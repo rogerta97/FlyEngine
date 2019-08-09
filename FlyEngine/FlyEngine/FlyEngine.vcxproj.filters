@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Archivos de encabezado\Modules">
+      <UniqueIdentifier>{77016c5b-d45a-4220-a3ed-6120e1df0527}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\Modules">
+      <UniqueIdentifier>{af99fc53-7dc7-4d6d-898d-d2904566142d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -27,9 +33,6 @@
     <ClInclude Include="Source\Light.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Module.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Color.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
@@ -42,11 +45,20 @@
     <ClInclude Include="Source\p2DynArray.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ModuleWindow.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Timer.h">
       <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleWindow.h">
+      <Filter>Archivos de encabezado\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleInput.h">
+      <Filter>Archivos de encabezado\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Module.h">
+      <Filter>Archivos de encabezado\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleSDL.h">
+      <Filter>Archivos de encabezado\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -65,11 +77,17 @@
     <ClCompile Include="Source\Main.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleWindow.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Timer.cpp">
       <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleWindow.cpp">
+      <Filter>Archivos de origen\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleInput.cpp">
+      <Filter>Archivos de origen\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleSDL.cpp">
+      <Filter>Archivos de origen\Modules</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

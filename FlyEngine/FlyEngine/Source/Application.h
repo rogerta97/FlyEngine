@@ -4,12 +4,18 @@
 #include "Globals.h"
 #include "Module.h"
 #include "Timer.h"
+
 #include "ModuleWindow.h"
+#include "ModuleInput.h"
+#include "ModuleSDL.h"
 
 class Application
 {
 public:
-	ModuleWindow* window;
+
+	ModuleSDL* m_sdl; 
+	//ModuleWindow* window;
+	//ModuleInput* input; 
 
 private:
 

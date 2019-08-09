@@ -2,17 +2,18 @@
 
 Application::Application()
 {
-	window = new ModuleWindow(this);
+	m_sdl = new ModuleSDL(this); 
+	// window = new ModuleWindow(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
 
 	// Main Modules
-	AddModule(window);
-	
+	AddModule(m_sdl);
+	// AddModule(window);
+		
 	// Scenes
-
 
 	// Renderer last!
 }
@@ -71,6 +72,14 @@ void Application::FinishUpdate()
 update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
+
+	//printf("Im The Application Update, press X to close");
+
+	//if (input->GetKey(SDL_SCANCODE_X) == KEY_STATE::KEY_DOWN) {
+	//	ret = UPDATE_ERROR;
+	//	return ret;
+	//}
+
 	PrepareUpdate();
 	
 	p2List_item<Module*>* item = list_modules.getFirst();
