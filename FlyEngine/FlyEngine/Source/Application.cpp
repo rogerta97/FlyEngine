@@ -2,17 +2,17 @@
 
 Application::Application()
 {
-	m_sdl = new ModuleSDL(this); 
-	// window = new ModuleWindow(this);
+	moduleInput = new ModuleInput(this); 
+	moduleWindow = new ModuleWindow(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
 
 	// Main Modules
-	AddModule(m_sdl);
-	// AddModule(window);
-		
+	AddModule(moduleInput);
+	AddModule(moduleWindow);
+	
 	// Scenes
 
 	// Renderer last!
@@ -73,12 +73,12 @@ update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
 
-	//printf("Im The Application Update, press X to close");
+	//printf("ESC state: %d\n", moduleInput->GetKey(SDL_SCANCODE_ESCAPE)); 
 
-	//if (input->GetKey(SDL_SCANCODE_X) == KEY_STATE::KEY_DOWN) {
-	//	ret = UPDATE_ERROR;
-	//	return ret;
-	//}
+	if (moduleInput->GetKey(SDL_SCANCODE_ESCAPE) == KEY_STATE::KEY_DOWN) {
+		ret = UPDATE_ERROR;
+		return ret;
+	}
 
 	PrepareUpdate();
 	

@@ -7,15 +7,13 @@
 
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
-#include "ModuleSDL.h"
 
 class Application
 {
 public:
 
-	ModuleSDL* m_sdl; 
-	//ModuleWindow* window;
-	//ModuleInput* input; 
+	ModuleInput* moduleInput; 
+	ModuleWindow* moduleWindow;
 
 private:
 

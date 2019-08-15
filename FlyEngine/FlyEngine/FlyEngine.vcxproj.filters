@@ -57,9 +57,6 @@
     <ClInclude Include="Source\Module.h">
       <Filter>Archivos de encabezado\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ModuleSDL.h">
-      <Filter>Archivos de encabezado\Modules</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -84,9 +81,6 @@
       <Filter>Archivos de origen\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Source\ModuleInput.cpp">
-      <Filter>Archivos de origen\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleSDL.cpp">
       <Filter>Archivos de origen\Modules</Filter>
     </ClCompile>
   </ItemGroup>
