@@ -1,23 +1,22 @@
+
 #include "Application.h"
+#include "mmgr.h"
 
 Application::Application()
 {
 	moduleInput = new ModuleInput(this); 
 	moduleWindow = new ModuleWindow(this);
 	moduleRender = new ModuleRender(this);
+	//moduleImGui = new ModuleImGui(this); 
 
-	// The order of calls is very important!
-	// Modules will Init() Start() and Update in this order
-	// They will CleanUp() in reverse order
+	// Init() Start() and Update in this order
+	// CleanUp() in reverse order
 
 	// Main Modules
 	AddModule(moduleInput);
 	AddModule(moduleWindow);
 	AddModule(moduleRender);
-	
-	// Scenes
-
-	// Renderer last!
+	//AddModule(moduleImGui); 
 }
 
 Application::~Application()
@@ -35,25 +34,24 @@ bool Application::Init()
 {
 	bool ret = true;
 
-	// Call Init() in all modules
-
+	// Init() in all modules
 	std::list<Module*>::iterator module_iterator = list_modules.begin();
-
 	while (module_iterator != list_modules.end() && ret == true)
 	{
 		ret = (*module_iterator)->Init();
 		module_iterator++;
 	}
 
-	// After all Init calls we call Start() in all modules
+	// Start() in all modules
 	LOG("Application Start --------------");
-
 	module_iterator = list_modules.begin();
 	while (module_iterator != list_modules.end() && ret == true)
 	{
 		ret = (*module_iterator)->Start();
 		module_iterator++;
 	}
+
+	currentEngineWindow = EW_ROOM_VISUALIZATION; 
 	
 	ms_timer.Start();
 	return ret;

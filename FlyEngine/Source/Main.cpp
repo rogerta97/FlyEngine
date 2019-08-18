@@ -3,6 +3,7 @@
 #include "Globals.h"
 
 #include "SDL.h"
+#include "mmgr.h"
 
 #pragma comment( lib, "3rdParty/SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "3rdParty/SDL/libx86/SDL2main.lib" )
@@ -85,5 +86,6 @@ int main(int argc, char ** argv)
 
 	delete App;
 	LOG("Exiting game '%s'...\n", TITLE);
+	m_dumpMemoryReport();
 	return main_return;
 }

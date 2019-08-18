@@ -2,6 +2,7 @@
 #define __OPENGL_H__
 
 #define WIN32_MEAN_AND_LEAN
+
 #include <Windows.h>
 #include "glew.h" 
 

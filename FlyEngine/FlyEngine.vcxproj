@@ -91,7 +91,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/Glew/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/mmgr;$(SolutionDir)3rdParty/ImGui</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -153,9 +153,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="3rdParty\ImGui\imconfig.h" />
+    <ClInclude Include="3rdParty\ImGui\imgui.h" />
+    <ClInclude Include="3rdParty\ImGui\imgui_impl_sdl.h" />
+    <ClInclude Include="3rdParty\ImGui\imgui_internal.h" />
+    <ClInclude Include="3rdParty\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="3rdParty\ImGui\imstb_textedit.h" />
+    <ClInclude Include="3rdParty\ImGui\imstb_truetype.h" />
+    <ClInclude Include="3rdParty\mmgr\mmgr.h" />
+    <ClInclude Include="3rdParty\mmgr\nommgr.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\Globals.h" />
+    <ClInclude Include="Source\ModuleImGui.h" />
     <ClInclude Include="Source\ModuleRender.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\ModuleInput.h" />
@@ -164,10 +174,17 @@
     <ClInclude Include="Source\Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="3rdParty\ImGui\imgui.cpp" />
+    <ClCompile Include="3rdParty\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="3rdParty\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="3rdParty\ImGui\imgui_impl_sdl.cpp" />
+    <ClCompile Include="3rdParty\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="3rdParty\mmgr\mmgr.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Color.cpp" />
     <ClCompile Include="Source\log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\ModuleImGui.cpp" />
     <ClCompile Include="Source\ModuleInput.cpp" />
     <ClCompile Include="Source\ModuleRender.cpp" />
     <ClCompile Include="Source\ModuleWindow.cpp" />
