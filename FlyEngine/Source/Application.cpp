@@ -4,6 +4,7 @@ Application::Application()
 {
 	moduleInput = new ModuleInput(this); 
 	moduleWindow = new ModuleWindow(this);
+	moduleRender = new ModuleRender(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -12,6 +13,7 @@ Application::Application()
 	// Main Modules
 	AddModule(moduleInput);
 	AddModule(moduleWindow);
+	AddModule(moduleRender);
 	
 	// Scenes
 

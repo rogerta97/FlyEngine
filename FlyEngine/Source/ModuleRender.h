@@ -8,14 +8,19 @@
 #pragma comment (lib, "opengl32.lib")						/* link Microsoft OpenGL lib */
 #pragma comment (lib, "3rdParty/Glew/libx86/glew32.lib")    /* link GLEW lib */
 
+#define BACKGROUND_COLOR 0.1f, 0.1f, 0.1f, 1.0f
+
 class Application;
 class ModuleRender : public Module
 {
 public:
 	ModuleRender(Application* app, bool start_enabled = true);
-
-	// Destructor
 	virtual ~ModuleRender();
+
+	// Flow 
+	bool Init(); 
+	update_status PostUpdate(float dt); 
+	bool CleanUp(); 
 
 public:
 

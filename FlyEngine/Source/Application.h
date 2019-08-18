@@ -6,6 +6,7 @@
 
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
+#include "ModuleRender.h"
 
 #include <list>
 
@@ -15,6 +16,7 @@ public:
 
 	ModuleInput* moduleInput; 
 	ModuleWindow* moduleWindow;
+	ModuleRender* moduleRender; 
 
 private:
 
