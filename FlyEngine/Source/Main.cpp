@@ -4,8 +4,8 @@
 
 #include "SDL.h"
 
-#pragma comment( lib, "../3rdParty/SDL/libx86/SDL2.lib" )
-#pragma comment( lib, "../3rdParty/SDL/libx86/SDL2main.lib" )
+#pragma comment( lib, "3rdParty/SDL/libx86/SDL2.lib" )
+#pragma comment( lib, "3rdParty/SDL/libx86/SDL2main.lib" )
 
 enum main_states
 {

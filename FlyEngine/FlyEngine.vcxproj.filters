@@ -19,33 +19,21 @@
     <Filter Include="Archivos de origen\Modules">
       <UniqueIdentifier>{af99fc53-7dc7-4d6d-898d-d2904566142d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de encabezado\Tools">
+      <UniqueIdentifier>{c70a4663-b790-459c-86b3-8e40c1373c63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\Utilities">
+      <UniqueIdentifier>{1d2ce2eb-73f0-4e8f-b6dd-812b27c85213}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\Utilities">
+      <UniqueIdentifier>{8d25a14f-6f40-45a2-9ae5-0bb4be422f53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Source\glmath.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Globals.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Light.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Color.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\p2Point.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\p2List.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\p2DynArray.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Timer.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleWindow.h">
@@ -60,24 +48,21 @@
     <ClInclude Include="Source\ModuleRender.h">
       <Filter>Archivos de encabezado\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="OpenGL.h">
+      <Filter>Archivos de encabezado\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Color.h">
+      <Filter>Archivos de encabezado\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Timer.h">
+      <Filter>Archivos de encabezado\Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Color.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\glmath.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\log.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Main.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Timer.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="Source\ModuleWindow.cpp">
@@ -88,6 +73,15 @@
     </ClCompile>
     <ClCompile Include="Source\ModuleRender.cpp">
       <Filter>Archivos de origen\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Color.cpp">
+      <Filter>Archivos de origen\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\log.cpp">
+      <Filter>Archivos de origen\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Timer.cpp">
+      <Filter>Archivos de origen\Utilities</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

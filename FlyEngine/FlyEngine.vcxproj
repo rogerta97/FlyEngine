@@ -91,7 +91,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\SDL\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/Glew/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -153,24 +153,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="OpenGL.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Color.h" />
-    <ClInclude Include="Source\glmath.h" />
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\ModuleRender.h" />
-    <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\ModuleInput.h" />
     <ClInclude Include="Source\ModuleWindow.h" />
-    <ClInclude Include="Source\p2DynArray.h" />
-    <ClInclude Include="Source\p2List.h" />
-    <ClInclude Include="Source\p2Point.h" />
     <ClInclude Include="Source\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Color.cpp" />
-    <ClCompile Include="Source\glmath.cpp" />
     <ClCompile Include="Source\log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\ModuleInput.cpp" />

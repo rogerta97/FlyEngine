@@ -10,16 +10,4 @@ ModuleRender::~ModuleRender()
 {
 }
 
-bool ModuleRender::Init()
-{
-	return true;
-}
 
-bool ModuleRender::CleanUp()
-{
-	return true;
-}
-
-void ModuleRender::SetTitle(const char* title)
-{
-}
