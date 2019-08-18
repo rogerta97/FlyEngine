@@ -48,14 +48,14 @@
     <ClInclude Include="Source\ModuleRender.h">
       <Filter>Archivos de encabezado\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="OpenGL.h">
-      <Filter>Archivos de encabezado\Tools</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Color.h">
       <Filter>Archivos de encabezado\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Source\Timer.h">
       <Filter>Archivos de encabezado\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\OpenGL.h">
+      <Filter>Archivos de encabezado\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
