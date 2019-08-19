@@ -2,9 +2,9 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 
-ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleWindow::ModuleWindow(bool start_enabled)
 {
-	mainWindow = NULL;
+	window = NULL;
 	screen_surface = NULL;
 }
 
@@ -55,9 +55,9 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
-		mainWindow = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
-		if(mainWindow == NULL)
+		if(window == NULL)
 		{
 			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 			ret = false;
@@ -65,7 +65,7 @@ bool ModuleWindow::Init()
 		else
 		{
 			//Get window surface
-			screen_surface = SDL_GetWindowSurface(mainWindow);
+			screen_surface = SDL_GetWindowSurface(window);
 		}
 	}
 
@@ -78,9 +78,9 @@ bool ModuleWindow::CleanUp()
 	LOG("Destroying SDL window and quitting all SDL systems");
 
 	//Destroy window
-	if(mainWindow != NULL)
+	if(window != NULL)
 	{
-		SDL_DestroyWindow(mainWindow);
+		SDL_DestroyWindow(window);
 	}
 
 	//Quit SDL subsystems
@@ -90,5 +90,5 @@ bool ModuleWindow::CleanUp()
 
 void ModuleWindow::SetTitle(const char* title)
 {
-	SDL_SetWindowTitle(mainWindow, title);
+	SDL_SetWindowTitle(window, title);
 }

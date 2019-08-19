@@ -1,13 +1,11 @@
-
 #include "Application.h"
-#include "mmgr.h"
 
 Application::Application()
 {
-	moduleInput = new ModuleInput(this); 
+	moduleInput = new ModuleInput(this);
 	moduleWindow = new ModuleWindow(this);
 	moduleRender = new ModuleRender(this);
-	//moduleImGui = new ModuleImGui(this); 
+	moduleImGui = new ModuleImGui(this);
 
 	// Init() Start() and Update in this order
 	// CleanUp() in reverse order
@@ -15,8 +13,8 @@ Application::Application()
 	// Main Modules
 	AddModule(moduleInput);
 	AddModule(moduleWindow);
+	AddModule(moduleImGui);
 	AddModule(moduleRender);
-	//AddModule(moduleImGui); 
 }
 
 Application::~Application()
@@ -25,8 +23,8 @@ Application::~Application()
 
 	while (module_iterator != list_modules.end())
 	{
-		delete *module_iterator; 
-		module_iterator++; 
+		delete* module_iterator;
+		module_iterator++;
 	}
 }
 
@@ -51,8 +49,8 @@ bool Application::Init()
 		module_iterator++;
 	}
 
-	currentEngineWindow = EW_ROOM_VISUALIZATION; 
-	
+	//currentEngineWindow = EW_ROOM_VISUALIZATION;
+
 	ms_timer.Start();
 	return ret;
 }
@@ -71,7 +69,7 @@ void Application::FinishUpdate()
 
 // Call PreUpdate, Update and PostUpdate on all modules
 update_status Application::Update()
-{	
+{
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
 

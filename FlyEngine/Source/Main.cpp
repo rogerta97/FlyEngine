@@ -3,8 +3,6 @@
 #include "Globals.h"
 
 #include "SDL.h"
-#include "mmgr.h"
-
 #pragma comment( lib, "3rdParty/SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "3rdParty/SDL/libx86/SDL2main.lib" )
 
@@ -17,14 +15,15 @@ enum main_states
 	MAIN_EXIT
 };
 
+Application* App = NULL;
+
 int main(int argc, char ** argv)
 {
 	LOG("Starting game '%s'...", TITLE);
 
 	int main_return = EXIT_FAILURE;
 	main_states state = MAIN_CREATION;
-	Application* App = NULL;
-
+	
 	while (state != MAIN_EXIT)
 	{
 		switch (state)
@@ -86,6 +85,5 @@ int main(int argc, char ** argv)
 
 	delete App;
 	LOG("Exiting game '%s'...\n", TITLE);
-	m_dumpMemoryReport();
 	return main_return;
 }

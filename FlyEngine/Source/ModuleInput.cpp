@@ -4,7 +4,7 @@
 
 #define MAX_KEYS 300
 
-ModuleInput::ModuleInput(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleInput::ModuleInput(bool start_enabled)
 {
 	keyboard = new KEY_STATE[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(KEY_STATE) * MAX_KEYS);
@@ -22,9 +22,9 @@ bool ModuleInput::Init()
 {
 	LOG("Init SDL input event system");
 	bool ret = true;
-	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Init(0);
 
-	if (SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
+	if(SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
 	{
 		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
@@ -36,25 +36,9 @@ bool ModuleInput::Init()
 // Called every draw update
 update_status ModuleInput::PreUpdate(float dt)
 {
-	bool quit = false;
-	SDL_Event e;
-
 	SDL_PumpEvents();
+
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
-
-	if (keys[SDL_SCANCODE_SPACE]) {
-		printf("Space pressed"); 
-	}
-
-	while (SDL_PollEvent(&e))
-	{
-		switch (e.type)
-		{
-		case SDL_QUIT:
-			quit = true;
-			break;
-		}
-	}
 	
 	for(int i = 0; i < MAX_KEYS; ++i)
 	{
@@ -100,8 +84,17 @@ update_status ModuleInput::PreUpdate(float dt)
 
 	mouse_x_motion = mouse_y_motion = 0;
 
-	if (keys[SDL_SCANCODE_RIGHT])
-		printf("Right key");
+	bool quit = false;
+	SDL_Event e;
+	while(SDL_PollEvent(&e))
+	{
+		switch(e.type)
+		{
+			case SDL_QUIT:
+			quit = true;
+			break;
+		}
+	}
 
 	if(quit == true || keyboard[SDL_SCANCODE_ESCAPE] == KEY_UP)
 		return UPDATE_STOP;

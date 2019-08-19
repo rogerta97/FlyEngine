@@ -10,7 +10,7 @@ class ModuleWindow : public Module
 {
 public:
 
-	ModuleWindow(Application* app, bool start_enabled = true);
+	ModuleWindow(bool start_enabled = true);
 
 	// Destructor
 	virtual ~ModuleWindow();
@@ -21,9 +21,8 @@ public:
 	void SetTitle(const char* title);
 
 public:
-
 	//The window we'll be rendering to
-	SDL_Window* mainWindow;
+	SDL_Window* window;
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface;

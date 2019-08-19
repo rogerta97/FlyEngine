@@ -17,6 +17,7 @@ void log(const char file[], int line, const char* format, ...);
 #define RADTODEG 57.295779513082320876f
 #define HAVE_M_PI
 
+
 typedef unsigned int uint;
 
 enum update_status
@@ -27,12 +28,12 @@ enum update_status
 };
 
 // Configuration -----------
-#define SCREEN_WIDTH 1800
-#define SCREEN_HEIGHT 970
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 1024
 #define SCREEN_SIZE 1
 #define WIN_FULLSCREEN false
-#define WIN_RESIZABLE false
+#define WIN_RESIZABLE true
 #define WIN_BORDERLESS false
 #define WIN_FULLSCREEN_DESKTOP false
 #define VSYNC true
-#define TITLE "FLY ENGINE V 0.01"
+#define TITLE "Fly Engine V 0.01"
