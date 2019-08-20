@@ -45,18 +45,6 @@
     <ClCompile Include="Source\ModuleImGui.cpp">
       <Filter>Source\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\imgui.cpp">
-      <Filter>Source\3rdParty\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\imgui_demo.cpp">
-      <Filter>Source\3rdParty\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\imgui_draw.cpp">
-      <Filter>Source\3rdParty\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\imgui_impl_sdl.cpp">
-      <Filter>Source\3rdParty\ImGui</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Application.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -71,6 +59,21 @@
     </ClCompile>
     <ClCompile Include="Source\ModuleRender.cpp">
       <Filter>Source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\ImGui\imgui.cpp">
+      <Filter>Source\3rdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\ImGui\imgui_demo.cpp">
+      <Filter>Source\3rdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\ImGui\imgui_dock.cpp">
+      <Filter>Source\3rdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\ImGui\imgui_draw.cpp">
+      <Filter>Source\3rdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\ImGui\imgui_impl_sdl.cpp">
+      <Filter>Source\3rdParty\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -92,27 +95,6 @@
     <ClInclude Include="Source\Module.h">
       <Filter>Source\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\imconfig.h">
-      <Filter>Source\3rdParty\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\imgui.h">
-      <Filter>Source\3rdParty\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\imgui_internal.h">
-      <Filter>Source\3rdParty\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\imgui_impl_sdl.h">
-      <Filter>Source\3rdParty\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\stb_truetype.h">
-      <Filter>Source\3rdParty\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\stb_textedit.h">
-      <Filter>Source\3rdParty\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\stb_rect_pack.h">
-      <Filter>Source\3rdParty\ImGui</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Timer.h">
       <Filter>Source\Tools</Filter>
     </ClInclude>
@@ -121,6 +103,30 @@
     </ClInclude>
     <ClInclude Include="Source\ModuleRender.h">
       <Filter>Source\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\ImGui\imconfig.h">
+      <Filter>Source\3rdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\ImGui\imgui.h">
+      <Filter>Source\3rdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\ImGui\imgui_dock.h">
+      <Filter>Source\3rdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\ImGui\imgui_impl_sdl.h">
+      <Filter>Source\3rdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\ImGui\imgui_internal.h">
+      <Filter>Source\3rdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\ImGui\stb_rect_pack.h">
+      <Filter>Source\3rdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\ImGui\stb_textedit.h">
+      <Filter>Source\3rdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\ImGui\stb_truetype.h">
+      <Filter>Source\3rdParty\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

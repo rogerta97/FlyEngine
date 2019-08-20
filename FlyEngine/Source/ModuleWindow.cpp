@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "SDL.h"
 
 ModuleWindow::ModuleWindow(bool start_enabled)
 {
@@ -63,10 +64,8 @@ bool ModuleWindow::Init()
 			ret = false;
 		}
 		else
-		{
-			//Get window surface
 			screen_surface = SDL_GetWindowSurface(window);
-		}
+		
 	}
 
 	return ret;
@@ -79,10 +78,8 @@ bool ModuleWindow::CleanUp()
 
 	//Destroy window
 	if(window != NULL)
-	{
 		SDL_DestroyWindow(window);
-	}
-
+	
 	//Quit SDL subsystems
 	SDL_Quit();
 	return true;
@@ -91,4 +88,14 @@ bool ModuleWindow::CleanUp()
 void ModuleWindow::SetTitle(const char* title)
 {
 	SDL_SetWindowTitle(window, title);
+}
+
+int ModuleWindow::GetWidth() const
+{
+	return width; 
+}
+
+int ModuleWindow::GetHeight() const
+{
+	return height;
 }

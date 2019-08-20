@@ -1,5 +1,5 @@
-#ifndef __ModuleWindow_H__
-#define __ModuleWindow_H__
+#ifndef __MODULEWINDOW_H__
+#define __MODULEWINDOW_H__
 
 #include "Module.h"
 #include "SDL.h"
@@ -18,14 +18,19 @@ public:
 	bool Init();
 	bool CleanUp();
 
+	// Utility
 	void SetTitle(const char* title);
+	int GetWidth() const; 
+	int GetHeight() const;
 
 public:
-	//The window we'll be rendering to
 	SDL_Window* window;
-
-	//The surface contained by the window
 	SDL_Surface* screen_surface;
+
+private:
+
+	int width; 
+	int height; 
 };
 
 #endif // __ModuleWindow_H__

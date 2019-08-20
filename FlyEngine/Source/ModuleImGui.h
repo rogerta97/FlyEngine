@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _MODULEIMGUI_H_
+#define _MODULEIMGUI_H_
+
 #include "Module.h"
 #include "Globals.h"
 
@@ -13,5 +15,9 @@ public:
 	update_status PreUpdate(float dt);
 	bool CleanUp();
 
+private: 
 
+	void DrawTopBar(); 
 };
+
+#endif
