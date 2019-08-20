@@ -36,22 +36,6 @@ bool ModuleImGui::Start()
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags = ImGuiConfigFlags_DockingEnable; 
 
-	//wchar_t buffer[MAX_PATH];
-	//GetModuleFileName(NULL, buffer, MAX_PATH);
-	//std::wstring ws(buffer);
-	//std::string exeDir(ws.begin(), ws.end());
-
-	//printf("Path: %s", str.c_str());
-	////for (int i = 0; i < MAX_PATH; i++) {
-
-	////	if(buffer[i] == '\0')
-	////		break; 
-	////		
-	////}
-	
-	/*ImFont* font1 = io.Fonts->AddFontDefault();
-	ImFont* font2 = io.Fonts->AddFontFromFileTTF("C:/Users/FULLMAC/Documents/FlyEngine/FlyEngine/EngineResources/Fonts/Antonio-Regular.ttf", 16.0f);*/
-
 	return true;
 }
 
@@ -65,14 +49,11 @@ update_status ModuleImGui::PreUpdate(float dt)
 
 update_status ModuleImGui::Update(float dt)
 {
-
 	bool opened = true;
 
 	ImGui::ShowDemoWindow(); 
+	DrawTopBar();	
 
-
-	DrawTopBar();
-	
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
