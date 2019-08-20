@@ -24,7 +24,7 @@ public:
 	int GetHeight() const;
 
 public:
-	SDL_Window* window;
+	SDL_Window* mainWindow;
 	SDL_Surface* screen_surface;
 
 private:

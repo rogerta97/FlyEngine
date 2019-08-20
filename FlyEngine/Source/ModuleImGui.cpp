@@ -4,8 +4,11 @@
 #include "Application.h"
 
 #include "imgui.h"
-#include "imgui_dock.h"
+#include "imgui_internal.h"
 #include "imgui_impl_sdl.h"
+#include "imgui_impl_opengl3.h"
+
+#include "SDL_opengl.h"
 
 #include <string>
 #include <Windows.h>
@@ -21,10 +24,17 @@ ModuleImGui::~ModuleImGui()
 bool ModuleImGui::Start()
 {
 	name = "ImGui";
-	ImGui_ImplSdlGL2_Init(App->moduleWindow->window);
+	
+	ImGui_ImplSDL2_InitForOpenGL(App->moduleWindow->mainWindow, App->moduleRender->context);
+	ImGui_ImplOpenGL3_Init("#version 130");
+
+	char* str = (char*)glGetString(GL_VERSION); 
+	printf("GL Version: %s", str); 
+
 	ImGui::StyleColorsDark(); 
 
-	//ImGuiIO& io = ImGui::GetIO();
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags = ImGuiConfigFlags_DockingEnable; 
 
 	//wchar_t buffer[MAX_PATH];
 	//GetModuleFileName(NULL, buffer, MAX_PATH);
@@ -39,7 +49,6 @@ bool ModuleImGui::Start()
 	////		
 	////}
 	
-
 	/*ImFont* font1 = io.Fonts->AddFontDefault();
 	ImFont* font2 = io.Fonts->AddFontFromFileTTF("C:/Users/FULLMAC/Documents/FlyEngine/FlyEngine/EngineResources/Fonts/Antonio-Regular.ttf", 16.0f);*/
 
@@ -48,48 +57,31 @@ bool ModuleImGui::Start()
 
 update_status ModuleImGui::PreUpdate(float dt)
 {
-	ImGui_ImplSdlGL2_NewFrame(App->moduleWindow->window);
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame(App->moduleWindow->mainWindow);
+	ImGui::NewFrame();
 	return update_status::UPDATE_CONTINUE;
 }
 
 update_status ModuleImGui::Update(float dt)
 {
 
-	ImGui::BeginDockspace();
+	bool opened = true;
 
-	//ImGui::SetWindowPos(ImVec2(-5, offset));
-	//ImGui::SetWindowSize(ImVec2(App->window->GetWidth() + 8, App->window->GetHeight() - offset));
-
-	ImGui::SetWindowPos(ImVec2(0, 0));
-	ImGui::SetWindowSize(ImVec2(App->moduleWindow->GetWidth() + 8, App->moduleWindow->GetHeight()));
-
-	//ImGui::DockSpace(ImGui::GetID("MainDock"));
-
-	//if (show_style_editor)
-	//{
-	//	if (ImGui::Begin("Style Editor", &show_style_editor))
-	//	{
-	//		ImGui::ShowStyleEditor();
-	//	}
-	//	ImGui::End();
-	//}
-
-	ImGui::BeginDock("First FlyEngine Window :D");
-	ImGui::EndDock();
-
-	ImGui::EndDockspace(); 
+	ImGui::ShowDemoWindow(); 
 
 
 	DrawTopBar();
 	
 	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	return update_status::UPDATE_CONTINUE;
 }
 
 bool ModuleImGui::CleanUp()
 {
-	ImGui_ImplSdlGL2_Shutdown();
+	ImGui_ImplSDL2_Shutdown(); 
 	return true;
 }
 

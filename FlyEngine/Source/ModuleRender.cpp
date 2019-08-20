@@ -8,6 +8,7 @@
 #include "imgui.h"
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
+#pragma comment (lib, "3rdParty/Glew/libx86/glew32.lib")
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 
 ModuleRender::ModuleRender(bool start_enabled)
@@ -24,7 +25,7 @@ bool ModuleRender::Init()
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
 	
-	context = SDL_GL_CreateContext(App->moduleWindow->window);
+	context = SDL_GL_CreateContext(App->moduleWindow->mainWindow);
 	if(context == NULL)
 	{
 		LOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -32,6 +33,7 @@ bool ModuleRender::Init()
 	}
 
 	ImGui::CreateContext();
+
 
 	if (VSYNC && SDL_GL_SetSwapInterval(1) < 0)
 		LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
@@ -58,7 +60,7 @@ update_status ModuleRender::PreUpdate(float dt)
 
 update_status ModuleRender::PostUpdate(float dt)
 {
-	SDL_GL_SwapWindow(App->moduleWindow->window);
+	SDL_GL_SwapWindow(App->moduleWindow->mainWindow);
 	return UPDATE_CONTINUE;
 }
 
