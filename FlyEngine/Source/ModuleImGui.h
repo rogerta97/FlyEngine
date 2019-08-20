@@ -18,6 +18,7 @@ public:
 private: 
 
 	void DrawTopBar(); 
+	void SetStyle(); 
 };
 
 #endif
