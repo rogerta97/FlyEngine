@@ -1,5 +1,5 @@
-#ifndef _CONSOLEDOCKPANEL_H_
-#define _CONSOLEDOCKPANEL_H_
+#ifndef _GAMEVIEWPORTDOCKPANEL_H_
+#define _GAMEVIEWPORTDOCKPANEL_H_
 
 #include "DockPanel.h"
 class GameViewportDockPanel : public DockPanel

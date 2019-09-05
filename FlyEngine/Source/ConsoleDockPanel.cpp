@@ -20,9 +20,10 @@ bool ConsoleDockPanel::Draw()
 #pragma endregion
 
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
-
 		ImGui::Text("Im The Console Text");
-
-		ImGui::End();
 	}
+
+	ImGui::End();
+
+	return true;
 }

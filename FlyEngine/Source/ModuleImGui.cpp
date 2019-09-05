@@ -13,6 +13,10 @@
 #include "RoomsGraphDockPanel.h"
 #include "ProjectInfoDockPanel.h"
 
+#include "GameViewportDockPanel.h"
+#include "RoomObjectsDockPanel.h"
+#include "ObjectPropertiesDockPanel.h"
+
 #include <string>
 #include <Windows.h>
 
@@ -46,9 +50,16 @@ void ModuleImGui::CreatePanels()
 	RoomsGraphDockPanel* roomsGraphPanel = new RoomsGraphDockPanel(true);
 	ProjectInfoDockPanel* projectInfoPanel = new ProjectInfoDockPanel(true);
 
+	GameViewportDockPanel* gameViewportDockPanel = new GameViewportDockPanel(false);
+	RoomObjectsDockPanel* roomObjectsDockPanel = new RoomObjectsDockPanel(false);
+	ObjectPropertiesDockPanel* objectPropertiesDockPanel = new ObjectPropertiesDockPanel(false);
+
 	AddPanelToRenderList(consolePanel); 
 	AddPanelToRenderList(roomsGraphPanel);
 	AddPanelToRenderList(projectInfoPanel);
+	AddPanelToRenderList(gameViewportDockPanel);
+	AddPanelToRenderList(roomObjectsDockPanel);
+	AddPanelToRenderList(objectPropertiesDockPanel);
 }
 
 void ModuleImGui::DeletePanels()

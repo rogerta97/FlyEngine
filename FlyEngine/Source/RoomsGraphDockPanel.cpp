@@ -19,7 +19,7 @@ bool RoomsGraphDockPanel::Draw()
 #pragma endregion
 
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
-		ImGui::Text("Im The Graph");	
+		ImGui::Button("Simulate Node Click");	
 	}
 
 	ImGui::End();

@@ -19,8 +19,9 @@ bool ProjectInfoDockPanel::Draw()
 #pragma endregion
 
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
-		ImGui::Text("Im The Info");	
+		ImGui::Text("Im The Project Info");	
 	}
 
 	ImGui::End();
+	return true;
 }
