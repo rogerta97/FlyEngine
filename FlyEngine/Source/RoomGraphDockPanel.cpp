@@ -12,13 +12,16 @@ RoomGraphDockPanel::~RoomGraphDockPanel()
 
 void RoomGraphDockPanel::Draw()
 {
+
 #pragma region secutiryChecks
 	DockPanel::Draw();
 #pragma endregion
 
 	if (ImGui::Begin(panelName.c_str())) {
 
-		ImGui::Text("Im The Panel Graph");
+		if (ImGui::Button("Simulate Graph Click")) {
+
+		}
 
 		ImGui::End();
 	}
