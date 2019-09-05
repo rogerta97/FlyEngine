@@ -21,7 +21,8 @@ public:
 	bool CleanUp();
 
 	// Docking
-	void DrawDockSpace(); 
+	void DrawDockSpace();
+	void DrawMainMenuBar();
 
 	// Panels 
 	void CreatePanels(); 
