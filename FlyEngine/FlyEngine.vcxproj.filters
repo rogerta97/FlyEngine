@@ -90,9 +90,6 @@
     <ClCompile Include="Source\DockPanel.cpp">
       <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
     </ClCompile>
-    <ClCompile Include="Source\RoomGraphDockPanel.cpp">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ModuleImGui.cpp">
       <Filter>Source\Modules\ModuleImGui</Filter>
     </ClCompile>
@@ -101,6 +98,18 @@
     </ClCompile>
     <ClCompile Include="3rdParty\mmgr\mmgr.cpp">
       <Filter>Source\3rdParty\MemoryManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameViewportDockPanel.cpp">
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ObjectPropertiesDockPanel.cpp">
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RoomObjectsDockPanel.cpp">
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RoomsGraphDockPanel.cpp">
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,9 +170,6 @@
     <ClInclude Include="Source\DockPanel.h">
       <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
     </ClInclude>
-    <ClInclude Include="Source\RoomGraphDockPanel.h">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
-    </ClInclude>
     <ClInclude Include="Source\ModuleImGui.h">
       <Filter>Source\Modules\ModuleImGui</Filter>
     </ClInclude>
@@ -175,6 +181,18 @@
     </ClInclude>
     <ClInclude Include="3rdParty\mmgr\nommgr.h">
       <Filter>Source\3rdParty\MemoryManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameViewportDockPanel.h">
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ObjectPropertiesDockPanel.h">
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RoomObjectsDockPanel.h">
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RoomsGraphDockPanel.h">
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

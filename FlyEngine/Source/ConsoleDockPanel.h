@@ -7,10 +7,10 @@ class ConsoleDockPanel : public DockPanel {
 
 public: 
 
-	ConsoleDockPanel(); 
+	ConsoleDockPanel(bool isVisible);
 	~ConsoleDockPanel(); 
 
-	void Draw(); 
+	bool Draw(); 
 
 private: 
 

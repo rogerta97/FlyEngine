@@ -1,8 +1,7 @@
-#include "RoomGraphDockPanel.h"
 #include "imgui.h"
 #include "ProjectInfoDockPanel.h"
 
-ProjectInfoDockPanel::ProjectInfoDockPanel() : DockPanel("Project Info")
+ProjectInfoDockPanel::ProjectInfoDockPanel(bool isVisible) : DockPanel("Project Info", isVisible)
 {
 	isMemberFrom = MEMBER_BOTH;
 }
@@ -11,17 +10,17 @@ ProjectInfoDockPanel::~ProjectInfoDockPanel()
 {
 }
 
-void ProjectInfoDockPanel::Draw()
+bool ProjectInfoDockPanel::Draw()
 {
 
 #pragma region secutiryChecks
-	DockPanel::Draw();
+	if (!DockPanel::Draw())
+		return false; 
 #pragma endregion
 
-	if (ImGui::Begin(panelName.c_str())) {
-
-		ImGui::Text("Im The Info");
-
-		ImGui::End();
+	if (ImGui::Begin(panelName.c_str(), &visible)) {
+		ImGui::Text("Im The Info");	
 	}
+
+	ImGui::End();
 }

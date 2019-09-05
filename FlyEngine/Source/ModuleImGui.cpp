@@ -10,7 +10,7 @@
 #include "SDL_opengl.h"
 
 #include "ConsoleDockPanel.h"
-#include "RoomGraphDockPanel.h"
+#include "RoomsGraphDockPanel.h"
 #include "ProjectInfoDockPanel.h"
 
 #include <string>
@@ -35,29 +35,30 @@ bool ModuleImGui::Start()
 	io.ConfigFlags = ImGuiConfigFlags_DockingEnable;
 
 	CreatePanels(); 
+	ImGui::StyleColorsDark();
 
 	return true;
 }
 
 void ModuleImGui::CreatePanels()
 {
-	ConsoleDockPanel* consolePanel = new ConsoleDockPanel();
-	RoomGraphDockPanel* roomGraphPanel = new RoomGraphDockPanel();
-	ProjectInfoDockPanel* projectInfoPanel = new ProjectInfoDockPanel();
+	ConsoleDockPanel* consolePanel = new ConsoleDockPanel(true);
+	RoomsGraphDockPanel* roomsGraphPanel = new RoomsGraphDockPanel(true);
+	ProjectInfoDockPanel* projectInfoPanel = new ProjectInfoDockPanel(true);
 
 	AddPanelToRenderList(consolePanel); 
-	AddPanelToRenderList(roomGraphPanel);
+	AddPanelToRenderList(roomsGraphPanel);
 	AddPanelToRenderList(projectInfoPanel);
 }
 
 void ModuleImGui::DeletePanels()
 {
-	for (auto it = activeDockPanels.rbegin(); it != activeDockPanels.rend(); it++) {
+	for (auto it = dockPanels.rbegin(); it != dockPanels.rend(); it++) {
 		delete((*it));
 		(*it) = nullptr; 
 	}
 
-	activeDockPanels.clear(); 
+	dockPanels.clear(); 
 }
 
 update_status ModuleImGui::PreUpdate(float dt)
@@ -116,21 +117,33 @@ void ModuleImGui::DrawMainMenuBar()
 
 	}
 
-	if (ImGui::MenuItem("Windows")) {
+	if (ImGui::BeginMenu("View")) {
 
+		for (auto it = dockPanels.begin(); it != dockPanels.end(); it++) {
+			if (ImGui::MenuItem((*it)->GetName().c_str())){
+				(*it)->ToggleVisibility(); 
+			}
+		}
+		
+		ImGui::EndMenu();
 	}
 
 	ImGui::EndMainMenuBar();
 }
 
+std::list<DockPanel*> ModuleImGui::getDockPanels() const
+{
+	return dockPanels; 
+}
+
 void ModuleImGui::AddPanelToRenderList(DockPanel* newPanel)
 {
-	activeDockPanels.push_back(newPanel); 
+	dockPanels.push_back(newPanel); 
 }
 
 void ModuleImGui::DrawPanels()
 {
-	for (auto it = activeDockPanels.begin(); it != activeDockPanels.end(); it++) {
+	for (auto it = dockPanels.begin(); it != dockPanels.end(); it++) {
 		(*it)->Draw(); 
 	}
 }
@@ -139,7 +152,7 @@ update_status ModuleImGui::Update(float dt)
 {
 	DrawDockSpace(); 
 
-	ImGui::StyleColorsDark(); 
+	
 	ImGui::Render();
 
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

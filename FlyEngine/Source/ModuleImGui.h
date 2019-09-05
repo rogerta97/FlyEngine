@@ -2,6 +2,7 @@
 #define _MODULEIMGUI_H_
 
 #include <list>
+#include <vector>
 
 #include "Module.h"
 #include "Globals.h"
@@ -23,6 +24,7 @@ public:
 	// Docking
 	void DrawDockSpace();
 	void DrawMainMenuBar();
+	std::list<DockPanel*> getDockPanels() const;
 
 	// Panels 
 	void CreatePanels(); 
@@ -36,7 +38,7 @@ private:
 	// Utility 
 	void SetStyle(); 
 
-	std::list<DockPanel*> activeDockPanels; 
+	std::list<DockPanel*> dockPanels;
 	ImGuiID mainDock_ID = 0; 
 };
 

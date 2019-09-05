@@ -7,10 +7,10 @@ class ProjectInfoDockPanel : public DockPanel {
 
 public:
 
-	ProjectInfoDockPanel();
+	ProjectInfoDockPanel(bool isVisible);
 	~ProjectInfoDockPanel();
 
-	void Draw();
+	bool Draw();
 
 private:
 

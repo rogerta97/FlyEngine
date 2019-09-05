@@ -17,11 +17,15 @@ class DockPanel {
 
 public:
 
-	DockPanel(std::string newPanelName);
+	DockPanel(std::string newPanelName, bool isVisible);
 	~DockPanel();
 
-	virtual void Draw();
+	virtual bool Draw();
 
+	// Utility
+	bool ToggleVisibility(); 
+
+	// Set & Get 
 	string GetName() const;
 	void inline SetName(string newName);
 
