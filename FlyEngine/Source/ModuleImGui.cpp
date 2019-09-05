@@ -3,12 +3,13 @@
 #include "ModuleRender.h"
 #include "Application.h"
 
-#include "imgui.h"
 #include "imgui_internal.h"
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_opengl3.h"
 
 #include "SDL_opengl.h"
+
+#include "ConsoleDockPanel.h"
 
 #include <string>
 #include <Windows.h>
@@ -24,16 +25,31 @@ ModuleImGui::~ModuleImGui()
 bool ModuleImGui::Start()
 {
 	name = "ImGui";
-	
+
 	ImGui_ImplSDL2_InitForOpenGL(App->moduleWindow->mainWindow, App->moduleRender->context);
 	ImGui_ImplOpenGL3_Init("#version 130");
 
-	SetStyle(); 
-
 	ImGuiIO& io = ImGui::GetIO();
-	io.ConfigFlags = ImGuiConfigFlags_DockingEnable; 
+	io.ConfigFlags = ImGuiConfigFlags_DockingEnable;
+
+	CreatePanels(); 
 
 	return true;
+}
+
+void ModuleImGui::CreatePanels()
+{
+	ConsoleDockPanel* consolePanel = new ConsoleDockPanel();
+	AddPanelToRenderList(consolePanel); 
+}
+
+void ModuleImGui::DeletePanels()
+{
+	for (auto it = activeDockPanels.rbegin(); it != activeDockPanels.rend(); it++) {
+		delete((*it));
+	}
+
+	activeDockPanels.clear(); 
 }
 
 update_status ModuleImGui::PreUpdate(float dt)
@@ -45,16 +61,54 @@ update_status ModuleImGui::PreUpdate(float dt)
 	return update_status::UPDATE_CONTINUE;
 }
 
+void ModuleImGui::DrawDockSpace() 
+{	
+	bool open = true;
+
+	// Set Main Window Settings
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar;
+	ImGuiViewport* viewport = ImGui::GetMainViewport();
+	ImGui::SetNextWindowPos(viewport->Pos);
+	ImGui::SetNextWindowSize(viewport->Size);
+	ImGui::SetNextWindowViewport(viewport->ID);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+
+	window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+	window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+	
+	// Create Main Window 
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+	ImGui::Begin("MainDock", &open, window_flags);
+	ImGui::PopStyleVar(3);
+
+	mainDock_ID = ImGui::GetID("MainDock");
+
+	// Create the dockspace 
+	ImGui::SetNextWindowDockID(mainDock_ID);
+	ImGui::DockSpace(mainDock_ID);
+
+	// Iterate trough panels 
+	DrawPanels(); 
+
+	ImGui::End(); 
+}
+
+void ModuleImGui::AddPanelToRenderList(DockPanel* newPanel)
+{
+	activeDockPanels.push_back(newPanel); 
+}
+
+void ModuleImGui::DrawPanels()
+{
+	for (auto it = activeDockPanels.begin(); it != activeDockPanels.end(); it++) {
+		(*it)->Draw(); 
+	}
+}
+
 update_status ModuleImGui::Update(float dt)
 {
-
-
-
-	ImGui::ShowDemoWindow(); 
- 
-
-
-	DrawTopBar();	
+	DrawDockSpace(); 
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -123,12 +177,31 @@ void ModuleImGui::SetStyle() {
 	style->Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(1.00f, 0.98f, 0.95f, 0.73f);
 }
 
-void ModuleImGui::DrawTopBar() {
-
-	ImGui::BeginMainMenuBar(); 
-
-	ImGui::EndMainMenuBar(); 
-}
-
-
+//void ModuleImGui::CreateDock()
+//{
+//	ImGuiID dockspace_id = ImGui::GetID("MainDock");
+//	ImGuiViewport* viewport = ImGui::GetMainViewport();
+//
+//	ImGui::DockBuilderRemoveNode(dockspace_id); // Clear out existing layout
+//	ImGui::DockBuilderAddNode(dockspace_id, ImGuiDockNodeFlags_DockSpace);
+//	ImGui::DockBuilderSetNodeSize(dockspace_id, viewport->Size);  // Add empty node
+//
+//	ImGuiID dock_main_id = dockspace_id; // This variable will track the document node, however we are not using it here as we aren't docking anything into it.
+//	ImGuiID dock_id_left = ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Left, 0.20f, nullptr, &dock_main_id);
+//	ImGuiID dock_id_right = ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Right, 0.20f, nullptr, &dock_main_id);
+//	ImGuiID dock_id_bottom = ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Down, 0.20f, nullptr, &dock_main_id);
+//
+//	//ImGui::DockBuilderDockWindow(SystemLog::ID.c_str(), dock_id_bottom);
+//	//ImGui::DockBuilderDockWindow(FormManager::PROPERTY_EDITOR_ID.c_str(), dock_id_right);
+//	//ImGui::DockBuilderDockWindow(FormManager::PROJECT_EXPLORER_ID.c_str(), dock_id_left);
+//	//ImGui::DockBuilderDockWindow("Extra", dock_id_prop);
+//
+//	//ImGui::DockBuilderDockWindow(fmt::format("dummy###{0}", FilelistForm::ID).c_str(), dock_id_left);
+//	//ImGui::DockBuilderDockWindow(fmt::format("dummy###{0}", AudioPlayerForm::ID).c_str(), dock_main_id);
+//	//ImGui::DockBuilderDockWindow(fmt::format("dummy###{0}", PlaylistForm::ID).c_str(), dock_id_right);
+//	//ImGui::DockBuilderDockWindow(SystemLog::ID.c_str(), dock_id_bottom);
+//
+//	ImGui::DockBuilderDockWindow("hjghj", dockspace_id); 
+//	ImGui::DockBuilderFinish(dockspace_id);
+//}
 

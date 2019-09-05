@@ -27,6 +27,8 @@
     <ClCompile Include="3rdParty\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Color.cpp" />
+    <ClCompile Include="Source\ConsoleDockPanel.cpp" />
+    <ClCompile Include="Source\DockPanel.cpp" />
     <ClCompile Include="Source\log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\ModuleImGui.cpp" />
@@ -47,6 +49,8 @@
     <ClInclude Include="3rdParty\ImGui\imstb_truetype.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Color.h" />
+    <ClInclude Include="Source\ConsoleDockPanel.h" />
+    <ClInclude Include="Source\DockPanel.h" />
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\ModuleImGui.h" />
