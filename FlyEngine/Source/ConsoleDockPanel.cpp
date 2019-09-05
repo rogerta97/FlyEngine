@@ -3,6 +3,7 @@
 
 ConsoleDockPanel::ConsoleDockPanel() : DockPanel("Console")
 {
+	isMemberFrom = MEMBER_BOTH; 
 	messagesAmmount = 0; 
 }
 
@@ -12,15 +13,13 @@ ConsoleDockPanel::~ConsoleDockPanel()
 
 void ConsoleDockPanel::Draw()
 {
-	if (ImGui::Begin(panelName.c_str())){
 
-		ImGui::Text("Im The Console Text");
-		ImGui::Text("Im The Console Text");
-		ImGui::Text("Im The Console Text");
-		ImGui::Text("Im The Console Text");
-		ImGui::Text("Im The Console Text");
-		ImGui::Text("Im The Console Text");
-		ImGui::Text("Im The Console Text");
+#pragma region secutiryChecks
+	DockPanel::Draw();
+#pragma endregion
+
+	if (ImGui::Begin(panelName.c_str())) {
+
 		ImGui::Text("Im The Console Text");
 
 		ImGui::End();

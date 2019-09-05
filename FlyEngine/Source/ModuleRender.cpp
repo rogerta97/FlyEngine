@@ -48,7 +48,6 @@ bool ModuleRender::Init()
 		ret = false;
 	}
 
-
 	return ret;
 }
 

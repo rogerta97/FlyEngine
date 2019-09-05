@@ -31,8 +31,14 @@
     <Filter Include="Source\Utilities">
       <UniqueIdentifier>{3608ae9f-7446-46d7-8fdb-f1bfe50806d7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\ImGuiPanels">
+    <Filter Include="Source\Modules\ModuleImGui">
+      <UniqueIdentifier>{5c9e942b-d307-4240-8741-3343db824ea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Modules\ModuleImGui\ImGuiPanels">
       <UniqueIdentifier>{c27d716c-5ae7-4394-875d-a3ad33ff3aef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\3rdParty\MemoryManager">
+      <UniqueIdentifier>{7907c4ee-95c0-4af4-8dfa-cb3600ecc481}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -43,9 +49,6 @@
       <Filter>Source\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Source\ModuleInput.cpp">
-      <Filter>Source\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleImGui.cpp">
       <Filter>Source\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application.cpp">
@@ -82,10 +85,22 @@
       <Filter>Source\3rdParty\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Source\ConsoleDockPanel.cpp">
-      <Filter>Source\ImGuiPanels</Filter>
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\DockPanel.cpp">
-      <Filter>Source\ImGuiPanels</Filter>
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RoomGraphDockPanel.cpp">
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleImGui.cpp">
+      <Filter>Source\Modules\ModuleImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ProjectInfoDockPanel.cpp">
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\mmgr\mmgr.cpp">
+      <Filter>Source\3rdParty\MemoryManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -99,9 +114,6 @@
       <Filter>Source\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleInput.h">
-      <Filter>Source\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleImGui.h">
       <Filter>Source\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\Module.h">
@@ -144,10 +156,25 @@
       <Filter>Source\3rdParty</Filter>
     </ClInclude>
     <ClInclude Include="Source\ConsoleDockPanel.h">
-      <Filter>Source\ImGuiPanels</Filter>
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\DockPanel.h">
-      <Filter>Source\ImGuiPanels</Filter>
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RoomGraphDockPanel.h">
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleImGui.h">
+      <Filter>Source\Modules\ModuleImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ProjectInfoDockPanel.h">
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\mmgr\mmgr.h">
+      <Filter>Source\3rdParty\MemoryManager</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\mmgr\nommgr.h">
+      <Filter>Source\3rdParty\MemoryManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,6 +6,8 @@
 #pragma comment( lib, "3rdParty/SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "3rdParty/SDL/libx86/SDL2main.lib" )
 
+#include "mmgr.h"
+
 enum main_states
 {
 	MAIN_CREATION,
@@ -84,6 +86,8 @@ int main(int argc, char ** argv)
 	}
 
 	delete App;
+	m_dumpMemoryReport(); 
+
 	LOG("Exiting game '%s'...\n", TITLE);
 	return main_return;
 }

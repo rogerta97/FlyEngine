@@ -49,8 +49,7 @@ bool Application::Init()
 		module_iterator++;
 	}
 
-	//currentEngineWindow = EW_ROOM_VISUALIZATION;
-
+	engineWindow = ROOM_OVERVIEW; 
 	ms_timer.Start();
 	return ret;
 }
@@ -67,7 +66,6 @@ void Application::FinishUpdate()
 {
 }
 
-// Call PreUpdate, Update and PostUpdate on all modules
 update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;

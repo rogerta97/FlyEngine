@@ -10,6 +10,8 @@
 #include "SDL_opengl.h"
 
 #include "ConsoleDockPanel.h"
+#include "RoomGraphDockPanel.h"
+#include "ProjectInfoDockPanel.h"
 
 #include <string>
 #include <Windows.h>
@@ -40,13 +42,19 @@ bool ModuleImGui::Start()
 void ModuleImGui::CreatePanels()
 {
 	ConsoleDockPanel* consolePanel = new ConsoleDockPanel();
+	RoomGraphDockPanel* roomGraphPanel = new RoomGraphDockPanel();
+	ProjectInfoDockPanel* projectInfoPanel = new ProjectInfoDockPanel();
+
 	AddPanelToRenderList(consolePanel); 
+	AddPanelToRenderList(roomGraphPanel);
+	AddPanelToRenderList(projectInfoPanel);
 }
 
 void ModuleImGui::DeletePanels()
 {
 	for (auto it = activeDockPanels.rbegin(); it != activeDockPanels.rend(); it++) {
 		delete((*it));
+		(*it) = nullptr; 
 	}
 
 	activeDockPanels.clear(); 
@@ -108,6 +116,7 @@ void ModuleImGui::DrawPanels()
 
 update_status ModuleImGui::Update(float dt)
 {
+
 	DrawDockSpace(); 
 
 	ImGui::Render();
@@ -118,6 +127,7 @@ update_status ModuleImGui::Update(float dt)
 
 bool ModuleImGui::CleanUp()
 {
+	DeletePanels(); 
 	ImGui_ImplSDL2_Shutdown(); 
 	return true;
 }

@@ -10,6 +10,12 @@
 
 #include <list>
 
+enum EngineWindows {
+
+	ROOM_OVERVIEW, 
+	ROOM_EDIT,
+};
+
 class Application
 {
 public:
@@ -19,11 +25,11 @@ public:
 
 	ModuleRender* moduleRender;
 
-
 private:
 
 	Timer	ms_timer;
 	float	dt;
+	EngineWindows engineWindow; 
 	std::list<Module*> list_modules;
 
 public:

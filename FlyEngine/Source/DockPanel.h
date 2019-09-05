@@ -5,6 +5,14 @@
 
 using namespace std;
 
+enum DockPanelMember {
+
+	MEMBER_ROOM_OVERVIEW,
+	MEMBER_ROOM_EDIT,
+	MEMBER_BOTH,
+	MEMBER_null
+};
+
 class DockPanel {
 
 public:
@@ -18,6 +26,8 @@ public:
 	void inline SetName(string newName);
 
 protected:
+
+	DockPanelMember isMemberFrom = MEMBER_null;
 	string panelName;
 	bool visible;
 };

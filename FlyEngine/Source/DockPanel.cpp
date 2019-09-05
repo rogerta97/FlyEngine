@@ -22,4 +22,10 @@ inline void DockPanel::SetName(string newName)
 	panelName = newName;
 }
 
-void DockPanel::Draw() {}
+void DockPanel::Draw() {
+
+	// Security Checkings 
+	assert(panelName != ""); // You should add a name to the docking window
+	assert(isMemberFrom != MEMBER_null); // Panels Should belong to big members 
+
+}
