@@ -13,6 +13,7 @@
 
 ModuleRender::ModuleRender(bool start_enabled)
 {
+	moduleType = MODULE_RENDER;
 }
 
 // Destructor

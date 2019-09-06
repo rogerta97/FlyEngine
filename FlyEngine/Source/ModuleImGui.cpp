@@ -22,6 +22,7 @@
 
 ModuleImGui::ModuleImGui(bool start_enabled)
 {
+	moduleType = MODULE_IMGUI;
 }
 
 ModuleImGui::~ModuleImGui()
@@ -54,19 +55,27 @@ void ModuleImGui::CreatePanels()
 	RoomObjectsDockPanel* roomObjectsDockPanel = new RoomObjectsDockPanel(false);
 	ObjectPropertiesDockPanel* objectPropertiesDockPanel = new ObjectPropertiesDockPanel(false);
 
-	AddPanelToRenderList(consolePanel); 
-	AddPanelToRenderList(roomsGraphPanel);
-	AddPanelToRenderList(projectInfoPanel);
-	AddPanelToRenderList(gameViewportDockPanel);
-	AddPanelToRenderList(roomObjectsDockPanel);
-	AddPanelToRenderList(objectPropertiesDockPanel);
+	dockPanels.push_back(consolePanel); 
+	dockPanels.push_back(roomsGraphPanel);
+	dockPanels.push_back(projectInfoPanel);
+
+	dockPanels.push_back(gameViewportDockPanel);
+	dockPanels.push_back(roomObjectsDockPanel);
+	dockPanels.push_back(objectPropertiesDockPanel);
 }
+
+//void ModuleImGui::GetPanel(DockPanelType panelType) {
+//
+//	for (auto it = dockPanels.begin(); it != dockPanels.end(); it++) {
+//
+//	}
+//}
 
 void ModuleImGui::DeletePanels()
 {
 	for (auto it = dockPanels.rbegin(); it != dockPanels.rend(); it++) {
 		delete((*it));
-		(*it) = nullptr; 
+		(*it) = nullptr;
 	}
 
 	dockPanels.clear(); 
@@ -132,7 +141,7 @@ void ModuleImGui::DrawMainMenuBar()
 
 		for (auto it = dockPanels.begin(); it != dockPanels.end(); it++) {
 			if (ImGui::MenuItem((*it)->GetName().c_str())){
-				(*it)->ToggleVisibility(); 
+				(*it)->ToggleVisibility();
 			}
 		}
 		
@@ -142,20 +151,30 @@ void ModuleImGui::DrawMainMenuBar()
 	ImGui::EndMainMenuBar();
 }
 
-std::list<DockPanel*> ModuleImGui::getDockPanels() const
-{
-	return dockPanels; 
-}
-
-void ModuleImGui::AddPanelToRenderList(DockPanel* newPanel)
-{
-	dockPanels.push_back(newPanel); 
-}
-
 void ModuleImGui::DrawPanels()
 {
 	for (auto it = dockPanels.begin(); it != dockPanels.end(); it++) {
-		(*it)->Draw(); 
+		(*it)->Draw();
+	}
+}
+
+void ModuleImGui::AddaptToFlySection(FlyEngineSection flyEngineSection)
+{
+	for (auto it = dockPanels.begin(); it != dockPanels.end(); it++) {
+
+		if ((*it)->GetFlySection() == flyEngineSection || (*it)->GetFlySection() == FLY_SECTION_BOTH)
+			(*it)->SetVisible(true);
+		else
+			(*it)->SetVisible(false); 
+	}
+}
+
+DockPanel* ModuleImGui::GetDockPanel(DockPanelType panelType)
+{
+	for (auto it = dockPanels.begin(); it != dockPanels.end(); it++) {
+		
+		if ((*it)->GetPanelType() == panelType)
+			return (*it);
 	}
 }
 

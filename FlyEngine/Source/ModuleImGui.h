@@ -7,8 +7,8 @@
 #include "Module.h"
 #include "Globals.h"
 #include "imgui.h"
+#include "DockPanel.h"
 
-class DockPanel; 
 class ModuleImGui : public Module
 {
 public:
@@ -24,14 +24,15 @@ public:
 	// Docking
 	void DrawDockSpace();
 	void DrawMainMenuBar();
-	std::list<DockPanel*> getDockPanels() const;
 
 	// Panels 
 	void CreatePanels(); 
 	void DeletePanels(); 
+	void DrawPanels();
 
-	void AddPanelToRenderList(DockPanel* newPanel);
-	void DrawPanels(); 
+	void AddaptToFlySection(FlyEngineSection flyEngineSection); 
+
+	DockPanel* GetDockPanel(DockPanelType panelType);
 
 private: 
 

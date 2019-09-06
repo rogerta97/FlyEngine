@@ -3,6 +3,8 @@
 
 RoomObjectsDockPanel::RoomObjectsDockPanel(bool isVisible) : DockPanel("Room Objects", isVisible)
 {
+	flyEngineSection = FLY_SECTION_ROOM_EDIT;
+	dockPanelType = DOCK_ROOM_OBJECTS;
 }
 
 RoomObjectsDockPanel::~RoomObjectsDockPanel()

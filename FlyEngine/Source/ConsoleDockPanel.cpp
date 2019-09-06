@@ -3,7 +3,8 @@
 
 ConsoleDockPanel::ConsoleDockPanel(bool isVisible) : DockPanel("Console", isVisible)
 {
-	isMemberFrom = MEMBER_BOTH; 
+	flyEngineSection = FLY_SECTION_BOTH;
+	dockPanelType = DOCK_CONSOLE; 
 	messagesAmmount = 0; 
 }
 

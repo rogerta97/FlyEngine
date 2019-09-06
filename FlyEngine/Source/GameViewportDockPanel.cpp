@@ -3,6 +3,8 @@
 
 GameViewportDockPanel::GameViewportDockPanel(bool isVisible) : DockPanel("Game Viewport", isVisible)
 {
+	flyEngineSection = FLY_SECTION_ROOM_EDIT;
+	dockPanelType = DOCK_GAME_VIEWPORT;
 }
 
 GameViewportDockPanel::~GameViewportDockPanel()

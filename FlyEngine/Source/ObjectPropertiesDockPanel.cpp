@@ -3,6 +3,8 @@
 
 ObjectPropertiesDockPanel::ObjectPropertiesDockPanel(bool isVisible) : DockPanel("Object Properties", isVisible)
 {
+	flyEngineSection = FLY_SECTION_ROOM_EDIT;
+	dockPanelType = DOCK_OBJECT_PROPERTIES;
 }
 
 ObjectPropertiesDockPanel::~ObjectPropertiesDockPanel()

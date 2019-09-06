@@ -5,12 +5,23 @@
 
 using namespace std;
 
-enum DockPanelMember {
+enum FlyEngineSection 
+{
+	FLY_SECTION_ROOM_GRAPH,
+	FLY_SECTION_ROOM_EDIT,
+	FLY_SECTION_BOTH,
+	FLY_SECTION_null
+};
 
-	MEMBER_ROOM_OVERVIEW,
-	MEMBER_ROOM_EDIT,
-	MEMBER_BOTH,
-	MEMBER_null
+enum DockPanelType
+{
+	DOCK_CONSOLE,
+	DOCK_GAME_VIEWPORT,
+	DOCK_OBJECT_PROPERTIES,
+	DOCK_PROJECT_INFO,
+	DOCK_ROOM_OBJECTS,
+	DOCK_ROOMS_GRAPH,
+	DOCK_null,
 };
 
 class DockPanel {
@@ -23,15 +34,20 @@ public:
 	virtual bool Draw();
 
 	// Utility
-	bool ToggleVisibility(); 
+	bool ToggleVisibility();
+	void SetVisible(bool newVisible); 
 
 	// Set & Get 
 	string GetName() const;
 	void inline SetName(string newName);
 
+	DockPanelType GetPanelType() const;
+	FlyEngineSection GetFlySection() const; 
+
 protected:
 
-	DockPanelMember isMemberFrom = MEMBER_null;
+	DockPanelType dockPanelType = DOCK_null; 
+	FlyEngineSection flyEngineSection = FLY_SECTION_null;
 	string panelName;
 	bool visible;
 };

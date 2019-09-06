@@ -1,9 +1,11 @@
+#include "Application.h"
 #include "RoomsGraphDockPanel.h"
 #include "imgui.h"
 
 RoomsGraphDockPanel::RoomsGraphDockPanel(bool isVisible) : DockPanel("Rooms Graph", isVisible)
 {
-
+	flyEngineSection = FLY_SECTION_ROOM_GRAPH;
+	dockPanelType = DOCK_ROOMS_GRAPH;
 }
 
 RoomsGraphDockPanel::~RoomsGraphDockPanel()
@@ -19,7 +21,10 @@ bool RoomsGraphDockPanel::Draw()
 #pragma endregion
 
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
-		ImGui::Button("Simulate Node Click");	
+		
+		if (ImGui::Button("Simulate Node Click")) {
+			App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
+		}
 	}
 
 	ImGui::End();

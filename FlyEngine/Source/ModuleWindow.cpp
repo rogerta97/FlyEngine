@@ -7,6 +7,7 @@ ModuleWindow::ModuleWindow(bool start_enabled)
 {
 	mainWindow = NULL;
 	screen_surface = NULL;
+	moduleType = MODULE_WINDOW;
 }
 
 // Destructor

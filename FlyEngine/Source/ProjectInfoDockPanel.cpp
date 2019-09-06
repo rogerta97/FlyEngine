@@ -3,7 +3,8 @@
 
 ProjectInfoDockPanel::ProjectInfoDockPanel(bool isVisible) : DockPanel("Project Info", isVisible)
 {
-	isMemberFrom = MEMBER_BOTH;
+	flyEngineSection = FLY_SECTION_ROOM_GRAPH;
+	dockPanelType = DOCK_GAME_VIEWPORT;
 }
 
 ProjectInfoDockPanel::~ProjectInfoDockPanel()

@@ -6,10 +6,22 @@
 class Application;
 struct PhysBody3D;
 
+enum ModuleType 
+{
+	MODULE_INPUT, 
+	MODULE_RENDER, 
+	MODULE_WINDOW, 
+	MODULE_IMGUI, 
+	MODULE_null
+};
+
 class Module
 {
 private :
 	bool enabled;
+
+protected: 
+	ModuleType moduleType = MODULE_null; 
 
 public:
 	const char* name = "";
