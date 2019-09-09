@@ -111,6 +111,9 @@
     <ClCompile Include="Source\RoomsGraphDockPanel.cpp">
       <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
     </ClCompile>
+    <ClCompile Include="Source\NodeGraph.cpp">
+      <Filter>Source\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -193,6 +196,9 @@
     </ClInclude>
     <ClInclude Include="Source\RoomsGraphDockPanel.h">
       <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\NodeGraph.h">
+      <Filter>Source\Tools</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
