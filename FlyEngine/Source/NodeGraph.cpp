@@ -28,7 +28,6 @@
 
 namespace ImNodes
 {
-
 	CanvasState* gCanvas = nullptr;
 
 	bool operator ==(const ImVec2& a, const ImVec2& b)

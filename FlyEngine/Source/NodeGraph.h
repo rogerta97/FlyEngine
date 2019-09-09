@@ -36,7 +36,6 @@
 
 namespace ImNodes
 {
-
 	enum StyleColor
 	{
 		ColCanvasLines,

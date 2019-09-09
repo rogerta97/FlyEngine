@@ -114,6 +114,9 @@
     <ClCompile Include="Source\NodeGraph.cpp">
       <Filter>Source\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Source\NodeGraphEz.cpp">
+      <Filter>Source\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -198,6 +201,9 @@
       <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\NodeGraph.h">
+      <Filter>Source\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\NodeGraphEz.h">
       <Filter>Source\Tools</Filter>
     </ClInclude>
   </ItemGroup>

@@ -38,6 +38,7 @@
     <ClCompile Include="Source\ModuleRender.cpp" />
     <ClCompile Include="Source\ModuleWindow.cpp" />
     <ClCompile Include="Source\NodeGraph.cpp" />
+    <ClCompile Include="Source\NodeGraphEz.cpp" />
     <ClCompile Include="Source\ObjectPropertiesDockPanel.cpp" />
     <ClCompile Include="Source\ProjectInfoDockPanel.cpp" />
     <ClCompile Include="Source\RoomObjectsDockPanel.cpp" />
@@ -68,6 +69,7 @@
     <ClInclude Include="Source\ModuleRender.h" />
     <ClInclude Include="Source\ModuleWindow.h" />
     <ClInclude Include="Source\NodeGraph.h" />
+    <ClInclude Include="Source\NodeGraphEz.h" />
     <ClInclude Include="Source\ObjectPropertiesDockPanel.h" />
     <ClInclude Include="Source\ProjectInfoDockPanel.h" />
     <ClInclude Include="Source\RoomObjectsDockPanel.h" />
