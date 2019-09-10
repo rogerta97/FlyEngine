@@ -1,11 +1,13 @@
-#include "Globals.h"
 #include "Application.h"
-#include "ModuleRender.h"
+#include "Globals.h"
+
 #include "SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
-
 #include "imgui.h"
+
+#include "ModuleRender.h"
+#include "ModuleWindow.h"
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "3rdParty/Glew/libx86/glew32.lib")

@@ -3,10 +3,6 @@
 #include "Globals.h"
 #include "Timer.h"
 #include "Module.h"
-#include "ModuleWindow.h"
-#include "ModuleInput.h"
-#include "ModuleImGui.h"
-#include "ModuleRender.h"
 
 #include <list>
 
@@ -16,9 +12,18 @@ enum EngineWindows {
 	ROOM_EDIT,
 };
 
+// Forward Declarations 
+class ModuleWindow;
+class ModuleInput;
+class ModuleImGui;
+class ModuleRender;
+class ModuleWorldManager;
+
 class Application
 {
 public:
+
+	ModuleWorldManager* moduleWorldManager; 
 	ModuleWindow* moduleWindow;
 	ModuleInput* moduleInput;
 	ModuleImGui* moduleImGui;

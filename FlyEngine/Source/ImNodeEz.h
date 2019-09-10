@@ -22,7 +22,7 @@
 //
 #pragma once
 
-#include "NodeGraph.h"
+#include "ImNode.h"
 
 namespace ImNodes
 {
@@ -34,6 +34,7 @@ namespace ImNodes
 		{
 			/// Slot title, will be displayed on the node.
 			const char* title;
+
 			/// Slot kind, will be used for matching connections to slots of same kind.
 			int kind;
 		};

@@ -6,8 +6,9 @@
 class Application;
 struct PhysBody3D;
 
-enum ModuleType 
+enum ModuleType
 {
+	MODULE_ENGINE_MANAGER, 
 	MODULE_INPUT, 
 	MODULE_RENDER, 
 	MODULE_WINDOW, 

@@ -33,12 +33,14 @@
     <ClCompile Include="Source\GameViewportDockPanel.cpp" />
     <ClCompile Include="Source\log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\ModuleWorldManager.cpp" />
     <ClCompile Include="Source\ModuleImGui.cpp" />
     <ClCompile Include="Source\ModuleInput.cpp" />
     <ClCompile Include="Source\ModuleRender.cpp" />
     <ClCompile Include="Source\ModuleWindow.cpp" />
+    <ClCompile Include="Source\ImNode.cpp" />
+    <ClCompile Include="Source\ImNodeEz.cpp" />
     <ClCompile Include="Source\NodeGraph.cpp" />
-    <ClCompile Include="Source\NodeGraphEz.cpp" />
     <ClCompile Include="Source\ObjectPropertiesDockPanel.cpp" />
     <ClCompile Include="Source\ProjectInfoDockPanel.cpp" />
     <ClCompile Include="Source\RoomObjectsDockPanel.cpp" />
@@ -64,12 +66,14 @@
     <ClInclude Include="Source\GameViewportDockPanel.h" />
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\Module.h" />
+    <ClInclude Include="Source\ModuleWorldManager.h" />
     <ClInclude Include="Source\ModuleImGui.h" />
     <ClInclude Include="Source\ModuleInput.h" />
     <ClInclude Include="Source\ModuleRender.h" />
     <ClInclude Include="Source\ModuleWindow.h" />
+    <ClInclude Include="Source\ImNode.h" />
+    <ClInclude Include="Source\ImNodeEz.h" />
     <ClInclude Include="Source\NodeGraph.h" />
-    <ClInclude Include="Source\NodeGraphEz.h" />
     <ClInclude Include="Source\ObjectPropertiesDockPanel.h" />
     <ClInclude Include="Source\ProjectInfoDockPanel.h" />
     <ClInclude Include="Source\RoomObjectsDockPanel.h" />
@@ -81,7 +85,7 @@
     <ProjectGuid>{5139FDC6-4C0A-4D2A-885F-A47D639FC41D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>FlyEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

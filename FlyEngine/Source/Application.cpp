@@ -1,19 +1,23 @@
 #include "Application.h"
 
+#include "ModuleWindow.h"
+#include "ModuleInput.h"
+#include "ModuleImGui.h"
+#include "ModuleRender.h"
+#include "ModuleWorldManager.h"
+
 Application::Application()
 {
 	moduleInput = new ModuleInput(this);
 	moduleWindow = new ModuleWindow(this);
 	moduleRender = new ModuleRender(this);
 	moduleImGui = new ModuleImGui(this);
+	moduleWorldManager = new ModuleWorldManager(this); 
 
-	// Init() Start() and Update in this order
-	// CleanUp() in reverse order
-
-	// Main Modules
 	AddModule(moduleInput);
 	AddModule(moduleWindow);
 	AddModule(moduleImGui);
+	AddModule(moduleWorldManager);
 	AddModule(moduleRender);
 }
 

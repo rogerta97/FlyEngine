@@ -40,6 +40,15 @@
     <Filter Include="Source\3rdParty\MemoryManager">
       <UniqueIdentifier>{7907c4ee-95c0-4af4-8dfa-cb3600ecc481}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Tools\NodeGraph">
+      <UniqueIdentifier>{4b410c40-2d86-44f5-9844-5dabee35f670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\3rdParty\ImNode">
+      <UniqueIdentifier>{94e6515c-6e59-4e37-8e15-8c60bcfef4bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\FlyEngine">
+      <UniqueIdentifier>{8dabfe53-c090-4cfd-8c01-5c6cee9867cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -111,11 +120,17 @@
     <ClCompile Include="Source\RoomsGraphDockPanel.cpp">
       <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
     </ClCompile>
-    <ClCompile Include="Source\NodeGraph.cpp">
-      <Filter>Source\Tools</Filter>
+    <ClCompile Include="Source\ImNode.cpp">
+      <Filter>Source\3rdParty\ImNode</Filter>
     </ClCompile>
-    <ClCompile Include="Source\NodeGraphEz.cpp">
-      <Filter>Source\Tools</Filter>
+    <ClCompile Include="Source\ImNodeEz.cpp">
+      <Filter>Source\3rdParty\ImNode</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleWorldManager.cpp">
+      <Filter>Source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\NodeGraph.cpp">
+      <Filter>Source\Tools\NodeGraph</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -200,11 +215,17 @@
     <ClInclude Include="Source\RoomsGraphDockPanel.h">
       <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
     </ClInclude>
-    <ClInclude Include="Source\NodeGraph.h">
-      <Filter>Source\Tools</Filter>
+    <ClInclude Include="Source\ImNode.h">
+      <Filter>Source\3rdParty\ImNode</Filter>
     </ClInclude>
-    <ClInclude Include="Source\NodeGraphEz.h">
-      <Filter>Source\Tools</Filter>
+    <ClInclude Include="Source\ImNodeEz.h">
+      <Filter>Source\3rdParty\ImNode</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleWorldManager.h">
+      <Filter>Source\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\NodeGraph.h">
+      <Filter>Source\Tools\NodeGraph</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
