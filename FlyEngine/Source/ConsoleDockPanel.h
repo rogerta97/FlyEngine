@@ -3,6 +3,16 @@
 
 #include "DockPanel.h"
 
+#include <map>
+
+using namespace std; 
+
+enum consoleMessageType {
+	CM_DEBUG,
+	CM_WARNING,
+	CM_ERROR
+};
+
 class ConsoleDockPanel : public DockPanel {
 
 public: 
@@ -14,7 +24,8 @@ public:
 
 private: 
 
-	int messagesAmmount; 
+	multimap<consoleMessageType, const char*> messagesList; 
+
 };
 
 #endif 

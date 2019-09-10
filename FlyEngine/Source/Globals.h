@@ -27,6 +27,8 @@ enum update_status
 	UPDATE_ERROR
 };
 
+#define IMGUI_SPACE_SEPARATOR ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
+
 // Configuration -----------
 #define SCREEN_WIDTH 1550
 #define SCREEN_HEIGHT 950

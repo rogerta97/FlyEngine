@@ -129,6 +129,8 @@ void ModuleImGui::DrawMainMenuBar()
 {
 	ImGui::BeginMainMenuBar();
 
+	static bool demoOpened = false;
+
 	if (ImGui::MenuItem("File")) {
 
 	}
@@ -144,11 +146,19 @@ void ModuleImGui::DrawMainMenuBar()
 				(*it)->ToggleVisibility();
 			}
 		}
+
+		// TODO: Rude Way to Show Demo Window
+		if (ImGui::MenuItem("ImGui Demo")){
+			demoOpened = !demoOpened; 
+		}
 		
 		ImGui::EndMenu();
 	}
 
 	ImGui::EndMainMenuBar();
+
+	if (demoOpened)
+		ImGui::ShowDemoWindow(&demoOpened);
 }
 
 void ModuleImGui::DrawPanels()
