@@ -62,6 +62,8 @@ void ModuleImGui::CreatePanels()
 	dockPanels.push_back(gameViewportDockPanel);
 	dockPanels.push_back(roomObjectsDockPanel);
 	dockPanels.push_back(objectPropertiesDockPanel);
+
+	consoleDockPanel = consolePanel; 
 }
 
 //void ModuleImGui::GetPanel(DockPanelType panelType) {

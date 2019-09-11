@@ -1,6 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
+#include "ModuleImGui.h"
 #include "ModuleInput.h"
+#include "ConsoleDockPanel.h"
 
 #define MAX_KEYS 300
 
@@ -99,6 +101,19 @@ update_status ModuleInput::PreUpdate(float dt)
 
 	if(quit == true || keyboard[SDL_SCANCODE_ESCAPE] == KEY_UP)
 		return UPDATE_STOP;
+
+	if (GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
+		FLY_LOG("Debug Message"); 
+	}
+
+	if (GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+		FLY_WARNING("Warning Message");
+	}
+
+
+	if (GetKey(SDL_SCANCODE_C) == KEY_DOWN) {
+		FLY_ERROR("Error Message");
+	}
 
 	return UPDATE_CONTINUE;
 }

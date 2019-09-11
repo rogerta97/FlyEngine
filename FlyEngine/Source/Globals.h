@@ -7,9 +7,20 @@
 #include <windows.h>
 #include <stdio.h>
 
-#define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
+enum consoleMessageType {
+	CM_DEBUG,
+	CM_WARNING,
+	CM_ERROR
+};
 
-void log(const char file[], int line, const char* format, ...);
+#define LOG(format, ...) log(__FILE__, __LINE__, CM_DEBUG, format, __VA_ARGS__)
+
+#define FLY_LOG(format, ...) flyLog(__FILE__, __LINE__, CM_DEBUG, format, __VA_ARGS__)
+#define FLY_WARNING(format, ...) flyLog(__FILE__, __LINE__, CM_WARNING, format, __VA_ARGS__)
+#define FLY_ERROR(format, ...) flyLog(__FILE__, __LINE__, CM_ERROR, format, __VA_ARGS__)
+
+void log(const char file[], int line, consoleMessageType messageType, const char* format, ...);
+void flyLog(const char file[], int line, consoleMessageType messageType, const char* format, ...);
 
 #define CAP(n) ((n <= 0.0f) ? n=0.0f : (n >= 1.0f) ? n=1.0f : n=n)
 

@@ -9,6 +9,7 @@
 #include "imgui.h"
 #include "DockPanel.h"
 
+class ConsoleDockPanel;
 class ModuleImGui : public Module
 {
 public:
@@ -33,6 +34,8 @@ public:
 	void AddaptToFlySection(FlyEngineSection flyEngineSection); 
 
 	DockPanel* GetDockPanel(DockPanelType panelType);
+
+	ConsoleDockPanel* consoleDockPanel;
 
 private: 
 
