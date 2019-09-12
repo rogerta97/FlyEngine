@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _APPLICATION_H_
+#define _APPLICATION_H_
 
 #include "Globals.h"
 #include "Timer.h"
@@ -6,8 +7,8 @@
 
 #include <list>
 
-enum EngineWindows {
-
+enum EngineWindows 
+{
 	ROOM_OVERVIEW, 
 	ROOM_EDIT,
 };
@@ -52,3 +53,5 @@ private:
 	void PrepareUpdate();
 	void FinishUpdate();
 };
+
+#endif

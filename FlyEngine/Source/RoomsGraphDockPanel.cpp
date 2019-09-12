@@ -3,8 +3,7 @@
 #include "imgui.h"
 #include "SDL_opengl.h"
 
-#include "ImNode.h"
-#include "ImNodeEz.h"
+#include "NodeGraph.h"
 
 RoomsGraphDockPanel::RoomsGraphDockPanel(bool isVisible) : DockPanel("Rooms Graph", isVisible)
 {
@@ -26,8 +25,7 @@ bool RoomsGraphDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
 		
-		static ImNodes::CanvasState canvas;
-		ImNodes::BeginCanvas(&canvas);
+		nodeGraph.DrawNodeGraph(); 
 
 		//GLuint my_opengl_texture;
 		//glGenTextures(1, &my_opengl_texture);
@@ -75,7 +73,7 @@ bool RoomsGraphDockPanel::Draw()
 		//ImNodes::Connection(&nodes[1], "", &nodes[0], "");
 		//ImNodes::Connection(&nodes[2], "", &nodes[0], "");
 
-		ImNodes::EndCanvas();	
+		//ImNodes::EndCanvas();	
 
 		//if (showGraph)
 		//	ShowExampleAppCustomNodeGraph(&graphOpened);

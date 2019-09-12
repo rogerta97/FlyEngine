@@ -1,4 +1,5 @@
 #include "ModuleWorldManager.h"
+#include "Room.h"
 
 ModuleWorldManager::ModuleWorldManager(bool start_enabled)
 {
@@ -11,6 +12,9 @@ ModuleWorldManager::~ModuleWorldManager()
 
 bool ModuleWorldManager::Init()
 {
+	// Create fake rooms 
+	Room* firstRoom = new Room(); 
+	roomsInWorldList.push_back(firstRoom);
 
 	return true;
 }

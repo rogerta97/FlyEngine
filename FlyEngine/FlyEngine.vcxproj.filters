@@ -49,6 +49,9 @@
     <Filter Include="Source\FlyEngine">
       <UniqueIdentifier>{8dabfe53-c090-4cfd-8c01-5c6cee9867cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\FlyEngine\Room">
+      <UniqueIdentifier>{e84db96a-ff69-482d-a1ce-6d2d9182bd87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -131,6 +134,9 @@
     </ClCompile>
     <ClCompile Include="Source\NodeGraph.cpp">
       <Filter>Source\Tools\NodeGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Room.cpp">
+      <Filter>Source\FlyEngine\Room</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +232,12 @@
     </ClInclude>
     <ClInclude Include="Source\NodeGraph.h">
       <Filter>Source\Tools\NodeGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Room.h">
+      <Filter>Source\FlyEngine\Room</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RoomLink.h">
+      <Filter>Source\FlyEngine\Room</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
