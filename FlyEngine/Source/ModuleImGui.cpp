@@ -7,8 +7,6 @@
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_opengl3.h"
 
-#include "SDL_opengl.h"
-
 #include "ConsoleDockPanel.h"
 #include "RoomsGraphDockPanel.h"
 #include "ProjectInfoDockPanel.h"
@@ -19,6 +17,7 @@
 
 #include <string>
 #include <Windows.h>
+#include "mmgr.h"
 
 ModuleImGui::ModuleImGui(bool start_enabled)
 {
@@ -76,6 +75,7 @@ void ModuleImGui::CreatePanels()
 void ModuleImGui::DeletePanels()
 {
 	for (auto it = dockPanels.rbegin(); it != dockPanels.rend(); it++) {
+		(*it)->CleanUp(); 
 		delete((*it));
 		(*it) = nullptr;
 	}

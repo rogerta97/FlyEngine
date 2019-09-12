@@ -11,8 +11,6 @@
 
 using namespace std; 
 
-
-
 struct ConsoleMessage {
 
 	string message; 
@@ -28,6 +26,7 @@ public:
 	~ConsoleDockPanel(); 
 
 	bool Draw();
+	bool CleanUp();
 	void PrintMessageStack(); 
 
 	// Utility 
@@ -44,7 +43,7 @@ private:
 	bool printWarningMessages;
 	bool printErrorMessages;
 
-	list<ConsoleMessage> messagesList;
+	list<ConsoleMessage*> messagesList;
 	char commandBuffer[MAX_COMMAND_LENGHT];
 };
 

@@ -1,5 +1,6 @@
 #include "ObjectPropertiesDockPanel.h"
 #include "imgui.h"
+#include "mmgr.h"
 
 ObjectPropertiesDockPanel::ObjectPropertiesDockPanel(bool isVisible) : DockPanel("Object Properties", isVisible)
 {

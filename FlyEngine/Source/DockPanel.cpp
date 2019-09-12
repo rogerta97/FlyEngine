@@ -1,5 +1,6 @@
 #include "DockPanel.h"
 #include "imgui.h"
+#include "mmgr.h"
 
 DockPanel::DockPanel(std::string newPanelName, bool isVisible)
 {
@@ -41,6 +42,11 @@ bool DockPanel::Draw() {
 		return false;
 
 	return true; 
+}
+
+bool DockPanel::CleanUp()
+{
+	return true;
 }
 
 // Will Return the new enabled state

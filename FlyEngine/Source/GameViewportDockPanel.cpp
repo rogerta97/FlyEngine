@@ -1,5 +1,6 @@
 #include "GameViewportDockPanel.h"
 #include "imgui.h"
+#include "mmgr.h"
 
 GameViewportDockPanel::GameViewportDockPanel(bool isVisible) : DockPanel("Game Viewport", isVisible)
 {

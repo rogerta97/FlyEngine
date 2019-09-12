@@ -3,6 +3,7 @@
 #include "ModuleImGui.h"
 #include "ModuleInput.h"
 #include "ConsoleDockPanel.h"
+#include "mmgr.h"
 
 #define MAX_KEYS 300
 

@@ -24,6 +24,8 @@
 #endif
 #include "ImNodeEz.h"
 
+#include "mmgr.h"
+
 namespace ImNodes
 {
 	extern CanvasState* gCanvas;

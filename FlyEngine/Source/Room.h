@@ -20,13 +20,14 @@ public:
 	Room(string roomName); 
 	~Room(); 
 
+	void CleanUp(); 
+
 	string GetName() const; 
 	void SetName(string newName); 
 
 private: 
 
 	string roomName;
-
 	list<RoomLink*> roomLinks; 
 
 };

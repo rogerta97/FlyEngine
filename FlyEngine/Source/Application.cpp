@@ -5,14 +5,15 @@
 #include "ModuleImGui.h"
 #include "ModuleRender.h"
 #include "ModuleWorldManager.h"
+#include "mmgr.h"
 
 Application::Application()
 {
 	moduleInput = new ModuleInput(this);
 	moduleWindow = new ModuleWindow(this);
-	moduleRender = new ModuleRender(this);
 	moduleImGui = new ModuleImGui(this);
 	moduleWorldManager = new ModuleWorldManager(this); 
+	moduleRender = new ModuleRender(this);
 
 	AddModule(moduleInput);
 	AddModule(moduleWindow);

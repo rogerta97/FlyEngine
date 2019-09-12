@@ -988,7 +988,6 @@ CODE
  - tip: call and read the ShowDemoWindow() code in imgui_demo.cpp for more example of how to use ImGui!
 
 */
-
 #if defined(_MSC_VER) && !defined(_CRT_SECURE_NO_WARNINGS)
 #define _CRT_SECURE_NO_WARNINGS
 #endif

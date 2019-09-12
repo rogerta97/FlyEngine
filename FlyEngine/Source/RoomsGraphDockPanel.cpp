@@ -4,6 +4,7 @@
 #include "SDL_opengl.h"
 
 #include "NodeGraph.h"
+#include "mmgr.h"
 
 RoomsGraphDockPanel::RoomsGraphDockPanel(bool isVisible) : DockPanel("Rooms Graph", isVisible)
 {

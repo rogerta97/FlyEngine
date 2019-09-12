@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "SDL.h"
+#include "mmgr.h"
 
 ModuleWindow::ModuleWindow(bool start_enabled)
 {

@@ -1,7 +1,7 @@
 #include "ModuleWorldManager.h"
 #include "Room.h"
-
 #include "NodeGraph.h"
+#include "mmgr.h"
 
 ModuleWorldManager::ModuleWorldManager(bool start_enabled)
 {
@@ -43,7 +43,20 @@ update_status ModuleWorldManager::PostUpdate(float dt)
 
 bool ModuleWorldManager::CleanUp()
 {
+	CleanUpRooms();	
+	NodeGraph::getInstance()->DeleteNodes(); 
+
 	return true;
+}
+
+void ModuleWorldManager::CleanUpRooms()
+{
+	for (auto it = roomsInWorldList.begin(); it != roomsInWorldList.end(); it++) {
+		(*it)->CleanUp();
+		delete (*it);
+	}
+
+	roomsInWorldList.clear();
 }
 
 Room* ModuleWorldManager::GetRoom(string roomName) const

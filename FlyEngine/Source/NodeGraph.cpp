@@ -5,6 +5,7 @@
 #include "Application.h"
 #include "Room.h"
 #include "ModuleWorldManager.h"
+#include "mmgr.h"
 
 NodeGraph* NodeGraph::instance = 0;
 
@@ -22,7 +23,7 @@ NodeGraph::NodeGraph()
 
 NodeGraph::~NodeGraph()
 {
-	DeleteNodes(); 
+
 }
 
 void NodeGraph::CreateNodes()
@@ -48,12 +49,16 @@ void NodeGraph::DeleteNodes()
 	}
 
 	instance->nodeList.clear();
+	delete instance; 
 
 	FLY_LOG("Nodes Deleted Correctly");
 }
 
 void NodeGraph::DrawNodeGraph()
 {
+	if (instance == nullptr)
+		return; 
+
 	static ImNodes::CanvasState canvas;
 	ImNodes::BeginCanvas(&canvas);
 

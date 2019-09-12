@@ -26,6 +26,8 @@
 
 #include "ImNode.h"
 
+#include "mmgr.h"
+
 namespace ImNodes
 {
 	CanvasState* gCanvas = nullptr;
@@ -150,6 +152,7 @@ namespace ImNodes
 	CanvasState::~CanvasState()
 	{
 		delete _impl;
+		m_dumpMemoryReport(); 
 	}
 
 	ImU32 MakeSlotDataID(const char* data, const char* slot_title, void* node_id, bool input_slot)

@@ -22,7 +22,9 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	Room* GetRoom(string roomName) const; 
+	void CleanUpRooms();
+
+	Room* GetRoom(string roomName) const;
 
 public:
 

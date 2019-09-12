@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "ConsoleDockPanel.h"
+#include "mmgr.h"
 
 void log(const char file[], int line, consoleMessageType messageType, const char* format, ...)
 {

@@ -1,5 +1,6 @@
 #include "imgui.h"
 #include "ProjectInfoDockPanel.h"
+#include "mmgr.h"
 
 ProjectInfoDockPanel::ProjectInfoDockPanel(bool isVisible) : DockPanel("Project Info", isVisible)
 {

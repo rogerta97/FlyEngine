@@ -32,6 +32,7 @@ public:
 	~DockPanel();
 
 	virtual bool Draw();
+	virtual bool CleanUp();
 
 	// Utility
 	bool ToggleVisibility();

@@ -1,5 +1,6 @@
 #include "ConsoleDockPanel.h"
 #include "Globals.h"
+#include "mmgr.h"
 
 ConsoleDockPanel::ConsoleDockPanel(bool isVisible) : DockPanel("Console", isVisible)
 {
@@ -58,7 +59,7 @@ bool ConsoleDockPanel::Draw()
 		ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 5.0f);
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.75f, 0.75f, 0.75f, 1));
 		if (ImGui::Button("Clear")) {
-			messagesList.clear(); 
+			CleanUp(); 
 		}
 
 		ImGui::PopStyleColor(); 
@@ -89,27 +90,35 @@ bool ConsoleDockPanel::Draw()
 	return true;
 }
 
+bool ConsoleDockPanel::CleanUp()
+{
+	for (auto it = messagesList.begin(); it != messagesList.end(); it++) {
+		delete (*it); 
+	}
+
+	messagesList.clear(); 
+
+	return true; 
+}
+
 void ConsoleDockPanel::PrintMessageStack()
 {
 	for (auto it = messagesList.begin(); it != messagesList.end(); it++) {
-	
-		if (messagesList.size() == 2)
-			messagesList.size();
 
-		if ((*it).canPrint) {
+		if ((*it)->canPrint) {
 
-			switch ((*it).messageType)
+			switch ((*it)->messageType)
 			{
 			case CM_DEBUG:
-				ImGui::TextColored(debugMessageColor, (*it).message.c_str());
+				ImGui::TextColored(debugMessageColor, (*it)->message.c_str());
 				break;
 
 			case CM_WARNING:
-				ImGui::TextColored(warningMessageColor, (*it).message.c_str());
+				ImGui::TextColored(warningMessageColor, (*it)->message.c_str());
 				break;
 
 			case CM_ERROR:
-				ImGui::TextColored(errorMessageColor, (*it).message.c_str());
+				ImGui::TextColored(errorMessageColor, (*it)->message.c_str());
 				break;
 
 			default:
@@ -123,14 +132,21 @@ void ConsoleDockPanel::SetMessageVisibility(consoleMessageType messageType)
 {
 	for (auto it = messagesList.begin(); it != messagesList.end(); it++) {
 
-		if ((*it).messageType == messageType) 		{
-			(*it).canPrint = !(*it).canPrint;
+		if ((*it)->messageType == messageType) 		{
+			(*it)->canPrint = !(*it)->canPrint;
 		}
 	}
 }
 
 void ConsoleDockPanel::AddLineToConsole(consoleMessageType messageType, string textToAdd)
 {
-	ConsoleMessage newMessage = { textToAdd, messageType, true };	
-	messagesList.push_back(newMessage); 
+	ConsoleMessage* newMessage = new ConsoleMessage();
+
+	newMessage->message = textToAdd;
+	newMessage->messageType = messageType;
+	newMessage->canPrint = true;
+
+	messagesList.push_back(newMessage);
 }
+	
+

@@ -1,5 +1,6 @@
 #include "RoomObjectsDockPanel.h"
 #include "imgui.h"
+#include "mmgr.h"
 
 RoomObjectsDockPanel::RoomObjectsDockPanel(bool isVisible) : DockPanel("Room Objects", isVisible)
 {
