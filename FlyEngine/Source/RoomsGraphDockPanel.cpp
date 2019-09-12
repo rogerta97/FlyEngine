@@ -25,7 +25,7 @@ bool RoomsGraphDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
 		
-		nodeGraph.DrawNodeGraph(); 
+		NodeGraph::DrawNodeGraph(); 
 
 		//GLuint my_opengl_texture;
 		//glGenTextures(1, &my_opengl_texture);

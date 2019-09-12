@@ -5,6 +5,7 @@
 #include "Globals.h"
 
 #include <list>
+#include <string>
 
 using namespace std; 
 
@@ -16,10 +17,12 @@ public:
 	ModuleWorldManager(bool start_enabled = true);
 	~ModuleWorldManager();
 
-	bool Init();
+	bool Start();
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
+
+	Room* GetRoom(string roomName) const; 
 
 public:
 

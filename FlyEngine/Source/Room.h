@@ -17,10 +17,15 @@ class Room {
 
 public:
 
-	Room(); 
+	Room(string roomName); 
 	~Room(); 
 
+	string GetName() const; 
+	void SetName(string newName); 
+
 private: 
+
+	string roomName;
 
 	list<RoomLink*> roomLinks; 
 

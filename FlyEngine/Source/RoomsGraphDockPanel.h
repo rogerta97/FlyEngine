@@ -13,8 +13,6 @@ public:
 
 	bool Draw();
 
-private:
-	NodeGraph nodeGraph; 
 };
 
 #endif 
