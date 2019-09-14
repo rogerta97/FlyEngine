@@ -16,8 +16,8 @@ struct Node {
 	bool selected; 
 	string title; 
 
-	ImNodes::Ez::SlotInfo inputs[1]; 
-	ImNodes::Ez::SlotInfo outputs[1];
+	list<ImNodes::Ez::SlotInfo> inputs; 
+	list<ImNodes::Ez::SlotInfo> outputs;
 };
 
 class NodeGraph
@@ -32,7 +32,7 @@ public:
 
 	static void CreateNode(string nodeName, ImVec2 pos);
 	static void DeleteNodes();
-	static void AddConnection(string originNodeTitle, string dstNodeTitle); 
+	static void DrawNodeConnections(); 
 
 	static void DrawNodeGraph();
 
@@ -43,30 +43,5 @@ private:
 	list<Node*> nodeList;
 
 };
-
-//class NodeGraph 
-//{
-//	static NodeGraph* instance;
-//	NodeGraph();
-//
-///*public:
-//	static NodeGraph* getInstance() {
-//		if (!instance)
-//			instance = new NodeGraph;
-//
-//		return instance;
-//	}
-//
-//public: 
-//	~NodeGraph();
-//
-//	static void CreateNodes(); 
-//	static void DeleteNodes(); 
-//
-//	static void DrawNodeGraph(); 
-//
-//private: 
-//	list<Node*> nodeList;*/ 
-//};
 
 #endif

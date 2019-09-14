@@ -33,8 +33,8 @@ void NodeGraph::CreateNode(string nodeName, ImVec2 pos)
 	newNode->title = nodeName.c_str();
 	newNode->selected = false;
 	newNode->position = pos;
-	newNode->inputs[0] = { "In", 1 };
-	newNode->outputs[0] = { "Out", 1 };
+	newNode->inputs.push_back({ "In", 1 });
+	newNode->outputs.push_back({ "Out", 1 });
 
 	instance->nodeList.push_back(newNode);
 
@@ -53,9 +53,11 @@ void NodeGraph::DeleteNodes()
 	FLY_LOG("Nodes Deleted Correctly");
 }
 
-void NodeGraph::AddConnection(string originNodeTitle, string dstNodeTitle)
+void NodeGraph::DrawNodeConnections()
 {
+	for (auto it : App->moduleWorldManager->roomsInWorldList) {
 
+	}	
 }
 
 void NodeGraph::DrawNodeGraph()
@@ -66,12 +68,12 @@ void NodeGraph::DrawNodeGraph()
 	static ImNodes::CanvasState canvas;
 	ImNodes::BeginCanvas(&canvas);
 
-	for (auto it = instance->nodeList.begin(); it != instance->nodeList.end(); it++) {
+	for (auto it : instance->nodeList) {
 
-		if (ImNodes::Ez::BeginNode((*it), (*it)->title.c_str(), &(*it)->position, &(*it)->selected))
+		if (ImNodes::Ez::BeginNode(it, it->title.c_str(), &it->position, &it->selected))
 		{
-			ImNodes::Ez::InputSlots((*it)->inputs, 1);
-			ImNodes::Ez::OutputSlots((*it)->outputs, 1);
+			ImNodes::Ez::InputSlots(it->inputs);
+			ImNodes::Ez::OutputSlots(it->outputs);
 			ImNodes::Ez::EndNode();
 		} 
 

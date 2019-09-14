@@ -23,7 +23,6 @@
 #   define IMGUI_DEFINE_MATH_OPERATORS
 #endif
 #include "ImNodeEz.h"
-
 #include "mmgr.h"
 
 namespace ImNodes
@@ -129,15 +128,15 @@ namespace ImNodes
 			return false;
 		}
 
-		void InputSlots(const SlotInfo* slots, int snum)
+		void InputSlots(std::list<SlotInfo>& slots)
 		{
 			const auto& style = ImGui::GetStyle();
 
 			// Render input slots
 			ImGui::BeginGroup();
 			{
-				for (int i = 0; i < snum; i++)
-					ImNodes::Ez::Slot(slots[i].title, ImNodes::InputSlotKind(slots[i].kind));
+				for (auto it : slots)
+					ImNodes::Ez::Slot(it.title, ImNodes::InputSlotKind(it.kind));
 			}
 			ImGui::EndGroup();
 
@@ -148,7 +147,7 @@ namespace ImNodes
 			ImGui::BeginGroup();
 		}
 
-		void OutputSlots(const SlotInfo* slots, int snum)
+		void OutputSlots(std::list<SlotInfo>& slotList)
 		{
 			const auto& style = ImGui::GetStyle();
 
@@ -159,8 +158,8 @@ namespace ImNodes
 			ImGui::SetCursorScreenPos({ ImGui::GetItemRectMax().x + style.ItemSpacing.x, ImGui::GetItemRectMin().y });
 			ImGui::BeginGroup();
 			{
-				for (int i = 0; i < snum; i++)
-					ImNodes::Ez::Slot(slots[i].title, ImNodes::OutputSlotKind(slots[i].kind));
+				for (auto it : slotList)
+					ImNodes::Ez::Slot(it.title, ImNodes::OutputSlotKind(it.kind));
 			}
 			ImGui::EndGroup();
 		}

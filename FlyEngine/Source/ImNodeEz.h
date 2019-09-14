@@ -23,6 +23,7 @@
 #pragma once
 
 #include "ImNode.h"
+#include <list>
 
 namespace ImNodes
 {
@@ -46,11 +47,11 @@ namespace ImNodes
 		/// Renders input slot region. Kind is unique value whose sign is ignored.
 		/// This function must always be called after BeginNode() and before OutputSlots().
 		/// When no input slots are rendered call InputSlots(nullptr, 0);
-		IMGUI_API void InputSlots(const SlotInfo* slots, int snum);
+		IMGUI_API void InputSlots(std::list<SlotInfo>& slotList);
 		/// Renders output slot region. Kind is unique value whose sign is ignored. This function must always be called after InputSlots() and function call is required (not optional).
 		/// This function must always be called after InputSlots() and before EndNode().
 		/// When no input slots are rendered call OutputSlots(nullptr, 0);
-		IMGUI_API void OutputSlots(const SlotInfo* slots, int snum);
+		IMGUI_API void OutputSlots(std::list<SlotInfo>& slotList);
 
 	}
 
