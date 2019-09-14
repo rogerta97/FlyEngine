@@ -65,13 +65,6 @@ void ModuleImGui::CreatePanels()
 	consoleDockPanel = consolePanel; 
 }
 
-//void ModuleImGui::GetPanel(DockPanelType panelType) {
-//
-//	for (auto it = dockPanels.begin(); it != dockPanels.end(); it++) {
-//
-//	}
-//}
-
 void ModuleImGui::DeletePanels()
 {
 	for (auto it = dockPanels.rbegin(); it != dockPanels.rend(); it++) {

@@ -66,6 +66,7 @@
     <ClInclude Include="Source\DockPanel.h" />
     <ClInclude Include="Source\GameViewportDockPanel.h" />
     <ClInclude Include="Source\Globals.h" />
+    <ClInclude Include="Source\ImNodeDemo.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\ModuleWorldManager.h" />
     <ClInclude Include="Source\ModuleImGui.h" />

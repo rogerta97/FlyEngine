@@ -239,5 +239,8 @@
     <ClInclude Include="Source\RoomLink.h">
       <Filter>Source\FlyEngine\Room</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ImNodeDemo.h">
+      <Filter>Source\3rdParty\ImNode</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

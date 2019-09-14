@@ -1,6 +1,7 @@
 #ifndef _NODE_GRAPH_H_
 #define _NODE_GRAPH_H_
 
+#include "imgui.h"
 #include "ImNode.h"
 #include "ImNodeEz.h"
 
@@ -15,8 +16,8 @@ struct Node {
 	bool selected; 
 	string title; 
 
-	//ImNodes::Ez::SlotInfo inputs[1]; 
-	//ImNodes::Ez::SlotInfo outputs[1];
+	ImNodes::Ez::SlotInfo inputs[1]; 
+	ImNodes::Ez::SlotInfo outputs[1];
 };
 
 class NodeGraph
@@ -29,17 +30,19 @@ public:
 	static NodeGraph* getInstance();
 	~NodeGraph();
 
-	static void CreateNodes();
+	static void CreateNode(string nodeName, ImVec2 pos);
 	static void DeleteNodes();
+	static void AddConnection(string originNodeTitle, string dstNodeTitle); 
 
 	static void DrawNodeGraph();
+
+private: 
+	Node* FindNode(string nodeName);
 
 private:
 	list<Node*> nodeList;
 
 };
-
-
 
 //class NodeGraph 
 //{

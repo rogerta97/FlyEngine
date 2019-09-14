@@ -22,7 +22,9 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
+	// Rooms Control 
 	void CleanUpRooms();
+	void ConnectRooms(Room* originRoom, Room* destinationRoom);
 
 	Room* GetRoom(string roomName) const;
 

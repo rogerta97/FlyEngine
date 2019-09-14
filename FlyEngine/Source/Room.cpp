@@ -1,9 +1,14 @@
 #include "Room.h"
-#include "mmgr.h"
+#include "Globals.h"
+#include "NodeGraph.h"
 
 Room::Room(string roomName)
 {
-	this->roomName = roomName; 
+	this->roomName = roomName;
+	FLY_LOG("Room %s created", roomName.c_str()); 
+
+	// Add The Room to the NodeGraph 
+	NodeGraph::getInstance()->CreateNode(roomName, ImVec2(50, 50)); 
 }
 
 Room::~Room()
@@ -13,8 +18,18 @@ Room::~Room()
 void Room::CleanUp()
 {
 	for (auto it = roomLinks.begin(); it != roomLinks.end(); it++) {
-		(*it)->connectionName = nullptr; 
+		delete *it; 
 	}
+
+	roomLinks.clear(); 
+}
+
+void Room::ConnectToRoom(Room* destinationRoom)
+{
+	RoomLink* newLink = new RoomLink(destinationRoom, "TestLink", false);
+	roomLinks.push_back(newLink);
+
+	FLY_LOG("Room %s connected the logic succesfuly with %s", roomName.c_str(), destinationRoom->GetName().c_str()); 
 }
 
 string Room::GetName() const

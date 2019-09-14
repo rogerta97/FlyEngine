@@ -21,12 +21,7 @@ bool ModuleWorldManager::Start()
 	roomToAdd = new Room("Forest Room 1");
 	roomsInWorldList.push_back(roomToAdd);
 
-	roomToAdd = new Room("Forest Room 2");
-	roomsInWorldList.push_back(roomToAdd);
-
-	FLY_LOG("Room Created Correctly");
-
-	NodeGraph::getInstance()->CreateNodes(); 
+	ConnectRooms(GetRoom("Forest"), GetRoom("Forest Room 1")); 
 
 	return true;
 }
@@ -57,6 +52,11 @@ void ModuleWorldManager::CleanUpRooms()
 	}
 
 	roomsInWorldList.clear();
+}
+
+void ModuleWorldManager::ConnectRooms(Room* originRoom, Room* destinationRoom)
+{
+	originRoom->ConnectToRoom(destinationRoom); 
 }
 
 Room* ModuleWorldManager::GetRoom(string roomName) const
