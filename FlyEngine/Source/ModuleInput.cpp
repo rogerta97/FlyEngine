@@ -3,6 +3,7 @@
 #include "ModuleImGui.h"
 #include "ModuleInput.h"
 #include "ConsoleDockPanel.h"
+#include "imgui_impl_sdl.h"
 #include "mmgr.h"
 
 #define MAX_KEYS 300
@@ -92,6 +93,8 @@ update_status ModuleInput::PreUpdate(float dt)
 	SDL_Event e;
 	while(SDL_PollEvent(&e))
 	{
+		ImGui_ImplSDL2_ProcessEvent(&e);
+
 		switch(e.type)
 		{
 			case SDL_QUIT:
