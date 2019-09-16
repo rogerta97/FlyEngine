@@ -21,16 +21,13 @@ NodeGraph* NodeGraph::getInstance()
 void NodeGraph::Update()
 {
 	instance->DrawNodeGraph();
-
 }
 
 NodeGraph::NodeGraph()
 {}
 
 NodeGraph::~NodeGraph()
-{
-
-}
+{}
 
 void NodeGraph::CreateNode(string nodeName, ImVec2 pos)
 {
@@ -44,7 +41,7 @@ void NodeGraph::CreateNode(string nodeName, ImVec2 pos)
 
 	instance->nodeList.push_back(newNode);
 
-	FLY_LOG("Node Created");
+	FLY_LOG("Node %s Created", nodeName.c_str());
 }
 
 void NodeGraph::DeleteNode(string nodeName)
@@ -126,14 +123,22 @@ void NodeGraph::DeleteAllConnections()
 
 void NodeGraph::CheckNewConnection()
 {
-	void* originNode;
-	void* dstNode; 
-	const char* originSlotName; 
-	const char* dstSlotName; 
+	void* _originNode;
+	void* _dstNode; 
+	const char* _originSlotName; 
+	const char* _dstSlotName; 
 	
-	if (ImNodes::GetNewConnection(&dstNode, &dstSlotName, &originNode, &originSlotName))	
-		instance->ConnectNodes((Node*)originNode, originSlotName, (Node*)dstNode, dstSlotName); 
-	
+	if (ImNodes::GetNewConnection(&_dstNode, &_dstSlotName, &_originNode, &_originSlotName)) {
+
+		Node* originNode = (Node*)_originNode; 
+		Room* originRoom = App->moduleWorldManager->GetRoomByName(originNode->title); 
+
+		Node* dstNode = (Node*)_dstNode;
+		Room* dstRoom = App->moduleWorldManager->GetRoomByName(dstNode->title);
+
+		App->moduleWorldManager->ConnectRooms(originRoom, dstRoom); 
+	}
+
 }
 
 void NodeGraph::DrawNodeGraph()

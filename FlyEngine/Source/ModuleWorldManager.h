@@ -23,10 +23,11 @@ public:
 	bool CleanUp();
 
 	// Rooms Control 
+	void CreateEmptyRoom(string roomName = "New Room"); 
 	void CleanUpRooms();
 	void ConnectRooms(Room* originRoom, Room* destinationRoom);
 
-	Room* GetRoom(string roomName) const;
+	Room* GetRoomByName(string roomName) const;
 
 public:
 

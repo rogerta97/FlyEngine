@@ -39,9 +39,9 @@ private:
 	ImVec4 warningMessageColor;
 	ImVec4 errorMessageColor;
 
-	bool printDebugMessages;
-	bool printWarningMessages;
-	bool printErrorMessages;
+	int debugMessageAmount;
+	int warningMessageAmount;
+	int errorMessageAmount; 
 
 	list<ConsoleMessage*> messagesList;
 	char commandBuffer[MAX_COMMAND_LENGHT];

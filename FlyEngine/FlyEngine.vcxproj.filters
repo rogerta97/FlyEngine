@@ -105,9 +105,6 @@
     <ClCompile Include="Source\ModuleImGui.cpp">
       <Filter>Source\Modules\ModuleImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ProjectInfoDockPanel.cpp">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
-    </ClCompile>
     <ClCompile Include="3rdParty\mmgr\mmgr.cpp">
       <Filter>Source\3rdParty\MemoryManager</Filter>
     </ClCompile>
@@ -137,6 +134,9 @@
     </ClCompile>
     <ClCompile Include="Source\Room.cpp">
       <Filter>Source\FlyEngine\Room</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GraphPropertiesDockPanel.cpp">
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -200,9 +200,6 @@
     <ClInclude Include="Source\ModuleImGui.h">
       <Filter>Source\Modules\ModuleImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ProjectInfoDockPanel.h">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
-    </ClInclude>
     <ClInclude Include="3rdParty\mmgr\mmgr.h">
       <Filter>Source\3rdParty\MemoryManager</Filter>
     </ClInclude>
@@ -244,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="Source\UIDFactory.h">
       <Filter>Source\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GraphPropertiesDockPanel.h">
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

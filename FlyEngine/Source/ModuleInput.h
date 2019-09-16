@@ -14,6 +14,12 @@ enum KEY_STATE
 	KEY_UP
 };
 
+enum MOUSE_BUTTON {
+	LEFT_CLICK = 1, 
+	WHEEL_CLICK,
+	RIGHT_CLICK
+};
+
 class ModuleInput : public Module
 {
 public:

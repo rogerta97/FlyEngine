@@ -14,17 +14,9 @@ ModuleWorldManager::~ModuleWorldManager()
 
 bool ModuleWorldManager::Start()
 {
-	// Create fake rooms 
-	Room* roomToAdd = new Room("Forest"); 
-	roomsInWorldList.push_back(roomToAdd);
-
-	roomToAdd = new Room("Forest Room 1");
-	roomsInWorldList.push_back(roomToAdd);
-
-	roomToAdd = new Room("Forest Room 2");
-	roomsInWorldList.push_back(roomToAdd);
-
-	//ConnectRooms(GetRoom("Forest"), GetRoom("Forest Room 1")); 
+	CreateEmptyRoom("Forest");
+	CreateEmptyRoom("Forest Room 1");
+	CreateEmptyRoom("Forest Room 2");
 
 	return true;
 }
@@ -48,6 +40,12 @@ bool ModuleWorldManager::CleanUp()
 	return true;
 }
 
+
+void ModuleWorldManager::CreateEmptyRoom(string roomName)
+{
+	roomsInWorldList.push_back(new Room(roomName));
+}
+
 void ModuleWorldManager::CleanUpRooms()
 {
 	for (auto it = roomsInWorldList.begin(); it != roomsInWorldList.end(); it++) {
@@ -64,7 +62,7 @@ void ModuleWorldManager::ConnectRooms(Room* originRoom, Room* destinationRoom)
 	NodeGraph::getInstance()->ConnectNodes(originRoom->GetName(), "Out", destinationRoom->GetName(), "In");
 }
 
-Room* ModuleWorldManager::GetRoom(string roomName) const
+Room* ModuleWorldManager::GetRoomByName(string roomName) const
 {
 	for (auto const& it : roomsInWorldList) {		
 

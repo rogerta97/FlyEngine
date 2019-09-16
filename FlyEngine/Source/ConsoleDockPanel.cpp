@@ -2,16 +2,18 @@
 #include "Globals.h"
 #include "mmgr.h"
 
+#include <string>
+
 ConsoleDockPanel::ConsoleDockPanel(bool isVisible) : DockPanel("Console", isVisible)
 {
 	flyEngineSection = FLY_SECTION_BOTH;
 	dockPanelType = DOCK_CONSOLE;
 
-	printDebugMessages = true; 
-	printWarningMessages = true;
-	printErrorMessages = true;
+	debugMessageAmount = 0; 
+	warningMessageAmount = 0;
+	errorMessageAmount = 0; 
 
-	debugMessageColor = ImVec4{ 0.4f, 0.4f, 0.4f, 1 };
+	debugMessageColor = ImVec4{ 0.5f, 0.5f, 0.5f, 1 };
 	warningMessageColor = ImVec4{ 0.9f, 0.6f, 0.2f, 1 };
 	errorMessageColor = ImVec4{ 1.0f, 0.2f, 0.2f, 1 };
 }
@@ -31,9 +33,12 @@ bool ConsoleDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_NoScrollbar)) {
 		
+		string buttonText = ""; 
+
 		// Debug Button
 		ImGui::PushStyleColor(ImGuiCol_Button, debugMessageColor);
-		if (ImGui::Button("Debug")) {
+		buttonText = "Debug (" + std::to_string(debugMessageAmount) + ')';
+		if (ImGui::Button(buttonText.c_str())) {
 			SetMessageVisibility(CM_DEBUG); 
 		} 
 		ImGui::PopStyleColor();
@@ -41,7 +46,8 @@ bool ConsoleDockPanel::Draw()
 		// Warnings Button
 		ImGui::SameLine();
 		ImGui::PushStyleColor(ImGuiCol_Button, warningMessageColor);
-		if (ImGui::Button("Warnings")) {
+		buttonText = "Warnings (" + std::to_string(warningMessageAmount) + ')';
+		if (ImGui::Button(buttonText.c_str())) {
 			SetMessageVisibility(CM_WARNING);
 		}
 		ImGui::PopStyleColor(); 
@@ -49,7 +55,8 @@ bool ConsoleDockPanel::Draw()
 		// Errors Button
 		ImGui::SameLine();
 		ImGui::PushStyleColor(ImGuiCol_Button, errorMessageColor);
-		if (ImGui::Button("Errors")) {
+		buttonText = "Errors (" + std::to_string(errorMessageAmount) + ')';
+		if (ImGui::Button(buttonText.c_str())) {
 			SetMessageVisibility(CM_ERROR);
 		}
 		ImGui::PopStyleColor(); 
@@ -64,6 +71,8 @@ bool ConsoleDockPanel::Draw()
 
 		ImGui::PopStyleColor(); 
 		ImGui::PopStyleVar(); 
+
+		ImGui::Spacing();
 
 		// Messages Area
 		ImGui::Separator();
@@ -97,6 +106,7 @@ bool ConsoleDockPanel::CleanUp()
 	}
 
 	messagesList.clear(); 
+	debugMessageAmount = warningMessageAmount = errorMessageAmount = 0; 
 
 	return true; 
 }
@@ -145,6 +155,19 @@ void ConsoleDockPanel::AddLineToConsole(consoleMessageType messageType, string t
 	newMessage->message = textToAdd;
 	newMessage->messageType = messageType;
 	newMessage->canPrint = true;
+
+	switch (messageType)
+	{
+		case CM_DEBUG:
+			debugMessageAmount++;
+			break;
+		case CM_WARNING:
+			warningMessageAmount++;
+			break;
+		case CM_ERROR:
+			errorMessageAmount++;
+			break;
+	}
 
 	messagesList.push_back(newMessage);
 }
