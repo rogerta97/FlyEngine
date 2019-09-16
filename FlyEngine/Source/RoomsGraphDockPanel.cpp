@@ -4,6 +4,7 @@
 #include "SDL_opengl.h"
 
 #include "NodeGraph.h"
+#include "ImNodeDemo.h"
 #include "mmgr.h"
 
 RoomsGraphDockPanel::RoomsGraphDockPanel(bool isVisible) : DockPanel("Rooms Graph", isVisible)
@@ -26,8 +27,8 @@ bool RoomsGraphDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
 		
-		NodeGraph::DrawNodeGraph(); 
-
+		NodeGraph::Update(); 
+		
 		//GLuint my_opengl_texture;
 		//glGenTextures(1, &my_opengl_texture);
 		//// [...] load image, render to texture, etc.

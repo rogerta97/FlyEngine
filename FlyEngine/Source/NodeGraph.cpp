@@ -18,6 +18,12 @@ NodeGraph* NodeGraph::getInstance()
 	return instance;
 }
 
+void NodeGraph::Update()
+{
+	instance->DrawNodeGraph();
+
+}
+
 NodeGraph::NodeGraph()
 {}
 
@@ -41,23 +47,87 @@ void NodeGraph::CreateNode(string nodeName, ImVec2 pos)
 	FLY_LOG("Node Created");
 }
 
-void NodeGraph::DeleteNodes()
+void NodeGraph::DeleteNode(string nodeName)
+{
+	for (auto it = instance->nodeList.begin(); it != instance->nodeList.end(); it++) {
+		
+		if ((*it)->title == nodeName) {
+			delete (*it); 
+			instance->nodeList.erase(it);
+			return;
+		}
+	}
+}
+
+void NodeGraph::DeleteAllNodes()
 {
 	for (auto it = instance->nodeList.begin(); it != instance->nodeList.end(); it++) {
 		delete (*it);
 	}
 
 	instance->nodeList.clear();
-	delete instance; 
 
 	FLY_LOG("Nodes Deleted Correctly");
 }
 
 void NodeGraph::DrawNodeConnections()
 {
-	for (auto it : App->moduleWorldManager->roomsInWorldList) {
-
+	for (auto it : instance->connectionsList) {
+		it->DrawConnection();
 	}	
+}
+
+void NodeGraph::ConnectNodes(string originNodeTitle, string originSlotName, string destinationNodeTitle, string destinationSlotName)
+{
+	Node* originNode = instance->GetNodeByTitle(originNodeTitle); 
+	Node* destinationNode = instance->GetNodeByTitle(destinationNodeTitle);
+
+	NodeGraphConnection* newGraphConnection = new NodeGraphConnection(); 
+
+	newGraphConnection->SetConnectionOrigin(originNode, originSlotName); 
+	newGraphConnection->SetConnectionDestination(destinationNode, destinationSlotName); 
+
+	instance->connectionsList.push_back(newGraphConnection); 
+}
+
+void NodeGraph::DeleteConnection(int connectionID)
+{
+	for (auto it = instance->connectionsList.begin(); it != instance->connectionsList.end(); it++) {
+
+		if ((*it)->connectionID == connectionID) {
+			delete (*it);
+			instance->connectionsList.erase(it);
+			return;
+		}
+	}
+}
+
+void NodeGraph::DeleteAllConnections()
+{
+	for (auto it = instance->connectionsList.begin(); it != instance->connectionsList.end(); it++) {
+		delete (*it);
+	}
+
+	instance->connectionsList.clear();
+	delete instance;
+
+	FLY_LOG("Connections Deleted Correctly");
+}
+
+void NodeGraph::CheckNewConnection()
+{
+	void* originNode;
+	void* dstNode; 
+	const char* originSlotName; 
+	const char* dstSlotName; 
+	
+	if (ImNodes::GetNewConnection(&dstNode, &dstSlotName, &originNode, &originSlotName))
+	{
+		NodeGraphConnection* newConnection = new NodeGraphConnection();
+		newConnection->SetConnectionOrigin((Node*)originNode, originSlotName);
+		newConnection->SetConnectionDestination((Node*)dstNode, dstSlotName);
+		instance->connectionsList.push_back(newConnection); 
+	}
 }
 
 void NodeGraph::DrawNodeGraph()
@@ -76,13 +146,15 @@ void NodeGraph::DrawNodeGraph()
 			ImNodes::Ez::OutputSlots(it->outputs);
 			ImNodes::Ez::EndNode();
 		} 
-
 	}
+
+	instance->CheckNewConnection();
+	instance->DrawNodeConnections(); 
 
 	ImNodes::EndCanvas(); 
 }
 
-Node* NodeGraph::FindNode(string nodeName)
+Node* NodeGraph::GetNodeByTitle(string nodeName)
 {
 	for (list<Node*>::iterator it = nodeList.begin(); it != nodeList.end(); it++) {
 		if ((*it)->title == nodeName)
@@ -90,4 +162,36 @@ Node* NodeGraph::FindNode(string nodeName)
 	}
 
 	return nullptr; 
+}
+
+NodeGraphConnection::NodeGraphConnection()
+{
+
+}
+
+void NodeGraphConnection::SetConnectionOrigin(Node* originNode, string slotTitle)
+{
+	this->originNode = originNode;
+	this->originSlotName = slotTitle; 
+}
+
+void NodeGraphConnection::SetConnectionDestination(Node* destinationNode, string slotTitle)
+{
+	this->destinationNode = destinationNode;
+	this->destinationSlotName = slotTitle;
+}
+
+void NodeGraphConnection::SetAllNullptr()
+{
+	destinationNode = nullptr; 
+	originNode = nullptr;
+	destinationSlotName = ""; 
+	originSlotName = "";
+	connectionID = -1; 
+	isBidirecitonal = false; 
+}
+
+void NodeGraphConnection::DrawConnection()
+{
+	ImNodes::Connection(destinationNode, destinationSlotName.c_str(), originNode, originSlotName.c_str()); 
 }

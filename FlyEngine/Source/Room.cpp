@@ -8,7 +8,9 @@ Room::Room(string roomName)
 	FLY_LOG("Room %s created", roomName.c_str()); 
 
 	// Add The Room to the NodeGraph 
-	NodeGraph::getInstance()->CreateNode(roomName, ImVec2(50, 50)); 
+	static int placer = 50;
+	NodeGraph::getInstance()->CreateNode(roomName, ImVec2(placer, 50));
+	placer += 250; 
 }
 
 Room::~Room()

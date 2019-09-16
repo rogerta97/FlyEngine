@@ -9,6 +9,8 @@
 #include <string>
 
 using namespace std;
+using namespace ImNodes; 
+using namespace Ez; 
 
 struct Node {
 
@@ -16,8 +18,31 @@ struct Node {
 	bool selected; 
 	string title; 
 
-	list<ImNodes::Ez::SlotInfo> inputs; 
-	list<ImNodes::Ez::SlotInfo> outputs;
+	list<SlotInfo> inputs; 
+	list<SlotInfo> outputs;
+};
+
+struct NodeGraphConnection {
+
+	NodeGraphConnection();
+
+public:
+	void SetConnectionOrigin(Node* originNode, string slotTitle);
+	void SetConnectionDestination(Node* deatinationNode, string slotTitle);
+
+	void SetAllNullptr(); 
+
+	void DrawConnection();
+
+public:
+	bool isBidirecitonal;
+	int connectionID; 
+
+	Node* destinationNode; 
+	Node* originNode; 
+	
+	string destinationSlotName; 
+	string originSlotName;
 };
 
 class NodeGraph
@@ -30,17 +55,31 @@ public:
 	static NodeGraph* getInstance();
 	~NodeGraph();
 
-	static void CreateNode(string nodeName, ImVec2 pos);
-	static void DeleteNodes();
-	static void DrawNodeConnections(); 
-
+	static void Update();
 	static void DrawNodeGraph();
 
+	// Nodes
+	static void CreateNode(string nodeName, ImVec2 pos);
+	static void DeleteNode(string nodeName);
+
+	static void DeleteAllNodes();
+
+	// Connections
+	static void ConnectNodes(string originNodeTitle, string originSlotName, string destinationNodeTitle, string destinationSlotName);
+	static void DrawNodeConnections(); 
+
+	static void DeleteConnection(int connectionID); 
+	static void DeleteAllConnections(); 
+
+	static void CheckNewConnection(); 
+
 private: 
-	Node* FindNode(string nodeName);
+	Node* GetNodeByTitle(string nodeName);
 
 private:
+
 	list<Node*> nodeList;
+	list<NodeGraphConnection*> connectionsList; 
 
 };
 

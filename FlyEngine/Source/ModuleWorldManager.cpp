@@ -21,7 +21,7 @@ bool ModuleWorldManager::Start()
 	roomToAdd = new Room("Forest Room 1");
 	roomsInWorldList.push_back(roomToAdd);
 
-	ConnectRooms(GetRoom("Forest"), GetRoom("Forest Room 1")); 
+	//ConnectRooms(GetRoom("Forest"), GetRoom("Forest Room 1")); 
 
 	return true;
 }
@@ -39,7 +39,8 @@ update_status ModuleWorldManager::PostUpdate(float dt)
 bool ModuleWorldManager::CleanUp()
 {
 	CleanUpRooms();	
-	NodeGraph::getInstance()->DeleteNodes(); 
+	NodeGraph::getInstance()->DeleteAllNodes(); 
+	NodeGraph::getInstance()->DeleteAllConnections(); 
 
 	return true;
 }
@@ -56,7 +57,8 @@ void ModuleWorldManager::CleanUpRooms()
 
 void ModuleWorldManager::ConnectRooms(Room* originRoom, Room* destinationRoom)
 {
-	originRoom->ConnectToRoom(destinationRoom); 
+	originRoom->ConnectToRoom(destinationRoom);
+	NodeGraph::getInstance()->ConnectNodes(originRoom->GetName(), "Out", destinationRoom->GetName(), "In");
 }
 
 Room* ModuleWorldManager::GetRoom(string roomName) const
