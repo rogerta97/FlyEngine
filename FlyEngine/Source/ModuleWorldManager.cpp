@@ -21,6 +21,9 @@ bool ModuleWorldManager::Start()
 	roomToAdd = new Room("Forest Room 1");
 	roomsInWorldList.push_back(roomToAdd);
 
+	roomToAdd = new Room("Forest Room 2");
+	roomsInWorldList.push_back(roomToAdd);
+
 	//ConnectRooms(GetRoom("Forest"), GetRoom("Forest Room 1")); 
 
 	return true;

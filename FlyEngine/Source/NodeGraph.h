@@ -66,6 +66,7 @@ public:
 
 	// Connections
 	static void ConnectNodes(string originNodeTitle, string originSlotName, string destinationNodeTitle, string destinationSlotName);
+	static void ConnectNodes(Node* originNode, string originSlotName, Node* destinationNode, string destinationSlotName);
 	static void DrawNodeConnections(); 
 
 	static void DeleteConnection(int connectionID); 

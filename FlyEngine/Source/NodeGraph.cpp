@@ -90,6 +90,16 @@ void NodeGraph::ConnectNodes(string originNodeTitle, string originSlotName, stri
 	instance->connectionsList.push_back(newGraphConnection); 
 }
 
+void NodeGraph::ConnectNodes(Node* originNode, string originSlotName, Node* destinationNode, string destinationSlotName)
+{
+	NodeGraphConnection* newGraphConnection = new NodeGraphConnection();
+
+	newGraphConnection->SetConnectionOrigin(originNode, originSlotName);
+	newGraphConnection->SetConnectionDestination(destinationNode, destinationSlotName);
+
+	instance->connectionsList.push_back(newGraphConnection);
+}
+
 void NodeGraph::DeleteConnection(int connectionID)
 {
 	for (auto it = instance->connectionsList.begin(); it != instance->connectionsList.end(); it++) {
@@ -121,13 +131,9 @@ void NodeGraph::CheckNewConnection()
 	const char* originSlotName; 
 	const char* dstSlotName; 
 	
-	if (ImNodes::GetNewConnection(&dstNode, &dstSlotName, &originNode, &originSlotName))
-	{
-		NodeGraphConnection* newConnection = new NodeGraphConnection();
-		newConnection->SetConnectionOrigin((Node*)originNode, originSlotName);
-		newConnection->SetConnectionDestination((Node*)dstNode, dstSlotName);
-		instance->connectionsList.push_back(newConnection); 
-	}
+	if (ImNodes::GetNewConnection(&dstNode, &dstSlotName, &originNode, &originSlotName))	
+		instance->ConnectNodes((Node*)originNode, originSlotName, (Node*)dstNode, dstSlotName); 
+	
 }
 
 void NodeGraph::DrawNodeGraph()

@@ -242,5 +242,8 @@
     <ClInclude Include="Source\ImNodeDemo.h">
       <Filter>Source\3rdParty\ImNode</Filter>
     </ClInclude>
+    <ClInclude Include="Source\UIDFactory.h">
+      <Filter>Source\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
