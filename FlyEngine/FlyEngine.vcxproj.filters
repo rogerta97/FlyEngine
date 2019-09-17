@@ -138,6 +138,9 @@
     <ClCompile Include="Source\GraphPropertiesDockPanel.cpp">
       <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FileSystem.cpp">
+      <Filter>Source\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -244,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="Source\GraphPropertiesDockPanel.h">
       <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FileSystem.h">
+      <Filter>Source\Tools</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -46,6 +46,27 @@ bool DockPanel::Draw() {
 
 bool DockPanel::CleanUp()
 {
+
+	switch (dockPanelType)
+	{
+	case DOCK_CONSOLE:
+		break;
+	case DOCK_GAME_VIEWPORT:
+		break;
+	case DOCK_OBJECT_PROPERTIES:
+		break;
+	case DOCK_PROJECT_INFO:
+		break;
+	case DOCK_ROOM_OBJECTS:
+		break;
+	case DOCK_ROOMS_GRAPH:
+		break;
+	case DOCK_null:
+		break;
+	default:
+		break;
+	}
+
 	return true;
 }
 

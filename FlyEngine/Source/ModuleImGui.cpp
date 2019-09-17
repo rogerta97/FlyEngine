@@ -10,6 +10,7 @@
 #include "ConsoleDockPanel.h"
 #include "RoomsGraphDockPanel.h"
 #include "GraphPropertiesDockPanel.h"
+#include "FileSystem.h"
 
 #include "GameViewportDockPanel.h"
 #include "RoomObjectsDockPanel.h"
@@ -37,8 +38,9 @@ bool ModuleImGui::Start()
 
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags = ImGuiConfigFlags_DockingEnable;
-	io.Fonts->AddFontFromFileTTF("C:/Users/FULLMAC/Documents/FlyEngine/FlyEngine/EngineResources/Fonts/Exo-Regular.otf", 16);
-
+	string fontsDirectory = FileSystem::getInstance()->solutionDirectory + "EngineResources/Fonts/Exo-Regular.otf";
+	io.Fonts->AddFontFromFileTTF(fontsDirectory.c_str(), 16);
+	
 	CreatePanels(); 
 	ImGui::StyleColorsDark();
 

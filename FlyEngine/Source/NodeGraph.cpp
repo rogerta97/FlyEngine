@@ -153,6 +153,7 @@ void NodeGraph::DrawNodeGraph()
 
 		if (ImNodes::Ez::BeginNode(it, it->title.c_str(), &it->position, &it->selected))
 		{
+			ImGui::Image(0, ImVec2(100, 100)); 
 			ImNodes::Ez::InputSlots(it->inputs);
 			ImNodes::Ez::OutputSlots(it->outputs);
 			ImNodes::Ez::EndNode();

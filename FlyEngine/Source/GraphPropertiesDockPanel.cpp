@@ -1,5 +1,6 @@
 #include "GraphPropertiesDockPanel.h"
 #include "Application.h"
+#include "ModuleImGui.h"
 #include "ModuleWorldManager.h"
 #include "Room.h"
 #include "imgui.h"
@@ -34,13 +35,12 @@ bool GraphPropertiesDockPanel::Draw()
 		}
 
 		ImGui::EndChild();
-		
+		/*
 		static char newRoomBuffer[256] = "Hello"; 
-		ImGui::InputText("##2", (char*)newRoomBuffer, 256 * sizeof(char));
-		
-		ImGui::SameLine();
-		if (ImGui::Button("Create New Room")) {
-			App->moduleWorldManager->CreateEmptyRoom(newRoomBuffer); 
+		ImGui::InputText("##2", (char*)newRoomBuffer, 256 * sizeof(char));*/
+
+		if (ImGui::Button("Add Room", ImVec2(ImGui::GetWindowWidth(), 50))) {
+			//App->moduleWorldManager->CreateEmptyRoom(newRoomBuffer); 
 		}
 
 		ImGui::Spacing();

@@ -1,6 +1,7 @@
 #include "ModuleWorldManager.h"
 #include "Room.h"
 #include "NodeGraph.h"
+#include "FileSystem.h"
 #include "mmgr.h"
 
 ModuleWorldManager::ModuleWorldManager(bool start_enabled)
