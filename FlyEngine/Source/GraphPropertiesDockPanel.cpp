@@ -73,7 +73,6 @@ void GraphPropertiesDockPanel::NewConnectionButtonHandler()
 			ImGui::CloseCurrentPopup();
 		}
 
-
 		ImGui::EndPopup();
 	}
 }

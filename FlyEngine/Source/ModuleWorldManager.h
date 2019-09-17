@@ -24,6 +24,8 @@ public:
 
 	// Rooms Control 
 	void CreateEmptyRoom(string roomName = "New Room"); 
+	void DeleteRoom(string roomName); 
+
 	void CleanUpRooms();
 	void ConnectRooms(Room* originRoom, Room* destinationRoom);
 

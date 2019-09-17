@@ -47,6 +47,17 @@ void ModuleWorldManager::CreateEmptyRoom(string roomName)
 	roomsInWorldList.push_back(new Room(roomName));
 }
 
+void ModuleWorldManager::DeleteRoom(string roomName)
+{
+	for (auto it = roomsInWorldList.begin(); it != roomsInWorldList.end(); it++) {
+		
+		if ((*it)->GetName() == roomName) {
+			(*it)->CleanUp();
+			delete (*it);
+		}	
+	}
+}
+
 void ModuleWorldManager::CleanUpRooms()
 {
 	for (auto it = roomsInWorldList.begin(); it != roomsInWorldList.end(); it++) {
