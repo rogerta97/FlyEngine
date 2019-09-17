@@ -12,11 +12,6 @@ public:
 	~RoomsGraphDockPanel();
 
 	bool Draw();
-
-	// Popups
-	void HandlePopups(); 
-	void NewRoomPopupHandler();
-
 };
 
 #endif 

@@ -39,10 +39,12 @@ bool ModuleImGui::Start()
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags = ImGuiConfigFlags_DockingEnable;
 	string fontsDirectory = FileSystem::getInstance()->solutionDirectory + "EngineResources/Fonts/Exo-Regular.otf";
-	io.Fonts->AddFontFromFileTTF(fontsDirectory.c_str(), 16);
+	engineFont = io.Fonts->AddFontFromFileTTF(fontsDirectory.c_str(), 16);
+	buttonFont = io.Fonts->AddFontFromFileTTF(fontsDirectory.c_str(), 24);
+
+	CreatePanels();
+	SetStyle(); 
 	
-	CreatePanels(); 
-	ImGui::StyleColorsDark();
 
 	return true;
 }
@@ -207,19 +209,11 @@ bool ModuleImGui::CleanUp()
 
 void ModuleImGui::SetStyle() {
 
+	ImGui::StyleColorsDark();
+
 	ImGuiStyle * style = &ImGui::GetStyle();
- 
-	style->WindowPadding = ImVec2(15, 15);
-	style->WindowRounding = 5.0f;
-	style->FramePadding = ImVec2(5, 5);
 	style->FrameRounding = 4.0f;
-	style->ItemSpacing = ImVec2(8, 4);
-	style->ItemInnerSpacing = ImVec2(4, 3);
-	style->IndentSpacing = 2.0f;
-	style->ScrollbarSize = 15.0f;
-	style->ScrollbarRounding = 9.0f;
-	style->GrabMinSize = 5.0f;
-	style->GrabRounding = 3.0f;
+
  //
 	//style->Colors[ImGuiCol_Text] = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
 	//style->Colors[ImGuiCol_TextDisabled] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);

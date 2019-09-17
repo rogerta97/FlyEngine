@@ -36,10 +36,12 @@ public:
 	DockPanel* GetDockPanel(DockPanelType panelType);
 
 	ConsoleDockPanel* consoleDockPanel;
+	ImFont* engineFont;
+	ImFont* buttonFont;
 
 private: 
 
-	// Utility 
+	// Fonts & Style 
 	void SetStyle(); 
 
 	std::list<DockPanel*> dockPanels;

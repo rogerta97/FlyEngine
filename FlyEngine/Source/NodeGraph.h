@@ -61,6 +61,7 @@ public:
 	// Nodes
 	static void CreateNode(string nodeName, ImVec2 pos);
 	static void DeleteNode(string nodeName);
+	static std::string GetNodesAsCombo(); 
 
 	static void DeleteAllNodes();
 
@@ -68,6 +69,7 @@ public:
 	static void ConnectNodes(string originNodeTitle, string originSlotName, string destinationNodeTitle, string destinationSlotName);
 	static void ConnectNodes(Node* originNode, string originSlotName, Node* destinationNode, string destinationSlotName);
 	static void DrawNodeConnections(); 
+	static std::string GetConnectionsAsCombo();
 
 	static void DeleteConnection(int connectionID); 
 	static void DeleteAllConnections(); 

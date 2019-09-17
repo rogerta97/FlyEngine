@@ -12,6 +12,17 @@ public:
 
 	bool Draw();
 
+	void NewConnectionButtonHandler();
+
+	void PrintConnectionsSection();
+
+	void PrintRoomsSection();
+
+	void NewRoomButtonHandler();
+
+private: 
+	bool showNewRoomNaming = false; 
+
 };
 
 #endif 

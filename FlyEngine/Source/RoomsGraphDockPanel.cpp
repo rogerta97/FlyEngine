@@ -30,29 +30,8 @@ bool RoomsGraphDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
 		NodeGraph::Update();
-		HandlePopups(); 
 	}
 
 	ImGui::End();
 }
 
-void RoomsGraphDockPanel::HandlePopups()
-{
-	NewRoomPopupHandler(); 
-}
-
-void RoomsGraphDockPanel::NewRoomPopupHandler()
-{
-	if (App->moduleInput->GetMouseButton(RIGHT_CLICK) == KEY_DOWN) {
-		ImGui::OpenPopup("new_room_popup");
-	}
-
-	if (ImGui::BeginPopup("new_room_popup"))
-	{
-		if (ImGui::Selectable("Add Empty Room")) {
-			App->moduleWorldManager->CreateEmptyRoom();
-		}
-
-		ImGui::EndPopup();
-	}
-}

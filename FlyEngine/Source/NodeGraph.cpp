@@ -56,6 +56,17 @@ void NodeGraph::DeleteNode(string nodeName)
 	}
 }
 
+std::string NodeGraph::GetNodesAsCombo()
+{
+	std::string returnString;
+	for (auto it : instance->nodeList) {
+		returnString += it->title;
+		returnString += '\0'; 
+	}
+
+	return returnString; 
+}
+
 void NodeGraph::DeleteAllNodes()
 {
 	for (auto it = instance->nodeList.begin(); it != instance->nodeList.end(); it++) {
@@ -72,6 +83,17 @@ void NodeGraph::DrawNodeConnections()
 	for (auto it : instance->connectionsList) {
 		it->DrawConnection();
 	}	
+}
+
+std::string NodeGraph::GetConnectionsAsCombo()
+{
+	std::string returnString;
+	for (auto it : instance->connectionsList) {
+		returnString += "Should Add Sth";
+		returnString += '\0';
+	}
+
+	return returnString;
 }
 
 void NodeGraph::ConnectNodes(string originNodeTitle, string originSlotName, string destinationNodeTitle, string destinationSlotName)
