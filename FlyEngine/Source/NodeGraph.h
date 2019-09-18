@@ -60,6 +60,7 @@ public:
 	static void DrawNodeGraph();
 
 	// Nodes
+	static void SelectNode(string nodeToSelect); 
 	static void CreateNode(string nodeName, ImVec2 pos);
 	static void DeleteNode(string nodeName);
 

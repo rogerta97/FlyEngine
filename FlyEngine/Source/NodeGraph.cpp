@@ -29,6 +29,17 @@ NodeGraph::NodeGraph()
 NodeGraph::~NodeGraph()
 {}
 
+void NodeGraph::SelectNode(string nodeToSelect)
+{
+	for (auto it : instance->nodeList) {
+
+		if(it->title != nodeToSelect)
+			it->selected = false;
+		else
+			it->selected = true;
+	}
+}
+
 void NodeGraph::CreateNode(string nodeName, ImVec2 pos)
 {
 	Node* newNode = new Node();
@@ -189,7 +200,7 @@ void NodeGraph::DrawNodeGraph()
 			ImGui::Image(0, ImVec2(100, 100)); 
 			ImNodes::Ez::InputSlots(it->inputs);
 			ImNodes::Ez::OutputSlots(it->outputs);
-			ImNodes::Ez::EndNode();
+			ImNodes::Ez::EndNode(it->title.c_str());
 		} 
 	}
 

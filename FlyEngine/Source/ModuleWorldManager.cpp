@@ -19,7 +19,7 @@ ModuleWorldManager::~ModuleWorldManager()
 bool ModuleWorldManager::Start()
 {
 	CreateEmptyRoom("Forest");
-	//CreateEmptyRoom("Forest Room 1");
+	CreateEmptyRoom("Forest Room 1");
 	//CreateEmptyRoom("Forest Room 2");
 
 	return true;
@@ -44,10 +44,14 @@ bool ModuleWorldManager::CleanUp()
 	return true;
 }
 
-
 void ModuleWorldManager::CreateEmptyRoom(string roomName)
 {
 	roomsInWorldList.push_back(new Room(roomName));
+}
+
+void ModuleWorldManager::DeleteSelectedRoom()
+{
+	DeleteRoom(selectedRoom->GetName()); 
 }
 
 void ModuleWorldManager::DeleteRoom(string roomName)
@@ -70,22 +74,6 @@ void ModuleWorldManager::CleanUpRooms()
 
 	roomsInWorldList.clear();
 }
-
-//std::list<RoomConnection*> ModuleWorldManager::GetConnectionsFromRoom(Room* originRoom)
-//{
-//	if (GetConnectionsAmount() <= 0)
-//		return std::list<RoomConnection*>(); 
-//
-//	for (auto it : roomsInWorldList) {
-//		if (it == originRoom) {
-//			return it->GetConnectionsList(); 
-//		}
-//	}
-//
-//	
-//
-//	return std::list<RoomConnection*>();
-//}
 
 int ModuleWorldManager::GetConnectionsAmount() const
 {
@@ -127,10 +115,12 @@ void ModuleWorldManager::SetSelectedRoom(Room* selectedRoom)
 
 void ModuleWorldManager::SetSelectedRoom(std::string roomName)
 {
-	Room* nextSelectedRoom = GetRoomByName(roomName); 
+	Room* nextSelectedRoom = GetRoomByName(roomName);
 
-	if (nextSelectedRoom != nullptr)
-		selectedRoom = nextSelectedRoom; 
+	if (nextSelectedRoom != nullptr) {		
+		selectedRoom = nextSelectedRoom;
+		NodeGraph::getInstance()->SelectNode(roomName);
+	}
 }
 
 Room* ModuleWorldManager::GetSelectedRoom() const

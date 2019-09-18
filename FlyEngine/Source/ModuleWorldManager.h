@@ -28,6 +28,7 @@ public:
 	void ConnectRooms(Room* originRoom, Room* destinationRoom);
 
 	void DeleteRoom(string roomName); 
+	void DeleteSelectedRoom(); 
 	void CleanUpRooms();
 
 	// Connections

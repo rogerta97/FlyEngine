@@ -24,9 +24,12 @@
 #   define IMGUI_DEFINE_MATH_OPERATORS
 #endif
 
+#include "Application.h"
+#include "ModuleWorldManager.h"
 #include "ImNode.h"
 
 #include "mmgr.h"
+#include "Globals.h"
 
 namespace ImNodes
 {
@@ -374,7 +377,7 @@ namespace ImNodes
 		gCanvas = impl->prev_canvas;
 	}
 
-	bool BeginNode(void* node_id, ImVec2* pos, bool* selected)
+	bool BeginNode(void* node_id, const char* nodeName, ImVec2* pos, bool* selected)
 	{
 		assert(gCanvas != nullptr);
 		assert(node_id != nullptr);
@@ -412,7 +415,7 @@ namespace ImNodes
 		return true;
 	}
 
-	void EndNode()
+	void EndNode(const char* nodeName)
 	{
 		assert(gCanvas != nullptr);
 		const ImGuiStyle& style = ImGui::GetStyle();
@@ -434,7 +437,7 @@ namespace ImNodes
 		// Render frame
 		draw_list->ChannelsSetCurrent(0);
 
-		ImColor node_color = canvas->colors[ColNodeBg];
+		ImColor node_color = canvas->colors[node_selected ? ColNodeActiveBg : ColNodeBg];
 		draw_list->AddRectFilled(node_rect.Min, node_rect.Max, node_color, style.FrameRounding);
 		draw_list->AddRect(node_rect.Min, node_rect.Max, canvas->colors[ColNodeBorder], style.FrameRounding);
 
@@ -479,6 +482,7 @@ namespace ImNodes
 				{
 					impl->single_selected_node = node_id;
 					impl->do_selections_frame = ImGui::GetCurrentContext()->FrameCount + 1;
+					App->moduleWorldManager->SetSelectedRoom(nodeName); 
 				}
 			}
 			else if (ImGui::IsItemActive() && ImGui::IsMouseDragging(0))

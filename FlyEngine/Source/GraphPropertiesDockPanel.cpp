@@ -97,6 +97,7 @@ void GraphPropertiesDockPanel::PrintConnectionsSection()
 
 	for (auto it : App->moduleWorldManager->connectionsInWorldList) {
 		string selectableConnectionText = it->originRoom->GetName() + string(" -> ") + it->destinationRoom->GetName();
+
 		ImGui::Selectable(selectableConnectionText.c_str());
 	}
 
@@ -120,8 +121,11 @@ void GraphPropertiesDockPanel::PrintRoomsSection()
 	ImGui::Text("Rooms:");
 	ImGui::BeginChild("RoomsList", ImVec2(ImGui::GetWindowContentRegionWidth(), ImGui::GetWindowHeight() / 4), true);
 
-	for (auto it : App->moduleWorldManager->roomsInWorldList) {
-		ImGui::Selectable(it->GetName().c_str()); 
+	for (auto it : NodeGraph::getInstance()->GetNodeList()) {
+
+		if (ImGui::Selectable(it->title.c_str(), &it->selected)) {
+			App->moduleWorldManager->SetSelectedRoom(it->title); 
+		}
 	}
 
 	ImGui::EndChild();
@@ -135,7 +139,7 @@ void GraphPropertiesDockPanel::PrintRoomsSection()
 	// Delete Room Button
 	ImGui::SameLine();
 	if (ImGui::Button("Delete Room", ImVec2((ImGui::GetWindowContentRegionWidth() / 2) - 7, 40))) {
-
+		App->moduleWorldManager->DeleteSelectedRoom(); 
 	}
 	ImGui::PopFont();
 }

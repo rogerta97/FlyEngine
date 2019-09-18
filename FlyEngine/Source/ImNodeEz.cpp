@@ -34,7 +34,7 @@ namespace ImNodes
 
 		bool BeginNode(void* node_id, const char* title, ImVec2* pos, bool* selected)
 		{
-			bool result = ImNodes::BeginNode(node_id, pos, selected);
+			bool result = ImNodes::BeginNode(node_id, title, pos, selected);
 
 			auto* storage = ImGui::GetStateStorage();
 			float node_width = storage->GetFloat(ImGui::GetID("node-width"));
@@ -53,13 +53,13 @@ namespace ImNodes
 			return result;
 		}
 
-		void EndNode()
+		void EndNode(const char* nodeName)
 		{
 			// Store node width which is needed for centering title.
 			auto* storage = ImGui::GetStateStorage();
 			ImGui::EndGroup();
 			storage->SetFloat(ImGui::GetID("node-width"), ImGui::GetItemRectSize().x);
-			ImNodes::EndNode();
+			ImNodes::EndNode(nodeName);
 		}
 
 		bool Slot(const char* title, int kind)
