@@ -4,6 +4,7 @@
 #include "imgui.h"
 #include "ImNode.h"
 #include "ImNodeEz.h"
+#include "Globals.h"
 
 #include <list>
 #include <string>
@@ -61,14 +62,18 @@ public:
 	// Nodes
 	static void CreateNode(string nodeName, ImVec2 pos);
 	static void DeleteNode(string nodeName);
+
+	static list<Node*> GetNodeList();
 	static std::string GetNodesAsCombo(); 
 
 	static void DeleteAllNodes();
 
 	// Connections
-	static void ConnectNodes(string originNodeTitle, string originSlotName, string destinationNodeTitle, string destinationSlotName);
-	static void ConnectNodes(Node* originNode, string originSlotName, Node* destinationNode, string destinationSlotName);
+	static void ConnectNodes(string originNodeTitle, string originSlotName, string destinationNodeTitle, string destinationSlotName, UID logicConectionID);
+	static void ConnectNodes(Node* originNode, string originSlotName, Node* destinationNode, string destinationSlotName, UID logicConectionID);
 	static void DrawNodeConnections(); 
+
+	static list<NodeGraphConnection*> GetConnectionList();
 	static std::string GetConnectionsAsCombo();
 
 	static void DeleteConnection(int connectionID); 
@@ -80,7 +85,6 @@ private:
 	Node* GetNodeByTitle(string nodeName);
 
 private:
-
 	list<Node*> nodeList;
 	list<NodeGraphConnection*> connectionsList; 
 

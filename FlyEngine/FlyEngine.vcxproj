@@ -26,6 +26,7 @@
     <ClCompile Include="3rdParty\ImGui\imgui_impl_sdl.cpp" />
     <ClCompile Include="3rdParty\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="3rdParty\mmgr\mmgr.cpp" />
+    <ClCompile Include="3rdParty\PCGRandom\pcg_basic.c" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Color.cpp" />
     <ClCompile Include="Source\ConsoleDockPanel.cpp" />
@@ -44,6 +45,7 @@
     <ClCompile Include="Source\NodeGraph.cpp" />
     <ClCompile Include="Source\ObjectPropertiesDockPanel.cpp" />
     <ClCompile Include="Source\GraphPropertiesDockPanel.cpp" />
+    <ClCompile Include="Source\RandomNumberGenerator.cpp" />
     <ClCompile Include="Source\Room.cpp" />
     <ClCompile Include="Source\RoomObjectsDockPanel.cpp" />
     <ClCompile Include="Source\RoomsGraphDockPanel.cpp" />
@@ -61,6 +63,7 @@
     <ClInclude Include="3rdParty\ImGui\imstb_truetype.h" />
     <ClInclude Include="3rdParty\mmgr\mmgr.h" />
     <ClInclude Include="3rdParty\mmgr\nommgr.h" />
+    <ClInclude Include="3rdParty\PCGRandom\pcg_basic.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\ConsoleDockPanel.h" />
@@ -85,7 +88,7 @@
     <ClInclude Include="Source\RoomObjectsDockPanel.h" />
     <ClInclude Include="Source\RoomsGraphDockPanel.h" />
     <ClInclude Include="Source\Timer.h" />
-    <ClInclude Include="Source\UIDFactory.h" />
+    <ClInclude Include="Source\RandomNumberGenerator.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -141,6 +144,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\FULLMAC\Documents\FlyEngine\FlyEngine\3rdParty\PCGRandom;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -148,6 +152,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\FULLMAC\Documents\FlyEngine\FlyEngine\3rdParty\PCGRandom;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -161,7 +166,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;WINDOWS_IGNORE_PACKING_MISMATCH;SOLUTION_DIR=R"($(SolutionDir))"</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;C:\Users\FULLMAC\Documents\FlyEngine\FlyEngine\3rdParty\PCGRandom;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -194,7 +199,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;C:\Users\FULLMAC\Documents\FlyEngine\FlyEngine\3rdParty\PCGRandom;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

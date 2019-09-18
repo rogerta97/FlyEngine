@@ -70,8 +70,8 @@ void ModuleWorldManager::CleanUpRooms()
 
 void ModuleWorldManager::ConnectRooms(Room* originRoom, Room* destinationRoom)
 {
-	originRoom->ConnectToRoom(destinationRoom);
-	NodeGraph::getInstance()->ConnectNodes(originRoom->GetName(), "Out", destinationRoom->GetName(), "In");
+	UID connectionID = originRoom->ConnectToRoom(destinationRoom); 
+	NodeGraph::getInstance()->ConnectNodes(originRoom->GetName(), "Out", destinationRoom->GetName(), "In", connectionID);
 }
 
 Room* ModuleWorldManager::GetRoomByName(string roomName) const

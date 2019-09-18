@@ -52,6 +52,15 @@
     <Filter Include="Source\FlyEngine\Room">
       <UniqueIdentifier>{e84db96a-ff69-482d-a1ce-6d2d9182bd87}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Tools\FileSystem">
+      <UniqueIdentifier>{da0f95bc-605f-4337-b7bf-eda9828577c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Tools\RandomGenerator">
+      <UniqueIdentifier>{145ff4d1-24e6-4248-908e-8c13e7e57db2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\3rdParty\RNG">
+      <UniqueIdentifier>{a2bd06ae-f0cb-47f3-b660-f0db4e93988c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -139,7 +148,13 @@
       <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\FileSystem.cpp">
-      <Filter>Source\Tools</Filter>
+      <Filter>Source\Tools\FileSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RandomNumberGenerator.cpp">
+      <Filter>Source\Tools\RandomGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\PCGRandom\pcg_basic.c">
+      <Filter>Source\3rdParty\RNG</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -242,14 +257,17 @@
     <ClInclude Include="Source\ImNodeDemo.h">
       <Filter>Source\3rdParty\ImNode</Filter>
     </ClInclude>
-    <ClInclude Include="Source\UIDFactory.h">
-      <Filter>Source\Tools</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GraphPropertiesDockPanel.h">
       <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\FileSystem.h">
-      <Filter>Source\Tools</Filter>
+      <Filter>Source\Tools\FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RandomNumberGenerator.h">
+      <Filter>Source\Tools\RandomGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\PCGRandom\pcg_basic.h">
+      <Filter>Source\3rdParty\RNG</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

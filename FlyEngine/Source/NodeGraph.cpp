@@ -40,8 +40,6 @@ void NodeGraph::CreateNode(string nodeName, ImVec2 pos)
 	newNode->outputs.push_back({ "Out", 1 });
 
 	instance->nodeList.push_back(newNode);
-
-	FLY_LOG("Node %s Created", nodeName.c_str());
 }
 
 void NodeGraph::DeleteNode(string nodeName)
@@ -54,6 +52,11 @@ void NodeGraph::DeleteNode(string nodeName)
 			return;
 		}
 	}
+}
+
+std::list<Node*> NodeGraph::GetNodeList()
+{
+	return instance->nodeList;
 }
 
 std::string NodeGraph::GetNodesAsCombo()
@@ -85,6 +88,11 @@ void NodeGraph::DrawNodeConnections()
 	}	
 }
 
+list<NodeGraphConnection*> NodeGraph::GetConnectionList()
+{
+	return instance->connectionsList;
+}
+
 std::string NodeGraph::GetConnectionsAsCombo()
 {
 	std::string returnString;
@@ -96,23 +104,26 @@ std::string NodeGraph::GetConnectionsAsCombo()
 	return returnString;
 }
 
-void NodeGraph::ConnectNodes(string originNodeTitle, string originSlotName, string destinationNodeTitle, string destinationSlotName)
+void NodeGraph::ConnectNodes(string originNodeTitle, string originSlotName, string destinationNodeTitle, string destinationSlotName, UID logicConnectionID)
 {
 	Node* originNode = instance->GetNodeByTitle(originNodeTitle); 
 	Node* destinationNode = instance->GetNodeByTitle(destinationNodeTitle);
 
 	NodeGraphConnection* newGraphConnection = new NodeGraphConnection(); 
-
+	newGraphConnection->connectionID = logicConnectionID; 
 	newGraphConnection->SetConnectionOrigin(originNode, originSlotName); 
 	newGraphConnection->SetConnectionDestination(destinationNode, destinationSlotName); 
 
 	instance->connectionsList.push_back(newGraphConnection); 
+
+	FLY_LOG("NEW GRAPH CONNECTION: %s -> %s", originNodeTitle.c_str(), destinationNodeTitle.c_str());
+	FLY_LOG("NEW GRAPH CONNECTION ID: %f", logicConnectionID); 
 }
 
-void NodeGraph::ConnectNodes(Node* originNode, string originSlotName, Node* destinationNode, string destinationSlotName)
+void NodeGraph::ConnectNodes(Node* originNode, string originSlotName, Node* destinationNode, string destinationSlotName, UID logicConnectionID)
 {
 	NodeGraphConnection* newGraphConnection = new NodeGraphConnection();
-
+	newGraphConnection->connectionID = logicConnectionID;
 	newGraphConnection->SetConnectionOrigin(originNode, originSlotName);
 	newGraphConnection->SetConnectionDestination(destinationNode, destinationSlotName);
 

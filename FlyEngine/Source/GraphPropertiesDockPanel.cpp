@@ -83,8 +83,9 @@ void GraphPropertiesDockPanel::PrintConnectionsSection()
 	ImGui::Text("Connections:");
 	ImGui::BeginChild("RoomsConnectionList", ImVec2(ImGui::GetWindowContentRegionWidth(), ImGui::GetWindowHeight() / 4), true);
 
-	for (auto it : App->moduleWorldManager->roomsInWorldList) {
-		ImGui::Selectable(it->GetName().c_str());
+	for (auto it : NodeGraph::getInstance()->GetConnectionList()) {
+		string selectableConnectionText = it->originNode->title.c_str() + string(" -> ") + it->destinationNode->title.c_str(); 
+		ImGui::Selectable(selectableConnectionText.c_str());
 	}
 
 	ImGui::EndChild();

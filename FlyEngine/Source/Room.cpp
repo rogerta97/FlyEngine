@@ -1,11 +1,11 @@
 #include "Room.h"
 #include "Globals.h"
 #include "NodeGraph.h"
+#include "RandomNumberGenerator.h"
 
 Room::Room(string roomName)
 {
 	this->roomName = roomName;
-	FLY_LOG("Room %s created", roomName.c_str()); 
 
 	// Add The Room to the NodeGraph 
 	static int placer = 50;
@@ -26,12 +26,13 @@ void Room::CleanUp()
 	roomLinks.clear(); 
 }
 
-void Room::ConnectToRoom(Room* destinationRoom)
+UID Room::ConnectToRoom(Room* destinationRoom)
 {
-	RoomLink* newLink = new RoomLink(destinationRoom, "TestLink", false);
-	roomLinks.push_back(newLink);
+	RoomConnection* newConnection = new RoomConnection(destinationRoom, "TestLink", false);
+	roomLinks.push_back(newConnection);
 
-	FLY_LOG("Room %s connected the logic succesfuly with %s", roomName.c_str(), destinationRoom->GetName().c_str()); 
+	FLY_LOG("Room %s connected the LOGIC succesfuly with %s", roomName.c_str(), destinationRoom->GetName().c_str()); 
+	return newConnection->connectionID; 
 }
 
 string Room::GetName() const
@@ -42,4 +43,12 @@ string Room::GetName() const
 void Room::SetName(string newName)
 {
 	roomName = newName; 
+}
+
+RoomConnection::RoomConnection(Room* _roomConnected, string _connectionName, bool _isBidirectional)
+{
+	roomConnected = _roomConnected;
+	connectionName = _connectionName;
+	isBidirectional = _isBidirectional;
+	connectionID = RandomNumberGenerator::getInstance()->GenerateUID();
 }

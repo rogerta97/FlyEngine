@@ -1,24 +1,23 @@
 #ifndef _ROOM_H_
 #define _ROOM_H_
 
+
 #include "RoomLink.h"
+#include "Globals.h"
 #include <list>
 #include <string>
 
 using namespace std; 
 
 class Room; 
-struct RoomLink {
+struct RoomConnection {
 
-	explicit RoomLink(Room* _roomConnected, string _connectionName, bool _isBidirectional) {
-		roomConnected = _roomConnected;
-		connectionName = _connectionName;
-		isBidirectional = _isBidirectional; 
-	}
+	RoomConnection(Room* _roomConnected, string _connectionName, bool _isBidirectional);
 
 	Room* roomConnected;
 	bool isBidirectional; 
 	string connectionName;
+	UID connectionID; 
 };
 
 class Room {
@@ -31,7 +30,7 @@ public:
 	void CleanUp(); 
 
 	// Utility
-	void ConnectToRoom(Room* destinationRoom);
+	UID ConnectToRoom(Room* destinationRoom);
 
 	// Encapsulation
 	string GetName() const; 
@@ -40,7 +39,7 @@ public:
 private: 
 
 	string roomName;
-	list<RoomLink*> roomLinks; 
+	list<RoomConnection*> roomLinks; 
 };
 
 

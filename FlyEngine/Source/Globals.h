@@ -30,6 +30,7 @@ void flyLog(const char file[], int line, consoleMessageType messageType, const c
 
 
 typedef unsigned int uint;
+typedef long double UID; 
 
 enum update_status
 {
