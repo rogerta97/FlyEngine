@@ -1,5 +1,5 @@
 #include "RandomNumberGenerator.h"
-#include "pcg_basic.h"
+#include "..//3rdParty/PCGRandom/pcg_basic.h"
 
 RandomNumberGenerator* RandomNumberGenerator::instance = 0; 
 

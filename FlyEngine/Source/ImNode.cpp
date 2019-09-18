@@ -434,7 +434,7 @@ namespace ImNodes
 		// Render frame
 		draw_list->ChannelsSetCurrent(0);
 
-		ImColor node_color = canvas->colors[node_selected ? ColNodeActiveBg : ColNodeBg];
+		ImColor node_color = canvas->colors[ColNodeBg];
 		draw_list->AddRectFilled(node_rect.Min, node_rect.Max, node_color, style.FrameRounding);
 		draw_list->AddRect(node_rect.Min, node_rect.Max, canvas->colors[ColNodeBorder], style.FrameRounding);
 
