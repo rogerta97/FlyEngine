@@ -10,6 +10,7 @@ Room::Room(string roomName)
 	// Add The Room to the NodeGraph 
 	static int placer = 50;
 	NodeGraph::getInstance()->CreateNode(roomName, ImVec2(placer, 50));
+	
 	placer += 250; 
 }
 
@@ -19,20 +20,30 @@ Room::~Room()
 
 void Room::CleanUp()
 {
-	for (auto it = roomLinks.begin(); it != roomLinks.end(); it++) {
+	for (auto it = roomConnections.begin(); it != roomConnections.end(); it++) {
 		delete *it; 
 	}
 
-	roomLinks.clear(); 
+	roomConnections.clear(); 
 }
 
-UID Room::ConnectToRoom(Room* destinationRoom)
+RoomConnection* Room::ConnectToRoom(Room* destinationRoom)
 {
-	RoomConnection* newConnection = new RoomConnection(destinationRoom, "TestLink", false);
-	roomLinks.push_back(newConnection);
+	RoomConnection* newConnection = new RoomConnection(this, destinationRoom, "TestLink", false);
+	roomConnections.push_back(newConnection);
 
 	FLY_LOG("Room %s connected the LOGIC succesfuly with %s", roomName.c_str(), destinationRoom->GetName().c_str()); 
-	return newConnection->connectionID; 
+	return newConnection;
+}
+
+list<RoomConnection*> Room::GetConnectionsList() const
+{
+	return roomConnections;
+}
+
+int Room::GetConnectionsAmount() const
+{
+	return roomConnections.size();
 }
 
 string Room::GetName() const
@@ -45,9 +56,10 @@ void Room::SetName(string newName)
 	roomName = newName; 
 }
 
-RoomConnection::RoomConnection(Room* _roomConnected, string _connectionName, bool _isBidirectional)
+RoomConnection::RoomConnection(Room* _originRoom, Room* _roomConnected, string _connectionName, bool _isBidirectional)
 {
-	roomConnected = _roomConnected;
+	originRoom = _originRoom;
+	destinationRoom = _roomConnected;
 	connectionName = _connectionName;
 	isBidirectional = _isBidirectional;
 	connectionID = RandomNumberGenerator::getInstance()->GenerateUID();

@@ -1,4 +1,7 @@
 #include "ModuleWorldManager.h"
+#include "Application.h"
+#include "ModuleImGui.h"
+#include "GraphPropertiesDockPanel.h"
 #include "Room.h"
 #include "NodeGraph.h"
 #include "FileSystem.h"
@@ -16,8 +19,8 @@ ModuleWorldManager::~ModuleWorldManager()
 bool ModuleWorldManager::Start()
 {
 	CreateEmptyRoom("Forest");
-	CreateEmptyRoom("Forest Room 1");
-	CreateEmptyRoom("Forest Room 2");
+	//CreateEmptyRoom("Forest Room 1");
+	//CreateEmptyRoom("Forest Room 2");
 
 	return true;
 }
@@ -68,10 +71,35 @@ void ModuleWorldManager::CleanUpRooms()
 	roomsInWorldList.clear();
 }
 
+//std::list<RoomConnection*> ModuleWorldManager::GetConnectionsFromRoom(Room* originRoom)
+//{
+//	if (GetConnectionsAmount() <= 0)
+//		return std::list<RoomConnection*>(); 
+//
+//	for (auto it : roomsInWorldList) {
+//		if (it == originRoom) {
+//			return it->GetConnectionsList(); 
+//		}
+//	}
+//
+//	
+//
+//	return std::list<RoomConnection*>();
+//}
+
+int ModuleWorldManager::GetConnectionsAmount() const
+{
+	return connectionsInWorldList.size();
+}
+
 void ModuleWorldManager::ConnectRooms(Room* originRoom, Room* destinationRoom)
 {
-	UID connectionID = originRoom->ConnectToRoom(destinationRoom); 
-	NodeGraph::getInstance()->ConnectNodes(originRoom->GetName(), "Out", destinationRoom->GetName(), "In", connectionID);
+	// Logic
+	RoomConnection* connection = originRoom->ConnectToRoom(destinationRoom); 
+	connectionsInWorldList.push_back(connection);
+
+	// Graph
+	NodeGraph::getInstance()->ConnectNodes(originRoom->GetName(), "Out", destinationRoom->GetName(), "In", connection->connectionID);	
 }
 
 Room* ModuleWorldManager::GetRoomByName(string roomName) const
@@ -85,4 +113,27 @@ Room* ModuleWorldManager::GetRoomByName(string roomName) const
 
 	FLY_ERROR("Room with name %s in ModuleWorldManager::GetRoom() could not be found", roomName.c_str()); 
 	return nullptr;
+}
+
+int ModuleWorldManager::GetRoomsAmount() const
+{
+	return roomsInWorldList.size();
+}
+
+void ModuleWorldManager::SetSelectedRoom(Room* selectedRoom)
+{
+	this->selectedRoom = selectedRoom; 
+}
+
+void ModuleWorldManager::SetSelectedRoom(std::string roomName)
+{
+	Room* nextSelectedRoom = GetRoomByName(roomName); 
+
+	if (nextSelectedRoom != nullptr)
+		selectedRoom = nextSelectedRoom; 
+}
+
+Room* ModuleWorldManager::GetSelectedRoom() const
+{
+	return selectedRoom;
 }

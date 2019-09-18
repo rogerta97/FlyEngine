@@ -29,6 +29,13 @@ ModuleImGui::~ModuleImGui()
 {
 }
 
+bool ModuleImGui::Init()
+{
+	
+
+	return true;
+}
+
 bool ModuleImGui::Start()
 {
 	name = "ImGui";
@@ -43,10 +50,8 @@ bool ModuleImGui::Start()
 	buttonFont = io.Fonts->AddFontFromFileTTF(fontsDirectory.c_str(), 24);
 
 	CreatePanels();
-	SetStyle(); 
-	
-
-	return true;
+	SetStyle();
+	return true; 
 }
 
 void ModuleImGui::CreatePanels()
@@ -68,6 +73,7 @@ void ModuleImGui::CreatePanels()
 	dockPanels.push_back(objectPropertiesDockPanel);
 
 	consoleDockPanel = consolePanel; 
+	graphPropertiesDockPanel = graphPropertiesPanel; 
 }
 
 void ModuleImGui::DeletePanels()

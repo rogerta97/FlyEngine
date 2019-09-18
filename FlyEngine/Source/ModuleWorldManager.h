@@ -10,6 +10,7 @@
 using namespace std; 
 
 class Room; 
+class RoomConnection; 
 class ModuleWorldManager : public Module
 {
 public:
@@ -22,18 +23,32 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	// Rooms Control 
+	// Rooms
 	void CreateEmptyRoom(string roomName = "New Room"); 
 	void ConnectRooms(Room* originRoom, Room* destinationRoom);
 
 	void DeleteRoom(string roomName); 
 	void CleanUpRooms();
 
+	// Connections
+	//std::list<RoomConnection*> GetConnectionsFromRoom(Room* originRoom);
+	int GetConnectionsAmount() const; 
+
 	// Utility
 	Room* GetRoomByName(string roomName) const;
+	int GetRoomsAmount() const;
+
+	void SetSelectedRoom(Room* selectedRoom); 
+	void SetSelectedRoom(std::string roomName); 
+
+	Room* GetSelectedRoom() const;
 
 public:
-	list<Room*> roomsInWorldList; 
+	list<Room*> roomsInWorldList;
+	list<RoomConnection*> connectionsInWorldList; 
+
+private: 
+	Room* selectedRoom; 
 };
 
 

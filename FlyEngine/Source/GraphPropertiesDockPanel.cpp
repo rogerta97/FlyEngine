@@ -11,7 +11,7 @@
 GraphPropertiesDockPanel::GraphPropertiesDockPanel(bool isVisible) : DockPanel("Graph Properties", isVisible)
 {
 	flyEngineSection = FLY_SECTION_ROOM_GRAPH;
-	dockPanelType = DOCK_GAME_VIEWPORT;
+	dockPanelType = DOCK_GAME_VIEWPORT;	
 }
 
 GraphPropertiesDockPanel::~GraphPropertiesDockPanel()
@@ -83,8 +83,20 @@ void GraphPropertiesDockPanel::PrintConnectionsSection()
 	ImGui::Text("Connections:");
 	ImGui::BeginChild("RoomsConnectionList", ImVec2(ImGui::GetWindowContentRegionWidth(), ImGui::GetWindowHeight() / 4), true);
 
-	for (auto it : NodeGraph::getInstance()->GetConnectionList()) {
-		string selectableConnectionText = it->originNode->title.c_str() + string(" -> ") + it->destinationNode->title.c_str(); 
+	//for (int n = 0; n < 5; n++)
+	//{
+	//	char buf[32];
+	//	sprintf(buf, "Object %d", n);
+	//	if (ImGui::Selectable(buf, selection[n]))
+	//	{
+	//		if (!ImGui::GetIO().KeyCtrl)    // Clear selection when CTRL is not held
+	//			memset(selection, 0, sizeof(selection));
+	//		selection[n] ^= 1;
+	//	}
+	//}
+
+	for (auto it : App->moduleWorldManager->connectionsInWorldList) {
+		string selectableConnectionText = it->originRoom->GetName() + string(" -> ") + it->destinationRoom->GetName();
 		ImGui::Selectable(selectableConnectionText.c_str());
 	}
 
@@ -109,7 +121,7 @@ void GraphPropertiesDockPanel::PrintRoomsSection()
 	ImGui::BeginChild("RoomsList", ImVec2(ImGui::GetWindowContentRegionWidth(), ImGui::GetWindowHeight() / 4), true);
 
 	for (auto it : App->moduleWorldManager->roomsInWorldList) {
-		ImGui::Selectable(it->GetName().c_str());
+		ImGui::Selectable(it->GetName().c_str()); 
 	}
 
 	ImGui::EndChild();

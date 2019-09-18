@@ -2,6 +2,7 @@
 #define _GRAPH_PROPERTIES_DOCKPANEL_H_
 
 #include "DockPanel.h"
+#include <vector>
 
 class GraphPropertiesDockPanel : public DockPanel {
 
@@ -12,17 +13,14 @@ public:
 
 	bool Draw();
 
+	void NewRoomButtonHandler();
 	void NewConnectionButtonHandler();
 
+	void PrintRoomsSection();
 	void PrintConnectionsSection();
 
-	void PrintRoomsSection();
-
-	void NewRoomButtonHandler();
-
 private: 
-	bool showNewRoomNaming = false; 
-
+	bool showNewRoomNaming = false;	
 };
 
 #endif 

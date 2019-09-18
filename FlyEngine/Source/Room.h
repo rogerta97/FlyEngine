@@ -12,9 +12,11 @@ using namespace std;
 class Room; 
 struct RoomConnection {
 
-	RoomConnection(Room* _roomConnected, string _connectionName, bool _isBidirectional);
+	RoomConnection(Room* _originRoom, Room* _roomConnected, string _connectionName, bool _isBidirectional);
 
-	Room* roomConnected;
+	Room* originRoom; 
+	Room* destinationRoom;
+
 	bool isBidirectional; 
 	string connectionName;
 	UID connectionID; 
@@ -29,17 +31,18 @@ public:
 
 	void CleanUp(); 
 
-	// Utility
-	UID ConnectToRoom(Room* destinationRoom);
+	// Connections
+	RoomConnection* ConnectToRoom(Room* destinationRoom);
+	list<RoomConnection*> GetConnectionsList() const;
+	int GetConnectionsAmount() const; 
 
 	// Encapsulation
 	string GetName() const; 
 	void SetName(string newName); 
 
 private: 
-
 	string roomName;
-	list<RoomConnection*> roomLinks; 
+	list<RoomConnection*> roomConnections; 
 };
 
 

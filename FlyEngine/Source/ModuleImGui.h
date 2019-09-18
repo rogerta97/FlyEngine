@@ -10,6 +10,8 @@
 #include "DockPanel.h"
 
 class ConsoleDockPanel;
+class GraphPropertiesDockPanel; 
+
 class ModuleImGui : public Module
 {
 public:
@@ -17,6 +19,7 @@ public:
 	~ModuleImGui();
 
 	// Module 
+	bool Init(); 
 	bool Start();
 	update_status Update(float dt);
 	update_status PreUpdate(float dt);
@@ -36,6 +39,8 @@ public:
 	DockPanel* GetDockPanel(DockPanelType panelType);
 
 	ConsoleDockPanel* consoleDockPanel;
+	GraphPropertiesDockPanel* graphPropertiesDockPanel; 
+
 	ImFont* engineFont;
 	ImFont* buttonFont;
 
