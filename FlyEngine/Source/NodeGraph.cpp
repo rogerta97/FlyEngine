@@ -24,7 +24,10 @@ void NodeGraph::Update()
 }
 
 NodeGraph::NodeGraph()
-{}
+{
+	graphNodeList.clear();
+	connectionsList.clear(); 
+}
 
 NodeGraph::~NodeGraph()
 {
@@ -89,6 +92,7 @@ void NodeGraph::DeleteAllNodes()
 	}
 
 	instance->graphNodeList.clear();
+	delete instance; 
 
 	FLY_LOG("Nodes Deleted Correctly");
 }
@@ -161,7 +165,6 @@ void NodeGraph::DeleteAllConnections()
 	}
 
 	instance->connectionsList.clear();
-	delete instance;
 
 	FLY_LOG("Connections Deleted Correctly");
 }

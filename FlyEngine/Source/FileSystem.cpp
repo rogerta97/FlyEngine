@@ -15,5 +15,10 @@ FileSystem* FileSystem::getInstance()
 }
 
 FileSystem::~FileSystem() {
-	delete instance;
+
+}
+
+void FileSystem::Delete()
+{
+	delete instance; 
 }

@@ -8,6 +8,11 @@ RandomNumberGenerator* RandomNumberGenerator::getInstance() {
 	return instance;
 }
 
+void RandomNumberGenerator::Delete()
+{
+	delete instance; 
+}
+
 int RandomNumberGenerator::GetPCGRandomNumberInt(int minValue, int maxValue)
 {
 	int num_generated = 0;

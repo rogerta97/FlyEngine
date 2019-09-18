@@ -1,6 +1,7 @@
 #include "ModuleWorldManager.h"
 #include "Application.h"
 #include "ModuleImGui.h"
+#include "RandomNumberGenerator.h"
 #include "GraphPropertiesDockPanel.h"
 #include "Room.h"
 #include "NodeGraph.h"
@@ -38,8 +39,11 @@ update_status ModuleWorldManager::PostUpdate(float dt)
 bool ModuleWorldManager::CleanUp()
 {
 	CleanUpRooms();	
-	NodeGraph::getInstance()->DeleteAllNodes(); 
 	NodeGraph::getInstance()->DeleteAllConnections(); 
+	NodeGraph::getInstance()->DeleteAllNodes(); 
+
+	FileSystem::getInstance()->Delete();
+	RandomNumberGenerator::getInstance()->Delete(); 
 
 	return true;
 }

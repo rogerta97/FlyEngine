@@ -17,6 +17,8 @@ public:
 	static FileSystem* getInstance();
 	~FileSystem();
 
+	void Delete(); 
+
 public: 
 	std::string solutionDirectory; 
 
