@@ -86,7 +86,7 @@ private:
 	Node* GetNodeByTitle(string nodeName);
 
 private:
-	list<Node*> nodeList;
+	list<Node*> graphNodeList;
 	list<NodeGraphConnection*> connectionsList; 
 
 };

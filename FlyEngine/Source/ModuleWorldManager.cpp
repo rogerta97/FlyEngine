@@ -18,8 +18,8 @@ ModuleWorldManager::~ModuleWorldManager()
 
 bool ModuleWorldManager::Start()
 {
-	CreateEmptyRoom("Forest");
-	CreateEmptyRoom("Forest Room 1");
+	//CreateEmptyRoom("Forest");
+	//CreateEmptyRoom("Forest Room 1");
 	//CreateEmptyRoom("Forest Room 2");
 
 	return true;
@@ -51,7 +51,8 @@ void ModuleWorldManager::CreateEmptyRoom(string roomName)
 
 void ModuleWorldManager::DeleteSelectedRoom()
 {
-	DeleteRoom(selectedRoom->GetName()); 
+	if(selectedRoom != nullptr)
+		DeleteRoom(selectedRoom->GetName()); 
 }
 
 void ModuleWorldManager::DeleteRoom(string roomName)
@@ -59,8 +60,12 @@ void ModuleWorldManager::DeleteRoom(string roomName)
 	for (auto it = roomsInWorldList.begin(); it != roomsInWorldList.end(); it++) {
 		
 		if ((*it)->GetName() == roomName) {
+			
 			(*it)->CleanUp();
+			NodeGraph::getInstance()->DeleteNode((*it)->GetName()); 
 			delete (*it);
+			roomsInWorldList.erase(it);		
+			break; 
 		}	
 	}
 }

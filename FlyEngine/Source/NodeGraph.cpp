@@ -27,11 +27,12 @@ NodeGraph::NodeGraph()
 {}
 
 NodeGraph::~NodeGraph()
-{}
+{
+}
 
 void NodeGraph::SelectNode(string nodeToSelect)
 {
-	for (auto it : instance->nodeList) {
+	for (auto it : instance->graphNodeList) {
 
 		if(it->title != nodeToSelect)
 			it->selected = false;
@@ -50,16 +51,16 @@ void NodeGraph::CreateNode(string nodeName, ImVec2 pos)
 	newNode->inputs.push_back({ "In", 1 });
 	newNode->outputs.push_back({ "Out", 1 });
 
-	instance->nodeList.push_back(newNode);
+	instance->graphNodeList.push_back(newNode);
 }
 
 void NodeGraph::DeleteNode(string nodeName)
 {
-	for (auto it = instance->nodeList.begin(); it != instance->nodeList.end(); it++) {
+	for (auto it = instance->graphNodeList.begin(); it != instance->graphNodeList.end(); it++) {
 		
 		if ((*it)->title == nodeName) {
 			delete (*it); 
-			instance->nodeList.erase(it);
+			instance->graphNodeList.erase(it);
 			return;
 		}
 	}
@@ -67,13 +68,13 @@ void NodeGraph::DeleteNode(string nodeName)
 
 std::list<Node*> NodeGraph::GetNodeList()
 {
-	return instance->nodeList;
+	return instance->graphNodeList;
 }
 
 std::string NodeGraph::GetNodesAsCombo()
 {
 	std::string returnString;
-	for (auto it : instance->nodeList) {
+	for (auto it : instance->graphNodeList) {
 		returnString += it->title;
 		returnString += '\0'; 
 	}
@@ -83,11 +84,11 @@ std::string NodeGraph::GetNodesAsCombo()
 
 void NodeGraph::DeleteAllNodes()
 {
-	for (auto it = instance->nodeList.begin(); it != instance->nodeList.end(); it++) {
+	for (auto it = instance->graphNodeList.begin(); it != instance->graphNodeList.end(); it++) {
 		delete (*it);
 	}
 
-	instance->nodeList.clear();
+	instance->graphNodeList.clear();
 
 	FLY_LOG("Nodes Deleted Correctly");
 }
@@ -187,13 +188,16 @@ void NodeGraph::CheckNewConnection()
 
 void NodeGraph::DrawNodeGraph()
 {
-	if (instance == nullptr)
-		return; 
 
 	static ImNodes::CanvasState canvas;
 	ImNodes::BeginCanvas(&canvas);
 
-	for (auto it : instance->nodeList) {
+	if (instance == nullptr) {
+		ImNodes::EndCanvas();
+		return;
+	}
+
+	for (auto it : instance->graphNodeList) {
 
 		if (ImNodes::Ez::BeginNode(it, it->title.c_str(), &it->position, &it->selected))
 		{
@@ -212,7 +216,7 @@ void NodeGraph::DrawNodeGraph()
 
 Node* NodeGraph::GetNodeByTitle(string nodeName)
 {
-	for (list<Node*>::iterator it = nodeList.begin(); it != nodeList.end(); it++) {
+	for (list<Node*>::iterator it = graphNodeList.begin(); it != graphNodeList.end(); it++) {
 		if ((*it)->title == nodeName)
 			return *it; 
 	}
