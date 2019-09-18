@@ -82,12 +82,16 @@ public:
 
 	static void CheckNewConnection(); 
 
+	NodeGraphConnection* connectionSelected = nullptr;
+
 private: 
 	Node* GetNodeByTitle(string nodeName);
 
 private:
 	list<Node*> graphNodeList;
 	list<NodeGraphConnection*> connectionsList; 
+
+ 
 
 };
 

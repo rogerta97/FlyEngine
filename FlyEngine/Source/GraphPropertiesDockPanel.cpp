@@ -96,7 +96,13 @@ void GraphPropertiesDockPanel::PrintConnectionsSection()
 	//}
 
 	for (auto it : App->moduleWorldManager->connectionsInWorldList) {
+
+		bool showSelected = false; 
 		string selectableConnectionText = it->originRoom->GetName() + string(" -> ") + it->destinationRoom->GetName();
+	
+		if (NodeGraph::getInstance()->connectionSelected != nullptr) {
+
+		}
 
 		ImGui::Selectable(selectableConnectionText.c_str());
 	}
