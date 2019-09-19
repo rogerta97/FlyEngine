@@ -88,7 +88,7 @@ void GraphPropertiesDockPanel::PrintConnectionsSection()
 
 		std::string selectableConnectionText = it->originNode->title.c_str() + std::string(" -> ") + it->destinationNode->title.c_str();
 		if (ImGui::Selectable(selectableConnectionText.c_str(), it->isSelected)) {
-
+			NodeGraph::getInstance()->connectionSelected = it; 
 		}
 	}
 
@@ -102,7 +102,7 @@ void GraphPropertiesDockPanel::PrintConnectionsSection()
 
 	ImGui::SameLine();
 	if (ImGui::Button("Delete Connection", ImVec2(ImGui::GetWindowContentRegionWidth() / 2 - 6, 40))) {
-
+		App->moduleWorldManager->DeleteConnection(NodeGraph::getInstance()->connectionSelected->connectionID); 
 	}
 	ImGui::PopFont();
 }

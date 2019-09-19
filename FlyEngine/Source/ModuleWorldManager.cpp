@@ -99,6 +99,45 @@ void ModuleWorldManager::ConnectRooms(Room* originRoom, Room* destinationRoom)
 	NodeGraph::getInstance()->ConnectNodes(originRoom->GetName(), "Out", destinationRoom->GetName(), "In", connection->connectionID);	
 }
 
+void ModuleWorldManager::UnconnectRooms(Room* originRoom, Room* destinationRoom)
+{
+	UID deletedConnectionID = -1;
+
+	// Logic
+	for (auto it : roomsInWorldList) {
+		if (it == originRoom) {
+			deletedConnectionID = it->DeleteConnectionByID(destinationRoom); 
+		}
+	}
+
+	// Graph 
+	if (deletedConnectionID != -1) {
+		NodeGraph::getInstance()->DeleteConnection(deletedConnectionID); 
+	}
+	else {
+		FLY_ERROR("Connection to delete could not be found"); 
+	}
+
+
+}
+
+void ModuleWorldManager::UnconnectRooms(std::string originRoomName, std::string destinationRoomName)
+{
+	UnconnectRooms(GetRoomByName(originRoomName), GetRoomByName(destinationRoomName)); 
+}
+
+void ModuleWorldManager::DeleteConnection(UID connectionID)
+{
+	// Logic
+	for (auto it : roomsInWorldList) {		
+		if (it->DeleteConnectionByID(connectionID)) {
+			break;
+		}
+	}
+
+	NodeGraph::getInstance()->DeleteConnection(connectionID); 
+}
+
 Room* ModuleWorldManager::GetRoomByName(string roomName) const
 {
 	for (auto const& it : roomsInWorldList) {		

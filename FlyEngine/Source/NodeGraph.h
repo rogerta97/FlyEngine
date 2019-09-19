@@ -77,6 +77,7 @@ public:
 
 	static list<NodeGraphConnection*> GetConnectionList();
 	static std::string GetConnectionsAsCombo();
+	static void SelectConnection(UID connectionID); 
 
 	static void DeleteConnection(int connectionID); 
 	static void DeleteAllConnections(); 

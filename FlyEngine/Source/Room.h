@@ -33,6 +33,9 @@ public:
 
 	// Connections
 	RoomConnection* ConnectToRoom(Room* destinationRoom);
+	UID DeleteConnectionByID(Room* destinationRoom); 
+	bool DeleteConnectionByID(UID destinationRoomID); 
+
 	list<RoomConnection*> GetConnectionsList() const;
 	int GetConnectionsAmount() const; 
 

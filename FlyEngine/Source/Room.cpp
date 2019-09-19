@@ -36,6 +36,35 @@ RoomConnection* Room::ConnectToRoom(Room* destinationRoom)
 	return newConnection;
 }
 
+bool Room::DeleteConnectionByID(UID connectionToBreak)
+{
+	for (auto it = roomConnections.begin(); it != roomConnections.end(); it++) {
+		if ((*it)->connectionID == connectionToBreak) {
+			UID returnUID = (*it)->connectionID;
+			delete (*it);
+			roomConnections.erase(it);
+			
+			return true;
+		}
+	}
+
+	return false;
+}
+
+UID Room::DeleteConnectionByID(Room* destinationRoom)
+{
+	for (auto it = roomConnections.begin(); it != roomConnections.end(); it++) {
+		if ((*it)->destinationRoom == destinationRoom) {
+			UID returnUID = (*it)->connectionID; 
+			roomConnections.erase(it); 
+			delete (*it); 
+			return returnUID;
+		}
+	}
+
+	return -1; 
+}
+
 list<RoomConnection*> Room::GetConnectionsList() const
 {
 	return roomConnections;

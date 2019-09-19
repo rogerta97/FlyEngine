@@ -212,7 +212,7 @@ namespace ImNodes
 		// Draw curve, change when it is hovered
 		bool is_close = min_square_distance <= thickness * thickness;
 
-		if (ImGui::IsMouseClicked(0)) {
+		if (ImGui::IsMouseClicked(0) && ImGui::IsWindowHovered()) {
 			isSelected = false;
 			if (is_close)
 				isSelected = true; 

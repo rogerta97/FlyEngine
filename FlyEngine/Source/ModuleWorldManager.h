@@ -27,6 +27,10 @@ public:
 	void CreateEmptyRoom(string roomName = "New Room"); 
 	void ConnectRooms(Room* originRoom, Room* destinationRoom);
 
+	void UnconnectRooms(Room* originRoom, Room* destinationRoom); 
+	void UnconnectRooms(std::string originRoomName, std::string destinationRoomName);
+	void DeleteConnection(UID connectionID);
+
 	void DeleteRoom(string roomName); 
 	void DeleteSelectedRoom(); 
 	void CleanUpRooms();

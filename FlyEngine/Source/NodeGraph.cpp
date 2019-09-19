@@ -120,6 +120,19 @@ std::string NodeGraph::GetConnectionsAsCombo()
 	return returnString;
 }
 
+void NodeGraph::SelectConnection(UID connectionID)
+{
+	for (auto it : instance->connectionsList) {
+		if (it->connectionID == connectionID) {
+			it->isSelected = true; 
+			instance->connectionSelected = it;
+		}
+		else {
+			it->isSelected = false; 
+		}
+	}
+}
+
 void NodeGraph::ConnectNodes(string originNodeTitle, string originSlotName, string destinationNodeTitle, string destinationSlotName, UID logicConnectionID)
 {
 	Node* originNode = instance->GetNodeByTitle(originNodeTitle); 
