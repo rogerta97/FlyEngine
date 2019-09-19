@@ -95,16 +95,16 @@ void GraphPropertiesDockPanel::PrintConnectionsSection()
 	//	}
 	//}
 
+	static int connectionSelected = -1;
+	int i = 0;  
 	for (auto it : App->moduleWorldManager->connectionsInWorldList) {
 
-		bool showSelected = false; 
 		string selectableConnectionText = it->originRoom->GetName() + string(" -> ") + it->destinationRoom->GetName();
-	
-		if (NodeGraph::getInstance()->connectionSelected != nullptr) {
-
+		if (ImGui::Selectable(selectableConnectionText.c_str(), connectionSelected == i)){
+			connectionSelected = i; 
 		}
 
-		ImGui::Selectable(selectableConnectionText.c_str());
+		i++; 
 	}
 
 	ImGui::EndChild();
