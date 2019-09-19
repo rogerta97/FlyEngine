@@ -229,7 +229,7 @@ Node* NodeGraph::GetNodeByTitle(string nodeName)
 
 NodeGraphConnection::NodeGraphConnection()
 {
-
+	SetAllNullptr(); 
 }
 
 void NodeGraphConnection::SetConnectionOrigin(Node* originNode, string slotTitle)
@@ -252,9 +252,10 @@ void NodeGraphConnection::SetAllNullptr()
 	originSlotName = "";
 	connectionID = -1; 
 	isBidirecitonal = false; 
+	isSelected = false;
 }
 
 void NodeGraphConnection::DrawConnection()
 {
-	ImNodes::Connection(destinationNode, destinationSlotName.c_str(), originNode, originSlotName.c_str()); 
+	ImNodes::Connection(destinationNode, destinationSlotName.c_str(), originNode, originSlotName.c_str(), isSelected); 
 }

@@ -7,6 +7,7 @@
 #include "imgui.h"
 
 #include "mmgr.h"
+#include <string>
 
 GraphPropertiesDockPanel::GraphPropertiesDockPanel(bool isVisible) : DockPanel("Graph Properties", isVisible)
 {
@@ -83,28 +84,12 @@ void GraphPropertiesDockPanel::PrintConnectionsSection()
 	ImGui::Text("Connections:");
 	ImGui::BeginChild("RoomsConnectionList", ImVec2(ImGui::GetWindowContentRegionWidth(), ImGui::GetWindowHeight() / 4), true);
 
-	//for (int n = 0; n < 5; n++)
-	//{
-	//	char buf[32];
-	//	sprintf(buf, "Object %d", n);
-	//	if (ImGui::Selectable(buf, selection[n]))
-	//	{
-	//		if (!ImGui::GetIO().KeyCtrl)    // Clear selection when CTRL is not held
-	//			memset(selection, 0, sizeof(selection));
-	//		selection[n] ^= 1;
-	//	}
-	//}
+	for (auto it : NodeGraph::getInstance()->GetConnectionList()){
 
-	static int connectionSelected = -1;
-	int i = 0;  
-	for (auto it : App->moduleWorldManager->connectionsInWorldList) {
+		std::string selectableConnectionText = it->originNode->title.c_str() + std::string(" -> ") + it->destinationNode->title.c_str();
+		if (ImGui::Selectable(selectableConnectionText.c_str(), it->isSelected)) {
 
-		string selectableConnectionText = it->originRoom->GetName() + string(" -> ") + it->destinationRoom->GetName();
-		if (ImGui::Selectable(selectableConnectionText.c_str(), connectionSelected == i)){
-			connectionSelected = i; 
 		}
-
-		i++; 
 	}
 
 	ImGui::EndChild();

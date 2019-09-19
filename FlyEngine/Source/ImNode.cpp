@@ -186,7 +186,7 @@ namespace ImNodes
 		return tx * tx + ty * ty;
 	}
 
-	bool RenderConnection(const ImVec2& input_pos, const ImVec2& output_pos, float thickness)
+	bool RenderConnection(const ImVec2& input_pos, const ImVec2& output_pos, float thickness, bool& isSelected)
 	{
 		ImDrawList* draw_list = ImGui::GetWindowDrawList();
 		CanvasState* canvas = gCanvas;
@@ -211,7 +211,14 @@ namespace ImNodes
 
 		// Draw curve, change when it is hovered
 		bool is_close = min_square_distance <= thickness * thickness;
-		draw_list->PathStroke(is_close ? canvas->colors[ColConnectionActive] : canvas->colors[ColConnection], false, thickness);
+
+		if (ImGui::IsMouseClicked(0)) {
+			isSelected = false;
+			if (is_close)
+				isSelected = true; 
+		}
+
+		draw_list->PathStroke(isSelected ? canvas->colors[ColConnectionActive] : canvas->colors[ColConnection], false, thickness);
 		return is_close;
 	}
 
@@ -306,7 +313,8 @@ namespace ImNodes
 					output_pos.x -= connection_indent;
 				}
 
-				RenderConnection(input_pos, output_pos, canvas->style.curve_thickness);
+				static bool selectWhenPending = true; 
+				RenderConnection(input_pos, output_pos, canvas->style.curve_thickness, selectWhenPending);
 			}
 		}
 
@@ -601,7 +609,7 @@ namespace ImNodes
 		return false;
 	}
 
-	bool Connection(void* input_node, const char* input_slot, void* output_node, const char* output_slot)
+	bool Connection(void* input_node, const char* input_slot, void* output_node, const char* output_slot, bool& isSelected)
 	{
 		assert(gCanvas != nullptr);
 		assert(input_node != nullptr);
@@ -632,12 +640,14 @@ namespace ImNodes
 		input_slot_pos.x += connection_indent;
 		output_slot_pos.x -= connection_indent;
 
-		bool curve_hovered = RenderConnection(input_slot_pos, output_slot_pos, canvas->style.curve_thickness);
+		bool curve_hovered = false; 
+		RenderConnection(input_slot_pos, output_slot_pos, canvas->style.curve_thickness, isSelected); 
+		/*bool curve_hovered = RenderConnection(input_slot_pos, output_slot_pos, canvas->style.curve_thickness);
 		if (curve_hovered && ImGui::IsWindowHovered())
 		{
 			if (ImGui::IsMouseDoubleClicked(0))
 				is_connected = false;
-		}
+		}*/
 
 		impl->cached_data.SetFloat(MakeSlotDataID("hovered", input_slot, input_node, true), curve_hovered && is_connected);
 		impl->cached_data.SetFloat(MakeSlotDataID("hovered", output_slot, output_node, false), curve_hovered && is_connected);

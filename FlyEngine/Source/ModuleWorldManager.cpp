@@ -19,8 +19,8 @@ ModuleWorldManager::~ModuleWorldManager()
 
 bool ModuleWorldManager::Start()
 {
-	//CreateEmptyRoom("Forest");
-	//CreateEmptyRoom("Forest Room 1");
+	CreateEmptyRoom("Forest");
+	CreateEmptyRoom("Forest Room 1");
 	//CreateEmptyRoom("Forest Room 2");
 
 	return true;

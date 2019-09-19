@@ -91,7 +91,7 @@ namespace ImNodes
 	/// Get information of connection that is being made and has only one end connected. Returns true when pending connection exists, false otherwise.
 	IMGUI_API bool GetPendingConnection(void** node_id, const char** slot_title, int* slot_kind);
 	/// Render a connection. Returns `true` when connection is present, `false` if it is deleted.
-	IMGUI_API bool Connection(void* input_node, const char* input_slot, void* output_node, const char* output_slot);
+	IMGUI_API bool Connection(void* input_node, const char* input_slot, void* output_node, const char* output_slot, bool& isSelected);
 	/// Returns active canvas state when called between BeginCanvas() and EndCanvas(). Returns nullptr otherwise. This function is not thread-safe.
 	IMGUI_API CanvasState* GetCurrentCanvas();
 	/// Convert kind id to input type.

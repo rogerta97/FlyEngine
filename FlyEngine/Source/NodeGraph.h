@@ -36,6 +36,7 @@ public:
 	void DrawConnection();
 
 public:
+	bool isSelected; 
 	bool isBidirecitonal;
 	int connectionID; 
 
