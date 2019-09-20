@@ -84,7 +84,7 @@ public:
 
 	static void DeleteConnection(int connectionID); 
 	static void DeleteConnections(vector<UID> connectionsList); 
-	static void DeleteAllConnections(); 
+	static int DeleteAllConnections(); 
 
 	static void CheckNewConnection(); 
 

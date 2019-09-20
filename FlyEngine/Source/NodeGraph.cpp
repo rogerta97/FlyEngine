@@ -174,7 +174,7 @@ void NodeGraph::DeleteConnection(int connectionID)
 
 void NodeGraph::DeleteConnections(vector<UID> connectionsToDelIDList)
 {
-	for (auto currentConnection = instance->connectionsList.begin(); currentConnection != instance->connectionsList.end(); currentConnection++) 
+	for (auto currentConnection = instance->connectionsList.begin(); currentConnection != instance->connectionsList.end();) 
 	{
 		for (auto testID : connectionsToDelIDList) 
 		{
@@ -183,12 +183,15 @@ void NodeGraph::DeleteConnections(vector<UID> connectionsToDelIDList)
 				currentConnection = instance->connectionsList.erase(currentConnection); 
 				break;
 			}
+			else
+				currentConnection++; 
 		}
 	}	
 }
 
-void NodeGraph::DeleteAllConnections()
+int NodeGraph::DeleteAllConnections()
 {
+	int conexionsDeletedAmount = instance->connectionsList.size(); 
 	for (auto it = instance->connectionsList.begin(); it != instance->connectionsList.end(); it++) {
 		delete (*it);
 	}
@@ -196,6 +199,7 @@ void NodeGraph::DeleteAllConnections()
 	instance->connectionsList.clear();
 
 	FLY_LOG("Connections Deleted Correctly");
+	return conexionsDeletedAmount; 
 }
 
 void NodeGraph::CheckNewConnection()

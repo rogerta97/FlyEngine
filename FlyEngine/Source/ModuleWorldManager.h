@@ -59,8 +59,8 @@ public:
 private: 
 	Room* selectedRoom;
 	
-	int connectionsAmount; 
-	int roomsAmount; 
+	int worldConnectionsAmount; 
+	int worldRoomsAmount; 
 };
 
 

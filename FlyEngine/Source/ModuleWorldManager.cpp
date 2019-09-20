@@ -11,8 +11,8 @@
 ModuleWorldManager::ModuleWorldManager(bool start_enabled)
 {
 	moduleType = MODULE_ENGINE_MANAGER;
-	connectionsAmount = 0; 
-	roomsAmount = 0;
+	worldConnectionsAmount = 0; 
+	worldRoomsAmount = 0;
 }
 
 ModuleWorldManager::~ModuleWorldManager()
@@ -22,8 +22,8 @@ ModuleWorldManager::~ModuleWorldManager()
 bool ModuleWorldManager::Start()
 {
 	CreateEmptyRoom("Forest");
-	CreateEmptyRoom("Forest Room 1");
-	//CreateEmptyRoom("Forest Room 2");
+	CreateEmptyRoom("Lake");
+	CreateEmptyRoom("Bridge");
 
 	return true;
 }
@@ -35,8 +35,8 @@ update_status ModuleWorldManager::PreUpdate(float dt)
 
 update_status ModuleWorldManager::PostUpdate(float dt)
 {
-	FLY_WARNING("I HAVE %d CONNECTIONS", connectionsAmount);
-	FLY_WARNING("I HAVE %d ROOMS", roomsAmount);
+	FLY_WARNING("I HAVE %d CONNECTIONS", worldConnectionsAmount);
+	FLY_WARNING("I HAVE %d ROOMS", worldRoomsAmount);
 
 	return UPDATE_CONTINUE;
 }
@@ -56,7 +56,7 @@ bool ModuleWorldManager::CleanUp()
 void ModuleWorldManager::CreateEmptyRoom(string roomName)
 {
 	roomsInWorldList.push_back(new Room(roomName));
-	roomsAmount++;
+	worldRoomsAmount++;
 	
 }
 
@@ -72,8 +72,7 @@ void ModuleWorldManager::DeleteRoom(string roomName)
 
 		if ((*it)->GetName() == roomName) {
 
-			NodeGraph::getInstance()->DeleteAllConnections();
-			(*it)->CleanUp();
+			DeleteConnectionsFromRoom((*it)->GetRoomID());
 
 			NodeGraph::getInstance()->DeleteNode((*it)->GetName());
 			delete (*it);
@@ -83,7 +82,7 @@ void ModuleWorldManager::DeleteRoom(string roomName)
 		}
 	}
 
-	roomsAmount--; 
+	worldRoomsAmount--; 
 }
 
 void ModuleWorldManager::DeleteRoom(UID roomID)
@@ -103,7 +102,7 @@ void ModuleWorldManager::DeleteRoom(UID roomID)
 		}
 	}
 
-	roomsAmount--;
+	worldRoomsAmount--;
 }
 
 void ModuleWorldManager::CleanUpRooms()
@@ -114,12 +113,12 @@ void ModuleWorldManager::CleanUpRooms()
 	}
 
 	roomsInWorldList.clear();
-	roomsAmount = 0; 
+	worldRoomsAmount = 0; 
 }
 
 int ModuleWorldManager::GetConnectionsAmount() const
 {
-	return connectionsAmount; 
+	return worldConnectionsAmount; 
 }
 
 void ModuleWorldManager::ConnectRooms(UID originRoomID, UID destinationRoomID)
@@ -134,7 +133,7 @@ void ModuleWorldManager::ConnectRooms(Room* originRoom, Room* destinationRoom)
 
 	// Graph
 	NodeGraph::getInstance()->ConnectNodes(originRoom->GetName(), "Out", destinationRoom->GetName(), "In", connection->connectionID);	
-	connectionsAmount++; 
+	worldConnectionsAmount++; 
 
 	
 }
@@ -158,7 +157,7 @@ void ModuleWorldManager::UnconnectRooms(Room* originRoom, Room* destinationRoom)
 		FLY_ERROR("Connection to delete could not be found"); 
 	}
 
-	connectionsAmount--; 
+	worldConnectionsAmount--; 
 }
 
 void ModuleWorldManager::UnconnectRooms(std::string originRoomName, std::string destinationRoomName)
@@ -168,6 +167,9 @@ void ModuleWorldManager::UnconnectRooms(std::string originRoomName, std::string 
 
 void ModuleWorldManager::DeleteConnection(UID connectionID)
 {
+	if (worldConnectionsAmount <= 0)
+		return; 
+
 	// Logic
 	for (auto it : roomsInWorldList) {		
 		if (it->DeleteConnectionByID(connectionID)) {
@@ -177,7 +179,7 @@ void ModuleWorldManager::DeleteConnection(UID connectionID)
 
 	// Graph
 	NodeGraph::getInstance()->DeleteConnection(connectionID); 
-	connectionsAmount--; 
+	worldConnectionsAmount--; 
 }
 
 void ModuleWorldManager::DeleteConnectionsFromRoom(UID targetRoomID)
@@ -188,7 +190,7 @@ void ModuleWorldManager::DeleteConnectionsFromRoom(UID targetRoomID)
 
 	// Graph 
 	NodeGraph::DeleteConnections(connectionsCementery);
-	connectionsAmount -= connectionsCementery.size();
+	worldConnectionsAmount -= connectionsCementery.size();
 }
 
 Room* ModuleWorldManager::GetRoomByName(std::string roomName) const
@@ -219,7 +221,7 @@ Room* ModuleWorldManager::GetRoomByID(UID roomID) const
 
 int ModuleWorldManager::GetRoomsAmount() const
 {
-	return roomsAmount;
+	return worldRoomsAmount;
 }
 
 void ModuleWorldManager::SetSelectedRoom(Room* selectedRoom)
