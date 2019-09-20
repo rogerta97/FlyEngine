@@ -188,6 +188,7 @@ namespace ImNodes
 
 	bool RenderConnection(const ImVec2& input_pos, const ImVec2& output_pos, float thickness, bool& isSelected)
 	{
+		bool connectionClicked = false;
 		ImDrawList* draw_list = ImGui::GetWindowDrawList();
 		CanvasState* canvas = gCanvas;
 		const ImGuiStyle& style = ImGui::GetStyle();
@@ -214,12 +215,14 @@ namespace ImNodes
 
 		if (ImGui::IsMouseClicked(0) && ImGui::IsWindowHovered()) {
 			isSelected = false;
-			if (is_close)
+			if (is_close) {
 				isSelected = true; 
+				connectionClicked = true; 
+			}
 		}
 
 		draw_list->PathStroke(isSelected ? canvas->colors[ColConnectionActive] : canvas->colors[ColConnection], false, thickness);
-		return is_close;
+		return connectionClicked;
 	}
 
 	void BeginCanvas(CanvasState* canvas)
@@ -618,6 +621,7 @@ namespace ImNodes
 		assert(output_slot != nullptr);
 
 		bool is_connected = true;
+		bool connectionClicked = false; 
 		auto* canvas = gCanvas;
 		auto* impl = canvas->_impl;
 
@@ -641,7 +645,7 @@ namespace ImNodes
 		output_slot_pos.x -= connection_indent;
 
 		bool curve_hovered = false; 
-		RenderConnection(input_slot_pos, output_slot_pos, canvas->style.curve_thickness, isSelected); 
+		connectionClicked = RenderConnection(input_slot_pos, output_slot_pos, canvas->style.curve_thickness, isSelected);
 		/*bool curve_hovered = RenderConnection(input_slot_pos, output_slot_pos, canvas->style.curve_thickness);
 		if (curve_hovered && ImGui::IsWindowHovered())
 		{
@@ -683,7 +687,7 @@ namespace ImNodes
 			}
 		}
 
-		return is_connected;
+		return connectionClicked;
 	}
 
 	CanvasState* GetCurrentCanvas()

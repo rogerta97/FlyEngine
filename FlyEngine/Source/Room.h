@@ -5,6 +5,7 @@
 #include "RoomLink.h"
 #include "Globals.h"
 #include <list>
+#include <vector>
 #include <string>
 
 using namespace std; 
@@ -35,6 +36,7 @@ public:
 	RoomConnection* ConnectToRoom(Room* destinationRoom);
 	UID DeleteConnectionByID(Room* destinationRoom); 
 	bool DeleteConnectionByID(UID destinationRoomID); 
+	vector<UID> DeleteAllConnections();
 
 	list<RoomConnection*> GetConnectionsList() const;
 	int GetConnectionsAmount() const; 
@@ -43,7 +45,11 @@ public:
 	string GetName() const; 
 	void SetName(string newName); 
 
+	UID GetRoomID() const;
+	void SetRoomID(UID newName);
+
 private: 
+	UID roomID; 
 	string roomName;
 	list<RoomConnection*> roomConnections; 
 };

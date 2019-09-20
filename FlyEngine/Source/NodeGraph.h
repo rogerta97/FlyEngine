@@ -7,6 +7,7 @@
 #include "Globals.h"
 
 #include <list>
+#include <vector>
 #include <string>
 
 using namespace std;
@@ -14,6 +15,8 @@ using namespace ImNodes;
 using namespace Ez; 
 
 struct Node {
+
+	UID roomID; 
 
 	ImVec2 position;
 	bool selected; 
@@ -62,7 +65,7 @@ public:
 
 	// Nodes
 	static void SelectNode(string nodeToSelect); 
-	static void CreateNode(string nodeName, ImVec2 pos);
+	static void CreateNode(string nodeName, ImVec2 pos, UID roomID);
 	static void DeleteNode(string nodeName);
 
 	static list<Node*> GetNodeList();
@@ -80,6 +83,7 @@ public:
 	static void SelectConnection(UID connectionID); 
 
 	static void DeleteConnection(int connectionID); 
+	static void DeleteConnections(vector<UID> connectionsList); 
 	static void DeleteAllConnections(); 
 
 	static void CheckNewConnection(); 

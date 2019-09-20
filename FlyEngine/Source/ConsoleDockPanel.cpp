@@ -136,6 +136,7 @@ void ConsoleDockPanel::PrintMessageStack()
 			}
 		}	
 	}
+	ImGui::SetScrollHere(0.999f);
 }
 
 void ConsoleDockPanel::SetMessageVisibility(consoleMessageType messageType)

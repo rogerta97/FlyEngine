@@ -6,10 +6,10 @@
 Room::Room(string roomName)
 {
 	this->roomName = roomName;
-
+	roomID = RandomNumberGenerator::GenerateUID(); 
 	// Add The Room to the NodeGraph 
 	static int placer = 50;
-	NodeGraph::getInstance()->CreateNode(roomName, ImVec2(placer, 50));
+	NodeGraph::getInstance()->CreateNode(roomName, ImVec2(placer, 50), roomID);
 	
 	placer += 250; 
 }
@@ -20,11 +20,13 @@ Room::~Room()
 
 void Room::CleanUp()
 {
-	for (auto it = roomConnections.begin(); it != roomConnections.end(); it++) {
-		delete *it; 
-	}
+	if (GetConnectionsAmount() > 0) {
+		for (auto it : roomConnections) {
+			delete it; 
+		}
 
-	roomConnections.clear(); 
+		roomConnections.clear();
+	}
 }
 
 RoomConnection* Room::ConnectToRoom(Room* destinationRoom)
@@ -49,6 +51,20 @@ bool Room::DeleteConnectionByID(UID connectionToBreak)
 	}
 
 	return false;
+}
+
+/// Returns UID of the connections deleted
+vector<UID> Room::DeleteAllConnections()
+{
+	vector<UID> deletedConnectionsUID; 
+
+	for (auto it = roomConnections.begin(); it != roomConnections.end();) {
+		deletedConnectionsUID.push_back((*it)->connectionID); 
+		delete (*it); 
+		it = roomConnections.erase(it); 
+	}
+
+	return deletedConnectionsUID; 
 }
 
 UID Room::DeleteConnectionByID(Room* destinationRoom)
@@ -83,6 +99,16 @@ string Room::GetName() const
 void Room::SetName(string newName)
 {
 	roomName = newName; 
+}
+
+UID Room::GetRoomID() const
+{
+	return roomID; 
+}
+
+void Room::SetRoomID(UID roomID)
+{
+	roomID = roomID;
 }
 
 RoomConnection::RoomConnection(Room* _originRoom, Room* _roomConnected, string _connectionName, bool _isBidirectional)

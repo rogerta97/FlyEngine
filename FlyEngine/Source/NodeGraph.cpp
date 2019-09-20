@@ -44,7 +44,7 @@ void NodeGraph::SelectNode(string nodeToSelect)
 	}
 }
 
-void NodeGraph::CreateNode(string nodeName, ImVec2 pos)
+void NodeGraph::CreateNode(string nodeName, ImVec2 pos, UID roomID)
 {
 	Node* newNode = new Node();
 
@@ -53,6 +53,7 @@ void NodeGraph::CreateNode(string nodeName, ImVec2 pos)
 	newNode->position = pos;
 	newNode->inputs.push_back({ "In", 1 });
 	newNode->outputs.push_back({ "Out", 1 });
+	newNode->roomID = roomID; 
 
 	instance->graphNodeList.push_back(newNode);
 }
@@ -171,6 +172,21 @@ void NodeGraph::DeleteConnection(int connectionID)
 	}
 }
 
+void NodeGraph::DeleteConnections(vector<UID> connectionsToDelIDList)
+{
+	for (auto currentConnection = instance->connectionsList.begin(); currentConnection != instance->connectionsList.end(); currentConnection++) 
+	{
+		for (auto testID : connectionsToDelIDList) 
+		{
+			if ((*currentConnection)->connectionID == testID) 
+			{
+				currentConnection = instance->connectionsList.erase(currentConnection); 
+				break;
+			}
+		}
+	}	
+}
+
 void NodeGraph::DeleteAllConnections()
 {
 	for (auto it = instance->connectionsList.begin(); it != instance->connectionsList.end(); it++) {
@@ -270,5 +286,8 @@ void NodeGraphConnection::SetAllNullptr()
 
 void NodeGraphConnection::DrawConnection()
 {
-	ImNodes::Connection(destinationNode, destinationSlotName.c_str(), originNode, originSlotName.c_str(), isSelected); 
+	if (ImNodes::Connection(destinationNode, destinationSlotName.c_str(), originNode, originSlotName.c_str(), isSelected))
+	{
+		NodeGraph::getInstance()->connectionSelected = this; 
+	}
 }

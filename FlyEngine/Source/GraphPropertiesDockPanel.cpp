@@ -21,7 +21,6 @@ GraphPropertiesDockPanel::~GraphPropertiesDockPanel()
 
 bool GraphPropertiesDockPanel::Draw()
 {
-
 #pragma region secutiryChecks
 	if (!DockPanel::Draw())
 		return false; 
