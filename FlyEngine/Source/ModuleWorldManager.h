@@ -24,33 +24,22 @@ public:
 	bool CleanUp();
 
 	// Rooms
-	void CreateEmptyRoom(string roomName = "New Room"); 
-
-	void ConnectRooms(UID originRoomID, UID destinationRoomID); 
-	void ConnectRooms(Room* originRoom, Room* destinationRoom);
-
+	Room* CreateEmptyRoom(string roomName = "New Room"); 
 	void DeleteRoom(string roomName); 
 	void DeleteRoom(UID roomID); 
-
-	void DeleteSelectedRoom(); 
 	void CleanUpRooms();
 
-	// Connections
-	void UnconnectRooms(Room* originRoom, Room* destinationRoom); 
-	void UnconnectRooms(std::string originRoomName, std::string destinationRoomName);
-	void DeleteConnection(UID connectionID);
-	void DeleteConnectionsFromRoom(UID targetRoom);
-	int GetConnectionsAmount() const; 
-
 	// Utility
-	Room* GetRoomByName(string roomName) const;
-	Room* GetRoomByID(UID roomID) const; 
+	Room* GetRoom(string roomName) const;
+	Room* GetRoom(UID roomID) const; 
 	int GetRoomsAmount() const;
 
 	void SetSelectedRoom(Room* selectedRoom); 
 	void SetSelectedRoom(std::string roomName); 
-
 	Room* GetSelectedRoom() const;
+
+	int worldConnectionsAmount;
+	int worldRoomsAmount;
 
 public:
 	list<Room*> roomsInWorldList;
@@ -58,9 +47,7 @@ public:
 
 private: 
 	Room* selectedRoom;
-	
-	int worldConnectionsAmount; 
-	int worldRoomsAmount; 
+
 };
 
 

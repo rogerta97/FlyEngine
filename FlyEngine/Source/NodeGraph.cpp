@@ -172,19 +172,24 @@ void NodeGraph::DeleteConnection(int connectionID)
 	}
 }
 
-void NodeGraph::DeleteConnections(vector<UID> connectionsToDelIDList)
+void NodeGraph::DeleteConnections(vector<UID> connectionsToDelIDVector)
 {
 	for (auto currentConnection = instance->connectionsList.begin(); currentConnection != instance->connectionsList.end();) 
 	{
-		for (auto testID : connectionsToDelIDList) 
+		for (auto checkID = connectionsToDelIDVector.begin(); checkID != connectionsToDelIDVector.end();)
 		{
-			if ((*currentConnection)->connectionID == testID) 
+			if ((*currentConnection)->connectionID == (*checkID))
 			{
+				delete (*currentConnection); 
 				currentConnection = instance->connectionsList.erase(currentConnection); 
+				checkID = connectionsToDelIDVector.erase(checkID);
 				break;
 			}
-			else
+			else {
+
+				checkID++; 
 				currentConnection++; 
+			}
 		}
 	}	
 }
@@ -212,14 +217,13 @@ void NodeGraph::CheckNewConnection()
 	if (ImNodes::GetNewConnection(&_dstNode, &_dstSlotName, &_originNode, &_originSlotName)) {
 
 		Node* originNode = (Node*)_originNode; 
-		Room* originRoom = App->moduleWorldManager->GetRoomByName(originNode->title); 
+		Room* originRoom = App->moduleWorldManager->GetRoom(originNode->title); 
 
 		Node* dstNode = (Node*)_dstNode;
-		Room* dstRoom = App->moduleWorldManager->GetRoomByName(dstNode->title);
+		Room* dstRoom = App->moduleWorldManager->GetRoom(dstNode->title);
 
-		App->moduleWorldManager->ConnectRooms(originRoom, dstRoom); 
+		originRoom->ConnectToRoom(dstRoom); 
 	}
-
 }
 
 void NodeGraph::DrawNodeGraph()

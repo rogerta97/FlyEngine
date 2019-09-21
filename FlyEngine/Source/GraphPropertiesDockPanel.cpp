@@ -101,8 +101,10 @@ void GraphPropertiesDockPanel::PrintConnectionsSection()
 
 	ImGui::SameLine();
 	if (ImGui::Button("Delete Connection", ImVec2(ImGui::GetWindowContentRegionWidth() / 2 - 6, 40))) {
-		if(NodeGraph::getInstance()->connectionSelected != nullptr)
-			App->moduleWorldManager->DeleteConnection(NodeGraph::getInstance()->connectionSelected->connectionID); 
+		if (NodeGraph::getInstance()->connectionSelected != nullptr) {
+			Room* originRoom = App->moduleWorldManager->GetRoom(NodeGraph::getInstance()->connectionSelected->originNode->roomID); 
+			originRoom->DeleteOutputConnection(NodeGraph::getInstance()->connectionSelected->connectionID);
+		}
 	}
 	ImGui::PopFont();
 }
@@ -130,7 +132,12 @@ void GraphPropertiesDockPanel::PrintRoomsSection()
 	// Delete Room Button
 	ImGui::SameLine();
 	if (ImGui::Button("Delete Room", ImVec2((ImGui::GetWindowContentRegionWidth() / 2) - 7, 40))) {
-		App->moduleWorldManager->DeleteSelectedRoom(); 
+		Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom();
+		if (selectedRoom != nullptr) 
+		{
+			App->moduleWorldManager->DeleteRoom(selectedRoom->GetRoomID());
+			selectedRoom = nullptr; 
+		}
 	}
 	ImGui::PopFont();
 }

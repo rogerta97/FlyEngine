@@ -1,4 +1,5 @@
 #include "ModuleWorldManager.h"
+#include "ModuleInput.h"
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "RandomNumberGenerator.h"
@@ -11,7 +12,7 @@
 ModuleWorldManager::ModuleWorldManager(bool start_enabled)
 {
 	moduleType = MODULE_ENGINE_MANAGER;
-	worldConnectionsAmount = 0; 
+	worldConnectionsAmount = 0;
 	worldRoomsAmount = 0;
 }
 
@@ -21,9 +22,12 @@ ModuleWorldManager::~ModuleWorldManager()
 
 bool ModuleWorldManager::Start()
 {
-	CreateEmptyRoom("Forest");
-	CreateEmptyRoom("Lake");
-	CreateEmptyRoom("Bridge");
+	Room* forestRoom = CreateEmptyRoom("Forest");
+	Room* Lake = CreateEmptyRoom("Lake");
+	//Room* Bridge = CreateEmptyRoom("Bridge");
+
+	//forestRoom->ConnectToRoom(Lake);
+	//forestRoom->ConnectToRoom(Bridge);
 
 	return true;
 }
@@ -35,54 +39,38 @@ update_status ModuleWorldManager::PreUpdate(float dt)
 
 update_status ModuleWorldManager::PostUpdate(float dt)
 {
-	FLY_WARNING("I HAVE %d CONNECTIONS", worldConnectionsAmount);
-	FLY_WARNING("I HAVE %d ROOMS", worldRoomsAmount);
+	if (App->moduleInput->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
+		FLY_WARNING("I HAVE %d CONNECTIONS", worldConnectionsAmount);
+		FLY_WARNING("I HAVE %d ROOMS", worldRoomsAmount);
+	}
 
 	return UPDATE_CONTINUE;
 }
 
 bool ModuleWorldManager::CleanUp()
 {
-	CleanUpRooms();	
-	NodeGraph::getInstance()->DeleteAllConnections(); 
-	NodeGraph::getInstance()->DeleteAllNodes(); 
+	CleanUpRooms();
+	NodeGraph::getInstance()->DeleteAllConnections();
+	NodeGraph::getInstance()->DeleteAllNodes();
 
 	FileSystem::getInstance()->Delete();
-	RandomNumberGenerator::getInstance()->Delete(); 
+	RandomNumberGenerator::getInstance()->Delete();
 
 	return true;
 }
 
-void ModuleWorldManager::CreateEmptyRoom(string roomName)
+Room* ModuleWorldManager::CreateEmptyRoom(string roomName)
 {
-	roomsInWorldList.push_back(new Room(roomName));
+	Room* newRoom = new Room(roomName);
+	roomsInWorldList.push_back(newRoom);
 	worldRoomsAmount++;
-	
-}
-
-void ModuleWorldManager::DeleteSelectedRoom()
-{
-	if(selectedRoom != nullptr)
-		DeleteRoom(selectedRoom->GetName()); 
+	return newRoom;
 }
 
 void ModuleWorldManager::DeleteRoom(string roomName)
 {
-	for (auto it = roomsInWorldList.begin(); it != roomsInWorldList.end(); it++) {
-
-		if ((*it)->GetName() == roomName) {
-
-			DeleteConnectionsFromRoom((*it)->GetRoomID());
-
-			NodeGraph::getInstance()->DeleteNode((*it)->GetName());
-			delete (*it);
-
-			roomsInWorldList.erase(it);
-			break;
-		}
-	}
-
-	worldRoomsAmount--; 
+	UID roomUID = GetRoom(roomName)->GetRoomID();
+	DeleteRoom(roomUID);
 }
 
 void ModuleWorldManager::DeleteRoom(UID roomID)
@@ -91,8 +79,7 @@ void ModuleWorldManager::DeleteRoom(UID roomID)
 
 		if ((*it)->GetRoomID() == roomID) {
 
-			NodeGraph::getInstance()->DeleteAllConnections(); 
-			(*it)->CleanUp(); 
+			(*it)->DeleteAllConnections();
 
 			NodeGraph::getInstance()->DeleteNode((*it)->GetName());
 			delete (*it);
@@ -113,100 +100,23 @@ void ModuleWorldManager::CleanUpRooms()
 	}
 
 	roomsInWorldList.clear();
-	worldRoomsAmount = 0; 
+	worldRoomsAmount = 0;
 }
 
-int ModuleWorldManager::GetConnectionsAmount() const
+Room* ModuleWorldManager::GetRoom(std::string roomName) const
 {
-	return worldConnectionsAmount; 
-}
-
-void ModuleWorldManager::ConnectRooms(UID originRoomID, UID destinationRoomID)
-{
-	ConnectRooms(GetRoomByID(originRoomID), GetRoomByID(destinationRoomID));
-}
-
-void ModuleWorldManager::ConnectRooms(Room* originRoom, Room* destinationRoom)
-{
-	// Logic
-	RoomConnection* connection = originRoom->ConnectToRoom(destinationRoom); 
-
-	// Graph
-	NodeGraph::getInstance()->ConnectNodes(originRoom->GetName(), "Out", destinationRoom->GetName(), "In", connection->connectionID);	
-	worldConnectionsAmount++; 
-
-	
-}
-
-void ModuleWorldManager::UnconnectRooms(Room* originRoom, Room* destinationRoom)
-{
-	UID deletedConnectionID = -1;
-
-	// Logic
-	for (auto it : roomsInWorldList) {
-		if (it == originRoom) {
-			deletedConnectionID = it->DeleteConnectionByID(destinationRoom); 
-		}
-	}
-
-	// Graph 
-	if (deletedConnectionID != -1) {
-		NodeGraph::getInstance()->DeleteConnection(deletedConnectionID); 
-	}
-	else {
-		FLY_ERROR("Connection to delete could not be found"); 
-	}
-
-	worldConnectionsAmount--; 
-}
-
-void ModuleWorldManager::UnconnectRooms(std::string originRoomName, std::string destinationRoomName)
-{
-	UnconnectRooms(GetRoomByName(originRoomName), GetRoomByName(destinationRoomName)); 
-}
-
-void ModuleWorldManager::DeleteConnection(UID connectionID)
-{
-	if (worldConnectionsAmount <= 0)
-		return; 
-
-	// Logic
-	for (auto it : roomsInWorldList) {		
-		if (it->DeleteConnectionByID(connectionID)) {
-			break;
-		}
-	}
-
-	// Graph
-	NodeGraph::getInstance()->DeleteConnection(connectionID); 
-	worldConnectionsAmount--; 
-}
-
-void ModuleWorldManager::DeleteConnectionsFromRoom(UID targetRoomID)
-{
-	// Logic 
-	Room* targetRoom = GetRoomByID(targetRoomID); 
-	vector<UID> connectionsCementery = targetRoom->DeleteAllConnections(); 
-
-	// Graph 
-	NodeGraph::DeleteConnections(connectionsCementery);
-	worldConnectionsAmount -= connectionsCementery.size();
-}
-
-Room* ModuleWorldManager::GetRoomByName(std::string roomName) const
-{
-	for (auto const& it : roomsInWorldList) {		
+	for (auto const& it : roomsInWorldList) {
 
 		if (roomName == it->GetName()) {
 			return it;
-		}		
+		}
 	}
 
-	FLY_ERROR("Room with name %s in ModuleWorldManager::GetRoom() could not be found", roomName.c_str()); 
+	FLY_ERROR("Room with name %s in ModuleWorldManager::GetRoom() could not be found", roomName.c_str());
 	return nullptr;
 }
 
-Room* ModuleWorldManager::GetRoomByID(UID roomID) const
+Room* ModuleWorldManager::GetRoom(UID roomID) const
 {
 	for (auto const& it : roomsInWorldList) {
 
@@ -226,14 +136,14 @@ int ModuleWorldManager::GetRoomsAmount() const
 
 void ModuleWorldManager::SetSelectedRoom(Room* selectedRoom)
 {
-	this->selectedRoom = selectedRoom; 
+	this->selectedRoom = selectedRoom;
 }
 
 void ModuleWorldManager::SetSelectedRoom(std::string roomName)
 {
-	Room* nextSelectedRoom = GetRoomByName(roomName);
+	Room* nextSelectedRoom = GetRoom(roomName);
 
-	if (nextSelectedRoom != nullptr) {		
+	if (nextSelectedRoom != nullptr) {
 		selectedRoom = nextSelectedRoom;
 		NodeGraph::getInstance()->SelectNode(roomName);
 	}

@@ -14,6 +14,7 @@ class Room;
 struct RoomConnection {
 
 	RoomConnection(Room* _originRoom, Room* _roomConnected, string _connectionName, bool _isBidirectional);
+	void DeleteOnGraph(); 
 
 	Room* originRoom; 
 	Room* destinationRoom;
@@ -32,14 +33,21 @@ public:
 
 	void CleanUp(); 
 
-	// Connections
+	// Connections 
 	RoomConnection* ConnectToRoom(Room* destinationRoom);
-	UID DeleteConnectionByID(Room* destinationRoom); 
-	bool DeleteConnectionByID(UID destinationRoomID); 
-	vector<UID> DeleteAllConnections();
 
-	list<RoomConnection*> GetConnectionsList() const;
-	int GetConnectionsAmount() const; 
+	void DeleteOutputConnections();
+	void DeleteOutputConnection(UID connectionToDelUID); 
+
+	void DeleteInputConnections(); 
+	void DeleteInputConnection(UID roomToDelUID);
+	void DeleteFromInRoomUIDs(UID roomToDelUID);
+
+	void DeleteAllConnections(); 
+
+	// Utility
+	int GetOutputConnectionsAmount() const; 
+	int GetInputConnectionsAmount() const; 
 
 	// Encapsulation
 	string GetName() const; 
@@ -49,9 +57,11 @@ public:
 	void SetRoomID(UID newName);
 
 private: 
+
 	UID roomID; 
 	string roomName;
-	list<RoomConnection*> roomConnections; 
+	list<RoomConnection*> outConnections;
+	list<UID> inRoomUIDs; 
 };
 
 

@@ -2,6 +2,8 @@
 #include "Globals.h"
 #include "NodeGraph.h"
 #include "RandomNumberGenerator.h"
+#include "Application.h"
+#include "ModuleWorldManager.h"
 
 Room::Room(string roomName)
 {
@@ -20,75 +22,106 @@ Room::~Room()
 
 void Room::CleanUp()
 {
-	if (GetConnectionsAmount() > 0) {
-		for (auto it : roomConnections) {
+	if (GetOutputConnectionsAmount() > 0) {
+		for (auto it : outConnections) {
 			delete it; 
 		}
 
-		roomConnections.clear();
+		outConnections.clear();
 	}
 }
 
 RoomConnection* Room::ConnectToRoom(Room* destinationRoom)
 {
+	// Logic
 	RoomConnection* newConnection = new RoomConnection(this, destinationRoom, "TestLink", false);
-	roomConnections.push_back(newConnection);
+	outConnections.push_back(newConnection);
+	destinationRoom->inRoomUIDs.push_back(GetRoomID());
 
+	// Update Graph 
+	NodeGraph::getInstance()->ConnectNodes(GetName(), "Out", destinationRoom->GetName(), "In", newConnection->connectionID);
 	FLY_LOG("Room %s connected the LOGIC succesfuly with %s", roomName.c_str(), destinationRoom->GetName().c_str()); 
+	App->moduleWorldManager->worldConnectionsAmount++; 
 	return newConnection;
 }
 
-bool Room::DeleteConnectionByID(UID connectionToBreak)
+void Room::DeleteAllConnections()
 {
-	for (auto it = roomConnections.begin(); it != roomConnections.end(); it++) {
-		if ((*it)->connectionID == connectionToBreak) {
-			UID returnUID = (*it)->connectionID;
+	DeleteOutputConnections();
+	DeleteInputConnections(); 
+}
+
+// Output Connections
+void Room::DeleteOutputConnections()
+{
+	if (outConnections.size() <= 0)
+		return; 
+
+	for (auto it : outConnections) {
+		it->destinationRoom->DeleteFromInRoomUIDs(roomID);
+		it->DeleteOnGraph();
+
+		delete it;
+	}
+
+	outConnections.clear(); 
+}
+void Room::DeleteOutputConnection(UID connectionToDelUID)
+{
+	for (auto it = outConnections.begin(); it != outConnections.end();) {
+		
+		if ((*it)->connectionID == connectionToDelUID) {
+
+			DeleteFromInRoomUIDs(this->roomID);
+			(*it)->DeleteOnGraph();
+
 			delete (*it);
-			roomConnections.erase(it);
-			
-			return true;
+			it = outConnections.erase(it);
+
+			break; 
 		}
+		else
+			it++; 
+	}
+}
+
+// Input connections
+void Room::DeleteInputConnections()
+{
+	if (inRoomUIDs.size() <= 0)
+		return;
+
+	// Logic 
+	for (auto it = inRoomUIDs.begin(); it != inRoomUIDs.end();) {
+
+		DeleteInputConnection((*it)); 
 	}
 
-	return false;
+	inRoomUIDs.clear();	
 }
-
-/// Returns UID of the connections deleted
-vector<UID> Room::DeleteAllConnections()
+void Room::DeleteInputConnection(UID roomToDelUID)
 {
-	vector<UID> deletedConnectionsUID; 
-
-	for (auto it = roomConnections.begin(); it != roomConnections.end();) {
-		deletedConnectionsUID.push_back((*it)->connectionID); 
-		delete (*it); 
-		it = roomConnections.erase(it); 
+	Room* originRoom = App->moduleWorldManager->GetRoom(roomToDelUID);
+	originRoom->DeleteOutputConnection(this->roomID); 
+}
+void Room::DeleteFromInRoomUIDs(UID roomToDelUID)
+{
+	for (auto it = inRoomUIDs.begin(); it != inRoomUIDs.end();) {
+		if ((*it) == roomToDelUID)
+			it = inRoomUIDs.erase(it);
+		else
+			it++;
 	}
-
-	return deletedConnectionsUID; 
 }
 
-UID Room::DeleteConnectionByID(Room* destinationRoom)
+int Room::GetOutputConnectionsAmount() const
 {
-	for (auto it = roomConnections.begin(); it != roomConnections.end(); it++) {
-		if ((*it)->destinationRoom == destinationRoom) {
-			UID returnUID = (*it)->connectionID; 
-			roomConnections.erase(it); 
-			delete (*it); 
-			return returnUID;
-		}
-	}
-
-	return -1; 
+	return outConnections.size();
 }
 
-list<RoomConnection*> Room::GetConnectionsList() const
+int Room::GetInputConnectionsAmount() const
 {
-	return roomConnections;
-}
-
-int Room::GetConnectionsAmount() const
-{
-	return roomConnections.size();
+	return inRoomUIDs.size();
 }
 
 string Room::GetName() const
@@ -118,4 +151,11 @@ RoomConnection::RoomConnection(Room* _originRoom, Room* _roomConnected, string _
 	connectionName = _connectionName;
 	isBidirectional = _isBidirectional;
 	connectionID = RandomNumberGenerator::getInstance()->GenerateUID();
+}
+
+void RoomConnection::DeleteOnGraph()
+{
+	NodeGraph::getInstance()->DeleteConnection(connectionID); 
+	originRoom = nullptr; 
+	destinationRoom = nullptr; 
 }
