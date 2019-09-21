@@ -1,6 +1,7 @@
 #include "GraphPropertiesDockPanel.h"
 #include "Application.h"
 #include "ModuleImGui.h"
+#include "ModuleInput.h"
 #include "ModuleWorldManager.h"
 #include "Room.h"
 #include "NodeGraph.h"
@@ -145,11 +146,18 @@ void GraphPropertiesDockPanel::PrintRoomsSection()
 void GraphPropertiesDockPanel::NewRoomButtonHandler()
 {
 	if (ImGui::BeginPopup("new_room_popup")) {
-		static char newRoomBuffer[64] = "Room Name...";
+
+		static char newRoomBuffer[64] = "...";
 		ImGui::InputText("##2", (char*)newRoomBuffer, 64 * sizeof(char));
 
+		if (App->moduleInput->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || App->moduleInput->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN) {
+			App->moduleWorldManager->CreateEmptyRoom(newRoomBuffer);
+			ImGui::CloseCurrentPopup();
+		}
+
 		ImGui::SameLine();
-		if (ImGui::Button("OK")) {
+
+		if (ImGui::Button("polla")) {
 			App->moduleWorldManager->CreateEmptyRoom(newRoomBuffer);
 			ImGui::CloseCurrentPopup(); 
 		}
