@@ -66,13 +66,22 @@ void Room::DeleteOutputConnections()
 
 	outConnections.clear(); 
 }
+
+RoomConnection* Room::GetConnectionToRoom(UID dstRoomUID) const
+{
+	for (auto it : outConnections) {		
+		if (it->destinationRoom->roomID == dstRoomUID) {
+			return it; 
+		}
+	}
+}
+
 void Room::DeleteOutputConnection(UID connectionToDelUID)
 {
 	for (auto it = outConnections.begin(); it != outConnections.end();) {
 		
 		if ((*it)->connectionID == connectionToDelUID) {
 
-			DeleteFromInRoomUIDs(this->roomID);
 			(*it)->DeleteOnGraph();
 
 			delete (*it);
@@ -84,17 +93,20 @@ void Room::DeleteOutputConnection(UID connectionToDelUID)
 			it++; 
 	}
 }
-
+void Room::DeleteOutputConnection(Room* targetRoomConnected) 
+{
+	RoomConnection* roomConnection = GetConnectionToRoom(targetRoomConnected->GetRoomID()); 
+	DeleteOutputConnection(roomConnection->connectionID); 
+}
 // Input connections
 void Room::DeleteInputConnections()
 {
 	if (inRoomUIDs.size() <= 0)
 		return;
 
-	// Logic 
 	for (auto it = inRoomUIDs.begin(); it != inRoomUIDs.end();) {
-
 		DeleteInputConnection((*it)); 
+		it = inRoomUIDs.erase(it); //;->destinationRoom->DeleteFromInRoomUIDs(this->roomID);
 	}
 
 	inRoomUIDs.clear();	
@@ -102,7 +114,7 @@ void Room::DeleteInputConnections()
 void Room::DeleteInputConnection(UID roomToDelUID)
 {
 	Room* originRoom = App->moduleWorldManager->GetRoom(roomToDelUID);
-	originRoom->DeleteOutputConnection(this->roomID); 
+	originRoom->DeleteOutputConnection(this); 
 }
 void Room::DeleteFromInRoomUIDs(UID roomToDelUID)
 {

@@ -24,10 +24,12 @@ bool ModuleWorldManager::Start()
 {
 	Room* forestRoom = CreateEmptyRoom("Forest");
 	Room* Lake = CreateEmptyRoom("Lake");
-	//Room* Bridge = CreateEmptyRoom("Bridge");
+	Room* Bridge = CreateEmptyRoom("Bridge");
 
-	//forestRoom->ConnectToRoom(Lake);
-	//forestRoom->ConnectToRoom(Bridge);
+	forestRoom->ConnectToRoom(Lake);
+	forestRoom->ConnectToRoom(Bridge);
+	Lake->ConnectToRoom(forestRoom); 
+	Bridge->ConnectToRoom(forestRoom);
 
 	return true;
 }

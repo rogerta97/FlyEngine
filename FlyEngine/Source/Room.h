@@ -37,7 +37,8 @@ public:
 	RoomConnection* ConnectToRoom(Room* destinationRoom);
 
 	void DeleteOutputConnections();
-	void DeleteOutputConnection(UID connectionToDelUID); 
+	void DeleteOutputConnection(UID connectionUID); 
+	void DeleteOutputConnection(Room* connectionUID); 
 
 	void DeleteInputConnections(); 
 	void DeleteInputConnection(UID roomToDelUID);
@@ -48,6 +49,7 @@ public:
 	// Utility
 	int GetOutputConnectionsAmount() const; 
 	int GetInputConnectionsAmount() const; 
+	RoomConnection* GetConnectionToRoom(UID dstRoomUID) const;
 
 	// Encapsulation
 	string GetName() const; 
