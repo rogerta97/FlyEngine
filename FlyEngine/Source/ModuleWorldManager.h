@@ -38,8 +38,8 @@ public:
 	void SetSelectedRoom(std::string roomName); 
 	Room* GetSelectedRoom() const;
 
-	int worldConnectionsAmount;
-	int worldRoomsAmount;
+	int connectionsInWorldAmount;
+	int roomsInWoldAmount;
 
 public:
 	list<Room*> roomsInWorldList;

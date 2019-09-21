@@ -103,7 +103,7 @@ void GraphPropertiesDockPanel::PrintConnectionsSection()
 	if (ImGui::Button("Delete Connection", ImVec2(ImGui::GetWindowContentRegionWidth() / 2 - 6, 40))) {
 		if (NodeGraph::getInstance()->connectionSelected != nullptr) {
 			Room* originRoom = App->moduleWorldManager->GetRoom(NodeGraph::getInstance()->connectionSelected->originNode->roomID); 
-			originRoom->DeleteOutputConnection(NodeGraph::getInstance()->connectionSelected->connectionID);
+			originRoom->BreakOutputConnection(NodeGraph::getInstance()->connectionSelected->connectionID);
 		}
 	}
 	ImGui::PopFont();

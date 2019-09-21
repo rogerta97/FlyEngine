@@ -12,8 +12,8 @@
 ModuleWorldManager::ModuleWorldManager(bool start_enabled)
 {
 	moduleType = MODULE_ENGINE_MANAGER;
-	worldConnectionsAmount = 0;
-	worldRoomsAmount = 0;
+	connectionsInWorldAmount = 0;
+	roomsInWoldAmount = 0;
 }
 
 ModuleWorldManager::~ModuleWorldManager()
@@ -41,9 +41,11 @@ update_status ModuleWorldManager::PreUpdate(float dt)
 
 update_status ModuleWorldManager::PostUpdate(float dt)
 {
-	if (App->moduleInput->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
-		FLY_WARNING("I HAVE %d CONNECTIONS", worldConnectionsAmount);
-		FLY_WARNING("I HAVE %d ROOMS", worldRoomsAmount);
+
+	if (App->moduleInput->GetKey(SDL_SCANCODE_S)) {
+
+		FLY_WARNING("Rooms Count: %d", roomsInWoldAmount); 
+		FLY_WARNING("Connections Count: %d", connectionsInWorldAmount); 
 	}
 
 	return UPDATE_CONTINUE;
@@ -65,7 +67,7 @@ Room* ModuleWorldManager::CreateEmptyRoom(string roomName)
 {
 	Room* newRoom = new Room(roomName);
 	roomsInWorldList.push_back(newRoom);
-	worldRoomsAmount++;
+	roomsInWoldAmount++;
 	return newRoom;
 }
 
@@ -91,7 +93,7 @@ void ModuleWorldManager::DeleteRoom(UID roomID)
 		}
 	}
 
-	worldRoomsAmount--;
+	roomsInWoldAmount--;
 }
 
 void ModuleWorldManager::CleanUpRooms()
@@ -102,7 +104,7 @@ void ModuleWorldManager::CleanUpRooms()
 	}
 
 	roomsInWorldList.clear();
-	worldRoomsAmount = 0;
+	roomsInWoldAmount = 0;
 }
 
 Room* ModuleWorldManager::GetRoom(std::string roomName) const
@@ -133,7 +135,7 @@ Room* ModuleWorldManager::GetRoom(UID roomID) const
 
 int ModuleWorldManager::GetRoomsAmount() const
 {
-	return worldRoomsAmount;
+	return roomsInWoldAmount;
 }
 
 void ModuleWorldManager::SetSelectedRoom(Room* selectedRoom)

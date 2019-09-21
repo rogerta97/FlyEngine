@@ -36,13 +36,13 @@ public:
 	// Connections 
 	RoomConnection* ConnectToRoom(Room* destinationRoom);
 
-	void DeleteOutputConnections();
-	void DeleteOutputConnection(UID connectionUID); 
-	void DeleteOutputConnection(Room* connectionUID); 
+	void BreakOutputConnections();
+	void BreakOutputConnection(UID connectionUID); 
+	void BreakOutputConnection(Room* connectionUID); 
 
-	void DeleteInputConnections(); 
-	void DeleteInputConnection(UID roomToDelUID);
-	void DeleteFromInRoomUIDs(UID roomToDelUID);
+	void BreakInputConnections(); 
+	void BreakInputConnection(UID roomToDelUID);
+	void BreakFromInRoomUIDs(UID roomToDelUID);
 
 	void DeleteAllConnections(); 
 
@@ -50,6 +50,7 @@ public:
 	int GetOutputConnectionsAmount() const; 
 	int GetInputConnectionsAmount() const; 
 	RoomConnection* GetConnectionToRoom(UID dstRoomUID) const;
+	int GetTotalConnectionsAmount() const; 
 
 	// Encapsulation
 	string GetName() const; 

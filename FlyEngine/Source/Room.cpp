@@ -41,29 +41,30 @@ RoomConnection* Room::ConnectToRoom(Room* destinationRoom)
 	// Update Graph 
 	NodeGraph::getInstance()->ConnectNodes(GetName(), "Out", destinationRoom->GetName(), "In", newConnection->connectionID);
 	FLY_LOG("Room %s connected the LOGIC succesfuly with %s", roomName.c_str(), destinationRoom->GetName().c_str()); 
-	App->moduleWorldManager->worldConnectionsAmount++; 
+	App->moduleWorldManager->connectionsInWorldAmount++; 
 	return newConnection;
 }
 
 void Room::DeleteAllConnections()
 {
-	DeleteOutputConnections();
-	DeleteInputConnections(); 
+	BreakOutputConnections();
+	BreakInputConnections(); 
 }
 
 // Output Connections
-void Room::DeleteOutputConnections()
+void Room::BreakOutputConnections()
 {
 	if (outConnections.size() <= 0)
 		return; 
 
 	for (auto it : outConnections) {
-		it->destinationRoom->DeleteFromInRoomUIDs(roomID);
+		it->destinationRoom->BreakFromInRoomUIDs(roomID);
 		it->DeleteOnGraph();
 
 		delete it;
 	}
 
+	App->moduleWorldManager->connectionsInWorldAmount -= outConnections.size(); 
 	outConnections.clear(); 
 }
 
@@ -76,7 +77,12 @@ RoomConnection* Room::GetConnectionToRoom(UID dstRoomUID) const
 	}
 }
 
-void Room::DeleteOutputConnection(UID connectionToDelUID)
+int Room::GetTotalConnectionsAmount() const
+{
+	return GetOutputConnectionsAmount() + GetInputConnectionsAmount(); 
+}
+
+void Room::BreakOutputConnection(UID connectionToDelUID)
 {
 	for (auto it = outConnections.begin(); it != outConnections.end();) {
 		
@@ -86,37 +92,37 @@ void Room::DeleteOutputConnection(UID connectionToDelUID)
 
 			delete (*it);
 			it = outConnections.erase(it);
-
+			App->moduleWorldManager->connectionsInWorldAmount -= 1; 
 			break; 
 		}
 		else
 			it++; 
 	}
 }
-void Room::DeleteOutputConnection(Room* targetRoomConnected) 
+void Room::BreakOutputConnection(Room* targetRoomConnected) 
 {
 	RoomConnection* roomConnection = GetConnectionToRoom(targetRoomConnected->GetRoomID()); 
-	DeleteOutputConnection(roomConnection->connectionID); 
+	BreakOutputConnection(roomConnection->connectionID); 
 }
 // Input connections
-void Room::DeleteInputConnections()
+void Room::BreakInputConnections()
 {
 	if (inRoomUIDs.size() <= 0)
 		return;
 
 	for (auto it = inRoomUIDs.begin(); it != inRoomUIDs.end();) {
-		DeleteInputConnection((*it)); 
-		it = inRoomUIDs.erase(it); //;->destinationRoom->DeleteFromInRoomUIDs(this->roomID);
+		BreakInputConnection((*it)); 
+		it = inRoomUIDs.erase(it);
 	}
 
 	inRoomUIDs.clear();	
 }
-void Room::DeleteInputConnection(UID roomToDelUID)
+void Room::BreakInputConnection(UID roomToDelUID)
 {
 	Room* originRoom = App->moduleWorldManager->GetRoom(roomToDelUID);
-	originRoom->DeleteOutputConnection(this); 
+	originRoom->BreakOutputConnection(this); 
 }
-void Room::DeleteFromInRoomUIDs(UID roomToDelUID)
+void Room::BreakFromInRoomUIDs(UID roomToDelUID)
 {
 	for (auto it = inRoomUIDs.begin(); it != inRoomUIDs.end();) {
 		if ((*it) == roomToDelUID)
