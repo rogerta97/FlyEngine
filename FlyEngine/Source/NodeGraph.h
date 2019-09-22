@@ -68,7 +68,7 @@ public:
 	static void CreateNode(string nodeName, ImVec2 pos, UID roomID);
 	static void DeleteNode(string nodeName);
 
-	static list<Node*> GetNodeList();
+	static list<Node*>& GetNodeList();
 	static std::string GetNodesAsCombo(); 
 
 	static void DeleteAllNodes();

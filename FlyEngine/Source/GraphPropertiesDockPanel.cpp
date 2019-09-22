@@ -68,9 +68,19 @@ void GraphPropertiesDockPanel::NewConnectionButtonHandler()
 		static int destinationRoomSelected = 0;
 
 		ImGui::Combo("Origin Room", &originRoomSelected, NodeGraph::getInstance()->GetNodesAsCombo().c_str());
-		ImGui::Combo("Destination Room", &originRoomSelected, NodeGraph::getInstance()->GetConnectionsAsCombo().c_str());
+		ImGui::Combo("Destination Room", &destinationRoomSelected, NodeGraph::getInstance()->GetNodesAsCombo().c_str());
 
 		if (ImGui::Button("Connect")) {
+
+
+			list<Room*>::iterator itOrigin = std::next(App->moduleWorldManager->roomsInWorldList.begin(), originRoomSelected);
+			list<Room*>::iterator itDst = std::next(App->moduleWorldManager->roomsInWorldList.begin(), destinationRoomSelected);
+
+			Room* originRoom = (*itOrigin);
+			Room* dstRoom = (*itDst);
+
+			originRoom->ConnectToRoom(dstRoom); 
+
 			ImGui::CloseCurrentPopup();
 		}
 

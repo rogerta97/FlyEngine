@@ -70,7 +70,7 @@ void NodeGraph::DeleteNode(string nodeName)
 	}
 }
 
-std::list<Node*> NodeGraph::GetNodeList()
+std::list<Node*>& NodeGraph::GetNodeList()
 {
 	return instance->graphNodeList;
 }

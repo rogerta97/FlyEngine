@@ -76,21 +76,16 @@ bool ConsoleDockPanel::Draw()
 
 		// Messages Area
 		ImGui::Separator();
-		ImGui::BeginChild("ConsoleMessagesArea", ImVec2(ImGui::GetWindowContentRegionWidth(), ImGui::GetWindowHeight() - ImGui::GetCursorPosY() - 30));
+		ImGui::BeginChild("ConsoleMessagesArea", ImVec2(ImGui::GetWindowContentRegionWidth(), ImGui::GetWindowHeight() - ImGui::GetCursorPosY() - 33));
 
 		PrintMessageStack(); 
 
 		ImGui::EndChild();
 		ImGui::Separator();
 
-		// Bottom Bar
-		if (ImGui::Button("Search")) {
-
-		}
-	
 		// Command Bar
-		ImGui::SameLine(); 
-		ImGui::InputText("", commandBuffer, IM_ARRAYSIZE(commandBuffer));
+		static char commandBuffer[MAX_COMMAND_LENGHT] = "Command...";
+		ImGui::InputText("##6", commandBuffer, IM_ARRAYSIZE(commandBuffer));
 	
 	}
 

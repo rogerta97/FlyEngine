@@ -44,7 +44,6 @@ private:
 	int errorMessageAmount; 
 
 	list<ConsoleMessage*> messagesList;
-	char commandBuffer[MAX_COMMAND_LENGHT];
 };
 
 #endif 
