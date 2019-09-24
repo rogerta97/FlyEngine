@@ -18,6 +18,7 @@ enum DockPanelType
 	DOCK_CONSOLE,
 	DOCK_GAME_VIEWPORT,
 	DOCK_OBJECT_PROPERTIES,
+	DOCK_WORLD_PROPERTIES,
 	DOCK_PROJECT_INFO,
 	DOCK_ROOM_OBJECTS,
 	DOCK_ROOMS_GRAPH,
@@ -37,6 +38,7 @@ public:
 	// Utility
 	bool ToggleVisibility();
 	void SetVisible(bool newVisible); 
+	bool& IsVisible(); 
 
 	// Set & Get 
 	string GetName() const;

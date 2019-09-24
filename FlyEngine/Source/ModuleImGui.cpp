@@ -9,6 +9,7 @@
 
 #include "ConsoleDockPanel.h"
 #include "RoomsGraphDockPanel.h"
+#include "WorldPropertiesDockPanel.h"
 #include "GraphPropertiesDockPanel.h"
 #include "FileSystem.h"
 
@@ -59,6 +60,7 @@ void ModuleImGui::CreatePanels()
 	ConsoleDockPanel* consolePanel = new ConsoleDockPanel(true);
 	RoomsGraphDockPanel* roomsGraphPanel = new RoomsGraphDockPanel(true);
 	GraphPropertiesDockPanel* graphPropertiesPanel = new GraphPropertiesDockPanel(true);
+	WorldPropertiesDockPanel* worldPropertiesDockPanel = new WorldPropertiesDockPanel(true);
 
 	GameViewportDockPanel* gameViewportDockPanel = new GameViewportDockPanel(false);
 	RoomObjectsDockPanel* roomObjectsDockPanel = new RoomObjectsDockPanel(false);
@@ -67,6 +69,7 @@ void ModuleImGui::CreatePanels()
 	dockPanels.push_back(consolePanel); 
 	dockPanels.push_back(roomsGraphPanel);
 	dockPanels.push_back(graphPropertiesPanel);
+	dockPanels.push_back(worldPropertiesDockPanel); 
 
 	dockPanels.push_back(gameViewportDockPanel);
 	dockPanels.push_back(roomObjectsDockPanel);
@@ -148,7 +151,7 @@ void ModuleImGui::DrawMainMenuBar()
 	if (ImGui::BeginMenu("View")) {
 
 		for (auto it = dockPanels.begin(); it != dockPanels.end(); it++) {
-			if (ImGui::MenuItem((*it)->GetName().c_str())){
+			if (ImGui::MenuItem((*it)->GetName().c_str(), "", (*it)->IsVisible())){
 				(*it)->ToggleVisibility();
 			}
 		}
@@ -219,6 +222,8 @@ void ModuleImGui::SetStyle() {
 
 	ImGuiStyle * style = &ImGui::GetStyle();
 	style->FrameRounding = 4.0f;
+	style->ItemSpacing = ImVec2(7.0f, 7.0f);
+	style->WindowPadding = ImVec2(7.0f, 7.0f);
 
  //
 	//style->Colors[ImGuiCol_Text] = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);

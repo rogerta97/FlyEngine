@@ -81,3 +81,8 @@ void DockPanel::SetVisible(bool newVisible)
 {
 	visible = newVisible; 
 }
+
+bool& DockPanel::IsVisible()
+{
+	return visible; 
+}

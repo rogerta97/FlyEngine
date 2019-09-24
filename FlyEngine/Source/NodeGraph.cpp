@@ -237,6 +237,8 @@ void NodeGraph::DrawNodeGraph()
 		return;
 	}
 
+	instance->DrawNodeConnections();
+
 	for (auto it : instance->graphNodeList) {
 
 		if (ImNodes::Ez::BeginNode(it, it->title.c_str(), &it->position, &it->selected))
@@ -249,7 +251,7 @@ void NodeGraph::DrawNodeGraph()
 	}
 
 	instance->CheckNewConnection();
-	instance->DrawNodeConnections(); 
+
 
 	ImNodes::EndCanvas(); 
 }

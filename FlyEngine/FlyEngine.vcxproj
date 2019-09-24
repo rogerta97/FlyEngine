@@ -50,6 +50,7 @@
     <ClCompile Include="Source\RoomObjectsDockPanel.cpp" />
     <ClCompile Include="Source\RoomsGraphDockPanel.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
+    <ClCompile Include="Source\WorldPropertiesDockPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rdParty\Glew\include\glew.h" />
@@ -84,11 +85,11 @@
     <ClInclude Include="Source\ObjectPropertiesDockPanel.h" />
     <ClInclude Include="Source\GraphPropertiesDockPanel.h" />
     <ClInclude Include="Source\Room.h" />
-    <ClInclude Include="Source\RoomLink.h" />
     <ClInclude Include="Source\RoomObjectsDockPanel.h" />
     <ClInclude Include="Source\RoomsGraphDockPanel.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\RandomNumberGenerator.h" />
+    <ClInclude Include="Source\WorldPropertiesDockPanel.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

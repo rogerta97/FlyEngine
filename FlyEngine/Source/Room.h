@@ -1,8 +1,6 @@
 #ifndef _ROOM_H_
 #define _ROOM_H_
 
-
-#include "RoomLink.h"
 #include "Globals.h"
 #include <list>
 #include <vector>

@@ -156,6 +156,9 @@
     <ClCompile Include="3rdParty\PCGRandom\pcg_basic.c">
       <Filter>Source\3rdParty\RNG</Filter>
     </ClCompile>
+    <ClCompile Include="Source\WorldPropertiesDockPanel.cpp">
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -251,9 +254,6 @@
     <ClInclude Include="Source\Room.h">
       <Filter>Source\FlyEngine\Room</Filter>
     </ClInclude>
-    <ClInclude Include="Source\RoomLink.h">
-      <Filter>Source\FlyEngine\Room</Filter>
-    </ClInclude>
     <ClInclude Include="Source\ImNodeDemo.h">
       <Filter>Source\3rdParty\ImNode</Filter>
     </ClInclude>
@@ -268,6 +268,9 @@
     </ClInclude>
     <ClInclude Include="3rdParty\PCGRandom\pcg_basic.h">
       <Filter>Source\3rdParty\RNG</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WorldPropertiesDockPanel.h">
+      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
