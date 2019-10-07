@@ -3,6 +3,7 @@
 
 #include "DockPanel.h"
 
+class Room;
 class WorldPropertiesDockPanel : public DockPanel {
 
 public:
@@ -10,13 +11,20 @@ public:
 	WorldPropertiesDockPanel(bool isVisible);
 	~WorldPropertiesDockPanel();
 
-	void PrintConnectionsSection(); 
 	void PrintRoomsSection(); 
+	void ShowNewRoomUI(); 
 
+	void PrintConnectionsSection(); 
 	void NewConnectionButtonHandler(); 
-	void NewRoomButtonHandler(); 
 
 	bool Draw();
+	void PrintRoomInfo(Room* selectedRoom);
+	void PrintEnterConnections(Room* selectedRoom);
+	void PrintOutConnections(Room* selectedRoom);
+
+private:
+
+	bool showNewRoomUI = false; 
 };
 
 #endif 

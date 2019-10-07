@@ -36,6 +36,8 @@ public:
 
 	void SetSelectedRoom(Room* selectedRoom); 
 	void SetSelectedRoom(std::string roomName); 
+	void SetSelectedRoom(UID roomName); 
+
 	Room* GetSelectedRoom() const;
 
 	int connectionsInWorldAmount;

@@ -137,19 +137,22 @@ int ModuleWorldManager::GetRoomsAmount() const
 	return roomsInWoldAmount;
 }
 
-void ModuleWorldManager::SetSelectedRoom(Room* selectedRoom)
+void ModuleWorldManager::SetSelectedRoom(Room* nextSelectedRoom)
 {
-	this->selectedRoom = selectedRoom;
+	if (nextSelectedRoom != nullptr) {
+		selectedRoom = nextSelectedRoom;
+		NodeGraph::getInstance()->SelectNode(nextSelectedRoom->GetName());
+	}
+}
+
+void ModuleWorldManager::SetSelectedRoom(UID selectedRoomUID)
+{
+	SetSelectedRoom(GetRoom(selectedRoomUID)); 
 }
 
 void ModuleWorldManager::SetSelectedRoom(std::string roomName)
 {
-	Room* nextSelectedRoom = GetRoom(roomName);
-
-	if (nextSelectedRoom != nullptr) {
-		selectedRoom = nextSelectedRoom;
-		NodeGraph::getInstance()->SelectNode(roomName);
-	}
+	SetSelectedRoom(GetRoom(roomName)); 
 }
 
 Room* ModuleWorldManager::GetSelectedRoom() const

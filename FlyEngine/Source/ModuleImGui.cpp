@@ -47,7 +47,7 @@ bool ModuleImGui::Start()
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags = ImGuiConfigFlags_DockingEnable;
 	string fontsDirectory = FileSystem::getInstance()->solutionDirectory + "EngineResources/Fonts/Exo-Regular.otf";
-	engineFont = io.Fonts->AddFontFromFileTTF(fontsDirectory.c_str(), 16);
+	engineFont = io.Fonts->AddFontFromFileTTF(fontsDirectory.c_str(), 17);
 	buttonFont = io.Fonts->AddFontFromFileTTF(fontsDirectory.c_str(), 24);
 
 	CreatePanels();
