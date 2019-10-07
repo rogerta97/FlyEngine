@@ -19,18 +19,41 @@ WorldPropertiesDockPanel::~WorldPropertiesDockPanel()
 
 bool WorldPropertiesDockPanel::Draw()
 {
+
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
+
 		PrintRoomsSection();
-		ImGui::Separator();
+	
 		ImGui::Separator();
 
-		PrintConnectionsSection();
-		ImGui::Separator();
-		ImGui::Separator();
+		//PrintConnectionsSection();
+		//ImGui::Separator();
+		//ImGui::Separator();
 
 		// Show Naming Popup
 		NewRoomButtonHandler();
-		NewConnectionButtonHandler();
+		//NewConnectionButtonHandler();
+
+		if (App->moduleWorldManager->GetSelectedRoom() != nullptr) {
+
+			Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom();
+			std::string colHeaderStr = "Room Info [" + selectedRoom->GetName() + "]";
+			if (ImGui::CollapsingHeader(colHeaderStr.c_str())) {
+				
+				ImGui::Text("Out Connections: "); 
+
+				ImGui::BeginChild("##OutConnectionsChild", ImVec2(ImGui::GetWindowContentRegionWidth(), ImGui::GetWindowHeight() / 4), true);
+
+				for (auto it : selectedRoom->outConnections) {
+					if (ImGui::Selectable(it->destinationRoom->GetName().c_str())) {
+
+					}
+				}
+
+				ImGui::EndChild(); 		
+
+			}
+		}
 	}
 
 	ImGui::End();

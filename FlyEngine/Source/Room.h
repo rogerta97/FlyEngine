@@ -57,12 +57,13 @@ public:
 	UID GetRoomID() const;
 	void SetRoomID(UID newName);
 
+	list<RoomConnection*> outConnections;
+	list<UID> inRoomUIDs;
+
 private: 
 
 	UID roomID; 
 	string roomName;
-	list<RoomConnection*> outConnections;
-	list<UID> inRoomUIDs; 
 };
 
 
