@@ -165,12 +165,9 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 	ImGui::EndChild();
 
 	// New Room Button 
-	ImGui::PushFont(App->moduleImGui->buttonFont);
 	if (ImGui::ImageButton(0, ImVec2(25, 25))) {
 		showNewRoomUI = true;
 	}
-
-
 
 	// Delete Room Button
 	ImGui::SameLine();
@@ -186,8 +183,6 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 	if (showNewRoomUI) {
 		ShowNewRoomUI();
 	}
-
-	ImGui::PopFont();
 }
 
 void WorldPropertiesDockPanel::ShowNewRoomUI()

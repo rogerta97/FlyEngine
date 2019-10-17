@@ -47,7 +47,10 @@ public:
 private: 
 
 	// Fonts & Style 
-	void SetStyle(); 
+	void SetStyle();
+	void DarkTheme();
+	void CherryTheme();
+
 
 	std::list<DockPanel*> dockPanels;
 	ImGuiID mainDock_ID = 0; 
