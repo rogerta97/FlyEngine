@@ -38,7 +38,7 @@ bool WorldPropertiesDockPanel::Draw()
 
 void WorldPropertiesDockPanel::PrintRoomInfo(Room* selectedRoom)
 {
-	std::string colHeaderStr = "Room Info [" + selectedRoom->GetName() + "]";
+	std::string colHeaderStr = selectedRoom->GetName() + " Info";
 
 	ImGui::Text("Room Selected: "); ImGui::SameLine();
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", selectedRoom->GetName().c_str());
@@ -51,8 +51,6 @@ void WorldPropertiesDockPanel::PrintRoomInfo(Room* selectedRoom)
 
 	if (ImGui::CollapsingHeader(colHeaderStr.c_str()))
 	{
-		ImGui::Separator();
-
 		PrintOutConnections(selectedRoom);
 		PrintEnterConnections(selectedRoom);
 	}
@@ -70,6 +68,18 @@ void WorldPropertiesDockPanel::PrintEnterConnections(Room* selectedRoom)
 	}
 
 	ImGui::EndChild();
+
+	// New Connection Button 
+	if (ImGui::ImageButton(0, ImVec2(25, 25))) {
+		
+	}
+
+	// Delete Connection Button
+	ImGui::SameLine();
+	if (ImGui::ImageButton(0, ImVec2(25, 25))) {
+
+
+	}
 }
 
 void WorldPropertiesDockPanel::PrintOutConnections(Room* selectedRoom)
@@ -89,6 +99,28 @@ void WorldPropertiesDockPanel::PrintOutConnections(Room* selectedRoom)
 	}
 
 	ImGui::EndChild();
+
+	// New Connection Button 
+	if (ImGui::ImageButton(0, ImVec2(25, 25))) {
+		showNewOutConnectionUI = true;
+	}
+
+	// Delete Connection Button
+	ImGui::SameLine();
+	if (ImGui::ImageButton(0, ImVec2(25, 25))) {
+
+	}
+
+	if (showNewOutConnectionUI) {
+
+		ImGui::Separator(); 
+
+		Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom(); 
+		static int outConnectionCombo; 
+		if (ImGui::Combo("", &outConnectionCombo, App->moduleWorldManager->GetRoomsAsCombo(false))) {
+
+		}
+	}
 }
 
 void WorldPropertiesDockPanel::NewConnectionButtonHandler()
@@ -189,18 +221,23 @@ void WorldPropertiesDockPanel::ShowNewRoomUI()
 {
 	ImGui::Separator();
 
-	static char newRoomBuffer[64] = "...";
-	ImGui::InputText("##2", (char*)newRoomBuffer, 64 * sizeof(char));
+	bool createThisTick = false; 
+	string newRoomBuffer("Room Name..."); 
+	ImGui::InputText("##2", (char*)newRoomBuffer.c_str(), 265 * sizeof(char));
 
 	if (App->moduleInput->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || App->moduleInput->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN) {
-		App->moduleWorldManager->CreateEmptyRoom(newRoomBuffer);
-		ImGui::CloseCurrentPopup();
+		createThisTick = true; 
 	}
 
 	ImGui::SameLine();
 
 	if (ImGui::Button("Create")) {
+		createThisTick = true; 
+	}
+
+	if (createThisTick) {
 		App->moduleWorldManager->CreateEmptyRoom(newRoomBuffer);
-		ImGui::CloseCurrentPopup();
+		showNewRoomUI = false;
+		newRoomBuffer = "Room Name..."; 
 	}
 }

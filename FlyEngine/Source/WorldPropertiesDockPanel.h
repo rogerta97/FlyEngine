@@ -25,6 +25,8 @@ public:
 private:
 
 	bool showNewRoomUI = false; 
+	bool showNewOutConnectionUI = false; 
+	bool showNewInConnectionUI = false; 
 };
 
 #endif 

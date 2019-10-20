@@ -73,7 +73,12 @@ Room* ModuleWorldManager::CreateEmptyRoom(string roomName)
 void ModuleWorldManager::DeleteRoom(string roomName)
 {
 	UID roomUID = GetRoom(roomName)->GetRoomID();
-	DeleteRoom(roomUID);
+
+	if (selectedRoom->GetRoomID() == roomUID) {
+		selectedRoom = nullptr; 
+	}
+
+	DeleteRoom(roomUID);	
 }
 
 void ModuleWorldManager::DeleteRoom(UID roomID)
@@ -104,6 +109,22 @@ void ModuleWorldManager::CleanUpRooms()
 
 	roomsInWorldList.clear();
 	roomsInWoldAmount = 0;
+}
+
+const char* ModuleWorldManager::GetRoomsAsCombo(bool includeSelected)
+{
+	string resultStr; 
+	for (auto& it : roomsInWorldList) {
+
+		if ((it) == selectedRoom && !includeSelected) {
+			continue; 
+		}
+
+		resultStr += (it)->GetName(); 
+		resultStr += '\0'; 
+	}
+
+	return resultStr.c_str(); 
 }
 
 Room* ModuleWorldManager::GetRoom(std::string roomName) const

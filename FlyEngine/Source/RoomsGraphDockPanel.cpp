@@ -4,6 +4,7 @@
 #include "RoomsGraphDockPanel.h"
 
 #include "imgui.h"
+#include "Room.h"
 #include "SDL_opengl.h"
 #include "mmgr.h"
 
@@ -30,6 +31,10 @@ bool RoomsGraphDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
 		NodeGraph::Update();
+
+		if(App->moduleWorldManager->GetSelectedRoom() != nullptr && App->moduleInput->GetKey(SDL_SCANCODE_DELETE)){
+			App->moduleWorldManager->DeleteRoom(App->moduleWorldManager->GetSelectedRoom()->GetName()); 
+		}
 	}
 
 	ImGui::End();

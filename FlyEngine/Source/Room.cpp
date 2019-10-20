@@ -82,6 +82,18 @@ int Room::GetTotalConnectionsAmount() const
 	return GetOutputConnectionsAmount() + GetInputConnectionsAmount(); 
 }
 
+const char* Room::GetOutConnectionsAsCombo()
+{
+	string returnStr;
+	for (auto& it : outConnections) {
+		returnStr += (it)->connectionName; 
+		returnStr += '\0';
+	}
+
+	return returnStr.c_str(); 
+}
+
+
 void Room::BreakOutputConnection(UID connectionToDelUID)
 {
 	for (auto it = outConnections.begin(); it != outConnections.end();) {

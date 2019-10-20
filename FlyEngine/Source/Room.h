@@ -49,6 +49,7 @@ public:
 	int GetInputConnectionsAmount() const; 
 	RoomConnection* GetConnectionToRoom(UID dstRoomUID) const;
 	int GetTotalConnectionsAmount() const; 
+	const char* GetOutConnectionsAsCombo(); 
 
 	// Encapsulation
 	string GetName() const; 

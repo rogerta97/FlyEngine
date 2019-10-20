@@ -28,6 +28,7 @@ public:
 	void DeleteRoom(string roomName); 
 	void DeleteRoom(UID roomID); 
 	void CleanUpRooms();
+	const char* GetRoomsAsCombo(bool includeSelected = false); 
 
 	// Utility
 	Room* GetRoom(string roomName) const;
