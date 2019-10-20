@@ -1,4 +1,8 @@
 #include "RoomObjectsDockPanel.h"
+#include "ModuleWorldManager.h"
+#include "Application.h"
+#include "Room.h"
+#include "FlyObject.h"
 #include "imgui.h"
 #include "mmgr.h"
 
@@ -20,10 +24,14 @@ bool RoomObjectsDockPanel::Draw()
 		return false;
 #pragma endregion
 
-	if (ImGui::Begin(panelName.c_str(), &visible)) {
-		ImGui::Text("Im The RoomObjects Text");
+	if (ImGui::Begin(panelName.c_str(), &visible)) 
+	{		
+		for (auto& it : App->moduleWorldManager->GetSelectedRoom()->objectsInRoom) {	
+			ImGui::Selectable((it)->GetName().c_str()); 
+		}
 	}
 
 	ImGui::End();
 	return true;
 }
+

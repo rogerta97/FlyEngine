@@ -3,6 +3,7 @@
 #include "NodeGraph.h"
 #include "RandomNumberGenerator.h"
 #include "Application.h"
+#include "FlyObject.h"
 #include "ModuleWorldManager.h"
 
 Room::Room(string roomName)
@@ -48,7 +49,7 @@ RoomConnection* Room::ConnectToRoom(Room* destinationRoom)
 void Room::DeleteAllConnections()
 {
 	BreakOutputConnections();
-	BreakInputConnections(); 
+	BreakEnterConnections(); 
 }
 
 // Output Connections
@@ -58,7 +59,7 @@ void Room::BreakOutputConnections()
 		return; 
 
 	for (auto it : outConnections) {
-		it->destinationRoom->BreakFromInRoomUIDs(roomID);
+		it->destinationRoom->BreakEnterConnectionFromInRoomUIDs(roomID);
 		it->DeleteOnGraph();
 
 		delete it;
@@ -79,7 +80,7 @@ RoomConnection* Room::GetConnectionToRoom(UID dstRoomUID) const
 
 int Room::GetTotalConnectionsAmount() const
 {
-	return GetOutputConnectionsAmount() + GetInputConnectionsAmount(); 
+	return GetOutputConnectionsAmount() + GetEnterConnectionsAmount(); 
 }
 
 const char* Room::GetOutConnectionsAsCombo()
@@ -117,24 +118,24 @@ void Room::BreakOutputConnection(Room* targetRoomConnected)
 	BreakOutputConnection(roomConnection->connectionID); 
 }
 // Input connections
-void Room::BreakInputConnections()
+void Room::BreakEnterConnections()
 {
 	if (inRoomUIDs.size() <= 0)
 		return;
 
 	for (auto it = inRoomUIDs.begin(); it != inRoomUIDs.end();) {
-		BreakInputConnection((*it)); 
+		BreakEnterConnection((*it)); 
 		it = inRoomUIDs.erase(it);
 	}
 
 	inRoomUIDs.clear();	
 }
-void Room::BreakInputConnection(UID roomToDelUID)
+void Room::BreakEnterConnection(UID roomToDelUID)
 {
 	Room* originRoom = App->moduleWorldManager->GetRoom(roomToDelUID);
 	originRoom->BreakOutputConnection(this); 
 }
-void Room::BreakFromInRoomUIDs(UID roomToDelUID)
+void Room::BreakEnterConnectionFromInRoomUIDs(UID roomToDelUID)
 {
 	for (auto it = inRoomUIDs.begin(); it != inRoomUIDs.end();) {
 		if ((*it) == roomToDelUID)
@@ -149,9 +150,23 @@ int Room::GetOutputConnectionsAmount() const
 	return outConnections.size();
 }
 
-int Room::GetInputConnectionsAmount() const
+int Room::GetEnterConnectionsAmount() const
 {
 	return inRoomUIDs.size();
+}
+
+void Room::CreateFlyObject(std::string objectName)
+{
+	FlyObject* newObject = new FlyObject(objectName); 
+	objectsInRoom.push_back(newObject); 
+	FLY_LOG("New Object Created"); 
+}
+
+void Room::DeleteFlyObject()
+{
+	for (auto& it : objectsInRoom) {
+		delete(it); 
+	}
 }
 
 string Room::GetName() const

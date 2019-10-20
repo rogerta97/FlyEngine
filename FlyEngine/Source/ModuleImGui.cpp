@@ -1,6 +1,7 @@
 #include "ModuleImGui.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "ModuleWorldManager.h"
 #include "Application.h"
 
 #include "imgui_internal.h"
@@ -173,6 +174,12 @@ void ModuleImGui::DrawMainMenuBar()
 		ImGui::EndMenu();
 	}
 
+	if (App->flySection == FLY_SECTION_ROOM_EDIT) {
+		if (ImGui::Button("Back To World")) {
+			App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_GRAPH); 
+		}
+	}
+
 	ImGui::EndMainMenuBar();
 
 	if (demoOpened)
@@ -188,6 +195,10 @@ void ModuleImGui::DrawPanels()
 
 void ModuleImGui::AddaptToFlySection(FlyEngineSection flyEngineSection)
 {
+	if (flyEngineSection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && App->moduleWorldManager->GetSelectedRoom() == nullptr) {
+		FLY_ERROR("Room Editor can not open with any room selected"); 
+	}
+
 	for (auto it = dockPanels.begin(); it != dockPanels.end(); it++) {
 
 		if ((*it)->GetFlySection() == flyEngineSection || (*it)->GetFlySection() == FLY_SECTION_BOTH)
@@ -195,6 +206,9 @@ void ModuleImGui::AddaptToFlySection(FlyEngineSection flyEngineSection)
 		else
 			(*it)->SetVisible(false); 
 	}
+
+	if(flyEngineSection == FLY_SECTION_ROOM_EDIT || flyEngineSection == FLY_SECTION_ROOM_GRAPH)
+		App->flySection = flyEngineSection;
 }
 
 DockPanel* ModuleImGui::GetDockPanel(DockPanelType panelType)

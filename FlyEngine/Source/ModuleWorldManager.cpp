@@ -30,6 +30,9 @@ bool ModuleWorldManager::Start()
 	forestRoom->ConnectToRoom(Bridge);
 	Lake->ConnectToRoom(forestRoom); 
 
+	SetSelectedRoom(forestRoom);
+	App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
+
 	return true;
 }
 
@@ -120,8 +123,7 @@ const char* ModuleWorldManager::GetRoomsAsCombo(bool includeSelected)
 			continue; 
 		}
 
-		resultStr += (it)->GetName(); 
-		resultStr += '\0'; 
+		resultStr += (it)->GetName() + '\0';
 	}
 
 	return resultStr.c_str(); 

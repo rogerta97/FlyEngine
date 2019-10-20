@@ -2,16 +2,9 @@
 #define _DOCKPANEL_H_
 
 #include <string>
+#include "Application.h"
 
 using namespace std;
-
-enum FlyEngineSection 
-{
-	FLY_SECTION_ROOM_GRAPH,
-	FLY_SECTION_ROOM_EDIT,
-	FLY_SECTION_BOTH,
-	FLY_SECTION_null
-};
 
 enum DockPanelType
 {

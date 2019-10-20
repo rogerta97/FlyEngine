@@ -7,10 +7,12 @@
 
 #include <list>
 
-enum EngineWindows 
+enum FlyEngineSection
 {
-	ROOM_OVERVIEW, 
-	ROOM_EDIT,
+	FLY_SECTION_ROOM_GRAPH,
+	FLY_SECTION_ROOM_EDIT,
+	FLY_SECTION_BOTH,
+	FLY_SECTION_null
 };
 
 // Forward Declarations 
@@ -35,7 +37,6 @@ private:
 
 	Timer	ms_timer;
 	float	dt;
-	EngineWindows engineWindow; 
 	std::list<Module*> list_modules;
 
 public:
@@ -46,6 +47,8 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
+
+	FlyEngineSection flySection = FlyEngineSection::FLY_SECTION_null; 
 
 private:
 

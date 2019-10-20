@@ -11,6 +11,8 @@ public:
 
 	bool Draw();
 
+	void ObjectCreatorPopup();
+
 };
 
 #endif

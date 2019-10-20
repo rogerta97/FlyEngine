@@ -14,13 +14,10 @@ public:
 	void PrintRoomsSection(); 
 	void ShowNewRoomUI(); 
 
-	void PrintConnectionsSection(); 
 	void NewConnectionButtonHandler(); 
 
 	bool Draw();
 	void PrintRoomInfo(Room* selectedRoom);
-	void PrintEnterConnections(Room* selectedRoom);
-	void PrintOutConnections(Room* selectedRoom);
 
 private:
 

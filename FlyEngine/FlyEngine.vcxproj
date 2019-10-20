@@ -32,6 +32,7 @@
     <ClCompile Include="Source\ConsoleDockPanel.cpp" />
     <ClCompile Include="Source\DockPanel.cpp" />
     <ClCompile Include="Source\FileSystem.cpp" />
+    <ClCompile Include="Source\FlyObject.cpp" />
     <ClCompile Include="Source\GameViewportDockPanel.cpp" />
     <ClCompile Include="Source\log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
@@ -43,12 +44,15 @@
     <ClCompile Include="Source\ImNode.cpp" />
     <ClCompile Include="Source\ImNodeEz.cpp" />
     <ClCompile Include="Source\NodeGraph.cpp" />
+    <ClCompile Include="Source\ObjectAttribute.cpp" />
     <ClCompile Include="Source\ObjectPropertiesDockPanel.cpp" />
     <ClCompile Include="Source\GraphPropertiesDockPanel.cpp" />
     <ClCompile Include="Source\RandomNumberGenerator.cpp" />
     <ClCompile Include="Source\Room.cpp" />
     <ClCompile Include="Source\RoomObjectsDockPanel.cpp" />
     <ClCompile Include="Source\RoomsGraphDockPanel.cpp" />
+    <ClCompile Include="Source\SpriteAttribute.cpp" />
+    <ClCompile Include="Source\TextureMSAA.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\WorldPropertiesDockPanel.cpp" />
   </ItemGroup>
@@ -70,6 +74,7 @@
     <ClInclude Include="Source\ConsoleDockPanel.h" />
     <ClInclude Include="Source\DockPanel.h" />
     <ClInclude Include="Source\FileSystem.h" />
+    <ClInclude Include="Source\FlyObject.h" />
     <ClInclude Include="Source\GameViewportDockPanel.h" />
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\ImNodeDemo.h" />
@@ -82,11 +87,15 @@
     <ClInclude Include="Source\ImNode.h" />
     <ClInclude Include="Source\ImNodeEz.h" />
     <ClInclude Include="Source\NodeGraph.h" />
+    <ClInclude Include="Source\ObjectAttribute.h" />
     <ClInclude Include="Source\ObjectPropertiesDockPanel.h" />
     <ClInclude Include="Source\GraphPropertiesDockPanel.h" />
+    <ClInclude Include="Source\OpenGL.h" />
     <ClInclude Include="Source\Room.h" />
     <ClInclude Include="Source\RoomObjectsDockPanel.h" />
     <ClInclude Include="Source\RoomsGraphDockPanel.h" />
+    <ClInclude Include="Source\SpriteAttribute.h" />
+    <ClInclude Include="Source\TextureMSAA.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\RandomNumberGenerator.h" />
     <ClInclude Include="Source\WorldPropertiesDockPanel.h" />

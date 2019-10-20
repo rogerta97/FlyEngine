@@ -22,6 +22,7 @@ struct RoomConnection {
 	UID connectionID; 
 };
 
+class FlyObject; 
 class Room {
 
 public:
@@ -31,38 +32,48 @@ public:
 
 	void CleanUp(); 
 
-	// Connections 
+	// Connections --------------------------------------------------------------------
 	RoomConnection* ConnectToRoom(Room* destinationRoom);
-
-	void BreakOutputConnections();
-	void BreakOutputConnection(UID connectionUID); 
-	void BreakOutputConnection(Room* connectionUID); 
-
-	void BreakInputConnections(); 
-	void BreakInputConnection(UID roomToDelUID);
-	void BreakFromInRoomUIDs(UID roomToDelUID);
-
-	void DeleteAllConnections(); 
-
-	// Utility
-	int GetOutputConnectionsAmount() const; 
-	int GetInputConnectionsAmount() const; 
 	RoomConnection* GetConnectionToRoom(UID dstRoomUID) const;
-	int GetTotalConnectionsAmount() const; 
-	const char* GetOutConnectionsAsCombo(); 
 
-	// Encapsulation
+	void DeleteAllConnections();
+	int GetTotalConnectionsAmount() const;
+	const char* GetOutConnectionsAsCombo();
+
+	// Output Connections ---------
+	void BreakOutputConnections();
+	void BreakOutputConnection(UID connectionUID);
+	void BreakOutputConnection(Room* connectionUID);
+
+	// Enter Connections ----------
+	void BreakEnterConnections(); 
+	void BreakEnterConnection(UID roomToDelUID);
+	void BreakEnterConnectionFromInRoomUIDs(UID roomToDelUID);
+
+	int GetEnterConnectionsAmount() const;
+	int GetOutputConnectionsAmount() const;
+
+	// Factory ------------------------------------------------------------------------
+	void CreateFlyObject(std::string objectName); 
+	void DeleteFlyObject();
+
+	// Encapsulation ------------------------------------------------------------------
 	string GetName() const; 
 	void SetName(string newName); 
 
 	UID GetRoomID() const;
 	void SetRoomID(UID newName);
 
+	// Vars ---------------------------------------------------------------------------
+	// Connections ---------
 	list<RoomConnection*> outConnections;
 	list<UID> inRoomUIDs;
 
-private: 
+	// Objects ---------
+	list<FlyObject*> objectsInRoom;
+	FlyObject* selectedObject; 
 
+private: 
 	UID roomID; 
 	string roomName;
 };

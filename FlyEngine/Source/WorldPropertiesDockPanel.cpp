@@ -19,11 +19,17 @@ WorldPropertiesDockPanel::~WorldPropertiesDockPanel()
 
 bool WorldPropertiesDockPanel::Draw()
 {
+#pragma region secutiryChecks
+	if (!DockPanel::Draw())
+		return false;
+#pragma endregion
 
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
 
-		PrintRoomsSection();	
+		PrintRoomsSection();
+
 		ImGui::Separator();
+		ImGui::Separator(); 
 
 		if (App->moduleWorldManager->GetSelectedRoom() != nullptr) {
 			Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom();
@@ -38,88 +44,54 @@ bool WorldPropertiesDockPanel::Draw()
 
 void WorldPropertiesDockPanel::PrintRoomInfo(Room* selectedRoom)
 {
-	std::string colHeaderStr = selectedRoom->GetName() + " Info";
+	if(ImGui::CollapsingHeader("Room Info")) {
 
-	ImGui::Text("Room Selected: "); ImGui::SameLine();
-	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", selectedRoom->GetName().c_str());
+		ImGui::Text("Room Selected: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", selectedRoom->GetName().c_str());
 
-	ImGui::Text("Enter Connections: "); ImGui::SameLine();
-	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", selectedRoom->GetInputConnectionsAmount());
+		ImGui::Text("Output Connections: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", selectedRoom->GetOutputConnectionsAmount());
 
-	ImGui::Text("Out Connections: "); ImGui::SameLine();
-	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", selectedRoom->GetOutputConnectionsAmount());
+		ImGui::Text("Input Connections: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", selectedRoom->GetEnterConnectionsAmount());
 
-	if (ImGui::CollapsingHeader(colHeaderStr.c_str()))
-	{
-		PrintOutConnections(selectedRoom);
-		PrintEnterConnections(selectedRoom);
-	}
-}
-
-void WorldPropertiesDockPanel::PrintEnterConnections(Room* selectedRoom)
-{
-	ImGui::Text("Enter Connections: ");
-	ImGui::BeginChild("##EnterConnectionsChild", ImVec2(ImGui::GetWindowContentRegionWidth(), 150), true);
-
-	for (auto it : selectedRoom->inRoomUIDs) {
-		if (ImGui::Selectable(App->moduleWorldManager->GetRoom(it)->GetName().c_str())) {
-			App->moduleWorldManager->SetSelectedRoom(it);
+		ImGui::SameLine(ImGui::GetContentRegionMax().x - 130);
+		if (ImGui::Button("Open Room Editor", ImVec2(130, 20))) {
+			App->moduleImGui->AddaptToFlySection(FlyEngineSection::FLY_SECTION_ROOM_EDIT);
 		}
-	}
-
-	ImGui::EndChild();
-
-	// New Connection Button 
-	if (ImGui::ImageButton(0, ImVec2(25, 25))) {
 		
-	}
+		ImGui::Separator();
 
-	// Delete Connection Button
-	ImGui::SameLine();
-	if (ImGui::ImageButton(0, ImVec2(25, 25))) {
+		if (selectedRoom->GetOutputConnectionsAmount() > 0) {
 
+			
+			if (ImGui::TreeNode("Out Connections")) {
 
-	}
-}
+				for (auto& it : selectedRoom->outConnections) {
+					ImGui::Selectable((it)->destinationRoom->GetName().c_str()); 
+				}
 
-void WorldPropertiesDockPanel::PrintOutConnections(Room* selectedRoom)
-{
-	ImGui::Text("Out Connections: ");
-
-	ImGui::BeginChild("##OutConnectionsChild", ImVec2(ImGui::GetWindowContentRegionWidth(), 150), true);
-
-	for (auto it : selectedRoom->outConnections) {
-		if (ImGui::Selectable(it->destinationRoom->GetName().c_str())) {
-			App->moduleWorldManager->SetSelectedRoom(it->destinationRoom); 
+				ImGui::TreePop(); 
+			}
 		}
-	}
 
-	if (selectedRoom->GetOutputConnectionsAmount() == 0) {
-		ImGui::TextColored(ImVec4(1, 0, 0, 1), "NONE"); 
-	}
+		if (selectedRoom->GetEnterConnectionsAmount() > 0) {
 
-	ImGui::EndChild();
+			if (ImGui::TreeNode("Enter Connections")) {
 
-	// New Connection Button 
-	if (ImGui::ImageButton(0, ImVec2(25, 25))) {
-		showNewOutConnectionUI = true;
-	}
+				for (auto& it : selectedRoom->inRoomUIDs) {
+					ImGui::Selectable(App->moduleWorldManager->GetRoom(it)->GetName().c_str());
+				}
 
-	// Delete Connection Button
-	ImGui::SameLine();
-	if (ImGui::ImageButton(0, ImVec2(25, 25))) {
+				ImGui::TreePop();
+			}
+		}
 
-	}
+		if (ImGui::Button("New Connection")) {
 
-	if (showNewOutConnectionUI) {
+		}
 
 		ImGui::Separator(); 
-
-		Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom(); 
-		static int outConnectionCombo; 
-		if (ImGui::Combo("", &outConnectionCombo, App->moduleWorldManager->GetRoomsAsCombo(false))) {
-
-		}
 	}
 }
 
@@ -133,9 +105,8 @@ void WorldPropertiesDockPanel::NewConnectionButtonHandler()
 		ImGui::Combo("Origin Room", &originRoomSelected, NodeGraph::getInstance()->GetNodesAsCombo().c_str());
 		ImGui::Combo("Destination Room", &destinationRoomSelected, NodeGraph::getInstance()->GetNodesAsCombo().c_str());
 
-		if (ImGui::Button("Connect")) {
-
-
+		if (ImGui::Button("Connect")) 
+		{
 			list<Room*>::iterator itOrigin = std::next(App->moduleWorldManager->roomsInWorldList.begin(), originRoomSelected);
 			list<Room*>::iterator itDst = std::next(App->moduleWorldManager->roomsInWorldList.begin(), destinationRoomSelected);
 
@@ -151,40 +122,10 @@ void WorldPropertiesDockPanel::NewConnectionButtonHandler()
 	}
 }
 
-void WorldPropertiesDockPanel::PrintConnectionsSection()
-{
-//	// Links List
-//	ImGui::Text("Connections:");
-//	ImGui::BeginChild("RoomsConnectionList", ImVec2(ImGui::GetWindowContentRegionWidth(), ImGui::GetWindowHeight() / 4), true);
-//
-//	for (auto it : NodeGraph::getInstance()->GetConnectionList()) {
-//
-//		std::string selectableConnectionText = it->originNode->title.c_str() + std::string(" -> ") + it->destinationNode->title.c_str();
-//		if (ImGui::Selectable(selectableConnectionText.c_str(), it->isSelected)) {
-//			NodeGraph::getInstance()->connectionSelected = it;
-//		}
-//	}
-//
-//	ImGui::EndChild();
-//
-//	// Add Link Button
-//	ImGui::PushFont(App->moduleImGui->buttonFont);
-//	if (ImGui::Button("Add Connection", ImVec2(ImGui::GetWindowContentRegionWidth() / 2, 40))) {
-//		
-//
-//	ImGui::SameLine();
-//	if (ImGui::Button("Delete Connection", ImVec2(ImGui::GetWindowContentRegionWidth() / 2 - 6, 40))) {
-//		if (NodeGraph::getInstance()->connectionSelected != nullptr) {
-//			Room* originRoom = App->moduleWorldManager->GetRoom(NodeGraph::getInstance()->connectionSelected->originNode->roomID);
-//			originRoom->BreakOutputConnection(NodeGraph::getInstance()->connectionSelected->connectionID);
-//		}
-//	}
-//	ImGui::PopFont();
-}
-
 void WorldPropertiesDockPanel::PrintRoomsSection()
 {
 	ImGui::Text("Rooms:");
+	
 	ImGui::BeginChild("RoomsList", ImVec2(ImGui::GetWindowContentRegionWidth(), ImGui::GetWindowHeight() / 4), true);
 
 	for (auto it : NodeGraph::getInstance()->GetNodeList()) {
@@ -197,13 +138,15 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 	ImGui::EndChild();
 
 	// New Room Button 
-	if (ImGui::ImageButton(0, ImVec2(25, 25))) {
-		showNewRoomUI = true;
+	if (ImGui::Button("New")) {
+		ImGui::OpenPopup("new_room"); 
 	}
+
+	ShowNewRoomUI();
 
 	// Delete Room Button
 	ImGui::SameLine();
-	if (ImGui::ImageButton(0, ImVec2(25, 25))) {
+	if (ImGui::Button("Delete")) {
 		Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom();
 		if (selectedRoom != nullptr)
 		{
@@ -211,33 +154,35 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 			selectedRoom = nullptr;
 		}
 	}
-
-	if (showNewRoomUI) {
-		ShowNewRoomUI();
-	}
 }
 
 void WorldPropertiesDockPanel::ShowNewRoomUI()
 {
-	ImGui::Separator();
+	if (ImGui::BeginPopup("new_room")) 
+	{
+		bool createThisTick = false;
+		string newRoomBuffer("Room Name...");
+		ImGui::InputText("##2", (char*)newRoomBuffer.c_str(), 265 * sizeof(char));
 
-	bool createThisTick = false; 
-	string newRoomBuffer("Room Name..."); 
-	ImGui::InputText("##2", (char*)newRoomBuffer.c_str(), 265 * sizeof(char));
+		if (App->moduleInput->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || App->moduleInput->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN) {
+			createThisTick = true;
+		}
 
-	if (App->moduleInput->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || App->moduleInput->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN) {
-		createThisTick = true; 
+		ImGui::SameLine();
+
+		if (ImGui::Button("Create")) {
+			createThisTick = true;
+		}
+
+		if (createThisTick) {
+			App->moduleWorldManager->CreateEmptyRoom(newRoomBuffer);
+			newRoomBuffer = "Room Name...";
+			ImGui::CloseCurrentPopup();		
+		}
+
+		ImGui::EndPopup();
 	}
 
-	ImGui::SameLine();
-
-	if (ImGui::Button("Create")) {
-		createThisTick = true; 
-	}
-
-	if (createThisTick) {
-		App->moduleWorldManager->CreateEmptyRoom(newRoomBuffer);
-		showNewRoomUI = false;
-		newRoomBuffer = "Room Name..."; 
-	}
+	
+	
 }

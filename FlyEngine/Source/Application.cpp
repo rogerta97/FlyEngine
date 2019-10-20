@@ -54,7 +54,7 @@ bool Application::Init()
 		module_iterator++;
 	}
 
-	engineWindow = ROOM_OVERVIEW; 
+	flySection = FLY_SECTION_ROOM_EDIT; 
 	ms_timer.Start();
 	return ret;
 }

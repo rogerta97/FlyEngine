@@ -61,6 +61,12 @@
     <Filter Include="Source\3rdParty\RNG">
       <UniqueIdentifier>{a2bd06ae-f0cb-47f3-b660-f0db4e93988c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\FlyEngine\FlyObject">
+      <UniqueIdentifier>{da051c03-cb85-4c57-b1cb-1ef31e851259}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\FlyEngine\ObjectAttributes">
+      <UniqueIdentifier>{e73d5c5c-e2db-4166-a6ab-65a38df89321}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -158,6 +164,18 @@
     </ClCompile>
     <ClCompile Include="Source\WorldPropertiesDockPanel.cpp">
       <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TextureMSAA.cpp">
+      <Filter>Source\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FlyObject.cpp">
+      <Filter>Source\FlyEngine\FlyObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SpriteAttribute.cpp">
+      <Filter>Source\FlyEngine\ObjectAttributes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ObjectAttribute.cpp">
+      <Filter>Source\FlyEngine\ObjectAttributes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -271,6 +289,21 @@
     </ClInclude>
     <ClInclude Include="Source\WorldPropertiesDockPanel.h">
       <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TextureMSAA.h">
+      <Filter>Source\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\OpenGL.h">
+      <Filter>Source\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FlyObject.h">
+      <Filter>Source\FlyEngine\FlyObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SpriteAttribute.h">
+      <Filter>Source\FlyEngine\ObjectAttributes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ObjectAttribute.h">
+      <Filter>Source\FlyEngine\ObjectAttributes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
