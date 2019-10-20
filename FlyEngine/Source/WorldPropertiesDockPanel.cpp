@@ -54,11 +54,6 @@ void WorldPropertiesDockPanel::PrintRoomInfo(Room* selectedRoom)
 
 		ImGui::Text("Input Connections: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", selectedRoom->GetEnterConnectionsAmount());
-
-		ImGui::SameLine(ImGui::GetContentRegionMax().x - 130);
-		if (ImGui::Button("Open Room Editor", ImVec2(130, 20))) {
-			App->moduleImGui->AddaptToFlySection(FlyEngineSection::FLY_SECTION_ROOM_EDIT);
-		}
 		
 		ImGui::Separator();
 
@@ -153,6 +148,11 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 			App->moduleWorldManager->DeleteRoom(selectedRoom->GetRoomID());
 			selectedRoom = nullptr;
 		}
+	}
+
+	ImGui::SameLine(ImGui::GetContentRegionMax().x - 130);
+	if (ImGui::Button("Open Room Editor", ImVec2(130, 20))) {
+		App->moduleImGui->AddaptToFlySection(FlyEngineSection::FLY_SECTION_ROOM_EDIT);
 	}
 }
 
