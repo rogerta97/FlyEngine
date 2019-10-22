@@ -171,11 +171,14 @@
     <ClCompile Include="Source\FlyObject.cpp">
       <Filter>Source\FlyEngine\FlyObject</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SpriteAttribute.cpp">
-      <Filter>Source\FlyEngine\ObjectAttributes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ObjectAttribute.cpp">
       <Filter>Source\FlyEngine\ObjectAttributes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AttributeImage.cpp">
+      <Filter>Source\FlyEngine\ObjectAttributes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Quad.cpp">
+      <Filter>Source\Utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -299,11 +302,14 @@
     <ClInclude Include="Source\FlyObject.h">
       <Filter>Source\FlyEngine\FlyObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SpriteAttribute.h">
-      <Filter>Source\FlyEngine\ObjectAttributes</Filter>
-    </ClInclude>
     <ClInclude Include="Source\ObjectAttribute.h">
       <Filter>Source\FlyEngine\ObjectAttributes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AttributeImage.h">
+      <Filter>Source\FlyEngine\ObjectAttributes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Quad.h">
+      <Filter>Source\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

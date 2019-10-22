@@ -28,6 +28,7 @@
     <ClCompile Include="3rdParty\mmgr\mmgr.cpp" />
     <ClCompile Include="3rdParty\PCGRandom\pcg_basic.c" />
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\AttributeImage.cpp" />
     <ClCompile Include="Source\Color.cpp" />
     <ClCompile Include="Source\ConsoleDockPanel.cpp" />
     <ClCompile Include="Source\DockPanel.cpp" />
@@ -47,11 +48,11 @@
     <ClCompile Include="Source\ObjectAttribute.cpp" />
     <ClCompile Include="Source\ObjectPropertiesDockPanel.cpp" />
     <ClCompile Include="Source\GraphPropertiesDockPanel.cpp" />
+    <ClCompile Include="Source\Quad.cpp" />
     <ClCompile Include="Source\RandomNumberGenerator.cpp" />
     <ClCompile Include="Source\Room.cpp" />
     <ClCompile Include="Source\RoomObjectsDockPanel.cpp" />
     <ClCompile Include="Source\RoomsGraphDockPanel.cpp" />
-    <ClCompile Include="Source\SpriteAttribute.cpp" />
     <ClCompile Include="Source\TextureMSAA.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\WorldPropertiesDockPanel.cpp" />
@@ -70,6 +71,7 @@
     <ClInclude Include="3rdParty\mmgr\nommgr.h" />
     <ClInclude Include="3rdParty\PCGRandom\pcg_basic.h" />
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\AttributeImage.h" />
     <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\ConsoleDockPanel.h" />
     <ClInclude Include="Source\DockPanel.h" />
@@ -91,10 +93,10 @@
     <ClInclude Include="Source\ObjectPropertiesDockPanel.h" />
     <ClInclude Include="Source\GraphPropertiesDockPanel.h" />
     <ClInclude Include="Source\OpenGL.h" />
+    <ClInclude Include="Source\Quad.h" />
     <ClInclude Include="Source\Room.h" />
     <ClInclude Include="Source\RoomObjectsDockPanel.h" />
     <ClInclude Include="Source\RoomsGraphDockPanel.h" />
-    <ClInclude Include="Source\SpriteAttribute.h" />
     <ClInclude Include="Source\TextureMSAA.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\RandomNumberGenerator.h" />
@@ -176,7 +178,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;WINDOWS_IGNORE_PACKING_MISMATCH;SOLUTION_DIR=R"($(SolutionDir))"</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;$(SolutionDir)3rdParty/RCGRandom;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -209,7 +211,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;C:\Users\FULLMAC\Documents\FlyEngine\FlyEngine\3rdParty\PCGRandom;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

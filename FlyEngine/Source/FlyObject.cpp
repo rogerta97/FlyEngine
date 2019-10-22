@@ -16,3 +16,8 @@ std::string FlyObject::GetName() const
 {
 	return name;
 }
+
+void FlyObject::AddAttribute(ObjectAttribute* newAttribute)
+{
+	
+}

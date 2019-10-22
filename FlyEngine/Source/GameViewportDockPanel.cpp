@@ -49,6 +49,7 @@ void GameViewportDockPanel::ObjectCreatorPopup()
 	{
 		ImGui::Text("Object Generator: ");
 		ImGui::Separator();
+		ImGui::Separator();
 
 		static char newObjectName[256] = "Name...";
 		ImGui::InputText("Name", newObjectName, 256 * sizeof(char));
