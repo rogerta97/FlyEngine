@@ -54,7 +54,7 @@ public:
 	int GetOutputConnectionsAmount() const;
 
 	// Factory ------------------------------------------------------------------------
-	void CreateFlyObject(std::string objectName); 
+	FlyObject* CreateFlyObject(std::string objectName); 
 	void DeleteFlyObject();
 
 	// Encapsulation ------------------------------------------------------------------

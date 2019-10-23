@@ -314,8 +314,5 @@
     <ClInclude Include="glmath.h">
       <Filter>Source\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ImGuiObjectCreatorPopup.h">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

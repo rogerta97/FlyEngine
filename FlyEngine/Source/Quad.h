@@ -19,8 +19,7 @@ public:
 private:
 	void SetQuadData(const float desiredWidth, const float desiredHeight);
 
-private: 
-
+public: 
 	vec3* vertices; 
 	int* indices;
 	//float* uvs; 

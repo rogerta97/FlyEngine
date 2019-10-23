@@ -13,9 +13,13 @@ public:
 	FlyObject(std::string objectName); 
 	~FlyObject(); 
 
+	void Update(); 
+	void Draw(); 
+
 	std::string GetName() const;
 
-	void AddAttribute(ObjectAttribute* newAttribute); 
+	// Attributes -----------
+	void AddAttributeImage(const char* imageTexturePath);
 
 private: 
 	std::list<ObjectAttribute*> attributeList; 

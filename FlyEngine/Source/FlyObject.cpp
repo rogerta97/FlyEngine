@@ -1,5 +1,9 @@
 #include "FlyObject.h"
 #include "RandomNumberGenerator.h"
+#include "AttributeImage.h"
+#include "FileSystem.h"
+
+#include <string>
 
 FlyObject::FlyObject(std::string _name)
 {
@@ -12,12 +16,29 @@ FlyObject::~FlyObject()
 
 }
 
+void FlyObject::Update()
+{
+}
+
+void FlyObject::Draw()
+{
+	for (auto& it : attributeList) {
+		(it)->Draw(); 
+	}
+}
+
 std::string FlyObject::GetName() const
 {
 	return name;
 }
 
-void FlyObject::AddAttribute(ObjectAttribute* newAttribute)
+void FlyObject::AddAttributeImage(const char* imageTexturePath)
 {
-	
+	AttributeImage* newAtrImage = new AttributeImage(); 
+
+	// General path to test on my laptop :)
+	std::string path = FileSystem::getInstance()->solutionDirectory; 
+	path += "EngineResources / Images / PlaceHolder.png";
+
+	newAtrImage->CreateImage(path.c_str());
 }

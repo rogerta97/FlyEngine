@@ -41,6 +41,13 @@ update_status ModuleWorldManager::PreUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
+update_status ModuleWorldManager::Update(float dt)
+{
+
+
+	return update_status();
+}
+
 update_status ModuleWorldManager::PostUpdate(float dt)
 {
 

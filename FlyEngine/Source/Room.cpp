@@ -155,11 +155,12 @@ int Room::GetEnterConnectionsAmount() const
 	return inRoomUIDs.size();
 }
 
-void Room::CreateFlyObject(std::string objectName)
+FlyObject* Room::CreateFlyObject(std::string objectName)
 {
 	FlyObject* newObject = new FlyObject(objectName); 
 	objectsInRoom.push_back(newObject); 
 	FLY_LOG("New Object Created"); 
+	return newObject; 
 }
 
 void Room::DeleteFlyObject()

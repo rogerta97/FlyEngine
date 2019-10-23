@@ -22,7 +22,7 @@ public:
 	void Draw(); 
 	void CleanUp(); 
 
-	bool SetImage(const char* texturePath); 
+	bool CreateImage(const char* texturePath); 
 
 	Quad* GetQuad() const;
 	Texture* GetTexture() const; 
