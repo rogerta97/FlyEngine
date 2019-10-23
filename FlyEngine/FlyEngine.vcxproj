@@ -70,6 +70,7 @@
     <ClInclude Include="3rdParty\mmgr\mmgr.h" />
     <ClInclude Include="3rdParty\mmgr\nommgr.h" />
     <ClInclude Include="3rdParty\PCGRandom\pcg_basic.h" />
+    <ClInclude Include="glmath.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\AttributeImage.h" />
     <ClInclude Include="Source\Color.h" />
@@ -79,6 +80,7 @@
     <ClInclude Include="Source\FlyObject.h" />
     <ClInclude Include="Source\GameViewportDockPanel.h" />
     <ClInclude Include="Source\Globals.h" />
+    <ClInclude Include="Source\ImGuiObjectCreatorPopup.h" />
     <ClInclude Include="Source\ImNodeDemo.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\ModuleWorldManager.h" />
@@ -178,7 +180,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;WINDOWS_IGNORE_PACKING_MISMATCH;SOLUTION_DIR=R"($(SolutionDir))"</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;$(SolutionDir)3rdParty/glm</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -211,7 +213,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;$(SolutionDir)3rdParty/glm</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

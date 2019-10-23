@@ -22,14 +22,17 @@ public:
 	void Draw(); 
 	void CleanUp(); 
 
-public:
+	bool SetImage(const char* texturePath); 
 
-	string		path; 
+	Quad* GetQuad() const;
+	Texture* GetTexture() const; 
 
-	float		imageWidth, imageHeight;
+private:
 	Quad*		quadMesh;
-	Texture*	texture;
-
+	Texture*	imageTexture;
+	
+	float		imageWidth; 
+	float		imageHeight; 
 };
 
 #endif 

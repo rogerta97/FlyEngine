@@ -1,6 +1,10 @@
 #ifndef _QUAD_H_
 #define _QUAD_H_
 
+#include "glm.hpp"
+
+using namespace glm; 
+
 class Quad
 {
 public: 
@@ -17,7 +21,7 @@ private:
 
 private: 
 
-	float3* vertices; 
+	vec3* vertices; 
 	int* indices;
 	//float* uvs; 
 
@@ -28,6 +32,9 @@ private:
 	unsigned int verticesID = -1;
 	unsigned int indicesID = -1;
 	//uint uvsID = -1;
+
+	float quadWidth; 
+	float quadHeight;
 };
 
 #endif

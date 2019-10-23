@@ -4,6 +4,7 @@
 #include "Room.h"
 #include "ModuleWorldManager.h"
 #include "mmgr.h"
+#include "ImGuiObjectCreatorPopup.h"
 
 GameViewportDockPanel::GameViewportDockPanel(bool isVisible) : DockPanel("Game Viewport", isVisible)
 {
@@ -47,17 +48,8 @@ void GameViewportDockPanel::ObjectCreatorPopup()
 {
 	if (ImGui::BeginPopup("create_flyobject"))
 	{
-		ImGui::Text("Object Generator: ");
-		ImGui::Separator();
-		ImGui::Separator();
 
-		static char newObjectName[256] = "Name...";
-		ImGui::InputText("Name", newObjectName, 256 * sizeof(char));
-
-		if (ImGui::Button("Create")) {
-			App->moduleWorldManager->GetSelectedRoom()->CreateFlyObject(newObjectName);
-			ImGui::CloseCurrentPopup();
-		}
+		ShowObjectCreatorPopup(); 
 
 		ImGui::EndPopup();
 	}

@@ -22,9 +22,9 @@ void Quad::Create(const float desiredWidth, const float desiredHeight)
 void Quad::SetQuadData(const float desiredWidth, const float desiredHeight)
 {
 	numVertices = 4;
-	vertices = new float3[numVertices];
+	vertices = new vec3[numVertices];
 
-	float2 half_size(1.0f, 1.0f); 
+	fvec2 half_size(1.0f, 1.0f); 
 
 	vertices[0] = { -half_size.x, half_size.y, 0 };
 	vertices[1] = { half_size.x, half_size.y, 0 };
