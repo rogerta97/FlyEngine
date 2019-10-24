@@ -4,7 +4,7 @@
 #include "ModuleInput.h"
 #include "ModuleImGui.h"
 #include "ModuleRender.h"
-#include "ModuleWorldManager.h"
+#include "ModuleRoomManager.h"
 #include "mmgr.h"
 
 Application::Application()
@@ -12,13 +12,13 @@ Application::Application()
 	moduleInput = new ModuleInput(this);
 	moduleWindow = new ModuleWindow(this);
 	moduleImGui = new ModuleImGui(this);
-	moduleWorldManager = new ModuleWorldManager(this); 
+	moduleRoomManager = new ModuleRoomManager(this);
 	moduleRender = new ModuleRender(this);
 
 	AddModule(moduleInput);
 	AddModule(moduleWindow);
 	AddModule(moduleImGui);
-	AddModule(moduleWorldManager);
+	AddModule(moduleRoomManager);
 	AddModule(moduleRender);
 }
 

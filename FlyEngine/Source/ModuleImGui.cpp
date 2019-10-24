@@ -1,7 +1,7 @@
 #include "ModuleImGui.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
-#include "ModuleWorldManager.h"
+#include "ModuleRoomManager.h"
 #include "Application.h"
 
 #include "imgui_internal.h"
@@ -57,8 +57,8 @@ bool ModuleImGui::Start()
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags = ImGuiConfigFlags_DockingEnable;
 	string fontsDirectory = FileSystem::getInstance()->solutionDirectory + "EngineResources/Fonts/Exo-Regular.otf";
-	engineFont = io.Fonts->AddFontFromFileTTF(fontsDirectory.c_str(), 17);
-	buttonFont = io.Fonts->AddFontFromFileTTF(fontsDirectory.c_str(), 24);
+	defaultFont = io.Fonts->AddFontFromFileTTF(fontsDirectory.c_str(), 17);
+	headerFont = io.Fonts->AddFontFromFileTTF(fontsDirectory.c_str(), 24);
 
 	CreatePanels();
 	SetStyle();
@@ -195,7 +195,7 @@ void ModuleImGui::DrawPanels()
 
 void ModuleImGui::AddaptToFlySection(FlyEngineSection flyEngineSection)
 {
-	if (flyEngineSection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && App->moduleWorldManager->GetSelectedRoom() == nullptr) {
+	if (flyEngineSection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && App->moduleRoomManager->GetSelectedRoom() == nullptr) {
 		FLY_ERROR("Room Editor can not open with any room selected"); 
 	}
 

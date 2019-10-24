@@ -4,7 +4,7 @@
 
 #include "Application.h"
 #include "Room.h"
-#include "ModuleWorldManager.h"
+#include "ModuleRoomManager.h"
 #include "mmgr.h"
 
 NodeGraph* NodeGraph::instance = 0;
@@ -217,10 +217,10 @@ void NodeGraph::CheckNewConnection()
 	if (ImNodes::GetNewConnection(&_dstNode, &_dstSlotName, &_originNode, &_originSlotName)) {
 
 		Node* originNode = (Node*)_originNode; 
-		Room* originRoom = App->moduleWorldManager->GetRoom(originNode->title); 
+		Room* originRoom = App->moduleRoomManager->GetRoom(originNode->title); 
 
 		Node* dstNode = (Node*)_dstNode;
-		Room* dstRoom = App->moduleWorldManager->GetRoom(dstNode->title);
+		Room* dstRoom = App->moduleRoomManager->GetRoom(dstNode->title);
 
 		originRoom->ConnectToRoom(dstRoom); 
 	}

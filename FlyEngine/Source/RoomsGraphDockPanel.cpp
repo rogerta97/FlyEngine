@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "ModuleInput.h"
-#include "ModuleWorldManager.h"
+#include "ModuleRoomManager.h"
 #include "RoomsGraphDockPanel.h"
 
 #include "imgui.h"
@@ -32,8 +32,8 @@ bool RoomsGraphDockPanel::Draw()
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
 		NodeGraph::Update();
 
-		if(App->moduleWorldManager->GetSelectedRoom() != nullptr && App->moduleInput->GetKey(SDL_SCANCODE_DELETE)){
-			App->moduleWorldManager->DeleteRoom(App->moduleWorldManager->GetSelectedRoom()->GetName()); 
+		if(App->moduleRoomManager->GetSelectedRoom() != nullptr && App->moduleInput->GetKey(SDL_SCANCODE_DELETE)){
+			App->moduleRoomManager->DeleteRoom(App->moduleRoomManager->GetSelectedRoom()->GetName()); 
 		}
 	}
 

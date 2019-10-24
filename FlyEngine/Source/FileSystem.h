@@ -21,7 +21,6 @@ public:
 
 public: 
 	std::string solutionDirectory; 
-
 };
 
 

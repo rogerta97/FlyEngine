@@ -1,5 +1,5 @@
 #include "RoomObjectsDockPanel.h"
-#include "ModuleWorldManager.h"
+#include "ModuleRoomManager.h"
 #include "Application.h"
 #include "Room.h"
 #include "FlyObject.h"
@@ -26,7 +26,7 @@ bool RoomObjectsDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible)) 
 	{		
-		for (auto& it : App->moduleWorldManager->GetSelectedRoom()->objectsInRoom) {	
+		for (auto& it : App->moduleRoomManager->GetSelectedRoom()->objectsInRoom) {	
 			ImGui::Selectable((it)->GetName().c_str()); 
 		}
 	}

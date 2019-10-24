@@ -4,7 +4,7 @@
 #include "RandomNumberGenerator.h"
 #include "Application.h"
 #include "FlyObject.h"
-#include "ModuleWorldManager.h"
+#include "ModuleRoomManager.h"
 
 Room::Room(string roomName)
 {
@@ -42,7 +42,7 @@ RoomConnection* Room::ConnectToRoom(Room* destinationRoom)
 	// Update Graph 
 	NodeGraph::getInstance()->ConnectNodes(GetName(), "Out", destinationRoom->GetName(), "In", newConnection->connectionID);
 	FLY_LOG("Room %s connected the LOGIC succesfuly with %s", roomName.c_str(), destinationRoom->GetName().c_str()); 
-	App->moduleWorldManager->connectionsInWorldAmount++; 
+	App->moduleRoomManager->connectionsInWorldAmount++; 
 	return newConnection;
 }
 
@@ -65,7 +65,7 @@ void Room::BreakOutputConnections()
 		delete it;
 	}
 
-	App->moduleWorldManager->connectionsInWorldAmount -= outConnections.size(); 
+	App->moduleRoomManager->connectionsInWorldAmount -= outConnections.size(); 
 	outConnections.clear(); 
 }
 
@@ -105,7 +105,7 @@ void Room::BreakOutputConnection(UID connectionToDelUID)
 
 			delete (*it);
 			it = outConnections.erase(it);
-			App->moduleWorldManager->connectionsInWorldAmount -= 1; 
+			App->moduleRoomManager->connectionsInWorldAmount -= 1; 
 			break; 
 		}
 		else
@@ -132,7 +132,7 @@ void Room::BreakEnterConnections()
 }
 void Room::BreakEnterConnection(UID roomToDelUID)
 {
-	Room* originRoom = App->moduleWorldManager->GetRoom(roomToDelUID);
+	Room* originRoom = App->moduleRoomManager->GetRoom(roomToDelUID);
 	originRoom->BreakOutputConnection(this); 
 }
 void Room::BreakEnterConnectionFromInRoomUIDs(UID roomToDelUID)

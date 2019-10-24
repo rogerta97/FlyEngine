@@ -41,8 +41,8 @@ public:
 	ConsoleDockPanel* consoleDockPanel;
 	GraphPropertiesDockPanel* graphPropertiesDockPanel; 
 
-	ImFont* engineFont;
-	ImFont* buttonFont;
+	ImFont* defaultFont;
+	ImFont* headerFont;
 
 private: 
 
@@ -50,7 +50,6 @@ private:
 	void SetStyle();
 	void DarkTheme();
 	void CherryTheme();
-
 
 	std::list<DockPanel*> dockPanels;
 	ImGuiID mainDock_ID = 0; 

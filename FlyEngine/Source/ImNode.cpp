@@ -25,7 +25,7 @@
 #endif
 
 #include "Application.h"
-#include "ModuleWorldManager.h"
+#include "ModuleRoomManager.h"
 #include "ImNode.h"
 
 #include "mmgr.h"
@@ -493,7 +493,7 @@ namespace ImNodes
 				{
 					impl->single_selected_node = node_id;
 					impl->do_selections_frame = ImGui::GetCurrentContext()->FrameCount + 1;
-					App->moduleWorldManager->SetSelectedRoom(nodeName); 
+					App->moduleRoomManager->SetSelectedRoom(nodeName); 
 				}
 			}
 			else if (ImGui::IsItemActive() && ImGui::IsMouseDragging(0))

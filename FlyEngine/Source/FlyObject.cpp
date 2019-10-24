@@ -36,7 +36,6 @@ void FlyObject::AddAttributeImage(const char* imageTexturePath)
 {
 	AttributeImage* newAtrImage = new AttributeImage(); 
 
-	// General path to test on my laptop :)
 	std::string path = FileSystem::getInstance()->solutionDirectory; 
 	path += "EngineResources / Images / PlaceHolder.png";
 

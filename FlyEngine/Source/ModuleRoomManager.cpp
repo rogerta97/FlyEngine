@@ -1,4 +1,4 @@
-#include "ModuleWorldManager.h"
+#include "ModuleRoomManager.h"
 #include "ModuleInput.h"
 #include "Application.h"
 #include "ModuleImGui.h"
@@ -9,18 +9,18 @@
 #include "FileSystem.h"
 #include "mmgr.h"
 
-ModuleWorldManager::ModuleWorldManager(bool start_enabled)
+ModuleRoomManager::ModuleRoomManager(bool start_enabled)
 {
 	moduleType = MODULE_ENGINE_MANAGER;
 	connectionsInWorldAmount = 0;
 	roomsInWoldAmount = 0;
 }
 
-ModuleWorldManager::~ModuleWorldManager()
+ModuleRoomManager::~ModuleRoomManager()
 {
 }
 
-bool ModuleWorldManager::Start()
+bool ModuleRoomManager::Start()
 {
 	Room* forestRoom = CreateEmptyRoom("Forest");
 	Room* Lake = CreateEmptyRoom("Lake");
@@ -36,19 +36,17 @@ bool ModuleWorldManager::Start()
 	return true;
 }
 
-update_status ModuleWorldManager::PreUpdate(float dt)
+update_status ModuleRoomManager::PreUpdate(float dt)
 {
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleWorldManager::Update(float dt)
+update_status ModuleRoomManager::Update(float dt)
 {
-
-
-	return update_status();
+	return UPDATE_CONTINUE;
 }
 
-update_status ModuleWorldManager::PostUpdate(float dt)
+update_status ModuleRoomManager::PostUpdate(float dt)
 {
 
 	if (App->moduleInput->GetKey(SDL_SCANCODE_S)) {
@@ -60,7 +58,7 @@ update_status ModuleWorldManager::PostUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-bool ModuleWorldManager::CleanUp()
+bool ModuleRoomManager::CleanUp()
 {
 	CleanUpRooms();
 	NodeGraph::getInstance()->DeleteAllConnections();
@@ -72,7 +70,7 @@ bool ModuleWorldManager::CleanUp()
 	return true;
 }
 
-Room* ModuleWorldManager::CreateEmptyRoom(string roomName)
+Room* ModuleRoomManager::CreateEmptyRoom(string roomName)
 {
 	Room* newRoom = new Room(roomName);
 	roomsInWorldList.push_back(newRoom);
@@ -80,7 +78,7 @@ Room* ModuleWorldManager::CreateEmptyRoom(string roomName)
 	return newRoom;
 }
 
-void ModuleWorldManager::DeleteRoom(string roomName)
+void ModuleRoomManager::DeleteRoom(string roomName)
 {
 	UID roomUID = GetRoom(roomName)->GetRoomID();
 
@@ -91,7 +89,7 @@ void ModuleWorldManager::DeleteRoom(string roomName)
 	DeleteRoom(roomUID);	
 }
 
-void ModuleWorldManager::DeleteRoom(UID roomID)
+void ModuleRoomManager::DeleteRoom(UID roomID)
 {
 	for (auto it = roomsInWorldList.begin(); it != roomsInWorldList.end(); it++) {
 
@@ -110,7 +108,7 @@ void ModuleWorldManager::DeleteRoom(UID roomID)
 	roomsInWoldAmount--;
 }
 
-void ModuleWorldManager::CleanUpRooms()
+void ModuleRoomManager::CleanUpRooms()
 {
 	for (auto it = roomsInWorldList.begin(); it != roomsInWorldList.end(); it++) {
 		(*it)->CleanUp();
@@ -121,7 +119,7 @@ void ModuleWorldManager::CleanUpRooms()
 	roomsInWoldAmount = 0;
 }
 
-const char* ModuleWorldManager::GetRoomsAsCombo(bool includeSelected)
+const char* ModuleRoomManager::GetRoomsAsCombo(bool includeSelected)
 {
 	string resultStr; 
 	for (auto& it : roomsInWorldList) {
@@ -136,7 +134,7 @@ const char* ModuleWorldManager::GetRoomsAsCombo(bool includeSelected)
 	return resultStr.c_str(); 
 }
 
-Room* ModuleWorldManager::GetRoom(std::string roomName) const
+Room* ModuleRoomManager::GetRoom(std::string roomName) const
 {
 	for (auto const& it : roomsInWorldList) {
 
@@ -145,11 +143,11 @@ Room* ModuleWorldManager::GetRoom(std::string roomName) const
 		}
 	}
 
-	FLY_ERROR("Room with name %s in ModuleWorldManager::GetRoom() could not be found", roomName.c_str());
+	FLY_ERROR("Room with name %s in ModuleRoomManager::GetRoom() could not be found", roomName.c_str());
 	return nullptr;
 }
 
-Room* ModuleWorldManager::GetRoom(UID roomID) const
+Room* ModuleRoomManager::GetRoom(UID roomID) const
 {
 	for (auto const& it : roomsInWorldList) {
 
@@ -158,16 +156,16 @@ Room* ModuleWorldManager::GetRoom(UID roomID) const
 		}
 	}
 
-	FLY_ERROR("Room with ID %f in ModuleWorldManager::GetRoom() could not be found", roomID);
+	FLY_ERROR("Room with ID %f in ModuleRoomManager::GetRoom() could not be found", roomID);
 	return nullptr;
 }
 
-int ModuleWorldManager::GetRoomsAmount() const
+int ModuleRoomManager::GetRoomsAmount() const
 {
 	return roomsInWoldAmount;
 }
 
-void ModuleWorldManager::SetSelectedRoom(Room* nextSelectedRoom)
+void ModuleRoomManager::SetSelectedRoom(Room* nextSelectedRoom)
 {
 	if (nextSelectedRoom != nullptr) {
 		selectedRoom = nextSelectedRoom;
@@ -175,17 +173,17 @@ void ModuleWorldManager::SetSelectedRoom(Room* nextSelectedRoom)
 	}
 }
 
-void ModuleWorldManager::SetSelectedRoom(UID selectedRoomUID)
+void ModuleRoomManager::SetSelectedRoom(UID selectedRoomUID)
 {
 	SetSelectedRoom(GetRoom(selectedRoomUID)); 
 }
 
-void ModuleWorldManager::SetSelectedRoom(std::string roomName)
+void ModuleRoomManager::SetSelectedRoom(std::string roomName)
 {
 	SetSelectedRoom(GetRoom(roomName)); 
 }
 
-Room* ModuleWorldManager::GetSelectedRoom() const
+Room* ModuleRoomManager::GetSelectedRoom() const
 {
 	return selectedRoom;
 }

@@ -64,8 +64,11 @@
     <Filter Include="Source\FlyEngine\FlyObject">
       <UniqueIdentifier>{da051c03-cb85-4c57-b1cb-1ef31e851259}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\FlyEngine\ObjectAttributes">
+    <Filter Include="Source\FlyEngine\FlyObject\ObjectAttributes">
       <UniqueIdentifier>{e73d5c5c-e2db-4166-a6ab-65a38df89321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\FlyEngine\Managers">
+      <UniqueIdentifier>{70bed84a-47fc-4a41-883e-4799d2991502}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -141,9 +144,6 @@
     <ClCompile Include="Source\ImNodeEz.cpp">
       <Filter>Source\3rdParty\ImNode</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleWorldManager.cpp">
-      <Filter>Source\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Source\NodeGraph.cpp">
       <Filter>Source\Tools\NodeGraph</Filter>
     </ClCompile>
@@ -172,13 +172,19 @@
       <Filter>Source\FlyEngine\FlyObject</Filter>
     </ClCompile>
     <ClCompile Include="Source\ObjectAttribute.cpp">
-      <Filter>Source\FlyEngine\ObjectAttributes</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClCompile>
     <ClCompile Include="Source\AttributeImage.cpp">
-      <Filter>Source\FlyEngine\ObjectAttributes</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClCompile>
     <ClCompile Include="Source\Quad.cpp">
       <Filter>Source\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleRoomManager.cpp">
+      <Filter>Source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ViewportManager.cpp">
+      <Filter>Source\FlyEngine\Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -266,9 +272,6 @@
     <ClInclude Include="Source\ImNodeEz.h">
       <Filter>Source\3rdParty\ImNode</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ModuleWorldManager.h">
-      <Filter>Source\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Source\NodeGraph.h">
       <Filter>Source\Tools\NodeGraph</Filter>
     </ClInclude>
@@ -303,16 +306,22 @@
       <Filter>Source\FlyEngine\FlyObject</Filter>
     </ClInclude>
     <ClInclude Include="Source\ObjectAttribute.h">
-      <Filter>Source\FlyEngine\ObjectAttributes</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClInclude>
     <ClInclude Include="Source\AttributeImage.h">
-      <Filter>Source\FlyEngine\ObjectAttributes</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClInclude>
     <ClInclude Include="Source\Quad.h">
       <Filter>Source\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="glmath.h">
       <Filter>Source\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleRoomManager.h">
+      <Filter>Source\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ViewportManager.h">
+      <Filter>Source\FlyEngine\Managers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

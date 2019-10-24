@@ -18,7 +18,6 @@ public:
 public:
 
 	SDL_GLContext context;
-
 };
 
 #endif

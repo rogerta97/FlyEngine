@@ -20,13 +20,13 @@ class ModuleWindow;
 class ModuleInput;
 class ModuleImGui;
 class ModuleRender;
-class ModuleWorldManager;
+class ModuleRoomManager;
 
 class Application
 {
 public:
 
-	ModuleWorldManager* moduleWorldManager; 
+	ModuleRoomManager* moduleRoomManager; 
 	ModuleWindow* moduleWindow;
 	ModuleInput* moduleInput;
 	ModuleImGui* moduleImGui;

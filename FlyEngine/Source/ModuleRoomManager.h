@@ -11,11 +11,11 @@ using namespace std;
 
 class Room; 
 class RoomConnection; 
-class ModuleWorldManager : public Module
+class ModuleRoomManager : public Module
 {
 public:
-	ModuleWorldManager(bool start_enabled = true);
-	~ModuleWorldManager();
+	ModuleRoomManager(bool start_enabled = true);
+	~ModuleRoomManager();
 
 	// Module
 	bool Start();

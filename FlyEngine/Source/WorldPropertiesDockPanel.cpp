@@ -1,6 +1,6 @@
 #include "WorldPropertiesDockPanel.h"
 #include "Application.h"
-#include "ModuleWorldManager.h"
+#include "ModuleRoomManager.h"
 #include "ModuleImGui.h"
 #include "ModuleInput.h"
 #include "imgui.h"
@@ -31,8 +31,8 @@ bool WorldPropertiesDockPanel::Draw()
 		ImGui::Separator();
 		ImGui::Separator(); 
 
-		if (App->moduleWorldManager->GetSelectedRoom() != nullptr) {
-			Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom();
+		if (App->moduleRoomManager->GetSelectedRoom() != nullptr) {
+			Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
 			PrintRoomInfo(selectedRoom);
 		}
 	}
@@ -75,7 +75,7 @@ void WorldPropertiesDockPanel::PrintRoomInfo(Room* selectedRoom)
 			if (ImGui::TreeNode("Enter Connections")) {
 
 				for (auto& it : selectedRoom->inRoomUIDs) {
-					ImGui::Selectable(App->moduleWorldManager->GetRoom(it)->GetName().c_str());
+					ImGui::Selectable(App->moduleRoomManager->GetRoom(it)->GetName().c_str());
 				}
 
 				ImGui::TreePop();
@@ -102,8 +102,8 @@ void WorldPropertiesDockPanel::NewConnectionButtonHandler()
 
 		if (ImGui::Button("Connect")) 
 		{
-			list<Room*>::iterator itOrigin = std::next(App->moduleWorldManager->roomsInWorldList.begin(), originRoomSelected);
-			list<Room*>::iterator itDst = std::next(App->moduleWorldManager->roomsInWorldList.begin(), destinationRoomSelected);
+			list<Room*>::iterator itOrigin = std::next(App->moduleRoomManager->roomsInWorldList.begin(), originRoomSelected);
+			list<Room*>::iterator itDst = std::next(App->moduleRoomManager->roomsInWorldList.begin(), destinationRoomSelected);
 
 			Room* originRoom = (*itOrigin);
 			Room* dstRoom = (*itDst);
@@ -126,7 +126,7 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 	for (auto it : NodeGraph::getInstance()->GetNodeList()) {
 
 		if (ImGui::Selectable(it->title.c_str(), &it->selected)) {
-			App->moduleWorldManager->SetSelectedRoom(it->title);
+			App->moduleRoomManager->SetSelectedRoom(it->title);
 		}
 	}
 
@@ -142,10 +142,10 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 	// Delete Room Button
 	ImGui::SameLine();
 	if (ImGui::Button("Delete")) {
-		Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom();
+		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
 		if (selectedRoom != nullptr)
 		{
-			App->moduleWorldManager->DeleteRoom(selectedRoom->GetRoomID());
+			App->moduleRoomManager->DeleteRoom(selectedRoom->GetRoomID());
 			selectedRoom = nullptr;
 		}
 	}
@@ -175,7 +175,7 @@ void WorldPropertiesDockPanel::ShowNewRoomUI()
 		}
 
 		if (createThisTick) {
-			App->moduleWorldManager->CreateEmptyRoom(newRoomBuffer);
+			App->moduleRoomManager->CreateEmptyRoom(newRoomBuffer);
 			newRoomBuffer = "Room Name...";
 			ImGui::CloseCurrentPopup();		
 		}

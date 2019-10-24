@@ -2,7 +2,8 @@
 #include "imgui.h"
 #include "Application.h"
 #include "Room.h"
-#include "ModuleWorldManager.h"
+#include "ModuleImGui.h"
+#include "ModuleRoomManager.h"
 #include "mmgr.h"
 #include "FlyObject.h"
 
@@ -48,27 +49,40 @@ void GameViewportDockPanel::ObjectCreatorPopup()
 {
 	if (ImGui::BeginPopup("create_flyobject"))
 	{
+		ImGui::PushFont(App->moduleImGui->headerFont);
 		ImGui::Text("Object Generator: ");
-		ImGui::Separator();
-		ImGui::Separator();
+		ImGui::Separator(); 
+		ImGui::PopFont(); 
 
 		static char newObjectName[256] = "Name...";
 		ImGui::InputText("Name", newObjectName, 256 * sizeof(char));
 
+		ImGui::PushFont(App->moduleImGui->headerFont);
 		ImGui::Separator();
+		ImGui::Text("Attributes: "); 
+		ImGui::PopFont();
 
-		static bool setImage;
-		ImGui::Checkbox("Image", &setImage);
+		static bool containsAttributeImage;
+		ImGui::Checkbox("Image", &containsAttributeImage);
 
+		if (containsAttributeImage) 
+		{
+			ImGui::Separator();
+			if(ImGui::CollapsingHeader("Attribute Image Configuration")) 
+			{
+				static float dimensions[2]; 
+				ImGui::InputFloat2("width", dimensions);
+			}
+		}
+
+		ImGui::Separator(); 
 		if (ImGui::Button("Create")) 
 		{
-			FlyObject* newObject = App->moduleWorldManager->GetSelectedRoom()->CreateFlyObject(newObjectName);
-
-
+			FlyObject* newObject = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject(newObjectName);
+			if (containsAttributeImage) newObject->AddAttributeImage("Path"); 
 
 			ImGui::CloseCurrentPopup();
 		}
-		
 		ImGui::EndPopup();
 	}
 }

@@ -37,7 +37,8 @@
     <ClCompile Include="Source\GameViewportDockPanel.cpp" />
     <ClCompile Include="Source\log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
-    <ClCompile Include="Source\ModuleWorldManager.cpp" />
+    <ClCompile Include="Source\ViewportManager.cpp" />
+    <ClCompile Include="Source\ModuleRoomManager.cpp" />
     <ClCompile Include="Source\ModuleImGui.cpp" />
     <ClCompile Include="Source\ModuleInput.cpp" />
     <ClCompile Include="Source\ModuleRender.cpp" />
@@ -82,7 +83,8 @@
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\ImNodeDemo.h" />
     <ClInclude Include="Source\Module.h" />
-    <ClInclude Include="Source\ModuleWorldManager.h" />
+    <ClInclude Include="Source\ViewportManager.h" />
+    <ClInclude Include="Source\ModuleRoomManager.h" />
     <ClInclude Include="Source\ModuleImGui.h" />
     <ClInclude Include="Source\ModuleInput.h" />
     <ClInclude Include="Source\ModuleRender.h" />

@@ -7,6 +7,8 @@
 
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
+#include "ModuleRoomManager.h"
+#include "ViewportManager.h"
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "3rdParty/Glew/libx86/glew32.lib")
@@ -63,6 +65,7 @@ update_status ModuleRender::PreUpdate(float dt)
 
 update_status ModuleRender::PostUpdate(float dt)
 {
+	ViewportManager::getInstance()->Draw(); 
 	SDL_GL_SwapWindow(App->moduleWindow->mainWindow);
 	return UPDATE_CONTINUE;
 }
