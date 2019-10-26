@@ -53,6 +53,9 @@ public:
 	int GetEnterConnectionsAmount() const;
 	int GetOutputConnectionsAmount() const;
 
+	// Draw ---------------------------------------------------------------------------
+	void DrawRoomObjects(); 
+
 	// Factory ------------------------------------------------------------------------
 	FlyObject* CreateFlyObject(std::string objectName); 
 	void DeleteFlyObject();

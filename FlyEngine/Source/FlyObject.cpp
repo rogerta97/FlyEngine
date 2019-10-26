@@ -40,4 +40,6 @@ void FlyObject::AddAttributeImage(const char* imageTexturePath)
 	path += "EngineResources / Images / PlaceHolder.png";
 
 	newAtrImage->CreateImage(path.c_str());
+
+	attributeList.push_back(newAtrImage); 
 }

@@ -1,6 +1,7 @@
 #ifndef _VIEWPORT_MANAGER_H_
 #define _VIEWPORT_MANAGER_H_
 
+class TextureMSAA; 
 struct ViewportManager {
 
 private:
@@ -12,9 +13,10 @@ public:
 	~ViewportManager();
 	void Delete();
 
-	void Draw(); 
+	void DrawRoomViewport(); 
 
 public:
+	TextureMSAA* viewportTexture;
 
 };
 

@@ -61,8 +61,7 @@ update_status ModuleRoomManager::PostUpdate(float dt)
 bool ModuleRoomManager::CleanUp()
 {
 	CleanUpRooms();
-	NodeGraph::getInstance()->DeleteAllConnections();
-	NodeGraph::getInstance()->DeleteAllNodes();
+
 
 	FileSystem::getInstance()->Delete();
 	RandomNumberGenerator::getInstance()->Delete();

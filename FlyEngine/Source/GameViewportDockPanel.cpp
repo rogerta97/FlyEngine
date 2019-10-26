@@ -1,11 +1,17 @@
 #include "GameViewportDockPanel.h"
 #include "imgui.h"
 #include "Application.h"
+#include "TextureMSAA.h"
+#include "OpenGL.h"
 #include "Room.h"
 #include "ModuleImGui.h"
 #include "ModuleRoomManager.h"
 #include "mmgr.h"
+#include "ViewportManager.h"
 #include "FlyObject.h"
+
+
+
 
 GameViewportDockPanel::GameViewportDockPanel(bool isVisible) : DockPanel("Game Viewport", isVisible)
 {
@@ -19,7 +25,6 @@ GameViewportDockPanel::~GameViewportDockPanel()
 
 bool GameViewportDockPanel::Draw()
 {
-
 #pragma region secutiryChecks
 	if (!DockPanel::Draw())
 		return false;
@@ -27,6 +32,7 @@ bool GameViewportDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_MenuBar)) {
 		
+		glEnable(GL_TEXTURE_2D);
 		if (ImGui::BeginMenuBar()) 
 		{
 			if (ImGui::Button("Create Object")) {
@@ -38,8 +44,13 @@ bool GameViewportDockPanel::Draw()
 			ImGui::EndMenuBar(); 
 		}
 
-		ImGui::Image(0, ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y - 60));
+		//FLY_LOG("Texture ID: %d", ViewportManager::getInstance()->viewportTexture->GetTextureID()); 
+		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y - 60));
 	}
+	glDisable(GL_TEXTURE_2D);
+
+	ViewportManager::getInstance()->viewportTexture->Render();
+	ViewportManager::getInstance()->viewportTexture->Unbind();
 
 	ImGui::End();
 	return true; 
@@ -79,7 +90,9 @@ void GameViewportDockPanel::ObjectCreatorPopup()
 		if (ImGui::Button("Create")) 
 		{
 			FlyObject* newObject = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject(newObjectName);
-			if (containsAttributeImage) newObject->AddAttributeImage("Path"); 
+
+			if (containsAttributeImage) 
+				newObject->AddAttributeImage("Path"); 
 
 			ImGui::CloseCurrentPopup();
 		}

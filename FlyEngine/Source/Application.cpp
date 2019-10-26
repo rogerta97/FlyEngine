@@ -17,9 +17,10 @@ Application::Application()
 
 	AddModule(moduleInput);
 	AddModule(moduleWindow);
-	AddModule(moduleImGui);
+
 	AddModule(moduleRoomManager);
 	AddModule(moduleRender);
+	AddModule(moduleImGui);
 }
 
 Application::~Application()

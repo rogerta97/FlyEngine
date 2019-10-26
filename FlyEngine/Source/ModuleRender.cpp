@@ -5,7 +5,9 @@
 #include <gl/GLU.h>
 #include "imgui.h"
 
+#include "TextureMSAA.h"
 #include "ModuleRender.h"
+#include "Room.h"
 #include "ModuleWindow.h"
 #include "ModuleRoomManager.h"
 #include "ViewportManager.h"
@@ -65,7 +67,17 @@ update_status ModuleRender::PreUpdate(float dt)
 
 update_status ModuleRender::PostUpdate(float dt)
 {
-	ViewportManager::getInstance()->Draw(); 
+	
+	ViewportManager::getInstance()->viewportTexture->Bind();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(50, 0, 0, 255); 
+
+	if (App->flySection == FLY_SECTION_ROOM_EDIT) {
+
+		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+		selectedRoom->DrawRoomObjects();
+	}
+
 	SDL_GL_SwapWindow(App->moduleWindow->mainWindow);
 	return UPDATE_CONTINUE;
 }

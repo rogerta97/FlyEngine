@@ -43,6 +43,9 @@ void Quad::SetQuadData(const float desiredWidth, const float desiredHeight)
 	indices[4] = 2;
 	indices[5] = 3;
 
+	quadWidth = desiredWidth;
+	quadHeight = desiredHeight;
+
 	//numUvs = numVertices;
 	//uvs = new float[numUvs * 3];
 

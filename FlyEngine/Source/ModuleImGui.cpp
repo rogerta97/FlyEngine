@@ -62,6 +62,9 @@ bool ModuleImGui::Start()
 
 	CreatePanels();
 	SetStyle();
+
+	AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
+
 	return true; 
 }
 
@@ -105,6 +108,17 @@ update_status ModuleImGui::PreUpdate(float dt)
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->moduleWindow->mainWindow);
 	ImGui::NewFrame();
+
+	return update_status::UPDATE_CONTINUE;
+}
+
+update_status ModuleImGui::PostUpdate(float dt)
+{
+	//DrawDockSpace();
+
+	//ImGui::Render();
+
+	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	return update_status::UPDATE_CONTINUE;
 }
@@ -222,9 +236,9 @@ DockPanel* ModuleImGui::GetDockPanel(DockPanelType panelType)
 
 update_status ModuleImGui::Update(float dt)
 {
-	DrawDockSpace(); 
 
-	
+	DrawDockSpace();
+
 	ImGui::Render();
 
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -235,7 +249,11 @@ update_status ModuleImGui::Update(float dt)
 bool ModuleImGui::CleanUp()
 {
 	DeletePanels(); 
+	NodeGraph::getInstance()->DeleteAllConnections();
+	NodeGraph::getInstance()->DeleteAllNodes();
+
 	ImGui_ImplSDL2_Shutdown(); 
+
 	return true;
 }
 

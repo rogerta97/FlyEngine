@@ -1,9 +1,11 @@
 #include "Room.h"
 #include "Globals.h"
 #include "NodeGraph.h"
+#include "ViewportManager.h"
 #include "RandomNumberGenerator.h"
 #include "Application.h"
 #include "FlyObject.h"
+#include "TextureMSAA.h"
 #include "ModuleRoomManager.h"
 
 Room::Room(string roomName)
@@ -148,6 +150,14 @@ void Room::BreakEnterConnectionFromInRoomUIDs(UID roomToDelUID)
 int Room::GetOutputConnectionsAmount() const
 {
 	return outConnections.size();
+}
+
+void Room::DrawRoomObjects()
+{
+	for (auto& it : objectsInRoom) {
+		(it)->Draw(); 
+	}
+
 }
 
 int Room::GetEnterConnectionsAmount() const

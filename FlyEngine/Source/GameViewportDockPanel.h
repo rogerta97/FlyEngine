@@ -2,6 +2,8 @@
 #define _GAMEVIEWPORTDOCKPANEL_H_
 
 #include "DockPanel.h"
+
+class TextureMSAA; 
 class GameViewportDockPanel : public DockPanel
 {
 public: 
@@ -12,6 +14,9 @@ public:
 	bool Draw();
 
 	void ObjectCreatorPopup();
+
+private: 
+
 
 };
 
