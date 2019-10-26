@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Globals.h"
 
+#include "OpenGL.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "imgui.h"
@@ -8,6 +9,7 @@
 #include "TextureMSAA.h"
 #include "ModuleRender.h"
 #include "Room.h"
+
 #include "ModuleWindow.h"
 #include "ModuleRoomManager.h"
 #include "ViewportManager.h"
@@ -42,12 +44,11 @@ bool ModuleRender::Init()
 
 	ImGui::CreateContext();
 
-
 	if (VSYNC && SDL_GL_SetSwapInterval(1) < 0)
 		LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 
-	glClearDepth(1.0f);
-	glClearColor(0.f, 0.f, 0.f, 1.f);
+	glPolygonMode(GL_FRONT, GL_LINE);
+	glOrtho(-1, 1, -1, 1, -1, 1);
 
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR)
@@ -61,24 +62,30 @@ bool ModuleRender::Init()
 
 update_status ModuleRender::PreUpdate(float dt)
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleRender::PostUpdate(float dt)
 {
-	
-	ViewportManager::getInstance()->viewportTexture->Bind();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(50, 0, 0, 255); 
+	//ViewportManager::getInstance()->viewportTexture->Bind();
 
-	if (App->flySection == FLY_SECTION_ROOM_EDIT) {
+	glClearColor(0.2f, 0, 0, 1);
 
-		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
-		selectedRoom->DrawRoomObjects();
-	}
+	glBegin(GL_TRIANGLES);
+	glVertex3f(1.0f, 1.0f, 0.0f);
+	glVertex3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(-1.0f, -1.0f, 1.0f);
+	glEnd();
+
+	GLenum err = glGetError(); 
+	if (err != GL_NO_ERROR)
+		FLY_ERROR("Open GL Error: %d", err); 
+
 
 	SDL_GL_SwapWindow(App->moduleWindow->mainWindow);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	return UPDATE_CONTINUE;
 }
 

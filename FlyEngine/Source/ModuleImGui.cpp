@@ -237,7 +237,7 @@ DockPanel* ModuleImGui::GetDockPanel(DockPanelType panelType)
 update_status ModuleImGui::Update(float dt)
 {
 
-	DrawDockSpace();
+	//DrawDockSpace();
 
 	ImGui::Render();
 

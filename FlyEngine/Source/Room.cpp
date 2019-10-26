@@ -157,7 +157,6 @@ void Room::DrawRoomObjects()
 	for (auto& it : objectsInRoom) {
 		(it)->Draw(); 
 	}
-
 }
 
 int Room::GetEnterConnectionsAmount() const
