@@ -30,10 +30,7 @@ void AttributeImage::Draw()
 	glBindBuffer(GL_ARRAY_BUFFER, quadMesh->verticesID); 
 	glVertexPointer(3, GL_FLOAT, 0, NULL); 
 
-	glLoadIdentity(); 
-
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadMesh->indicesID);
-	glColor3f(0, 50, 0); 
 	glDrawElements(GL_TRIANGLES, quadMesh->numIndices, GL_UNSIGNED_INT, NULL); 
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

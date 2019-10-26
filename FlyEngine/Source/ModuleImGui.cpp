@@ -10,6 +10,8 @@
 
 #include "ConsoleDockPanel.h"
 #include "RoomsGraphDockPanel.h"
+#include "ViewportManager.h"
+#include "TextureMSAA.h"
 #include "WorldPropertiesDockPanel.h"
 #include "GraphPropertiesDockPanel.h"
 #include "FileSystem.h"
@@ -119,6 +121,9 @@ update_status ModuleImGui::PostUpdate(float dt)
 	//ImGui::Render();
 
 	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+
+
 
 	return update_status::UPDATE_CONTINUE;
 }
@@ -238,6 +243,12 @@ update_status ModuleImGui::Update(float dt)
 {
 
 	//DrawDockSpace();
+	ImGui::Begin("test");
+
+	ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(500, 500), ImVec2(1, 1), ImVec2(0, 0));
+
+
+	ImGui::End();
 
 	ImGui::Render();
 

@@ -47,8 +47,8 @@ bool ModuleRender::Init()
 	if (VSYNC && SDL_GL_SetSwapInterval(1) < 0)
 		LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 
-	glPolygonMode(GL_FRONT, GL_LINE);
-	glOrtho(-1, 1, -1, 1, -1, 1);
+	glPolygonMode(GL_FRONT, GL_FILL);
+	glOrtho(-2, 2, -2, 2, -2, 2);
 
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR)
@@ -62,7 +62,6 @@ bool ModuleRender::Init()
 
 update_status ModuleRender::PreUpdate(float dt)
 {
-	
 	return UPDATE_CONTINUE;
 }
 
@@ -70,18 +69,17 @@ update_status ModuleRender::PostUpdate(float dt)
 {
 	//ViewportManager::getInstance()->viewportTexture->Bind();
 
-	glClearColor(0.2f, 0, 0, 1);
+	if (App->flySection == FLY_SECTION_ROOM_EDIT) {
+		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom(); 
+		selectedRoom->DrawRoomObjects();
+	}
 
-	glBegin(GL_TRIANGLES);
-	glVertex3f(1.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(-1.0f, -1.0f, 1.0f);
-	glEnd();
+	//ViewportManager::getInstance()->viewportTexture->Render();
+	//ViewportManager::getInstance()->viewportTexture->Unbind();
 
 	GLenum err = glGetError(); 
 	if (err != GL_NO_ERROR)
 		FLY_ERROR("Open GL Error: %d", err); 
-
 
 	SDL_GL_SwapWindow(App->moduleWindow->mainWindow);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

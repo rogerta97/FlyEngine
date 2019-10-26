@@ -32,8 +32,6 @@ bool GameViewportDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_MenuBar)) {
 		
-		glEnable(GL_TEXTURE_2D);
-
 		if (ImGui::BeginMenuBar()) 
 		{
 			if (ImGui::Button("Create Object")) {
@@ -43,13 +41,9 @@ bool GameViewportDockPanel::Draw()
 			ObjectCreatorPopup();
 			ImGui::EndMenuBar(); 
 		}
+
 		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y - 60));
 	}
-
-	glDisable(GL_TEXTURE_2D);
-
-	ViewportManager::getInstance()->viewportTexture->Render();
-	ViewportManager::getInstance()->viewportTexture->Unbind();
 
 	ImGui::End();
 	return true; 
