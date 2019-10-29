@@ -7,10 +7,16 @@
 #include <windows.h>
 #include <stdio.h>
 
+
 enum consoleMessageType {
 	CM_DEBUG,
 	CM_WARNING,
 	CM_ERROR
+};
+
+enum FlyEngineEvent
+{
+	WINDOW_RESIZED, 
 };
 
 #define LOG(format, ...) log(__FILE__, __LINE__, CM_DEBUG, format, __VA_ARGS__)
@@ -28,7 +34,6 @@ void flyLog(const char file[], int line, consoleMessageType messageType, const c
 #define RADTODEG 57.295779513082320876f
 #define HAVE_M_PI
 
-
 typedef unsigned int uint;
 typedef long double UID; 
 
@@ -42,8 +47,8 @@ enum update_status
 #define IMGUI_SPACE_SEPARATOR ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
 
 // Configuration -----------
-#define SCREEN_WIDTH 1550
-#define SCREEN_HEIGHT 950
+#define SCREEN_WIDTH 1300
+#define SCREEN_HEIGHT 975
 #define SCREEN_SIZE 1
 #define WIN_FULLSCREEN false
 #define WIN_RESIZABLE true

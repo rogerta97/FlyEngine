@@ -11,12 +11,12 @@
 #include "FlyObject.h"
 
 
-
-
 GameViewportDockPanel::GameViewportDockPanel(bool isVisible) : DockPanel("Game Viewport", isVisible)
 {
 	flyEngineSection = FLY_SECTION_ROOM_EDIT;
 	dockPanelType = DOCK_GAME_VIEWPORT;
+
+	topBarWidth = 60; 
 }
 
 GameViewportDockPanel::~GameViewportDockPanel()
@@ -32,21 +32,68 @@ bool GameViewportDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_MenuBar)) {
 		
-		if (ImGui::BeginMenuBar()) 
-		{
-			if (ImGui::Button("Create Object")) {
-				ImGui::OpenPopup("create_flyobject"); 
-			}
+		DrawTopBar();
 
-			ObjectCreatorPopup();
-			ImGui::EndMenuBar(); 
-		}
+		regionSize = vec2(ImGui::GetWindowContentRegionMax().x, ImGui::GetWindowContentRegionMax().y - topBarWidth);
 
-		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y - 60));
+		vec2 screenCenter = vec2(regionSize.x / 2, regionSize.y / 2); 
+		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - viewportSize.y / 2));
+
+		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(viewportSize.x, viewportSize.y));
 	}
 
 	ImGui::End();
 	return true; 
+}
+
+void GameViewportDockPanel::ReceiveEvent(FlyEngineEvent eventType)
+{
+	
+	switch (eventType)
+	{
+		case WINDOW_RESIZED:
+		{
+			viewportSize.x = regionSize.x; 
+			viewportSize.y = ViewportManager::getInstance()->GetHeightFromWidth(viewportSize.x); 
+
+			if (viewportSize.y > regionSize.y) 
+			{
+				viewportSize.y = regionSize.y; 
+				viewportSize.x = ViewportManager::getInstance()->GetWidthFromHeight(viewportSize.y);
+			}
+
+			FLY_LOG("Region Size: %f , %f", regionSize.x, regionSize.y);
+			FLY_LOG("Viewport Size: %f , %f", viewportSize.x, viewportSize.y);
+			break;
+		}
+	}
+
+
+}
+
+void GameViewportDockPanel::DrawTopBar()
+{
+	if (ImGui::BeginMenuBar())
+	{
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+
+		ImGui::PushItemWidth(150);
+		if (ImGui::Button("Create Object")) {
+			ImGui::OpenPopup("create_flyobject");
+		}
+		ImGui::PopStyleColor(); 
+
+		ImGui::PushItemWidth(150);
+		static int resolutionSelected = 0; 
+		if (ImGui::Combo("", &resolutionSelected, "4:3\0")) {
+
+		}
+		ImGui::PopItemWidth(); 
+
+
+		ObjectCreatorPopup();
+		ImGui::EndMenuBar();
+	}
 }
 
 void GameViewportDockPanel::ObjectCreatorPopup()
@@ -91,4 +138,14 @@ void GameViewportDockPanel::ObjectCreatorPopup()
 		}
 		ImGui::EndPopup();
 	}
+}
+
+glm::vec2 GameViewportDockPanel::GetRegionSize() const
+{
+	return regionSize;
+}
+
+glm::vec2 GameViewportDockPanel::GetViewportSize() const
+{
+	return viewportSize;
 }

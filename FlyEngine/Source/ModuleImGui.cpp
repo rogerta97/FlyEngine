@@ -78,23 +78,24 @@ void ModuleImGui::CreatePanels()
 	ConsoleDockPanel* consolePanel = new ConsoleDockPanel(true);
 	RoomsGraphDockPanel* roomsGraphPanel = new RoomsGraphDockPanel(true);
 	GraphPropertiesDockPanel* graphPropertiesPanel = new GraphPropertiesDockPanel(true);
-	WorldPropertiesDockPanel* worldPropertiesDockPanel = new WorldPropertiesDockPanel(true);
+	WorldPropertiesDockPanel* roomPropertiesPanel = new WorldPropertiesDockPanel(true);
 
-	GameViewportDockPanel* gameViewportDockPanel = new GameViewportDockPanel(false);
+	GameViewportDockPanel* gameViewporPanel = new GameViewportDockPanel(false);
 	RoomObjectsDockPanel* roomObjectsDockPanel = new RoomObjectsDockPanel(false);
 	ObjectPropertiesDockPanel* objectPropertiesDockPanel = new ObjectPropertiesDockPanel(false);
 
 	dockPanels.push_back(consolePanel); 
 	dockPanels.push_back(roomsGraphPanel);
 	dockPanels.push_back(graphPropertiesPanel);
-	dockPanels.push_back(worldPropertiesDockPanel); 
+	dockPanels.push_back(roomPropertiesPanel); 
 
-	dockPanels.push_back(gameViewportDockPanel);
+	dockPanels.push_back(gameViewporPanel);
 	dockPanels.push_back(roomObjectsDockPanel);
 	dockPanels.push_back(objectPropertiesDockPanel);
 
 	consoleDockPanel = consolePanel; 
-	graphPropertiesDockPanel = graphPropertiesPanel; 
+	graphPropertiesDockPanel = graphPropertiesPanel;
+	gameViewportDockPanel = gameViewporPanel;
 }
 
 void ModuleImGui::DeletePanels()
@@ -232,14 +233,17 @@ update_status ModuleImGui::PostUpdate(float dt)
 {
 	DrawDockSpace();
 
-	ImGui::Begin("test");
-	ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(500, 500), ImVec2(1, 1), ImVec2(0, 0));
-	ImGui::End();
-
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	return update_status::UPDATE_CONTINUE;
+}
+
+void ModuleImGui::ReceiveEvent(FlyEngineEvent eventType)
+{
+	for (auto& it : dockPanels) {
+		(it)->ReceiveEvent(eventType); 
+	}
 }
 
 bool ModuleImGui::CleanUp()

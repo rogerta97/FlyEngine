@@ -1,7 +1,9 @@
 #include "ViewportManager.h"
 #include "Application.h"
 #include "ModuleRoomManager.h"
+#include "GameViewportDockPanel.h"
 #include "ModuleWindow.h"
+#include "ModuleImGui.h"
 #include "Room.h"
 #include "TextureMSAA.h"
 
@@ -11,6 +13,8 @@ ViewportManager::ViewportManager()
 {
 	viewportTexture = new TextureMSAA();
 	viewportTexture->Create(App->moduleWindow->screen_surface->w, App->moduleWindow->screen_surface->h, 2);
+	
+	viewportAspectRatio = AR_4_3; 
 }
 
 ViewportManager* ViewportManager::getInstance()
@@ -30,10 +34,45 @@ void ViewportManager::Delete()
 	delete instance; 
 }
 
+void ViewportManager::ResizeViewport()
+{
+}
+
 void ViewportManager::DrawRoomViewport()
 {
 	// Draw needed FlyObjects 
 
 
 	// Update MSAA texture 
+}
+float ViewportManager::GetWidthFromHeight(float viewportHeight)
+{
+	switch (viewportAspectRatio)
+	{
+		case AR_4_3:
+			return (viewportHeight * 4) / 3; 
+	}
+
+	return -1; 
+}
+float ViewportManager::GetHeightFromWidth(float viewportWidth)
+{
+	vec2 regionSize = App->moduleImGui->gameViewportDockPanel->GetRegionSize(); 
+
+	switch (viewportAspectRatio)
+	{
+		case AR_4_3:
+			return (viewportWidth * 3) / 4;
+	}
+
+	return -1;
+}
+ViewportAspectRatio ViewportManager::GetAspectRatio() const
+{
+	return viewportAspectRatio;
+}
+
+void ViewportManager::SetAspectRatio(ViewportAspectRatio newAR)
+{
+	viewportAspectRatio = newAR; 
 }
