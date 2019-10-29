@@ -5,8 +5,9 @@
 #include <list>
 
 #include "Globals.h"
+#include "ObjectAttribute.h"
 
-class ObjectAttribute; 
+class AttributeImage; 
 class FlyObject
 {
 public: 
@@ -19,7 +20,7 @@ public:
 	std::string GetName() const;
 
 	// Attributes -----------
-	void AddAttributeImage(const char* imageTexturePath);
+	AttributeImage* AddAttributeImage(const char* imageTexturePath);
 
 private: 
 	std::list<ObjectAttribute*> attributeList; 

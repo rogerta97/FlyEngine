@@ -20,6 +20,9 @@
 #include "RoomObjectsDockPanel.h"
 #include "ObjectPropertiesDockPanel.h"
 
+#include "Room.h"
+#include "FlyObject.h"
+
 #include <string>
 #include <Windows.h>
 #include "mmgr.h"
@@ -110,20 +113,6 @@ update_status ModuleImGui::PreUpdate(float dt)
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->moduleWindow->mainWindow);
 	ImGui::NewFrame();
-
-	return update_status::UPDATE_CONTINUE;
-}
-
-update_status ModuleImGui::PostUpdate(float dt)
-{
-	//DrawDockSpace();
-
-	//ImGui::Render();
-
-	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-
-
 
 	return update_status::UPDATE_CONTINUE;
 }
@@ -239,19 +228,15 @@ DockPanel* ModuleImGui::GetDockPanel(DockPanelType panelType)
 	}
 }
 
-update_status ModuleImGui::Update(float dt)
+update_status ModuleImGui::PostUpdate(float dt)
 {
+	DrawDockSpace();
 
-	//DrawDockSpace();
 	ImGui::Begin("test");
-
 	ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(500, 500), ImVec2(1, 1), ImVec2(0, 0));
-
-
 	ImGui::End();
 
 	ImGui::Render();
-
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	return update_status::UPDATE_CONTINUE;

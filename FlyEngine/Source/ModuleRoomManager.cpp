@@ -7,6 +7,7 @@
 #include "Room.h"
 #include "NodeGraph.h"
 #include "FileSystem.h"
+#include "FlyObject.h"
 #include "mmgr.h"
 
 ModuleRoomManager::ModuleRoomManager(bool start_enabled)
@@ -32,7 +33,7 @@ bool ModuleRoomManager::Start()
 
 	SetSelectedRoom(forestRoom);
 	App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
-
+	
 	return true;
 }
 
@@ -61,7 +62,6 @@ update_status ModuleRoomManager::PostUpdate(float dt)
 bool ModuleRoomManager::CleanUp()
 {
 	CleanUpRooms();
-
 
 	FileSystem::getInstance()->Delete();
 	RandomNumberGenerator::getInstance()->Delete();

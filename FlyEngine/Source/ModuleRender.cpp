@@ -67,15 +67,15 @@ update_status ModuleRender::PreUpdate(float dt)
 
 update_status ModuleRender::PostUpdate(float dt)
 {
-	//ViewportManager::getInstance()->viewportTexture->Bind();
+	ViewportManager::getInstance()->viewportTexture->Bind();
 
 	if (App->flySection == FLY_SECTION_ROOM_EDIT) {
 		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom(); 
 		selectedRoom->DrawRoomObjects();
 	}
 
-	//ViewportManager::getInstance()->viewportTexture->Render();
-	//ViewportManager::getInstance()->viewportTexture->Unbind();
+	ViewportManager::getInstance()->viewportTexture->Render();
+	ViewportManager::getInstance()->viewportTexture->Unbind();
 
 	GLenum err = glGetError(); 
 	if (err != GL_NO_ERROR)
