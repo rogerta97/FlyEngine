@@ -44,6 +44,10 @@ bool DockPanel::Draw() {
 	return true; 
 }
 
+void DockPanel::ReceiveEvent(FlyEngineEvent eventType)
+{
+}
+
 bool DockPanel::CleanUp()
 {
 

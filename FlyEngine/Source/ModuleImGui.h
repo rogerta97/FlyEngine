@@ -11,6 +11,7 @@
 
 class ConsoleDockPanel;
 class GraphPropertiesDockPanel; 
+class GameViewportDockPanel;
 
 class ModuleImGui : public Module
 {
@@ -23,6 +24,7 @@ public:
 	bool Start();
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt); 
+	void ReceiveEvent(FlyEngineEvent eventType); 
 	bool CleanUp();
 
 	// Docking
@@ -39,7 +41,8 @@ public:
 	DockPanel* GetDockPanel(DockPanelType panelType);
 
 	ConsoleDockPanel* consoleDockPanel;
-	GraphPropertiesDockPanel* graphPropertiesDockPanel; 
+	GraphPropertiesDockPanel* graphPropertiesDockPanel;
+	GameViewportDockPanel* gameViewportDockPanel;
 
 	ImFont* defaultFont;
 	ImFont* headerFont;

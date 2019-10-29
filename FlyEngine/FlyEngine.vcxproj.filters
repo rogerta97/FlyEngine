@@ -31,12 +31,6 @@
     <Filter Include="Source\Utilities">
       <UniqueIdentifier>{3608ae9f-7446-46d7-8fdb-f1bfe50806d7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Modules\ModuleImGui">
-      <UniqueIdentifier>{5c9e942b-d307-4240-8741-3343db824ea1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Modules\ModuleImGui\ImGuiPanels">
-      <UniqueIdentifier>{c27d716c-5ae7-4394-875d-a3ad33ff3aef}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\3rdParty\MemoryManager">
       <UniqueIdentifier>{7907c4ee-95c0-4af4-8dfa-cb3600ecc481}</UniqueIdentifier>
     </Filter>
@@ -69,6 +63,9 @@
     </Filter>
     <Filter Include="Source\FlyEngine\Managers">
       <UniqueIdentifier>{70bed84a-47fc-4a41-883e-4799d2991502}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Modules\DockingPanels">
+      <UniqueIdentifier>{c27d716c-5ae7-4394-875d-a3ad33ff3aef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -115,28 +112,25 @@
       <Filter>Source\3rdParty\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Source\ConsoleDockPanel.cpp">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\DockPanel.cpp">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleImGui.cpp">
-      <Filter>Source\Modules\ModuleImGui</Filter>
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="3rdParty\mmgr\mmgr.cpp">
       <Filter>Source\3rdParty\MemoryManager</Filter>
     </ClCompile>
     <ClCompile Include="Source\GameViewportDockPanel.cpp">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\ObjectPropertiesDockPanel.cpp">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\RoomObjectsDockPanel.cpp">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\RoomsGraphDockPanel.cpp">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\ImNode.cpp">
       <Filter>Source\3rdParty\ImNode</Filter>
@@ -151,7 +145,7 @@
       <Filter>Source\FlyEngine\Room</Filter>
     </ClCompile>
     <ClCompile Include="Source\GraphPropertiesDockPanel.cpp">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\FileSystem.cpp">
       <Filter>Source\Tools\FileSystem</Filter>
@@ -163,7 +157,7 @@
       <Filter>Source\3rdParty\RNG</Filter>
     </ClCompile>
     <ClCompile Include="Source\WorldPropertiesDockPanel.cpp">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\TextureMSAA.cpp">
       <Filter>Source\Utilities</Filter>
@@ -185,6 +179,9 @@
     </ClCompile>
     <ClCompile Include="Source\ViewportManager.cpp">
       <Filter>Source\FlyEngine\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleImGui.cpp">
+      <Filter>Source\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -240,13 +237,10 @@
       <Filter>Source\3rdParty</Filter>
     </ClInclude>
     <ClInclude Include="Source\ConsoleDockPanel.h">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\DockPanel.h">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleImGui.h">
-      <Filter>Source\Modules\ModuleImGui</Filter>
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="3rdParty\mmgr\mmgr.h">
       <Filter>Source\3rdParty\MemoryManager</Filter>
@@ -255,16 +249,16 @@
       <Filter>Source\3rdParty\MemoryManager</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameViewportDockPanel.h">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\ObjectPropertiesDockPanel.h">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\RoomObjectsDockPanel.h">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\RoomsGraphDockPanel.h">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\ImNode.h">
       <Filter>Source\3rdParty\ImNode</Filter>
@@ -282,7 +276,7 @@
       <Filter>Source\3rdParty\ImNode</Filter>
     </ClInclude>
     <ClInclude Include="Source\GraphPropertiesDockPanel.h">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\FileSystem.h">
       <Filter>Source\Tools\FileSystem</Filter>
@@ -294,7 +288,7 @@
       <Filter>Source\3rdParty\RNG</Filter>
     </ClInclude>
     <ClInclude Include="Source\WorldPropertiesDockPanel.h">
-      <Filter>Source\Modules\ModuleImGui\ImGuiPanels</Filter>
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\TextureMSAA.h">
       <Filter>Source\Utilities</Filter>
@@ -322,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="Source\ViewportManager.h">
       <Filter>Source\FlyEngine\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleImGui.h">
+      <Filter>Source\Modules</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

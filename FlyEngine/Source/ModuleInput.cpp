@@ -98,8 +98,16 @@ update_status ModuleInput::PreUpdate(float dt)
 		switch(e.type)
 		{
 			case SDL_QUIT:
-			quit = true;
-			break;
+			{
+				quit = true;
+				break;
+			}
+
+			case SDL_WINDOWEVENT:
+			{
+				if (e.window.event == SDL_WINDOWEVENT_RESIZED)
+					App->BroadCastEvent(WINDOW_RESIZED); 
+			}
 		}
 	}
 

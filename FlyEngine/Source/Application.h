@@ -48,6 +48,8 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+	void BroadCastEvent(FlyEngineEvent eventType); 
+
 	FlyEngineSection flySection = FlyEngineSection::FLY_SECTION_null; 
 
 private:

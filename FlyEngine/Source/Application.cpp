@@ -120,6 +120,14 @@ bool Application::CleanUp()
 	return ret;
 }
 
+void Application::BroadCastEvent(FlyEngineEvent eventType)
+{
+	for (auto& it : list_modules) 
+	{
+		(it)->ReceiveEvent(eventType); 
+	}
+}
+
 void Application::AddModule(Module* mod)
 {
 	list_modules.push_back(mod);
