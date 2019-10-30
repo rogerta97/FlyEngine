@@ -14,7 +14,9 @@ public:
 	~GameViewportDockPanel(); 
 
 	bool Draw();
-	void ReceiveEvent(FlyEngineEvent eventType); 
+	void ReceiveEvent(FlyEngineEvent eventType);
+	void FitViewportToRegion();
+
 
 	void DrawTopBar();
 

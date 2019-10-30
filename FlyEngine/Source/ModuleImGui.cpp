@@ -70,6 +70,9 @@ bool ModuleImGui::Start()
 
 	AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
 
+
+	ViewportManager::getInstance();
+
 	return true; 
 }
 

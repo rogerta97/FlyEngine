@@ -51,6 +51,9 @@ float ViewportManager::GetWidthFromHeight(float viewportHeight)
 	{
 		case AR_4_3:
 			return (viewportHeight * 4) / 3; 
+
+		case AR_1_1:
+			return viewportHeight;
 	}
 
 	return -1; 
@@ -63,6 +66,9 @@ float ViewportManager::GetHeightFromWidth(float viewportWidth)
 	{
 		case AR_4_3:
 			return (viewportWidth * 3) / 4;
+
+		case AR_1_1:
+			return viewportWidth;
 	}
 
 	return -1;
@@ -74,5 +80,6 @@ ViewportAspectRatio ViewportManager::GetAspectRatio() const
 
 void ViewportManager::SetAspectRatio(ViewportAspectRatio newAR)
 {
-	viewportAspectRatio = newAR; 
+	viewportAspectRatio = newAR;
+	App->moduleImGui->gameViewportDockPanel->FitViewportToRegion();
 }

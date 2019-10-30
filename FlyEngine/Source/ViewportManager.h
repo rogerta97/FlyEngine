@@ -8,6 +8,7 @@ using namespace glm;
 enum ViewportAspectRatio
 {
 	AR_4_3,
+	AR_1_1,
 };
 
 class TextureMSAA; 

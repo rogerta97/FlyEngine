@@ -4,6 +4,7 @@
 #include "TextureMSAA.h"
 #include "OpenGL.h"
 #include "Room.h"
+#include "ViewportManager.h"
 #include "ModuleImGui.h"
 #include "ModuleRoomManager.h"
 #include "mmgr.h"
@@ -26,49 +27,62 @@ GameViewportDockPanel::~GameViewportDockPanel()
 bool GameViewportDockPanel::Draw()
 {
 #pragma region secutiryChecks
+
 	if (!DockPanel::Draw())
 		return false;
+
+	if (App->moduleRoomManager->GetSelectedRoom() == nullptr)
+		return false; 
+
 #pragma endregion
 
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_MenuBar)) {
 		
+		vec2 regionSizeThisTick = vec2(ImGui::GetWindowContentRegionMax().x, ImGui::GetWindowContentRegionMax().y);
+		if (regionSizeThisTick != regionSize) {
+			FitViewportToRegion();
+			regionSize = regionSizeThisTick;
+		}
+
 		DrawTopBar();
 
-		regionSize = vec2(ImGui::GetWindowContentRegionMax().x, ImGui::GetWindowContentRegionMax().y - topBarWidth);
+		regionSize = vec2(ImGui::GetWindowContentRegionMax().x, ImGui::GetWindowContentRegionMax().y);
 
 		vec2 screenCenter = vec2(regionSize.x / 2, regionSize.y / 2); 
-		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - viewportSize.y / 2));
+		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - (viewportSize.y / 2)));
 
-		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(viewportSize.x, viewportSize.y));
+		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(viewportSize.x - 1, viewportSize.y - 1));
 	}
 
 	ImGui::End();
+	ImGui::PopStyleVar();
+	 
 	return true; 
 }
 
 void GameViewportDockPanel::ReceiveEvent(FlyEngineEvent eventType)
-{
-	
+{	
 	switch (eventType)
 	{
 		case WINDOW_RESIZED:
 		{
-			viewportSize.x = regionSize.x; 
-			viewportSize.y = ViewportManager::getInstance()->GetHeightFromWidth(viewportSize.x); 
-
-			if (viewportSize.y > regionSize.y) 
-			{
-				viewportSize.y = regionSize.y; 
-				viewportSize.x = ViewportManager::getInstance()->GetWidthFromHeight(viewportSize.y);
-			}
-
-			FLY_LOG("Region Size: %f , %f", regionSize.x, regionSize.y);
-			FLY_LOG("Viewport Size: %f , %f", viewportSize.x, viewportSize.y);
+			FitViewportToRegion();
 			break;
 		}
 	}
+}
 
+void GameViewportDockPanel::FitViewportToRegion()
+{
+	viewportSize.x = regionSize.x;
+	viewportSize.y = ViewportManager::getInstance()->GetHeightFromWidth(viewportSize.x);
 
+	if (viewportSize.y > regionSize.y)
+	{
+		viewportSize.y = regionSize.y;
+		viewportSize.x = ViewportManager::getInstance()->GetWidthFromHeight(viewportSize.y);
+	}
 }
 
 void GameViewportDockPanel::DrawTopBar()
@@ -85,11 +99,24 @@ void GameViewportDockPanel::DrawTopBar()
 
 		ImGui::PushItemWidth(150);
 		static int resolutionSelected = 0; 
-		if (ImGui::Combo("", &resolutionSelected, "4:3\0")) {
+		if (ImGui::Combo("", &resolutionSelected, "4:3\0 1:1\0")) {
 
+			switch (resolutionSelected)
+			{
+
+			case 0:
+				ViewportManager::getInstance()->SetAspectRatio(AR_4_3);
+				break;
+
+			case 1:
+				ViewportManager::getInstance()->SetAspectRatio(AR_1_1);
+				break;
+
+			default:
+				break;
+			}
 		}
 		ImGui::PopItemWidth(); 
-
 
 		ObjectCreatorPopup();
 		ImGui::EndMenuBar();
