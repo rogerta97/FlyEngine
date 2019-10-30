@@ -9,6 +9,7 @@ class ModuleRender : public Module
 public:
 	ModuleRender(bool start_enabled = true);
 	~ModuleRender();
+	void ReceiveEvent(FlyEngineEvent eventType); 
 
 	bool Init();
 	update_status PreUpdate(float dt);

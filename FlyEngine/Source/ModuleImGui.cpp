@@ -70,6 +70,8 @@ bool ModuleImGui::Start()
 
 	AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
 
+	FlyObject* test = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("res");
+	test->AddAttributeImage("sa"); 
 
 	ViewportManager::getInstance();
 

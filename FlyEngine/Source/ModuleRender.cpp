@@ -27,7 +27,26 @@ ModuleRender::ModuleRender(bool start_enabled)
 
 // Destructor
 ModuleRender::~ModuleRender()
-{}
+{
+
+}
+
+void ModuleRender::ReceiveEvent(FlyEngineEvent eventType)
+{
+	switch (eventType)
+	{
+		case WINDOW_RESIZED:
+		{
+			glMatrixMode(GL_PROJECTION);
+			glLoadIdentity();
+			float width = App->moduleWindow->GetWidth();
+			float height = App->moduleWindow->GetHeight();
+
+			glOrtho(-width / 100, width / 100, -height / 100, height / 100, -1.f, -1.0f);
+			break;
+		}
+	}
+}
 
 // Called before render is available
 bool ModuleRender::Init()
@@ -55,9 +74,20 @@ bool ModuleRender::Init()
 	if (VSYNC && SDL_GL_SetSwapInterval(1) < 0)
 		LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 
+<<<<<<< Updated upstream
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(-20, 20, -20, 20, -20, 20);
+=======
+	glPolygonMode(GL_FRONT, GL_FILL);
+	glMatrixMode(GL_PROJECTION); 
+	glLoadIdentity(); 
+
+	float windowWidth = App->moduleWindow->GetWidth();
+	float windowHeight = App->moduleWindow->GetHeight();
+
+	glOrtho(-windowWidth / 100, windowWidth / 100, -windowHeight / 100, windowHeight / 100, -1.0f, 1.0f);
+>>>>>>> Stashed changes
 
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR)
@@ -73,6 +103,7 @@ update_status ModuleRender::PreUpdate(float dt)
 {
 	return UPDATE_CONTINUE;
 }
+
 
 update_status ModuleRender::PostUpdate(float dt)
 {

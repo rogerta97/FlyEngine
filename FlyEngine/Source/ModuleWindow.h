@@ -18,10 +18,12 @@ public:
 	bool Init();
 	bool CleanUp();
 
+
 	// Utility
 	void SetTitle(const char* title);
 	int GetWidth() const; 
 	int GetHeight() const;
+	float GetAspectRatio() const; 
 
 public:
 	SDL_Window* mainWindow;
