@@ -9,7 +9,6 @@ class TextureMSAA;
 class GameViewportDockPanel : public DockPanel
 {
 public: 
-
 	GameViewportDockPanel(bool isVisible); 
 	~GameViewportDockPanel(); 
 

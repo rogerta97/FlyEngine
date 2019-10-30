@@ -34,17 +34,13 @@ void AttributeImage::Draw()
 
 	if (parentObject->transform != nullptr)
 	{
-		//mat4x4 view_mat; 
-		//GLfloat matrix[16];
-		//glGetFloatv(GL_MODELVIEW_MATRIX, matrix);
-		//view_mat = glm::make_mat4x4(matrix);
-
-		float4x4 hello; 
+		float4x4 view_mat; 
+		GLfloat matrix[16];
+		glGetFloatv(GL_MODELVIEW_MATRIX, matrix);
+		view_mat.Set((float*)matrix);
 
 		glMatrixMode(GL_MODELVIEW);	
-		glLoadIdentity(); 
-
-		//glLoadMatrixf(glm::value_ptr(glm::transpose(parentObject->transform->CalculateViewMatrix()) * view_mat));
+		glLoadMatrixf((GLfloat*)((parentObject->transform->CalculateViewMatrix()).Transposed() * view_mat).v);
 	}
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadMesh->indicesID);

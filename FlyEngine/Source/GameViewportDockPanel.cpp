@@ -104,11 +104,11 @@ void GameViewportDockPanel::DrawTopBar()
 			{
 
 			case 0:
-				ViewportManager::getInstance()->SetAspectRatio(AR_4_3);
+				ViewportManager::getInstance()->SetAspectRatioType(AR_4_3);
 				break;
 
 			case 1:
-				ViewportManager::getInstance()->SetAspectRatio(AR_1_1);
+				ViewportManager::getInstance()->SetAspectRatioType(AR_1_1);
 				break;
 
 			default:

@@ -31,8 +31,8 @@ public:
 	float GetHeightFromWidth(float viewportWidth);
 
 	// Encapsulation --------------------------
-	ViewportAspectRatio GetAspectRatio() const; 
-	void SetAspectRatio(ViewportAspectRatio newAR); 
+	ViewportAspectRatio GetAspectRatioType() const; 
+	void SetAspectRatioType(ViewportAspectRatio newAR); 
 
 public:
 	TextureMSAA* viewportTexture;

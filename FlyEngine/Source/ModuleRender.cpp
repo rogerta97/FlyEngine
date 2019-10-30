@@ -55,7 +55,7 @@ bool ModuleRender::Init()
 		LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 
 	glPolygonMode(GL_FRONT, GL_FILL);
-	glOrtho(-20, 20, -20, 20, -20, 20);
+	glOrtho(-20, 20, -20, 20 * ViewportManager::getInstance()->GetAspectRatioType(), -20, 20);
 
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR)
