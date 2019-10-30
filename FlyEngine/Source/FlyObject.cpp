@@ -9,6 +9,8 @@ FlyObject::FlyObject(std::string _name)
 {
 	name = _name; 
 	id = RandomNumberGenerator::GenerateUID(); 
+
+	transform = new Transform(); 
 }
 
 FlyObject::~FlyObject()
@@ -34,7 +36,7 @@ std::string FlyObject::GetName() const
 
 AttributeImage* FlyObject::AddAttributeImage(const char* imageTexturePath)
 {
-	AttributeImage* newAtrImage = new AttributeImage(); 
+	AttributeImage* newAtrImage = new AttributeImage(this); 
 
 	std::string path = FileSystem::getInstance()->solutionDirectory; 
 	path += "EngineResources / Images / PlaceHolder.png";

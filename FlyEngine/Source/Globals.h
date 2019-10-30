@@ -33,6 +33,7 @@ void flyLog(const char file[], int line, consoleMessageType messageType, const c
 #define DEGTORAD 0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
 #define HAVE_M_PI
+#define IDENTITY_MAT 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
 
 typedef unsigned int uint;
 typedef long double UID; 

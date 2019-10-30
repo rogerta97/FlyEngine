@@ -212,13 +212,14 @@ int KdTree<T>::NumInnerNodes() const
 	return numInnerNodes;
 }
 
+
 template<typename T>
 int KdTree<T>::TreeHeight(int nodeIndex) const
 {
 	const KdTreeNode &node = nodes[nodeIndex];
 	if (node.IsLeaf())
 		return 1;
-	return 1 + std::max(TreeHeight(node.LeftChildIndex()), TreeHeight(node.RightChildIndex()));
+	return 1;
 }
 
 template<typename T>

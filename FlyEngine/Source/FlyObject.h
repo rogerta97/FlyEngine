@@ -6,6 +6,7 @@
 
 #include "Globals.h"
 #include "ObjectAttribute.h"
+#include "Transform.h"
 
 class AttributeImage; 
 class FlyObject
@@ -21,6 +22,9 @@ public:
 
 	// Attributes -----------
 	AttributeImage* AddAttributeImage(const char* imageTexturePath);
+
+public:
+	Transform* transform; 
 
 private: 
 	std::list<ObjectAttribute*> attributeList; 

@@ -42,13 +42,20 @@ bool ModuleRender::Init()
 		return false; 
 	}
 
+	//Initialize Modelview Matrix
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	glClearDepth(1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
 	ImGui::CreateContext();
 
 	if (VSYNC && SDL_GL_SetSwapInterval(1) < 0)
 		LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 
 	glPolygonMode(GL_FRONT, GL_FILL);
-	glOrtho(-2, 2, -2, 2, -2, 2);
+	glOrtho(-20, 20, -20, 20, -20, 20);
 
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR)

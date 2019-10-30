@@ -2,12 +2,14 @@
 #include "Quad.h"
 #include "Globals.h"
 #include "OpenGL.h"
+#include "FlyObject.h"
 
-AttributeImage::AttributeImage()
+AttributeImage::AttributeImage(FlyObject* _parentObject = nullptr)
 {
 	attributeType = AT_null; 
 	quadMesh = nullptr; 
 	imageTexture = nullptr; 
+	parentObject = _parentObject; 
 }
 
 AttributeImage::~AttributeImage()
@@ -29,6 +31,21 @@ void AttributeImage::Draw()
 	glEnableClientState(GL_VERTEX_ARRAY); 
 	glBindBuffer(GL_ARRAY_BUFFER, quadMesh->verticesID); 
 	glVertexPointer(3, GL_FLOAT, 0, NULL); 
+
+	if (parentObject->transform != nullptr)
+	{
+		//mat4x4 view_mat; 
+		//GLfloat matrix[16];
+		//glGetFloatv(GL_MODELVIEW_MATRIX, matrix);
+		//view_mat = glm::make_mat4x4(matrix);
+
+		float4x4 hello; 
+
+		glMatrixMode(GL_MODELVIEW);	
+		glLoadIdentity(); 
+
+		//glLoadMatrixf(glm::value_ptr(glm::transpose(parentObject->transform->CalculateViewMatrix()) * view_mat));
+	}
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadMesh->indicesID);
 	glDrawElements(GL_TRIANGLES, quadMesh->numIndices, GL_UNSIGNED_INT, NULL); 

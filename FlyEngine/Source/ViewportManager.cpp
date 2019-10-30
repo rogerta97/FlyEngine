@@ -60,7 +60,7 @@ float ViewportManager::GetWidthFromHeight(float viewportHeight)
 }
 float ViewportManager::GetHeightFromWidth(float viewportWidth)
 {
-	vec2 regionSize = App->moduleImGui->gameViewportDockPanel->GetRegionSize(); 
+	float2 regionSize = App->moduleImGui->gameViewportDockPanel->GetRegionSize(); 
 
 	switch (viewportAspectRatio)
 	{

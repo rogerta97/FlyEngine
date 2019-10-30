@@ -3,7 +3,7 @@
 
 #include "ObjectAttribute.h"
 
-#include <string>+
+#include <string>
 
 using namespace std; 
 
@@ -14,7 +14,7 @@ class Texture;
 class AttributeImage : public ObjectAttribute
 {
 public: 
-	AttributeImage();
+	AttributeImage(FlyObject* _parentObject);
 	~AttributeImage(); 
 
 	void Init(); 
@@ -30,6 +30,8 @@ public:
 private:
 	Quad*		quadMesh;
 	Texture*	imageTexture;
+
+	FlyObject*	parentObject; 
 	
 	float		imageWidth; 
 	float		imageHeight; 

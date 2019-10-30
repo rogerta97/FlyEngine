@@ -11,7 +11,6 @@
 #include "ViewportManager.h"
 #include "FlyObject.h"
 
-
 GameViewportDockPanel::GameViewportDockPanel(bool isVisible) : DockPanel("Game Viewport", isVisible)
 {
 	flyEngineSection = FLY_SECTION_ROOM_EDIT;
@@ -39,17 +38,17 @@ bool GameViewportDockPanel::Draw()
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_MenuBar)) {
 		
-		vec2 regionSizeThisTick = vec2(ImGui::GetWindowContentRegionMax().x, ImGui::GetWindowContentRegionMax().y);
-		if (regionSizeThisTick != regionSize) {
+		float2 regionSizeThisTick = float2(ImGui::GetWindowContentRegionMax().x, ImGui::GetWindowContentRegionMax().y);
+		if (!regionSizeThisTick.Equals(regionSize)) {
 			FitViewportToRegion();
 			regionSize = regionSizeThisTick;
 		}
 
 		DrawTopBar();
 
-		regionSize = vec2(ImGui::GetWindowContentRegionMax().x, ImGui::GetWindowContentRegionMax().y);
+		regionSize = float2(ImGui::GetWindowContentRegionMax().x, ImGui::GetWindowContentRegionMax().y);
 
-		vec2 screenCenter = vec2(regionSize.x / 2, regionSize.y / 2); 
+		float2 screenCenter = float2(regionSize.x / 2, regionSize.y / 2);
 		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - (viewportSize.y / 2)));
 
 		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(viewportSize.x - 1, viewportSize.y - 1));
@@ -167,12 +166,12 @@ void GameViewportDockPanel::ObjectCreatorPopup()
 	}
 }
 
-glm::vec2 GameViewportDockPanel::GetRegionSize() const
+float2 GameViewportDockPanel::GetRegionSize() const
 {
 	return regionSize;
 }
 
-glm::vec2 GameViewportDockPanel::GetViewportSize() const
+float2 GameViewportDockPanel::GetViewportSize() const
 {
 	return viewportSize;
 }

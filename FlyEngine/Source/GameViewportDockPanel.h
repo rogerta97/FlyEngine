@@ -3,7 +3,7 @@
 
 #include "DockPanel.h"
 #include "Globals.h"
-#include "vec2.hpp"
+#include "MathGeoLib.h"
 
 class TextureMSAA; 
 class GameViewportDockPanel : public DockPanel
@@ -17,20 +17,19 @@ public:
 	void ReceiveEvent(FlyEngineEvent eventType);
 	void FitViewportToRegion();
 
-
 	void DrawTopBar();
 
 	void ObjectCreatorPopup();
 
-	glm::vec2 GetRegionSize() const; 
-	glm::vec2 GetViewportSize() const;  
+	float2 GetRegionSize() const; 
+	float2 GetViewportSize() const;  
 
 private: 
 
 	int topBarWidth;
 
-	glm::vec2 regionSize; 
-	glm::vec2 viewportSize; 
+	float2 regionSize;
+	float2 viewportSize;
 
 };
 
