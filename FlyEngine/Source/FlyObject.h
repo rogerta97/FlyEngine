@@ -27,6 +27,7 @@ public:
 	Transform* transform; 
 
 private: 
+	bool isSelected; 
 	std::list<ObjectAttribute*> attributeList; 
 	std::string name; 
 	UID id; 

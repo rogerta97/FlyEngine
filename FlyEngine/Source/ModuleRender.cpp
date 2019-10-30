@@ -48,14 +48,16 @@ bool ModuleRender::Init()
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	glClearDepth(1.0f);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glPolygonMode(GL_FRONT, GL_FILL);
 
 	ImGui::CreateContext();
 
 	if (VSYNC && SDL_GL_SetSwapInterval(1) < 0)
 		LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 
-	glPolygonMode(GL_FRONT, GL_FILL);
-	glOrtho(-20, 20, -20, 20 * ViewportManager::getInstance()->GetAspectRatioType(), -20, 20);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(-20, 20, -20, 20, -20, 20);
 
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR)

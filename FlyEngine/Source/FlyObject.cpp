@@ -9,6 +9,7 @@ FlyObject::FlyObject(std::string _name)
 {
 	name = _name; 
 	id = RandomNumberGenerator::GenerateUID(); 
+	isSelected = false; 
 
 	transform = new Transform(); 
 }

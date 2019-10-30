@@ -21,7 +21,8 @@ bool ObjectPropertiesDockPanel::Draw()
 #pragma endregion
 
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
-		ImGui::Text("Im The Object Properties");
+		
+	//	ImGui::DragFloat2("Position", )
 	}
 
 	ImGui::End();

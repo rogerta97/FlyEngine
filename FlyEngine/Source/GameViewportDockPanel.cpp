@@ -82,6 +82,10 @@ void GameViewportDockPanel::FitViewportToRegion()
 		viewportSize.y = regionSize.y;
 		viewportSize.x = ViewportManager::getInstance()->GetWidthFromHeight(viewportSize.y);
 	}
+
+	glMatrixMode(GL_PROJECTION);
+	float aspectRatio = App->moduleWindow->
+	glOrtho()
 }
 
 void GameViewportDockPanel::DrawTopBar()
