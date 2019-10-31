@@ -82,4 +82,5 @@ void ViewportManager::SetAspectRatioType(ViewportAspectRatio newAR)
 {
 	viewportAspectRatio = newAR;
 	App->moduleImGui->gameViewportDockPanel->FitViewportToRegion();
+	App->moduleImGui->ReceiveEvent(WINDOW_RESIZED); 
 }

@@ -64,9 +64,10 @@ bool ModuleRender::Init()
 	//Initialize Modelview Matrix
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	glClearDepth(1.0f);
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
 	glPolygonMode(GL_FRONT, GL_FILL);
 
 	ImGui::CreateContext();
@@ -74,20 +75,10 @@ bool ModuleRender::Init()
 	if (VSYNC && SDL_GL_SetSwapInterval(1) < 0)
 		LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 
-<<<<<<< Updated upstream
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(-20, 20, -20, 20, -20, 20);
-=======
-	glPolygonMode(GL_FRONT, GL_FILL);
-	glMatrixMode(GL_PROJECTION); 
-	glLoadIdentity(); 
-
 	float windowWidth = App->moduleWindow->GetWidth();
 	float windowHeight = App->moduleWindow->GetHeight();
 
 	glOrtho(-windowWidth / 100, windowWidth / 100, -windowHeight / 100, windowHeight / 100, -1.0f, 1.0f);
->>>>>>> Stashed changes
 
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR)
