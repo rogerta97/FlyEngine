@@ -65,6 +65,7 @@ bool ConsoleDockPanel::Draw()
 		ImGui::SameLine();
 		ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 5.0f);
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.75f, 0.75f, 0.75f, 1));
+
 		if (ImGui::Button("Clear")) {
 			CleanUp(); 
 		}

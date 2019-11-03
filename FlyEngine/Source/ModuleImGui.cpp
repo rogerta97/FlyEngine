@@ -70,7 +70,7 @@ bool ModuleImGui::Start()
 
 	AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
 
-	FlyObject* test = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("res");
+	FlyObject* test = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Test");
 	test->AddAttributeImage("sa"); 
 
 	ViewportManager::getInstance();
@@ -236,7 +236,7 @@ DockPanel* ModuleImGui::GetDockPanel(DockPanelType panelType)
 
 update_status ModuleImGui::PostUpdate(float dt)
 {
-	DrawDockSpace();
+	//DrawDockSpace();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

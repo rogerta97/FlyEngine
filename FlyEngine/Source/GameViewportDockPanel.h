@@ -23,8 +23,9 @@ public:
 	float2 GetRegionSize() const; 
 	float2 GetViewportSize() const;  
 
-private: 
+	bool aspectRatioChanged; 
 
+private: 
 	int topBarWidth;
 
 	float2 regionSize;

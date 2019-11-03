@@ -37,12 +37,14 @@ void ModuleRender::ReceiveEvent(FlyEngineEvent eventType)
 	{
 		case WINDOW_RESIZED:
 		{
-			glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-			float width = App->moduleWindow->GetWidth();
-			float height = App->moduleWindow->GetHeight();
+			//glMatrixMode(GL_PROJECTION);
+			//glLoadIdentity();
 
-			glOrtho(-width / 100, width / 100, -height / 100, height / 100, -1.f, -1.0f);
+			//float width = App->moduleWindow->GetWidth();
+			//float height = App->moduleWindow->GetHeight();
+
+			//glOrtho(-width / 100, width / 100, -height / 100, height / 100, -1.f, -1.0f);
+			//FLY_WARNING("glOrtho resized in Event"); 
 			break;
 		}
 	}
@@ -78,7 +80,8 @@ bool ModuleRender::Init()
 	float windowWidth = App->moduleWindow->GetWidth();
 	float windowHeight = App->moduleWindow->GetHeight();
 
-	glOrtho(-windowWidth / 100, windowWidth / 100, -windowHeight / 100, windowHeight / 100, -1.0f, 1.0f);
+	glOrtho(0.0f, windowWidth , windowHeight, 0, -1.0f, 1.0f);
+	FLY_WARNING("glOrtho resized in Init");
 
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR)
@@ -98,19 +101,20 @@ update_status ModuleRender::PreUpdate(float dt)
 
 update_status ModuleRender::PostUpdate(float dt)
 {
-	ViewportManager::getInstance()->viewportTexture->Bind();
+	//ViewportManager::getInstance()->viewportTexture->Bind();
 
 	if (App->flySection == FLY_SECTION_ROOM_EDIT) {
 		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom(); 
 		selectedRoom->DrawRoomObjects();
 	}
 
-	ViewportManager::getInstance()->viewportTexture->Render();
-	ViewportManager::getInstance()->viewportTexture->Unbind();
+	//ViewportManager::getInstance()->viewportTexture->Render();
+	//ViewportManager::getInstance()->viewportTexture->Unbind();
 
 	GLenum err = glGetError(); 
+	
 	if (err != GL_NO_ERROR)
-		FLY_ERROR("Open GL Error: %d", err); 
+		FLY_ERROR("Open GL Error: %s", glewGetErrorString(err));
 
 	SDL_GL_SwapWindow(App->moduleWindow->mainWindow);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

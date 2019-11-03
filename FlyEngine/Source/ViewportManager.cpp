@@ -3,6 +3,7 @@
 #include "ModuleRoomManager.h"
 #include "GameViewportDockPanel.h"
 #include "ModuleWindow.h"
+#include "OpenGL.h"
 #include "ModuleImGui.h"
 #include "Room.h"
 #include "TextureMSAA.h"
@@ -82,5 +83,5 @@ void ViewportManager::SetAspectRatioType(ViewportAspectRatio newAR)
 {
 	viewportAspectRatio = newAR;
 	App->moduleImGui->gameViewportDockPanel->FitViewportToRegion();
-	App->moduleImGui->ReceiveEvent(WINDOW_RESIZED); 
+	App->moduleImGui->gameViewportDockPanel->aspectRatioChanged = true; 
 }

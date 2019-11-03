@@ -16,6 +16,10 @@ GameViewportDockPanel::GameViewportDockPanel(bool isVisible) : DockPanel("Game V
 	flyEngineSection = FLY_SECTION_ROOM_EDIT;
 	dockPanelType = DOCK_GAME_VIEWPORT;
 
+	regionSize = float2(-1.0f, -1.0f);
+	viewportSize = float2(-1.0f, -1.0f);
+
+	aspectRatioChanged = true; 
 	topBarWidth = 60; 
 }
 
@@ -39,9 +43,35 @@ bool GameViewportDockPanel::Draw()
 	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_MenuBar)) {
 		
 		float2 regionSizeThisTick = float2(ImGui::GetWindowContentRegionMax().x, ImGui::GetWindowContentRegionMax().y);
-		if (!regionSizeThisTick.Equals(regionSize)) {
-			FitViewportToRegion();
+
+		if ((!regionSizeThisTick.Equals(regionSize) || aspectRatioChanged) && regionSize.x != -1.0f)
+		{
 			regionSize = regionSizeThisTick;
+			FitViewportToRegion();
+
+			if (aspectRatioChanged)
+			{
+				glMatrixMode(GL_MODELVIEW);
+				glLoadIdentity();
+
+				glMatrixMode(GL_PROJECTION);
+				glLoadIdentity();
+
+				int width = viewportSize.x;
+				int height = viewportSize.y;
+
+				//glOrtho(-width / 2, width, height, 0.0f, 0.0f, 1.0f);
+				glOrtho(0.0f, width / 2.0f, -height / 2.0f, height / 2.0f, -1.0f, 1.0f);
+				aspectRatioChanged = false;
+			}
+			//FLY_LOG("Viewport Size X: %f", viewportSize.x); 
+			//FLY_LOG("Viewport Size Y: %f", viewportSize.y); 
+
+			//FLY_LOG("Region Size X: %f", regionSize.x);
+			//FLY_LOG("Region Size Y: %f", regionSize.y);
+
+			//
+			//}
 		}
 
 		DrawTopBar();
@@ -108,8 +138,10 @@ void GameViewportDockPanel::DrawTopBar()
 				break;
 
 			case 1:
+			{
 				ViewportManager::getInstance()->SetAspectRatioType(AR_1_1);
 				break;
+			}
 
 			default:
 				break;
