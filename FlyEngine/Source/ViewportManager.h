@@ -29,6 +29,7 @@ public:
 
 	float GetWidthFromHeight(float viewportHeight); 
 	float GetHeightFromWidth(float viewportWidth);
+	void SetTextureSize(float windowWidth, float windowHeight) const;
 
 	// Encapsulation --------------------------
 	ViewportAspectRatio GetAspectRatioType() const; 

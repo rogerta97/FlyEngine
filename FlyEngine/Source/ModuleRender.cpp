@@ -12,6 +12,8 @@
 
 #include "ModuleWindow.h"
 #include "ModuleRoomManager.h"
+#include "ModuleImGui.h"
+#include "GameViewportDockPanel.h"
 #include "ViewportManager.h"
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -37,14 +39,16 @@ void ModuleRender::ReceiveEvent(FlyEngineEvent eventType)
 	{
 		case WINDOW_RESIZED:
 		{
-			//glMatrixMode(GL_PROJECTION);
-			//glLoadIdentity();
+			glMatrixMode(GL_PROJECTION);
+			glLoadIdentity();
 
-			//float width = App->moduleWindow->GetWidth();
-			//float height = App->moduleWindow->GetHeight();
+			float windowWidth = App->moduleWindow->GetWidth();
+			float windowHeight = App->moduleWindow->GetHeight();
 
-			//glOrtho(-width / 100, width / 100, -height / 100, height / 100, -1.f, -1.0f);
-			//FLY_WARNING("glOrtho resized in Event"); 
+			float aspectRatio = windowWidth / windowHeight;
+			glViewport(0, 0, windowWidth, windowHeight);
+			glOrtho(-500.0 * aspectRatio, 500.0 * aspectRatio, -500.0, 500.0, 1.0, -1.0);
+			
 			break;
 		}
 	}
@@ -80,7 +84,11 @@ bool ModuleRender::Init()
 	float windowWidth = App->moduleWindow->GetWidth();
 	float windowHeight = App->moduleWindow->GetHeight();
 
-	glOrtho(0.0f, windowWidth , windowHeight, 0, -1.0f, 1.0f);
+	float aspectRatio = windowWidth / windowHeight;
+	glViewport(0, 0, windowWidth, windowHeight);
+	glOrtho(-500.0 * aspectRatio, 500.0 * aspectRatio, -500.0, 500.0, 1.0, -1.0);
+	//glOrtho(-500.0 , 500.0 , -500.0, 500.0, 1.0, -1.0);
+	
 	FLY_WARNING("glOrtho resized in Init");
 
 	GLenum error = glGetError();
@@ -101,15 +109,21 @@ update_status ModuleRender::PreUpdate(float dt)
 
 update_status ModuleRender::PostUpdate(float dt)
 {
-	//ViewportManager::getInstance()->viewportTexture->Bind();
+	ViewportManager::getInstance()->viewportTexture->Bind();
 
 	if (App->flySection == FLY_SECTION_ROOM_EDIT) {
 		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom(); 
 		selectedRoom->DrawRoomObjects();
 	}
 
-	//ViewportManager::getInstance()->viewportTexture->Render();
-	//ViewportManager::getInstance()->viewportTexture->Unbind();
+	ViewportManager::getInstance()->viewportTexture->Render();
+	ViewportManager::getInstance()->viewportTexture->Unbind();
+
+
+	//if (App->flySection == FLY_SECTION_ROOM_EDIT) {
+	//	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+	//	selectedRoom->DrawRoomObjects();
+	//}
 
 	GLenum err = glGetError(); 
 	

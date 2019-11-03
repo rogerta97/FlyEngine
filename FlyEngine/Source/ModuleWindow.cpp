@@ -88,6 +88,19 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
+void ModuleWindow::ReceiveEvent(FlyEngineEvent newEvent)
+{
+	switch (newEvent)
+	{
+	case WINDOW_RESIZED:	
+		SDL_GetWindowSize(this->mainWindow, &width, &height); 
+		screen_surface->w = width; 
+		screen_surface->h = height; 
+
+		break;
+	}
+}
+
 void ModuleWindow::SetTitle(const char* title)
 {
 	SDL_SetWindowTitle(mainWindow, title);

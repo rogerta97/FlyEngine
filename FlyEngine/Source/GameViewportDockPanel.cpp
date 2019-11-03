@@ -8,6 +8,7 @@
 #include "ModuleImGui.h"
 #include "ModuleRoomManager.h"
 #include "mmgr.h"
+#include "ModuleWindow.h"
 #include "ViewportManager.h"
 #include "FlyObject.h"
 
@@ -19,7 +20,7 @@ GameViewportDockPanel::GameViewportDockPanel(bool isVisible) : DockPanel("Game V
 	regionSize = float2(-1.0f, -1.0f);
 	viewportSize = float2(-1.0f, -1.0f);
 
-	aspectRatioChanged = true; 
+	aspectRatioChanged = false; 
 	topBarWidth = 60; 
 }
 
@@ -51,27 +52,16 @@ bool GameViewportDockPanel::Draw()
 
 			if (aspectRatioChanged)
 			{
-				glMatrixMode(GL_MODELVIEW);
-				glLoadIdentity();
-
 				glMatrixMode(GL_PROJECTION);
 				glLoadIdentity();
 
-				int width = viewportSize.x;
-				int height = viewportSize.y;
+				float windowWidth = viewportSize.x;
+				float windowHeight = viewportSize.y;
 
-				//glOrtho(-width / 2, width, height, 0.0f, 0.0f, 1.0f);
-				glOrtho(0.0f, width / 2.0f, -height / 2.0f, height / 2.0f, -1.0f, 1.0f);
+				glViewport(0, 0, windowWidth, windowHeight);
+
 				aspectRatioChanged = false;
 			}
-			//FLY_LOG("Viewport Size X: %f", viewportSize.x); 
-			//FLY_LOG("Viewport Size Y: %f", viewportSize.y); 
-
-			//FLY_LOG("Region Size X: %f", regionSize.x);
-			//FLY_LOG("Region Size Y: %f", regionSize.y);
-
-			//
-			//}
 		}
 
 		DrawTopBar();

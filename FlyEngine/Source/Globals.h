@@ -48,8 +48,8 @@ enum update_status
 #define IMGUI_SPACE_SEPARATOR ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
 
 // Configuration -----------
-#define SCREEN_WIDTH 1300
-#define SCREEN_HEIGHT 975
+#define SCREEN_WIDTH 1200
+#define SCREEN_HEIGHT 900
 #define SCREEN_SIZE 1
 #define WIN_FULLSCREEN false
 #define WIN_RESIZABLE true

@@ -30,7 +30,6 @@ private:
 
 	float2 regionSize;
 	float2 viewportSize;
-
 };
 
 #endif

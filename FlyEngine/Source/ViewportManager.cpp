@@ -74,6 +74,12 @@ float ViewportManager::GetHeightFromWidth(float viewportWidth)
 
 	return -1;
 }
+void ViewportManager::SetTextureSize(float windowWidth, float windowHeight) const
+{
+	viewportTexture->SetWidth(windowWidth);
+	viewportTexture->SetHeight(windowHeight);
+}
+
 ViewportAspectRatio ViewportManager::GetAspectRatioType() const
 {
 	return viewportAspectRatio;

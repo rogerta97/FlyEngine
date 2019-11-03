@@ -17,7 +17,7 @@ public:
 
 	bool Init();
 	bool CleanUp();
-
+	void ReceiveEvent(FlyEngineEvent newEvent);
 
 	// Utility
 	void SetTitle(const char* title);
