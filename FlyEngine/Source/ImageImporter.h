@@ -3,16 +3,18 @@
 
 #include <string>
 
-#pragma comment(lib, "DevILWindowsSDK/libx86/DevILç")
-#pragma comment(lib, "DevILWindowsSDK/libx86/ILU.lib")
-#pragma comment(lib, "DevILWindowsSDK/libx86/ILUT.lib")
 
 class Texture; 
-class ImageImporter
-{
-public: 
-	ImageImporter(); 
-	~ImageImporter(); 
+struct ImageImporter {
+
+private:
+	static ImageImporter* instance;
+	ImageImporter();
+
+public:
+	static ImageImporter* getInstance();
+	~ImageImporter();
+	void Delete();
 
 	Texture* LoadTexture(std::string path, bool flipImage); 
 };

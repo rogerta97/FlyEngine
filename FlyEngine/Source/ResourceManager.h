@@ -5,7 +5,7 @@
 
 using namespace std; 
 
-class Texture; 
+class Resource; 
 struct ResourceManager
 {
 private:
@@ -20,7 +20,7 @@ public:
 	void Delete();
 
 private: 
-	std::list<*> 
+	std::list<Resource*> resourceList; 
 };
 
 #endif // !_MODULE_GAME_VIEWPORT_H_

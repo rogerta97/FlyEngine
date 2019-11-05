@@ -152,8 +152,7 @@ int Room::GetOutputConnectionsAmount() const
 	return outConnections.size();
 }
 
-void Room::
-()
+void Room::DrawRoomObjects()
 {
 	for (auto& it : objectsInRoom) {
 		(it)->Draw(); 

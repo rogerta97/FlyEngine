@@ -7,12 +7,30 @@
 #include "IL/ilu.h"
 #include "IL/ilut.h"
 
-ImageImporter::ImageImporter()
+ImageImporter* ImageImporter::instance = 0;
+
+ImageImporter::ImageImporter() 
 {
+	ilInit();
+	iluInit(); 
+	ilutInit(); 
 }
 
-ImageImporter::~ImageImporter()
+ImageImporter* ImageImporter::getInstance()
 {
+	if (instance == 0)
+		instance = new ImageImporter();
+
+	return instance;
+}
+
+ImageImporter::~ImageImporter() {
+
+}
+
+void ImageImporter::Delete()
+{
+	delete instance; 
 }
 
 Texture* ImageImporter::LoadTexture(std::string path, bool flipImage = false)

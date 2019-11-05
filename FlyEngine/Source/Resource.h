@@ -3,7 +3,9 @@
 
 class Resource 
 {
-
+public:
+	Resource(); 
+	~Resource(); 
 };
 
 

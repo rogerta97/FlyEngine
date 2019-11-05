@@ -129,6 +129,7 @@ update_status ModuleRender::PostUpdate(float dt)
 	ViewportManager::getInstance()->viewportTexture->Bind();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0, 0, 0, 1);
 
 	if (App->flySection == FLY_SECTION_ROOM_EDIT) {
 		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();

@@ -2,7 +2,9 @@
 #include "Quad.h"
 #include "Globals.h"
 #include "OpenGL.h"
+#include "FileSystem.h"
 #include "FlyObject.h"
+#include "ImageImporter.h"
 
 AttributeImage::AttributeImage(FlyObject* _parentObject = nullptr)
 {
@@ -60,11 +62,9 @@ void AttributeImage::CleanUp()
 
 bool AttributeImage::CreateImage(const char* texturePath)
 {
-	//imageTexture = new Texture();
-	//get width and height 
-
-	// -----
-
+	
+	string path = FileSystem::getInstance()->solutionDirectory + "EngineResources\\Images\\Parrot.png";
+	imageTexture = ImageImporter::getInstance()->LoadTexture(path.c_str(), false); 
 	imageWidth = imageHeight = 1; // SUPOSE 
 
 	quadMesh = new Quad(); 
