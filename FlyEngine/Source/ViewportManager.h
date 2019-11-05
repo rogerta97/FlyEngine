@@ -25,7 +25,6 @@ public:
 	// Utility --------------------------------
 	void Delete();
 	void ResizeViewport(); 
-	void DrawRoomViewport(); 
 
 	float GetWidthFromHeight(float viewportHeight); 
 	float GetHeightFromWidth(float viewportWidth);

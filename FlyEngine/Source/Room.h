@@ -67,6 +67,9 @@ public:
 	UID GetRoomID() const;
 	void SetRoomID(UID newName);
 
+	void SetSelectedObject(FlyObject* newObject); 
+	FlyObject* GetSelectedObject() const;
+
 	// Vars ---------------------------------------------------------------------------
 	// Connections ---------
 	list<RoomConnection*> outConnections;
@@ -74,9 +77,9 @@ public:
 
 	// Objects ---------
 	list<FlyObject*> objectsInRoom;
-	FlyObject* selectedObject; 
 
 private: 
+	FlyObject* selectedObject; 
 	UID roomID; 
 	string roomName;
 };

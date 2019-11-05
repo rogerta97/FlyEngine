@@ -73,6 +73,12 @@
     <Filter Include="Source\3rdParty\MathGeoLib\src">
       <UniqueIdentifier>{a87abd9e-e935-4fd4-be6b-3e0a799d03a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Importer">
+      <UniqueIdentifier>{eff29dd6-2983-4bac-9831-20a3993b7279}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Resources">
+      <UniqueIdentifier>{015e3d8d-a505-44bd-ab6e-351f4c688d64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -281,6 +287,15 @@
     </ClCompile>
     <ClCompile Include="3rdParty\MathGeoLib\Time\Clock.cpp">
       <Filter>Source\3rdParty\MathGeoLib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ImageImporter.cpp">
+      <Filter>Source\Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ResourceManager.cpp">
+      <Filter>Source\FlyEngine\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Texture.cpp">
+      <Filter>Source\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -595,6 +610,18 @@
     </ClInclude>
     <ClInclude Include="3rdParty\MathGeoLib\Time\Clock.h">
       <Filter>Source\3rdParty\MathGeoLib\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ImageImporter.h">
+      <Filter>Source\Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ResourceManager.h">
+      <Filter>Source\FlyEngine\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Texture.h">
+      <Filter>Source\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Resource.h">
+      <Filter>Source\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

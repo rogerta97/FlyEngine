@@ -109,16 +109,12 @@ update_status ModuleRender::PreUpdate(float dt)
 
 update_status ModuleRender::PostUpdate(float dt)
 {
-	ViewportManager::getInstance()->viewportTexture->Bind();
+	
 
-	if (App->flySection == FLY_SECTION_ROOM_EDIT) {
-		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom(); 
-		selectedRoom->DrawRoomObjects();
-	}
-
-	ViewportManager::getInstance()->viewportTexture->Render();
-	ViewportManager::getInstance()->viewportTexture->Unbind();
-
+	//if (App->flySection == FLY_SECTION_ROOM_EDIT) {
+	//	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom(); 
+	//	selectedRoom->DrawRoomObjects();
+	//}
 
 	//if (App->flySection == FLY_SECTION_ROOM_EDIT) {
 	//	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
@@ -130,9 +126,20 @@ update_status ModuleRender::PostUpdate(float dt)
 	if (err != GL_NO_ERROR)
 		FLY_ERROR("Open GL Error: %s", glewGetErrorString(err));
 
-	SDL_GL_SwapWindow(App->moduleWindow->mainWindow);
+	ViewportManager::getInstance()->viewportTexture->Bind();
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	if (App->flySection == FLY_SECTION_ROOM_EDIT) {
+		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+		selectedRoom->DrawRoomObjects();
+	}
+
+	ViewportManager::getInstance()->viewportTexture->Render();
+	ViewportManager::getInstance()->viewportTexture->Unbind();
+
+	SDL_GL_SwapWindow(App->moduleWindow->mainWindow);
+	
 	return UPDATE_CONTINUE;
 }
 

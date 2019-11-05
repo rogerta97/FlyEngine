@@ -39,13 +39,6 @@ void ViewportManager::ResizeViewport()
 {
 }
 
-void ViewportManager::DrawRoomViewport()
-{
-	// Draw needed FlyObjects 
-
-
-	// Update MSAA texture 
-}
 float ViewportManager::GetWidthFromHeight(float viewportHeight)
 {
 	switch (viewportAspectRatio)

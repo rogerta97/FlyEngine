@@ -40,6 +40,8 @@ bool GameViewportDockPanel::Draw()
 
 #pragma endregion
 
+	glEnable(GL_TEXTURE_2D);
+
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_MenuBar)) {
 		
@@ -71,8 +73,11 @@ bool GameViewportDockPanel::Draw()
 		float2 screenCenter = float2(regionSize.x / 2, regionSize.y / 2);
 		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - (viewportSize.y / 2)));
 
-		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(viewportSize.x - 1, viewportSize.y - 1));
+		FLY_LOG("Texture ID: %d", ViewportManager::getInstance()->viewportTexture->GetTextureID()); 
+		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(viewportSize.x - 1, viewportSize.y - 1), ImVec2(0, 1), ImVec2(1, 0));
 	}
+
+	glDisable(GL_TEXTURE_2D);
 
 	ImGui::End();
 	ImGui::PopStyleVar();

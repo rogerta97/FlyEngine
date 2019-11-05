@@ -138,4 +138,5 @@ void TextureMSAA::UnloadFromMemory()
 
 void TextureMSAA::Clear()
 {
+
 }

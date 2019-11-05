@@ -65,8 +65,11 @@
     <ClCompile Include="Source\FileSystem.cpp" />
     <ClCompile Include="Source\FlyObject.cpp" />
     <ClCompile Include="Source\GameViewportDockPanel.cpp" />
+    <ClCompile Include="Source\ImageImporter.cpp" />
     <ClCompile Include="Source\log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\ResourceManager.cpp" />
+    <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\ViewportManager.cpp" />
     <ClCompile Include="Source\ModuleRoomManager.cpp" />
@@ -170,8 +173,12 @@
     <ClInclude Include="Source\FlyObject.h" />
     <ClInclude Include="Source\GameViewportDockPanel.h" />
     <ClInclude Include="Source\Globals.h" />
+    <ClInclude Include="Source\ImageImporter.h" />
     <ClInclude Include="Source\ImNodeDemo.h" />
     <ClInclude Include="Source\Module.h" />
+    <ClInclude Include="Source\Resource.h" />
+    <ClInclude Include="Source\ResourceManager.h" />
+    <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\Transform.h" />
     <ClInclude Include="Source\ViewportManager.h" />
     <ClInclude Include="Source\ModuleRoomManager.h" />
@@ -279,7 +286,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;WINDOWS_IGNORE_PACKING_MISMATCH;SOLUTION_DIR=R"($(SolutionDir))"</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;$(SolutionDir)3rdParty/glm;$(SolutionDir)3rdParty/MathGeoLib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;$(SolutionDir)3rdParty/glm;$(SolutionDir)3rdParty/MathGeoLib;$(SolutionDir)3rdParty/DevILWindowsSDK/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -312,7 +319,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;$(SolutionDir)3rdParty/glm;$(SolutionDir)3rdParty/MathGeoLib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;$(SolutionDir)3rdParty/glm;$(SolutionDir)3rdParty/MathGeoLib;$(SolutionDir)3rdParty/DevILWindowsSDK/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

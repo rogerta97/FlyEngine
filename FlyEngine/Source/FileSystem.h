@@ -16,8 +16,11 @@ private:
 public: 
 	static FileSystem* getInstance();
 	~FileSystem();
-
 	void Delete(); 
+
+	// Utility -----------
+	string GetLastPathItem(string path, bool keepLastPathItem);
+	void DeleteFileExtension(string& path); 
 
 public: 
 	std::string solutionDirectory; 

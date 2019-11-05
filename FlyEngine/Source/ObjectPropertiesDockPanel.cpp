@@ -1,5 +1,10 @@
 #include "ObjectPropertiesDockPanel.h"
+#include "Application.h"
+#include "ModuleImGui.h"
 #include "imgui.h"
+#include "ModuleRoomManager.h"
+#include "FlyObject.h"
+#include "Room.h"
 #include "mmgr.h"
 
 ObjectPropertiesDockPanel::ObjectPropertiesDockPanel(bool isVisible) : DockPanel("Object Properties", isVisible)
@@ -21,8 +26,31 @@ bool ObjectPropertiesDockPanel::Draw()
 #pragma endregion
 
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
-		
-	//	ImGui::DragFloat2("Position", )
+
+		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();
+
+		if (selectedObject != nullptr)
+		{
+			ImGui::Image(0, ImVec2(25, 25));
+			ImGui::SameLine();
+
+			ImGui::PushFont(App->moduleImGui->headerFont);
+			ImGui::Text("%s", selectedObject->GetName().c_str());
+			ImGui::PopFont();
+
+			ImGui::Separator();
+
+			float showPosition[2] = { selectedObject->transform->GetPosition().x, selectedObject->transform->GetPosition().y};
+
+			if (ImGui::DragFloat2("Position", showPosition)) 
+			{
+				selectedObject->transform->SetPosition(float2(showPosition[0], showPosition[1])); 
+			}
+		}
+		else
+		{
+			ImGui::Text("No Object Selected"); 
+		}
 	}
 
 	ImGui::End();

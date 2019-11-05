@@ -152,7 +152,8 @@ int Room::GetOutputConnectionsAmount() const
 	return outConnections.size();
 }
 
-void Room::DrawRoomObjects()
+void Room::
+()
 {
 	for (auto& it : objectsInRoom) {
 		(it)->Draw(); 
@@ -197,6 +198,16 @@ UID Room::GetRoomID() const
 void Room::SetRoomID(UID roomID)
 {
 	roomID = roomID;
+}
+
+void Room::SetSelectedObject(FlyObject* newObject)
+{
+	selectedObject = newObject; 
+}
+
+FlyObject* Room::GetSelectedObject() const
+{
+	return selectedObject;
 }
 
 RoomConnection::RoomConnection(Room* _originRoom, Room* _roomConnected, string _connectionName, bool _isBidirectional)

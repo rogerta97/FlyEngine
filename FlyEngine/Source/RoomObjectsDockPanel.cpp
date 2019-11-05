@@ -27,7 +27,11 @@ bool RoomObjectsDockPanel::Draw()
 	if (ImGui::Begin(panelName.c_str(), &visible)) 
 	{		
 		for (auto& it : App->moduleRoomManager->GetSelectedRoom()->objectsInRoom) {	
-			ImGui::Selectable((it)->GetName().c_str()); 
+
+			if (ImGui::Selectable((it)->GetName().c_str())) {
+				(it)->isSelected = true; 
+				App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(it);
+			}
 		}
 	}
 
