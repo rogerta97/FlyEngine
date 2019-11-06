@@ -356,7 +356,7 @@ void ModuleImGui::CherryTheme()
 	style->Colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.54f, 0.33f, 0.42f, 1.00f);
 	style->Colors[ImGuiCol_TextDisabled] = TEXT(0.28f);
 	style->Colors[ImGuiCol_ChildWindowBg] = BG(0.58f);
-	style->Colors[ImGuiCol_PopupBg] = BG(0.9f);
+	style->Colors[ImGuiCol_PopupBg] = ImVec4(0.18f, 0.19f, 0.20f, 1.00f);
 	style->Colors[ImGuiCol_Border] = ImVec4(0.31f, 0.31f, 1.00f, 0.00f);
 	style->Colors[ImGuiCol_BorderShadow] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
 	style->Colors[ImGuiCol_FrameBg] = BG(1.00f);

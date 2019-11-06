@@ -17,18 +17,19 @@ public:
 	void SetPosition(float2 newPosition);
 
 	float3 GetRotation() const;
-	void SetRotation(float3 newRotation);
-	void SetRotation(float2 newRotation);
+	void SetRotationEuler(float3 newRotation);
+	void SetRotationEuler(float2 newRotation);
 
 	float3 GetScale() const;
-	void SetScale(float3 newScale);
+	void SetScale(float3 newRotation);
+	void SetScale(float2 newRotation);
 
 	bool dirty; 
 
 private:
 
 	float3 position;
-	float3 rotation;
+	float3 rotationEuler;
 	float3 scale;
 
 	float4x4 ViewMatrix;

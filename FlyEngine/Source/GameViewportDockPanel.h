@@ -18,6 +18,8 @@ public:
 
 	void DrawTopBar();
 
+	void ResetAttributeSelectionBooleans();
+
 	void ObjectCreatorPopup();
 
 	float2 GetRegionSize() const; 
@@ -30,6 +32,9 @@ private:
 
 	float2 regionSize;
 	float2 viewportSize;
+
+	// Object Creator -------
+	bool containsAttributeImage = false; 
 };
 
 #endif

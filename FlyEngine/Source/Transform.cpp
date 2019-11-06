@@ -4,7 +4,7 @@
 Transform::Transform()
 {
 	position = float3(0, 0, 0);
-	rotation = float3(0, 0, 0);
+	rotationEuler = float3(0, 0, 0);
 	scale = float3(1, 1, 1);
 
 	CalculateViewMatrix(); 
@@ -36,17 +36,17 @@ void Transform::SetPosition(float2 newPosition)
 
 float3 Transform::GetRotation() const
 {
-	return rotation; 
+	return rotationEuler; 
 }
 
-void Transform::SetRotation(float3 newRotation)
+void Transform::SetRotationEuler(float3 newRotation)
 {
-	rotation = newRotation;
+	rotationEuler = newRotation;
 }
 
-void Transform::SetRotation(float2 newRotation)
+void Transform::SetRotationEuler(float2 newRotation)
 {
-
+	SetRotationEuler(float3(newRotation.x, newRotation.y, 0)); 
 }
 
 float3 Transform::GetScale() const
@@ -59,13 +59,23 @@ void Transform::SetScale(float3 newScale)
 	scale = newScale; 
 }
 
+void Transform::SetScale(float2 newScale)
+{
+	SetScale(float3(newScale.x, newScale.y, 1));
+}
+
 float4x4 Transform::CalculateViewMatrix()
 {
 	//new_mat = new_mat * transform.rotation;
 	float4x4 new_mat = float4x4::identity;
 
 	new_mat = new_mat * new_mat.Scale(scale);
-	new_mat.SetTranslatePart(position);
+
+	new_mat.RotateX(rotationEuler.x); 
+	new_mat.RotateY(rotationEuler.y); 
+
+    new_mat.SetTranslatePart(position);
+	
 
 	ViewMatrix = new_mat;
 	return ViewMatrix; 

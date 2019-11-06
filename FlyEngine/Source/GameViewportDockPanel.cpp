@@ -115,8 +115,10 @@ void GameViewportDockPanel::DrawTopBar()
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
 
 		ImGui::PushItemWidth(150);
-		if (ImGui::Button("Create Object")) {
+		if (ImGui::Button("Create Object")) 
+		{
 			ImGui::OpenPopup("create_flyobject");
+			ResetAttributeSelectionBooleans();
 		}
 		ImGui::PopStyleColor(); 
 
@@ -148,37 +150,66 @@ void GameViewportDockPanel::DrawTopBar()
 	}
 }
 
+void GameViewportDockPanel::ResetAttributeSelectionBooleans()
+{
+	containsAttributeImage = false;
+}
+
 void GameViewportDockPanel::ObjectCreatorPopup()
 {
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5, 5));
 	if (ImGui::BeginPopup("create_flyobject"))
 	{
 		ImGui::PushFont(App->moduleImGui->headerFont);
 		ImGui::Text("Object Generator: ");
-		ImGui::Separator(); 
 		ImGui::PopFont(); 
 
-		static char newObjectName[256] = "Name...";
+		static char newObjectName[256] = "";
 		ImGui::InputText("Name", newObjectName, 256 * sizeof(char));
 
 		ImGui::PushFont(App->moduleImGui->headerFont);
-		ImGui::Separator();
+
 		ImGui::Text("Attributes: "); 
 		ImGui::PopFont();
 
-		static bool containsAttributeImage;
-		ImGui::Checkbox("Image", &containsAttributeImage);
+		static int attributeSelected = 0;
+
+		switch (attributeSelected)
+		{
+		case 0:
+			break; 
+
+		case 1:
+			containsAttributeImage = true; 
+			break; 
+		}
 
 		if (containsAttributeImage) 
 		{
-			ImGui::Separator();
+	
 			if(ImGui::CollapsingHeader("Attribute Image Configuration")) 
 			{
-				static float dimensions[2]; 
-				ImGui::InputFloat2("width", dimensions);
+				ImGui::BeginChild("AI_Child", ImVec2(ImGui::GetContentRegionAvailWidth(), 50), true);
+
+				char buf[256] = "C:/";
+				ImGui::InputText("##InputBrowse", buf, IM_ARRAYSIZE(buf));
+				
+				ImGui::SameLine(); 			
+				if (ImGui::Button("Browse")) {
+
+				}
+
+				ImGui::EndChild();
+				
+			
 			}
 		}
 
-		ImGui::Separator(); 
+		ImGui::Combo("", &attributeSelected, "Select Attribute\0Image\0"); 
+		ImGui::SameLine(); 
+		ImGui::Button("Add Attribute"); 
+
+		ImGui::PushFont(App->moduleImGui->headerFont);
 		if (ImGui::Button("Create")) 
 		{
 			FlyObject* newObject = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject(newObjectName);
@@ -188,8 +219,11 @@ void GameViewportDockPanel::ObjectCreatorPopup()
 
 			ImGui::CloseCurrentPopup();
 		}
+		ImGui::PopFont();
+
 		ImGui::EndPopup();
 	}
+	ImGui::PopStyleVar();
 }
 
 float2 GameViewportDockPanel::GetRegionSize() const

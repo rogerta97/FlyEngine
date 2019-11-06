@@ -41,20 +41,22 @@ bool ObjectPropertiesDockPanel::Draw()
 			ImGui::Separator();
 
 			float showPosition[2] = { selectedObject->transform->GetPosition().x, selectedObject->transform->GetPosition().y};
+			float showRotation[2] = { selectedObject->transform->GetRotation().x, selectedObject->transform->GetRotation().y};
+			float showScale[2] = { selectedObject->transform->GetScale().x, selectedObject->transform->GetScale().y};
 
-			if (ImGui::DragFloat2("Position", showPosition)) 
+			if (ImGui::DragFloat2("Position", showPosition, 0.5f)) 
 			{
 				selectedObject->transform->SetPosition(float2(showPosition[0], showPosition[1])); 
 			}
 
-			if (ImGui::DragFloat2("Rotation", showPosition))
+			if (ImGui::DragFloat2("Rotation", showRotation))
 			{
-				selectedObject->transform->SetPosition(float2(showPosition[0], showPosition[1]));
+				selectedObject->transform->SetRotationEuler(float2(showRotation[0], showRotation[1]));
 			}
 			
-			if (ImGui::DragFloat2("Scale", showPosition))
+			if (ImGui::DragFloat2("Scale", showScale, 0.1f))
 			{
-				selectedObject->transform->SetPosition(float2(showPosition[0], showPosition[1]));
+				selectedObject->transform->SetScale(float2(showScale[0], showScale[1]));
 			}
 		}
 		else
