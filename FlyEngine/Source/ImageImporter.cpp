@@ -3,9 +3,9 @@
 #include "Application.h"
 #include "FileSystem.h"
 
-#include "IL/il.h"
-#include "IL/ilu.h"
-#include "IL/ilut.h"
+#include <IL/il.h>
+#include <IL/ilu.h>
+#include <IL/ilut.h>
 
 ImageImporter* ImageImporter::instance = 0;
 
@@ -47,7 +47,9 @@ Texture* ImageImporter::LoadTexture(std::string path, bool flipImage = false)
 	//Check if the texture existed before based on the name on its path
 	std::string new_name = FileSystem::getInstance()->GetLastPathItem(path, true);
 
-	success = ilLoadImage((const wchar_t*)path.c_str());
+	success = ilLoadImage(path.c_str());
+
+	FLY_ERROR("%s", iluErrorString(success));
 
 	if (success)
 	{

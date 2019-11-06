@@ -46,25 +46,25 @@ void Quad::SetQuadData(const float desiredWidth, const float desiredHeight)
 	quadWidth = desiredWidth;
 	quadHeight = desiredHeight;
 
-	//numUvs = numVertices;
-	//uvs = new float[numUvs * 3];
+	numUvs = numVertices;
+	uvs = new float[numUvs * 3];
 
-	////Front 
-	//uvs[0] = 0.0f;
-	//uvs[1] = 1.0f;
-	//uvs[2] = 0.0f;
+	//Front 
+	uvs[0] = 0.0f;
+	uvs[1] = 1.0f;
+	uvs[2] = 0.0f;
 
-	//uvs[3] = 1.0f;
-	//uvs[4] = 1.0f;
-	//uvs[5] = 0.0f;
+	uvs[3] = 1.0f;
+	uvs[4] = 1.0f;
+	uvs[5] = 0.0f;
 
-	//uvs[6] = 0.0f;
-	//uvs[7] = 0.0f;
-	//uvs[8] = 0.0f;
+	uvs[6] = 0.0f;
+	uvs[7] = 0.0f;
+	uvs[8] = 0.0f;
 
-	//uvs[9] = 1.0f;
-	//uvs[10] = 0.0f;
-	//uvs[11] = 0.0f;
+	uvs[9] = 1.0f;
+	uvs[10] = 0.0f;
+	uvs[11] = 0.0f;
 
 }
 
@@ -83,6 +83,14 @@ void Quad::LoadToMemory()
 		glGenBuffers(1, &indicesID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesID);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * numIndices, indices, GL_STATIC_DRAW);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	}
+
+	if (numUvs != 0)
+	{
+		glGenBuffers(1, &uvsID);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uvsID);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * numUvs * 3, uvs, GL_STATIC_DRAW);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 }

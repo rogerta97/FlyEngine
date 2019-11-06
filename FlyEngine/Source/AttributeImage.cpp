@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "OpenGL.h"
 #include "FileSystem.h"
+#include "Texture.h"
 #include "FlyObject.h"
 #include "ImageImporter.h"
 
@@ -36,20 +37,41 @@ void AttributeImage::Draw()
 
 	if (parentObject->transform != nullptr)
 	{
-		float4x4 view_mat; 
-		GLfloat matrix[16];
-		glGetFloatv(GL_MODELVIEW_MATRIX, matrix);
-		view_mat.Set((float*)matrix);
+		//float4x4 view_mat; 
+		//GLfloat matrix[16];
+		//glGetFloatv(GL_MODELVIEW_MATRIX, matrix);
+		//view_mat.Set((float*)matrix);
 
 		glMatrixMode(GL_MODELVIEW);	
-		glLoadMatrixf((GLfloat*)((parentObject->transform->CalculateViewMatrix()).Transposed() * view_mat).v);
+		glLoadMatrixf((GLfloat*)((parentObject->transform->CalculateViewMatrix()).Transposed() /** view_mat*/).v);
+	}
+
+	if (imageTexture != nullptr) {
+
+		glEnable(GL_TEXTURE_2D); 
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, quadMesh->uvsID);
+
+		imageTexture->Bind(); 
+
+		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
 	}
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadMesh->indicesID);
 	glDrawElements(GL_TRIANGLES, quadMesh->numIndices, GL_UNSIGNED_INT, NULL); 
 
+	if(imageTexture) 
+	{	
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		imageTexture->UnBind();
+		glDisable(GL_TEXTURE_2D);
+	}
+
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	if (imageTexture)
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY); 
 
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
@@ -62,10 +84,9 @@ void AttributeImage::CleanUp()
 
 bool AttributeImage::CreateImage(const char* texturePath)
 {
-	
-	string path = FileSystem::getInstance()->solutionDirectory + "EngineResources\\Images\\Parrot.png";
-	imageTexture = ImageImporter::getInstance()->LoadTexture(path.c_str(), false); 
-	imageWidth = imageHeight = 1; // SUPOSE 
+	string path = FileSystem::getInstance()->solutionDirectory + "EngineResources\\Images\\Parrot.jpg";
+	imageTexture = ImageImporter::getInstance()->LoadTexture(path.c_str(), true); 
+	imageWidth = imageHeight = 1; 
 
 	quadMesh = new Quad(); 
 	quadMesh->Create(imageWidth, imageHeight); 

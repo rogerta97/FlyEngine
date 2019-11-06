@@ -79,6 +79,9 @@
     <Filter Include="Source\Tools\Importer">
       <UniqueIdentifier>{eff29dd6-2983-4bac-9831-20a3993b7279}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\3rdParty\Devil">
+      <UniqueIdentifier>{bcb5813b-86cf-437c-8d03-454f2bb9a478}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -625,6 +628,30 @@
     </ClInclude>
     <ClInclude Include="Source\Resource.h">
       <Filter>Source\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\DevILWindowsSDK\include\IL\devil_cpp_wrapper.hpp">
+      <Filter>Source\3rdParty\Devil</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\DevILWindowsSDK\include\IL\devil_internal_exports.h">
+      <Filter>Source\3rdParty\Devil</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\DevILWindowsSDK\include\IL\il.h">
+      <Filter>Source\3rdParty\Devil</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\DevILWindowsSDK\include\IL\il_wrap.h">
+      <Filter>Source\3rdParty\Devil</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\DevILWindowsSDK\include\IL\ilu.h">
+      <Filter>Source\3rdParty\Devil</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\DevILWindowsSDK\include\IL\ilu_region.h">
+      <Filter>Source\3rdParty\Devil</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\DevILWindowsSDK\include\IL\ilut.h">
+      <Filter>Source\3rdParty\Devil</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\DevILWindowsSDK\include\IL\ilut_config.h">
+      <Filter>Source\3rdParty\Devil</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

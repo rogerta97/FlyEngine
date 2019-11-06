@@ -46,6 +46,16 @@ bool ObjectPropertiesDockPanel::Draw()
 			{
 				selectedObject->transform->SetPosition(float2(showPosition[0], showPosition[1])); 
 			}
+
+			if (ImGui::DragFloat2("Rotation", showPosition))
+			{
+				selectedObject->transform->SetPosition(float2(showPosition[0], showPosition[1]));
+			}
+			
+			if (ImGui::DragFloat2("Scale", showPosition))
+			{
+				selectedObject->transform->SetPosition(float2(showPosition[0], showPosition[1]));
+			}
 		}
 		else
 		{

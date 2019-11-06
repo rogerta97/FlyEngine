@@ -22,15 +22,15 @@ private:
 public: 
 	vec3* vertices; 
 	int* indices;
-	//float* uvs; 
+	float* uvs; 
 
 	unsigned int numVertices = 0;
 	unsigned int numIndices = 0;
-	//uint numUvs = 0;
+	uint numUvs = 0;
 
 	unsigned int verticesID = -1;
 	unsigned int indicesID = -1;
-	//uint uvsID = -1;
+	uint uvsID = -1;
 
 	float quadWidth; 
 	float quadHeight;

@@ -73,7 +73,6 @@ bool GameViewportDockPanel::Draw()
 		float2 screenCenter = float2(regionSize.x / 2, regionSize.y / 2);
 		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - (viewportSize.y / 2)));
 
-		FLY_LOG("Texture ID: %d", ViewportManager::getInstance()->viewportTexture->GetTextureID()); 
 		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(viewportSize.x - 1, viewportSize.y - 1), ImVec2(0, 1), ImVec2(1, 0));
 	}
 
