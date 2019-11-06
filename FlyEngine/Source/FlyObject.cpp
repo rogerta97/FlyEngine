@@ -38,12 +38,8 @@ std::string FlyObject::GetName() const
 AttributeImage* FlyObject::AddAttributeImage(const char* imageTexturePath)
 {
 	AttributeImage* newAtrImage = new AttributeImage(this); 
-
-	std::string path = FileSystem::getInstance()->solutionDirectory; 
-	path += "EngineResources / Images / PlaceHolder.png";
-	newAtrImage->CreateImage(path.c_str());
+	newAtrImage->CreateImage(imageTexturePath);
 
 	attributeList.push_back(newAtrImage); 
-
 	return newAtrImage; 
 }

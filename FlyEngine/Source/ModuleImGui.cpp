@@ -72,7 +72,8 @@ bool ModuleImGui::Start()
 	AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
 
 	FlyObject* test = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Test");
-	test->AddAttributeImage("sa"); 
+	string spritePath = FileSystem::getInstance()->solutionDirectory + "EngineResources/Images/Transformer.png"; 
+	test->AddAttributeImage(spritePath.c_str());
 
 	ViewportManager::getInstance();
 

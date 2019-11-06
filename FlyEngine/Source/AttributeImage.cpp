@@ -55,6 +55,9 @@ void AttributeImage::Draw()
 		imageTexture->Bind(); 
 
 		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadMesh->indicesID);
@@ -84,9 +87,10 @@ void AttributeImage::CleanUp()
 
 bool AttributeImage::CreateImage(const char* texturePath)
 {
-	string path = FileSystem::getInstance()->solutionDirectory + "EngineResources\\Images\\Parrot.jpg";
-	imageTexture = ImageImporter::getInstance()->LoadTexture(path.c_str(), true); 
-	imageWidth = imageHeight = 1; 
+	imageTexture = ImageImporter::getInstance()->LoadTexture(texturePath, true);
+
+	imageWidth = imageTexture->GetWidth();
+	imageHeight = imageTexture->GetHeight();
 
 	quadMesh = new Quad(); 
 	quadMesh->Create(imageWidth, imageHeight); 
