@@ -14,7 +14,7 @@
 #include "TextureMSAA.h"
 #include "WorldPropertiesDockPanel.h"
 #include "GraphPropertiesDockPanel.h"
-#include "FileSystem.h"
+#include "MyFileSystem.h"
 #include "OpenGL.h"
 
 #include "GameViewportDockPanel.h"
@@ -63,7 +63,7 @@ bool ModuleImGui::Start()
 
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags = ImGuiConfigFlags_DockingEnable;
-	string fontsDirectory = FileSystem::getInstance()->solutionDirectory + "EngineResources/Fonts/Exo-Regular.otf";
+	string fontsDirectory = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources/Fonts/Exo-Regular.otf";
 	defaultFont = io.Fonts->AddFontFromFileTTF(fontsDirectory.c_str(), 17);
 	headerFont = io.Fonts->AddFontFromFileTTF(fontsDirectory.c_str(), 24);
 
@@ -73,7 +73,7 @@ bool ModuleImGui::Start()
 	AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
 
 	FlyObject* test = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Test");
-	string spritePath = FileSystem::getInstance()->solutionDirectory + "EngineResources/Images/Transformer.png"; 
+	string spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources/Images/Transformer.png"; 
 	test->AddAttributeImage(spritePath.c_str());
 
 	ViewportManager::getInstance();

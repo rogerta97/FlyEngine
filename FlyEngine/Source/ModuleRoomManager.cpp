@@ -6,7 +6,7 @@
 #include "GraphPropertiesDockPanel.h"
 #include "Room.h"
 #include "NodeGraph.h"
-#include "FileSystem.h"
+#include "MyFileSystem.h"
 #include "FlyObject.h"
 #include "mmgr.h"
 
@@ -63,7 +63,7 @@ bool ModuleRoomManager::CleanUp()
 {
 	CleanUpRooms();
 
-	FileSystem::getInstance()->Delete();
+	MyFileSystem::getInstance()->Delete();
 	RandomNumberGenerator::getInstance()->Delete();
 
 	return true;

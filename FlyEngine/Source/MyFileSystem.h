@@ -7,23 +7,28 @@
 
 using namespace std; 
 
-struct FileSystem {
+struct MyFileSystem {
+
 
 private: 
-	static FileSystem* instance; 
-	FileSystem();
+	static MyFileSystem* instance; 
+	MyFileSystem();
 
 public: 
-	static FileSystem* getInstance();
-	~FileSystem();
+	static MyFileSystem* getInstance();
+	~MyFileSystem();
 	void Delete(); 
 
 	// Utility -----------
 	string GetLastPathItem(string path, bool keepLastPathItem);
 	void DeleteFileExtension(string& path); 
 
-public: 
-	std::string solutionDirectory; 
+	string GetIconsDirectory();
+	string GetSolutionDirectory();
+
+private: 
+	std::string solutionDirectory = ""; 
+	std::string iconsDirectory = ""; 
 };
 
 

@@ -2,7 +2,7 @@
 #include "Quad.h"
 #include "Globals.h"
 #include "OpenGL.h"
-#include "FileSystem.h"
+#include "MyFileSystem.h"
 #include "Texture.h"
 #include "FlyObject.h"
 #include "ImageImporter.h"

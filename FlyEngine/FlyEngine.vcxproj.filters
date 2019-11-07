@@ -162,9 +162,6 @@
     <ClCompile Include="Source\GraphPropertiesDockPanel.cpp">
       <Filter>Source\Modules\DockingPanels</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FileSystem.cpp">
-      <Filter>Source\Tools\FileSystem</Filter>
-    </ClCompile>
     <ClCompile Include="Source\RandomNumberGenerator.cpp">
       <Filter>Source\Tools\RandomGenerator</Filter>
     </ClCompile>
@@ -306,6 +303,9 @@
     <ClCompile Include="Source\ModuleManager.cpp">
       <Filter>Source\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Source\MyFileSystem.cpp">
+      <Filter>Source\Tools\FileSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -400,9 +400,6 @@
     </ClInclude>
     <ClInclude Include="Source\GraphPropertiesDockPanel.h">
       <Filter>Source\Modules\DockingPanels</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\FileSystem.h">
-      <Filter>Source\Tools\FileSystem</Filter>
     </ClInclude>
     <ClInclude Include="Source\RandomNumberGenerator.h">
       <Filter>Source\Tools\RandomGenerator</Filter>
@@ -661,6 +658,9 @@
     </ClInclude>
     <ClInclude Include="Source\ModuleManager.h">
       <Filter>Source\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MyFileSystem.h">
+      <Filter>Source\Tools\FileSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
