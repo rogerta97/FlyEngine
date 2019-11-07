@@ -22,6 +22,7 @@ public:
 	// Utility -----------
 	string GetLastPathItem(string path, bool keepLastPathItem);
 	void DeleteFileExtension(string& path); 
+	string DeleteLastPathItem(string path); 
 
 	string GetIconsDirectory();
 	string GetSolutionDirectory();
