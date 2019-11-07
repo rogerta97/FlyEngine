@@ -47,23 +47,23 @@ bool GameViewportDockPanel::Draw()
 		
 		float2 regionSizeThisTick = float2(ImGui::GetWindowContentRegionMax().x, ImGui::GetWindowContentRegionMax().y);
 
-		if ((!regionSizeThisTick.Equals(regionSize) || aspectRatioChanged) && regionSize.x != -1.0f)
+		if (!regionSizeThisTick.Equals(regionSize) && regionSize.x != -1.0f)
 		{
 			regionSize = regionSizeThisTick;
 			FitViewportToRegion();
 
-			if (aspectRatioChanged)
-			{
-				glMatrixMode(GL_PROJECTION);
-				glLoadIdentity();
+			//if (aspectRatioChanged)
+			//{
+			//	glMatrixMode(GL_PROJECTION);
+			//	glLoadIdentity();
 
-				float windowWidth = viewportSize.x;
-				float windowHeight = viewportSize.y;
+			//	float windowWidth = viewportSize.x;
+			//	float windowHeight = viewportSize.y;
 
-				glViewport(0, 0, windowWidth, windowHeight);
+			//	glViewport(0, 0, windowWidth, windowHeight);
 
-				aspectRatioChanged = false;
-			}
+			//	aspectRatioChanged = false;
+			//}
 		}
 
 		DrawTopBar();
@@ -106,6 +106,13 @@ void GameViewportDockPanel::FitViewportToRegion()
 		viewportSize.y = regionSize.y;
 		viewportSize.x = ViewportManager::getInstance()->GetWidthFromHeight(viewportSize.y);
 	}
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	float aspectRatio = viewportSize.x / viewportSize.y; 
+	glViewport(0, 0, viewportSize.x, viewportSize.y); 
+	glOrtho(-400.0 * aspectRatio, 400.0 * aspectRatio, -400.0, 400.0, 1.0, -1.0);
 }
 
 void GameViewportDockPanel::DrawTopBar()
@@ -123,26 +130,7 @@ void GameViewportDockPanel::DrawTopBar()
 		ImGui::PopStyleColor(); 
 
 		ImGui::PushItemWidth(150);
-		static int resolutionSelected = 0; 
-		if (ImGui::Combo("", &resolutionSelected, "4:3\0 1:1\0")) {
 
-			switch (resolutionSelected)
-			{
-
-			case 0:
-				ViewportManager::getInstance()->SetAspectRatioType(AR_4_3);
-				break;
-
-			case 1:
-			{
-				ViewportManager::getInstance()->SetAspectRatioType(AR_1_1);
-				break;
-			}
-
-			default:
-				break;
-			}
-		}
 		ImGui::PopItemWidth(); 
 
 		ObjectCreatorPopup();
@@ -152,7 +140,7 @@ void GameViewportDockPanel::DrawTopBar()
 
 void GameViewportDockPanel::ResetAttributeSelectionBooleans()
 {
-	containsAttributeImage = false;
+	//containsAttributeImage = false;
 }
 
 void GameViewportDockPanel::ObjectCreatorPopup()
@@ -160,68 +148,7 @@ void GameViewportDockPanel::ObjectCreatorPopup()
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5, 5));
 	if (ImGui::BeginPopup("create_flyobject"))
 	{
-		ImGui::PushFont(App->moduleImGui->headerFont);
-		ImGui::Text("Object Generator: ");
-		ImGui::PopFont(); 
-
-		static char newObjectName[256] = "";
-		ImGui::InputText("Name", newObjectName, 256 * sizeof(char));
-
-		ImGui::PushFont(App->moduleImGui->headerFont);
-
-		ImGui::Text("Attributes: "); 
-		ImGui::PopFont();
-
-		static int attributeSelected = 0;
-
-		switch (attributeSelected)
-		{
-		case 0:
-			break; 
-
-		case 1:
-			containsAttributeImage = true; 
-			break; 
-		}
-
-		if (containsAttributeImage) 
-		{
-	
-			if(ImGui::CollapsingHeader("Attribute Image Configuration")) 
-			{
-				ImGui::BeginChild("AI_Child", ImVec2(ImGui::GetContentRegionAvailWidth(), 50), true);
-
-				char buf[256] = "C:/";
-				ImGui::InputText("##InputBrowse", buf, IM_ARRAYSIZE(buf));
-				
-				ImGui::SameLine(); 			
-				if (ImGui::Button("Browse")) {
-
-				}
-
-				ImGui::EndChild();
-				
-			
-			}
-		}
-
-		ImGui::Combo("", &attributeSelected, "Select Attribute\0Image\0"); 
-		ImGui::SameLine(); 
-		ImGui::Button("Add Attribute"); 
-
-		ImGui::PushFont(App->moduleImGui->headerFont);
-		if (ImGui::Button("Create")) 
-		{
-			FlyObject* newObject = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject(newObjectName);
-
-			if (containsAttributeImage) 
-				newObject->AddAttributeImage("Path"); 
-
-			ImGui::CloseCurrentPopup();
-		}
-		ImGui::PopFont();
-
-		ImGui::EndPopup();
+		
 	}
 	ImGui::PopStyleVar();
 }

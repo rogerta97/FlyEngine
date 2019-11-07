@@ -5,6 +5,7 @@
 #include "ModuleImGui.h"
 #include "ModuleRender.h"
 #include "ModuleRoomManager.h"
+#include "ModuleManager.h"
 #include "mmgr.h"
 
 Application::Application()
@@ -14,6 +15,7 @@ Application::Application()
 	moduleImGui = new ModuleImGui(this);
 	moduleRoomManager = new ModuleRoomManager(this);
 	moduleRender = new ModuleRender(this);
+	moduleManager = new ModuleManager(this); 
 
 	AddModule(moduleInput);
 	AddModule(moduleWindow);
@@ -21,6 +23,7 @@ Application::Application()
 	AddModule(moduleRoomManager);
 	AddModule(moduleRender);
 	AddModule(moduleImGui);
+	AddModule(moduleManager); 
 }
 
 Application::~Application()

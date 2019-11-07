@@ -21,6 +21,7 @@ class ModuleInput;
 class ModuleImGui;
 class ModuleRender;
 class ModuleRoomManager;
+class ModuleManager; 
 
 class Application
 {
@@ -29,9 +30,9 @@ public:
 	ModuleRoomManager* moduleRoomManager; 
 	ModuleWindow* moduleWindow;
 	ModuleInput* moduleInput;
-	ModuleImGui* moduleImGui;
-
 	ModuleRender* moduleRender;
+	ModuleImGui* moduleImGui;
+	ModuleManager* moduleManager; 
 
 private:
 

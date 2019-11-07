@@ -42,10 +42,11 @@ void ModuleRender::ReceiveEvent(FlyEngineEvent eventType)
 			glMatrixMode(GL_PROJECTION);
 			glLoadIdentity();
 
-			float windowWidth = App->moduleWindow->GetWidth();
-			float windowHeight = App->moduleWindow->GetHeight();
+			float windowWidth = App->moduleImGui->gameViewportDockPanel->GetViewportSize().x;
+			float windowHeight = App->moduleImGui->gameViewportDockPanel->GetViewportSize().y;
 
 			float aspectRatio = windowWidth / windowHeight;
+
 			glViewport(0, 0, windowWidth, windowHeight);
 			glOrtho(-500.0 * aspectRatio, 500.0 * aspectRatio, -500.0, 500.0, 1.0, -1.0);
 			
@@ -108,24 +109,7 @@ update_status ModuleRender::PreUpdate(float dt)
 
 
 update_status ModuleRender::PostUpdate(float dt)
-{
-	
-
-	//if (App->flySection == FLY_SECTION_ROOM_EDIT) {
-	//	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom(); 
-	//	selectedRoom->DrawRoomObjects();
-	//}
-
-	//if (App->flySection == FLY_SECTION_ROOM_EDIT) {
-	//	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
-	//	selectedRoom->DrawRoomObjects();
-	//}
-
-	GLenum err = glGetError(); 
-	
-	if (err != GL_NO_ERROR)
-		FLY_ERROR("Open GL Error: %s", glewGetErrorString(err));
-
+{	
 	ViewportManager::getInstance()->viewportTexture->Bind();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -138,6 +122,11 @@ update_status ModuleRender::PostUpdate(float dt)
 
 	ViewportManager::getInstance()->viewportTexture->Render();
 	ViewportManager::getInstance()->viewportTexture->Unbind();
+
+	GLenum err = glGetError(); 
+	
+	if (err != GL_NO_ERROR)
+		FLY_ERROR("Open GL Error: %s", glewGetErrorString(err));
 
 	SDL_GL_SwapWindow(App->moduleWindow->mainWindow);
 	

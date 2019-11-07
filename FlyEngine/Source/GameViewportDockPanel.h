@@ -33,8 +33,6 @@ private:
 	float2 regionSize;
 	float2 viewportSize;
 
-	// Object Creator -------
-	bool containsAttributeImage = false; 
 };
 
 #endif

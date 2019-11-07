@@ -36,7 +36,6 @@ bool DockPanel::Draw() {
 
 	// Security Checkings 
 	assert(panelName != ""); // You should add a name to the docking window
-	assert(flyEngineSection != FLY_SECTION_null); // Panels Should belong to a member 
 
 	if (!visible)
 		return false;

@@ -19,6 +19,7 @@
 
 #include "GameViewportDockPanel.h"
 #include "RoomObjectsDockPanel.h"
+#include "SceneDockPanel.h"
 #include "ObjectPropertiesDockPanel.h"
 
 #include "Room.h"
@@ -90,6 +91,7 @@ void ModuleImGui::CreatePanels()
 	GameViewportDockPanel* gameViewporPanel = new GameViewportDockPanel(false);
 	RoomObjectsDockPanel* roomObjectsDockPanel = new RoomObjectsDockPanel(false);
 	ObjectPropertiesDockPanel* objectPropertiesDockPanel = new ObjectPropertiesDockPanel(false);
+	SceneDockPanel* sceneDockPanel = new SceneDockPanel(false); 
 
 	dockPanels.push_back(consolePanel); 
 	dockPanels.push_back(roomsGraphPanel);
@@ -99,6 +101,7 @@ void ModuleImGui::CreatePanels()
 	dockPanels.push_back(gameViewporPanel);
 	dockPanels.push_back(roomObjectsDockPanel);
 	dockPanels.push_back(objectPropertiesDockPanel);
+	dockPanels.push_back(sceneDockPanel);
 
 	consoleDockPanel = consolePanel; 
 	graphPropertiesDockPanel = graphPropertiesPanel;
@@ -240,16 +243,6 @@ update_status ModuleImGui::PostUpdate(float dt)
 {
 	DrawDockSpace();
 
-	//if (ImGui::Begin("Test")) 
-	//{
-	//	float windowWidth = 250;
-	//	float windowHeight = 250;
-
-	//	int textureID = ViewportManager::getInstance()->viewportTexture->GetTextureID();
-	//	ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(250, 250));
-	//}
-	//ImGui::End();
-
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -343,7 +336,7 @@ void ModuleImGui::CherryTheme()
 	style->ItemInnerSpacing = ImVec2(7.0f, 5.0f);
 	style->WindowPadding = ImVec2(9.0f, 9.0f);
 	style->FramePadding = ImVec2(2.0f, 2.0f); 
-	style->IndentSpacing = 18;
+	style->IndentSpacing = 30;
 	style->ScrollbarSize = 15; 
 
 	style->WindowRounding = 4;
