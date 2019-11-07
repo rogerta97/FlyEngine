@@ -3,7 +3,6 @@
 
 #include <string>
 
-
 class Texture; 
 struct ImageImporter {
 

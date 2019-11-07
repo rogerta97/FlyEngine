@@ -69,7 +69,6 @@
     <ClCompile Include="Source\log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\ModuleManager.cpp" />
-    <ClCompile Include="Source\Resource.cpp" />
     <ClCompile Include="Source\ResourceManager.cpp" />
     <ClCompile Include="Source\SceneDockPanel.cpp" />
     <ClCompile Include="Source\Texture.cpp" />

@@ -1,9 +1,10 @@
 #include "Texture.h"
 #include "OpenGL.h"
 
-Texture::Texture()
+Texture::Texture() : Resource(RESOURCE_TEXTURE)
 {
 	texture_id = 0;
+	height = width = 0; 
 }
 
 

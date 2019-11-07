@@ -300,9 +300,6 @@
     <ClCompile Include="Source\Texture.cpp">
       <Filter>Source\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Resource.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
     <ClCompile Include="Source\SceneDockPanel.cpp">
       <Filter>Source\Modules\DockingPanels</Filter>
     </ClCompile>

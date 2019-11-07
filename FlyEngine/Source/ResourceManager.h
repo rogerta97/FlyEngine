@@ -2,10 +2,11 @@
 #define _RESOURCE_MANAGER_H_
 
 #include <list>
+#include "Resource.h"
+#include "Globals.h"
 
 using namespace std; 
 
-class Resource; 
 struct ResourceManager
 {
 private:
@@ -17,6 +18,11 @@ public:
 	~ResourceManager();
 
 	// Utility --------------------------------
+	bool AddResource(Resource* newResource); 
+
+	bool ExistResource(Resource* checkResource); 
+	bool ExistResource(UID resourceUID); 
+
 	void Delete();
 
 private: 
