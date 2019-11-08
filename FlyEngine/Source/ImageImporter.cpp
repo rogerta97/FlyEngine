@@ -44,9 +44,6 @@ Texture* ImageImporter::LoadTexture(std::string path, bool flipImage = false)
 	ilGenImages(1, &imageID);
 	ilBindImage(imageID);
 
-	//Check if the texture existed before based on the name on its path
-	std::string new_name = MyFileSystem::getInstance()->GetLastPathItem(path, true);
-
 	success = ilLoadImage(path.c_str());
 
 	FLY_ERROR("%s", iluErrorString(success));
@@ -73,7 +70,7 @@ Texture* ImageImporter::LoadTexture(std::string path, bool flipImage = false)
 			new_tex->SetHeight(ilGetInteger(IL_IMAGE_HEIGHT));
 
 			new_tex->SetPath(path.c_str());
-			new_tex->name = new_name;
+			new_tex->SetName("ErrorName");
 
 			new_tex->Bind();
 			new_tex->SetTextureSettings();

@@ -16,6 +16,7 @@ bool ModuleManager::Init()
 {
 	// Load Engine Icons -----
 	Texture* plusIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "PlusSign.png"), false); 
+	ResourceManager::getInstance()->AddResource((Resource*)plusIcon, "PlusIcon");
 	//ResourceManager::getInstance()->
 
 	return true;

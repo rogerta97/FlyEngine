@@ -3,6 +3,7 @@
 
 #include "Globals.h"
 #include "RandomNumberGenerator.h"
+#include <string>
 
 enum ResourceType
 {
@@ -21,6 +22,15 @@ public:
 	~Resource()
 	{
 
+	}
+
+	void SetName(std::string newName)
+	{
+		resourceName = newName;
+	}
+	std::string GetName() const
+	{
+		return resourceName;
 	}
 
 	void SetType(ResourceType newType)
@@ -43,7 +53,8 @@ public:
 
 private: 
 	ResourceType resourceType = RESOURCE_null; 
-	UID resourceID = -1; 
+	UID resourceID = -1;
+	std::string resourceName = ""; 
 };
 
 

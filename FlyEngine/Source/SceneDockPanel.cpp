@@ -2,10 +2,12 @@
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "ModuleRoomManager.h"
+#include "ResourceManager.h"
 
 #include "SceneDockPanel.h"
 
 #include "Room.h"
+#include "Texture.h"
 #include "ViewportManager.h"
 #include "FlyObject.h"
 
@@ -65,17 +67,27 @@ void SceneDockPanel::ShowObjectCreatorTab()
 	ImGui::PushFont(App->moduleImGui->headerFont);
 	ImGui::Text("Object Tools: ");
 	ImGui::PopFont();
+	
+	ImGui::BeginChild("##AttributesChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 200), true);
 
-	ImGui::SameLine();
-	
-	if(ImGui::ImageButton(0, ImVec2(20, 20)))
+	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIcon");
+
+	ImGui::SetCursorPosX(ImGui::GetContentRegionAvailWidth() - 15); 
+	ImGui::SetCursorPosY(ImGui::GetContentRegionAvail().y - 15); 
+
+	if(ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(18, 18)))
 	{
-	
+		ImGui::OpenPopup("new_tool"); 
 	}
 
-	ImGui::BeginChild("##AttributesChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 100), true);
-
 	ImGui::EndChild();
+
+	if (ImGui::BeginPopup("new_tool")) {
+
+		ImGui::Text("text");
+
+		ImGui::EndPopup();
+	}
 
 	//static int attributeSelected = 0;
 	//static int containsAttributeImage = false;

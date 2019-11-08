@@ -2,6 +2,7 @@
 #define _RESOURCE_MANAGER_H_
 
 #include <list>
+#include <string>
 #include "Resource.h"
 #include "Globals.h"
 
@@ -18,7 +19,10 @@ public:
 	~ResourceManager();
 
 	// Utility --------------------------------
-	bool AddResource(Resource* newResource); 
+	bool AddResource(Resource* newResource, std::string name);
+
+	Resource* GetResource(std::string resourceName) const; 
+	Resource* GetResource(UID resourceUID) const; 
 
 	bool ExistResource(Resource* checkResource); 
 	bool ExistResource(UID resourceUID); 

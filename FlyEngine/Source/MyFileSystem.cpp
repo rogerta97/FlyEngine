@@ -35,21 +35,17 @@ string MyFileSystem::GetLastPathItem(string path, bool keepTermination = true)
 }
 
 
-string MyFileSystem::DeleteLastPathItem(string path)
+void MyFileSystem::DeleteLastPathItem(string& path)
 {
-	string resultString(path);
-
-	int pos = resultString.find_last_of('\\');
+	int pos = path.find_last_of('\\');
 
 	if (pos == path.size() - 1)
 	{
-		string nextStr = resultString.substr(0, pos); 
-		DeleteLastPathItem(nextStr.c_str());
+		path = path.substr(0, pos);
+		pos = path.find_last_of('\\');
 	}
 
-	resultString = resultString.substr(0, pos + 1);
-
-	return resultString;
+	path = path.substr(0, pos + 1);
 }
 
 void MyFileSystem::DeleteFileExtension(string& path)
@@ -64,7 +60,7 @@ string MyFileSystem::GetIconsDirectory()
 	if (iconsDirectory == "")
 	{
 		iconsDirectory = GetSolutionDirectory(); 
-		iconsDirectory += "FlyEngine\\Source\\Game\\Resources\\EngineIcons\\"; 
+		iconsDirectory += "Source\\Game\\Resources\\EngineIcons\\"; 
 	}
 		
 	return iconsDirectory;
@@ -75,7 +71,7 @@ string MyFileSystem::GetSolutionDirectory()
 	if (solutionDirectory == "")
 	{
 		solutionDirectory = SDL_GetBasePath();
-		solutionDirectory = DeleteLastPathItem(solutionDirectory); 
+		DeleteLastPathItem(solutionDirectory); 
 	}
 
 	return solutionDirectory;

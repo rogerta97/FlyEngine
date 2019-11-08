@@ -36,12 +36,9 @@ public:
 	uint CreateBuffer();
 	void Clear();
 
-	std::string name = "";
 	uint texture_id = -1;
 
 private:
-
-
 	uint width = 0;
 	uint height = 0;
 
