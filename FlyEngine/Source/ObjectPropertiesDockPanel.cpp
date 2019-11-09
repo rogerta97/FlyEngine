@@ -34,7 +34,7 @@ bool ObjectPropertiesDockPanel::Draw()
 			ImGui::Image(0, ImVec2(25, 25));
 			ImGui::SameLine();
 
-			ImGui::PushFont(App->moduleImGui->headerFont);
+			ImGui::PushFont(App->moduleImGui->rudaBoldFont);
 			ImGui::Text("%s", selectedObject->GetName().c_str());
 			ImGui::PopFont();
 

@@ -21,7 +21,6 @@ GameViewportDockPanel::GameViewportDockPanel(bool isVisible) : DockPanel("Game V
 	viewportSize = float2(-1.0f, -1.0f);
 
 	aspectRatioChanged = false; 
-	topBarWidth = 60; 
 }
 
 GameViewportDockPanel::~GameViewportDockPanel()
@@ -43,7 +42,9 @@ bool GameViewportDockPanel::Draw()
 	glEnable(GL_TEXTURE_2D);
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_MenuBar)) {
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.09f, 0.11f, 0.13f, 1.0f));
+
+	if (ImGui::Begin(panelName.c_str(), &visible)) {
 		
 		float2 regionSizeThisTick = float2(ImGui::GetWindowContentRegionMax().x, ImGui::GetWindowContentRegionMax().y);
 
@@ -66,19 +67,16 @@ bool GameViewportDockPanel::Draw()
 			//}
 		}
 
-		DrawTopBar();
-
 		regionSize = float2(ImGui::GetWindowContentRegionMax().x, ImGui::GetWindowContentRegionMax().y);
-
 		float2 screenCenter = float2(regionSize.x / 2, regionSize.y / 2);
 		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - (viewportSize.y / 2)));
-
 		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(viewportSize.x - 1, viewportSize.y - 1), ImVec2(0, 1), ImVec2(1, 0));
 	}
 
 	glDisable(GL_TEXTURE_2D);
 
 	ImGui::End();
+	ImGui::PopStyleColor(); 
 	ImGui::PopStyleVar();
 	 
 	return true; 
@@ -117,25 +115,7 @@ void GameViewportDockPanel::FitViewportToRegion()
 
 void GameViewportDockPanel::DrawTopBar()
 {
-	if (ImGui::BeginMenuBar())
-	{
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
 
-		ImGui::PushItemWidth(150);
-		if (ImGui::Button("Create Object")) 
-		{
-			ImGui::OpenPopup("create_flyobject");
-			ResetAttributeSelectionBooleans();
-		}
-		ImGui::PopStyleColor(); 
-
-		ImGui::PushItemWidth(150);
-
-		ImGui::PopItemWidth(); 
-
-		ObjectCreatorPopup();
-		ImGui::EndMenuBar();
-	}
 }
 
 void GameViewportDockPanel::ResetAttributeSelectionBooleans()

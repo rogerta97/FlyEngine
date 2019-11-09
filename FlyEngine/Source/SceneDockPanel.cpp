@@ -70,18 +70,20 @@ void SceneDockPanel::ShowObjectCreatorTab()
 	
 	ImGui::BeginChild("##AttributesChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 200), true);
 
-	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIcon");
+	ImGui::Selectable("Example");
+	ImGui::Text("Hello"); 
 
+
+	ImGui::EndChild();
+
+
+	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIcon");
 	ImGui::SetCursorPosX(ImGui::GetContentRegionAvailWidth() - 15); 
 	ImGui::SetCursorPosY(ImGui::GetContentRegionAvail().y - 15); 
-
 	if(ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(18, 18)))
 	{
 		ImGui::OpenPopup("new_tool"); 
 	}
-
-	ImGui::EndChild();
-
 	if (ImGui::BeginPopup("new_tool")) {
 
 		ImGui::Text("text");

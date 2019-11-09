@@ -28,8 +28,6 @@ public:
 	bool aspectRatioChanged; 
 
 private: 
-	int topBarWidth;
-
 	float2 regionSize;
 	float2 viewportSize;
 

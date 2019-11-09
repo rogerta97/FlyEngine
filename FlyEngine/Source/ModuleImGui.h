@@ -46,6 +46,7 @@ public:
 
 	ImFont* defaultFont;
 	ImFont* headerFont;
+	ImFont* rudaBoldFont; 
 
 private: 
 
