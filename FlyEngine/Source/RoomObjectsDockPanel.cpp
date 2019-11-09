@@ -1,5 +1,6 @@
 #include "RoomObjectsDockPanel.h"
 #include "ModuleRoomManager.h"
+#include "ModuleImGui.h"
 #include "Application.h"
 #include "Room.h"
 #include "FlyObject.h"
@@ -26,6 +27,19 @@ bool RoomObjectsDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible)) 
 	{		
+
+		//ImGui::PushFont(App->moduleImGui->rudaBoldFont);
+		//ImGui::Text("Bold Font");
+		//ImGui::PopFont();
+		//
+		//ImGui::PushFont(App->moduleImGui->rudaBlackFont);
+		//ImGui::Text("Black Font"); 
+		//ImGui::PopFont();
+		//
+		//ImGui::PushFont(App->moduleImGui->rudaRegularFont);
+		//ImGui::Text("Regular Font");
+		//ImGui::PopFont();
+
 		for (auto& it : App->moduleRoomManager->GetSelectedRoom()->objectsInRoom) {	
 
 			if (ImGui::Selectable((it)->GetName().c_str())) {

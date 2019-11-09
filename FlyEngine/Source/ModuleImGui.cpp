@@ -64,11 +64,12 @@ bool ModuleImGui::Start()
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags = ImGuiConfigFlags_DockingEnable;
 	string fontsDirectory = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources/Fonts/Exo-Regular.otf";
-	defaultFont = io.Fonts->AddFontFromFileTTF(fontsDirectory.c_str(), 17);
-	headerFont = io.Fonts->AddFontFromFileTTF(fontsDirectory.c_str(), 24);
 
-	fontsDirectory = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources/Fonts/Ruda-Bold.ttf";
-	rudaBoldFont = io.Fonts->AddFontFromFileTTF(fontsDirectory.c_str(), 17);
+	fontsDirectory = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources/Fonts/";
+
+	rudaRegularFont = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Regular.ttf").c_str(), 19);
+	rudaBoldFont = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Black.ttf").c_str(), 22);
+	rudaBlackFont = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Bold.ttf").c_str(), 20);
 
 	CreatePanels();
 	SetStyle();
@@ -126,6 +127,7 @@ update_status ModuleImGui::PreUpdate(float dt)
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->moduleWindow->mainWindow);
+
 	ImGui::NewFrame();
 
 	return update_status::UPDATE_CONTINUE;
@@ -261,6 +263,7 @@ void ModuleImGui::ReceiveEvent(FlyEngineEvent eventType)
 
 bool ModuleImGui::CleanUp()
 {
+
 	DeletePanels(); 
 	NodeGraph::getInstance()->DeleteAllConnections();
 	NodeGraph::getInstance()->DeleteAllNodes();

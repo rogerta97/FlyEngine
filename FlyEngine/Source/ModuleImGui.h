@@ -44,9 +44,9 @@ public:
 	GraphPropertiesDockPanel* graphPropertiesDockPanel;
 	GameViewportDockPanel* gameViewportDockPanel;
 
-	ImFont* defaultFont;
-	ImFont* headerFont;
 	ImFont* rudaBoldFont; 
+	ImFont* rudaBlackFont; 
+	ImFont* rudaRegularFont; 
 
 private: 
 

@@ -56,15 +56,17 @@ bool SceneDockPanel::Draw()
 
 void SceneDockPanel::ShowObjectCreatorTab()
 {
-	ImGui::PushFont(App->moduleImGui->headerFont);
+	ImGui::PushFont(App->moduleImGui->rudaBoldFont);
 	ImGui::Text("Object Generator: ");
 	ImGui::PopFont();
 
 	static char newObjectName[256] = "";
 	ImGui::InputText("Name", newObjectName, 256 * sizeof(char));
 
+	ImGui::Spacing();
 	ImGui::Separator(); 
-	ImGui::PushFont(App->moduleImGui->headerFont);
+	ImGui::Spacing();
+	ImGui::PushFont(App->moduleImGui->rudaBoldFont);
 	ImGui::Text("Object Tools: ");
 	ImGui::PopFont();
 	
@@ -73,13 +75,9 @@ void SceneDockPanel::ShowObjectCreatorTab()
 	ImGui::Selectable("Example");
 	ImGui::Text("Hello"); 
 
-
 	ImGui::EndChild();
 
-
 	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIcon");
-	ImGui::SetCursorPosX(ImGui::GetContentRegionAvailWidth() - 15); 
-	ImGui::SetCursorPosY(ImGui::GetContentRegionAvail().y - 15); 
 	if(ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(18, 18)))
 	{
 		ImGui::OpenPopup("new_tool"); 
@@ -125,7 +123,7 @@ void SceneDockPanel::ShowObjectCreatorTab()
 	//ImGui::Combo("##NewAttributeCombo", &attributeSelected, "Select Attribute\0Image\0");
 	//ImGui::SameLine();
 
-	ImGui::PushFont(App->moduleImGui->headerFont);
+	//ImGui::PushFont(App->moduleImGui->rudaBlackFont);
 	ImGui::SetCursorPosX(ImGui::GetContentRegionAvailWidth() - 50.0f); 
 	if (ImGui::Button("Create"))
 	{
@@ -136,7 +134,7 @@ void SceneDockPanel::ShowObjectCreatorTab()
 
 		ImGui::CloseCurrentPopup();
 	}
-	ImGui::PopFont();
+//	ImGui::PopFont();
 }
 
 void SceneDockPanel::ShowViewportSettingsTab()
