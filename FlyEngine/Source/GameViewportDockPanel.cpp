@@ -52,19 +52,6 @@ bool GameViewportDockPanel::Draw()
 		{
 			regionSize = regionSizeThisTick;
 			FitViewportToRegion();
-
-			//if (aspectRatioChanged)
-			//{
-			//	glMatrixMode(GL_PROJECTION);
-			//	glLoadIdentity();
-
-			//	float windowWidth = viewportSize.x;
-			//	float windowHeight = viewportSize.y;
-
-			//	glViewport(0, 0, windowWidth, windowHeight);
-
-			//	aspectRatioChanged = false;
-			//}
 		}
 
 		regionSize = float2(ImGui::GetWindowContentRegionMax().x, ImGui::GetWindowContentRegionMax().y);

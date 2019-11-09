@@ -1,14 +1,13 @@
 #ifndef _FLY_OBJECT_H_
 #define _FLY_OBJECT_H_
 
-#include <string>
 #include <list>
 
 #include "Globals.h"
-#include "ObjectAttribute.h"
+#include "Tool.h"
 #include "Transform.h"
 
-class AttributeImage; 
+class ImageTool; 
 class FlyObject
 {
 public: 
@@ -21,14 +20,14 @@ public:
 	std::string GetName() const;
 
 	// Attributes -----------
-	AttributeImage* AddAttributeImage(const char* imageTexturePath);
+	ImageTool* AddAttributeImage(const char* imageTexturePath);
 
 public:
 	Transform* transform; 
 	bool isSelected; 
 
 private: 
-	std::list<ObjectAttribute*> attributeList; 
+	std::list<Tool*> attributeList; 
 	std::string name; 
 	UID id; 
 };

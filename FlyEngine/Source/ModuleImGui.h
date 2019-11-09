@@ -47,6 +47,7 @@ public:
 	ImFont* rudaBoldFont; 
 	ImFont* rudaBlackFont; 
 	ImFont* rudaRegularFont; 
+	ImFont* rudaCommentFont; 
 
 private: 
 

@@ -177,12 +177,6 @@
     <ClCompile Include="Source\FlyObject.cpp">
       <Filter>Source\FlyEngine\FlyObject</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ObjectAttribute.cpp">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\AttributeImage.cpp">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Quad.cpp">
       <Filter>Source\Utilities</Filter>
     </ClCompile>
@@ -306,6 +300,15 @@
     <ClCompile Include="Source\MyFileSystem.cpp">
       <Filter>Source\Tools\FileSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Tool.cpp">
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ImageTool.cpp">
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ObjectCreator.cpp">
+      <Filter>Source\FlyEngine\FlyObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -418,12 +421,6 @@
     </ClInclude>
     <ClInclude Include="Source\FlyObject.h">
       <Filter>Source\FlyEngine\FlyObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ObjectAttribute.h">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\AttributeImage.h">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClInclude>
     <ClInclude Include="Source\Quad.h">
       <Filter>Source\Utilities</Filter>
@@ -661,6 +658,15 @@
     </ClInclude>
     <ClInclude Include="Source\MyFileSystem.h">
       <Filter>Source\Tools\FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tool.h">
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ImageTool.h">
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ObjectCreator.h">
+      <Filter>Source\FlyEngine\FlyObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

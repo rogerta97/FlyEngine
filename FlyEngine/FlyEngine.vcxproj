@@ -58,7 +58,7 @@
     <ClCompile Include="3rdParty\mmgr\mmgr.cpp" />
     <ClCompile Include="3rdParty\PCGRandom\pcg_basic.c" />
     <ClCompile Include="Source\Application.cpp" />
-    <ClCompile Include="Source\AttributeImage.cpp" />
+    <ClCompile Include="Source\ImageTool.cpp" />
     <ClCompile Include="Source\Color.cpp" />
     <ClCompile Include="Source\ConsoleDockPanel.cpp" />
     <ClCompile Include="Source\DockPanel.cpp" />
@@ -69,6 +69,7 @@
     <ClCompile Include="Source\log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\ModuleManager.cpp" />
+    <ClCompile Include="Source\ObjectCreator.cpp" />
     <ClCompile Include="Source\ResourceManager.cpp" />
     <ClCompile Include="Source\SceneDockPanel.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
@@ -82,7 +83,7 @@
     <ClCompile Include="Source\ImNode.cpp" />
     <ClCompile Include="Source\ImNodeEz.cpp" />
     <ClCompile Include="Source\NodeGraph.cpp" />
-    <ClCompile Include="Source\ObjectAttribute.cpp" />
+    <ClCompile Include="Source\Tool.cpp" />
     <ClCompile Include="Source\ObjectPropertiesDockPanel.cpp" />
     <ClCompile Include="Source\GraphPropertiesDockPanel.cpp" />
     <ClCompile Include="Source\Quad.cpp" />
@@ -175,7 +176,7 @@
     <ClInclude Include="3rdParty\PCGRandom\pcg_basic.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Source\Application.h" />
-    <ClInclude Include="Source\AttributeImage.h" />
+    <ClInclude Include="Source\ImageTool.h" />
     <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\ConsoleDockPanel.h" />
     <ClInclude Include="Source\DockPanel.h" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Source\ImNodeDemo.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\ModuleManager.h" />
+    <ClInclude Include="Source\ObjectCreator.h" />
     <ClInclude Include="Source\Resource.h" />
     <ClInclude Include="Source\ResourceManager.h" />
     <ClInclude Include="Source\SceneDockPanel.h" />
@@ -201,7 +203,7 @@
     <ClInclude Include="Source\ImNode.h" />
     <ClInclude Include="Source\ImNodeEz.h" />
     <ClInclude Include="Source\NodeGraph.h" />
-    <ClInclude Include="Source\ObjectAttribute.h" />
+    <ClInclude Include="Source\Tool.h" />
     <ClInclude Include="Source\ObjectPropertiesDockPanel.h" />
     <ClInclude Include="Source\GraphPropertiesDockPanel.h" />
     <ClInclude Include="Source\OpenGL.h" />

@@ -67,7 +67,6 @@ bool ModuleWindow::Init()
 			height = DM.h;
 		}
 
-
 		mainWindow = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
 		if(mainWindow == NULL)

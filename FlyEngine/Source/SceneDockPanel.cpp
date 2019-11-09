@@ -2,9 +2,11 @@
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "ModuleRoomManager.h"
+#include "ModuleManager.h"
 #include "ResourceManager.h"
 
 #include "SceneDockPanel.h"
+#include "ObjectCreator.h"
 
 #include "Room.h"
 #include "Texture.h"
@@ -15,10 +17,13 @@ SceneDockPanel::SceneDockPanel(bool isVisible) : DockPanel("Scene", isVisible)
 {
 	flyEngineSection = FLY_SECTION_ROOM_EDIT;
 	dockPanelType = DOCK_SCENE;
+
+	objectCreator = new ObjectCreator(); 
 }
 
 SceneDockPanel::~SceneDockPanel()
 {
+	delete objectCreator; 
 }
 
 bool SceneDockPanel::Draw()
@@ -36,7 +41,11 @@ bool SceneDockPanel::Draw()
 		{
 			if (ImGui::BeginTabItem("Object Creator"))
 			{
-				ShowObjectCreatorTab();
+				if (ImGui::IsItemClicked(1)) {
+					FLY_LOG("Reset Object Data"); 
+				}
+
+				objectCreator->Draw(); 
 				ImGui::EndTabItem();
 			}
 
@@ -54,88 +63,102 @@ bool SceneDockPanel::Draw()
 	return true;
 }
 
-void SceneDockPanel::ShowObjectCreatorTab()
-{
-	ImGui::PushFont(App->moduleImGui->rudaBoldFont);
-	ImGui::Text("Object Generator: ");
-	ImGui::PopFont();
-
-	static char newObjectName[256] = "";
-	ImGui::InputText("Name", newObjectName, 256 * sizeof(char));
-
-	ImGui::Spacing();
-	ImGui::Separator(); 
-	ImGui::Spacing();
-	ImGui::PushFont(App->moduleImGui->rudaBoldFont);
-	ImGui::Text("Object Tools: ");
-	ImGui::PopFont();
-	
-	ImGui::BeginChild("##AttributesChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 200), true);
-
-	ImGui::Selectable("Example");
-	ImGui::Text("Hello"); 
-
-	ImGui::EndChild();
-
-	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIcon");
-	if(ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(18, 18)))
-	{
-		ImGui::OpenPopup("new_tool"); 
-	}
-	if (ImGui::BeginPopup("new_tool")) {
-
-		ImGui::Text("text");
-
-		ImGui::EndPopup();
-	}
-
-	//static int attributeSelected = 0;
-	//static int containsAttributeImage = false;
-
-	//switch (attributeSelected)
-	//{
-	//	case 0:
-	//		break;
-
-	//	case 1:
-	//		containsAttributeImage = true;
-	//		break;
-	//}
-
-	//if (containsAttributeImage)
-	//{
-	//	if (ImGui::CollapsingHeader("Attribute Image Configuration"))
-	//	{
-	//		ImGui::BeginChild("AI_Child", ImVec2(ImGui::GetContentRegionAvailWidth(), 50), true);
-
-	//		char buf[256] = "C:/";
-	//		ImGui::InputText("##InputBrowse", buf, IM_ARRAYSIZE(buf));
-	//		ImGui::SameLine();
-
-	//		if (ImGui::Button("Browse")) {
-
-	//		}
-
-	//		ImGui::EndChild();
-	//	}
-	//}
-
-	//ImGui::Combo("##NewAttributeCombo", &attributeSelected, "Select Attribute\0Image\0");
-	//ImGui::SameLine();
-
-	//ImGui::PushFont(App->moduleImGui->rudaBlackFont);
-	ImGui::SetCursorPosX(ImGui::GetContentRegionAvailWidth() - 50.0f); 
-	if (ImGui::Button("Create"))
-	{
-		FlyObject* newObject = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject(newObjectName);
-
-		//if (containsAttributeImage)
-			//newObject->AddAttributeImage("Path");
-
-		ImGui::CloseCurrentPopup();
-	}
+//void SceneDockPanel::ShowObjectCreatorTab()
+//{
+//	ImGui::Spacing(); 
+//	ImGui::PushFont(App->moduleImGui->rudaBlackFont);
+//	static char newObjectName[256] = "";
+//	ImGui::InputText("Object Name", newObjectName, 256 * sizeof(char));
 //	ImGui::PopFont();
-}
+//
+//	ImGui::Spacing();
+//	ImGui::Separator(); 
+//	ImGui::Spacing();
+//
+//	DrawAddToolSection();
+//
+//	ImGui::Spacing(); 
+//	ImGui::Separator();
+//	ImGui::Spacing(); 
+//
+//	ImGui::SetCursorPosX(ImGui::GetContentRegionAvailWidth() - 80.0f); 
+//
+//	ImGui::PushFont(App->moduleImGui->rudaBlackFont);
+//	if (ImGui::Button("Create", ImVec2(80, 30)))
+//	{
+//		//FlyObject* newObject = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject(newObjectName);
+//
+//		//if (containsAttributeImage)
+//			//newObject->AddAttributeImage("Path");
+//
+//		ImGui::CloseCurrentPopup();
+//	}
+//
+//	ImGui::PopFont(); 
+////	ImGui::PopFont();
+//}
+//
+//void SceneDockPanel::DrawAddToolSection()
+//{
+//	ImGui::PushFont(App->moduleImGui->rudaBoldFont);
+//	ImGui::Text("Object Tools: ");
+//	ImGui::PopFont();
+//
+//	ImGui::BeginChild("##AttributesChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 200), true);
+//
+//	ImGui::Selectable("Example");
+//	ImGui::Text("Hello");
+//
+//	ImGui::EndChild();
+//
+//	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIcon");
+//	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(18, 18)))
+//	{
+//		ImGui::OpenPopup("plusIconClicked");
+//	}
+//
+//	ImGui::SameLine();
+//	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIcon");
+//	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(18, 18)))
+//	{
+//
+//	}
+//
+//	DrawAddToolPopup();
+//}
+//
+//void SceneDockPanel::DrawAddToolPopup()
+//{
+//	if (ImGui::BeginPopup("plusIconClicked"))
+//	{
+//		// Search Bar ---------------
+//		ImGui::InputText("##SearchTool", searchToolBuffer, IM_ARRAYSIZE(searchToolBuffer));
+//		ImGui::SameLine();
+//		
+//		Texture* searchIcon = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
+//		if (ImGui::ImageButton((ImTextureID)searchIcon->GetTextureID(), ImVec2(18, 18))) {
+//		
+//		}
+//		
+//		ImGui::Spacing();
+//		ImGui::Separator();
+//		ImGui::Spacing(); 
+//
+//		// Tools Dictonary ----------
+//		for (int i = 0; i < App->moduleManager->GetToolsAmount(); i++) 
+//		{
+//			ToolSelectableInfo newToolInfo = App->moduleManager->GetToolNameDescription(i);
+//			DrawSearchToolSelectable(newToolInfo.toolName.c_str(), newToolInfo.toolDescription.c_str(), newToolInfo.toolType);
+//		}
+//		
+//		ImGui::EndPopup();
+//	}
+//}
+//
+//void SceneDockPanel::DrawSearchToolSelectable(const char* toolName = "", const char* toolDescription = "", ToolType toolType = AT_null)
+//{
+//
+//}
 
 void SceneDockPanel::ShowViewportSettingsTab()
 {

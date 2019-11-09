@@ -1,6 +1,6 @@
 #include "FlyObject.h"
 #include "RandomNumberGenerator.h"
-#include "AttributeImage.h"
+#include "ImageTool.h"
 #include "MyFileSystem.h"
 
 #include <string>
@@ -35,9 +35,9 @@ std::string FlyObject::GetName() const
 	return name;
 }
 
-AttributeImage* FlyObject::AddAttributeImage(const char* imageTexturePath)
+ImageTool* FlyObject::AddAttributeImage(const char* imageTexturePath)
 {
-	AttributeImage* newAtrImage = new AttributeImage(this); 
+	ImageTool* newAtrImage = new ImageTool(this); 
 	newAtrImage->CreateImage(imageTexturePath);
 
 	attributeList.push_back(newAtrImage); 

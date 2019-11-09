@@ -1,9 +1,7 @@
-#ifndef _ATTRIBUTE_IMAGE_H_
-#define _ATTRIBUTE_IMAGE_H_
+#ifndef _IMAGE_TOOL_H_
+#define _IMAGE_TOOL_H_
 
-#include "ObjectAttribute.h"
-
-#include <string>
+#include "Tool.h"
 
 using namespace std; 
 
@@ -11,11 +9,11 @@ class FlyObject;
 class Quad; 
 class Texture; 
 
-class AttributeImage : public ObjectAttribute
+class ImageTool : public Tool
 {
 public: 
-	AttributeImage(FlyObject* _parentObject);
-	~AttributeImage(); 
+	ImageTool(FlyObject* _parentObject);
+	~ImageTool(); 
 
 	void Init(); 
 	void Update(); 

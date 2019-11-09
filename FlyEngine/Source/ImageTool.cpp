@@ -1,4 +1,4 @@
-#include "AttributeImage.h"
+#include "ImageTool.h"
 #include "Quad.h"
 #include "Globals.h"
 #include "OpenGL.h"
@@ -7,29 +7,32 @@
 #include "FlyObject.h"
 #include "ImageImporter.h"
 
-AttributeImage::AttributeImage(FlyObject* _parentObject = nullptr)
+ImageTool::ImageTool(FlyObject* _parentObject = nullptr)
 {
-	attributeType = AT_null; 
+	toolType = AT_null; 
 	quadMesh = nullptr; 
 	imageTexture = nullptr; 
 	parentObject = _parentObject; 
+
+	SetToolName("Image"); 
+	SetToolDescription("This should be the description of the image"); 
 }
 
-AttributeImage::~AttributeImage()
+ImageTool::~ImageTool()
 {
 }
 
-void AttributeImage::Init()
-{
-
-}
-
-void AttributeImage::Update()
+void ImageTool::Init()
 {
 
 }
 
-void AttributeImage::Draw()
+void ImageTool::Update()
+{
+
+}
+
+void ImageTool::Draw()
 {
 	glEnableClientState(GL_VERTEX_ARRAY); 
 	glBindBuffer(GL_ARRAY_BUFFER, quadMesh->verticesID); 
@@ -80,12 +83,12 @@ void AttributeImage::Draw()
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
-void AttributeImage::CleanUp()
+void ImageTool::CleanUp()
 {
 
 }
 
-bool AttributeImage::CreateImage(const char* texturePath)
+bool ImageTool::CreateImage(const char* texturePath)
 {
 	imageTexture = ImageImporter::getInstance()->LoadTexture(texturePath, true);
 
@@ -98,12 +101,12 @@ bool AttributeImage::CreateImage(const char* texturePath)
 	return true; 
 }
 
-Quad* AttributeImage::GetQuad() const
+Quad* ImageTool::GetQuad() const
 {
 	return quadMesh; 
 }
 
-Texture* AttributeImage::GetTexture() const
+Texture* ImageTool::GetTexture() const
 {
 	return imageTexture; 
 }
