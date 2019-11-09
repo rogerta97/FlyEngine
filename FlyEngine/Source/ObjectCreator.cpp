@@ -62,7 +62,7 @@ void ObjectCreator::DrawObjectNameBar()
 {
 	ImGui::PushFont(App->moduleImGui->rudaBlackFont);
 	static char newObjectName[256] = "";
-	ImGui::InputText("Object Name", newObjectName, 256 * sizeof(char));
+	ImGui::InputTextWithHint("Object Name", "Name...", newObjectName, 256 * sizeof(char));
 	ImGui::PopFont();
 }
 
@@ -112,11 +112,12 @@ void ObjectCreator::DrawSelectedToolProperties()
 		if(ImGui::CollapsingHeader("Image Tool Adjustments:")) 
 		{
 			static uint selectedTextureID = -1; 
-			static char pathBuffer[256] = "";
+			static char buf[256]; 
 			static Texture* selectedTexture = nullptr; 
 
-
-			ImGui::InputText("", pathBuffer, IM_ARRAYSIZE(pathBuffer), ImGuiInputTextFlags_ReadOnly);
+			ImGui::PushFont(App->moduleImGui->rudaRegularFont);
+			ImGui::InputTextWithHint("", "C://...",buf, IM_ARRAYSIZE(buf), ImGuiInputTextFlags_ReadOnly);
+			ImGui::PopFont(); 
 
 			ImGui::PushFont(App->moduleImGui->rudaBlackFont);
 			ImGui::SameLine(); 
@@ -132,6 +133,9 @@ void ObjectCreator::DrawSelectedToolProperties()
 				}
 			}
 
+			ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), 170), true); 
+			ImGui::SetCursorPos(ImVec2((ImGui::GetContentRegionAvailWidth() / 2) - (150/2), 170/2 - 150/2));
+
 			if (selectedTextureID == -1)
 			{
 				selectedTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageNull"); 
@@ -142,6 +146,8 @@ void ObjectCreator::DrawSelectedToolProperties()
 				selectedTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageNull");
 				ImGui::Image((ImTextureID)selectedTexture->GetTextureID(), ImVec2(150, 150));
 			}
+
+			ImGui::EndChild(); 
 
 			ImGui::PopFont(); 
 		}
