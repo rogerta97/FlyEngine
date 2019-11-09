@@ -82,6 +82,9 @@
     <Filter Include="Source\3rdParty\Devil">
       <UniqueIdentifier>{bcb5813b-86cf-437c-8d03-454f2bb9a478}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\3rdParty\TinyFileDialog">
+      <UniqueIdentifier>{f000d78e-964c-4839-b830-1e0567f605e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -308,6 +311,9 @@
     </ClCompile>
     <ClCompile Include="Source\ObjectCreator.cpp">
       <Filter>Source\FlyEngine\FlyObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TinyFileDialog.cpp">
+      <Filter>Source\3rdParty\TinyFileDialog</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -667,6 +673,9 @@
     </ClInclude>
     <ClInclude Include="Source\ObjectCreator.h">
       <Filter>Source\FlyEngine\FlyObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TinyFileDialog.h">
+      <Filter>Source\3rdParty\TinyFileDialog</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

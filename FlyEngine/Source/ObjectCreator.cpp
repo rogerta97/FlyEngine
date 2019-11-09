@@ -4,18 +4,20 @@
 #include "ModuleImGui.h"
 #include "Texture.h"
 #include "ResourceManager.h"
+#include "MyFileSystem.h"
+#include "TinyFileDialog.h"
 #include "FlyObject.h"
 
 #include "imgui.h"
 
 ObjectCreator::ObjectCreator()
 {
-	temporalObject = new FlyObject("ToCopy"); 
+
 }
 
 ObjectCreator::~ObjectCreator()
 {
-	delete temporalObject; 
+
 }
 
 void ObjectCreator::Draw()
@@ -30,8 +32,9 @@ void ObjectCreator::Draw()
 	ImGui::Spacing();
 
 	DrawToolsList();
-
 	DrawAddAndDeleteButtons();
+	DrawSelectedToolProperties(); 
+
 	DrawPopups(); 
 
 	ImGui::Spacing();
@@ -48,6 +51,7 @@ void ObjectCreator::Draw()
 		//if (containsAttributeImage)
 			//newObject->AddAttributeImage("Path");
 
+		CleanBooleans(); 
 		ImGui::CloseCurrentPopup();
 	}
 
@@ -70,8 +74,10 @@ void ObjectCreator::DrawToolsList()
 
 	ImGui::BeginChild("##AttributesChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 200), true);
 
-	ImGui::Selectable("Example");
-	ImGui::Text("Hello");
+	if (showImageTool) 
+	{
+		if (ImGui::Selectable("Image", selectedInList == AT_IMAGE)) selectedInList = AT_IMAGE; 
+	}
 
 	ImGui::EndChild();
 }
@@ -89,6 +95,60 @@ void ObjectCreator::DrawAddAndDeleteButtons()
 	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(18, 18)))
 	{
 
+	}
+}
+
+void ObjectCreator::DrawSelectedToolProperties()
+{
+	switch (selectedInList)
+	{
+	case AT_IMAGE:
+
+		ImGui::Spacing(); 
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		ImGui::PushFont(App->moduleImGui->rudaBoldFont);
+		if(ImGui::CollapsingHeader("Image Tool Adjustments:")) 
+		{
+			static uint selectedTextureID = -1; 
+			static char pathBuffer[256] = "";
+			static Texture* selectedTexture = nullptr; 
+
+
+			ImGui::InputText("", pathBuffer, IM_ARRAYSIZE(pathBuffer), ImGuiInputTextFlags_ReadOnly);
+
+			ImGui::PushFont(App->moduleImGui->rudaBlackFont);
+			ImGui::SameLine(); 
+			if (ImGui::Button("Browse"))
+			{
+				char const* lFilterPatterns[2] = { "*.png", "*.jpg" };
+				const char* path = tinyfd_openFileDialog("Load Image...", NULL, 1, lFilterPatterns, NULL, 0);
+
+				if (path != NULL) 
+				{
+					//string scene_name = MyFileSystem::getInstance()->GetLastPathItem(path, false); 
+					FLY_LOG("Player Opened %s", path);
+				}
+			}
+
+			if (selectedTextureID == -1)
+			{
+				selectedTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageNull"); 
+				ImGui::Image((ImTextureID)selectedTexture->GetTextureID(), ImVec2(150, 150));
+			}
+			else
+			{
+				selectedTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageNull");
+				ImGui::Image((ImTextureID)selectedTexture->GetTextureID(), ImVec2(150, 150));
+			}
+
+			ImGui::PopFont(); 
+		}
+
+		ImGui::PopFont(); 
+
+		break;
 	}
 }
 
@@ -120,8 +180,14 @@ void ObjectCreator::DrawPopups()
 	}
 }
 
+void ObjectCreator::CleanBooleans()
+{
+	showImageTool = false; 
+}
+
 void ObjectCreator::OnNewToolButtonClicked()
 {
+
 }
 
 void ObjectCreator::DrawToolSelectable(ToolSelectableInfo newToolInfo)
@@ -132,7 +198,7 @@ void ObjectCreator::DrawToolSelectable(ToolSelectableInfo newToolInfo)
 		switch (newToolInfo.toolType)
 		{
 		case AT_IMAGE:
-			//Add
+			showImageTool = true; 
 			break;
 
 		case AT_null:

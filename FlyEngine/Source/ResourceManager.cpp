@@ -1,6 +1,8 @@
 #include "ResourceManager.h"
 #include <string>
 
+#include <assert.h>
+
 ResourceManager* ResourceManager::instance = 0;
 
 ResourceManager::ResourceManager()
@@ -22,6 +24,8 @@ ResourceManager::~ResourceManager()
 
 bool ResourceManager::AddResource(Resource* newResource, std::string name)
 {
+	//assert(newResource->GetPath() == ""); 
+
 	newResource->SetName(name);
 	resourceList.push_back(newResource);
 	return false;

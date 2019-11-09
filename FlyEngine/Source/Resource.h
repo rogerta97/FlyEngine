@@ -24,6 +24,7 @@ public:
 
 	}
 
+	// Setters & Getters -------------------
 	void SetName(std::string newName)
 	{
 		resourceName = newName;
@@ -51,10 +52,21 @@ public:
 		return resourceID;
 	}
 
+	const char* GetPath() const
+	{
+		return path.c_str(); 
+	}
+	void SetPath(const char* path)
+	{
+		this->path = path;
+	}
+
 private: 
 	ResourceType resourceType = RESOURCE_null; 
 	UID resourceID = -1;
+
 	std::string resourceName = ""; 
+	std::string path = "";
 };
 
 

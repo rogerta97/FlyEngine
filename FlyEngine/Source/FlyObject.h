@@ -16,6 +16,7 @@ public:
 
 	void Update(); 
 	void Draw(); 
+	void CleanUp(); 
 
 	std::string GetName() const;
 

@@ -30,6 +30,16 @@ void FlyObject::Draw()
 	}
 }
 
+void FlyObject::CleanUp()
+{
+	for (auto& it : attributeList)
+	{
+		(it)->CleanUp(); 
+	}
+	attributeList.clear(); 
+	delete transform; 
+}
+
 std::string FlyObject::GetName() const
 {
 	return name;

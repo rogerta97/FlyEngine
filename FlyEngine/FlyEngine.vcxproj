@@ -73,6 +73,7 @@
     <ClCompile Include="Source\ResourceManager.cpp" />
     <ClCompile Include="Source\SceneDockPanel.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
+    <ClCompile Include="Source\TinyFileDialog.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\ViewportManager.cpp" />
     <ClCompile Include="Source\ModuleRoomManager.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Source\ResourceManager.h" />
     <ClInclude Include="Source\SceneDockPanel.h" />
     <ClInclude Include="Source\Texture.h" />
+    <ClInclude Include="Source\TinyFileDialog.h" />
     <ClInclude Include="Source\Transform.h" />
     <ClInclude Include="Source\ViewportManager.h" />
     <ClInclude Include="Source\ModuleRoomManager.h" />

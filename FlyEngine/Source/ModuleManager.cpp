@@ -27,6 +27,9 @@ bool ModuleManager::Init()
 	Texture* searchIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "SearchIcon.png"), false);
 	ResourceManager::getInstance()->AddResource((Resource*)searchIcon, "SearchIcon");
 
+	Texture* imageNull = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ImageNull.jpg"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)imageNull, "ImageNull");
+
 	// Tools Descriptions 
 	ToolSelectableInfo imageToolInfo; 
 	imageToolInfo.toolName = "Image"; 

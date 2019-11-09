@@ -20,9 +20,6 @@ public:
 	void UnBind();
 
 	//Setters & Getters 
-	const char* GetPath() const;
-	void SetPath(const char* path);
-
 	uint GetTextureID() const;
 	void SetTextureID(uint id);
 
@@ -42,7 +39,7 @@ private:
 	uint width = 0;
 	uint height = 0;
 
-	std::string path = "";
+
 
 };
 

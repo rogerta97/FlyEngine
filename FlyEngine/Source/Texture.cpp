@@ -51,16 +51,6 @@ void Texture::UnBind()
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-const char* Texture::GetPath() const
-{
-	return path.c_str();
-}
-
-void Texture::SetPath(const char* path)
-{
-	this->path = path;
-}
-
 uint Texture::GetTextureID() const
 {
 	return texture_id;

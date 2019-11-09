@@ -16,7 +16,10 @@ public:
 	void DrawObjectNameBar(); 
 	void DrawToolsList(); 
 	void DrawAddAndDeleteButtons();
+	void DrawSelectedToolProperties(); 
 	void DrawPopups();
+
+	void CleanBooleans();
 
 	void OnNewToolButtonClicked(); 
 	void DrawToolSelectable(ToolSelectableInfo newToolInfo);
@@ -24,7 +27,11 @@ public:
 public:
 	char searchToolBuffer[256] = "";
 
-	FlyObject* temporalObject = nullptr; 
+	// Image Tool ----
+	bool showImageTool = false; 
+	std::string path = ""; 
+
+	ToolType selectedInList = ToolType::AT_null; 
 };
 
 #endif
