@@ -3,6 +3,8 @@
 #include "ModuleImGui.h"
 #include "imgui.h"
 #include "ModuleRoomManager.h"
+#include "ResourceManager.h"
+#include "Texture.h"
 #include "FlyObject.h"
 #include "Room.h"
 #include "mmgr.h"
@@ -31,18 +33,23 @@ bool ObjectPropertiesDockPanel::Draw()
 
 		if (selectedObject != nullptr)
 		{
-			ImGui::Image(0, ImVec2(25, 25));
-			ImGui::SameLine();
+			Texture* objectIconTextue = (Texture*)ResourceManager::getInstance()->GetResource("ObjectIcon");
+			ImGui::Image((ImTextureID)objectIconTextue->GetTextureID(), ImVec2(35, 35));
+
+			ImGui::Separator();
+			
+			ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 40, ImGui::GetCursorPosY() - 27)); 
 
 			ImGui::PushFont(App->moduleImGui->rudaBoldFont);
 			ImGui::Text("%s", selectedObject->GetName().c_str());
 			ImGui::PopFont();
 
-			ImGui::Separator();
-
 			float showPosition[2] = { selectedObject->transform->GetPosition().x, selectedObject->transform->GetPosition().y};
 			float showRotation[2] = { selectedObject->transform->GetRotation().x, selectedObject->transform->GetRotation().y};
 			float showScale[2] = { selectedObject->transform->GetScale().x, selectedObject->transform->GetScale().y};
+
+			ImGui::Spacing(); 
+			ImGui::Spacing();
 
 			if (ImGui::DragFloat2("Position", showPosition, 0.5f)) 
 			{

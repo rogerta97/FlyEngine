@@ -30,6 +30,9 @@ bool ModuleManager::Init()
 	Texture* imageNull = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ImageNull.jpg"), false);
 	ResourceManager::getInstance()->AddResource((Resource*)imageNull, "ImageNull");
 
+	Texture* objectIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ObjectIcon.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)objectIcon, "ObjectIcon");
+
 	// Tools Descriptions 
 	ToolSelectableInfo imageToolInfo; 
 	imageToolInfo.toolName = "Image"; 

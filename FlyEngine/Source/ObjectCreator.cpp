@@ -76,7 +76,10 @@ void ObjectCreator::DrawToolsList()
 
 	if (showImageTool) 
 	{
-		if (ImGui::Selectable("Image", selectedInList == AT_IMAGE)) selectedInList = AT_IMAGE; 
+		ToolSelectableInfo toolInfo = App->moduleManager->GetToolNameDescription("Image");
+
+		if (DrawToolSelectable(toolInfo)) selectedInList = AT_IMAGE;
+		
 	}
 
 	ImGui::EndChild();
@@ -196,11 +199,13 @@ void ObjectCreator::OnNewToolButtonClicked()
 
 }
 
-void ObjectCreator::DrawToolSelectable(ToolSelectableInfo newToolInfo)
+bool ObjectCreator::DrawToolSelectable(ToolSelectableInfo newToolInfo)
 {
+	bool clicked = false; 
 	ImGui::PushFont(App->moduleImGui->rudaBlackFont);
 	if (ImGui::Selectable(newToolInfo.toolName.c_str(), true, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), 37))) {
 
+		clicked = true; 
 		switch (newToolInfo.toolType)
 		{
 		case AT_IMAGE:
@@ -218,4 +223,7 @@ void ObjectCreator::DrawToolSelectable(ToolSelectableInfo newToolInfo)
 	ImGui::PushFont(App->moduleImGui->rudaCommentFont);
 	ImGui::TextWrapped(newToolInfo.toolDescription.c_str());
 	ImGui::PopFont();
+
+	return clicked; 
+
 }

@@ -22,7 +22,7 @@ public:
 	void CleanBooleans();
 
 	void OnNewToolButtonClicked(); 
-	void DrawToolSelectable(ToolSelectableInfo newToolInfo);
+	bool DrawToolSelectable(ToolSelectableInfo newToolInfo);
 
 public:
 	char searchToolBuffer[256] = "";
