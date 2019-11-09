@@ -59,6 +59,15 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
+		if (FLY_FULLSCREEN == true)
+		{
+			SDL_DisplayMode DM;
+			SDL_GetDesktopDisplayMode(0, &DM);
+			width = DM.w;
+			height = DM.h;
+		}
+
+
 		mainWindow = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
 		if(mainWindow == NULL)
