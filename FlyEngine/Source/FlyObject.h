@@ -20,15 +20,16 @@ public:
 
 	std::string GetName() const;
 
-	// Attributes -----------
-	ImageTool* AddAttributeImage(const char* imageTexturePath);
+	// Tools -----------
+	ImageTool* AddImageTool(const char* imageTexturePath);
+	std::list<Tool*> GetToolsList() const; 
 
 public:
 	Transform* transform; 
 	bool isSelected; 
 
 private: 
-	std::list<Tool*> attributeList; 
+	std::list<Tool*> toolsList; 
 	std::string name; 
 	UID id; 
 };

@@ -67,11 +67,21 @@ bool ModuleImGui::Start()
 
 	fontsDirectory = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources/Fonts/";
 
-	rudaRegularFont = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Regular.ttf").c_str(), 19);
-	rudaBoldFont = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Black.ttf").c_str(), 22);
-	rudaBoldFontBig = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Black.ttf").c_str(), 25);
-	rudaBlackFont = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Bold.ttf").c_str(), 20);
-	rudaCommentFont = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Regular.ttf").c_str(), 15);
+	rudaRegularMid = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Regular.ttf").c_str(), 19);
+	rudaBoldMid = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Bold.ttf").c_str(), 19);
+	rudaBlackMid = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Black.ttf").c_str(), 19);
+
+	rudaRegularSmall = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Regular.ttf").c_str(), 15);
+	rudaBoldSmall = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Bold.ttf").c_str(), 15);
+	rudaBlackSmall = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Black.ttf").c_str(), 15);
+
+	rudaRegularBig = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Regular.ttf").c_str(), 22);
+	rudaBoldBig = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Bold.ttf").c_str(), 22);
+	rudaBlackBig = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Black.ttf").c_str(), 22);
+
+	rudaRegularHuge = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Regular.ttf").c_str(), 30);
+	rudaBoldHuge = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Bold.ttf").c_str(), 30);
+	rudaBlackHuge = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Black.ttf").c_str(), 30);
 
 	CreatePanels();
 	SetStyle();
@@ -80,7 +90,7 @@ bool ModuleImGui::Start()
 
 	FlyObject* test = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer");
 	string spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources/Images/Transformer.png"; 
-	test->AddAttributeImage(spritePath.c_str());
+	test->AddImageTool(spritePath.c_str());
 
 	ViewportManager::getInstance();
 
@@ -280,6 +290,7 @@ void ModuleImGui::SetStyle() {
 	//imGuiIO.Fonts->AddFontFromFileTTF("../data/Fonts/Ruda-Bold.ttf", 15.0f, &config);
 	ImGui::GetStyle().FrameRounding = 4.0f;
 	ImGui::GetStyle().GrabRounding = 4.0f;
+	ImGui::GetStyle().ItemSpacing = ImVec2(5.0f, 5.0f);
 
 	ImVec4* colors = ImGui::GetStyle().Colors;
 	colors[ImGuiCol_Text] = ImVec4(0.95f, 0.96f, 0.98f, 1.00f);

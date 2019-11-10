@@ -9,7 +9,7 @@
 
 ImageImporter* ImageImporter::instance = 0;
 
-ImageImporter::ImageImporter() 
+ImageImporter::ImageImporter()
 {
 	ilInit();
 	iluInit(); 

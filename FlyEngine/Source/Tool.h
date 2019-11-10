@@ -9,6 +9,13 @@ enum ToolType
 	AT_null,
 };
 
+struct ToolSelectableInfo
+{
+	std::string toolName;
+	std::string toolDescription;
+	ToolType toolType;
+};
+
 class Tool
 {
 public:
@@ -26,9 +33,14 @@ public:
 	std::string GetToolDescription() const;
 	void SetToolDescription(std::string newDescription);
 
-public:
-	ToolType toolType;
+	ToolType GetToolType() const;
+	void SetToolType(ToolType newToolType);
 
+	ToolSelectableInfo GetToolSelectableInfo(); 
+
+public:
+
+	ToolType toolType;
 	std::string toolName; 
 	std::string toolDescription; 
 }; 

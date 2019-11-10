@@ -2,8 +2,10 @@
 #include "ModuleRoomManager.h"
 #include "ModuleImGui.h"
 #include "Application.h"
+#include "Texture.h"
 #include "Room.h"
 #include "FlyObject.h"
+#include "ResourceManager.h"
 #include "imgui.h"
 #include "mmgr.h"
 
@@ -25,27 +27,33 @@ bool RoomObjectsDockPanel::Draw()
 		return false;
 #pragma endregion
 
-	if (ImGui::Begin(panelName.c_str(), &visible)) 
-	{		
+	if (ImGui::Begin(panelName.c_str(), &visible))
+	{
+		// Searcher ---
+		static char searchToolBuffer[256] = "";
+		ImGui::InputTextWithHint("##SearchTool", "Search...", searchToolBuffer, IM_ARRAYSIZE(searchToolBuffer));
+		ImGui::SameLine();
 
-		//ImGui::PushFont(App->moduleImGui->rudaBoldFont);
-		//ImGui::Text("Bold Font");
-		//ImGui::PopFont();
-		//
-		//ImGui::PushFont(App->moduleImGui->rudaBlackFont);
-		//ImGui::Text("Black Font"); 
-		//ImGui::PopFont();
-		//
-		//ImGui::PushFont(App->moduleImGui->rudaRegularFont);
-		//ImGui::Text("Regular Font");
-		//ImGui::PopFont();
+		Texture* searchIcon = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
+		if (ImGui::ImageButton((ImTextureID)searchIcon->GetTextureID(), ImVec2(18, 18))) {
 
-		for (auto& it : App->moduleRoomManager->GetSelectedRoom()->objectsInRoom) {	
+		}
 
-			if (ImGui::Selectable((it)->GetName().c_str())) {
-				(it)->isSelected = true; 
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		// Objects List -------
+		for (auto& it : App->moduleRoomManager->GetSelectedRoom()->objectsInRoom) {
+
+			PUSH_FONT(App->moduleImGui->rudaRegularMid);
+
+			if (ImGui::Selectable(string("- " + (it)->GetName()).c_str())) 
+			{
+				(it)->isSelected = true;
 				App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(it);
 			}
+			POP_FONT;
 		}
 	}
 

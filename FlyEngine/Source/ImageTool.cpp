@@ -9,7 +9,7 @@
 
 ImageTool::ImageTool(FlyObject* _parentObject = nullptr)
 {
-	toolType = AT_null; 
+	toolType = AT_IMAGE; 
 	quadMesh = nullptr; 
 	imageTexture = nullptr; 
 	parentObject = _parentObject; 

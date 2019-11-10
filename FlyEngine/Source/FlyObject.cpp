@@ -25,18 +25,18 @@ void FlyObject::Update()
 
 void FlyObject::Draw()
 {
-	for (auto& it : attributeList) {
+	for (auto& it : toolsList) {
 		(it)->Draw(); 
 	}
 }
 
 void FlyObject::CleanUp()
 {
-	for (auto& it : attributeList)
+	for (auto& it : toolsList)
 	{
 		(it)->CleanUp(); 
 	}
-	attributeList.clear(); 
+	toolsList.clear(); 
 	delete transform; 
 }
 
@@ -45,11 +45,16 @@ std::string FlyObject::GetName() const
 	return name;
 }
 
-ImageTool* FlyObject::AddAttributeImage(const char* imageTexturePath)
+ImageTool* FlyObject::AddImageTool(const char* imageTexturePath)
 {
 	ImageTool* newAtrImage = new ImageTool(this); 
 	newAtrImage->CreateImage(imageTexturePath);
 
-	attributeList.push_back(newAtrImage); 
+	toolsList.push_back(newAtrImage); 
 	return newAtrImage; 
+}
+
+std::list<Tool*> FlyObject::GetToolsList() const
+{
+	return toolsList;
 }

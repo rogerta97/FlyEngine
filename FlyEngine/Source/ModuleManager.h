@@ -8,13 +8,6 @@
 #include <list>
 #include <string>
 
-struct ToolSelectableInfo
-{
-	std::string toolName;
-	std::string toolDescription;
-	ToolType toolType; 
-};
-
 class ModuleManager : public Module
 {
 public:
@@ -22,6 +15,7 @@ public:
 	~ModuleManager();
 
 	bool Init();
+	void LoadEngineIcons();
 	int GetToolsAmount() const; 
 
 	// Desctiption Dictionary -----

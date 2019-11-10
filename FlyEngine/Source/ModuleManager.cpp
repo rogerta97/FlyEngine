@@ -18,7 +18,22 @@ ModuleManager::~ModuleManager()
 bool ModuleManager::Init()
 {
 	// Load Engine Icons -----
-	Texture* plusIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "PlusSign.png"), false); 
+	LoadEngineIcons();
+
+	// Tools Descriptions 
+	ToolSelectableInfo imageToolInfo; 
+	imageToolInfo.toolName = "Image"; 
+	imageToolInfo.toolDescription = "This should be the description of the image tool"; 
+	imageToolInfo.toolType = AT_IMAGE; 
+
+	AddToolsNameDescription(imageToolInfo); 
+
+	return true;
+}
+
+void ModuleManager::LoadEngineIcons()
+{
+	Texture* plusIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "PlusSign.png"), false);
 	ResourceManager::getInstance()->AddResource((Resource*)plusIcon, "PlusIcon");
 
 	Texture* minusIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "MinusIcon.png"), false);
@@ -33,15 +48,8 @@ bool ModuleManager::Init()
 	Texture* objectIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ObjectIcon.png"), false);
 	ResourceManager::getInstance()->AddResource((Resource*)objectIcon, "ObjectIcon");
 
-	// Tools Descriptions 
-	ToolSelectableInfo imageToolInfo; 
-	imageToolInfo.toolName = "Image"; 
-	imageToolInfo.toolDescription = "This should be the description of the image tool"; 
-	imageToolInfo.toolType = AT_IMAGE; 
-
-	AddToolsNameDescription(imageToolInfo); 
-
-	return true;
+	Texture* filterIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "FilterIcon.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)filterIcon, "FilterIcon");
 }
 
 int ModuleManager::GetToolsAmount() const

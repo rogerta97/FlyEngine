@@ -17,7 +17,7 @@ public:
 	void DrawObjectNameBar(); 
 	void DrawToolsList(); 
 	void DrawAddAndDeleteButtons();
-	void DrawSelectedToolProperties(); 
+	void DrawSelectedToolProperties(ToolType selectedObjectType);
 	void DrawPopups();
 
 	void CleanBooleans();
@@ -27,6 +27,7 @@ public:
 
 public:
 	char searchToolBuffer[256] = "";
+	char newObjectName[256] = "";
 
 	// Image Tool ----
 	bool showImageTool = false; 

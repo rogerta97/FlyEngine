@@ -3,14 +3,19 @@
 
 #include "DockPanel.h"
 
+class FlyObject;
+class ObjectCreator;
 class ObjectPropertiesDockPanel : public DockPanel {
 
 public:
-
 	ObjectPropertiesDockPanel(bool isVisible);
 	~ObjectPropertiesDockPanel();
 
 	bool Draw();
+	void DrawSelectedObjectTools(FlyObject* selectedObject);
+	void DrawObjectPlacementCH(FlyObject* selectedObject);
+
+	ObjectCreator* objectCreator = nullptr;
 };
 
 #endif 

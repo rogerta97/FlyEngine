@@ -47,12 +47,21 @@ public:
 	GraphPropertiesDockPanel* graphPropertiesDockPanel;
 	GameViewportDockPanel* gameViewportDockPanel;
 
-	ImFont* rudaBoldFont; 
-	ImFont* rudaBoldFontBig;
+	ImFont* rudaRegularMid;
+	ImFont* rudaBoldMid;
+	ImFont* rudaBlackMid;
 
-	ImFont* rudaBlackFont; 
-	ImFont* rudaRegularFont; 
-	ImFont* rudaCommentFont; 
+	ImFont* rudaRegularSmall;
+	ImFont* rudaBoldSmall;
+	ImFont* rudaBlackSmall;
+
+	ImFont* rudaRegularBig;
+	ImFont* rudaBoldBig;
+	ImFont* rudaBlackBig;
+
+	ImFont* rudaRegularHuge;
+	ImFont* rudaBoldHuge;
+	ImFont* rudaBlackHuge;
 
 private: 
 

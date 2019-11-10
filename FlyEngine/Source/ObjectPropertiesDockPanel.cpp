@@ -4,6 +4,7 @@
 #include "imgui.h"
 #include "ModuleRoomManager.h"
 #include "ResourceManager.h"
+#include "ObjectCreator.h"
 #include "Texture.h"
 #include "FlyObject.h"
 #include "Room.h"
@@ -13,10 +14,13 @@ ObjectPropertiesDockPanel::ObjectPropertiesDockPanel(bool isVisible) : DockPanel
 {
 	flyEngineSection = FLY_SECTION_ROOM_EDIT;
 	dockPanelType = DOCK_OBJECT_PROPERTIES;
+
+	objectCreator = new ObjectCreator(); 
 }
 
 ObjectPropertiesDockPanel::~ObjectPropertiesDockPanel()
 {
+	delete objectCreator; 
 }
 
 bool ObjectPropertiesDockPanel::Draw()
@@ -38,48 +42,78 @@ bool ObjectPropertiesDockPanel::Draw()
 
 			ImGui::Separator();
 
-			ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 45, ImGui::GetCursorPosY() - 27));
+			ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 45, ImGui::GetCursorPosY() - 35));
 
-			ImGui::PushFont(App->moduleImGui->rudaBoldFontBig);
+			ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
 			ImGui::Text("%s", selectedObject->GetName().c_str());
 			ImGui::PopFont();
 
 			ImGui::Spacing();
 			ImGui::Spacing();
 
-			ImGui::PushFont(App->moduleImGui->rudaBoldFont);
-			if (ImGui::CollapsingHeader("Object Placement")) 
-			{
-				float showPosition[2] = { selectedObject->transform->GetPosition().x, selectedObject->transform->GetPosition().y};
-				float showRotation[2] = { selectedObject->transform->GetRotation().x, selectedObject->transform->GetRotation().y};
-				float showScale[2] = { selectedObject->transform->GetScale().x, selectedObject->transform->GetScale().y};
+			DrawObjectPlacementCH(selectedObject);
 
-				PUSH_FONT(App->moduleImGui->rudaBlackFont);
-				if (ImGui::DragFloat2("Position", showPosition, 0.5f)) 
-				{
-					selectedObject->transform->SetPosition(float2(showPosition[0], showPosition[1])); 
-				}
+			ImGui::Spacing();
+			ImGui::Separator(); 
+			ImGui::Spacing();
 
-				if (ImGui::DragFloat2("Rotation", showRotation))
-				{
-					selectedObject->transform->SetRotationEuler(float2(showRotation[0], showRotation[1]));
-				}
-			
-				if (ImGui::DragFloat2("Scale", showScale, 0.1f))
-				{
-					selectedObject->transform->SetScale(float2(showScale[0], showScale[1]));
-				}
-				POP_FONT;
-			}
-
-			POP_FONT; 
+			DrawSelectedObjectTools(selectedObject);
 		}
 		else
 		{
-			ImGui::Text("No Object Selected"); 
+			ImGui::TextColored(ImVec4(0.2f, 0.2f, 0.2f, 1.0f), "No Object Selected");
 		}
 	}
 
 	ImGui::End();
 	return true;
+}
+
+void ObjectPropertiesDockPanel::DrawSelectedObjectTools(FlyObject* selectedObject)
+{
+
+	PUSH_FONT(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Tools: ");
+	POP_FONT;
+
+	PUSH_FONT(App->moduleImGui->rudaBoldMid);
+	for (auto& currentTool : selectedObject->GetToolsList())
+	{
+		if (ImGui::CollapsingHeader(currentTool->GetToolName().c_str()))
+		{
+			objectCreator->DrawSelectedToolProperties(currentTool->GetToolType());
+		}
+
+	}
+	POP_FONT;
+}
+
+void ObjectPropertiesDockPanel::DrawObjectPlacementCH(FlyObject* selectedObject)
+{
+
+	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
+	if (ImGui::CollapsingHeader("Object Placement"))
+	{
+		float showPosition[2] = { selectedObject->transform->GetPosition().x, selectedObject->transform->GetPosition().y };
+		float showRotation[2] = { selectedObject->transform->GetRotation().x, selectedObject->transform->GetRotation().y };
+		float showScale[2] = { selectedObject->transform->GetScale().x, selectedObject->transform->GetScale().y };
+
+		PUSH_FONT(App->moduleImGui->rudaRegularMid);
+		if (ImGui::DragFloat2("Position", showPosition, 0.5f))
+		{
+			selectedObject->transform->SetPosition(float2(showPosition[0], showPosition[1]));
+		}
+
+		if (ImGui::DragFloat2("Rotation", showRotation))
+		{
+			selectedObject->transform->SetRotationEuler(float2(showRotation[0], showRotation[1]));
+		}
+
+		if (ImGui::DragFloat2("Scale", showScale, 0.1f))
+		{
+			selectedObject->transform->SetScale(float2(showScale[0], showScale[1]));
+		}
+		POP_FONT;
+	}
+	POP_FONT;
 }

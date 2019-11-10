@@ -46,3 +46,24 @@ void Tool::SetToolDescription(std::string newDescription)
 {
 	toolDescription = newDescription; 
 }
+
+ToolType Tool::GetToolType() const
+{
+	return toolType;
+}
+
+void Tool::SetToolType(ToolType newToolType)
+{
+	toolType = newToolType; 
+}
+
+ToolSelectableInfo Tool::GetToolSelectableInfo()
+{
+	ToolSelectableInfo returnToolInfo; 
+
+	returnToolInfo.toolName = toolName; 
+	returnToolInfo.toolDescription = toolDescription; 
+	returnToolInfo.toolType = toolType; 
+
+	return returnToolInfo;
+}

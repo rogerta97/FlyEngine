@@ -3,7 +3,6 @@
 
 #include "DockPanel.h"
 #include "Tool.h"
-#include "Tool.h"
 
 class ObjectCreator; 
 class SceneDockPanel : public DockPanel {
@@ -17,15 +16,8 @@ public:
 
 	void ShowViewportSettingsTab();
 
-	// Object Creator -------------
-	//void ShowObjectCreatorTab();
-	//void DrawAddToolSection();
-	//void DrawAddToolPopup();
-	//void DrawSearchToolSelectable(const char* toolName , const char* toolDescription, ToolType toolType);
-
 private: 
-
-	ObjectCreator* objectCreator; 
+	ObjectCreator* objectCreator = nullptr;
 	char searchToolBuffer[256] = ""; 
 
 	bool addToolImage = false; 
