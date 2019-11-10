@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "Texture.h"
+#include "ImageImporter.h"
 #include "ResourceManager.h"
 #include "MyFileSystem.h"
 #include "TinyFileDialog.h"
@@ -114,45 +115,70 @@ void ObjectCreator::DrawSelectedToolProperties()
 		ImGui::PushFont(App->moduleImGui->rudaBoldFont);
 		if(ImGui::CollapsingHeader("Image Tool Adjustments:")) 
 		{
-			static uint selectedTextureID = -1; 
-			static char buf[256]; 
+			static char buf[256] = ""; 
 			static Texture* selectedTexture = nullptr; 
 
+			ImGui::Spacing();
 			ImGui::PushFont(App->moduleImGui->rudaRegularFont);
-			ImGui::InputTextWithHint("", "C://...",buf, IM_ARRAYSIZE(buf), ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputTextWithHint("", "C:/",buf, IM_ARRAYSIZE(buf), ImGuiInputTextFlags_ReadOnly);
 			ImGui::PopFont(); 
 
 			ImGui::PushFont(App->moduleImGui->rudaBlackFont);
 			ImGui::SameLine(); 
+
 			if (ImGui::Button("Browse"))
 			{
 				char const* lFilterPatterns[2] = { "*.png", "*.jpg" };
 				const char* path = tinyfd_openFileDialog("Load Image...", NULL, 1, lFilterPatterns, NULL, 0);
 
 				if (path != NULL) 
-				{
-					//string scene_name = MyFileSystem::getInstance()->GetLastPathItem(path, false); 
+				{	
+					if (!ResourceManager::getInstance()->ExistResourcePath(path)) 
+					{
+						previewImageTexture = ImageImporter::getInstance()->LoadTexture(path, false);
+						ResourceManager::getInstance()->AddResource(previewImageTexture, previewImageTexture->GetName());
+					}
+					else
+					{
+						previewImageTexture = (Texture*)ResourceManager::getInstance()->GetResourceByPath(path); 
+					}
+
+					strcpy(buf, path); 
 					FLY_LOG("Player Opened %s", path);
 				}
 			}
+			POP_FONT;
 
-			ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), 170), true); 
-			ImGui::SetCursorPos(ImVec2((ImGui::GetContentRegionAvailWidth() / 2) - (150/2), 170/2 - 150/2));
+			if (previewImageTexture == nullptr)			
+				selectedTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageNull");		
+			else	
+				selectedTexture = (Texture*)ResourceManager::getInstance()->GetResource(previewImageTexture->GetName());
 
-			if (selectedTextureID == -1)
-			{
-				selectedTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageNull"); 
-				ImGui::Image((ImTextureID)selectedTexture->GetTextureID(), ImVec2(150, 150));
-			}
-			else
-			{
-				selectedTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageNull");
-				ImGui::Image((ImTextureID)selectedTexture->GetTextureID(), ImVec2(150, 150));
-			}
+			float aspect_ratio = selectedTexture->GetTextureAspectRatio();
+			float previewQuadWidth = 150;
+			float previewQuadHeight = previewQuadWidth / aspect_ratio;
+	
+			PUSH_FONT(App->moduleImGui->rudaRegularFont);
+			ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), previewQuadHeight + 18), true);
 
-			ImGui::EndChild(); 
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, previewQuadWidth + 10);
 
-			ImGui::PopFont(); 
+			ImGui::Image((ImTextureID)selectedTexture->GetTextureID(), ImVec2(previewQuadWidth, previewQuadHeight));
+
+			ImGui::NextColumn(); 
+
+			ImGui::Text("Name: "); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "La Vaca Que Rie");
+
+			ImGui::Text("Width: "); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "654");
+
+			ImGui::Text("Height: "); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "654");
+
+			ImGui::EndChild();
+			POP_FONT; 
 		}
 
 		ImGui::PopFont(); 

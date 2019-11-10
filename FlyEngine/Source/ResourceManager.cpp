@@ -51,12 +51,22 @@ Resource* ResourceManager::GetResource(UID resourceUID) const
 	return nullptr;
 }
 
-bool ResourceManager::ExistResource(Resource* checkResource)
+Resource* ResourceManager::GetResourceByPath(std::string resourcePath) const
 {
-	return ExistResource(checkResource->GetUID());
+	for (auto& it : resourceList)
+		if ((it)->GetPath() == resourcePath)
+			return (it);
+
+	FLY_ERROR("No resource with path '%s' found", resourcePath.c_str());
+	return nullptr;
 }
 
-bool ResourceManager::ExistResource(UID resourceUID)
+bool ResourceManager::ExistResource(Resource* checkResource)
+{
+	return ExistResourceUID(checkResource->GetUID());
+}
+
+bool ResourceManager::ExistResourceUID(UID resourceUID)
 {
 	for (auto& it: resourceList)
 	{
@@ -65,6 +75,17 @@ bool ResourceManager::ExistResource(UID resourceUID)
 	}
 
 	return false; 
+}
+
+bool ResourceManager::ExistResourcePath(std::string resourcePath)
+{
+	for (auto& it : resourceList)
+	{
+		if (it->GetPath() == resourcePath)
+			return true;
+	}
+
+	return false;
 }
 
 void ResourceManager::Delete()

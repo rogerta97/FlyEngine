@@ -9,6 +9,9 @@
 #include "imgui.h"
 #include "DockPanel.h"
 
+#define PUSH_FONT(font) ImGui::PushFont(font)
+#define POP_FONT ImGui::PopFont()
+
 class ConsoleDockPanel;
 class GraphPropertiesDockPanel; 
 class GameViewportDockPanel;
@@ -45,6 +48,8 @@ public:
 	GameViewportDockPanel* gameViewportDockPanel;
 
 	ImFont* rudaBoldFont; 
+	ImFont* rudaBoldFontBig;
+
 	ImFont* rudaBlackFont; 
 	ImFont* rudaRegularFont; 
 	ImFont* rudaCommentFont; 

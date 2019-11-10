@@ -23,9 +23,11 @@ public:
 
 	Resource* GetResource(std::string resourceName) const; 
 	Resource* GetResource(UID resourceUID) const; 
+	Resource* GetResourceByPath(std::string resourcePath) const; 
 
 	bool ExistResource(Resource* checkResource); 
-	bool ExistResource(UID resourceUID); 
+	bool ExistResourceUID(UID resourceUID); 
+	bool ExistResourcePath(std::string resourcePath); 
 
 	void Delete();
 

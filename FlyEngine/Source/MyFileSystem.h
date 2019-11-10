@@ -20,7 +20,7 @@ public:
 	void Delete(); 
 
 	// Utility -----------
-	string GetLastPathItem(string path, bool keepLastPathItem);
+	string GetLastPathItem(string path, bool keepTermination);
 	void DeleteFileExtension(string& path); 
 	void DeleteLastPathItem(string& path); 
 

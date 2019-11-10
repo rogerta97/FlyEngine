@@ -5,6 +5,7 @@
 #include "ModuleManager.h"
 
 class FlyObject; 
+class Texture; 
 class ObjectCreator
 {
 public:
@@ -29,7 +30,7 @@ public:
 
 	// Image Tool ----
 	bool showImageTool = false; 
-	std::string path = ""; 
+	Texture* previewImageTexture = nullptr; 
 
 	ToolType selectedInList = ToolType::AT_null; 
 };

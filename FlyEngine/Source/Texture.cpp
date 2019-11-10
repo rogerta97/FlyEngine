@@ -41,6 +41,11 @@ void Texture::SetTextureSettings()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 }
 
+float Texture::GetTextureAspectRatio()
+{
+	return (float)width / (float)height;
+}
+
 void Texture::Bind()
 {
 	glBindTexture(GL_TEXTURE_2D, texture_id);

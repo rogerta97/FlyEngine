@@ -37,34 +37,42 @@ bool ObjectPropertiesDockPanel::Draw()
 			ImGui::Image((ImTextureID)objectIconTextue->GetTextureID(), ImVec2(35, 35));
 
 			ImGui::Separator();
-			
-			ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 40, ImGui::GetCursorPosY() - 27)); 
 
-			ImGui::PushFont(App->moduleImGui->rudaBoldFont);
+			ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 45, ImGui::GetCursorPosY() - 27));
+
+			ImGui::PushFont(App->moduleImGui->rudaBoldFontBig);
 			ImGui::Text("%s", selectedObject->GetName().c_str());
 			ImGui::PopFont();
 
-			float showPosition[2] = { selectedObject->transform->GetPosition().x, selectedObject->transform->GetPosition().y};
-			float showRotation[2] = { selectedObject->transform->GetRotation().x, selectedObject->transform->GetRotation().y};
-			float showScale[2] = { selectedObject->transform->GetScale().x, selectedObject->transform->GetScale().y};
-
-			ImGui::Spacing(); 
+			ImGui::Spacing();
 			ImGui::Spacing();
 
-			if (ImGui::DragFloat2("Position", showPosition, 0.5f)) 
+			ImGui::PushFont(App->moduleImGui->rudaBoldFont);
+			if (ImGui::CollapsingHeader("Object Placement")) 
 			{
-				selectedObject->transform->SetPosition(float2(showPosition[0], showPosition[1])); 
+				float showPosition[2] = { selectedObject->transform->GetPosition().x, selectedObject->transform->GetPosition().y};
+				float showRotation[2] = { selectedObject->transform->GetRotation().x, selectedObject->transform->GetRotation().y};
+				float showScale[2] = { selectedObject->transform->GetScale().x, selectedObject->transform->GetScale().y};
+
+				PUSH_FONT(App->moduleImGui->rudaBlackFont);
+				if (ImGui::DragFloat2("Position", showPosition, 0.5f)) 
+				{
+					selectedObject->transform->SetPosition(float2(showPosition[0], showPosition[1])); 
+				}
+
+				if (ImGui::DragFloat2("Rotation", showRotation))
+				{
+					selectedObject->transform->SetRotationEuler(float2(showRotation[0], showRotation[1]));
+				}
+			
+				if (ImGui::DragFloat2("Scale", showScale, 0.1f))
+				{
+					selectedObject->transform->SetScale(float2(showScale[0], showScale[1]));
+				}
+				POP_FONT;
 			}
 
-			if (ImGui::DragFloat2("Rotation", showRotation))
-			{
-				selectedObject->transform->SetRotationEuler(float2(showRotation[0], showRotation[1]));
-			}
-			
-			if (ImGui::DragFloat2("Scale", showScale, 0.1f))
-			{
-				selectedObject->transform->SetScale(float2(showScale[0], showScale[1]));
-			}
+			POP_FONT; 
 		}
 		else
 		{
