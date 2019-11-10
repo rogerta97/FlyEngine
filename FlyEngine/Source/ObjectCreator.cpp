@@ -70,7 +70,7 @@ void ObjectCreator::DrawObjectNameBar()
 void ObjectCreator::DrawToolsList()
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldFont);
-	ImGui::Text("Object Tools: ");
+	ImGui::Text("Add Object Tools: ");
 	ImGui::PopFont();
 
 	ImGui::BeginChild("##AttributesChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 200), true);
@@ -116,7 +116,6 @@ void ObjectCreator::DrawSelectedToolProperties()
 		if(ImGui::CollapsingHeader("Image Tool Adjustments:")) 
 		{
 			static char buf[256] = ""; 
-			static Texture* selectedTexture = nullptr; 
 
 			ImGui::Spacing();
 			ImGui::PushFont(App->moduleImGui->rudaRegularFont);
@@ -150,11 +149,11 @@ void ObjectCreator::DrawSelectedToolProperties()
 			POP_FONT;
 
 			if (previewImageTexture == nullptr)			
-				selectedTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageNull");		
+				previewImageTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageNull");
 			else	
-				selectedTexture = (Texture*)ResourceManager::getInstance()->GetResource(previewImageTexture->GetName());
+				previewImageTexture = (Texture*)ResourceManager::getInstance()->GetResource(previewImageTexture->GetName());
 
-			float aspect_ratio = selectedTexture->GetTextureAspectRatio();
+			float aspect_ratio = previewImageTexture->GetTextureAspectRatio();
 			float previewQuadWidth = 150;
 			float previewQuadHeight = previewQuadWidth / aspect_ratio;
 	
@@ -164,18 +163,18 @@ void ObjectCreator::DrawSelectedToolProperties()
 			ImGui::Columns(2);
 			ImGui::SetColumnWidth(0, previewQuadWidth + 10);
 
-			ImGui::Image((ImTextureID)selectedTexture->GetTextureID(), ImVec2(previewQuadWidth, previewQuadHeight));
+			ImGui::Image((ImTextureID)previewImageTexture->GetTextureID(), ImVec2(previewQuadWidth, previewQuadHeight));
 
 			ImGui::NextColumn(); 
 
 			ImGui::Text("Name: "); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "La Vaca Que Rie");
+			ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%s", previewImageTexture->GetName().c_str());
 
 			ImGui::Text("Width: "); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "654");
+			ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", previewImageTexture->GetWidth());
 
 			ImGui::Text("Height: "); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "654");
+			ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", previewImageTexture->GetHeight());
 
 			ImGui::EndChild();
 			POP_FONT; 
