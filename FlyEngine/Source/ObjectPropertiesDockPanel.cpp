@@ -57,7 +57,7 @@ bool ObjectPropertiesDockPanel::Draw()
 			ImGui::Separator(); 
 			ImGui::Spacing();
 
-			DrawSelectedObjectTools(selectedObject);
+			DrawObjectTools(selectedObject);
 		}
 		else
 		{
@@ -69,7 +69,7 @@ bool ObjectPropertiesDockPanel::Draw()
 	return true;
 }
 
-void ObjectPropertiesDockPanel::DrawSelectedObjectTools(FlyObject* selectedObject)
+void ObjectPropertiesDockPanel::DrawObjectTools(FlyObject* selectedObject)
 {
 
 	PUSH_FONT(App->moduleImGui->rudaBlackBig);
@@ -81,7 +81,7 @@ void ObjectPropertiesDockPanel::DrawSelectedObjectTools(FlyObject* selectedObjec
 	{
 		if (ImGui::CollapsingHeader(currentTool->GetToolName().c_str()))
 		{
-			objectCreator->DrawSelectedToolProperties(currentTool->GetToolType());
+			objectCreator->DrawToolProperties(currentTool->GetToolType());
 		}
 
 	}
@@ -94,6 +94,8 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH(FlyObject* selectedObject)
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 	if (ImGui::CollapsingHeader("Object Placement"))
 	{
+		ImGui::Spacing(); 
+
 		float showPosition[2] = { selectedObject->transform->GetPosition().x, selectedObject->transform->GetPosition().y };
 		float showRotation[2] = { selectedObject->transform->GetRotation().x, selectedObject->transform->GetRotation().y };
 		float showScale[2] = { selectedObject->transform->GetScale().x, selectedObject->transform->GetScale().y };

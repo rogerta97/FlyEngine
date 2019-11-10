@@ -50,6 +50,18 @@ void ModuleManager::LoadEngineIcons()
 
 	Texture* filterIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "FilterIcon.png"), false);
 	ResourceManager::getInstance()->AddResource((Resource*)filterIcon, "FilterIcon");
+
+	Texture* plusIconWhite = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "PlusIconWhite.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)plusIconWhite, "PlusIconWhite");
+
+	Texture* minusIconWhite = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "MinusIconWhite.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)minusIconWhite, "MinusIconWhite");
+
+	Texture* arrowUpWhite = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ArrowUpWhite.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)arrowUpWhite, "ArrowUpWhite");
+
+	Texture* arrowDownWhite = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ArrowUpWhite.png"), true);
+	ResourceManager::getInstance()->AddResource((Resource*)arrowDownWhite, "ArrowDownWhite");
 }
 
 int ModuleManager::GetToolsAmount() const

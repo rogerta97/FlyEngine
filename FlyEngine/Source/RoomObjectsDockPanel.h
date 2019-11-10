@@ -12,6 +12,10 @@ public:
 
 	bool Draw();
 
+	void DrawObjectHierarchy();
+
+	void DrawControlButtons();
+
 };
 
 #endif 

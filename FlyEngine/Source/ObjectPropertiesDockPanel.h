@@ -12,7 +12,7 @@ public:
 	~ObjectPropertiesDockPanel();
 
 	bool Draw();
-	void DrawSelectedObjectTools(FlyObject* selectedObject);
+	void DrawObjectTools(FlyObject* selectedObject);
 	void DrawObjectPlacementCH(FlyObject* selectedObject);
 
 	ObjectCreator* objectCreator = nullptr;

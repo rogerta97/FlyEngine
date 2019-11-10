@@ -17,7 +17,8 @@ public:
 	void DrawObjectNameBar(); 
 	void DrawToolsList(); 
 	void DrawAddAndDeleteButtons();
-	void DrawSelectedToolProperties(ToolType selectedObjectType);
+	void DrawToolProperties(ToolType selectedObjectType);
+	void DrawImageToolInfo();
 	void DrawPopups();
 
 	void CleanBooleans();

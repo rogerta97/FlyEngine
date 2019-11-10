@@ -27,14 +27,6 @@ ObjectCreator::~ObjectCreator()
 void ObjectCreator::Draw()
 {
 	// Name Bar --------
-	ImGui::Spacing();
-
-	DrawObjectNameBar(); 
-
-	ImGui::Spacing();
-	ImGui::Separator();
-	ImGui::Spacing();
-
 	DrawToolsList();
 	DrawAddAndDeleteButtons();
 
@@ -48,7 +40,7 @@ void ObjectCreator::Draw()
 
 		if (ImGui::CollapsingHeader("Image Tool Adjustments:"))
 		{
-			DrawSelectedToolProperties(selectedInList);
+			DrawToolProperties(selectedInList);
 		}
 
 		break;
@@ -60,13 +52,17 @@ void ObjectCreator::Draw()
 	ImGui::Separator();
 	ImGui::Spacing();
 
-	ImGui::SetCursorPosX(ImGui::GetContentRegionAvailWidth() - 80.0f);
+	DrawObjectNameBar();
 
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	if (ImGui::Button("Create", ImVec2(80, 30)))
+	ImGui::SameLine(); 
+	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
+	if (ImGui::Button("Create", ImVec2(80, 28)))
 	{
-		// Safety Check 
-		assert(newObjectName == ""); 
+		if (newObjectName == "") {
+			FLY_ERROR("Object with no name can not be created"); 
+			ImGui::PopFont();
+			return; 
+		}
 
 		FlyObject* newObject = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject(newObjectName);
 
@@ -83,8 +79,8 @@ void ObjectCreator::Draw()
 
 void ObjectCreator::DrawObjectNameBar()
 {
-	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-	ImGui::InputTextWithHint("Object Name", "Name...", newObjectName, 256 * sizeof(char));
+	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
+	ImGui::InputTextWithHint("##ObjectNaming", "Object Name...", newObjectName, 256 * sizeof(char));
 	ImGui::PopFont();
 }
 
@@ -94,16 +90,21 @@ void ObjectCreator::DrawToolsList()
 	ImGui::Text("Add Object Tools: ");
 	ImGui::PopFont();
 
-	ImGui::BeginChild("##AttributesChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 200), true);
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f)); 
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5, 5));
+
+	ImGui::BeginChild("##AttributesChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
 
 	if (showImageTool) 
 	{
 		ToolSelectableInfo toolInfo = App->moduleManager->GetToolNameDescription("Image");
-
 		if (DrawToolSelectable(toolInfo)) selectedInList = AT_IMAGE;	
 	}
 
 	ImGui::EndChild();
+
+	ImGui::PopStyleVar();
+	ImGui::PopStyleColor(); 
 }
 
 void ObjectCreator::DrawAddAndDeleteButtons()
@@ -122,84 +123,84 @@ void ObjectCreator::DrawAddAndDeleteButtons()
 	}
 }
 
-void ObjectCreator::DrawSelectedToolProperties(ToolType selectedObjectType)
+void ObjectCreator::DrawToolProperties(ToolType selectedObjectType)
 {
 	switch (selectedObjectType)
 	{
+
 	case AT_IMAGE:
+		DrawImageToolInfo();
+		break;
+
+	}
+}
+
+void ObjectCreator::DrawImageToolInfo()
+{
+	static char buf[256] = "";
+
+	if (previewImageTexture == nullptr)
+		previewImageTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageNull");
+	else
+		previewImageTexture = (Texture*)ResourceManager::getInstance()->GetResource(previewImageTexture->GetName());
+
+	float aspect_ratio = previewImageTexture->GetTextureAspectRatio();
+	float previewQuadWidth = 150;
+	float previewQuadHeight = previewQuadWidth / aspect_ratio;
+
+	ImGui::Spacing();
+	PUSH_FONT(App->moduleImGui->rudaRegularMid);
+
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), previewQuadHeight + 18));
+
+	ImGui::Columns(2);
+	ImGui::SetColumnWidth(0, previewQuadWidth + 10);
+
+	ImGui::Spacing();
+	ImGui::Image((ImTextureID)previewImageTexture->GetTextureID(), ImVec2(previewQuadWidth, previewQuadHeight));
+
+	ImGui::NextColumn();
+
+	ImGui::Spacing();
+	ImGui::Text("Name: "); ImGui::SameLine();
+	ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%s", previewImageTexture->GetName().c_str());
+
+	ImGui::Text("Width: "); ImGui::SameLine();
+	ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", previewImageTexture->GetWidth());
+
+	ImGui::Text("Height: "); ImGui::SameLine();
+	ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", previewImageTexture->GetHeight());
+
+	Texture* searchTexture = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+
+	if (ImGui::ImageButton((ImTextureID)searchTexture->GetTextureID(), ImVec2(24, 24)))
 	{
-		static char buf[256] = "";
+		char const* lFilterPatterns[2] = { "*.jpg" , "*.png" };
+		const char* path = tinyfd_openFileDialog("Load Image...", NULL, 2, lFilterPatterns, NULL, 0);
 
-		ImGui::Spacing();
-		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
-		ImGui::InputTextWithHint("", "C:/", buf, IM_ARRAYSIZE(buf), ImGuiInputTextFlags_ReadOnly);
-		ImGui::PopFont();
-
-		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
-		ImGui::SameLine();
-
-		Texture* searchTexture = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon"); 
-		if (ImGui::ImageButton((ImTextureID)searchTexture->GetTextureID(), ImVec2(18, 18)))
+		if (path != NULL)
 		{
-			char const* lFilterPatterns[2] = { "*.jpg" , "*.png" };
-			const char* path = tinyfd_openFileDialog("Load Image...", NULL, 2, lFilterPatterns, NULL, 0);
-
-			if (path != NULL)
+			if (!ResourceManager::getInstance()->ExistResourcePath(path))
 			{
-				if (!ResourceManager::getInstance()->ExistResourcePath(path))
-				{
-					previewImageTexture = ImageImporter::getInstance()->LoadTexture(path, false);
-					ResourceManager::getInstance()->AddResource(previewImageTexture, previewImageTexture->GetName());
-				}
-				else
-				{
-					previewImageTexture = (Texture*)ResourceManager::getInstance()->GetResourceByPath(path);
-				}
-
-				strcpy(buf, path);
-				FLY_LOG("Player Opened %s", path);
+				previewImageTexture = ImageImporter::getInstance()->LoadTexture(path, false);
+				ResourceManager::getInstance()->AddResource(previewImageTexture, previewImageTexture->GetName());
 			}
+			else
+			{
+				previewImageTexture = (Texture*)ResourceManager::getInstance()->GetResourceByPath(path);
+			}
+
+			strcpy(buf, path);
+			FLY_LOG("Player Opened %s", path);
 		}
 
-		if (previewImageTexture == nullptr)
-			previewImageTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageNull");
-		else
-			previewImageTexture = (Texture*)ResourceManager::getInstance()->GetResource(previewImageTexture->GetName());
-
-		float aspect_ratio = previewImageTexture->GetTextureAspectRatio();
-		float previewQuadWidth = 150;
-		float previewQuadHeight = previewQuadWidth / aspect_ratio;
-
-		ImGui::Spacing(); 
-		PUSH_FONT(App->moduleImGui->rudaRegularMid);
-		ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), previewQuadHeight + 18), true);
-
-		ImGui::Columns(2);
-		ImGui::SetColumnWidth(0, previewQuadWidth + 10);
-
-		ImGui::Image((ImTextureID)previewImageTexture->GetTextureID(), ImVec2(previewQuadWidth, previewQuadHeight));
-
-		ImGui::NextColumn();
-
-		ImGui::Text("Name: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%s", previewImageTexture->GetName().c_str());
-
-		ImGui::Text("Width: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", previewImageTexture->GetWidth());
-
-		ImGui::Text("Height: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", previewImageTexture->GetHeight());
-
-		ImGui::EndChild();
-		POP_FONT;
-
-
-		ImGui::PopFont();
-
 	}
-	break;
 
-	}
+	ImGui::PopStyleColor(2);
+	ImGui::EndChild();
+	ImGui::PopFont();
 }
 
 void ObjectCreator::DrawPopups()
@@ -210,10 +211,8 @@ void ObjectCreator::DrawPopups()
 		ImGui::InputText("##SearchTool", searchToolBuffer, IM_ARRAYSIZE(searchToolBuffer));
 		ImGui::SameLine();
 
-		Texture* searchIcon = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
-		if (ImGui::ImageButton((ImTextureID)searchIcon->GetTextureID(), ImVec2(18, 18))) {
-
-		}
+		Texture* filterIcon = (Texture*)ResourceManager::getInstance()->GetResource("FilterIcon");
+		ImGui::Image((ImTextureID)filterIcon->GetTextureID(), ImVec2(22, 22));
 
 		ImGui::Spacing();
 		ImGui::Separator();
@@ -244,7 +243,12 @@ void ObjectCreator::DrawPopups()
 
 void ObjectCreator::CleanBooleans()
 {
-	showImageTool = false; 
+	if (showImageTool)
+	{
+		showImageTool = false; 
+		selectedInList = AT_null;
+		previewImageTexture = nullptr; 
+	}
 }
 
 void ObjectCreator::OnNewToolButtonClicked()
