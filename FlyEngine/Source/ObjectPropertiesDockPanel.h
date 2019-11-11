@@ -2,9 +2,10 @@
 #define _OBJECTPROPERTIESDOCKPANEL_H_
 
 #include "DockPanel.h"
+#include "ModuleManager.h"
 
 class FlyObject;
-class ObjectCreator;
+class FlyObjectEditorUI;
 class ObjectPropertiesDockPanel : public DockPanel {
 
 public:
@@ -13,9 +14,11 @@ public:
 
 	bool Draw();
 	void DrawObjectTools(FlyObject* selectedObject);
+	void DrawToolAdjustments(FlyObject* selectedObject);
+	void DrawToolList(FlyObject* selectedObject);
+	void DrawToolSelectable(ToolSelectableInfo& selectableInfo, Tool*& currentTool, FlyObject* selectedObject);
 	void DrawObjectPlacementCH(FlyObject* selectedObject);
-
-	ObjectCreator* objectCreator = nullptr;
+	void DrawToolImageSettings(FlyObject* selectedObject);
 };
 
 #endif 

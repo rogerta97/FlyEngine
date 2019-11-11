@@ -44,6 +44,7 @@ public:
 	ToolType toolType;
 	std::string toolName; 
 	std::string toolDescription; 
+	bool isSelected; 
 }; 
 
 #endif

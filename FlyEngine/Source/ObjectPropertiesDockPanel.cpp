@@ -4,23 +4,26 @@
 #include "imgui.h"
 #include "ModuleRoomManager.h"
 #include "ResourceManager.h"
-#include "ObjectCreator.h"
+#include "ImageTool.h"
+#include "ImageImporter.h"
+#include "TinyFileDialog.h"
+#include "FlyObjectEditorUI.h"
 #include "Texture.h"
 #include "FlyObject.h"
 #include "Room.h"
 #include "mmgr.h"
+
 
 ObjectPropertiesDockPanel::ObjectPropertiesDockPanel(bool isVisible) : DockPanel("Object Properties", isVisible)
 {
 	flyEngineSection = FLY_SECTION_ROOM_EDIT;
 	dockPanelType = DOCK_OBJECT_PROPERTIES;
 
-	objectCreator = new ObjectCreator(); 
 }
 
 ObjectPropertiesDockPanel::~ObjectPropertiesDockPanel()
 {
-	delete objectCreator; 
+
 }
 
 bool ObjectPropertiesDockPanel::Draw()
@@ -31,8 +34,8 @@ bool ObjectPropertiesDockPanel::Draw()
 		return false;
 #pragma endregion
 
-	if (ImGui::Begin(panelName.c_str(), &visible)) {
-
+	if (ImGui::Begin(panelName.c_str(), &visible)) 
+	{
 		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();
 
 		if (selectedObject != nullptr)
@@ -71,8 +74,34 @@ bool ObjectPropertiesDockPanel::Draw()
 
 void ObjectPropertiesDockPanel::DrawObjectTools(FlyObject* selectedObject)
 {
+	// Draw Objects List ---------
+	DrawToolList(selectedObject);
 
-	// Draw Objects List
+	// Draw Tool --------
+	DrawToolAdjustments(selectedObject);
+}
+
+void ObjectPropertiesDockPanel::DrawToolAdjustments(FlyObject* selectedObject)
+{
+	if (selectedObject->selectedTool)
+	{
+		switch (selectedObject->selectedTool->GetToolType())
+		{
+		case AT_IMAGE:
+			DrawToolImageSettings(selectedObject); 
+			break; 
+		}
+		PUSH_FONT(App->moduleImGui->rudaBoldMid);
+		for (auto& currentTool : selectedObject->GetToolsList())
+		{
+
+		}
+		POP_FONT;
+	}
+}
+
+void ObjectPropertiesDockPanel::DrawToolList(FlyObject* selectedObject)
+{
 	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 	ImGui::Text("Object Actions: ");
 	ImGui::PopFont();
@@ -80,34 +109,39 @@ void ObjectPropertiesDockPanel::DrawObjectTools(FlyObject* selectedObject)
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5, 5));
 
-	ImGui::BeginChild("##AttributesChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
+	ImGui::BeginChild("##ToolsListObjectProperties", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
 
-	for(auto& currentTool: selectedObject->GetToolsList()){
-		objectCreator->DrawToolSelectable(App->moduleManager->GetToolNameDescription(currentTool->toolName));
+	for (auto& currentTool : selectedObject->GetToolsList()) 
+	{
+		ToolSelectableInfo selectableInfo = currentTool->GetToolSelectableInfo(); 
+		DrawToolSelectable(selectableInfo, currentTool, selectedObject);
 	}
 
 	ImGui::EndChild();
 
 	ImGui::PopStyleVar();
 	ImGui::PopStyleColor();
+}
 
-	ImGui::Separator(); 
-
-	PUSH_FONT(App->moduleImGui->rudaBoldMid);
-	for (auto& currentTool : selectedObject->GetToolsList())
-	{
-		if (ImGui::CollapsingHeader(currentTool->GetToolName().c_str()))
-		{
-			objectCreator->DrawToolProperties(currentTool->GetToolType());
-		}
-
+void ObjectPropertiesDockPanel::DrawToolSelectable(ToolSelectableInfo& selectableInfo, Tool*& currentTool, FlyObject* selectedObject)
+{
+	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
+	if (ImGui::Selectable(selectableInfo.toolName.c_str(), &currentTool->isSelected, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), 37))) {
+		selectedObject->selectedTool = currentTool;
 	}
-	POP_FONT;
+	ImGui::PopFont();
+
+	// Description -----
+	ImGui::SetCursorPosY(ImGui::GetCursorPos().y - 20);
+	ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 2);
+
+	ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
+	ImGui::TextWrapped(selectableInfo.toolDescription.c_str());
+	ImGui::PopFont();
 }
 
 void ObjectPropertiesDockPanel::DrawObjectPlacementCH(FlyObject* selectedObject)
 {
-
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 	if (ImGui::CollapsingHeader("Object Placement"))
 	{
@@ -135,4 +169,82 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH(FlyObject* selectedObject)
 		POP_FONT;
 	}
 	POP_FONT;
+}
+
+void ObjectPropertiesDockPanel::DrawToolImageSettings(FlyObject* selectedObject)
+{
+	ImageTool* imageTool = (ImageTool*)selectedObject->GetTool("Image");
+
+	if (imageTool != nullptr)
+	{
+		if (ImGui::CollapsingHeader("Image Tool Settings"))
+		{
+			static char buf[256] = "";
+
+			Texture* imageToolTexture = imageTool->GetTexture(); 
+
+			if (imageToolTexture == nullptr)
+				imageToolTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageNull");
+
+			float aspect_ratio = imageToolTexture->GetTextureAspectRatio();
+			float previewQuadWidth = 150;
+			float previewQuadHeight = previewQuadWidth / aspect_ratio;
+
+			ImGui::Spacing();
+			PUSH_FONT(App->moduleImGui->rudaRegularMid);
+
+			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+			ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), previewQuadHeight + 18));
+
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, previewQuadWidth + 10);
+
+			ImGui::Spacing();
+			ImGui::Image((ImTextureID)imageToolTexture->GetTextureID(), ImVec2(previewQuadWidth, previewQuadHeight));
+
+			ImGui::NextColumn();
+
+			ImGui::Spacing();
+			ImGui::Text("Name: "); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%s", imageToolTexture->GetName().c_str());
+
+			ImGui::Text("Width: "); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", imageToolTexture->GetWidth());
+
+			ImGui::Text("Height: "); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", imageToolTexture->GetHeight());
+
+			Texture* searchTexture = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+
+			if (ImGui::ImageButton((ImTextureID)searchTexture->GetTextureID(), ImVec2(24, 24)))
+			{
+				char const* lFilterPatterns[2] = { "*.jpg" , "*.png" };
+				const char* path = tinyfd_openFileDialog("Load Image...", NULL, 2, lFilterPatterns, NULL, 0);
+
+				if (path != NULL)
+				{
+					if (!ResourceManager::getInstance()->ExistResourcePath(path))
+					{
+						imageToolTexture = ImageImporter::getInstance()->LoadTexture(path, false);
+						ResourceManager::getInstance()->AddResource(imageToolTexture, imageToolTexture->GetName());
+					}
+					else
+					{
+						imageToolTexture = (Texture*)ResourceManager::getInstance()->GetResourceByPath(path);
+					}
+
+					imageTool->SetTexture(imageToolTexture); 
+
+					strcpy(buf, path);
+					FLY_LOG("Player Opened %s", path);
+				}
+
+			}
+
+			ImGui::PopStyleColor(2);
+			ImGui::EndChild();
+			ImGui::PopFont();
+		}
+	}
 }

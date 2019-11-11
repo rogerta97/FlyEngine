@@ -22,11 +22,16 @@ public:
 
 	// Tools -----------
 	ImageTool* AddImageTool(const char* imageTexturePath);
+	Tool* GetTool(std::string toolName); 
 	std::list<Tool*> GetToolsList() const; 
+
+	// Draw UI ---------
+	void DrawImageToolSettings(); 
 
 public:
 	Transform* transform; 
 	bool isSelected; 
+	Tool* selectedTool; 
 
 private: 
 	std::list<Tool*> toolsList; 

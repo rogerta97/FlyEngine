@@ -4,7 +4,8 @@
 #include "DockPanel.h"
 #include "Tool.h"
 
-class ObjectCreator; 
+class FlyObjectEditorUI; 
+class Texture; 
 class SceneDockPanel : public DockPanel {
 
 public:
@@ -16,12 +17,27 @@ public:
 
 	void ShowViewportSettingsTab();
 
-private: 
-	ObjectCreator* objectCreator = nullptr;
-	char searchToolBuffer[256] = ""; 
+	// Object Creator Utility ---------------
+	void DrawObjectCreator();
+	void DrawSelectedToolSettings();
+	void DrawToolImageSettings();
+	void DrawCreatorBottomBar();
+	void OnAddButtonClicked();
+	void DrawCreatorAddAndDeleteButtons();
+	void DrawCreatorToolsList();
+	bool DrawToolSelectable(ToolSelectableInfo& toolInfo);
 
-	bool addToolImage = false; 
+private: 
 	std::list<Tool*> tmpToolsToAdd; 
+
+	// Object Creator Vars -----------
+	char searchToolBuffer[256] = ""; 
+	char newObjectName[256] = ""; 
+	
+	bool showImageTool = false; 
+	Texture* previewImageTexture = nullptr;
+
+	ToolType toolAdjustmentsOwnerType = ToolType::AT_null; 
 };
 
 #endif 

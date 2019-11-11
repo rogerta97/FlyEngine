@@ -90,7 +90,7 @@ void ImageTool::CleanUp()
 
 bool ImageTool::CreateImage(const char* texturePath)
 {
-	imageTexture = ImageImporter::getInstance()->LoadTexture(texturePath, true);
+	imageTexture = ImageImporter::getInstance()->LoadTexture(texturePath, false);
 
 	imageWidth = imageTexture->GetWidth();
 	imageHeight = imageTexture->GetHeight();
@@ -104,6 +104,24 @@ bool ImageTool::CreateImage(const char* texturePath)
 Quad* ImageTool::GetQuad() const
 {
 	return quadMesh; 
+}
+
+void ImageTool::SetQuad(Quad* newQuad)
+{
+	quadMesh = newQuad;
+}
+
+void ImageTool::SetTexture(Texture* newTexture)
+{
+	// Addapt Quad 
+	quadMesh->UnloadFromMemory();
+	delete quadMesh; 
+
+	quadMesh = new Quad(); 
+	quadMesh->Create(newTexture->GetWidth(), newTexture->GetHeight());
+
+	// Set Texture 
+	imageTexture = newTexture;
 }
 
 Texture* ImageTool::GetTexture() const

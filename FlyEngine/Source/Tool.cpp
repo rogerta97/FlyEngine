@@ -3,6 +3,7 @@
 Tool::Tool()
 {
 	toolType = AT_null; 
+	isSelected = false; 
 	return; 
 }
 

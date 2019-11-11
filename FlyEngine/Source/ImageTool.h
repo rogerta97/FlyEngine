@@ -23,6 +23,9 @@ public:
 	bool CreateImage(const char* texturePath); 
 
 	Quad* GetQuad() const;
+	void SetQuad(Quad* newQuad);
+	
+	void SetTexture(Texture* newTexture);
 	Texture* GetTexture() const; 
 
 private:

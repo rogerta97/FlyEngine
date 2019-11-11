@@ -309,11 +309,11 @@
     <ClCompile Include="Source\ImageTool.cpp">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ObjectCreator.cpp">
-      <Filter>Source\FlyEngine\FlyObject</Filter>
-    </ClCompile>
     <ClCompile Include="Source\TinyFileDialog.cpp">
       <Filter>Source\3rdParty\TinyFileDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FlyObjectEditorUI.cpp">
+      <Filter>Source\Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -671,11 +671,11 @@
     <ClInclude Include="Source\ImageTool.h">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ObjectCreator.h">
-      <Filter>Source\FlyEngine\FlyObject</Filter>
-    </ClInclude>
     <ClInclude Include="Source\TinyFileDialog.h">
       <Filter>Source\3rdParty\TinyFileDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FlyObjectEditorUI.h">
+      <Filter>Source\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

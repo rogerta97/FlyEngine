@@ -10,7 +10,8 @@
 #include "DockPanel.h"
 
 #define PUSH_FONT(font) ImGui::PushFont(font)
-#define POP_FONT ImGui::PopFont()
+#define POP_FONT ImGui::PopFont();
+#define IMGUI_SPACED_SEPARATOR ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
 
 class ConsoleDockPanel;
 class GraphPropertiesDockPanel; 
@@ -22,7 +23,7 @@ public:
 	ModuleImGui(bool start_enabled = true);
 	~ModuleImGui();
 
-	// Module 
+	// Module ---------------
 	bool Init(); 
 	bool Start();
 	update_status PreUpdate(float dt);
@@ -30,11 +31,11 @@ public:
 	void ReceiveEvent(FlyEngineEvent eventType); 
 	bool CleanUp();
 
-	// Docking
+	// Docking --------------
 	void DrawDockSpace();
 	void DrawMainMenuBar();
 
-	// Panels 
+	// Panels ---------------
 	void CreatePanels(); 
 	void DeletePanels(); 
 	void DrawPanels();
@@ -47,6 +48,7 @@ public:
 	GraphPropertiesDockPanel* graphPropertiesDockPanel;
 	GameViewportDockPanel* gameViewportDockPanel;
 
+	// Fonts ---------------
 	ImFont* rudaRegularMid;
 	ImFont* rudaBoldMid;
 	ImFont* rudaBlackMid;
