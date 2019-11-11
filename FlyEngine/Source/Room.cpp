@@ -7,6 +7,7 @@
 #include "FlyObject.h"
 #include "TextureMSAA.h"
 #include "ModuleRoomManager.h"
+#include "mmgr.h"
 
 Room::Room(string roomName)
 {

@@ -1,5 +1,6 @@
 #include "Texture.h"
 #include "OpenGL.h"
+#include "mmgr.h"
 
 Texture::Texture() : Resource(RESOURCE_TEXTURE)
 {
@@ -74,7 +75,7 @@ uint Texture::CreateBuffer()
 	return texture_id;
 }
 
-void Texture::Clear()
+void Texture::CleanUp()
 {
 	glDeleteTextures(1, &texture_id);
 	texture_id = 0;

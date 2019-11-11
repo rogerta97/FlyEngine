@@ -1,5 +1,6 @@
 #include "ResourceManager.h"
 #include <string>
+#include "mmgr.h"
 
 #include <assert.h>
 
@@ -27,13 +28,13 @@ bool ResourceManager::AddResource(Resource* newResource, std::string name)
 	//assert(newResource->GetPath() == ""); 
 
 	newResource->SetName(name);
-	resourceList.push_back(newResource);
+	instance->resourceList.push_back(newResource);
 	return false;
 }
 
-Resource* ResourceManager::GetResource(std::string resourceName) const
+Resource* ResourceManager::GetResource(std::string resourceName) 
 {
-	for (auto& it : resourceList)
+	for (auto& it : instance->resourceList)
 		if ((it)->GetName() == resourceName)
 			return (it);
 
@@ -41,9 +42,9 @@ Resource* ResourceManager::GetResource(std::string resourceName) const
 	return nullptr;
 }
 
-Resource* ResourceManager::GetResource(UID resourceUID) const
+Resource* ResourceManager::GetResource(UID resourceUID) 
 {
-	for (auto& it : resourceList)
+	for (auto& it : instance->resourceList)
 		if ((it)->GetUID() == resourceUID)
 			return (it);
 
@@ -51,9 +52,9 @@ Resource* ResourceManager::GetResource(UID resourceUID) const
 	return nullptr;
 }
 
-Resource* ResourceManager::GetResourceByPath(std::string resourcePath) const
+Resource* ResourceManager::GetResourceByPath(std::string resourcePath) 
 {
-	for (auto& it : resourceList)
+	for (auto& it : instance->resourceList)
 		if ((it)->GetPath() == resourcePath)
 			return (it);
 
@@ -68,7 +69,7 @@ bool ResourceManager::ExistResource(Resource* checkResource)
 
 bool ResourceManager::ExistResourceUID(UID resourceUID)
 {
-	for (auto& it: resourceList)
+	for (auto& it: instance->resourceList)
 	{
 		if (it->GetUID() == resourceUID)
 			return true;
@@ -79,7 +80,7 @@ bool ResourceManager::ExistResourceUID(UID resourceUID)
 
 bool ResourceManager::ExistResourcePath(std::string resourcePath)
 {
-	for (auto& it : resourceList)
+	for (auto& it : instance->resourceList)
 	{
 		if (it->GetPath() == resourcePath)
 			return true;
@@ -88,7 +89,10 @@ bool ResourceManager::ExistResourcePath(std::string resourcePath)
 	return false;
 }
 
-void ResourceManager::Delete()
+void ResourceManager::CleanUp()
 {
-	delete instance;
+	for (auto& currentResource : instance->resourceList)
+	{
+		currentResource->CleanUp();
+	}
 }

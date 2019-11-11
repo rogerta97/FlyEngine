@@ -32,7 +32,7 @@ public:
 
 	//Buffers
 	uint CreateBuffer();
-	void Clear();
+	void CleanUp();
 
 	uint texture_id = -1;
 

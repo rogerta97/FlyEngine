@@ -1,4 +1,5 @@
 #include "Tool.h"
+#include "mmgr.h"
 
 Tool::Tool()
 {

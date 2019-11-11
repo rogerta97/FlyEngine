@@ -6,6 +6,7 @@
 #include "imgui.h"
 #include "Room.h"
 #include "NodeGraph.h"
+#include "mmgr.h"
 
 WorldPropertiesDockPanel::WorldPropertiesDockPanel(bool isVisible) : DockPanel("World Properties", isVisible)
 {

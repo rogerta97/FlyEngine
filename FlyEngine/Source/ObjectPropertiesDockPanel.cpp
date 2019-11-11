@@ -7,7 +7,6 @@
 #include "ImageTool.h"
 #include "ImageImporter.h"
 #include "TinyFileDialog.h"
-#include "FlyObjectEditorUI.h"
 #include "Texture.h"
 #include "FlyObject.h"
 #include "Room.h"

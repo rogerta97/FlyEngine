@@ -8,6 +8,7 @@
 #include "ResourceManager.h"
 #include "imgui.h"
 #include "MyFileSystem.h"
+#include "mmgr.h"
 
 #include <string>
 

@@ -1,5 +1,6 @@
 #include "Quad.h"
 #include "OpenGL.h"
+#include "mmgr.h"
 
 Quad::Quad()
 {

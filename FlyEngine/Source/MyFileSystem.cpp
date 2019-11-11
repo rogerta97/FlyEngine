@@ -1,5 +1,6 @@
 #include "MyFileSystem.h"
 #include "SDL/include/SDL_filesystem.h"
+#include "mmgr.h"
 
 MyFileSystem* MyFileSystem::instance = 0; 
 
@@ -57,24 +58,24 @@ void MyFileSystem::DeleteFileExtension(string& path)
 
 string MyFileSystem::GetIconsDirectory()
 {
-	if (iconsDirectory == "")
+	if (instance->iconsDirectory == "")
 	{
-		iconsDirectory = GetSolutionDirectory(); 
-		iconsDirectory += "Source\\Game\\Resources\\EngineIcons\\"; 
+		instance->iconsDirectory = GetSolutionDirectory();
+		instance->iconsDirectory += "Source\\Game\\Resources\\EngineIcons\\";
 	}
 		
-	return iconsDirectory;
+	return instance->iconsDirectory;
 }
 
 string MyFileSystem::GetSolutionDirectory()
 {
-	if (solutionDirectory == "")
+	if (instance->solutionDirectory == "")
 	{
-		solutionDirectory = SDL_GetBasePath();
-		DeleteLastPathItem(solutionDirectory); 
+		instance->solutionDirectory = SDL_GetBasePath();
+		DeleteLastPathItem(instance->solutionDirectory);
 	}
 
-	return solutionDirectory;
+	return instance->solutionDirectory;
 }
 
 void MyFileSystem::Delete()

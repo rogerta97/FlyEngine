@@ -24,6 +24,8 @@ public:
 
 	}
 
+	virtual void CleanUp();
+
 	// Setters & Getters -------------------
 	void SetName(std::string newName)
 	{

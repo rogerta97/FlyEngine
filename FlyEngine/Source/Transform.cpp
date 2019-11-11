@@ -1,5 +1,6 @@
 #include "Transform.h"
 #include "Globals.h"
+#include "mmgr.h"
 
 Transform::Transform()
 {

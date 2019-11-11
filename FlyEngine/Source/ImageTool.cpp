@@ -7,6 +7,8 @@
 #include "FlyObject.h"
 #include "ImageImporter.h"
 
+#include "mmgr.h"
+
 ImageTool::ImageTool(FlyObject* _parentObject = nullptr)
 {
 	toolType = AT_IMAGE; 

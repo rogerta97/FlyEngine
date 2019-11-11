@@ -15,6 +15,8 @@ public:
 	~ModuleManager();
 
 	bool Init();
+	bool CleanUp(); 
+
 	void LoadEngineIcons();
 	int GetToolsAmount() const; 
 

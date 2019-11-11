@@ -6,7 +6,6 @@
 #include "ResourceManager.h"
 
 #include "SceneDockPanel.h"
-#include "FlyObjectEditorUI.h"
 #include "ImageImporter.h"
 #include "TinyFileDialog.h"
 
@@ -14,6 +13,7 @@
 #include "Texture.h"
 #include "ViewportManager.h"
 #include "FlyObject.h"
+#include "mmgr.h"
 
 SceneDockPanel::SceneDockPanel(bool isVisible) : DockPanel("Scene", isVisible)
 {

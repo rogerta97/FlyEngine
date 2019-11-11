@@ -312,8 +312,8 @@
     <ClCompile Include="Source\TinyFileDialog.cpp">
       <Filter>Source\3rdParty\TinyFileDialog</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FlyObjectEditorUI.cpp">
-      <Filter>Source\Tools</Filter>
+    <ClCompile Include="Source\Resource.cpp">
+      <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -673,9 +673,6 @@
     </ClInclude>
     <ClInclude Include="Source\TinyFileDialog.h">
       <Filter>Source\3rdParty\TinyFileDialog</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\FlyObjectEditorUI.h">
-      <Filter>Source\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

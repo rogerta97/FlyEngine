@@ -17,19 +17,19 @@ private:
 public: 
 	static MyFileSystem* getInstance();
 	~MyFileSystem();
-	void Delete(); 
+	static void Delete(); 
 
 	// Utility -----------
-	string GetLastPathItem(string path, bool keepTermination);
-	void DeleteFileExtension(string& path); 
-	void DeleteLastPathItem(string& path); 
+	static string GetLastPathItem(string path, bool keepTermination);
+	static void DeleteFileExtension(string& path);
+	static void DeleteLastPathItem(string& path);
 
-	string GetIconsDirectory();
-	string GetSolutionDirectory();
+	static string GetIconsDirectory();
+	static string GetSolutionDirectory();
 
 private: 
-	std::string solutionDirectory = ""; 
-	std::string iconsDirectory = ""; 
+	std::string solutionDirectory = "";
+	std::string iconsDirectory = "";
 };
 
 

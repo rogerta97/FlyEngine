@@ -13,9 +13,9 @@ private:
 public:
 	static ImageImporter* getInstance();
 	~ImageImporter();
-	void Delete();
 
-	Texture* LoadTexture(std::string path, bool flipImage); 
+	static void Delete();
+	static Texture* LoadTexture(std::string path, bool flipImage);
 };
 
 #endif // !_IMAGE_IMPORTER_H_

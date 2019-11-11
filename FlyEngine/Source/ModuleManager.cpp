@@ -4,7 +4,7 @@
 #include "ResourceManager.h"
 #include "MyFileSystem.h"
 #include "SceneDockPanel.h"
-
+#include "mmgr.h"
 
 
 ModuleManager::ModuleManager(bool start_enabled)
@@ -24,6 +24,12 @@ bool ModuleManager::Init()
 	AddToolsNameDescription("Image", "This should be the description of the image tool", AT_IMAGE);
 	AddToolsNameDescription("Change Scene", "This should be the description of the change scene tool", AT_CHANGE_SCENE);
 
+	return true;
+}
+
+bool ModuleManager::CleanUp()
+{
+	ImageImporter::getInstance()->Delete(); 
 	return true;
 }
 

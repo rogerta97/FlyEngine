@@ -19,17 +19,17 @@ public:
 	~ResourceManager();
 
 	// Utility --------------------------------
-	bool AddResource(Resource* newResource, std::string name);
+	static bool AddResource(Resource* newResource, std::string name);
 
-	Resource* GetResource(std::string resourceName) const; 
-	Resource* GetResource(UID resourceUID) const; 
-	Resource* GetResourceByPath(std::string resourcePath) const; 
+	static Resource* GetResource(std::string resourceName);
+	static Resource* GetResource(UID resourceUID);
+	static Resource* GetResourceByPath(std::string resourcePath);
 
-	bool ExistResource(Resource* checkResource); 
-	bool ExistResourceUID(UID resourceUID); 
-	bool ExistResourcePath(std::string resourcePath); 
+	static bool ExistResource(Resource* checkResource);
+	static bool ExistResourceUID(UID resourceUID);
+	static bool ExistResourcePath(std::string resourcePath);
 
-	void Delete();
+	static void CleanUp();
 
 private: 
 	std::list<Resource*> resourceList; 

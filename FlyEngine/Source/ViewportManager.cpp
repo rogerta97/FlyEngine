@@ -7,6 +7,7 @@
 #include "ModuleImGui.h"
 #include "Room.h"
 #include "TextureMSAA.h"
+#include "mmgr.h"
 
 ViewportManager* ViewportManager::instance = 0;
 

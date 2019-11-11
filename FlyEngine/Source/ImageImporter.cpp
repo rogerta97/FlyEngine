@@ -2,6 +2,7 @@
 #include "Texture.h"
 #include "Application.h"
 #include "MyFileSystem.h"
+#include "mmgr.h"
 
 #include <IL/il.h>
 #include <IL/ilu.h>
@@ -24,8 +25,9 @@ ImageImporter* ImageImporter::getInstance()
 	return instance;
 }
 
-ImageImporter::~ImageImporter() {
-
+ImageImporter::~ImageImporter() 
+{
+	
 }
 
 void ImageImporter::Delete()
