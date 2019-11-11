@@ -23,16 +23,16 @@ public:
 	~ViewportManager();
 	
 	// Utility --------------------------------
-	void Delete();
-	void ResizeViewport(); 
+	static void Delete();
+	static void ResizeViewport();
 
-	float GetWidthFromHeight(float viewportHeight); 
-	float GetHeightFromWidth(float viewportWidth);
-	void SetTextureSize(float windowWidth, float windowHeight) const;
+	static float GetWidthFromHeight(float viewportHeight);
+	static float GetHeightFromWidth(float viewportWidth);
+	static void SetTextureSize(float windowWidth, float windowHeight);
 
 	// Encapsulation --------------------------
-	ViewportAspectRatio GetAspectRatioType() const; 
-	void SetAspectRatioType(ViewportAspectRatio newAR); 
+	static ViewportAspectRatio GetAspectRatioType();
+	static void SetAspectRatioType(ViewportAspectRatio newAR);
 
 public:
 	TextureMSAA* viewportTexture;

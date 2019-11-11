@@ -3,6 +3,7 @@
 #include "ImageImporter.h"
 #include "ResourceManager.h"
 #include "MyFileSystem.h"
+#include "ViewportManager.h"
 #include "SceneDockPanel.h"
 #include "mmgr.h"
 
@@ -30,6 +31,8 @@ bool ModuleManager::Init()
 bool ModuleManager::CleanUp()
 {
 	ImageImporter::getInstance()->Delete(); 
+	ResourceManager::getInstance()->CleanUp(); 
+	ViewportManager::getInstance()->Delete();
 	return true;
 }
 

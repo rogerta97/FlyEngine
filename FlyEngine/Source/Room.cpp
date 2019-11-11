@@ -173,10 +173,16 @@ FlyObject* Room::CreateFlyObject(std::string objectName)
 	return newObject; 
 }
 
-void Room::DeleteFlyObject()
+void Room::DeleteFlyObject(FlyObject* objectToDelete)
 {
-	for (auto& it : objectsInRoom) {
-		delete(it); 
+	for (auto& currentObject : objectsInRoom) 
+	{
+		if (objectToDelete->GetName() == currentObject->GetName()) 
+		{
+			currentObject->CleanUp();
+			delete currentObject; 
+			currentObject = nullptr; 
+		}
 	}
 }
 

@@ -6,6 +6,7 @@
 #include "OpenGL.h"
 #include "ModuleImGui.h"
 #include "Room.h"
+#include "Texture.h"
 #include "TextureMSAA.h"
 #include "mmgr.h"
 
@@ -33,6 +34,9 @@ ViewportManager::~ViewportManager()
 
 void ViewportManager::Delete()
 {
+	instance->viewportTexture->CleanUp();
+
+	delete instance->viewportTexture;
 	delete instance; 
 }
 
@@ -42,7 +46,7 @@ void ViewportManager::ResizeViewport()
 
 float ViewportManager::GetWidthFromHeight(float viewportHeight)
 {
-	switch (viewportAspectRatio)
+	switch (instance->viewportAspectRatio)
 	{
 		case AR_4_3:
 			return (viewportHeight * 4) / 3; 
@@ -57,7 +61,7 @@ float ViewportManager::GetHeightFromWidth(float viewportWidth)
 {
 	float2 regionSize = App->moduleImGui->gameViewportDockPanel->GetRegionSize(); 
 
-	switch (viewportAspectRatio)
+	switch (instance->viewportAspectRatio)
 	{
 		case AR_4_3:
 			return (viewportWidth * 3) / 4;
@@ -68,20 +72,20 @@ float ViewportManager::GetHeightFromWidth(float viewportWidth)
 
 	return -1;
 }
-void ViewportManager::SetTextureSize(float windowWidth, float windowHeight) const
+void ViewportManager::SetTextureSize(float windowWidth, float windowHeight)
 {
-	viewportTexture->SetWidth(windowWidth);
-	viewportTexture->SetHeight(windowHeight);
+	instance->viewportTexture->SetWidth(windowWidth);
+	instance->viewportTexture->SetHeight(windowHeight);
 }
 
-ViewportAspectRatio ViewportManager::GetAspectRatioType() const
+ViewportAspectRatio ViewportManager::GetAspectRatioType()
 {
-	return viewportAspectRatio;
+	return instance->viewportAspectRatio;
 }
 
 void ViewportManager::SetAspectRatioType(ViewportAspectRatio newAR)
 {
-	viewportAspectRatio = newAR;
+	instance->viewportAspectRatio = newAR;
 	App->moduleImGui->gameViewportDockPanel->FitViewportToRegion();
 	App->moduleImGui->gameViewportDockPanel->aspectRatioChanged = true; 
 }

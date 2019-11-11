@@ -94,5 +94,9 @@ void ResourceManager::CleanUp()
 	for (auto& currentResource : instance->resourceList)
 	{
 		currentResource->CleanUp();
+		delete currentResource;
 	}
+
+	instance->resourceList.clear(); 
+	delete instance; 
 }

@@ -43,6 +43,7 @@ void FlyObject::CleanUp()
 	{
 		(it)->CleanUp(); 
 	}
+
 	toolsList.clear(); 
 	delete transform; 
 }
@@ -75,6 +76,22 @@ Tool* FlyObject::GetTool(std::string toolName)
 std::list<Tool*> FlyObject::GetToolsList() const
 {
 	return toolsList;
+}
+
+void FlyObject::DeleteTool(std::string toolNameToDelete)
+{
+	for (auto currentTool = toolsList.begin(); currentTool != toolsList.end(); currentTool++)
+	{
+		if ((*currentTool)->GetToolName() == toolNameToDelete)
+		{
+			(*currentTool)->CleanUp();
+			delete (*currentTool);
+			currentTool = toolsList.erase(currentTool); 
+
+			if (toolsList.size() == 0)
+				return;
+		}
+	}
 }
 
 void FlyObject::DrawImageToolSettings()

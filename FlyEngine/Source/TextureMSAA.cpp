@@ -129,14 +129,14 @@ unsigned int TextureMSAA::GetHeight() const
 
 void TextureMSAA::LoadToMemory()
 {
-
 }
 
 void TextureMSAA::UnloadFromMemory()
 {
 }
 
-void TextureMSAA::Clear()
+void TextureMSAA::CleanUp()
 {
-
+	glDeleteTextures(1, (GLuint*)&texture_id);
+	texture_id = 0; 
 }

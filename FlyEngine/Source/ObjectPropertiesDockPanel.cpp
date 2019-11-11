@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "imgui.h"
+#include "Tool.h"
 #include "ModuleRoomManager.h"
 #include "ResourceManager.h"
 #include "ImageTool.h"
@@ -117,6 +118,35 @@ void ObjectPropertiesDockPanel::DrawToolList(FlyObject* selectedObject)
 	}
 
 	ImGui::EndChild();
+
+	ImGui::PopStyleVar();
+	ImGui::PopStyleColor();
+
+	DrawAddAndDeleteButtons(selectedObject);
+}
+
+void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons(FlyObject* selectedObject)
+{
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
+
+	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
+	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
+	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(18, 18)))
+	{
+	
+	}
+
+	ImGui::SameLine();
+	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
+	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(18, 18)))
+	{	
+		Tool* selectedTool = selectedObject->selectedTool; 
+
+		selectedTool->CleanUp();
+		selectedObject->DeleteTool(selectedTool->GetToolName()); 
+		selectedTool = nullptr;
+	}
 
 	ImGui::PopStyleVar();
 	ImGui::PopStyleColor();

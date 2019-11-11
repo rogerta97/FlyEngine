@@ -26,7 +26,7 @@ public:
 
 	void LoadToMemory();
 	void UnloadFromMemory();
-	void Clear();
+	void CleanUp();
 
 private:
 

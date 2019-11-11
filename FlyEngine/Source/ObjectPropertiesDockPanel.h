@@ -16,6 +16,7 @@ public:
 	void DrawObjectTools(FlyObject* selectedObject);
 	void DrawToolAdjustments(FlyObject* selectedObject);
 	void DrawToolList(FlyObject* selectedObject);
+	void DrawAddAndDeleteButtons(FlyObject* selectedObject);
 	void DrawToolSelectable(ToolSelectableInfo& selectableInfo, Tool*& currentTool, FlyObject* selectedObject);
 	void DrawObjectPlacementCH(FlyObject* selectedObject);
 	void DrawToolImageSettings(FlyObject* selectedObject);

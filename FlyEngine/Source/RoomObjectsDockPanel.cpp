@@ -3,6 +3,7 @@
 #include "ModuleImGui.h"
 #include "Application.h"
 #include "Texture.h"
+#include "ModuleInput.h"
 #include "Room.h"
 #include "FlyObject.h"
 #include "ResourceManager.h"
@@ -76,6 +77,10 @@ void RoomObjectsDockPanel::DrawObjectHierarchy()
 		{
 			(it)->isSelected = true;
 			App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(it);
+
+			if (App->moduleInput->GetMouseButton(RIGHT_CLICK)) {
+				FLY_LOG("CLICKED RIGHT BUTTON");
+			}
 		}
 		POP_FONT;
 	}
