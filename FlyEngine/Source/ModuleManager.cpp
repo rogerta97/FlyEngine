@@ -21,12 +21,8 @@ bool ModuleManager::Init()
 	LoadEngineIcons();
 
 	// Tools Descriptions 
-	ToolSelectableInfo imageToolInfo; 
-	imageToolInfo.toolName = "Image"; 
-	imageToolInfo.toolDescription = "This should be the description of the image tool"; 
-	imageToolInfo.toolType = AT_IMAGE; 
-
-	AddToolsNameDescription(imageToolInfo); 
+	AddToolsNameDescription("Image", "This should be the description of the image tool", AT_IMAGE);
+	AddToolsNameDescription("Change Scene", "This should be the description of the change scene tool", AT_CHANGE_SCENE);
 
 	return true;
 }
@@ -74,9 +70,15 @@ std::list<ToolSelectableInfo> ModuleManager::GetToolsNamesDescriptionsList() con
 	return toolNamesDescriptions;
 }
 
-void ModuleManager::AddToolsNameDescription(ToolSelectableInfo newInfo)
+void ModuleManager::AddToolsNameDescription(std::string name, std::string description, ToolType newTooltype)
 {
-	toolNamesDescriptions.push_back(newInfo); 
+	ToolSelectableInfo newtsi; 
+
+	newtsi.toolName = name; 
+	newtsi.toolDescription = description; 
+	newtsi.toolType = newTooltype; 
+
+	toolNamesDescriptions.push_back(newtsi);
 }
 
 ToolSelectableInfo ModuleManager::GetToolNameDescription(std::string toolCheckName) const

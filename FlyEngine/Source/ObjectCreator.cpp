@@ -87,7 +87,7 @@ void ObjectCreator::DrawObjectNameBar()
 void ObjectCreator::DrawToolsList()
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-	ImGui::Text("Add Object Tools: ");
+	ImGui::Text("Add Object Actions: ");
 	ImGui::PopFont();
 
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f)); 
@@ -105,22 +105,31 @@ void ObjectCreator::DrawToolsList()
 
 	ImGui::PopStyleVar();
 	ImGui::PopStyleColor(); 
+
+
 }
 
 void ObjectCreator::DrawAddAndDeleteButtons()
 {
-	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIcon");
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0)); 
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(2.0f, 2.0f)); 
+
+
+	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(18, 18)))
 	{
 		ImGui::OpenPopup("plusIconClicked");
 	}
 
 	ImGui::SameLine();
-	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIcon");
+	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
 	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(18, 18)))
 	{
 
 	}
+
+	ImGui::PopStyleVar();
+	ImGui::PopStyleColor(); 
 }
 
 void ObjectCreator::DrawToolProperties(ToolType selectedObjectType)
@@ -258,6 +267,7 @@ void ObjectCreator::OnNewToolButtonClicked()
 
 bool ObjectCreator::DrawToolSelectable(ToolSelectableInfo newToolInfo)
 {
+	// Title ------
 	bool clicked = false; 
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 	if (ImGui::Selectable(newToolInfo.toolName.c_str(), true, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), 37))) {
@@ -265,13 +275,20 @@ bool ObjectCreator::DrawToolSelectable(ToolSelectableInfo newToolInfo)
 		clicked = true; 
 
 	}
-
 	ImGui::PopFont();
 
-	ImGui::SetCursorPosY(ImGui::GetCursorPos().y - 18);
+	// Edit Button ------
+	//ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x - 50, 0)); 
+	//ImGui::ImageButton(0, ImVec2(50, 50));
+
+	// Description -----
+	ImGui::SetCursorPosY(ImGui::GetCursorPos().y - 20);
+	ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 2);
+
 	ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
 	ImGui::TextWrapped(newToolInfo.toolDescription.c_str());
 	ImGui::PopFont();
+
 
 	return clicked; 
 

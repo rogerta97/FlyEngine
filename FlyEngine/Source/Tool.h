@@ -6,6 +6,7 @@
 enum ToolType
 {
 	AT_IMAGE,
+	AT_CHANGE_SCENE,
 	AT_null,
 };
 

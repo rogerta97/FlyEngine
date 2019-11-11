@@ -72,9 +72,26 @@ bool ObjectPropertiesDockPanel::Draw()
 void ObjectPropertiesDockPanel::DrawObjectTools(FlyObject* selectedObject)
 {
 
-	PUSH_FONT(App->moduleImGui->rudaBlackBig);
-	ImGui::Text("Tools: ");
-	POP_FONT;
+	// Draw Objects List
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text("Object Actions: ");
+	ImGui::PopFont();
+
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5, 5));
+
+	ImGui::BeginChild("##AttributesChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
+
+	for(auto& currentTool: selectedObject->GetToolsList()){
+		objectCreator->DrawToolSelectable(App->moduleManager->GetToolNameDescription(currentTool->toolName));
+	}
+
+	ImGui::EndChild();
+
+	ImGui::PopStyleVar();
+	ImGui::PopStyleColor();
+
+	ImGui::Separator(); 
 
 	PUSH_FONT(App->moduleImGui->rudaBoldMid);
 	for (auto& currentTool : selectedObject->GetToolsList())

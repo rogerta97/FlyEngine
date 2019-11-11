@@ -20,7 +20,7 @@ public:
 
 	// Desctiption Dictionary -----
 	std::list<ToolSelectableInfo> GetToolsNamesDescriptionsList() const; 
-	void AddToolsNameDescription(ToolSelectableInfo newInfo); 
+	void AddToolsNameDescription(std::string name, std::string description, ToolType newTooltype);
 	ToolSelectableInfo GetToolNameDescription(std::string toolName) const;
 	ToolSelectableInfo GetToolNameDescription(int pos) const;
 
