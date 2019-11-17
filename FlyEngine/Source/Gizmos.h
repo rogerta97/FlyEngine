@@ -11,13 +11,19 @@ public:
 	~Gizmos();
 
 	void Draw();
+	void DrawMoveGizmo();
+
+	void SetCenterSquareSize(float& centerSize); 
 	void SetArrowLenght(float& lineLenght);
 	void SetArrowWidth(float& _arrowWidth);
+
+	void SetGizmoStyle(float centerSize, float lineLenght, float _arrowWidth); 
 
 private:
 
 	float arrowLenght; 
 	float arrowWidth; 
+	float centerSquareSize; 
 
 	FlyObject* objectAttached;
 };

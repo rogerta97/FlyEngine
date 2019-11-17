@@ -21,8 +21,12 @@ FlyObject::FlyObject(std::string _name)
 	isSelected = false; 
 
 	transform = new Transform();
-	clickableArea = new BoundingBox(this); 
+
+	objectBorderBox = new BoundingBox(this); 
+	objectBorderBox->ShowCornerDots(false); 
+
 	gizmos = new Gizmos(this);
+	gizmos->SetGizmoStyle(5.0f, 50.0f, 3.0f);
 }
 
 FlyObject::~FlyObject()
@@ -41,7 +45,7 @@ void FlyObject::Draw()
 		(it)->Draw(); 
 	}
 
-	//clickableArea->Draw(); 
+	objectBorderBox->Draw(); 
 	gizmos->Draw();
 }
 

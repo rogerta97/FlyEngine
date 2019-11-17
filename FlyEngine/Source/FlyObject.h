@@ -35,7 +35,7 @@ public:
 public:
 	Transform* transform;
 	Tool* selectedTool; 
-	BoundingBox* clickableArea; 
+	BoundingBox* objectBorderBox; 
 	Gizmos* gizmos; 
 	bool isSelected; 
 

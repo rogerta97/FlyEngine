@@ -5,6 +5,12 @@
 #include "Globals.h"
 #include "MathGeoLib.h"
 
+enum GizmoMode
+{
+	GIZMO_SELECT,
+	GIZMO_MOVE,
+};
+
 class TextureMSAA; 
 class GameViewportDockPanel : public DockPanel
 {
@@ -12,25 +18,25 @@ public:
 	GameViewportDockPanel(bool isVisible); 
 	~GameViewportDockPanel(); 
 
+	// Draw ---
 	bool Draw();
-	void ReceiveEvent(FlyEngineEvent eventType);
+	void DrawTopBar();
 	void FitViewportToRegion();
 
-	void DrawTopBar();
+	void ReceiveEvent(FlyEngineEvent eventType);
 
-	void ResetAttributeSelectionBooleans();
-
-	void ObjectCreatorPopup();
-
+	// Get & Set ----
 	float2 GetRegionSize() const; 
-	float2 GetViewportSize() const;  
+	float2 GetViewportSize() const;
+
+	GizmoMode GetGizmoMode() const;
 
 	bool aspectRatioChanged; 
 
 private: 
 	float2 regionSize;
 	float2 viewportSize;
-
+	GizmoMode gizmoMode; 
 };
 
 #endif

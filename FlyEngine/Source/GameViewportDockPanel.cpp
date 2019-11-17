@@ -48,24 +48,9 @@ bool GameViewportDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_MenuBar)) 
 	{
-		ImGui::BeginMenuBar(); 
+		DrawTopBar(); 
 
-		Texture* arrowSelect = (Texture*)ResourceManager::getInstance()->GetResource("SelectArrow");
-		if (ImGui::ImageButton((ImTextureID)arrowSelect->GetTextureID(), ImVec2(18, 18)))
-		{
-
-		}
-
-		ImGui::SameLine(); 
-		Texture* moveArrows = (Texture*)ResourceManager::getInstance()->GetResource("MoveOption");
-		if (ImGui::ImageButton((ImTextureID)moveArrows->GetTextureID(), ImVec2(18, 18)))
-		{
-
-		}
-
-		ImGui::EndMenuBar(); 
 		float2 regionSizeThisTick = float2(ImGui::GetWindowContentRegionMax().x, ImGui::GetWindowContentRegionMax().y);
-
 		if (!regionSizeThisTick.Equals(regionSize) && regionSize.x != -1.0f)
 		{
 			regionSize = regionSizeThisTick;
@@ -120,22 +105,45 @@ void GameViewportDockPanel::FitViewportToRegion()
 
 void GameViewportDockPanel::DrawTopBar()
 {
+	ImGui::BeginMenuBar();
 
-}
+	Texture* arrowSelect = (Texture*)ResourceManager::getInstance()->GetResource("SelectArrow");
 
-void GameViewportDockPanel::ResetAttributeSelectionBooleans()
-{
-	//containsAttributeImage = false;
-}
-
-void GameViewportDockPanel::ObjectCreatorPopup()
-{
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5, 5));
-	if (ImGui::BeginPopup("create_flyobject"))
-	{
-		
+	bool currentMode = false; 
+	if (gizmoMode == GIZMO_SELECT) {
+		currentMode = true; 
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(35, 35, 37, 1.0f));
 	}
-	ImGui::PopStyleVar();
+
+	if (ImGui::ImageButton((ImTextureID)arrowSelect->GetTextureID(), ImVec2(18, 18)))
+	{
+		gizmoMode = GIZMO_SELECT; 
+	}
+
+	if (currentMode) {
+		currentMode = false; 
+		ImGui::PopStyleColor(); 
+	}
+
+	currentMode = false;
+	if (gizmoMode == GIZMO_MOVE) {
+		currentMode = true;
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(35, 35, 37, 1.0f));
+	}
+
+	ImGui::SameLine();
+	Texture* moveArrows = (Texture*)ResourceManager::getInstance()->GetResource("MoveOption");
+	if (ImGui::ImageButton((ImTextureID)moveArrows->GetTextureID(), ImVec2(18, 18)))
+	{
+		gizmoMode = GIZMO_MOVE;
+	}
+
+	if (currentMode) {
+		currentMode = false;
+		ImGui::PopStyleColor();
+	}
+
+	ImGui::EndMenuBar();
 }
 
 float2 GameViewportDockPanel::GetRegionSize() const
@@ -146,4 +154,9 @@ float2 GameViewportDockPanel::GetRegionSize() const
 float2 GameViewportDockPanel::GetViewportSize() const
 {
 	return viewportSize;
+}
+
+GizmoMode GameViewportDockPanel::GetGizmoMode() const
+{
+	return gizmoMode;
 }
