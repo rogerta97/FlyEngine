@@ -60,6 +60,7 @@ public:
 	FlyObject* CreateFlyObject(std::string objectName); 
 	void AddFlyObject(FlyObject* newFlyObject);
 	void DeleteFlyObject(FlyObject* objectToDelete);
+	void DeleteSelectedObject(); 
 
 	// Encapsulation ------------------------------------------------------------------
 	string GetName() const; 

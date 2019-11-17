@@ -5,7 +5,9 @@
 #include "RandomNumberGenerator.h"
 #include "Application.h"
 #include "FlyObject.h"
+#include "ModuleImGui.h"
 #include "TextureMSAA.h"
+#include "ObjectPropertiesDockPanel.h"
 #include "ModuleRoomManager.h"
 #include "mmgr.h"
 
@@ -185,14 +187,28 @@ void Room::AddFlyObject(FlyObject* newFlyObject)
 
 void Room::DeleteFlyObject(FlyObject* objectToDelete)
 {
-	for (auto& currentObject : objectsInRoom) 
+	for (auto it = objectsInRoom.begin(); it != objectsInRoom.end(); it++) 
 	{
-		if (objectToDelete->GetName() == currentObject->GetName()) 
+		if ((*it)->GetName() == objectToDelete->GetName())
 		{
-			currentObject->CleanUp();
-			delete currentObject; 
-			currentObject = nullptr; 
+			(*it)->CleanUp();
+			delete (*it);
+			(*it) = nullptr;
+
+			it = objectsInRoom.erase(it); 
+
+			if (objectsInRoom.empty())
+				break; 
 		}
+	}
+}
+
+void Room::DeleteSelectedObject()
+{
+	if (selectedObject != nullptr)
+	{
+		DeleteFlyObject(selectedObject);
+		selectedObject = nullptr;
 	}
 }
 
@@ -218,7 +234,10 @@ void Room::SetRoomID(UID roomID)
 
 void Room::SetSelectedObject(FlyObject* newObject)
 {
-	selectedObject = newObject; 
+	selectedObject = newObject;
+
+	ObjectPropertiesDockPanel* propertiesDockPanel = (ObjectPropertiesDockPanel*)App->moduleImGui->GetDockPanel(DOCK_OBJECT_PROPERTIES); 
+	propertiesDockPanel->SetSelectedObject(selectedObject); 	
 }
 
 FlyObject* Room::GetSelectedObject() const

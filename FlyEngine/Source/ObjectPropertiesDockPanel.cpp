@@ -1,6 +1,7 @@
 #include "ObjectPropertiesDockPanel.h"
 #include "Application.h"
 #include "ModuleImGui.h"
+#include "ModuleManager.h"
 #include "imgui.h"
 #include "Tool.h"
 #include "ModuleRoomManager.h"
@@ -28,7 +29,6 @@ ObjectPropertiesDockPanel::~ObjectPropertiesDockPanel()
 
 bool ObjectPropertiesDockPanel::Draw()
 {
-
 #pragma region secutiryChecks
 	if (!DockPanel::Draw())
 		return false;
@@ -52,15 +52,14 @@ bool ObjectPropertiesDockPanel::Draw()
 			ImGui::PopFont();
 
 			ImGui::Spacing();
-			ImGui::Spacing();
 
-			DrawObjectPlacementCH(selectedObject);
+			DrawObjectPlacementCH();
 
 			ImGui::Spacing();
 			ImGui::Separator(); 
 			ImGui::Spacing();
 
-			DrawObjectTools(selectedObject);
+			DrawObjectTools();
 		}
 		else
 		{
@@ -72,35 +71,33 @@ bool ObjectPropertiesDockPanel::Draw()
 	return true;
 }
 
-void ObjectPropertiesDockPanel::DrawObjectTools(FlyObject* selectedObject)
+void ObjectPropertiesDockPanel::DrawObjectTools()
 {
 	// Draw Objects List ---------
-	DrawToolList(selectedObject);
+	DrawToolList();
+
+	ImGui::Spacing();
+	ImGui::Separator();
+	ImGui::Spacing(); 
 
 	// Draw Tool --------
-	DrawToolAdjustments(selectedObject);
+	DrawToolAdjustments();
 }
 
-void ObjectPropertiesDockPanel::DrawToolAdjustments(FlyObject* selectedObject)
+void ObjectPropertiesDockPanel::DrawToolAdjustments()
 {
 	if (selectedObject->selectedTool)
 	{
 		switch (selectedObject->selectedTool->GetToolType())
 		{
 		case AT_IMAGE:
-			DrawToolImageSettings(selectedObject); 
+			DrawToolImageSettings(); 
 			break; 
 		}
-		PUSH_FONT(App->moduleImGui->rudaBoldMid);
-		for (auto& currentTool : selectedObject->GetToolsList())
-		{
-
-		}
-		POP_FONT;
 	}
 }
 
-void ObjectPropertiesDockPanel::DrawToolList(FlyObject* selectedObject)
+void ObjectPropertiesDockPanel::DrawToolList()
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 	ImGui::Text("Object Actions: ");
@@ -114,7 +111,7 @@ void ObjectPropertiesDockPanel::DrawToolList(FlyObject* selectedObject)
 	for (auto& currentTool : selectedObject->GetToolsList()) 
 	{
 		ToolSelectableInfo selectableInfo = currentTool->GetToolSelectableInfo(); 
-		DrawToolSelectable(selectableInfo, currentTool, selectedObject);
+		DrawToolSelectable(selectableInfo, currentTool);
 	}
 
 	ImGui::EndChild();
@@ -122,10 +119,10 @@ void ObjectPropertiesDockPanel::DrawToolList(FlyObject* selectedObject)
 	ImGui::PopStyleVar();
 	ImGui::PopStyleColor();
 
-	DrawAddAndDeleteButtons(selectedObject);
+	DrawAddAndDeleteButtons();
 }
 
-void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons(FlyObject* selectedObject)
+void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 {
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
@@ -134,7 +131,8 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons(FlyObject* selectedObjec
 	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(18, 18)))
 	{
-	
+		ImGui::OpenPopup("add_tool_from_object_properties"); 
+
 	}
 
 	ImGui::SameLine();
@@ -152,10 +150,41 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons(FlyObject* selectedObjec
 	}
 
 	ImGui::PopStyleVar();
-	ImGui::PopStyleColor();
+	ImGui::PopStyleColor();	
+
+	if (ImGui::BeginPopup("add_tool_from_object_properties"))
+	{
+		// Search Bar ---------------
+		ImGui::InputText("##SearchTool", searchNewToolBuffer, IM_ARRAYSIZE(searchNewToolBuffer));
+		ImGui::SameLine();
+
+		Texture* filterIcon = (Texture*)ResourceManager::getInstance()->GetResource("FilterIcon");
+		ImGui::Image((ImTextureID)filterIcon->GetTextureID(), ImVec2(22, 22));
+
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		// Tools Dictonary ----------
+		ToolSelectableInfo* newToolSelected = App->moduleManager->DrawToolDictionaryUI();
+		if (newToolSelected != nullptr)
+		{
+			switch (newToolSelected->toolType)
+			{
+			case AT_IMAGE:
+				selectedObject->AddImageTool("None");
+				break;
+
+			case AT_null:
+				break;
+			}
+		}
+
+		ImGui::EndPopup();
+	}
 }
 
-void ObjectPropertiesDockPanel::DrawToolSelectable(ToolSelectableInfo& selectableInfo, Tool*& currentTool, FlyObject* selectedObject)
+void ObjectPropertiesDockPanel::DrawToolSelectable(ToolSelectableInfo& selectableInfo, Tool*& currentTool)
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 	if (ImGui::Selectable(selectableInfo.toolName.c_str(), &currentTool->isSelected, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), 37))) {
@@ -172,7 +201,7 @@ void ObjectPropertiesDockPanel::DrawToolSelectable(ToolSelectableInfo& selectabl
 	ImGui::PopFont();
 }
 
-void ObjectPropertiesDockPanel::DrawObjectPlacementCH(FlyObject* selectedObject)
+void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 	if (ImGui::CollapsingHeader("Object Placement"))
@@ -203,7 +232,7 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH(FlyObject* selectedObject)
 	POP_FONT;
 }
 
-void ObjectPropertiesDockPanel::DrawToolImageSettings(FlyObject* selectedObject)
+void ObjectPropertiesDockPanel::DrawToolImageSettings()
 {
 	ImageTool* imageTool = (ImageTool*)selectedObject->GetTool("Image");
 
@@ -279,4 +308,14 @@ void ObjectPropertiesDockPanel::DrawToolImageSettings(FlyObject* selectedObject)
 			ImGui::PopFont();
 		}
 	}
+}
+
+void ObjectPropertiesDockPanel::SetSelectedObject(FlyObject* newSelectedObject)
+{
+	selectedObject = newSelectedObject; 
+}
+
+FlyObject* ObjectPropertiesDockPanel::GetSelectedObject() const
+{
+	return selectedObject;
 }

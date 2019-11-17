@@ -77,7 +77,7 @@ int ModuleManager::GetToolsAmount() const
 	return toolNamesDescriptions.size();
 }
 
-ToolSelectableInfo* ModuleManager::DrawDictionaryUI()
+ToolSelectableInfo* ModuleManager::DrawToolDictionaryUI()
 {
 	ToolSelectableInfo* returnInfo = nullptr; 
 

@@ -107,7 +107,12 @@ void RoomObjectsDockPanel::DrawControlButtons()
 	}
 
 	ImGui::SameLine();
-	ImGui::ImageButton((ImTextureID)minusObjectTexture->GetTextureID(), ImVec2(20, 20), ImVec2(0, 0), ImVec2(1, 1), 0); ImGui::SameLine();
+	if(ImGui::ImageButton((ImTextureID)minusObjectTexture->GetTextureID(), ImVec2(20, 20), ImVec2(0, 0), ImVec2(1, 1), 0))
+	{
+		App->moduleRoomManager->GetSelectedRoom()->DeleteSelectedObject();
+	}
+
+	ImGui::SameLine();
 	ImGui::ImageButton((ImTextureID)arrowUpObjectTexture->GetTextureID(), ImVec2(20, 20), ImVec2(0, 0), ImVec2(1, 1), 0); ImGui::SameLine();
 	ImGui::ImageButton((ImTextureID)arrowDownObjectTexture->GetTextureID(), ImVec2(20, 20), ImVec2(0, 0), ImVec2(1, 1), 0);
 

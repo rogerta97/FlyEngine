@@ -18,7 +18,7 @@
 
 ObjectCreatorDockPanel::ObjectCreatorDockPanel(bool isVisible) : DockPanel("Entity Creator", isVisible)
 {
-	flyEngineSection = FLY_SECTION_ROOM_EDIT;
+	flyEngineSection = FLY_SECTION_null;
 	dockPanelType = DOCK_OBJECT_CREATOR;
 	ResetObjectData(); 
 }
@@ -45,6 +45,9 @@ bool ObjectCreatorDockPanel::Draw()
 
 void ObjectCreatorDockPanel::ResetObjectData()
 {
+	strcpy(newObjectName, ""); 
+	strcpy(searchNewToolBuffer, ""); 
+	selectedTool = nullptr; 
 	creatingObject = new FlyObject("Prev");
 }
 
@@ -135,7 +138,7 @@ void ObjectCreatorDockPanel::OnAddToolButtonClicked()
 		ImGui::Spacing();
 
 		// Tools Dictonary ----------
-		ToolSelectableInfo* newToolSelected = App->moduleManager->DrawDictionaryUI(); 
+		ToolSelectableInfo* newToolSelected = App->moduleManager->DrawToolDictionaryUI(); 
 		if (newToolSelected != nullptr)
 		{
 			switch (newToolSelected->toolType)
@@ -162,7 +165,6 @@ void ObjectCreatorDockPanel::Close()
 void ObjectCreatorDockPanel::DrawCreateButton()
 {
 	ImGui::SetCursorPosY(ImGui::GetContentRegionMax().y - 35); 
-
 
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 	ImGui::InputTextWithHint("##ObjectNaming", "Object Name...", newObjectName, 256 * sizeof(char));
@@ -281,7 +283,9 @@ void ObjectCreatorDockPanel::DrawAddAndDeleteToolButtons()
 	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
 	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(18, 18)))
 	{
-
+		if (selectedTool != nullptr) {
+			creatingObject->DeleteTool(selectedTool->GetToolName()); 
+		}
 	}
 
 	ImGui::PopStyleVar();

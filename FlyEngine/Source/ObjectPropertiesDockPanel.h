@@ -1,5 +1,5 @@
-#ifndef _OBJECTPROPERTIESDOCKPANEL_H_
-#define _OBJECTPROPERTIESDOCKPANEL_H_
+#ifndef _OBJECT_PROPERTIES_DOCK_PANEL_H_
+#define _OBJECT_PROPERTIES_DOCK_PANEL_H_
 
 #include "DockPanel.h"
 #include "ModuleManager.h"
@@ -13,13 +13,20 @@ public:
 
 	bool Draw();
 
-	void DrawObjectTools(FlyObject* selectedObject);
-	void DrawToolAdjustments(FlyObject* selectedObject);
-	void DrawToolList(FlyObject* selectedObject);
-	void DrawAddAndDeleteButtons(FlyObject* selectedObject);
-	void DrawToolSelectable(ToolSelectableInfo& selectableInfo, Tool*& currentTool, FlyObject* selectedObject);
-	void DrawObjectPlacementCH(FlyObject* selectedObject);
-	void DrawToolImageSettings(FlyObject* selectedObject);
+	void SetSelectedObject(FlyObject* newSelectedObject);
+	FlyObject* GetSelectedObject() const;
+
+	void DrawObjectTools();
+	void DrawToolAdjustments();
+	void DrawToolList();
+	void DrawAddAndDeleteButtons();
+	void DrawToolSelectable(ToolSelectableInfo& selectableInfo, Tool*& currentTool);
+	void DrawObjectPlacementCH();
+	void DrawToolImageSettings();
+
+private: 
+	char searchNewToolBuffer[256]; 
+	FlyObject* selectedObject = nullptr; 
 };
 
 #endif 

@@ -57,6 +57,8 @@ bool SceneDockPanel::Draw()
 
 void SceneDockPanel::ShowViewportSettingsTab()
 {
+	ImGui::Spacing(); 
+
 	static int resolutionSelected = 0;
 	if (ImGui::Combo("Resolution", &resolutionSelected, "4:3\0 1:1\0")) {
 

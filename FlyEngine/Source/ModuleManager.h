@@ -19,7 +19,7 @@ public:
 
 	void LoadEngineIcons();
 	int GetToolsAmount() const; 
-	ToolSelectableInfo* DrawDictionaryUI(); 
+	ToolSelectableInfo* DrawToolDictionaryUI(); 
 
 	// Desctiption Dictionary -----
 	std::list<ToolSelectableInfo> GetToolsNamesDescriptionsList() const; 
