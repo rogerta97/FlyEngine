@@ -14,6 +14,7 @@
 #include "TextureMSAA.h"
 #include "WorldPropertiesDockPanel.h"
 #include "GraphPropertiesDockPanel.h"
+#include "ObjectCreatorDockPanel.h"
 #include "MyFileSystem.h"
 #include "OpenGL.h"
 
@@ -109,6 +110,7 @@ void ModuleImGui::CreatePanels()
 	WorldPropertiesDockPanel* roomPropertiesPanel = new WorldPropertiesDockPanel(true);
 
 	GameViewportDockPanel* gameViewporPanel = new GameViewportDockPanel(false);
+	ObjectCreatorDockPanel* objectCreatorPanel = new ObjectCreatorDockPanel(false); 
 	RoomObjectsDockPanel* roomObjectsDockPanel = new RoomObjectsDockPanel(false);
 	ObjectPropertiesDockPanel* objectPropertiesDockPanel = new ObjectPropertiesDockPanel(false);
 	SceneDockPanel* sceneDockPanel = new SceneDockPanel(false); 

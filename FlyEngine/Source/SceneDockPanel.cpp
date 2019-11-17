@@ -176,7 +176,8 @@ void SceneDockPanel::DrawCreatorBottomBar()
 	ImGui::SameLine(); 
 	if (ImGui::Button("Create", ImVec2(80, 28)))
 	{
-		if (newObjectName == "") {
+		std::string newObjectNameStr(newObjectName);
+		if (newObjectNameStr.empty()) {
 			FLY_ERROR("Object with no name can not be created");
 			ImGui::PopFont();
 			return;
@@ -283,7 +284,7 @@ bool SceneDockPanel::DrawToolSelectable(ToolSelectableInfo& toolInfo)
 {
 	bool clicked = false; 
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
-	if (ImGui::Selectable(toolInfo.toolName.c_str(), true, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), 37))) {
+	if (ImGui::Selectable(toolInfo.toolName.c_str(), toolInfo.toolType == toolAdjustmentsOwnerType, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), 37))) {
 		clicked = true; 
 	}
 	ImGui::PopFont();

@@ -315,6 +315,9 @@
     <ClCompile Include="Source\Resource.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ObjectCreatorDockPanel.cpp">
+      <Filter>Source\Modules\DockingPanels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -673,6 +676,9 @@
     </ClInclude>
     <ClInclude Include="Source\TinyFileDialog.h">
       <Filter>Source\3rdParty\TinyFileDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ObjectCreatorDockPanel.h">
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

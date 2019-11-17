@@ -4,7 +4,6 @@
 #include "DockPanel.h"
 #include "Tool.h"
 
-class FlyObjectEditorUI; 
 class Texture; 
 class SceneDockPanel : public DockPanel {
 

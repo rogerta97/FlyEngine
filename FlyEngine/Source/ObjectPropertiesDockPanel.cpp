@@ -143,9 +143,12 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons(FlyObject* selectedObjec
 	{	
 		Tool* selectedTool = selectedObject->selectedTool; 
 
-		selectedTool->CleanUp();
-		selectedObject->DeleteTool(selectedTool->GetToolName()); 
-		selectedTool = nullptr;
+		if (selectedTool != nullptr)
+		{
+			selectedTool->CleanUp();
+			selectedObject->DeleteTool(selectedTool->GetToolName());
+			selectedTool = nullptr;
+		}
 	}
 
 	ImGui::PopStyleVar();

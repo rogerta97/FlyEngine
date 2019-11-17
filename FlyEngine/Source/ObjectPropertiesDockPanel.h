@@ -5,7 +5,6 @@
 #include "ModuleManager.h"
 
 class FlyObject;
-class FlyObjectEditorUI;
 class ObjectPropertiesDockPanel : public DockPanel {
 
 public:
