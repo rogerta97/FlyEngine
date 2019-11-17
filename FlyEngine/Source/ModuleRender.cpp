@@ -48,7 +48,7 @@ void ModuleRender::ReceiveEvent(FlyEngineEvent eventType)
 			float aspectRatio = windowWidth / windowHeight;
 
 			glViewport(0, 0, windowWidth, windowHeight);
-			glOrtho(-500.0 * aspectRatio, 500.0 * aspectRatio, -500.0, 500.0, 1.0, -1.0);
+			glOrtho(aspectRatio, aspectRatio, -1.0f, 1.0f, 1.0, -1.0);
 			
 			break;
 		}

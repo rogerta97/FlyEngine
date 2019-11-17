@@ -24,6 +24,7 @@ public:
 	// Tools -----------
 	ImageTool* AddImageTool(const char* imageTexturePath);
 	Tool* GetTool(std::string toolName); 
+	Tool* GetTool(ToolType toolType); 
 	std::list<Tool*> GetToolsList() const; 
 	void DeleteTool(std::string toolNameToDelete); 
 

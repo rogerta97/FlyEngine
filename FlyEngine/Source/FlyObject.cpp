@@ -60,11 +60,16 @@ void FlyObject::SetName(std::string newName)
 
 ImageTool* FlyObject::AddImageTool(const char* imageTexturePath)
 {
-	ImageTool* newAtrImage = new ImageTool(this); 
-	newAtrImage->CreateImage(imageTexturePath);
+	if (GetTool(AT_IMAGE) == nullptr)
+	{
+		ImageTool* newAtrImage = new ImageTool(this);
+		newAtrImage->CreateImage(imageTexturePath);
 
-	toolsList.push_back(newAtrImage); 
-	return newAtrImage; 
+		toolsList.push_back(newAtrImage);
+		return newAtrImage;
+	}
+
+	return (ImageTool*)GetTool(AT_IMAGE); 	
 }
 
 Tool* FlyObject::GetTool(std::string toolName)
@@ -76,6 +81,17 @@ Tool* FlyObject::GetTool(std::string toolName)
 	}
 
 	return nullptr; 
+}
+
+Tool* FlyObject::GetTool(ToolType toolType)
+{
+	for (auto& currentTool : toolsList)
+	{
+		if (currentTool->GetToolType() == toolType)
+			return currentTool;
+	}
+
+	return nullptr;
 }
 
 std::list<Tool*> FlyObject::GetToolsList() const

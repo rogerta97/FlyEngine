@@ -44,8 +44,8 @@ bool GameViewportDockPanel::Draw()
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.09f, 0.11f, 0.13f, 1.0f));
 
-	if (ImGui::Begin(panelName.c_str(), &visible)) {
-		
+	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_MenuBar)) 
+	{
 		float2 regionSizeThisTick = float2(ImGui::GetWindowContentRegionMax().x, ImGui::GetWindowContentRegionMax().y);
 
 		if (!regionSizeThisTick.Equals(regionSize) && regionSize.x != -1.0f)
