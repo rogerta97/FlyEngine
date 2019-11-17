@@ -4,12 +4,17 @@
 #include "DockPanel.h"
 #include "ModuleManager.h"
 
+#include <string>
+
 class FlyObject;
 class ObjectCreatorDockPanel : public DockPanel {
 
 public:
 	ObjectCreatorDockPanel(bool isVisible);
 	~ObjectCreatorDockPanel();
+
+	void DrawObjectActionsList(); 
+	void DrawSelectable(ToolSelectableInfo selectableInfo);
 
 private:
 	FlyObject* creatingObject = nullptr; 
