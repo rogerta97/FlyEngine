@@ -70,6 +70,12 @@ void ModuleManager::LoadEngineIcons()
 
 	Texture* arrowDownWhite = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ArrowUpWhite.png"), true);
 	ResourceManager::getInstance()->AddResource((Resource*)arrowDownWhite, "ArrowDownWhite");
+
+	Texture* selectArrow = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "SelectArrow.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)selectArrow, "SelectArrow");
+
+	Texture* moveOption = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "MoveOption.png"), true);
+	ResourceManager::getInstance()->AddResource((Resource*)moveOption, "MoveOption");
 }
 
 int ModuleManager::GetToolsAmount() const

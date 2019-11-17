@@ -18,7 +18,8 @@ FlyObject::FlyObject(std::string _name)
 	id = RandomNumberGenerator::GenerateUID(); 
 	isSelected = false; 
 
-	transform = new Transform(); 
+	transform = new Transform();
+	clickableArea = new BoundingBox(this); 
 }
 
 FlyObject::~FlyObject()
@@ -28,6 +29,7 @@ FlyObject::~FlyObject()
 
 void FlyObject::Update()
 {
+	
 }
 
 void FlyObject::Draw()
@@ -35,6 +37,8 @@ void FlyObject::Draw()
 	for (auto& it : toolsList) {
 		(it)->Draw(); 
 	}
+
+	clickableArea->Draw(); 
 }
 
 void FlyObject::CleanUp()

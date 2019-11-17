@@ -57,6 +57,7 @@
     <ClCompile Include="3rdParty\MathGeoLib\Time\Clock.cpp" />
     <ClCompile Include="3rdParty\mmgr\mmgr.cpp" />
     <ClCompile Include="3rdParty\PCGRandom\pcg_basic.c" />
+    <ClCompile Include="Source\BoundingBox.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\ImageTool.cpp" />
     <ClCompile Include="Source\Color.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="3rdParty\mmgr\nommgr.h" />
     <ClInclude Include="3rdParty\PCGRandom\pcg_basic.h" />
     <ClInclude Include="glmath.h" />
+    <ClInclude Include="Source\BoundingBox.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\ImageTool.h" />
     <ClInclude Include="Source\Color.h" />

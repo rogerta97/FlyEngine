@@ -318,6 +318,9 @@
     <ClCompile Include="Source\ObjectCreatorDockPanel.cpp">
       <Filter>Source\Modules\DockingPanels</Filter>
     </ClCompile>
+    <ClCompile Include="Source\BoundingBox.cpp">
+      <Filter>Source\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -679,6 +682,9 @@
     </ClInclude>
     <ClInclude Include="Source\ObjectCreatorDockPanel.h">
       <Filter>Source\Modules\DockingPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BoundingBox.h">
+      <Filter>Source\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

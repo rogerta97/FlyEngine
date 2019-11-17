@@ -6,10 +6,10 @@
 #include "Globals.h"
 #include "Tool.h"
 #include "Transform.h"
+#include "BoundingBox.h"
 
 class ImageTool; 
-class FlyObject
-{
+class FlyObject {
 public: 
 	FlyObject(std::string objectName); 
 	~FlyObject(); 
@@ -32,9 +32,10 @@ public:
 	void DrawImageToolSettings(); 
 
 public:
-	Transform* transform; 
-	bool isSelected; 
+	Transform* transform;
 	Tool* selectedTool; 
+	BoundingBox* clickableArea; 
+	bool isSelected; 
 
 private: 
 	std::list<Tool*> toolsList; 

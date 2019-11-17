@@ -93,8 +93,8 @@ bool ModuleImGui::Start()
 	//string spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources\\Images\\TransformerYellow.png";
 	//parrot->AddImageTool(spritePath.c_str());
 
-	//FlyObject* test = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer Red");
-	//spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources/Images/Transformer.png"; 
+	//FlyObject* test = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer");
+	//string spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources/Images/Transformer.png"; 
 	//test->AddImageTool(spritePath.c_str());
 
 	ViewportManager::getInstance();
@@ -292,9 +292,8 @@ bool ModuleImGui::CleanUp()
 	return true;
 }
 
-void ModuleImGui::SetStyle() {
-
-	//imGuiIO.Fonts->AddFontFromFileTTF("../data/Fonts/Ruda-Bold.ttf", 15.0f, &config);
+void ModuleImGui::SetStyle() 
+{
 	ImGui::GetStyle().FrameRounding = 4.0f;
 	ImGui::GetStyle().GrabRounding = 4.0f;
 	ImGui::GetStyle().ItemSpacing = ImVec2(5.0f, 5.0f);

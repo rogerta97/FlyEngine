@@ -55,7 +55,7 @@ void ObjectCreatorDockPanel::DrawObjectCreator()
 {
 	DrawObjectToolsList(); 
 	DrawAddAndDeleteToolButtons(); 
-	DrawSelectedToolSettings(); 
+	//DrawSelectedToolSettings(); 
 	DrawCreateButton();
 }
 

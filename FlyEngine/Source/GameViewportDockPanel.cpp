@@ -6,8 +6,10 @@
 #include "Room.h"
 #include "ViewportManager.h"
 #include "ModuleImGui.h"
+#include "ResourceManager.h"
 #include "ModuleRoomManager.h"
 #include "mmgr.h"
+#include "Texture.h"
 #include "ModuleWindow.h"
 #include "ViewportManager.h"
 #include "FlyObject.h"
@@ -46,6 +48,22 @@ bool GameViewportDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_MenuBar)) 
 	{
+		ImGui::BeginMenuBar(); 
+
+		Texture* arrowSelect = (Texture*)ResourceManager::getInstance()->GetResource("SelectArrow");
+		if (ImGui::ImageButton((ImTextureID)arrowSelect->GetTextureID(), ImVec2(18, 18)))
+		{
+
+		}
+
+		ImGui::SameLine(); 
+		Texture* moveArrows = (Texture*)ResourceManager::getInstance()->GetResource("MoveOption");
+		if (ImGui::ImageButton((ImTextureID)moveArrows->GetTextureID(), ImVec2(18, 18)))
+		{
+
+		}
+
+		ImGui::EndMenuBar(); 
 		float2 regionSizeThisTick = float2(ImGui::GetWindowContentRegionMax().x, ImGui::GetWindowContentRegionMax().y);
 
 		if (!regionSizeThisTick.Equals(regionSize) && regionSize.x != -1.0f)
