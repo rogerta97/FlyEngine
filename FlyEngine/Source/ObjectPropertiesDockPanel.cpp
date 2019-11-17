@@ -218,7 +218,7 @@ void ObjectPropertiesDockPanel::DrawToolImageSettings(FlyObject* selectedObject)
 			if (imageToolTexture == nullptr)
 				imageToolTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageNull");
 
-			float aspect_ratio = imageToolTexture->GetTextureAspectRatio();
+			float aspect_ratio = imageToolTexture->GetAspectRatio();
 			float previewQuadWidth = 150;
 			float previewQuadHeight = previewQuadWidth / aspect_ratio;
 

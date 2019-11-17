@@ -58,6 +58,7 @@ public:
 
 	// Factory ------------------------------------------------------------------------
 	FlyObject* CreateFlyObject(std::string objectName); 
+	void AddFlyObject(FlyObject* newFlyObject);
 	void DeleteFlyObject(FlyObject* objectToDelete);
 
 	// Encapsulation ------------------------------------------------------------------

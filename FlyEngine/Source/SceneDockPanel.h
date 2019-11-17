@@ -16,16 +16,6 @@ public:
 
 	void ShowViewportSettingsTab();
 
-	// Object Creator Utility ---------------
-	void DrawObjectCreator();
-	void DrawSelectedToolSettings();
-	void DrawToolImageSettings();
-	void DrawCreatorBottomBar();
-	void OnAddButtonClicked();
-	void DrawCreatorAddAndDeleteButtons();
-	void DrawCreatorToolsList();
-	bool DrawToolSelectable(ToolSelectableInfo& toolInfo);
-
 private: 
 	std::list<Tool*> tmpToolsToAdd; 
 

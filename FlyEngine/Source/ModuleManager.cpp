@@ -3,7 +3,10 @@
 #include "ImageImporter.h"
 #include "ResourceManager.h"
 #include "MyFileSystem.h"
+#include "Application.h"
+#include "ModuleImGui.h"
 #include "ViewportManager.h"
+#include "imgui.h"
 #include "SceneDockPanel.h"
 #include "mmgr.h"
 
@@ -72,6 +75,32 @@ void ModuleManager::LoadEngineIcons()
 int ModuleManager::GetToolsAmount() const
 {
 	return toolNamesDescriptions.size();
+}
+
+ToolSelectableInfo* ModuleManager::DrawDictionaryUI()
+{
+	ToolSelectableInfo* returnInfo = nullptr; 
+
+	for (auto& currentToolDescription : toolNamesDescriptions)
+	{
+		ImGui::PushFont(App->moduleImGui->rudaBoldMid);
+
+		if (ImGui::Selectable(currentToolDescription.toolName.c_str(), false, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), 37)))
+		{
+			returnInfo = &currentToolDescription; 
+		}
+		ImGui::PopFont();
+
+		// Description -----
+		ImGui::SetCursorPosY(ImGui::GetCursorPos().y - 20);
+		ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 2);
+
+		ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
+		ImGui::TextWrapped(currentToolDescription.toolDescription.c_str());
+		ImGui::PopFont();
+	}
+
+	return returnInfo; 
 }
 
 std::list<ToolSelectableInfo> ModuleManager::GetToolsNamesDescriptionsList() const

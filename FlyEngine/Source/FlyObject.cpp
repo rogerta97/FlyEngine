@@ -53,6 +53,11 @@ std::string FlyObject::GetName() const
 	return name;
 }
 
+void FlyObject::SetName(std::string newName)
+{
+	name = newName; 
+}
+
 ImageTool* FlyObject::AddImageTool(const char* imageTexturePath)
 {
 	ImageTool* newAtrImage = new ImageTool(this); 
@@ -107,7 +112,7 @@ void FlyObject::DrawImageToolSettings()
 		else
 			imageTexture = (Texture*)ResourceManager::getInstance()->GetResource(imageTool->GetTexture()->GetName());
 
-		float aspect_ratio = imageTexture->GetTextureAspectRatio();
+		float aspect_ratio = imageTexture->GetAspectRatio();
 		float previewQuadWidth = 150;
 		float previewQuadHeight = previewQuadWidth / aspect_ratio;
 

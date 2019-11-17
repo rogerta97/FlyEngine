@@ -33,7 +33,6 @@ unsigned int Texture::GetHeight() const
 	return height;
 }
 
-
 void Texture::SetTextureSettings()
 {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -42,7 +41,7 @@ void Texture::SetTextureSettings()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 }
 
-float Texture::GetTextureAspectRatio()
+float Texture::GetAspectRatio()
 {
 	return (float)width / (float)height;
 }

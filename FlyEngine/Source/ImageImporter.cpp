@@ -52,7 +52,7 @@ Texture* ImageImporter::LoadTexture(std::string path, bool flipImage = false)
 
 	if (success)
 	{
-		std::string textureNameGenerated = MyFileSystem::getInstance()->GetLastPathItem(path, false); 
+		std::string textureNameGenerated = MyFileSystem::getInstance()->GetLastPathItem(path, false);
 		//Get data of the image
 		ILinfo image_info;
 		iluGetImageInfo(&image_info);
@@ -81,6 +81,8 @@ Texture* ImageImporter::LoadTexture(std::string path, bool flipImage = false)
 			new_tex->UnBind();
 		}
 	}
+	else
+		new_tex = nullptr; 
 
 	return new_tex;
 }

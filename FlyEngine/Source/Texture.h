@@ -14,7 +14,7 @@ public:
 
 	//Utility
 	void SetTextureSettings();
-	float GetTextureAspectRatio(); 
+	float GetAspectRatio(); 
 
 	//Memory management
 	void Bind();

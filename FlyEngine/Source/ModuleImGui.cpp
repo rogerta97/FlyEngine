@@ -121,6 +121,7 @@ void ModuleImGui::CreatePanels()
 	dockPanels.push_back(roomPropertiesPanel); 
 
 	dockPanels.push_back(gameViewporPanel);
+	dockPanels.push_back(objectCreatorPanel); 
 	dockPanels.push_back(roomObjectsDockPanel);
 	dockPanels.push_back(objectPropertiesDockPanel);
 	dockPanels.push_back(sceneDockPanel);
@@ -301,7 +302,7 @@ void ModuleImGui::SetStyle() {
 	ImVec4* colors = ImGui::GetStyle().Colors;
 	colors[ImGuiCol_Text] = ImVec4(0.95f, 0.96f, 0.98f, 1.00f);
 	colors[ImGuiCol_TextDisabled] = ImVec4(0.36f, 0.42f, 0.47f, 1.00f);
-	colors[ImGuiCol_WindowBg] = ImVec4(0.11f, 0.15f, 0.17f, 1.00f);
+	colors[ImGuiCol_WindowBg] = ImVec4(0.15f, 0.18f, 0.22f, 1.00f);
 	colors[ImGuiCol_ChildBg] = ImVec4(0.15f, 0.18f, 0.22f, 1.00f);
 	colors[ImGuiCol_PopupBg] = ImVec4(0.08f, 0.08f, 0.08f, 0.94f);
 	colors[ImGuiCol_BorderShadow] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);

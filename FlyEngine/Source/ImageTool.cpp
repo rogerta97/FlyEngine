@@ -94,8 +94,11 @@ bool ImageTool::CreateImage(const char* texturePath)
 {
 	imageTexture = ImageImporter::getInstance()->LoadTexture(texturePath, false);
 
-	imageWidth = imageTexture->GetWidth();
-	imageHeight = imageTexture->GetHeight();
+	if (imageTexture != nullptr)
+	{
+		imageWidth = imageTexture->GetWidth();
+		imageHeight = imageTexture->GetHeight();
+	}
 
 	quadMesh = new Quad(); 
 	quadMesh->Create(imageWidth, imageHeight); 

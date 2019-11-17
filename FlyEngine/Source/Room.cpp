@@ -173,6 +173,16 @@ FlyObject* Room::CreateFlyObject(std::string objectName)
 	return newObject; 
 }
 
+void Room::AddFlyObject(FlyObject* newFlyObject)
+{
+	if (newFlyObject == nullptr) {
+		FLY_ERROR("NULL object is trying to be added to the scene"); 
+		return; 
+	}
+
+	objectsInRoom.push_back(newFlyObject);
+}
+
 void Room::DeleteFlyObject(FlyObject* objectToDelete)
 {
 	for (auto& currentObject : objectsInRoom) 

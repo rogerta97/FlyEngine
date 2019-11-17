@@ -16,6 +16,7 @@
 class ConsoleDockPanel;
 class GraphPropertiesDockPanel; 
 class GameViewportDockPanel;
+class ObjectCreatorDockPanel; 
 
 class ModuleImGui : public Module
 {
@@ -47,6 +48,7 @@ public:
 	ConsoleDockPanel* consoleDockPanel;
 	GraphPropertiesDockPanel* graphPropertiesDockPanel;
 	GameViewportDockPanel* gameViewportDockPanel;
+	ObjectCreatorDockPanel* objectCreatorDockPanel; 
 
 	// Fonts ---------------
 	ImFont* rudaRegularMid;

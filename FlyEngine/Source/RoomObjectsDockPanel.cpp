@@ -7,6 +7,7 @@
 #include "Room.h"
 #include "FlyObject.h"
 #include "ResourceManager.h"
+#include "ObjectCreatorDockPanel.h"
 #include "imgui.h"
 #include "mmgr.h"
 
@@ -40,6 +41,7 @@ bool RoomObjectsDockPanel::Draw()
 
 		// Objects List -------
 		DrawObjectHierarchy();
+		DrawControlButtons();
 	}
 
 	ImGui::End();
@@ -87,8 +89,6 @@ void RoomObjectsDockPanel::DrawObjectHierarchy()
 
 	ImGui::PopStyleVar();
 	ImGui::EndChild();
-
-	DrawControlButtons();
 }
 
 void RoomObjectsDockPanel::DrawControlButtons()
@@ -100,7 +100,13 @@ void RoomObjectsDockPanel::DrawControlButtons()
 	Texture* arrowUpObjectTexture = (Texture*)ResourceManager::getInstance()->GetResource("ArrowUpWhite");
 	Texture* arrowDownObjectTexture = (Texture*)ResourceManager::getInstance()->GetResource("ArrowDownWhite");
 
-	ImGui::ImageButton((ImTextureID)plusObjectTexture->GetTextureID(), ImVec2(20, 20), ImVec2(0, 0), ImVec2(1, 1), 0); ImGui::SameLine();
+	if(ImGui::ImageButton((ImTextureID)plusObjectTexture->GetTextureID(), ImVec2(20, 20), ImVec2(0, 0), ImVec2(1, 1), 0))
+	{
+		App->moduleImGui->objectCreatorDockPanel->ResetObjectData(); 
+		App->moduleImGui->objectCreatorDockPanel->SetVisible(true); 
+	}
+
+	ImGui::SameLine();
 	ImGui::ImageButton((ImTextureID)minusObjectTexture->GetTextureID(), ImVec2(20, 20), ImVec2(0, 0), ImVec2(1, 1), 0); ImGui::SameLine();
 	ImGui::ImageButton((ImTextureID)arrowUpObjectTexture->GetTextureID(), ImVec2(20, 20), ImVec2(0, 0), ImVec2(1, 1), 0); ImGui::SameLine();
 	ImGui::ImageButton((ImTextureID)arrowDownObjectTexture->GetTextureID(), ImVec2(20, 20), ImVec2(0, 0), ImVec2(1, 1), 0);

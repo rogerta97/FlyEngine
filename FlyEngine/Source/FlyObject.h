@@ -19,6 +19,7 @@ public:
 	void CleanUp(); 
 
 	std::string GetName() const;
+	void SetName(std::string newName); 
 
 	// Tools -----------
 	ImageTool* AddImageTool(const char* imageTexturePath);

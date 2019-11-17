@@ -7,17 +7,33 @@
 #include <string>
 
 class FlyObject;
+class Tool; 
 class ObjectCreatorDockPanel : public DockPanel {
 
 public:
 	ObjectCreatorDockPanel(bool isVisible);
 	~ObjectCreatorDockPanel();
 
-	void DrawObjectActionsList(); 
-	void DrawSelectable(ToolSelectableInfo selectableInfo);
+	bool Draw(); 
+
+	void ResetObjectData(); 
+
+	void DrawObjectCreator(); 
+	void DrawObjectToolsList(); 
+	void DrawSelectable(ToolSelectableInfo selectableInfo, bool& isSelected, Tool* currentTool);
+	void DrawAddAndDeleteToolButtons(); 
+	void DrawToolImageSettings(); 
+	void DrawSelectedToolSettings(); 
+	void OnAddToolButtonClicked(); 
+	void DrawCreateButton(); 
 
 private:
+
+	char searchNewToolBuffer[256]; 
+	char newObjectName[256]; 
+
 	FlyObject* creatingObject = nullptr; 
+	Tool* selectedTool = nullptr; 
 };
 
 #endif 
