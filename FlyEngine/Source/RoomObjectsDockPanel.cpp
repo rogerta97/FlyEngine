@@ -102,8 +102,8 @@ void RoomObjectsDockPanel::DrawControlButtons()
 
 	if(ImGui::ImageButton((ImTextureID)plusObjectTexture->GetTextureID(), ImVec2(20, 20), ImVec2(0, 0), ImVec2(1, 1), 0))
 	{
-		App->moduleImGui->objectCreatorDockPanel->ResetObjectData(); 
-		App->moduleImGui->objectCreatorDockPanel->SetVisible(true); 
+		//App->moduleImGui->objectCreatorDockPanel->ResetObjectData(); 
+		App->moduleImGui->objectCreatorDockPanel->ToggleVisibility(); 
 	}
 
 	ImGui::SameLine();

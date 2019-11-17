@@ -45,20 +45,20 @@ bool ObjectCreatorDockPanel::Draw()
 
 void ObjectCreatorDockPanel::ResetObjectData()
 {
-	if (creatingObject != nullptr)
+	/*if (creatingObject != nullptr)
 	{
 		creatingObject->CleanUp(); 
 		delete creatingObject; 
-	}
+	}*/
 
 	creatingObject = new FlyObject("Prev");
 }
 
 void ObjectCreatorDockPanel::DrawObjectCreator()
 {
-	DrawObjectToolsList(); 
-	DrawAddAndDeleteToolButtons(); 
-	DrawSelectedToolSettings(); 
+	//DrawObjectToolsList(); 
+	//DrawAddAndDeleteToolButtons(); 
+	//DrawSelectedToolSettings(); 
 	DrawCreateButton();
 }
 
@@ -186,7 +186,7 @@ void ObjectCreatorDockPanel::DrawCreateButton()
 			App->moduleRoomManager->GetSelectedRoom()->AddFlyObject(creatingObject); 
 		}
 
-		visible = false; 
+		//visible = false; 
 	}
 
 	ImGui::PopFont();
