@@ -10,22 +10,17 @@ public:
 	BoundingBox(FlyObject* objectAttached); 
 	~BoundingBox();
 
-	void Draw(); 
+	void Draw();
+	void DrawSquare(math::float2& topLeft, math::float2& topRight, math::float2& bottomLeft, math::float2& bottomRight);
+	void DrawControlPoint(float2 pointPos, float pointSize);
+
 	void FitToObject(); 
-
-	void SetMinPoint(float newMinPointX, float newMinPointY);
-	float2& GetMinPoint();
-
-	void SetMaxPoint(float newMaxPointX, float newMaxPointY);
-	float2& GetMaxPoint();
 
 	void SetSize(float newMaxPointX, float newMaxPointY);
 	float2& GetSize();
 
 private: 
 	float2 size;
-	float2 minPoint; 
-	float2 maxPoint;
 	FlyObject* objectAttached; 
 };
 
