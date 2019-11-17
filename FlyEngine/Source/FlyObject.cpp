@@ -8,7 +8,9 @@
 #include "ResourceManager.h"
 #include "imgui.h"
 #include "MyFileSystem.h"
+#include "Gizmos.h"
 #include "mmgr.h"
+
 
 #include <string>
 
@@ -20,6 +22,7 @@ FlyObject::FlyObject(std::string _name)
 
 	transform = new Transform();
 	clickableArea = new BoundingBox(this); 
+	gizmos = new Gizmos(this);
 }
 
 FlyObject::~FlyObject()
@@ -38,7 +41,8 @@ void FlyObject::Draw()
 		(it)->Draw(); 
 	}
 
-	clickableArea->Draw(); 
+	//clickableArea->Draw(); 
+	gizmos->Draw();
 }
 
 void FlyObject::CleanUp()

@@ -8,6 +8,7 @@
 #include "Transform.h"
 #include "BoundingBox.h"
 
+class Gizmos; 
 class ImageTool; 
 class FlyObject {
 public: 
@@ -35,6 +36,7 @@ public:
 	Transform* transform;
 	Tool* selectedTool; 
 	BoundingBox* clickableArea; 
+	Gizmos* gizmos; 
 	bool isSelected; 
 
 private: 

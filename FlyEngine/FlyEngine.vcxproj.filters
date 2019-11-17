@@ -321,6 +321,9 @@
     <ClCompile Include="Source\BoundingBox.cpp">
       <Filter>Source\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Gizmos.cpp">
+      <Filter>Source\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -684,6 +687,9 @@
       <Filter>Source\Modules\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\BoundingBox.h">
+      <Filter>Source\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Gizmos.h">
       <Filter>Source\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
