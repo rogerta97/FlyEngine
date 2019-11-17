@@ -16,7 +16,8 @@ public:
 
 	bool Draw(); 
 
-	void ResetObjectData(); 
+	void ResetObjectData();
+	void Close(); 
 
 	void DrawObjectCreator(); 
 	void DrawObjectToolsList(); 

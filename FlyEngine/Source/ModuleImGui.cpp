@@ -128,6 +128,7 @@ void ModuleImGui::CreatePanels()
 
 	consoleDockPanel = consolePanel; 
 	graphPropertiesDockPanel = graphPropertiesPanel;
+	objectCreatorDockPanel = objectCreatorPanel; 
 	gameViewportDockPanel = gameViewporPanel;
 }
 
@@ -282,7 +283,6 @@ void ModuleImGui::ReceiveEvent(FlyEngineEvent eventType)
 
 bool ModuleImGui::CleanUp()
 {
-
 	DeletePanels(); 
 	NodeGraph::getInstance()->DeleteAllConnections();
 	NodeGraph::getInstance()->DeleteAllNodes();

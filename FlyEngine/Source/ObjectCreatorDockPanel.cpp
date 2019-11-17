@@ -45,20 +45,14 @@ bool ObjectCreatorDockPanel::Draw()
 
 void ObjectCreatorDockPanel::ResetObjectData()
 {
-	/*if (creatingObject != nullptr)
-	{
-		creatingObject->CleanUp(); 
-		delete creatingObject; 
-	}*/
-
 	creatingObject = new FlyObject("Prev");
 }
 
 void ObjectCreatorDockPanel::DrawObjectCreator()
 {
-	//DrawObjectToolsList(); 
-	//DrawAddAndDeleteToolButtons(); 
-	//DrawSelectedToolSettings(); 
+	DrawObjectToolsList(); 
+	DrawAddAndDeleteToolButtons(); 
+	DrawSelectedToolSettings(); 
 	DrawCreateButton();
 }
 
@@ -122,7 +116,6 @@ void ObjectCreatorDockPanel::DrawSelectedToolSettings()
 			break;
 		}
 
-		IMGUI_SPACED_SEPARATOR
 	}
 }
 
@@ -160,11 +153,16 @@ void ObjectCreatorDockPanel::OnAddToolButtonClicked()
 	}
 }
 
+void ObjectCreatorDockPanel::Close() 
+{
+	selectedTool = nullptr;
+	visible = false; 
+}
+
 void ObjectCreatorDockPanel::DrawCreateButton()
 {
-	ImGui::SetCursorPosY(ImGui::GetContentRegionMax().y - 40); 
+	ImGui::SetCursorPosY(ImGui::GetContentRegionMax().y - 35); 
 
-	ImGui::Separator(); 
 
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 	ImGui::InputTextWithHint("##ObjectNaming", "Object Name...", newObjectName, 256 * sizeof(char));
@@ -183,10 +181,10 @@ void ObjectCreatorDockPanel::DrawCreateButton()
 		else 
 		{
 			creatingObject->SetName(newObjectName); 
-			App->moduleRoomManager->GetSelectedRoom()->AddFlyObject(creatingObject); 
+			App->moduleRoomManager->GetSelectedRoom()->AddFlyObject(creatingObject);				
 		}
 
-		//visible = false; 
+		Close();
 	}
 
 	ImGui::PopFont();

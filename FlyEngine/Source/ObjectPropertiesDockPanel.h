@@ -12,6 +12,7 @@ public:
 	~ObjectPropertiesDockPanel();
 
 	bool Draw();
+
 	void DrawObjectTools(FlyObject* selectedObject);
 	void DrawToolAdjustments(FlyObject* selectedObject);
 	void DrawToolList(FlyObject* selectedObject);
