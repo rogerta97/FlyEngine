@@ -33,12 +33,13 @@ public:
 	GizmoMode GetGizmoMode() const;
 
 	float2& GetViewportCenterGlobal(); 
+	float2& GetMouseRelativePosition(); 
 
 	bool aspectRatioChanged; 
 
 private: 
 
-	float2 viewportCenterGlobal; 
+	float2 viewportCenterGlobalPos; 
 	float2 regionSize;
 	float2 viewportSize;
 	GizmoMode gizmoMode; 

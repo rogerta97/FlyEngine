@@ -70,12 +70,12 @@ bool GameViewportDockPanel::Draw()
 		regionSize.y += (titleBarHeight + menuBarHeight);
 
 		float2 screenCenter = float2(regionSize.x / 2, regionSize.y / 2);
-		viewportCenterGlobal = float2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y) + screenCenter;
+		viewportCenterGlobalPos = float2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y) + screenCenter;
 
 		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - (viewportSize.y / 2) + menuBarHeight));
 		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(viewportSize.x - 1, viewportSize.y - 2));
 
-		FLY_WARNING("Viewport Center: %f %f", viewportCenterGlobal.x, viewportCenterGlobal.y);
+		FLY_WARNING("Viewport Center: %f %f", viewportCenterGlobalPos.x, viewportCenterGlobalPos.y);
 
 	}
 
@@ -186,5 +186,10 @@ GizmoMode GameViewportDockPanel::GetGizmoMode() const
 
 float2& GameViewportDockPanel::GetViewportCenterGlobal()
 {
-	return viewportCenterGlobal; 
+	return viewportCenterGlobalPos; 
+}
+
+float2& GameViewportDockPanel::GetMouseRelativePosition()
+{
+	float2 mouseRelativePos = viewportCenterGlobalPos -
 }
