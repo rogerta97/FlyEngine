@@ -52,8 +52,8 @@ bool GameViewportDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_MenuBar)) 
 	{
-		ImVec2 pos = ImGui::GetWindowPos(); 
-		FLY_LOG("Window Pos: %f %f", pos.x, pos.y);
+
+
 		DrawTopBar(); 
 
 		float2 regionSizeThisTick = float2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
@@ -70,8 +70,13 @@ bool GameViewportDockPanel::Draw()
 		regionSize.y += (titleBarHeight + menuBarHeight);
 
 		float2 screenCenter = float2(regionSize.x / 2, regionSize.y / 2);
+		viewportCenterGlobal = float2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y) + screenCenter;
+
 		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - (viewportSize.y / 2) + menuBarHeight));
 		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(viewportSize.x - 1, viewportSize.y - 2));
+
+		FLY_WARNING("Viewport Center: %f %f", viewportCenterGlobal.x, viewportCenterGlobal.y);
+
 	}
 
 	glDisable(GL_TEXTURE_2D);
@@ -119,7 +124,6 @@ void GameViewportDockPanel::DrawTopBar()
 	ImGui::PushStyleColor(ImGuiCol_MenuBarBg, ImVec4(0, 0, 0, 0.2f)); 
 	ImGui::BeginMenuBar();
 
-	menuBarHeight = ImGui::GetWindowSize().y; 
 	Texture* arrowSelect = (Texture*)ResourceManager::getInstance()->GetResource("SelectArrow");
 
 	bool currentMode = false; 
@@ -178,4 +182,9 @@ float2 GameViewportDockPanel::GetViewportSize() const
 GizmoMode GameViewportDockPanel::GetGizmoMode() const
 {
 	return gizmoMode;
+}
+
+float2& GameViewportDockPanel::GetViewportCenterGlobal()
+{
+	return viewportCenterGlobal; 
 }

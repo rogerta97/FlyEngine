@@ -32,10 +32,13 @@ public:
 
 	GizmoMode GetGizmoMode() const;
 
+	float2& GetViewportCenterGlobal(); 
+
 	bool aspectRatioChanged; 
 
 private: 
-	float menuBarHeight; 
+
+	float2 viewportCenterGlobal; 
 	float2 regionSize;
 	float2 viewportSize;
 	GizmoMode gizmoMode; 
