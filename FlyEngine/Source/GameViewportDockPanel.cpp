@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "TextureMSAA.h"
 #include "OpenGL.h"
+#include "Gizmos.h"
 #include "Room.h"
 #include "ViewportManager.h"
 #include "ModuleImGui.h"
@@ -13,6 +14,7 @@
 #include "ModuleWindow.h"
 #include "ViewportManager.h"
 #include "FlyObject.h"
+#include "imgui_internal.h"
 
 GameViewportDockPanel::GameViewportDockPanel(bool isVisible) : DockPanel("Game Viewport", isVisible)
 {
@@ -23,6 +25,7 @@ GameViewportDockPanel::GameViewportDockPanel(bool isVisible) : DockPanel("Game V
 	viewportSize = float2(-1.0f, -1.0f);
 
 	aspectRatioChanged = false; 
+	gizmoMode = GIZMO_null; 
 }
 
 GameViewportDockPanel::~GameViewportDockPanel()
@@ -43,24 +46,32 @@ bool GameViewportDockPanel::Draw()
 
 	glEnable(GL_TEXTURE_2D);
 
+
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.09f, 0.11f, 0.13f, 1.0f));
 
 	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_MenuBar)) 
 	{
-		DrawTopBar(); 
+		ImVec2 pos = ImGui::GetWindowPos(); 
+		FLY_LOG("Window Pos: %f %f", pos.x, pos.y);
+		//DrawTopBar(); 
 
-		float2 regionSizeThisTick = float2(ImGui::GetWindowContentRegionMax().x, ImGui::GetWindowContentRegionMax().y);
+		float2 regionSizeThisTick = float2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
 		if (!regionSizeThisTick.Equals(regionSize) && regionSize.x != -1.0f)
 		{
 			regionSize = regionSizeThisTick;
 			FitViewportToRegion();
 		}
 
-		regionSize = float2(ImGui::GetWindowContentRegionMax().x, ImGui::GetWindowContentRegionMax().y);
+		float titleBarHeight = ImGui::GetCurrentWindow()->TitleBarHeight(); 
+		float menuBarHeight = ImGui::GetCurrentWindow()->MenuBarHeight();
+
+		regionSize = float2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
+		regionSize.y += (titleBarHeight + menuBarHeight);
+
 		float2 screenCenter = float2(regionSize.x / 2, regionSize.y / 2);
-		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - (viewportSize.y / 2)));
-		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(viewportSize.x - 1, viewportSize.y - 1));
+		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - (viewportSize.y / 2) + 25));
+		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(viewportSize.x - 1, viewportSize.y - 2));
 	}
 
 	glDisable(GL_TEXTURE_2D);
@@ -105,8 +116,10 @@ void GameViewportDockPanel::FitViewportToRegion()
 
 void GameViewportDockPanel::DrawTopBar()
 {
+	ImGui::PushStyleColor(ImGuiCol_MenuBarBg, ImVec4(0, 0, 0, 0.2f)); 
 	ImGui::BeginMenuBar();
 
+	menuBarHeight = ImGui::GetWindowSize().y; 
 	Texture* arrowSelect = (Texture*)ResourceManager::getInstance()->GetResource("SelectArrow");
 
 	bool currentMode = false; 
@@ -117,7 +130,12 @@ void GameViewportDockPanel::DrawTopBar()
 
 	if (ImGui::ImageButton((ImTextureID)arrowSelect->GetTextureID(), ImVec2(18, 18)))
 	{
-		gizmoMode = GIZMO_SELECT; 
+		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject(); 
+		if (selectedObject != nullptr)
+		{
+			selectedObject->gizmos->FitBoxToObject(); 
+		}	
+		gizmoMode = GIZMO_SELECT;
 	}
 
 	if (currentMode) {
@@ -144,6 +162,7 @@ void GameViewportDockPanel::DrawTopBar()
 	}
 
 	ImGui::EndMenuBar();
+	ImGui::PopStyleColor();
 }
 
 float2 GameViewportDockPanel::GetRegionSize() const

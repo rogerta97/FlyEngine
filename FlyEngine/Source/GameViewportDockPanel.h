@@ -9,6 +9,7 @@ enum GizmoMode
 {
 	GIZMO_SELECT,
 	GIZMO_MOVE,
+	GIZMO_null, 
 };
 
 class TextureMSAA; 
@@ -34,6 +35,7 @@ public:
 	bool aspectRatioChanged; 
 
 private: 
+	float menuBarHeight; 
 	float2 regionSize;
 	float2 viewportSize;
 	GizmoMode gizmoMode; 

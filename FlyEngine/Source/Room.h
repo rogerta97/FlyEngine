@@ -30,6 +30,7 @@ public:
 	Room(string roomName); 
 	~Room(); 
 
+	void Update(); 
 	void CleanUp(); 
 
 	// Connections --------------------------------------------------------------------
@@ -55,6 +56,9 @@ public:
 
 	// Draw ---------------------------------------------------------------------------
 	void DrawRoomObjects(); 
+
+	// Update -------------------------------------------------------------------------
+	void UpdateRoomObjects(); 
 
 	// Factory ------------------------------------------------------------------------
 	FlyObject* CreateFlyObject(std::string objectName); 

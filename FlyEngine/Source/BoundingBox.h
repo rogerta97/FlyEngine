@@ -10,11 +10,11 @@ public:
 	BoundingBox(FlyObject* objectAttached); 
 	~BoundingBox();
 
+
 	void Draw();
+
 	void DrawSquare(math::float2& topLeft, math::float2& topRight, math::float2& bottomLeft, math::float2& bottomRight, float4 color);
 	void DrawControlPoint(float2 pointPos, float pointSize);
-
-	void FitToObject(); 
 
 	void SetSize(float newMaxPointX, float newMaxPointY);
 	float2& GetSize();
@@ -23,6 +23,8 @@ public:
 	float4& GetsquareColor();
 
 	void ShowCornerDots(bool show);
+
+	bool IsMouseOver();
 
 private: 
 

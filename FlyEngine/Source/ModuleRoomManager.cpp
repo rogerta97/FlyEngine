@@ -44,6 +44,11 @@ update_status ModuleRoomManager::PreUpdate(float dt)
 
 update_status ModuleRoomManager::Update(float dt)
 {
+	for (auto& currentRoom : roomsInWorldList)
+	{
+		currentRoom->Update(); 
+	}
+
 	return UPDATE_CONTINUE;
 }
 

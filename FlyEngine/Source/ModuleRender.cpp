@@ -87,8 +87,8 @@ bool ModuleRender::Init()
 
 	float aspectRatio = windowWidth / windowHeight;
 	glViewport(0, 0, windowWidth, windowHeight);
-	glOrtho(-500.0 * aspectRatio, 500.0 * aspectRatio, -500.0, 500.0, 1.0, -1.0);
-	//glOrtho(-500.0 , 500.0 , -500.0, 500.0, 1.0, -1.0);
+	glOrtho(-400.0 * aspectRatio, 400.0 * aspectRatio, -400.0, 400.0, 1.0, -1.0);
+
 	
 	FLY_WARNING("glOrtho resized in Init");
 
@@ -110,6 +110,11 @@ update_status ModuleRender::PreUpdate(float dt)
 
 update_status ModuleRender::PostUpdate(float dt)
 {	
+	//if (App->flySection == FLY_SECTION_ROOM_EDIT) {
+	//	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+	//	selectedRoom->DrawRoomObjects();
+	//}
+
 	ViewportManager::getInstance()->viewportTexture->Bind();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

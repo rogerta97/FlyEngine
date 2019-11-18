@@ -4,6 +4,7 @@
 #include "ImageTool.h"
 #include "Texture.h"
 #include "TinyFileDialog.h"
+#include "Quad.h"
 #include "ImageImporter.h"
 #include "ResourceManager.h"
 #include "imgui.h"
@@ -26,7 +27,7 @@ FlyObject::FlyObject(std::string _name)
 	objectBorderBox->ShowCornerDots(false); 
 
 	gizmos = new Gizmos(this);
-	gizmos->SetGizmoStyle(5.0f, 50.0f, 3.0f);
+	gizmos->SetMoveGizmoStyle(5.0f, 50.0f, 3.0f);
 }
 
 FlyObject::~FlyObject()
@@ -36,7 +37,7 @@ FlyObject::~FlyObject()
 
 void FlyObject::Update()
 {
-	
+	gizmos->Update(); 
 }
 
 void FlyObject::Draw()
@@ -45,8 +46,8 @@ void FlyObject::Draw()
 		(it)->Draw(); 
 	}
 
-	objectBorderBox->Draw(); 
-	gizmos->Draw();
+	if(isSelected)
+		gizmos->Draw();
 }
 
 void FlyObject::CleanUp()
@@ -68,6 +69,20 @@ std::string FlyObject::GetName() const
 void FlyObject::SetName(std::string newName)
 {
 	name = newName; 
+}
+
+float2 FlyObject::GetObjectVisualDimensions()
+{
+	float2 objectVisualSize; 
+
+	// For now we will just take into account ImageTool, if you are deleting this you advanced really. 
+	ImageTool* imageTool = (ImageTool*)GetTool(AT_IMAGE); 
+	if (imageTool != nullptr)
+	{
+		objectVisualSize = float2(imageTool->GetQuad()->quadWidth, imageTool->GetQuad()->quadHeight); 
+	}
+
+	return objectVisualSize; 
 }
 
 ImageTool* FlyObject::AddImageTool(const char* imageTexturePath)

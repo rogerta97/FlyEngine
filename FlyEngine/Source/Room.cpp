@@ -26,6 +26,11 @@ Room::~Room()
 {
 }
 
+void Room::Update()
+{
+	UpdateRoomObjects(); 
+}
+
 void Room::CleanUp()
 {
 	if (GetOutputConnectionsAmount() > 0) {
@@ -159,6 +164,13 @@ void Room::DrawRoomObjects()
 {
 	for (auto& it : objectsInRoom) {
 		(it)->Draw(); 
+	}
+}
+
+void Room::UpdateRoomObjects()
+{
+	for (auto& it : objectsInRoom) {
+		(it)->Update();
 	}
 }
 

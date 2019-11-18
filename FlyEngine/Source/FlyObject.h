@@ -22,6 +22,9 @@ public:
 	std::string GetName() const;
 	void SetName(std::string newName); 
 
+	// Utils -----------
+	float2 GetObjectVisualDimensions(); 
+
 	// Tools -----------
 	ImageTool* AddImageTool(const char* imageTexturePath);
 	Tool* GetTool(std::string toolName); 

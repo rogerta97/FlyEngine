@@ -63,8 +63,8 @@ bool ModuleWindow::Init()
 		{
 			SDL_DisplayMode DM;
 			SDL_GetDesktopDisplayMode(0, &DM);
-			width = DM.w;
-			height = DM.h;
+			width = DM.w - 10;
+			height = DM.h - 90;
 		}
 
 		mainWindow = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);

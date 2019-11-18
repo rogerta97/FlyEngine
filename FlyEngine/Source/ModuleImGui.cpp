@@ -219,7 +219,7 @@ void ModuleImGui::DrawMainMenuBar()
 	}
 
 	if (App->flySection == FLY_SECTION_ROOM_EDIT) {
-		if (ImGui::Button("Back To World")) {
+		if (ImGui::SmallButton("Back To World")) {
 			App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_GRAPH); 
 		}
 	}
