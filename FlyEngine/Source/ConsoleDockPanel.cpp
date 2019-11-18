@@ -6,7 +6,7 @@
 
 ConsoleDockPanel::ConsoleDockPanel(bool isVisible) : DockPanel("Console", isVisible)
 {
-	flyEngineSection = FLY_SECTION_null;
+	flyEngineSection = FLY_SECTION_ROOM_EDIT;
 	dockPanelType = DOCK_CONSOLE;
 
 	debugMessageAmount = 0; 

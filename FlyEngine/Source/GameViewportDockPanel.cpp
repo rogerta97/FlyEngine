@@ -54,7 +54,7 @@ bool GameViewportDockPanel::Draw()
 	{
 		ImVec2 pos = ImGui::GetWindowPos(); 
 		FLY_LOG("Window Pos: %f %f", pos.x, pos.y);
-		//DrawTopBar(); 
+		DrawTopBar(); 
 
 		float2 regionSizeThisTick = float2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
 		if (!regionSizeThisTick.Equals(regionSize) && regionSize.x != -1.0f)
@@ -70,7 +70,7 @@ bool GameViewportDockPanel::Draw()
 		regionSize.y += (titleBarHeight + menuBarHeight);
 
 		float2 screenCenter = float2(regionSize.x / 2, regionSize.y / 2);
-		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - (viewportSize.y / 2) + 25));
+		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - (viewportSize.y / 2) + menuBarHeight));
 		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(viewportSize.x - 1, viewportSize.y - 2));
 	}
 
@@ -128,7 +128,7 @@ void GameViewportDockPanel::DrawTopBar()
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(35, 35, 37, 1.0f));
 	}
 
-	if (ImGui::ImageButton((ImTextureID)arrowSelect->GetTextureID(), ImVec2(18, 18)))
+	if (ImGui::ImageButton((ImTextureID)arrowSelect->GetTextureID(), ImVec2(17, 17)))
 	{
 		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject(); 
 		if (selectedObject != nullptr)
@@ -151,7 +151,7 @@ void GameViewportDockPanel::DrawTopBar()
 
 	ImGui::SameLine();
 	Texture* moveArrows = (Texture*)ResourceManager::getInstance()->GetResource("MoveOption");
-	if (ImGui::ImageButton((ImTextureID)moveArrows->GetTextureID(), ImVec2(18, 18)))
+	if (ImGui::ImageButton((ImTextureID)moveArrows->GetTextureID(), ImVec2(17, 17)))
 	{
 		gizmoMode = GIZMO_MOVE;
 	}
