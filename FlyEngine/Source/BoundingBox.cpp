@@ -109,7 +109,7 @@ bool BoundingBox::IsMouseOver()
 	//SDL_GetMouseState(&mouseX, &mouseY);
 	//float2 cursorPos = float2(posX, posY);
 
-	FLY_LOG("Cursor X: %f Cursor Y: %f", mousePos.x, mousePos.y);
+	//FLY_LOG("Cursor X: %f Cursor Y: %f", mousePos.x, mousePos.y);
 
 	return false; 
 }

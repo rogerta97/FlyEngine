@@ -46,14 +46,11 @@ bool GameViewportDockPanel::Draw()
 
 	glEnable(GL_TEXTURE_2D);
 
-
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.09f, 0.11f, 0.13f, 1.0f));
 
 	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_MenuBar)) 
 	{
-
-
 		DrawTopBar(); 
 
 		float2 regionSizeThisTick = float2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
@@ -75,11 +72,13 @@ bool GameViewportDockPanel::Draw()
 		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - (viewportSize.y / 2) + menuBarHeight));
 		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(viewportSize.x - 1, viewportSize.y - 2));
 
-		FLY_WARNING("Viewport Center: %f %f", viewportCenterGlobalPos.x, viewportCenterGlobalPos.y);
+		//FLY_WARNING("Viewport Center: %f %f", viewportCenterGlobalPos.x, viewportCenterGlobalPos.y);
 
 	}
 
 	glDisable(GL_TEXTURE_2D);
+
+	GetMouseRelativePosition();
 
 	ImGui::End();
 	ImGui::PopStyleColor(); 
@@ -191,5 +190,7 @@ float2& GameViewportDockPanel::GetViewportCenterGlobal()
 
 float2& GameViewportDockPanel::GetMouseRelativePosition()
 {
-	float2 mouseRelativePos = viewportCenterGlobalPos -
+	float2 mouseRelativePos = float2(ImGui::GetMousePos().x, ImGui::GetMousePos().y) - viewportCenterGlobalPos; 
+	//FLY_LOG("Relative Mouse Position: %f, %f", mouseRelativePos.x, mouseRelativePos.y); 
+	return mouseRelativePos; 
 }
