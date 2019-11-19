@@ -1,5 +1,8 @@
 #include "BoundingBox.h"
 #include "OpenGL.h"
+#include "Application.h"
+#include "ModuleImGui.h"
+#include "GameViewportDockPanel.h"
 #include "SDL.h"
 #include "FlyObject.h"
 #include "imgui.h"
@@ -93,7 +96,19 @@ void BoundingBox::ShowCornerDots(bool show)
 
 bool BoundingBox::IsMouseOver()
 {
-	ImVec2 mousePos = ImGui::GetMousePos();
+	float2 mousePos = App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition();
+	float2 mousePosGame = App->moduleImGui->gameViewportDockPanel->ScreenToWorld(mousePos.x, mousePos.y);
+
+	float2 topLeft = float2(-size.x, -size.y);
+	float2 topRight = float2(size.x, -size.y);
+	float2 bottomLeft = float2(-size.x, size.y);
+	float2 bottomRight = float2(size.x, size.y);
+
+	FLY_LOG("Mouse Pos: %f", mousePos.x);
+	FLY_LOG("Game Pos: %f", mousePosGame.x);
+
+	if (mousePosGame.x > topLeft.x && mousePosGame.x < topRight.x)
+		FLY_LOG("Is Inside");
 
 	/*GLdouble modelview[16]; 
 	GLdouble projection[16];

@@ -86,10 +86,11 @@ bool ModuleRender::Init()
 	float windowHeight = App->moduleWindow->GetHeight();
 
 	float aspectRatio = windowWidth / windowHeight;
-	glViewport(0, 0, windowWidth, windowHeight);
-	glOrtho(-400.0 * aspectRatio, 400.0 * aspectRatio, -400.0, 400.0, 1.0, -1.0);
 
-	
+	glViewport(0, 0, windowWidth, windowHeight);
+	//glOrtho(-400.0 * aspectRatio, 400.0 * aspectRatio, -400.0, 400.0, 1.0, -1.0);
+	glOrtho(-100.0, 100.0, -100.0, 100.0, 1.0, -1.0);
+
 	FLY_WARNING("glOrtho resized in Init");
 
 	GLenum error = glGetError();

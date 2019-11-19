@@ -34,6 +34,7 @@ public:
 
 	float2& GetViewportCenterGlobal(); 
 	float2& GetMouseRelativePosition(); 
+	float2& ScreenToWorld(float screenPosX, float screenPosY);
 
 	bool aspectRatioChanged; 
 

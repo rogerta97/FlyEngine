@@ -115,7 +115,7 @@ void GameViewportDockPanel::FitViewportToRegion()
 
 	float aspectRatio = viewportSize.x / viewportSize.y; 
 	glViewport(0, 0, viewportSize.x, viewportSize.y); 
-	glOrtho(-400.0 * aspectRatio, 400.0 * aspectRatio, -400.0, 400.0, 1.0, -1.0);
+	glOrtho(-500.0, 500.0, -500.0, 500.0, 1.0, -1.0);
 }
 
 void GameViewportDockPanel::DrawTopBar()
@@ -193,4 +193,19 @@ float2& GameViewportDockPanel::GetMouseRelativePosition()
 	float2 mouseRelativePos = float2(ImGui::GetMousePos().x, ImGui::GetMousePos().y) - viewportCenterGlobalPos; 
 	//FLY_LOG("Relative Mouse Position: %f, %f", mouseRelativePos.x, mouseRelativePos.y); 
 	return mouseRelativePos; 
+}
+
+float2& GameViewportDockPanel::ScreenToWorld(float screenPosX, float screenPosY)
+{
+	float screenMaxX = viewportSize.x / 2; 
+	float worldMaxX = 500.0f;
+
+	float screenMaxY = viewportSize.y / 2;
+	float worldMaxY = 500.0f;
+
+	float2 returnV; 
+	returnV.x = (screenPosX * worldMaxX) / screenMaxX;
+	returnV.y = (screenPosY * worldMaxY) / screenMaxY;
+
+	return returnV;
 }
