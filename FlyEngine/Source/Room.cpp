@@ -246,6 +246,18 @@ void Room::SetRoomID(UID roomID)
 
 void Room::SetSelectedObject(FlyObject* newObject)
 {
+	for (auto& it : objectsInRoom)
+	{
+		if ((it) == newObject)
+		{
+			(it)->isSelected = true; 
+		}
+		else
+		{		
+			it->isSelected = false; 
+		}
+	}
+
 	selectedObject = newObject;
 
 	ObjectPropertiesDockPanel* propertiesDockPanel = (ObjectPropertiesDockPanel*)App->moduleImGui->GetDockPanel(DOCK_OBJECT_PROPERTIES); 

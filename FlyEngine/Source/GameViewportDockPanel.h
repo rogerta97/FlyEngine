@@ -25,10 +25,12 @@ public:
 	void FitViewportToRegion();
 
 	void ReceiveEvent(FlyEngineEvent eventType);
+	bool IsMouseInViewport();
 
 	// Get & Set ----
-	float2 GetRegionSize() const; 
-	float2 GetViewportSize() const;
+	float2& GetRegionSize(); 
+	float2& GetViewportSize();
+	float& GetAspectRatio(); 
 
 	GizmoMode GetGizmoMode() const;
 
@@ -37,12 +39,14 @@ public:
 	float2& ScreenToWorld(float screenPosX, float screenPosY);
 
 	bool aspectRatioChanged; 
+	float verticalOffset; 
 
 private: 
 
 	float2 viewportCenterGlobalPos; 
 	float2 regionSize;
 	float2 viewportSize;
+	float aspectRatio;
 	GizmoMode gizmoMode; 
 };
 

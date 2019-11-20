@@ -10,28 +10,37 @@ public:
 	BoundingBox(FlyObject* objectAttached); 
 	~BoundingBox();
 
-
 	void Draw();
 
-	void DrawSquare(math::float2& topLeft, math::float2& topRight, math::float2& bottomLeft, math::float2& bottomRight, float4 color);
+	void DrawSquare(float4 color);
 	void DrawControlPoint(float2 pointPos, float pointSize);
 
+	bool IsMouseOver();
+
+	// Set & Get 
 	void SetSize(float newMaxPointX, float newMaxPointY);
 	float2& GetSize();
 
 	void SetSquareColor(float4& newSquareColor);
 	float4& GetsquareColor();
 
-	void ShowCornerDots(bool show);
+	float2& GetMinPoint();
+	void SetMinPoint(float2 _minPoint); 
 
-	bool IsMouseOver();
+	float2& GetMaxPoint();
+	void SetMaxPoint(float2 _maxPoint);
+
+public:
+	bool showCornerDots; 
 
 private: 
 
-	bool showCornerDots; 
 
 	float2 size;
 	float4 squareColor; 
+
+	float2 minPoint; 
+	float2 maxPoint; 
 
 	FlyObject* objectAttached; 
 };

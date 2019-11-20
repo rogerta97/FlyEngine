@@ -24,7 +24,7 @@ FlyObject::FlyObject(std::string _name)
 	transform = new Transform();
 
 	objectBorderBox = new BoundingBox(this); 
-	objectBorderBox->ShowCornerDots(false); 
+	objectBorderBox->showCornerDots = false; 
 
 	gizmos = new Gizmos(this);
 	gizmos->SetMoveGizmoStyle(5.0f, 50.0f, 3.0f);
@@ -93,6 +93,10 @@ ImageTool* FlyObject::AddImageTool(const char* imageTexturePath)
 		newAtrImage->CreateImage(imageTexturePath);
 
 		toolsList.push_back(newAtrImage);
+
+		// Addapt Gizmo Rect to new Image
+		gizmos->FitBoxToObject();
+
 		return newAtrImage;
 	}
 

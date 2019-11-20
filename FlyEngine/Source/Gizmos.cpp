@@ -5,7 +5,10 @@
 #include "ImageTool.h"
 #include "Quad.h"
 #include "ModuleImGui.h"
+#include "ModuleInput.h"
 #include "BoundingBox.h"
+#include "ModuleRoomManager.h"
+#include "Room.h"
 #include "GameViewportDockPanel.h"
 
 Gizmos::Gizmos(FlyObject* _objectAttached)
@@ -13,8 +16,9 @@ Gizmos::Gizmos(FlyObject* _objectAttached)
 	objectAttached = _objectAttached; 
 
 	objectBorderBox = new BoundingBox(objectAttached); 
-	objectBorderBox->ShowCornerDots(false); 
+	objectBorderBox->showCornerDots = false;
 	SetBoxColor(float4(0.4f, 0.4f, 1.0f, 0.2f)); 
+	FitBoxToObject(); 
 }
 
 Gizmos::~Gizmos()
@@ -30,7 +34,20 @@ void Gizmos::Update()
 		switch (gizmoMode)
 		{
 		case GIZMO_SELECT:
-			objectBorderBox->IsMouseOver(); 
+
+			if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN))
+			{
+				
+				if (objectBorderBox->IsMouseOver())
+				{
+					App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(objectAttached); 
+				}
+				else
+				{
+					App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(nullptr);
+				}
+			}
+				 
 			break;
 
 		case GIZMO_MOVE:

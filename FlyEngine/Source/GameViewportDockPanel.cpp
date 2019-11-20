@@ -63,17 +63,15 @@ bool GameViewportDockPanel::Draw()
 		float titleBarHeight = ImGui::GetCurrentWindow()->TitleBarHeight(); 
 		float menuBarHeight = ImGui::GetCurrentWindow()->MenuBarHeight();
 
+		verticalOffset = titleBarHeight + menuBarHeight;
 		regionSize = float2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
-		regionSize.y += (titleBarHeight + menuBarHeight);
+		regionSize.y += titleBarHeight + menuBarHeight;
 
 		float2 screenCenter = float2(regionSize.x / 2, regionSize.y / 2);
 		viewportCenterGlobalPos = float2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y) + screenCenter;
 
 		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - (viewportSize.y / 2) + menuBarHeight));
 		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(viewportSize.x - 1, viewportSize.y - 2));
-
-		//FLY_WARNING("Viewport Center: %f %f", viewportCenterGlobalPos.x, viewportCenterGlobalPos.y);
-
 	}
 
 	glDisable(GL_TEXTURE_2D);
@@ -99,6 +97,16 @@ void GameViewportDockPanel::ReceiveEvent(FlyEngineEvent eventType)
 	}
 }
 
+bool GameViewportDockPanel::IsMouseInViewport()
+{
+	float2 mousePositionRelative = GetMouseRelativePosition(); 
+	
+	if (mousePositionRelative.x < -viewportSize.x / 2 || mousePositionRelative.x > viewportSize.x / 2 ||
+		) {
+
+	}
+}
+
 void GameViewportDockPanel::FitViewportToRegion()
 {
 	viewportSize.x = regionSize.x;
@@ -113,9 +121,10 @@ void GameViewportDockPanel::FitViewportToRegion()
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	float aspectRatio = viewportSize.x / viewportSize.y; 
+	aspectRatio = viewportSize.x / viewportSize.y; 
 	glViewport(0, 0, viewportSize.x, viewportSize.y); 
-	glOrtho(-500.0, 500.0, -500.0, 500.0, 1.0, -1.0);
+	glOrtho(-500.0 * aspectRatio, 500.0 * aspectRatio, -500.0, 500.0, 1.0, -1.0);
+	//glOrtho(-500.0 , 500.0 , -500.0, 500.0, 1.0, -1.0);
 }
 
 void GameViewportDockPanel::DrawTopBar()
@@ -168,14 +177,19 @@ void GameViewportDockPanel::DrawTopBar()
 	ImGui::PopStyleColor();
 }
 
-float2 GameViewportDockPanel::GetRegionSize() const
+float2& GameViewportDockPanel::GetRegionSize() 
 {
 	return regionSize;
 }
 
-float2 GameViewportDockPanel::GetViewportSize() const
+float2& GameViewportDockPanel::GetViewportSize() 
 {
 	return viewportSize;
+}
+
+float& GameViewportDockPanel::GetAspectRatio()
+{
+	return aspectRatio; 
 }
 
 GizmoMode GameViewportDockPanel::GetGizmoMode() const
@@ -206,6 +220,7 @@ float2& GameViewportDockPanel::ScreenToWorld(float screenPosX, float screenPosY)
 	float2 returnV; 
 	returnV.x = (screenPosX * worldMaxX) / screenMaxX;
 	returnV.y = (screenPosY * worldMaxY) / screenMaxY;
+	returnV.y -= ((verticalOffset / 2) * aspectRatio); 
 
 	return returnV;
 }
