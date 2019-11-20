@@ -28,6 +28,9 @@ Gizmos::~Gizmos()
 
 void Gizmos::Update()
 {
+	if (!App->moduleImGui->gameViewportDockPanel->IsMouseInViewport())
+		return; 
+
 	GizmoMode gizmoMode = App->moduleImGui->gameViewportDockPanel->GetGizmoMode(); 
 	if (gizmoMode != GIZMO_null)
 	{
@@ -36,8 +39,7 @@ void Gizmos::Update()
 		case GIZMO_SELECT:
 
 			if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN))
-			{
-				
+			{	
 				if (objectBorderBox->IsMouseOver())
 				{
 					App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(objectAttached); 
@@ -47,6 +49,11 @@ void Gizmos::Update()
 					App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(nullptr);
 				}
 			}
+
+			// Aixo es nomes un test, el algoritme de mousepicking no ha de funcionar aixi sino de la seguent manera:
+
+			// el input s'agafa desde algun lloc on es tingui accés a la llista d'objectes, després s'itera per tots els objectes i es mira si la 
+			// ratoli esta dintre de la bb, si está tel guardes, si despres un surt que falla seguir amb el que tens guardat. 
 				 
 			break;
 

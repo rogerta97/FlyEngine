@@ -100,11 +100,13 @@ void GameViewportDockPanel::ReceiveEvent(FlyEngineEvent eventType)
 bool GameViewportDockPanel::IsMouseInViewport()
 {
 	float2 mousePositionRelative = GetMouseRelativePosition(); 
-	
 	if (mousePositionRelative.x < -viewportSize.x / 2 || mousePositionRelative.x > viewportSize.x / 2 ||
-		) {
-
+		mousePositionRelative.y > viewportSize.y / 2 || mousePositionRelative.y < -viewportSize.y / 2)
+	{
+		return false; 
 	}
+
+	return true; 
 }
 
 void GameViewportDockPanel::FitViewportToRegion()
