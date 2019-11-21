@@ -22,6 +22,10 @@ public:
 	std::string GetName() const;
 	void SetName(std::string newName); 
 
+	void Move();
+	void Rotate(); 
+	void Scale(); 
+
 	// Utils -----------
 	float2 GetObjectVisualDimensions(); 
 

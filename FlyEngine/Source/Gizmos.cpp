@@ -10,15 +10,19 @@
 #include "ModuleRoomManager.h"
 #include "Room.h"
 #include "GameViewportDockPanel.h"
+#include "Transform.h"
 
 Gizmos::Gizmos(FlyObject* _objectAttached)
 {
 	objectAttached = _objectAttached; 
+	
+	gizmoTransform = new Transform();
 
-	objectBorderBox = new BoundingBox(objectAttached); 
-	objectBorderBox->showCornerDots = false;
+	selectGizmo.objectBorderBox = new BoundingBox(objectAttached);
+	selectGizmo.objectBorderBox->showCornerDots = false;
+
+	CalculateGizmos(); 
 	SetBoxColor(float4(0.4f, 0.4f, 1.0f, 0.2f)); 
-	FitBoxToObject(); 
 }
 
 Gizmos::~Gizmos()
@@ -40,7 +44,7 @@ void Gizmos::Update()
 
 			if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN))
 			{	
-				if (objectBorderBox->IsMouseOver())
+				if (selectGizmo.objectBorderBox->IsMouseOver())
 				{
 					App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(objectAttached); 
 				}
@@ -82,15 +86,48 @@ void Gizmos::Draw()
 
 void Gizmos::DrawSelectGizmo()
 {
-	objectBorderBox->Draw();
+	glMatrixMode(GL_MODELVIEW); 
+	glLoadIdentity();
+
+	selectGizmo.objectBorderBox->Draw();
 }
 
 void Gizmos::CalculateGizmos()
 {
-	// Fit Transform gizmo 
-	FitBoxToObject(); 
+	if (objectAttached != nullptr)
+	{
+		gizmoTransform->SetPosition(objectAttached->transform->GetPosition());
+		gizmoTransform->SetRotationEuler(objectAttached->transform->GetRotation());
+		gizmoTransform->SetScale(objectAttached->transform->GetScale());
+		gizmoTransform->CalculateViewMatrix();
 
-	// Fit Move Gizmo
+		gizmoTransform->GetViewMatrix(); 
+		FitMinAndMaxPoints();
+	}
+}
+
+void Gizmos::FitMinAndMaxPoints()
+{
+	selectGizmo.objectBorderBox->CenterMinMaxPoints();
+	float2 selectMaxPoint = selectGizmo.objectBorderBox->GetMaxPoint();
+	float2 selectMinPoint = selectGizmo.objectBorderBox->GetMinPoint();
+
+	// Position
+	selectMaxPoint.x *= gizmoTransform->GetScale().x;
+	selectMaxPoint.y *= gizmoTransform->GetScale().y;
+
+	selectMinPoint.x *= gizmoTransform->GetScale().x;
+	selectMinPoint.y *= gizmoTransform->GetScale().y;
+
+	// Scale
+	selectMaxPoint.x += gizmoTransform->GetPosition().x;
+	selectMaxPoint.y += gizmoTransform->GetPosition().y;
+
+	selectMinPoint.x += gizmoTransform->GetPosition().x;
+	selectMinPoint.y += gizmoTransform->GetPosition().y;
+
+	selectGizmo.objectBorderBox->SetMaxPoint(selectMaxPoint);
+	selectGizmo.objectBorderBox->SetMinPoint(selectMinPoint);
 }
 
 void Gizmos::FitBoxToObject()
@@ -100,23 +137,23 @@ void Gizmos::FitBoxToObject()
 		if (objectAttached->GetTool(AT_IMAGE) != nullptr)
 		{
 			float2 objectDimensions = objectAttached->GetObjectVisualDimensions(); 
-			objectBorderBox->SetSize(objectDimensions.x, objectDimensions.y); 
+			selectGizmo.objectBorderBox->SetSize(objectDimensions.x, objectDimensions.y); 
 		}
 	}
 }
 
 void Gizmos::DrawMoveGizmo()
 {
-	glLineWidth(arrowWidth);
+	glLineWidth(moveGizmo.arrowWidth);
 
 	// X Axis
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glBegin(GL_LINES);
 	glColor3f(0, 0, 255); glVertex3f(0, 0, 0.f);
-	glColor3f(0, 0, 255); glVertex3f(arrowLenght, 0, 0.f);
+	glColor3f(0, 0, 255); glVertex3f(moveGizmo.arrowLenght, 0, 0.f);
 	glEnd();
 
-	float3 triangleBase = float3(arrowLenght, 0, 0);
+	float3 triangleBase = float3(moveGizmo.arrowLenght, 0, 0);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glBegin(GL_TRIANGLES);
 	glColor3f(0, 0, 255); glVertex3f(triangleBase.x, triangleBase.y - 10.0f, 0.0f);
@@ -129,10 +166,10 @@ void Gizmos::DrawMoveGizmo()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glBegin(GL_LINES);
 	glColor3f(0, 255, 0); glVertex3f(0, 0, 0.f);
-	glColor3f(0, 255, 0); glVertex3f(0,-arrowLenght, 0.f);
+	glColor3f(0, 255, 0); glVertex3f(0,-moveGizmo.arrowLenght, 0.f);
 	glEnd();
 
-	triangleBase = float3(0, 0 - arrowLenght, 0);
+	triangleBase = float3(0, 0 - moveGizmo.arrowLenght, 0);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glBegin(GL_TRIANGLES);
 	glColor3f(0, 255, 0); glVertex3f(triangleBase.x - 10.0f, triangleBase.y, 0.0f);
@@ -142,10 +179,10 @@ void Gizmos::DrawMoveGizmo()
 
 	// Center Square
 	glBegin(GL_QUAD_STRIP);
-	glColor3f(255, 0, 0); glVertex3f(-centerSquareSize, -centerSquareSize, 0.f);
-	glColor3f(255, 0, 0); glVertex3f(centerSquareSize, -centerSquareSize, 0.f);
-	glColor3f(255, 0, 0); glVertex3f(-centerSquareSize, centerSquareSize, 0.f);
-	glColor3f(255, 0, 0); glVertex3f(centerSquareSize, centerSquareSize, 0.f);
+	glColor3f(255, 0, 0); glVertex3f(-moveGizmo.centerSquareSize, -moveGizmo.centerSquareSize, 0.f);
+	glColor3f(255, 0, 0); glVertex3f(moveGizmo.centerSquareSize, -moveGizmo.centerSquareSize, 0.f);
+	glColor3f(255, 0, 0); glVertex3f(-moveGizmo.centerSquareSize, moveGizmo.centerSquareSize, 0.f);
+	glColor3f(255, 0, 0); glVertex3f(moveGizmo.centerSquareSize, moveGizmo.centerSquareSize, 0.f);
 	glEnd();
 
 	glLineWidth(1.0f);
@@ -155,32 +192,32 @@ void Gizmos::DrawMoveGizmo()
 
 void Gizmos::SetArrowLenght(float& lineLenght)
 {
-	arrowLenght = lineLenght; 
+	moveGizmo.arrowLenght = lineLenght;
 }
 
 void Gizmos::SetArrowWidth(float& _arrowWidth)
 {
-	arrowWidth = _arrowWidth; 
+	moveGizmo.arrowWidth = _arrowWidth;
 }
 
 void Gizmos::SetBoxSize(float& boxSizeX, float& boxSizeY)
 {
-	objectBorderBox->SetSize(boxSizeX, boxSizeY); 
+	selectGizmo.objectBorderBox->SetSize(boxSizeX, boxSizeY);
 }
 
 void Gizmos::SetBoxColor(float4 color)
 {
-	objectBorderBox->SetSquareColor(color); 
+	selectGizmo.objectBorderBox->SetSquareColor(color); 
 }
 
 void Gizmos::SetMoveGizmoStyle(float centerSize, float lineLenght, float _arrowWidth)
 {
-	centerSquareSize = centerSize; 
-	arrowLenght = lineLenght; 
-	arrowWidth = _arrowWidth;
+	moveGizmo.centerSquareSize = centerSize;
+	moveGizmo.arrowLenght = lineLenght;
+	moveGizmo.arrowWidth = _arrowWidth;
 }
 
 void Gizmos::SetCenterSquareSize(float& _centerSize)
 {
-	centerSquareSize = _centerSize;
+	moveGizmo.centerSquareSize = _centerSize;
 }

@@ -15,9 +15,9 @@ Transform::~Transform()
 {
 }
 
-float3 Transform::GetPosition() const
+float2 Transform::GetPosition() const
 {
-	return position; 
+	return float2(position.x, position.y); 
 }
 
 float3& Transform::GetPositionRef()
@@ -50,9 +50,9 @@ void Transform::SetRotationEuler(float2 newRotation)
 	SetRotationEuler(float3(newRotation.x, newRotation.y, 0)); 
 }
 
-float3 Transform::GetScale() const
+float2 Transform::GetScale() const
 {
-	return scale;
+	return float2(scale.x, scale.y);
 }
 
 void Transform::SetScale(float3 newScale)
@@ -79,5 +79,10 @@ float4x4 Transform::CalculateViewMatrix()
 	
 
 	ViewMatrix = new_mat;
+	return ViewMatrix; 
+}
+
+float4x4& Transform::GetViewMatrix()
+{
 	return ViewMatrix; 
 }

@@ -18,6 +18,12 @@ public:
 	bool IsMouseOver();
 	void FitToObject(); 
 
+	void Move(float2 newPositon);
+	void CenterMinMaxPoints();
+
+	void Rotate(float2 newRotationEuler);
+	void Scale(float2 newScale);
+
 	// Set & Get 
 	void SetSize(float newMaxPointX, float newMaxPointY);
 	float2& GetSize();
@@ -35,8 +41,6 @@ public:
 	bool showCornerDots; 
 
 private: 
-
-
 	float2 size;
 	float4 squareColor; 
 

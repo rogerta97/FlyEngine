@@ -126,7 +126,6 @@ void GameViewportDockPanel::FitViewportToRegion()
 	aspectRatio = viewportSize.x / viewportSize.y; 
 	glViewport(0, 0, viewportSize.x, viewportSize.y); 
 	glOrtho(-500.0 * aspectRatio, 500.0 * aspectRatio, -500.0, 500.0, 1.0, -1.0);
-	//glOrtho(-500.0 , 500.0 , -500.0, 500.0, 1.0, -1.0);
 }
 
 void GameViewportDockPanel::DrawTopBar()

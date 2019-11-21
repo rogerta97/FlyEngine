@@ -5,6 +5,7 @@
 #include "imgui.h"
 #include "Tool.h"
 #include "ModuleRoomManager.h"
+#include "Gizmos.h"
 #include "ResourceManager.h"
 #include "ImageTool.h"
 #include "ImageImporter.h"
@@ -216,6 +217,7 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 		if (ImGui::DragFloat2("Position", showPosition, 0.5f))
 		{
 			selectedObject->transform->SetPosition(float2(showPosition[0], showPosition[1]));
+			selectedObject->gizmos->CalculateGizmos(); 
 		}
 
 		if (ImGui::DragFloat2("Rotation", showRotation))
@@ -226,6 +228,7 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 		if (ImGui::DragFloat2("Scale", showScale, 0.1f))
 		{
 			selectedObject->transform->SetScale(float2(showScale[0], showScale[1]));
+			selectedObject->gizmos->CalculateGizmos();
 		}
 		POP_FONT;
 	}

@@ -5,6 +5,20 @@
 
 class BoundingBox; 
 class FlyObject;
+class Transform;
+
+struct SelectGizmo
+{
+	BoundingBox* objectBorderBox;
+};
+
+struct MoveGizmo
+{
+	float arrowLenght;
+	float arrowWidth;
+	float centerSquareSize;
+};
+
 class Gizmos
 {
 public:
@@ -16,7 +30,9 @@ public:
 
 	void DrawMoveGizmo();
 	void DrawSelectGizmo(); 
-	void CalculateGizmos(); 
+	void CalculateGizmos();
+	void FitMinAndMaxPoints();
+
 
 	void FitBoxToObject(); 
 
@@ -28,15 +44,13 @@ public:
 
 	void SetMoveGizmoStyle(float centerSize, float lineLenght, float _arrowWidth); 
 
+public: 
+	Transform* gizmoTransform; 
+
 private:
 
-	// Move Gizmo
-	float arrowLenght; 
-	float arrowWidth; 
-	float centerSquareSize; 
-
-	// Select Gizmo
-	BoundingBox* objectBorderBox; 
+	MoveGizmo moveGizmo;
+	SelectGizmo selectGizmo; 
 
 	FlyObject* objectAttached;
 };

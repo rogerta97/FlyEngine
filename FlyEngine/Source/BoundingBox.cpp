@@ -110,6 +110,27 @@ void BoundingBox::SetMaxPoint(float2 _maxPoint)
 	maxPoint = _maxPoint; 
 }
 
+void BoundingBox::Move(float2 newPosition)
+{
+
+}
+
+void BoundingBox::CenterMinMaxPoints()
+{
+	minPoint = float2(-size.x, size.y);
+	maxPoint = float2(size.x, -size.y);
+}
+
+void BoundingBox::Rotate(float2 newRotationEuler)
+{
+
+}
+
+void BoundingBox::Scale(float2 newScale)
+{
+	
+}
+
 bool BoundingBox::IsMouseOver()
 {
 	float2 mousePos = App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition();
@@ -117,8 +138,10 @@ bool BoundingBox::IsMouseOver()
 
 	float aspectRatio = App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
 	mousePosGame.x *= aspectRatio;	
-	if (mousePosGame.x > minPoint.x && mousePosGame.x < maxPoint.x &&
-		mousePosGame.y < minPoint.y && mousePosGame.y > maxPoint.y)
+
+	// Calculate Final Position Values
+	if (mousePosGame.x > (minPoint.x) && (mousePosGame.x < (maxPoint.x) &&
+		mousePosGame.y < (minPoint.y) && mousePosGame.y >(maxPoint.y)))
 		return true; 
 
 	return false; 
@@ -126,8 +149,6 @@ bool BoundingBox::IsMouseOver()
 
 void BoundingBox::FitToObject()
 {
-
-	minPoint += objectAttached->transform->GetPosition();
-
-
+	//minPoint += objectAttached->transform->GetPosition();
 }
+

@@ -71,6 +71,19 @@ void FlyObject::SetName(std::string newName)
 	name = newName; 
 }
 
+void FlyObject::Move()
+{
+
+}
+
+void FlyObject::Rotate()
+{
+}
+
+void FlyObject::Scale()
+{
+}
+
 float2 FlyObject::GetObjectVisualDimensions()
 {
 	float2 objectVisualSize; 

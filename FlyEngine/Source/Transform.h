@@ -10,8 +10,9 @@ public:
 	~Transform(); 
 	
 	float4x4 CalculateViewMatrix(); 
+	float4x4& GetViewMatrix(); 
 
-	float3 GetPosition() const; 
+	float2 GetPosition() const; 
 	float3& GetPositionRef(); 
 	void SetPosition(float3 newPosition);
 	void SetPosition(float2 newPosition);
@@ -20,7 +21,7 @@ public:
 	void SetRotationEuler(float3 newRotation);
 	void SetRotationEuler(float2 newRotation);
 
-	float3 GetScale() const;
+	float2 GetScale() const;
 	void SetScale(float3 newRotation);
 	void SetScale(float2 newRotation);
 
