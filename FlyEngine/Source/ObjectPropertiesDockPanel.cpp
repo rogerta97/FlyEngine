@@ -54,7 +54,7 @@ bool ObjectPropertiesDockPanel::Draw()
 
 			ImGui::Spacing();
 
-			DrawObjectPlacementCH();
+			//DrawObjectPlacementCH();
 
 			ImGui::Spacing();
 			ImGui::Separator(); 

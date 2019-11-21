@@ -19,8 +19,8 @@ Gizmos::Gizmos(FlyObject* _objectAttached)
 	gizmoTransform = new Transform();
 
 	selectGizmo = new SelectGizmo(_objectAttached);
-
 	moveGizmo = new MoveGizmo(_objectAttached);
+
 	SetMoveGizmoStyle(7.0f, 100.0f, 5.0f, 20, 20);
 	SetBoxColor(float4(0.4f, 0.4f, 1.0f, 0.2f)); 
 }
@@ -73,13 +73,15 @@ void Gizmos::Update()
 			if (moveGizmo->canDrag)
 			{
 				float2 positionInDrag = float2(moveGizmo->beginDragPos.x + ImGui::GetMouseDragDelta().x, moveGizmo->beginDragPos.y); 
-				objectAttached->transform->SetPosition(positionInDrag);
+				float2 positionInDragGame = App->moduleImGui->gameViewportDockPanel->ScreenToWorld(positionInDrag.x, positionInDrag.y); 
+				objectAttached->transform->SetPosition(positionInDragGame);
 				FLY_LOG("Accum Drag: %f", ImGui::GetMouseDragDelta().x);
 
 				if (App->moduleInput->GetMouseButton(LEFT_CLICK) == KEY_UP)
 				{
 					moveGizmo->canDrag = false; 
-					moveGizmo->beginDragPos = float2(10, 10); 
+					moveGizmo->beginDragPos = float2(0, 0); 
+					objectAttached->transform->SetPosition(positionInDrag);
 				}
 			}
 
@@ -203,7 +205,7 @@ void Gizmos::DrawMoveGizmo()
 	glEnd();
 
 	moveGizmo->axisXBox->Draw();
-	moveGizmo->axisYBox->Draw();
+	//moveGizmo->axisYBox->Draw();
 
 	glLineWidth(1.0f);
 	glColor3f(255, 255, 255);
@@ -306,15 +308,15 @@ MoveGizmo::~MoveGizmo()
 
 void MoveGizmo::AddaptAxisBoxes(FlyObject* objectAttached)
 {
-	//// X Axis 
-	//float2 moveMaxPoint = axisXBox->GetMaxPoint();
-	//float2 moveMinPoint = axisXBox->GetMinPoint();
+	// X Axis 
+	float2 moveMaxPoint = axisXBox->GetMaxPoint();
+	float2 moveMinPoint = axisXBox->GetMinPoint();
 
-	//moveMaxPoint.x += objectAttached->transform->GetPosition().x;
-	//moveMinPoint.y += objectAttached->transform->GetPosition().y;
-	//								
-	//moveMaxPoint.x += objectAttached->transform->GetPosition().x;
-	//moveMinPoint.y += objectAttached->transform->GetPosition().y;
+	moveMinPoint.x += objectAttached->transform->GetPosition().x;
+	moveMinPoint.y += objectAttached->transform->GetPosition().y;
+									
+	moveMaxPoint.x += objectAttached->transform->GetPosition().x;
+	moveMaxPoint.y += objectAttached->transform->GetPosition().y;
 
 	//axisXBox->SetMinPoint(moveMinPoint);
 	//axisXBox->SetMaxPoint(moveMinPoint); 
