@@ -6,6 +6,7 @@
 #include "Texture.h"
 #include "FlyObject.h"
 #include "ImageImporter.h"
+#include "Gizmos.h"
 
 #include "mmgr.h"
 
@@ -127,6 +128,8 @@ void ImageTool::SetTexture(Texture* newTexture)
 
 	// Set Texture 
 	imageTexture = newTexture;
+
+	parentObject->gizmos->CalculateGizmos(); 
 }
 
 Texture* ImageTool::GetTexture() const

@@ -16,6 +16,7 @@ public:
 
 	void DrawMoveGizmo();
 	void DrawSelectGizmo(); 
+	void CalculateGizmos(); 
 
 	void FitBoxToObject(); 
 
@@ -29,12 +30,15 @@ public:
 
 private:
 
+	// Move Gizmo
 	float arrowLenght; 
 	float arrowWidth; 
 	float centerSquareSize; 
 
-	FlyObject* objectAttached;
+	// Select Gizmo
 	BoundingBox* objectBorderBox; 
+
+	FlyObject* objectAttached;
 };
 
 #endif // ! _GIZMOS_H_

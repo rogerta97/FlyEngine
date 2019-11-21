@@ -85,6 +85,14 @@ void Gizmos::DrawSelectGizmo()
 	objectBorderBox->Draw();
 }
 
+void Gizmos::CalculateGizmos()
+{
+	// Fit Transform gizmo 
+	FitBoxToObject(); 
+
+	// Fit Move Gizmo
+}
+
 void Gizmos::FitBoxToObject()
 {
 	if (objectAttached != nullptr) 

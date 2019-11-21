@@ -16,6 +16,7 @@ public:
 	void DrawControlPoint(float2 pointPos, float pointSize);
 
 	bool IsMouseOver();
+	void FitToObject(); 
 
 	// Set & Get 
 	void SetSize(float newMaxPointX, float newMaxPointY);

@@ -123,3 +123,11 @@ bool BoundingBox::IsMouseOver()
 
 	return false; 
 }
+
+void BoundingBox::FitToObject()
+{
+
+	minPoint += objectAttached->transform->GetPosition();
+
+
+}

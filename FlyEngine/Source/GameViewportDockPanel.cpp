@@ -25,7 +25,7 @@ GameViewportDockPanel::GameViewportDockPanel(bool isVisible) : DockPanel("Game V
 	viewportSize = float2(-1.0f, -1.0f);
 
 	aspectRatioChanged = false; 
-	gizmoMode = GIZMO_null; 
+	gizmoMode = GIZMO_SELECT; 
 }
 
 GameViewportDockPanel::~GameViewportDockPanel()
