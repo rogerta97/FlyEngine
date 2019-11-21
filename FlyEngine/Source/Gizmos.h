@@ -7,15 +7,34 @@ class BoundingBox;
 class FlyObject;
 class Transform;
 
-struct SelectGizmo
+class SelectGizmo
 {
+public: 
+	SelectGizmo(FlyObject* parentObject); 
+	~SelectGizmo(); 
+
 	BoundingBox* objectBorderBox;
 };
 
-struct MoveGizmo
+class MoveGizmo
 {
-	float arrowLenght;
-	float arrowWidth;
+public: 
+
+	MoveGizmo(FlyObject* parentObject);
+	~MoveGizmo(); 
+
+	void AddaptAxisBoxes(); 
+
+public:
+	float lineLength;
+	float lineWidth;
+
+	float arrowLength;
+	float arrowWidth; 
+
+	BoundingBox* axisXBox;
+	BoundingBox* axisYBox;
+
 	float centerSquareSize;
 };
 
@@ -30,27 +49,29 @@ public:
 
 	void DrawMoveGizmo();
 	void DrawSelectGizmo(); 
+
 	void CalculateGizmos();
 	void FitMinAndMaxPoints();
 
-
 	void FitBoxToObject(); 
 
-	void SetCenterSquareSize(float& centerSize); 
+	void SetCenterSquareSize(float& centerSize);
+	void SetLineLength(float& lineLenght);
+	void SetLineWidth(float& _arrowWidth);
 	void SetArrowLenght(float& lineLenght);
 	void SetArrowWidth(float& _arrowWidth);
 	void SetBoxSize(float& boxSizeX, float& boxSizeY);
 	void SetBoxColor(float4 color); 
 
-	void SetMoveGizmoStyle(float centerSize, float lineLenght, float _arrowWidth); 
+	void SetMoveGizmoStyle(float centerSize, float lineLenght, float _arrowWidth, float arrowLength, float arrowWidth);
 
 public: 
 	Transform* gizmoTransform; 
 
 private:
 
-	MoveGizmo moveGizmo;
-	SelectGizmo selectGizmo; 
+	MoveGizmo* moveGizmo;
+	SelectGizmo* selectGizmo; 
 
 	FlyObject* objectAttached;
 };

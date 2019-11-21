@@ -27,7 +27,6 @@ FlyObject::FlyObject(std::string _name)
 	objectBorderBox->showCornerDots = false; 
 
 	gizmos = new Gizmos(this);
-	gizmos->SetMoveGizmoStyle(5.0f, 50.0f, 3.0f);
 }
 
 FlyObject::~FlyObject()

@@ -67,7 +67,6 @@ void Transform::SetScale(float2 newScale)
 
 float4x4 Transform::CalculateViewMatrix()
 {
-	//new_mat = new_mat * transform.rotation;
 	float4x4 new_mat = float4x4::identity;
 
 	new_mat = new_mat * new_mat.Scale(scale);
@@ -77,7 +76,6 @@ float4x4 Transform::CalculateViewMatrix()
 
     new_mat.SetTranslatePart(position);
 	
-
 	ViewMatrix = new_mat;
 	return ViewMatrix; 
 }
