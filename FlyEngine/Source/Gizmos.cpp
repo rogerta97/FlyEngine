@@ -22,8 +22,6 @@ Gizmos::Gizmos(FlyObject* _objectAttached)
 
 	moveGizmo = new MoveGizmo(_objectAttached);
 	SetMoveGizmoStyle(7.0f, 100.0f, 5.0f, 20, 20);
-
-	CalculateGizmos(); 
 	SetBoxColor(float4(0.4f, 0.4f, 1.0f, 0.2f)); 
 }
 
@@ -44,7 +42,7 @@ void Gizmos::Update()
 		{
 		case GIZMO_SELECT:
 
-			if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN))
+			if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN)
 			{	
 				if (selectGizmo->objectBorderBox->IsMouseOver())
 				{
@@ -55,15 +53,36 @@ void Gizmos::Update()
 					App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(nullptr);
 				}
 			}
-
-			// Aixo es nomes un test, el algoritme de mousepicking no ha de funcionar aixi sino de la seguent manera:
-
-			// el input s'agafa desde algun lloc on es tingui accés a la llista d'objectes, després s'itera per tots els objectes i es mira si la 
-			// ratoli esta dintre de la bb, si está tel guardes, si despres un surt que falla seguir amb el que tens guardat. 
-				 
 			break;
 
 		case GIZMO_MOVE:
+			if (App->moduleInput->GetMouseButton(LEFT_CLICK) == KEY_DOWN)
+			{
+				if (moveGizmo->axisXBox->IsMouseOver())
+				{
+					moveGizmo->canDrag = true; 
+					moveGizmo->beginDragPos = objectAttached->transform->GetPosition(); 
+				}
+
+				if (moveGizmo->axisYBox->IsMouseOver())
+				{
+	
+				}
+			}
+
+			if (moveGizmo->canDrag)
+			{
+				float2 positionInDrag = float2(moveGizmo->beginDragPos.x + ImGui::GetMouseDragDelta().x, moveGizmo->beginDragPos.y); 
+				objectAttached->transform->SetPosition(positionInDrag);
+				FLY_LOG("Accum Drag: %f", ImGui::GetMouseDragDelta().x);
+
+				if (App->moduleInput->GetMouseButton(LEFT_CLICK) == KEY_UP)
+				{
+					moveGizmo->canDrag = false; 
+					moveGizmo->beginDragPos = float2(10, 10); 
+				}
+			}
+
 			break;
 
 		case GIZMO_null:
@@ -118,33 +137,13 @@ void Gizmos::CalculateGizmos()
 		gizmoTransform->CalculateViewMatrix();
 
 		// Select Gizmo 
-		FitMinAndMaxPoints();	
+		selectGizmo->FitMinAndMaxPoints(objectAttached);
+
+		// Move Tool 
+		moveGizmo->AddaptAxisBoxes(objectAttached);
 	}
 }
 
-void Gizmos::FitMinAndMaxPoints()
-{
-	selectGizmo->objectBorderBox->CenterMinMaxPoints();
-	float2 selectMaxPoint = selectGizmo->objectBorderBox->GetMaxPoint();
-	float2 selectMinPoint = selectGizmo->objectBorderBox->GetMinPoint();
-
-	// Position
-	selectMaxPoint.x *= gizmoTransform->GetScale().x;
-	selectMaxPoint.y *= gizmoTransform->GetScale().y;
-
-	selectMinPoint.x *= gizmoTransform->GetScale().x;
-	selectMinPoint.y *= gizmoTransform->GetScale().y;
-
-	// Scale
-	selectMaxPoint.x += gizmoTransform->GetPosition().x;
-	selectMaxPoint.y += gizmoTransform->GetPosition().y;
-
-	selectMinPoint.x += gizmoTransform->GetPosition().x;
-	selectMinPoint.y += gizmoTransform->GetPosition().y;
-
-	selectGizmo->objectBorderBox->SetMaxPoint(selectMaxPoint);
-	selectGizmo->objectBorderBox->SetMinPoint(selectMinPoint);
-}
 
 void Gizmos::FitBoxToObject()
 {
@@ -203,6 +202,9 @@ void Gizmos::DrawMoveGizmo()
 	glColor3f(255, 0, 0); glVertex3f(moveGizmo->centerSquareSize, moveGizmo->centerSquareSize, 0.f);
 	glEnd();
 
+	moveGizmo->axisXBox->Draw();
+	moveGizmo->axisYBox->Draw();
+
 	glLineWidth(1.0f);
 	glColor3f(255, 255, 255);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -236,6 +238,12 @@ void Gizmos::SetMoveGizmoStyle(float centerSize, float lineLength, float _lineWi
 
 	moveGizmo->arrowLength = arrowLength;
 	moveGizmo->arrowWidth = arrowWidth;
+
+	moveGizmo->axisXBox->SetMinPoint(float2(0, arrowWidth / 2));
+	moveGizmo->axisXBox->SetMaxPoint(float2(lineLength, - arrowWidth / 2));
+
+	moveGizmo->axisYBox->SetMinPoint(float2(-arrowWidth / 2, 0));
+	moveGizmo->axisYBox->SetMaxPoint(float2(arrowWidth / 2, -lineLength));
 }
 
 void Gizmos::SetCenterSquareSize(float& _centerSize)
@@ -262,6 +270,30 @@ SelectGizmo::~SelectGizmo()
 {
 }
 
+void SelectGizmo::FitMinAndMaxPoints(FlyObject* objectAttached)
+{
+	objectBorderBox->CenterMinMaxPoints();
+	float2 selectMaxPoint = objectBorderBox->GetMaxPoint();
+	float2 selectMinPoint = objectBorderBox->GetMinPoint();
+
+	// Scale
+	selectMaxPoint.x *= objectAttached->gizmos->gizmoTransform->GetScale().x;
+	selectMaxPoint.y *= objectAttached->gizmos->gizmoTransform->GetScale().y;
+
+	selectMinPoint.x *= objectAttached->gizmos->gizmoTransform->GetScale().x;
+	selectMinPoint.y *= objectAttached->gizmos->gizmoTransform->GetScale().y;
+
+	// Position
+	selectMaxPoint.x += objectAttached->gizmos->gizmoTransform->GetPosition().x;
+	selectMaxPoint.y += objectAttached->gizmos->gizmoTransform->GetPosition().y;
+
+	selectMinPoint.x += objectAttached->gizmos->gizmoTransform->GetPosition().x;
+	selectMinPoint.y += objectAttached->gizmos->gizmoTransform->GetPosition().y;
+
+	objectBorderBox->SetMaxPoint(selectMaxPoint);
+	objectBorderBox->SetMinPoint(selectMinPoint);
+}
+
 MoveGizmo::MoveGizmo(FlyObject* parentObject)
 {
 	axisXBox = new BoundingBox(parentObject);
@@ -272,7 +304,31 @@ MoveGizmo::~MoveGizmo()
 {
 }
 
-void MoveGizmo::AddaptAxisBoxes()
+void MoveGizmo::AddaptAxisBoxes(FlyObject* objectAttached)
 {
+	//// X Axis 
+	//float2 moveMaxPoint = axisXBox->GetMaxPoint();
+	//float2 moveMinPoint = axisXBox->GetMinPoint();
 
+	//moveMaxPoint.x += objectAttached->transform->GetPosition().x;
+	//moveMinPoint.y += objectAttached->transform->GetPosition().y;
+	//								
+	//moveMaxPoint.x += objectAttached->transform->GetPosition().x;
+	//moveMinPoint.y += objectAttached->transform->GetPosition().y;
+
+	//axisXBox->SetMinPoint(moveMinPoint);
+	//axisXBox->SetMaxPoint(moveMinPoint); 
+
+	//// Y Axis 
+	//moveMaxPoint = axisYBox->GetMaxPoint();
+	//moveMinPoint = axisYBox->GetMinPoint();
+
+	//moveMaxPoint.x += objectAttached->transform->GetPosition().x;
+	//moveMinPoint.y += objectAttached->transform->GetPosition().y;
+
+	//moveMaxPoint.x += objectAttached->transform->GetPosition().x;
+	//moveMinPoint.y += objectAttached->transform->GetPosition().y;
+
+	//axisYBox->SetMinPoint(moveMinPoint);
+	//axisYBox->SetMaxPoint(moveMaxPoint);
 }

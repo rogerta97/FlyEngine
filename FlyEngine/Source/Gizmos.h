@@ -13,6 +13,9 @@ public:
 	SelectGizmo(FlyObject* parentObject); 
 	~SelectGizmo(); 
 
+	void FitMinAndMaxPoints(FlyObject* objectAttached);
+
+public: 
 	BoundingBox* objectBorderBox;
 };
 
@@ -23,7 +26,7 @@ public:
 	MoveGizmo(FlyObject* parentObject);
 	~MoveGizmo(); 
 
-	void AddaptAxisBoxes(); 
+	void AddaptAxisBoxes(FlyObject* objectAttached);
 
 public:
 	float lineLength;
@@ -34,6 +37,9 @@ public:
 
 	BoundingBox* axisXBox;
 	BoundingBox* axisYBox;
+
+	bool canDrag; 
+	float2 beginDragPos; 
 
 	float centerSquareSize;
 };
@@ -51,7 +57,7 @@ public:
 	void DrawSelectGizmo(); 
 
 	void CalculateGizmos();
-	void FitMinAndMaxPoints();
+	
 
 	void FitBoxToObject(); 
 
