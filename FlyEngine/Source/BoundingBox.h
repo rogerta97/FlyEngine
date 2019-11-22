@@ -14,6 +14,7 @@ public:
 
 	void DrawSquare(float4 color);
 	void DrawControlPoint(float2 pointPos, float pointSize);
+	void DrawMinAndMaxPoints(); 
 
 	bool IsMouseOver();
 	void FitToObject(); 

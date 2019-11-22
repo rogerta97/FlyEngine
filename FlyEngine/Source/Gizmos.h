@@ -7,6 +7,14 @@ class BoundingBox;
 class FlyObject;
 class Transform;
 
+enum DragAxis
+{
+	DRAG_X,
+	DRAG_Y,
+	DRAG_XY,
+	NOT_DRAG
+};
+
 class SelectGizmo
 {
 public: 
@@ -38,7 +46,7 @@ public:
 	BoundingBox* axisXBox;
 	BoundingBox* axisYBox;
 
-	bool canDrag; 
+	DragAxis dragAxis;
 	float2 beginDragPos; 
 
 	float centerSquareSize;

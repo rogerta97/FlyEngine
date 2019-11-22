@@ -1,5 +1,9 @@
 #include "Transform.h"
-#include "Globals.h"
+
+#include "Application.h"
+#include "ModuleImGui.h"
+#include "GameViewportDockPanel.h"
+
 #include "mmgr.h"
 
 Transform::Transform()
@@ -28,11 +32,17 @@ float3& Transform::GetPositionRef()
 void Transform::SetPosition(float3 newPosition)
 {
 	position = newPosition; 
+	position.x *= App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
 }
 
 void Transform::SetPosition(float2 newPosition)
 {
 	SetPosition(float3(newPosition.x, newPosition.y, 0)); 
+}
+
+void Transform::SetPosition(float newPositionX, float newPositionY)
+{
+	SetPosition(float2(newPositionX, newPositionY)); 
 }
 
 float3 Transform::GetRotation() const

@@ -188,9 +188,9 @@ float2& GameViewportDockPanel::GetViewportSize()
 	return viewportSize;
 }
 
-float& GameViewportDockPanel::GetAspectRatio()
+float GameViewportDockPanel::GetAspectRatio()
 {
-	return aspectRatio; 
+	return viewportSize.x / viewportSize.y;
 }
 
 GizmoMode GameViewportDockPanel::GetGizmoMode() const
@@ -208,6 +208,17 @@ float2& GameViewportDockPanel::GetMouseRelativePosition()
 	float2 mouseRelativePos = float2(ImGui::GetMousePos().x, ImGui::GetMousePos().y) - viewportCenterGlobalPos; 
 	//FLY_LOG("Relative Mouse Position: %f, %f", mouseRelativePos.x, mouseRelativePos.y); 
 	return mouseRelativePos; 
+}
+
+float2& GameViewportDockPanel::GetMouseGamePos()
+{
+	float2 ret = GetMouseRelativePosition(); 
+	return ScreenToWorld(ret); 
+}
+
+float2& GameViewportDockPanel::ScreenToWorld(float2 screenPos)
+{
+	return ScreenToWorld(screenPos.x, screenPos.y);
 }
 
 float2& GameViewportDockPanel::ScreenToWorld(float screenPosX, float screenPosY)

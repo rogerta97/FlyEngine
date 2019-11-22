@@ -16,6 +16,7 @@ public:
 	float3& GetPositionRef(); 
 	void SetPosition(float3 newPosition);
 	void SetPosition(float2 newPosition);
+	void SetPosition(float newPositionX, float newPositionY);
 
 	float3 GetRotation() const;
 	void SetRotationEuler(float3 newRotation);

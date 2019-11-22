@@ -68,6 +68,10 @@ void BoundingBox::DrawControlPoint(float2 pointPos, float pointSize)
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
+void BoundingBox::DrawMinAndMaxPoints()
+{
+}
+
 void BoundingBox::SetSize(float sizeX, float sizeY)
 {
 	size = float2(sizeX, sizeY);

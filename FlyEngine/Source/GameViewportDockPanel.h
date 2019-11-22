@@ -30,13 +30,16 @@ public:
 	// Get & Set ----
 	float2& GetRegionSize(); 
 	float2& GetViewportSize();
-	float& GetAspectRatio(); 
+	float GetAspectRatio(); 
 
 	GizmoMode GetGizmoMode() const;
 
 	float2& GetViewportCenterGlobal(); 
 	float2& GetMouseRelativePosition(); 
+	float2& GetMouseGamePos(); 
+
 	float2& ScreenToWorld(float screenPosX, float screenPosY);
+	float2& ScreenToWorld(float2 screenPos);
 
 	bool aspectRatioChanged; 
 	float verticalOffset; 

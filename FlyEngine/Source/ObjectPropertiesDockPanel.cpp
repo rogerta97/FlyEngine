@@ -8,12 +8,14 @@
 #include "Gizmos.h"
 #include "ResourceManager.h"
 #include "ImageTool.h"
+#include "GameViewportDockPanel.h"
 #include "ImageImporter.h"
 #include "TinyFileDialog.h"
 #include "Texture.h"
 #include "FlyObject.h"
 #include "Room.h"
 #include "mmgr.h"
+
 
 
 ObjectPropertiesDockPanel::ObjectPropertiesDockPanel(bool isVisible) : DockPanel("Object Properties", isVisible)
@@ -54,7 +56,7 @@ bool ObjectPropertiesDockPanel::Draw()
 
 			ImGui::Spacing();
 
-			//DrawObjectPlacementCH();
+			DrawObjectPlacementCH();
 
 			ImGui::Spacing();
 			ImGui::Separator(); 
@@ -209,23 +211,29 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 	{
 		ImGui::Spacing(); 
 
-		float showPosition[2] = { selectedObject->transform->GetPosition().x, selectedObject->transform->GetPosition().y };
-		float showRotation[2] = { selectedObject->transform->GetRotation().x, selectedObject->transform->GetRotation().y };
-		float showScale[2] = { selectedObject->transform->GetScale().x, selectedObject->transform->GetScale().y };
+		float2 showPosition = App->moduleImGui->gameViewportDockPanel->ScreenToWorld(selectedObject->transform->GetPosition());
+		float showPositionArr[2] = { showPosition.x, showPosition.y };
+
+		float2 showRotation = App->moduleImGui->gameViewportDockPanel->ScreenToWorld(selectedObject->transform->GetRotation().Swizzled(1, 2));
+		float showRotationArr[2] = { showRotation.x, showRotation.y };
+
+		float2 showScale = App->moduleImGui->gameViewportDockPanel->ScreenToWorld(selectedObject->transform->GetScale());
+		float showScaleArr[2] = { showScale.x, showScale.y };
+
 
 		PUSH_FONT(App->moduleImGui->rudaRegularMid);
-		if (ImGui::DragFloat2("Position", showPosition, 0.5f))
+		if (ImGui::DragFloat2("Position", showPositionArr, 0.5f))
 		{
-			selectedObject->transform->SetPosition(float2(showPosition[0], showPosition[1]));
+			selectedObject->transform->SetPosition(showPositionArr[0], showPositionArr[1]);
 			selectedObject->gizmos->CalculateGizmos(); 
 		}
 
-		if (ImGui::DragFloat2("Rotation", showRotation))
+		if (ImGui::DragFloat2("Rotation", showRotationArr))
 		{
 			selectedObject->transform->SetRotationEuler(float2(showRotation[0], showRotation[1]));
 		}
 
-		if (ImGui::DragFloat2("Scale", showScale, 0.1f))
+		if (ImGui::DragFloat2("Scale", showScaleArr, 0.1f))
 		{
 			selectedObject->transform->SetScale(float2(showScale[0], showScale[1]));
 			selectedObject->gizmos->CalculateGizmos();
