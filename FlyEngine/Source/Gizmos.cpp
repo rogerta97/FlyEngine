@@ -64,17 +64,18 @@ void Gizmos::HandleMoveGizmo()
 			moveGizmo->dragAxis = DRAG_X;
 
 			moveGizmo->dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos(); 
-			moveGizmo->dragCenterOffset -= App->moduleImGui->gameViewportDockPanel->ScreenToWorld(objectAttached->transform->GetPosition(false));
+			moveGizmo->dragCenterOffset -= (objectAttached->transform->GetPosition(false));
 			moveGizmo->dragCenterOffset = float2((int)moveGizmo->dragCenterOffset.x, (int)moveGizmo->dragCenterOffset.y);
-			moveGizmo->initDragPos = objectAttached->transform->GetPosition(false);
 		}
 
-		//if (moveGizmo->axisYBox->IsMouseOver())
-		//{
-		//	moveGizmo->dragAxis = DRAG_Y;
-		//	moveGizmo->dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition() - objectAttached->transform->GetPosition();
-		//	moveGizmo->initDragPos = objectAttached->transform->GetPosition(true);
-		//}
+		if (moveGizmo->axisYBox->IsMouseOver())
+		{
+			moveGizmo->dragAxis = DRAG_Y;
+
+			moveGizmo->dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos();
+			moveGizmo->dragCenterOffset += (objectAttached->transform->GetPosition(false));
+			moveGizmo->dragCenterOffset = float2((int)moveGizmo->dragCenterOffset.x, (int)moveGizmo->dragCenterOffset.y);
+		}
 	}
 
 	HandleDrag();
@@ -86,21 +87,21 @@ void Gizmos::HandleDrag()
 	{
 		FLY_LOG("Draggin");
 		
-		float2 positionInDrag = float2(App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().x - moveGizmo->dragCenterOffset.x, 0/*App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition().y - moveGizmo->initDragPos.y*/);
+		float2 positionInDrag = float2(App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().x, App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().y);
 		float2 positionInDragGame = float2(App->moduleImGui->gameViewportDockPanel->ScreenToWorld(positionInDrag.x, positionInDrag.y));
 
 		switch (moveGizmo->dragAxis)
 		{
 
 		case DRAG_X:
-			objectAttached->transform->SetPosition(float2(positionInDrag.x, 0));
+			objectAttached->transform->SetPosition(float2(positionInDrag.x - moveGizmo->dragCenterOffset.x, 0));
 			objectAttached->CalculateCurrentGizmo(); 
 			break;
 
-		//case DRAG_Y:
-		//	objectAttached->transform->SetPosition(float2(moveGizmo->initDragPos.x, positionInDragGame.y));
-		//	objectAttached->CalculateCurrentGizmo();
-		//	break;
+		case DRAG_Y:
+			objectAttached->transform->SetPosition(float2(0, positionInDragGame.y + moveGizmo->dragCenterOffset.y));
+			objectAttached->CalculateCurrentGizmo();
+			break;
 
 		//case DRAG_XY:
 		//	objectAttached->transform->SetPosition(float2(positionInDragGame.x, positionInDragGame.y));
