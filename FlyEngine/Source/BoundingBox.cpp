@@ -23,8 +23,6 @@ BoundingBox::~BoundingBox()
 
 void BoundingBox::Draw()
 {
-	float2 objectPosition = float2(0, 0);
-
 	DrawSquare(float4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	if (showCornerDots)
@@ -139,9 +137,6 @@ bool BoundingBox::IsMouseOver()
 {
 	float2 mousePos = App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition();
 	float2 mousePosGame = App->moduleImGui->gameViewportDockPanel->ScreenToWorld(mousePos.x, mousePos.y);
-
-	float aspectRatio = App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
-	mousePosGame.x *= aspectRatio;	
 
 	// Calculate Final Position Values
 	if (mousePosGame.x > (minPoint.x) && (mousePosGame.x < (maxPoint.x) &&

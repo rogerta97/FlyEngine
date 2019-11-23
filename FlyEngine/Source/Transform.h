@@ -12,8 +12,9 @@ public:
 	float4x4 CalculateViewMatrix(); 
 	float4x4& GetViewMatrix(); 
 
-	float2 GetPosition() const; 
+	float2 GetPosition(bool withAR = false);
 	float3& GetPositionRef(); 
+
 	void SetPosition(float3 newPosition);
 	void SetPosition(float2 newPosition);
 	void SetPosition(float newPositionX, float newPositionY);

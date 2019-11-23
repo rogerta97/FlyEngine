@@ -211,15 +211,14 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 	{
 		ImGui::Spacing(); 
 
-		float2 showPosition = App->moduleImGui->gameViewportDockPanel->ScreenToWorld(selectedObject->transform->GetPosition());
-		float showPositionArr[2] = { showPosition.x, showPosition.y };
+		float2 showPosition = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos(); 
 
-		float2 showRotation = App->moduleImGui->gameViewportDockPanel->ScreenToWorld(selectedObject->transform->GetRotation().Swizzled(1, 2));
-		float showRotationArr[2] = { showRotation.x, showRotation.y };
+		FLY_LOG("Game Pos: %f %f", showPosition.x, showPosition.y);
+		FLY_LOG("Relative: %f %f", App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition().x, App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition().y); 
 
-		float2 showScale = App->moduleImGui->gameViewportDockPanel->ScreenToWorld(selectedObject->transform->GetScale());
-		float showScaleArr[2] = { showScale.x, showScale.y };
-
+		float showPositionArr[2] = { selectedObject->transform->GetPosition().x, selectedObject->transform->GetPosition().y };
+		float showRotationArr[2] = { selectedObject->transform->GetRotation().x, selectedObject->transform->GetRotation().y };
+		float showScaleArr[2] = { selectedObject->transform->GetScale().x, selectedObject->transform->GetScale().y };
 
 		PUSH_FONT(App->moduleImGui->rudaRegularMid);
 		if (ImGui::DragFloat2("Position", showPositionArr, 0.5f))
@@ -230,12 +229,12 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 
 		if (ImGui::DragFloat2("Rotation", showRotationArr))
 		{
-			selectedObject->transform->SetRotationEuler(float2(showRotation[0], showRotation[1]));
+			selectedObject->transform->SetRotationEuler(float2(showRotationArr[0], showRotationArr[1]));
 		}
 
 		if (ImGui::DragFloat2("Scale", showScaleArr, 0.1f))
 		{
-			selectedObject->transform->SetScale(float2(showScale[0], showScale[1]));
+			selectedObject->transform->SetScale(float2(showScaleArr[0], showScaleArr[1]));
 			selectedObject->gizmos->CalculateGizmos();
 		}
 		POP_FONT;

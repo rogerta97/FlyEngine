@@ -21,7 +21,7 @@ public:
 	SelectGizmo(FlyObject* parentObject); 
 	~SelectGizmo(); 
 
-	void FitMinAndMaxPoints(FlyObject* objectAttached);
+	void AddaptSelectBox(FlyObject* objectAttached);
 
 public: 
 	BoundingBox* objectBorderBox;

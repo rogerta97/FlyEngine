@@ -1,6 +1,7 @@
 #include "Gizmos.h"
 #include "OpenGL.h"
 #include "FlyObject.h"
+#include "ViewportManager.h"
 #include "Application.h"
 #include "ImageTool.h"
 #include "Quad.h"
@@ -57,53 +58,55 @@ void Gizmos::Update()
 
 		case GIZMO_MOVE:
 
-			if (App->moduleInput->GetMouseButton(LEFT_CLICK) == KEY_DOWN)
-			{
-				if (moveGizmo->axisXBox->IsMouseOver())
-				{
-					moveGizmo->dragAxis = DRAG_X;
-					moveGizmo->beginDragPos = App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition();
-				}
+			//if (App->moduleInput->GetMouseButton(LEFT_CLICK) == KEY_DOWN)
+			//{
+			//	if (moveGizmo->axisXBox->IsMouseOver())
+			//	{
+			//		moveGizmo->dragAxis = DRAG_X;
+			//		moveGizmo->beginDragPos = App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition();
+			//		moveGizmo->beginDragPos = float2::zero; 
+			//	}
 
-				if (moveGizmo->axisYBox->IsMouseOver())
-				{
-					moveGizmo->dragAxis = DRAG_Y;
-					moveGizmo->beginDragPos = App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition();
-				}
-			}
+			//	if (moveGizmo->axisYBox->IsMouseOver())
+			//	{
+			//		moveGizmo->dragAxis = DRAG_Y;
+			//		moveGizmo->beginDragPos = App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition();
+			//		moveGizmo->beginDragPos = float2::zero; 
+			//	}
+			//}
 
-			if (moveGizmo->dragAxis != NOT_DRAG)
-			{
-				FLY_LOG("Dragging"); 
+			//if (moveGizmo->dragAxis != NOT_DRAG)
+			//{
+			//	FLY_LOG("Dragging"); 
 
-				float2 positionInDrag = float2(moveGizmo->beginDragPos.x + ImGui::GetMouseDragDelta().x, moveGizmo->beginDragPos.y + +ImGui::GetMouseDragDelta().y);
-				float2 positionInDragGame = App->moduleImGui->gameViewportDockPanel->ScreenToWorld(positionInDrag.x, positionInDrag.y);
+			//	float2 positionInDrag = float2(moveGizmo->beginDragPos.x + ImGui::GetMouseDragDelta().x, moveGizmo->beginDragPos.y + +ImGui::GetMouseDragDelta().y);
+			//	float2 positionInDragGame = App->moduleImGui->gameViewportDockPanel->ScreenToWorld(positionInDrag.x, positionInDrag.y);
 
-				switch (moveGizmo->dragAxis)
-				{
+			//	switch (moveGizmo->dragAxis)
+			//	{
 
-				case DRAG_X:
-					objectAttached->transform->SetPosition(float2(positionInDragGame.x, moveGizmo->beginDragPos.y));
-					moveGizmo->AddaptAxisBoxes(objectAttached); 
-					break; 
+			//	case DRAG_X:
+			//		objectAttached->transform->SetPosition(float2(positionInDragGame.x, moveGizmo->beginDragPos.y));
+			//		moveGizmo->AddaptAxisBoxes(objectAttached); 
+			//		break; 
 
-				case DRAG_Y:
-					objectAttached->transform->SetPosition(float2(moveGizmo->beginDragPos.x, positionInDragGame.y));
-					moveGizmo->AddaptAxisBoxes(objectAttached);
-					break;
+			//	case DRAG_Y:
+			//		objectAttached->transform->SetPosition(float2(moveGizmo->beginDragPos.x, positionInDragGame.y));
+			//		moveGizmo->AddaptAxisBoxes(objectAttached);
+			//		break;
 
-				case DRAG_XY:
-					objectAttached->transform->SetPosition(float2(positionInDragGame.x, positionInDragGame.y));
-					break;
+			//	case DRAG_XY:
+			//		objectAttached->transform->SetPosition(float2(positionInDragGame.x, positionInDragGame.y));
+			//		break;
 
-				}
+			//	}
 
-				if (App->moduleInput->GetMouseButton(LEFT_CLICK) == KEY_UP)
-				{
-					moveGizmo->dragAxis = NOT_DRAG;
-					moveGizmo->beginDragPos = float2(0, 0); 
-				}
-			}
+			//	if (App->moduleInput->GetMouseButton(LEFT_CLICK) == KEY_UP)
+			//	{
+			//		moveGizmo->dragAxis = NOT_DRAG;
+			//		moveGizmo->beginDragPos = float2(0, 0); 
+			//	}
+			//}
 
 			break;
 
@@ -123,19 +126,22 @@ void Gizmos::Draw()
 
 	case GIZMO_MOVE:
 
-		glMatrixMode(GL_MODELVIEW); 
-		glLoadIdentity(); 
 
 		float4x4 moveGizmoViewMat = float4x4::identity;
 
 		moveGizmoViewMat.RotateX(0);
 		moveGizmoViewMat.RotateY(0);
 	
-		moveGizmoViewMat.SetTranslatePart(float3(objectAttached->transform->GetPosition().x, objectAttached->transform->GetPosition().y, 0));
+		float2 objectPosition = objectAttached->transform->GetPosition(); 
+		moveGizmoViewMat.SetTranslatePart(float3(objectPosition.x * ViewportManager::getInstance()->GetAspectRatio(), objectPosition.y, 0));
 
+		glMatrixMode(GL_MODELVIEW); 
+		glLoadIdentity(); 
 		glLoadMatrixf((GLfloat*)moveGizmoViewMat.Transposed().v); 
 
 		DrawMoveGizmo();
+
+		glLoadIdentity();
 
 		break;
 	}
@@ -143,25 +149,23 @@ void Gizmos::Draw()
 
 void Gizmos::DrawSelectGizmo()
 {
-	glMatrixMode(GL_MODELVIEW); 
+	//float2 appliedArPos = objectAttached->transform->GetPosition() * App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
+	//objectAttached->transform->SetPosition(appliedArPos);
+
+	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	//glLoadMatrixf((GLfloat*)objectAttached->transform->CalculateViewMatrix().Transposed().v);
 
 	selectGizmo->objectBorderBox->Draw();
+
+	//float2 unAppliedArPos = objectAttached->transform->GetPosition() / App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
+	//objectAttached->transform->SetPosition(unAppliedArPos);
 }
 
 void Gizmos::CalculateGizmos()
-{
-	if (objectAttached != nullptr)
-	{
-		gizmoTransform->SetPosition(objectAttached->transform->GetPosition());
-		gizmoTransform->SetRotationEuler(objectAttached->transform->GetRotation());
-		gizmoTransform->SetScale(objectAttached->transform->GetScale());
-		gizmoTransform->CalculateViewMatrix();
-
-		// Select Gizmo 
-		selectGizmo->FitMinAndMaxPoints(objectAttached);
-
-	}
+{			
+	selectGizmo->AddaptSelectBox(objectAttached);
+	moveGizmo->AddaptAxisBoxes(objectAttached); 
 }
 
 
@@ -222,8 +226,8 @@ void Gizmos::DrawMoveGizmo()
 	glColor3f(255, 0, 0); glVertex3f(moveGizmo->centerSquareSize, moveGizmo->centerSquareSize, 0.f);
 	glEnd();
 
-	moveGizmo->axisXBox->Draw();
-	moveGizmo->axisYBox->Draw();
+	//moveGizmo->axisXBox->Draw();
+	//moveGizmo->axisYBox->Draw();
 
 	glLineWidth(1.0f);
 	glColor3f(255, 255, 255);
@@ -290,25 +294,25 @@ SelectGizmo::~SelectGizmo()
 {
 }
 
-void SelectGizmo::FitMinAndMaxPoints(FlyObject* objectAttached)
+void SelectGizmo::AddaptSelectBox(FlyObject* objectAttached)
 {
 	objectBorderBox->CenterMinMaxPoints();
 	float2 selectMaxPoint = objectBorderBox->GetMaxPoint();
 	float2 selectMinPoint = objectBorderBox->GetMinPoint();
 
-	// Scale
-	selectMaxPoint.x *= objectAttached->gizmos->gizmoTransform->GetScale().x;
-	selectMaxPoint.y *= objectAttached->gizmos->gizmoTransform->GetScale().y;
-
-	selectMinPoint.x *= objectAttached->gizmos->gizmoTransform->GetScale().x;
-	selectMinPoint.y *= objectAttached->gizmos->gizmoTransform->GetScale().y;
-
 	// Position
-	selectMaxPoint.x += objectAttached->gizmos->gizmoTransform->GetPosition().x;
-	selectMaxPoint.y += objectAttached->gizmos->gizmoTransform->GetPosition().y;
-
-	selectMinPoint.x += objectAttached->gizmos->gizmoTransform->GetPosition().x;
-	selectMinPoint.y += objectAttached->gizmos->gizmoTransform->GetPosition().y;
+	selectMaxPoint.x += objectAttached->transform->GetPosition(true).x;
+	selectMaxPoint.y += objectAttached->transform->GetPosition(true).y;
+						
+	selectMinPoint.x += objectAttached->transform->GetPosition(true).x; 
+	selectMinPoint.y += objectAttached->transform->GetPosition(true).y; 
+								
+	// Scale							
+	selectMaxPoint.x *= objectAttached->transform->GetScale().x;
+	selectMaxPoint.y *= objectAttached->transform->GetScale().y;
+								
+	selectMinPoint.x *= objectAttached->transform->GetScale().x;
+	selectMinPoint.y *= objectAttached->transform->GetScale().y;
 
 	objectBorderBox->SetMaxPoint(selectMaxPoint);
 	objectBorderBox->SetMinPoint(selectMinPoint);

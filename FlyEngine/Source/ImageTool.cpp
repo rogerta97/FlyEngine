@@ -8,6 +8,10 @@
 #include "ImageImporter.h"
 #include "Gizmos.h"
 
+#include "Application.h"
+#include "ModuleImGui.h"
+#include "GameViewportDockPanel.h"
+
 #include "mmgr.h"
 
 ImageTool::ImageTool(FlyObject* _parentObject = nullptr)
@@ -48,8 +52,14 @@ void ImageTool::Draw()
 		//glGetFloatv(GL_MODELVIEW_MATRIX, matrix);
 		//view_mat.Set((float*)matrix);
 
+		float2 appliedArPos = parentObject->transform->GetPosition(true);
+		parentObject->transform->SetPosition(appliedArPos);
+
 		glMatrixMode(GL_MODELVIEW);	
 		glLoadMatrixf((GLfloat*)((parentObject->transform->CalculateViewMatrix()).Transposed() /** view_mat*/).v);
+
+		float2 unAppliedArPos = parentObject->transform->GetPosition() / App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
+		parentObject->transform->SetPosition(unAppliedArPos);
 	}
 
 	if (imageTexture != nullptr) {

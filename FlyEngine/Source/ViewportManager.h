@@ -2,6 +2,7 @@
 #define _VIEWPORT_MANAGER_H_
 
 #include "glm.hpp"
+#include "Math/float2.h"
 
 using namespace glm; 
 
@@ -29,6 +30,11 @@ public:
 	static float GetWidthFromHeight(float viewportHeight);
 	static float GetHeightFromWidth(float viewportWidth);
 	static void SetTextureSize(float windowWidth, float windowHeight);
+
+	// Aspect Ratio
+	static float2& ScreenToWorld(float2 screenPos);
+	static float2& ScreenToWorld(float screenPosX, float screenPosY);
+	static float GetAspectRatio();
 
 	// Encapsulation --------------------------
 	static ViewportAspectRatio GetAspectRatioType();

@@ -78,6 +78,21 @@ void ViewportManager::SetTextureSize(float windowWidth, float windowHeight)
 	instance->viewportTexture->SetHeight(windowHeight);
 }
 
+float2& ViewportManager::ScreenToWorld(float2 screenPos)
+{
+	return App->moduleImGui->gameViewportDockPanel->ScreenToWorld(screenPos);
+}
+
+float2& ViewportManager::ScreenToWorld(float screenPosX, float screenPosY)
+{
+	return App->moduleImGui->gameViewportDockPanel->ScreenToWorld(screenPosX, screenPosY);
+}
+
+float ViewportManager::GetAspectRatio()
+{
+	return App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
+}
+
 ViewportAspectRatio ViewportManager::GetAspectRatioType()
 {
 	return instance->viewportAspectRatio;

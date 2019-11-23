@@ -65,18 +65,16 @@ bool GameViewportDockPanel::Draw()
 
 		verticalOffset = titleBarHeight + menuBarHeight;
 		regionSize = float2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
-		regionSize.y += titleBarHeight + menuBarHeight;
+		regionSize.y += verticalOffset;
 
 		float2 screenCenter = float2(regionSize.x / 2, regionSize.y / 2);
 		viewportCenterGlobalPos = float2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y) + screenCenter;
 
-		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - (viewportSize.y / 2) + menuBarHeight));
+		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - (viewportSize.y / 2) + (verticalOffset / 2)));
 		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(viewportSize.x - 1, viewportSize.y - 2));
 	}
 
 	glDisable(GL_TEXTURE_2D);
-
-	GetMouseRelativePosition();
 
 	ImGui::End();
 	ImGui::PopStyleColor(); 
@@ -205,8 +203,7 @@ float2& GameViewportDockPanel::GetViewportCenterGlobal()
 
 float2& GameViewportDockPanel::GetMouseRelativePosition()
 {
-	float2 mouseRelativePos = float2(ImGui::GetMousePos().x, ImGui::GetMousePos().y) - viewportCenterGlobalPos; 
-	//FLY_LOG("Relative Mouse Position: %f, %f", mouseRelativePos.x, mouseRelativePos.y); 
+	float2 mouseRelativePos = float2(ImGui::GetMousePos().x - viewportCenterGlobalPos.x, ImGui::GetMousePos().y - viewportCenterGlobalPos.y - (verticalOffset / 2));
 	return mouseRelativePos; 
 }
 
@@ -232,7 +229,6 @@ float2& GameViewportDockPanel::ScreenToWorld(float screenPosX, float screenPosY)
 	float2 returnV; 
 	returnV.x = (screenPosX * worldMaxX) / screenMaxX;
 	returnV.y = (screenPosY * worldMaxY) / screenMaxY;
-	returnV.y -= ((verticalOffset / 2) * aspectRatio); 
 
 	return returnV;
 }

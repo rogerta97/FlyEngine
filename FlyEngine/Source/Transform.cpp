@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include "ViewportManager.h"
 
 #include "Application.h"
 #include "ModuleImGui.h"
@@ -19,9 +20,15 @@ Transform::~Transform()
 {
 }
 
-float2 Transform::GetPosition() const
+float2 Transform::GetPosition(bool withAR)
 {
-	return float2(position.x, position.y); 
+	float2 posToRet = float2(position.x, position.y); 
+
+	if (withAR){
+		posToRet *= ViewportManager::getInstance()->GetAspectRatio(); 
+	}
+
+	return posToRet;
 }
 
 float3& Transform::GetPositionRef()
@@ -29,10 +36,10 @@ float3& Transform::GetPositionRef()
 	return position;
 }
 
+
 void Transform::SetPosition(float3 newPosition)
 {
 	position = newPosition; 
-	position.x *= App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
 }
 
 void Transform::SetPosition(float2 newPosition)
