@@ -149,17 +149,10 @@ void Gizmos::Draw()
 
 void Gizmos::DrawSelectGizmo()
 {
-	//float2 appliedArPos = objectAttached->transform->GetPosition() * App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
-	//objectAttached->transform->SetPosition(appliedArPos);
-
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	//glLoadMatrixf((GLfloat*)objectAttached->transform->CalculateViewMatrix().Transposed().v);
 
 	selectGizmo->objectBorderBox->Draw();
-
-	//float2 unAppliedArPos = objectAttached->transform->GetPosition() / App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
-	//objectAttached->transform->SetPosition(unAppliedArPos);
 }
 
 void Gizmos::CalculateGizmos()
