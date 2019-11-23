@@ -209,13 +209,15 @@ float2& GameViewportDockPanel::GetViewportCenterGlobal()
 float2& GameViewportDockPanel::GetMouseRelativePosition()
 {
 	float2 mouseRelativePos = float2(ImGui::GetMousePos().x - viewportCenterGlobalPos.x, ImGui::GetMousePos().y - viewportCenterGlobalPos.y - (verticalOffset / 2));
+	mouseRelativePos = float2(ImGui::GetMousePos().x - viewportCenterGlobalPos.x, ImGui::GetMousePos().y - viewportCenterGlobalPos.y);
 	return mouseRelativePos; 
 }
 
 float2& GameViewportDockPanel::GetMouseGamePos()
 {
 	float2 ret = GetMouseRelativePosition(); 
-	return ScreenToWorld(ret); 
+	ret = float2((int)ScreenToWorld(ret).x, (int)ScreenToWorld(ret).y); 
+	return ret; 
 }
 
 float2& GameViewportDockPanel::ScreenToWorld(float2 screenPos)

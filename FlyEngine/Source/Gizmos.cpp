@@ -62,7 +62,10 @@ void Gizmos::HandleMoveGizmo()
 		if (moveGizmo->axisXBox->IsMouseOver())
 		{
 			moveGizmo->dragAxis = DRAG_X;
-			moveGizmo->dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition() - objectAttached->transform->GetPosition();
+
+			moveGizmo->dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos(); 
+			moveGizmo->dragCenterOffset -= App->moduleImGui->gameViewportDockPanel->ScreenToWorld(objectAttached->transform->GetPosition(false));
+			moveGizmo->dragCenterOffset = float2((int)moveGizmo->dragCenterOffset.x, (int)moveGizmo->dragCenterOffset.y);
 			moveGizmo->initDragPos = objectAttached->transform->GetPosition(false);
 		}
 
@@ -82,15 +85,15 @@ void Gizmos::HandleDrag()
 	if (moveGizmo->dragAxis != NOT_DRAG)
 	{
 		FLY_LOG("Draggin");
-
-		float2 positionInDrag = float2(moveGizmo->initDragPos.x + ImGui::GetMouseDragDelta().x, moveGizmo->initDragPos.y + ImGui::GetMouseDragDelta().y);
-		float2 positionInDragGame = App->moduleImGui->gameViewportDockPanel->ScreenToWorld(positionInDrag.x, positionInDrag.y);
+		
+		float2 positionInDrag = float2(App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().x - moveGizmo->dragCenterOffset.x, 0/*App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition().y - moveGizmo->initDragPos.y*/);
+		float2 positionInDragGame = float2(App->moduleImGui->gameViewportDockPanel->ScreenToWorld(positionInDrag.x, positionInDrag.y));
 
 		switch (moveGizmo->dragAxis)
 		{
 
 		case DRAG_X:
-			objectAttached->transform->SetPosition(float2(positionInDragGame.x, moveGizmo->initDragPos.y));
+			objectAttached->transform->SetPosition(float2(positionInDrag.x, 0));
 			objectAttached->CalculateCurrentGizmo(); 
 			break;
 
@@ -108,7 +111,7 @@ void Gizmos::HandleDrag()
 		if (App->moduleInput->GetMouseButton(LEFT_CLICK) == KEY_UP)
 		{
 			moveGizmo->dragAxis = NOT_DRAG;
-			moveGizmo->initDragPos = objectAttached->transform->GetPosition(true); 
+			//moveGizmo->initDragPos = objectAttached->transform->GetPosition(true); 
 		}
 	}
 }
