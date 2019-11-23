@@ -20,7 +20,7 @@ public:
 	void FitToObject(); 
 
 	void Move(float2 newPositon);
-	void CenterMinMaxPoints();
+	void CenterMinMaxPointsToScreen();
 
 	void Rotate(float2 newRotationEuler);
 	void Scale(float2 newScale);

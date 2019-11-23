@@ -224,8 +224,7 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 		if (ImGui::DragFloat2("Position", showPositionArr, 0.5f))
 		{
 			selectedObject->transform->SetPosition(showPositionArr[0], showPositionArr[1]);
-			selectedObject->gizmos->CalculateSelectGizmo(selectedObject);
-			selectedObject->gizmos->CalculateMoveGizmo(selectedObject);
+			selectedObject->CalculateCurrentGizmo(); 
 		}
 
 		if (ImGui::DragFloat2("Rotation", showRotationArr))

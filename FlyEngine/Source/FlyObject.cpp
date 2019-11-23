@@ -98,6 +98,21 @@ float2 FlyObject::GetObjectVisualDimensions()
 	return objectVisualSize; 
 }
 
+void FlyObject::CalculateCurrentGizmo()
+{
+	switch (App->moduleImGui->gameViewportDockPanel->GetGizmoMode())
+	{
+	case GIZMO_SELECT:
+		gizmos->CalculateSelectGizmo(this); 
+		break; 
+
+	case GIZMO_MOVE:
+		gizmos->CalculateMoveGizmo(this);
+		break;
+
+	}
+}
+
 ImageTool* FlyObject::AddImageTool(const char* imageTexturePath)
 {
 	if (GetTool(AT_IMAGE) == nullptr)

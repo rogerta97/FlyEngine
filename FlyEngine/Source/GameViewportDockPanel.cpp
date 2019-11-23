@@ -141,12 +141,12 @@ void GameViewportDockPanel::DrawTopBar()
 
 	if (ImGui::ImageButton((ImTextureID)arrowSelect->GetTextureID(), ImVec2(17, 17)))
 	{
+		gizmoMode = GIZMO_SELECT;
 		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject(); 
 		if (selectedObject != nullptr)
 		{
-			selectedObject->gizmos->CalculateSelectGizmo(selectedObject);
+			selectedObject->CalculateCurrentGizmo();
 		}	
-		gizmoMode = GIZMO_SELECT;
 	}
 
 	if (currentMode) {
@@ -164,12 +164,12 @@ void GameViewportDockPanel::DrawTopBar()
 	Texture* moveArrows = (Texture*)ResourceManager::getInstance()->GetResource("MoveOption");
 	if (ImGui::ImageButton((ImTextureID)moveArrows->GetTextureID(), ImVec2(17, 17)))
 	{
+		gizmoMode = GIZMO_MOVE;
 		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();
 		if (selectedObject != nullptr)
 		{
-			selectedObject->gizmos->CalculateMoveGizmo(selectedObject);
+			selectedObject->CalculateCurrentGizmo();
 		}
-		gizmoMode = GIZMO_MOVE;
 	}
 
 	if (currentMode) {

@@ -28,6 +28,7 @@ public:
 
 	// Utils -----------
 	float2 GetObjectVisualDimensions();  
+	void CalculateCurrentGizmo(); 
 
 	// Tools -----------
 	ImageTool* AddImageTool(const char* imageTexturePath);

@@ -47,7 +47,8 @@ public:
 	BoundingBox* axisYBox;
 
 	DragAxis dragAxis;
-	float2 beginDragPos; 
+	float2 dragCenterOffset; 
+	float2 initDragPos; 
 
 	float centerSquareSize;
 };

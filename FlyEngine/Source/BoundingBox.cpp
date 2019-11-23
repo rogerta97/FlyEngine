@@ -24,9 +24,6 @@ BoundingBox::~BoundingBox()
 
 void BoundingBox::Draw()
 {
-	FLY_LOG("%f %f", minPoint.x, minPoint.y);
-	FLY_LOG("%f %f", maxPoint.x, maxPoint.y);
-
 	DrawSquare(float4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	if (showCornerDots)
@@ -104,6 +101,10 @@ float2& BoundingBox::GetMinPoint()
 void BoundingBox::SetMinPoint(float2 _minPoint)
 {
 	minPoint = _minPoint; 
+
+	size.x = maxPoint.x - minPoint.x;
+	size.y = maxPoint.y - minPoint.y;
+	size /= 2;
 }
 
 float2& BoundingBox::GetMaxPoint()
@@ -114,6 +115,10 @@ float2& BoundingBox::GetMaxPoint()
 void BoundingBox::SetMaxPoint(float2 _maxPoint)
 {
 	maxPoint = _maxPoint; 
+
+	size.x = maxPoint.x - minPoint.x; 
+	size.y = maxPoint.y - minPoint.y; 
+	size /= 2; 
 }
 
 void BoundingBox::Move(float2 newPosition)
@@ -121,7 +126,7 @@ void BoundingBox::Move(float2 newPosition)
 
 }
 
-void BoundingBox::CenterMinMaxPoints()
+void BoundingBox::CenterMinMaxPointsToScreen()
 {
 	minPoint = float2(-size.x, size.y);
 	maxPoint = float2(size.x, -size.y);
@@ -145,9 +150,12 @@ bool BoundingBox::IsMouseOver()
 	mousePosGame.x *= ViewportManager::getInstance()->GetAspectRatio(); 
 
 	// Calculate Final Position Values
-	if (mousePosGame.x > (minPoint.x) && (mousePosGame.x < (maxPoint.x) &&
-		mousePosGame.y < (minPoint.y) && mousePosGame.y >(maxPoint.y)))
+	if (mousePosGame.x > (minPoint.x) && (mousePosGame.x < (maxPoint.x)) &&
+		mousePosGame.y > (minPoint.y) && mousePosGame.y  > (maxPoint.y))
 		return true; 
+
+	if (mousePosGame.x > (minPoint.x) && (mousePosGame.x < (maxPoint.x)))
+		return true;
 
 	return false; 
 }
