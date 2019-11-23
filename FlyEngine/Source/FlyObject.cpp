@@ -6,6 +6,7 @@
 #include "TinyFileDialog.h"
 #include "Quad.h"
 #include "ImageImporter.h"
+#include "GameViewportDockPanel.h"
 #include "ResourceManager.h"
 #include "imgui.h"
 #include "MyFileSystem.h"

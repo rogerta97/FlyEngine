@@ -27,7 +27,7 @@ public:
 	void Scale(); 
 
 	// Utils -----------
-	float2 GetObjectVisualDimensions(); 
+	float2 GetObjectVisualDimensions();  
 
 	// Tools -----------
 	ImageTool* AddImageTool(const char* imageTexturePath);

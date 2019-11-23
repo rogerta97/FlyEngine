@@ -24,6 +24,9 @@ BoundingBox::~BoundingBox()
 
 void BoundingBox::Draw()
 {
+	FLY_LOG("%f %f", minPoint.x, minPoint.y);
+	FLY_LOG("%f %f", maxPoint.x, maxPoint.y);
+
 	DrawSquare(float4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	if (showCornerDots)
@@ -140,11 +143,6 @@ bool BoundingBox::IsMouseOver()
 	float2 mousePosGame = App->moduleImGui->gameViewportDockPanel->ScreenToWorld(mousePos.x, mousePos.y);
 
 	mousePosGame.x *= ViewportManager::getInstance()->GetAspectRatio(); 
-
-	FLY_LOG("Pos In Game: %f %f", mousePosGame.x, mousePosGame.y); 
-
-	FLY_LOG("MinPoint: %f %f", minPoint.x, minPoint.y);
-	FLY_LOG("MaxPoint: %f %f", maxPoint.x, maxPoint.y);
 
 	// Calculate Final Position Values
 	if (mousePosGame.x > (minPoint.x) && (mousePosGame.x < (maxPoint.x) &&

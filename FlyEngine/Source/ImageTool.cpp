@@ -139,7 +139,7 @@ void ImageTool::SetTexture(Texture* newTexture)
 	// Set Texture 
 	imageTexture = newTexture;
 
-	parentObject->gizmos->CalculateGizmos(); 
+	parentObject->gizmos->CalculateSelectGizmo(parentObject); 
 }
 
 Texture* ImageTool::GetTexture() const

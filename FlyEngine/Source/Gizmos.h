@@ -58,14 +58,18 @@ public:
 	Gizmos(FlyObject* objectAttached);
 	~Gizmos();
 
-	void Update(); 
+	void Update();
+	void HandleMoveGizmo();
+	void HandleDrag();
+	void HandleSelectionGizmo();
+
 	void Draw();
 
 	void DrawMoveGizmo();
 	void DrawSelectGizmo(); 
 
-	void CalculateGizmos();
-	
+	void CalculateSelectGizmo(FlyObject* objectAttached);
+	void CalculateMoveGizmo(FlyObject* objectAttached);
 
 	void FitBoxToObject(); 
 

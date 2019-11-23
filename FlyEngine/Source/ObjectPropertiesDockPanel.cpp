@@ -224,7 +224,8 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 		if (ImGui::DragFloat2("Position", showPositionArr, 0.5f))
 		{
 			selectedObject->transform->SetPosition(showPositionArr[0], showPositionArr[1]);
-			selectedObject->gizmos->CalculateGizmos(); 
+			selectedObject->gizmos->CalculateSelectGizmo(selectedObject);
+			selectedObject->gizmos->CalculateMoveGizmo(selectedObject);
 		}
 
 		if (ImGui::DragFloat2("Rotation", showRotationArr))
@@ -235,7 +236,6 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 		if (ImGui::DragFloat2("Scale", showScaleArr, 0.1f))
 		{
 			selectedObject->transform->SetScale(float2(showScaleArr[0], showScaleArr[1]));
-			selectedObject->gizmos->CalculateGizmos();
 		}
 		POP_FONT;
 	}
