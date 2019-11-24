@@ -6,7 +6,9 @@
 #include "OpenGL.h"
 #include "ModuleImGui.h"
 #include "Room.h"
+#include "FlyObject.h"
 #include "Texture.h"
+#include "Gizmos.h"
 #include "TextureMSAA.h"
 #include "mmgr.h"
 
@@ -101,6 +103,14 @@ ViewportAspectRatio ViewportManager::GetAspectRatioType()
 void ViewportManager::SetAspectRatioType(ViewportAspectRatio newAR)
 {
 	instance->viewportAspectRatio = newAR;
+
 	App->moduleImGui->gameViewportDockPanel->FitViewportToRegion();
 	App->moduleImGui->gameViewportDockPanel->aspectRatioChanged = true; 
+
+	FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject(); 
+
+	if (selectedObject != nullptr)
+	{
+		selectedObject->CalculateAllGizmos(); 
+	}
 }

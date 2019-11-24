@@ -59,38 +59,45 @@ void Gizmos::HandleMoveGizmo()
 {
 	if (App->moduleInput->GetMouseButton(LEFT_CLICK) == KEY_DOWN)
 	{
-		if (moveGizmo->axisXBox->IsMouseOver())
+		if (selectGizmo->objectBorderBox->IsMouseOver())
 		{
-			moveGizmo->dragAxis = DRAG_X;
+			App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(objectAttached); 
 
-			moveGizmo->dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos(); 
-			moveGizmo->dragCenterOffset -= (objectAttached->transform->GetPosition(false));
-			moveGizmo->dragCenterOffset = float2((int)moveGizmo->dragCenterOffset.x, (int)moveGizmo->dragCenterOffset.y);
-			
-			moveGizmo->initDragPos = objectAttached->transform->GetPosition(false);
+			if (moveGizmo->axisXBox->IsMouseOver())
+			{
+				moveGizmo->dragAxis = DRAG_X;
+
+				moveGizmo->dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos();
+				moveGizmo->dragCenterOffset -= (objectAttached->transform->GetPosition(false));
+				moveGizmo->dragCenterOffset = float2((int)moveGizmo->dragCenterOffset.x, (int)moveGizmo->dragCenterOffset.y);
+
+				moveGizmo->initDragPos = objectAttached->transform->GetPosition(false);
+			}
+
+			if (moveGizmo->axisYBox->IsMouseOver())
+			{
+				moveGizmo->dragAxis = DRAG_Y;
+
+				moveGizmo->dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos();
+				moveGizmo->dragCenterOffset -= (objectAttached->transform->GetPosition(false));
+				moveGizmo->dragCenterOffset = float2((int)moveGizmo->dragCenterOffset.x, (int)moveGizmo->dragCenterOffset.y);
+
+				moveGizmo->initDragPos = objectAttached->transform->GetPosition(false);
+			}
+
+			if (moveGizmo->axisXYBox->IsMouseOver())
+			{
+				moveGizmo->dragAxis = DRAG_XY;
+
+				moveGizmo->dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos();
+				moveGizmo->dragCenterOffset -= (objectAttached->transform->GetPosition(false));
+				moveGizmo->dragCenterOffset = float2((int)moveGizmo->dragCenterOffset.x, (int)moveGizmo->dragCenterOffset.y);
+
+				moveGizmo->initDragPos = objectAttached->transform->GetPosition(false);
+			}
 		}
-
-		if (moveGizmo->axisYBox->IsMouseOver())
-		{
-			moveGizmo->dragAxis = DRAG_Y;
-
-			moveGizmo->dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos();
-			moveGizmo->dragCenterOffset -= (objectAttached->transform->GetPosition(false));
-			moveGizmo->dragCenterOffset = float2((int)moveGizmo->dragCenterOffset.x, (int)moveGizmo->dragCenterOffset.y);
-
-			moveGizmo->initDragPos = objectAttached->transform->GetPosition(false);
-		}
-
-		if (moveGizmo->axisXYBox->IsMouseOver())
-		{
-			moveGizmo->dragAxis = DRAG_XY;
-
-			moveGizmo->dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos();
-			moveGizmo->dragCenterOffset -= (objectAttached->transform->GetPosition(false));
-			moveGizmo->dragCenterOffset = float2((int)moveGizmo->dragCenterOffset.x, (int)moveGizmo->dragCenterOffset.y);
-
-			moveGizmo->initDragPos = objectAttached->transform->GetPosition(false);
-		}
+		else
+			App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(nullptr);
 	}
 
 	HandleDrag();
