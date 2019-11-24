@@ -71,7 +71,6 @@ void Quad::SetQuadData(const float desiredWidth, const float desiredHeight)
 	uvs[9] = 1.0f;
 	uvs[10] = 0.0f;
 	uvs[11] = 0.0f;
-
 }
 
 void Quad::LoadToMemory()
@@ -103,4 +102,29 @@ void Quad::LoadToMemory()
 
 void Quad::UnloadFromMemory()
 {
+	if (numVertices != 0)
+	{
+		glDeleteBuffers(1, &verticesID);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	if (numIndices != 0)
+	{
+		glDeleteBuffers(1, &indicesID);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	}
+
+	if (numUvs != 0)
+	{
+		glDeleteBuffers(1, &uvsID);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	}
+}
+
+void Quad::CleanUp()
+{
+	UnloadFromMemory(); 
+	delete[] vertices;
+	delete[] indices; 
+	delete[] uvs; 
 }

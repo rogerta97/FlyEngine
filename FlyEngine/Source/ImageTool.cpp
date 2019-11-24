@@ -98,7 +98,16 @@ void ImageTool::Draw()
 
 void ImageTool::CleanUp()
 {
+	quadMesh->CleanUp();
+	delete quadMesh; 
 
+	if (imageTexture != nullptr)
+	{
+		imageTexture->CleanUp();
+		delete imageTexture; 
+	}
+
+	parentObject = nullptr; 
 }
 
 bool ImageTool::CreateImage(const char* texturePath)

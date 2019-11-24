@@ -102,6 +102,7 @@ void ModuleRoomManager::DeleteRoom(UID roomID)
 			(*it)->DeleteAllConnections();
 
 			NodeGraph::getInstance()->DeleteNode((*it)->GetName());
+			(*it)->CleanUp(); 
 			delete (*it);
 
 			roomsInWorldList.erase(it);
@@ -110,6 +111,11 @@ void ModuleRoomManager::DeleteRoom(UID roomID)
 	}
 
 	roomsInWoldAmount--;
+}
+
+void ModuleRoomManager::DeleteRoom(Room* roomToDelete)
+{
+	DeleteRoom(roomToDelete->GetRoomID()); 
 }
 
 void ModuleRoomManager::CleanUpRooms()

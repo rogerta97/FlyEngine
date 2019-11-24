@@ -26,10 +26,13 @@ public:
 
 	// Rooms
 	Room* CreateEmptyRoom(string roomName = "New Room"); 
+	const char* GetRoomsAsCombo(bool includeSelected = false); 
+
 	void DeleteRoom(string roomName); 
 	void DeleteRoom(UID roomID); 
+	void DeleteRoom(Room* roomToDelete); 
+
 	void CleanUpRooms();
-	const char* GetRoomsAsCombo(bool includeSelected = false); 
 
 	// Utility
 	Room* GetRoom(string roomName) const;

@@ -51,6 +51,7 @@ void FlyObject::CleanUp()
 	for (auto& it : toolsList)
 	{
 		(it)->CleanUp(); 
+		delete it; 
 	}
 
 	toolsList.clear(); 
@@ -58,7 +59,6 @@ void FlyObject::CleanUp()
 
 	gizmos->CleanUp();
 	delete gizmos; 
-
 }
 
 std::string FlyObject::GetName() const

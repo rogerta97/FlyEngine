@@ -15,6 +15,7 @@ public:
 
 	void LoadToMemory(); 
 	void UnloadFromMemory(); 
+	void CleanUp(); 
 
 private:
 	void SetQuadData(const float desiredWidth, const float desiredHeight);

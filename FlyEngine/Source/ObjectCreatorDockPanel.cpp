@@ -171,7 +171,7 @@ void ObjectCreatorDockPanel::DrawCreateButton()
 
 	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
 	ImGui::SameLine();
-	if (ImGui::Button("Create", ImVec2(80, 28)))
+	if (ImGui::Button("Create", ImVec2(80, 25)))
 	{
 		std::string newObjectNameStr(newObjectName);
 		if (newObjectNameStr.empty()) {

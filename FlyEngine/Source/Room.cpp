@@ -61,6 +61,14 @@ void Room::CleanUp()
 
 		outConnections.clear();
 	}
+
+	for (auto& currentObject : objectsInRoom)
+	{
+		currentObject->CleanUp();
+		delete currentObject; 
+	}
+
+	objectsInRoom.clear(); 
 }
 
 RoomConnection* Room::ConnectToRoom(Room* destinationRoom)
