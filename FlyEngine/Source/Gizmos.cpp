@@ -179,7 +179,6 @@ void Gizmos::FitBoxToObject()
 			selectGizmo->objectBorderBox->SetSize(objectDimensions.x, objectDimensions.y); 
 		}
 	}
-
 }
 
 void Gizmos::DrawMoveGizmo()

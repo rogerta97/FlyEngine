@@ -74,8 +74,8 @@ void BoundingBox::DrawMinAndMaxPoints()
 void BoundingBox::SetSize(float sizeX, float sizeY)
 {
 	size = float2(sizeX, sizeY);
-	minPoint = float2(-sizeX, sizeY);
-	maxPoint = float2(sizeX, -sizeY);
+	minPoint = objectAttached->transform->GetPosition() + float2(-sizeX, sizeY);
+	maxPoint = objectAttached->transform->GetPosition() + float2(sizeX, -sizeY);
 }
 
 float2& BoundingBox::GetSize()
@@ -102,8 +102,8 @@ void BoundingBox::SetMinPoint(float2 _minPoint)
 {
 	minPoint = _minPoint; 
 
-	size.x = maxPoint.x - minPoint.x;
-	size.y = maxPoint.y - minPoint.y;
+	size.x = abs(maxPoint.x - minPoint.x);
+	size.y = abs(maxPoint.y - minPoint.y);
 	size /= 2;
 }
 
@@ -116,8 +116,8 @@ void BoundingBox::SetMaxPoint(float2 _maxPoint)
 {
 	maxPoint = _maxPoint; 
 
-	size.x = maxPoint.x - minPoint.x; 
-	size.y = maxPoint.y - minPoint.y; 
+	size.x = abs(maxPoint.x - minPoint.x);
+	size.y = abs(maxPoint.y - minPoint.y);
 	size /= 2; 
 }
 
@@ -144,18 +144,36 @@ void BoundingBox::Scale(float2 newScale)
 
 bool BoundingBox::IsMouseOver()
 {
+	bool ret = false; 
 	float2 mousePos = App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition();
 	float2 mousePosGame = App->moduleImGui->gameViewportDockPanel->ScreenToWorld(mousePos.x, mousePos.y);
 
 	mousePosGame.x *= ViewportManager::getInstance()->GetAspectRatio(); 
+	mousePosGame.y *= ViewportManager::getInstance()->GetAspectRatio(); 
 
 	// Calculate Final Position Values
-	if (mousePosGame.x > (minPoint.x) && (mousePosGame.x < (maxPoint.x)) &&
-		mousePosGame.y > (minPoint.y) && mousePosGame.y  > (maxPoint.y))
-		return true; 
-
+	bool a = false;
 	if (mousePosGame.x > (minPoint.x) && (mousePosGame.x < (maxPoint.x)))
-		return true;
+	{
+		FLY_LOG("inside X");
+		a = true; 
+		ret = true;
+	}
+
+	if (mousePosGame.y > (minPoint.y) || mousePosGame.y < (maxPoint.y))
+	{
+		ret = false;
+		FLY_ERROR("Out Of Y");
+	}
+
+	FLY_WARNING("Mouse Pos: %f %f", mousePosGame.x, mousePosGame.y);
+	FLY_LOG("Min: %f %f", minPoint.x, minPoint.y);
+	FLY_LOG("Max: %f %f", maxPoint.x, maxPoint.y);
+
+	return ret;
+	
+	//if (mousePosGame.x > (minPoint.x) && (mousePosGame.x < (maxPoint.x)))
+	//	return true;
 
 	return false; 
 }

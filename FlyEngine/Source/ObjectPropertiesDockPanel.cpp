@@ -213,8 +213,8 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 
 		float2 showPosition = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos(); 
 
-		FLY_LOG("Game Pos: %f %f", showPosition.x, showPosition.y);
-		FLY_LOG("Relative: %f %f", App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition().x, App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition().y); 
+		/*FLY_LOG("Game Pos: %f %f", showPosition.x, showPosition.y);
+		FLY_LOG("Relative: %f %f", App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition().x, App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition().y);*/ 
 
 		float showPositionArr[2] = { selectedObject->transform->GetPosition().x, selectedObject->transform->GetPosition().y };
 		float showRotationArr[2] = { selectedObject->transform->GetRotation().x, selectedObject->transform->GetRotation().y };
