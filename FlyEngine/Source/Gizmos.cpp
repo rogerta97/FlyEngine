@@ -22,7 +22,7 @@ Gizmos::Gizmos(FlyObject* _objectAttached)
 	selectGizmo = new SelectGizmo(_objectAttached);
 	moveGizmo = new MoveGizmo(_objectAttached);
 
-	SetMoveGizmoStyle(7.0f, 100.0f, 5.0f, 20, 20);
+	SetMoveGizmoStyle(7.0f, 100.0f, 5.0f, 20, 20, 25);
 	SetBoxColor(float4(0.4f, 0.4f, 1.0f, 0.2f)); 
 }
 
@@ -80,6 +80,17 @@ void Gizmos::HandleMoveGizmo()
 
 			moveGizmo->initDragPos = objectAttached->transform->GetPosition(false);
 		}
+
+		if (moveGizmo->axisXYBox->IsMouseOver())
+		{
+			moveGizmo->dragAxis = DRAG_XY;
+
+			moveGizmo->dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos();
+			moveGizmo->dragCenterOffset -= (objectAttached->transform->GetPosition(false));
+			moveGizmo->dragCenterOffset = float2((int)moveGizmo->dragCenterOffset.x, (int)moveGizmo->dragCenterOffset.y);
+
+			moveGizmo->initDragPos = objectAttached->transform->GetPosition(false);
+		}
 	}
 
 	HandleDrag();
@@ -108,16 +119,16 @@ void Gizmos::HandleDrag()
 			objectAttached->CalculateCurrentGizmo();
 			break;
 
-		//case DRAG_XY:
-		//	objectAttached->transform->SetPosition(float2(positionInDragGame.x, positionInDragGame.y));
-		//	break;
+		case DRAG_XY:
+			objectAttached->transform->SetPosition(float2(positionInDrag.x - moveGizmo->dragCenterOffset.x, positionInDrag.y - moveGizmo->dragCenterOffset.y));
+			objectAttached->CalculateCurrentGizmo();
+			break;
 
 		}
 
 		if (App->moduleInput->GetMouseButton(LEFT_CLICK) == KEY_UP)
 		{
 			moveGizmo->dragAxis = NOT_DRAG;
-			//moveGizmo->initDragPos = objectAttached->transform->GetPosition(true); 
 		}
 	}
 }
@@ -185,8 +196,6 @@ void Gizmos::DrawMoveGizmo()
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	//objectAttached->gizmos->moveGizmo->axisXBox->Draw();
-	//objectAttached->gizmos->moveGizmo->axisYBox->Draw();
 
 	float4x4 moveGizmoViewMat = float4x4::identity;
 	moveGizmoViewMat.RotateX(0);
@@ -228,12 +237,11 @@ void Gizmos::DrawMoveGizmo()
 	glEnd();
 
 	// Yellow XY Square
-	float2 xySquarePosition = float2(moveGizmo->lineLength / 5, -moveGizmo->lineLength / 5); 
 	glBegin(GL_QUAD_STRIP);
-	glColor3f(255, 0, 0); glVertex3f(xySquarePosition.x -moveGizmo->centerSquareSize, xySquarePosition.y -moveGizmo->centerSquareSize, 0.f);
-	glColor3f(255, 0, 0); glVertex3f(xySquarePosition.x + moveGizmo->centerSquareSize,xySquarePosition.y  -moveGizmo->centerSquareSize, 0.f);
-	glColor3f(255, 0, 0); glVertex3f(xySquarePosition.x -moveGizmo->centerSquareSize, xySquarePosition.y + moveGizmo->centerSquareSize, 0.f);
-	glColor3f(255, 0, 0); glVertex3f(xySquarePosition.x + moveGizmo->centerSquareSize,xySquarePosition.y + moveGizmo->centerSquareSize, 0.f);
+	glColor3f(255, 255, 0); glVertex3f(moveGizmo->xySquarePos.x -moveGizmo->xySquareSize / 2, moveGizmo->xySquarePos.y -moveGizmo->xySquareSize / 2, 0.f);
+	glColor3f(255, 255, 0); glVertex3f(moveGizmo->xySquarePos.x + moveGizmo->xySquareSize / 2, moveGizmo->xySquarePos.y  -moveGizmo->xySquareSize / 2, 0.f);
+	glColor3f(255, 255, 0); glVertex3f(moveGizmo->xySquarePos.x -moveGizmo->xySquareSize / 2, moveGizmo->xySquarePos.y + moveGizmo->xySquareSize / 2, 0.f);
+	glColor3f(255, 255, 0); glVertex3f(moveGizmo->xySquarePos.x + moveGizmo->xySquareSize / 2, moveGizmo->xySquarePos.y + moveGizmo->xySquareSize / 2, 0.f);
 	glEnd();
 
 	// Center Square
@@ -247,8 +255,6 @@ void Gizmos::DrawMoveGizmo()
 	glLineWidth(1.0f);
 	glColor3f(255, 255, 255);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-
 }
 
 void Gizmos::SetArrowLenght(float& lineLenght)
@@ -271,7 +277,7 @@ void Gizmos::SetBoxColor(float4 color)
 	selectGizmo->objectBorderBox->SetSquareColor(color); 
 }
 
-void Gizmos::SetMoveGizmoStyle(float centerSize, float lineLength, float _lineWidth, float arrowLength, float arrowWidth)
+void Gizmos::SetMoveGizmoStyle(float centerSize, float lineLength, float _lineWidth, float arrowLength, float arrowWidth, float _xySquareSize)
 {
 	moveGizmo->centerSquareSize = centerSize;
 	moveGizmo->lineLength = lineLength;
@@ -280,11 +286,17 @@ void Gizmos::SetMoveGizmoStyle(float centerSize, float lineLength, float _lineWi
 	moveGizmo->arrowLength = arrowLength;
 	moveGizmo->arrowWidth = arrowWidth;
 
+	moveGizmo->xySquareSize = _xySquareSize; 
+	moveGizmo->xySquarePos = float2(moveGizmo->lineLength / 4, -moveGizmo->lineLength / 4);
+
 	moveGizmo->axisXBox->SetMinPoint(float2(0, arrowWidth / 2));
 	moveGizmo->axisXBox->SetMaxPoint(float2(lineLength, - arrowWidth / 2));
 
 	moveGizmo->axisYBox->SetMinPoint(float2(-arrowWidth / 2, 0));
 	moveGizmo->axisYBox->SetMaxPoint(float2(arrowWidth / 2, -lineLength));
+
+	moveGizmo->axisXYBox->SetMinPoint(float2(moveGizmo->xySquarePos.x - moveGizmo->xySquareSize / 2, moveGizmo->xySquarePos.y + moveGizmo->xySquareSize / 2));
+	moveGizmo->axisXYBox->SetMaxPoint(float2(moveGizmo->xySquarePos.x + moveGizmo->xySquareSize / 2, moveGizmo->xySquarePos.y - moveGizmo->xySquareSize / 2));
 }
 
 void Gizmos::SetCenterSquareSize(float& _centerSize)
@@ -339,6 +351,8 @@ MoveGizmo::MoveGizmo(FlyObject* parentObject)
 {
 	axisXBox = new BoundingBox(parentObject);
 	axisYBox = new BoundingBox(parentObject);
+	axisXYBox = new BoundingBox(parentObject);
+
 	dragAxis = NOT_DRAG; 
 }
 
@@ -381,4 +395,18 @@ void MoveGizmo::AddaptAxisBoxes(FlyObject* objectAttached)
 
 	axisYBox->SetMinPoint(moveMinPoint);
 	axisYBox->SetMaxPoint(moveMaxPoint);
+
+	// Center Box 
+	axisXYBox->CenterMinMaxPointsToScreen();
+	moveMaxPoint = float2(axisXYBox->GetMaxPoint().x, axisXYBox->GetMaxPoint().y);
+	moveMinPoint = float2(axisXYBox->GetMinPoint().x, axisXYBox->GetMinPoint().y);
+
+	moveMinPoint.x += objectAttached->transform->GetPosition(true).x + xySquarePos.x;
+	moveMinPoint.y += objectAttached->transform->GetPosition(true).y + xySquarePos.y;
+
+	moveMaxPoint.x += objectAttached->transform->GetPosition(true).x + xySquarePos.x;
+	moveMaxPoint.y += objectAttached->transform->GetPosition(true).y + xySquarePos.y;
+
+	axisXYBox->SetMinPoint(moveMinPoint);
+	axisXYBox->SetMaxPoint(moveMaxPoint);
 }

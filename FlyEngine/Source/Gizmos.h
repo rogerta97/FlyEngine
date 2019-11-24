@@ -43,8 +43,12 @@ public:
 	float arrowLength;
 	float arrowWidth; 
 
+	float xySquareSize;
+	float2 xySquarePos; 
+
 	BoundingBox* axisXBox;
 	BoundingBox* axisYBox;
+	BoundingBox* axisXYBox;
 
 	DragAxis dragAxis;
 	float2 dragCenterOffset; 
@@ -82,7 +86,7 @@ public:
 	void SetBoxSize(float& boxSizeX, float& boxSizeY);
 	void SetBoxColor(float4 color); 
 
-	void SetMoveGizmoStyle(float centerSize, float lineLenght, float _arrowWidth, float arrowLength, float arrowWidth);
+	void SetMoveGizmoStyle(float centerSize, float lineLenght, float _arrowWidth, float arrowLength, float arrowWidth, float xySquareSize);
 
 public: 
 	Transform* gizmoTransform; 
