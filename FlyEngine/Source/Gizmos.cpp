@@ -73,7 +73,7 @@ void Gizmos::HandleMoveGizmo()
 			moveGizmo->dragAxis = DRAG_Y;
 
 			moveGizmo->dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos();
-			moveGizmo->dragCenterOffset += (objectAttached->transform->GetPosition(false));
+			moveGizmo->dragCenterOffset -= (objectAttached->transform->GetPosition(false));
 			moveGizmo->dragCenterOffset = float2((int)moveGizmo->dragCenterOffset.x, (int)moveGizmo->dragCenterOffset.y);
 		}
 	}
@@ -89,6 +89,7 @@ void Gizmos::HandleDrag()
 		
 		float2 positionInDrag = float2(App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().x, App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().y);
 		float2 positionInDragGame = float2(App->moduleImGui->gameViewportDockPanel->ScreenToWorld(positionInDrag.x, positionInDrag.y));
+		positionInDragGame = float2((int)positionInDragGame.x, (int)positionInDragGame.y);
 
 		switch (moveGizmo->dragAxis)
 		{
@@ -99,7 +100,7 @@ void Gizmos::HandleDrag()
 			break;
 
 		case DRAG_Y:
-			objectAttached->transform->SetPosition(float2(0, positionInDragGame.y + moveGizmo->dragCenterOffset.y));
+			objectAttached->transform->SetPosition(float2(0, positionInDrag.y - moveGizmo->dragCenterOffset.y));
 			objectAttached->CalculateCurrentGizmo();
 			break;
 

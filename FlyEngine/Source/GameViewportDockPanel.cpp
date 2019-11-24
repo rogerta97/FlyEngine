@@ -208,7 +208,7 @@ float2& GameViewportDockPanel::GetViewportCenterGlobal()
 
 float2& GameViewportDockPanel::GetMouseRelativePosition()
 {
-	float2 mouseRelativePos = float2(ImGui::GetMousePos().x - viewportCenterGlobalPos.x, ImGui::GetMousePos().y - viewportCenterGlobalPos.y + (verticalOffset / 2));
+	float2 mouseRelativePos = float2(ImGui::GetMousePos().x - viewportCenterGlobalPos.x, ImGui::GetMousePos().y - viewportCenterGlobalPos.y - (verticalOffset / 2));
 	return mouseRelativePos; 
 }
 
