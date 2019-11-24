@@ -11,6 +11,7 @@ public:
 	~BoundingBox();
 
 	void Draw();
+	void CleanUp(); 
 
 	void DrawSquare(float4 color);
 	void DrawControlPoint(float2 pointPos, float pointSize);

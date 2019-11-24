@@ -8,6 +8,7 @@
 #include "ViewportManager.h"
 #include "imgui.h"
 #include "ModuleInput.h"
+#include "mmgr.h"
 
 BoundingBox::BoundingBox(FlyObject* _objectAttached)
 {
@@ -33,6 +34,11 @@ void BoundingBox::Draw()
 		DrawControlPoint(float2(minPoint.x, minPoint.y), 4);
 		DrawControlPoint(float2(maxPoint.x, minPoint.y), 4);
 	}
+}
+
+void BoundingBox::CleanUp()
+{
+	objectAttached = nullptr; 
 }
 
 void BoundingBox::DrawSquare(float4 color = float4(1.0f, 1.0f, 1.0f, 0.4f))
@@ -74,8 +80,8 @@ void BoundingBox::DrawMinAndMaxPoints()
 void BoundingBox::SetSize(float sizeX, float sizeY)
 {
 	size = float2(sizeX, sizeY);
-	minPoint = objectAttached->transform->GetPosition() + float2(-sizeX, sizeY);
-	maxPoint = objectAttached->transform->GetPosition() + float2(sizeX, -sizeY);
+	minPoint = objectAttached->transform->GetPosition(true) + float2(-sizeX, sizeY);
+	maxPoint = objectAttached->transform->GetPosition(true) + float2(sizeX, -sizeY);
 }
 
 float2& BoundingBox::GetSize()

@@ -21,6 +21,8 @@ public:
 	SelectGizmo(FlyObject* parentObject); 
 	~SelectGizmo(); 
 
+	void CleanUp();
+
 	void AddaptSelectBox(FlyObject* objectAttached);
 
 public: 
@@ -33,6 +35,8 @@ public:
 
 	MoveGizmo(FlyObject* parentObject);
 	~MoveGizmo(); 
+
+	void CleanUp();
 
 	void AddaptAxisBoxes(FlyObject* objectAttached);
 
@@ -66,7 +70,7 @@ public:
 	void Update();
 	void HandleMoveGizmo();
 	void HandleDrag();
-	void HandleSelectionGizmo();
+	void CleanUp(); 
 
 	// Utils -----------------
 	bool IsMouseOver(); 
@@ -79,7 +83,7 @@ public:
 	// Fitting ---------------
 	void CalculateSelectGizmo(FlyObject* objectAttached);
 	void CalculateMoveGizmo(FlyObject* objectAttached);
-	void FitBoxToObject(); 
+	void FitSelectBoxSize(); 
 	void SetCenterSquareSize(float& centerSize);
 
 	// Set & Get -------------
@@ -92,9 +96,6 @@ public:
 
 	// Style -----------------
 	void SetMoveGizmoStyle(float centerSize, float lineLenght, float _arrowWidth, float arrowLength, float arrowWidth, float xySquareSize);
-
-public: 
-	Transform* gizmoTransform; 
 
 private:
 

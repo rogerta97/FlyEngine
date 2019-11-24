@@ -20,7 +20,6 @@ ObjectCreatorDockPanel::ObjectCreatorDockPanel(bool isVisible) : DockPanel("Enti
 {
 	flyEngineSection = FLY_SECTION_null;
 	dockPanelType = DOCK_OBJECT_CREATOR;
-	ResetObjectData(); 
 }
 
 ObjectCreatorDockPanel::~ObjectCreatorDockPanel()

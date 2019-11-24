@@ -23,10 +23,6 @@ FlyObject::FlyObject(std::string _name)
 	isSelected = false; 
 
 	transform = new Transform();
-
-	objectBorderBox = new BoundingBox(this); 
-	objectBorderBox->showCornerDots = false; 
-
 	gizmos = new Gizmos(this);
 }
 
@@ -59,6 +55,10 @@ void FlyObject::CleanUp()
 
 	toolsList.clear(); 
 	delete transform; 
+
+	gizmos->CleanUp();
+	delete gizmos; 
+
 }
 
 std::string FlyObject::GetName() const
@@ -134,7 +134,7 @@ ImageTool* FlyObject::AddImageTool(const char* imageTexturePath)
 		toolsList.push_back(newAtrImage);
 
 		// Addapt Gizmo Rect to new Image
-		gizmos->FitBoxToObject();
+		gizmos->FitSelectBoxSize();
 
 		return newAtrImage;
 	}

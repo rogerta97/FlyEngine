@@ -46,7 +46,6 @@ private:
 public:
 	Transform* transform;
 	Tool* selectedTool; 
-	BoundingBox* objectBorderBox; 
 	Gizmos* gizmos; 
 	bool isSelected; 
 

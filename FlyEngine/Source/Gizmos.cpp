@@ -12,12 +12,11 @@
 #include "Room.h"
 #include "GameViewportDockPanel.h"
 #include "Transform.h"
+#include "mmgr.h"
 
 Gizmos::Gizmos(FlyObject* _objectAttached)
 {
 	objectAttached = _objectAttached; 
-	
-	gizmoTransform = new Transform();
 
 	selectGizmo = new SelectGizmo(_objectAttached);
 	moveGizmo = new MoveGizmo(_objectAttached);
@@ -31,6 +30,15 @@ Gizmos::~Gizmos()
 
 }
 
+void Gizmos::CleanUp()
+{
+	selectGizmo->CleanUp();
+	delete selectGizmo;
+
+	moveGizmo->CleanUp();
+	delete moveGizmo; 
+}
+
 void Gizmos::Update()
 {
 	if (!App->moduleImGui->gameViewportDockPanel->IsMouseInViewport())
@@ -41,10 +49,6 @@ void Gizmos::Update()
 	{
 		switch (gizmoMode)
 		{
-		case GIZMO_SELECT:
-			HandleSelectionGizmo();
-			break;
-
 		case GIZMO_MOVE:
 			HandleMoveGizmo();
 			break;
@@ -61,12 +65,9 @@ void Gizmos::HandleMoveGizmo()
 	{
 		if (selectGizmo->objectBorderBox->IsMouseOver())
 		{
-			if (App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject() != objectAttached)
-			{
-				//App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(objectAttached);
+			if (App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject() != objectAttached)				
 				return;
-			}
-				
+						
 			if (moveGizmo->axisXBox->IsMouseOver() && objectAttached->isSelected)
 			{
 				moveGizmo->dragAxis = DRAG_X;
@@ -142,21 +143,6 @@ void Gizmos::HandleDrag()
 	}
 }
 
-void Gizmos::HandleSelectionGizmo()
-{
-	/*if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN)
-	{
-		if (selectGizmo->objectBorderBox->IsMouseOver())
-		{
-			App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(objectAttached);
-		}
-		else
-		{
-			App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(nullptr);
-		}
-	}*/
-}
-
 bool Gizmos::IsMouseOver()
 {
 	return selectGizmo->objectBorderBox->IsMouseOver();
@@ -187,6 +173,7 @@ void Gizmos::DrawSelectGizmo()
 void Gizmos::CalculateSelectGizmo(FlyObject* objectAttached)
 {			
 	selectGizmo->AddaptSelectBox(objectAttached);
+	FitSelectBoxSize(); 
 }
 
 void Gizmos::CalculateMoveGizmo(FlyObject* objectAttached)
@@ -194,7 +181,7 @@ void Gizmos::CalculateMoveGizmo(FlyObject* objectAttached)
 	moveGizmo->AddaptAxisBoxes(objectAttached);
 }
 
-void Gizmos::FitBoxToObject()
+void Gizmos::FitSelectBoxSize()
 {
 	if (objectAttached != nullptr) 
 	{
@@ -337,6 +324,12 @@ SelectGizmo::~SelectGizmo()
 {
 }
 
+void SelectGizmo::CleanUp()
+{
+	objectBorderBox->CleanUp(); 
+	delete objectBorderBox; 
+}
+
 void SelectGizmo::AddaptSelectBox(FlyObject* objectAttached)
 {
 	objectBorderBox->CenterMinMaxPointsToScreen();
@@ -373,6 +366,21 @@ MoveGizmo::MoveGizmo(FlyObject* parentObject)
 
 MoveGizmo::~MoveGizmo()
 {
+}
+
+void MoveGizmo::CleanUp()
+{
+	axisXBox->CleanUp();
+	delete axisXBox;
+	axisXBox = nullptr; 
+
+	axisYBox->CleanUp();
+	delete axisYBox;
+	axisXBox = nullptr;
+
+	axisXYBox->CleanUp();
+	delete axisXYBox;
+	axisXBox = nullptr;
 }
 
 void MoveGizmo::AddaptAxisBoxes(FlyObject* objectAttached)
