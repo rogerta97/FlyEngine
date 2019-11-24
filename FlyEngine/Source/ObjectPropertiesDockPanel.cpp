@@ -206,8 +206,6 @@ void ObjectPropertiesDockPanel::DrawToolSelectable(ToolSelectableInfo& selectabl
 
 void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 {
-	FLY_WARNING("Inc: %f", selectedObject->transform->GetScaleInc().x);
-
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 	if (ImGui::CollapsingHeader("Object Placement"))
 	{
@@ -228,7 +226,7 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 		if (ImGui::DragFloat2("Position", showPositionArr, 0.5f))
 		{
 			selectedObject->transform->SetPosition(showPositionArr[0], showPositionArr[1]);
-			selectedObject->CalculateCurrentGizmo(); 
+			selectedObject->CalculateAllGizmos();
 		}
 
 		if (ImGui::DragFloat2("Rotation", showRotationArr))
@@ -239,7 +237,7 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 		if (ImGui::DragFloat2("Scale", showScaleArr, 0.1f))
 		{
 			selectedObject->transform->SetScale(float2(showScaleArr[0], showScaleArr[1]));
-			selectedObject->CalculateCurrentGizmo();
+			selectedObject->CalculateAllGizmos();
 		}
 		POP_FONT;
 	}

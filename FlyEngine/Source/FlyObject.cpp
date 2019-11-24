@@ -98,6 +98,12 @@ float2 FlyObject::GetObjectVisualDimensions()
 	return objectVisualSize; 
 }
 
+void FlyObject::CalculateAllGizmos()
+{
+	gizmos->CalculateSelectGizmo(this);
+	gizmos->CalculateMoveGizmo(this);
+}
+
 void FlyObject::CalculateCurrentGizmo()
 {
 	switch (App->moduleImGui->gameViewportDockPanel->GetGizmoMode())
