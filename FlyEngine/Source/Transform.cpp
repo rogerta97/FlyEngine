@@ -13,6 +13,8 @@ Transform::Transform()
 	rotationEuler = float3(0, 0, 0);
 	scale = float3(1, 1, 1);
 
+	scalePrevTick = GetScale();
+
 	CalculateViewMatrix(); 
 }
 
@@ -80,6 +82,16 @@ void Transform::SetScale(float3 newScale)
 void Transform::SetScale(float2 newScale)
 {
 	SetScale(float3(newScale.x, newScale.y, 1));
+}
+
+float2& Transform::GetScaleInc()
+{
+	float2 currentScale = GetScale(); 
+	float incX = scalePrevTick.x / currentScale.x;
+	float incY = scalePrevTick.y / currentScale.y;
+
+	float2 inc = float2(incX, incY);
+	return inc;
 }
 
 float4x4 Transform::CalculateViewMatrix()

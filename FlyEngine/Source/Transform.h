@@ -26,14 +26,16 @@ public:
 	float2 GetScale() const;
 	void SetScale(float3 newRotation);
 	void SetScale(float2 newRotation);
+	float2& GetScaleInc(); 
 
 	bool dirty; 
+	float2 scalePrevTick;
 
 private:
-
 	float3 position;
 	float3 rotationEuler;
 	float3 scale;
+
 
 	float4x4 ViewMatrix;
 };
