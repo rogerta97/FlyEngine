@@ -185,8 +185,8 @@ void Gizmos::DrawMoveGizmo()
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	objectAttached->gizmos->moveGizmo->axisXBox->Draw();
-	objectAttached->gizmos->moveGizmo->axisYBox->Draw();
+	//objectAttached->gizmos->moveGizmo->axisXBox->Draw();
+	//objectAttached->gizmos->moveGizmo->axisYBox->Draw();
 
 	float4x4 moveGizmoViewMat = float4x4::identity;
 	moveGizmoViewMat.RotateX(0);
@@ -208,7 +208,7 @@ void Gizmos::DrawMoveGizmo()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glBegin(GL_TRIANGLES);
 	glColor3f(0, 0, 255); glVertex3f(triangleBase.x, triangleBase.y - moveGizmo->arrowWidth / 2, 0.0f);
-	glColor3f(0, 0, 255); glVertex3f(triangleBase.x + moveGizmo->arrowLength, 0.0f, 0.0f);
+	glColor3f(0, 0, 255); glVertex3f(triangleBase.x + moveGizmo->arrowLength + 5, 0.0f, 0.0f);
 	glColor3f(0, 0, 255); glVertex3f(triangleBase.x, triangleBase.y + moveGizmo->arrowWidth / 2, 0.0f);
 	glEnd();
 
@@ -223,8 +223,17 @@ void Gizmos::DrawMoveGizmo()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glBegin(GL_TRIANGLES);
 	glColor3f(0, 255, 0); glVertex3f(triangleBase.x - moveGizmo->arrowWidth / 2, triangleBase.y, 0.0f);
-	glColor3f(0, 255, 0); glVertex3f(0.0f, triangleBase.y - moveGizmo->arrowLength, 0.0f);
+	glColor3f(0, 255, 0); glVertex3f(0.0f, triangleBase.y - moveGizmo->arrowLength - 5, 0.0f);
 	glColor3f(0, 255, 0); glVertex3f(triangleBase.x + moveGizmo->arrowWidth / 2, triangleBase.y, 0.0f);
+	glEnd();
+
+	// Yellow XY Square
+	float2 xySquarePosition = float2(moveGizmo->lineLength / 5, -moveGizmo->lineLength / 5); 
+	glBegin(GL_QUAD_STRIP);
+	glColor3f(255, 0, 0); glVertex3f(xySquarePosition.x -moveGizmo->centerSquareSize, xySquarePosition.y -moveGizmo->centerSquareSize, 0.f);
+	glColor3f(255, 0, 0); glVertex3f(xySquarePosition.x + moveGizmo->centerSquareSize,xySquarePosition.y  -moveGizmo->centerSquareSize, 0.f);
+	glColor3f(255, 0, 0); glVertex3f(xySquarePosition.x -moveGizmo->centerSquareSize, xySquarePosition.y + moveGizmo->centerSquareSize, 0.f);
+	glColor3f(255, 0, 0); glVertex3f(xySquarePosition.x + moveGizmo->centerSquareSize,xySquarePosition.y + moveGizmo->centerSquareSize, 0.f);
 	glEnd();
 
 	// Center Square

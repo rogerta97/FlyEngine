@@ -152,30 +152,18 @@ bool BoundingBox::IsMouseOver()
 	mousePosGame.y *= ViewportManager::getInstance()->GetAspectRatio(); 
 
 	// Calculate Final Position Values
-	bool a = false;
 	if (mousePosGame.x > (minPoint.x) && (mousePosGame.x < (maxPoint.x)))
 	{
-		FLY_LOG("inside X");
-		a = true; 
 		ret = true;
 	}
 
 	if (mousePosGame.y > (minPoint.y) || mousePosGame.y < (maxPoint.y))
 	{
 		ret = false;
-		FLY_ERROR("Out Of Y");
 	}
 
-	FLY_WARNING("Mouse Pos: %f %f", mousePosGame.x, mousePosGame.y);
-	FLY_LOG("Min: %f %f", minPoint.x, minPoint.y);
-	FLY_LOG("Max: %f %f", maxPoint.x, maxPoint.y);
-
 	return ret;
-	
-	//if (mousePosGame.x > (minPoint.x) && (mousePosGame.x < (maxPoint.x)))
-	//	return true;
 
-	return false; 
 }
 
 void BoundingBox::FitToObject()
