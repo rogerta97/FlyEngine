@@ -31,6 +31,7 @@ public:
 	~Room(); 
 
 	void Update(); 
+
 	void CleanUp(); 
 
 	// Connections --------------------------------------------------------------------

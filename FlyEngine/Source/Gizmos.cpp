@@ -61,9 +61,13 @@ void Gizmos::HandleMoveGizmo()
 	{
 		if (selectGizmo->objectBorderBox->IsMouseOver())
 		{
-			App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(objectAttached); 
-
-			if (moveGizmo->axisXBox->IsMouseOver())
+			if (App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject() != objectAttached)
+			{
+				//App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(objectAttached);
+				return;
+			}
+				
+			if (moveGizmo->axisXBox->IsMouseOver() && objectAttached->isSelected)
 			{
 				moveGizmo->dragAxis = DRAG_X;
 
@@ -74,7 +78,7 @@ void Gizmos::HandleMoveGizmo()
 				moveGizmo->initDragPos = objectAttached->transform->GetPosition(false);
 			}
 
-			if (moveGizmo->axisYBox->IsMouseOver())
+			if (moveGizmo->axisYBox->IsMouseOver() && objectAttached->isSelected)
 			{
 				moveGizmo->dragAxis = DRAG_Y;
 
@@ -85,7 +89,7 @@ void Gizmos::HandleMoveGizmo()
 				moveGizmo->initDragPos = objectAttached->transform->GetPosition(false);
 			}
 
-			if (moveGizmo->axisXYBox->IsMouseOver())
+			if (moveGizmo->axisXYBox->IsMouseOver() && objectAttached->isSelected)
 			{
 				moveGizmo->dragAxis = DRAG_XY;
 
@@ -96,8 +100,6 @@ void Gizmos::HandleMoveGizmo()
 				moveGizmo->initDragPos = objectAttached->transform->GetPosition(false);
 			}
 		}
-		else
-			App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(nullptr);
 	}
 
 	HandleDrag();
@@ -118,17 +120,17 @@ void Gizmos::HandleDrag()
 
 		case DRAG_X:
 			objectAttached->transform->SetPosition(float2(positionInDrag.x - moveGizmo->dragCenterOffset.x, moveGizmo->initDragPos.y));
-			objectAttached->CalculateCurrentGizmo(); 
+			objectAttached->CalculateAllGizmos(); 
 			break;
 
 		case DRAG_Y:
 			objectAttached->transform->SetPosition(float2(moveGizmo->initDragPos.x, positionInDrag.y - moveGizmo->dragCenterOffset.y));
-			objectAttached->CalculateCurrentGizmo();
+			objectAttached->CalculateAllGizmos();
 			break;
 
 		case DRAG_XY:
 			objectAttached->transform->SetPosition(float2(positionInDrag.x - moveGizmo->dragCenterOffset.x, positionInDrag.y - moveGizmo->dragCenterOffset.y));
-			objectAttached->CalculateCurrentGizmo();
+			objectAttached->CalculateAllGizmos();
 			break;
 
 		}
@@ -142,7 +144,7 @@ void Gizmos::HandleDrag()
 
 void Gizmos::HandleSelectionGizmo()
 {
-	if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN)
+	/*if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN)
 	{
 		if (selectGizmo->objectBorderBox->IsMouseOver())
 		{
@@ -152,7 +154,12 @@ void Gizmos::HandleSelectionGizmo()
 		{
 			App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(nullptr);
 		}
-	}
+	}*/
+}
+
+bool Gizmos::IsMouseOver()
+{
+	return selectGizmo->objectBorderBox->IsMouseOver();
 }
 
 void Gizmos::Draw()

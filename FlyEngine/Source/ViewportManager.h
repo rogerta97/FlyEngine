@@ -3,8 +3,10 @@
 
 #include "glm.hpp"
 #include "Math/float2.h"
+#include <list>
 
 using namespace glm; 
+using namespace std; 
 
 enum ViewportAspectRatio
 {
@@ -13,6 +15,7 @@ enum ViewportAspectRatio
 };
 
 class TextureMSAA; 
+class FlyObject; 
 struct ViewportManager 
 {
 private:
@@ -26,6 +29,7 @@ public:
 	// Utility --------------------------------
 	static void Delete();
 	static void ResizeViewport();
+	static list<FlyObject*> RaycastMouseClick(); 
 
 	static float GetWidthFromHeight(float viewportHeight);
 	static float GetHeightFromWidth(float viewportWidth);

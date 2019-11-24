@@ -4,7 +4,9 @@
 #include "ViewportManager.h"
 #include "RandomNumberGenerator.h"
 #include "Application.h"
+#include "ModuleInput.h"
 #include "FlyObject.h"
+#include "GameViewportDockPanel.h"
 #include "ModuleImGui.h"
 #include "TextureMSAA.h"
 #include "ObjectPropertiesDockPanel.h"
@@ -26,10 +28,29 @@ Room::~Room()
 {
 }
 
+
 void Room::Update()
 {
-	UpdateRoomObjects(); 
+	if (App->moduleRoomManager->GetSelectedRoom() == this)
+	{
+		UpdateRoomObjects();
+
+		// Check for new Selected Objects 
+		if (App->moduleRoomManager->GetSelectedRoom()->objectsInRoom.empty())
+			return;
+
+		if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && App->moduleImGui->gameViewportDockPanel->IsMouseInViewport())
+		{
+			list<FlyObject*> objectCandidates = ViewportManager::getInstance()->RaycastMouseClick();
+
+			if (!objectCandidates.empty())
+				App->moduleManager->SetSelectedFlyObject(objectCandidates.back());
+			else
+				App->moduleManager->SetSelectedFlyObject(nullptr);
+		}
+	}
 }
+
 
 void Room::CleanUp()
 {
@@ -183,7 +204,6 @@ FlyObject* Room::CreateFlyObject(std::string objectName)
 {
 	FlyObject* newObject = new FlyObject(objectName); 
 	objectsInRoom.push_back(newObject); 
-	FLY_LOG("New Object Created"); 
 	return newObject; 
 }
 
@@ -246,6 +266,9 @@ void Room::SetRoomID(UID roomID)
 
 void Room::SetSelectedObject(FlyObject* newObject)
 {
+	if (App->moduleManager->GetSelectedFlyObject() == newObject)
+		return; 
+
 	for (auto& it : objectsInRoom)
 	{
 		if ((it) == newObject)

@@ -30,6 +30,7 @@ public:
 	float2 GetObjectVisualDimensions();  
 	void CalculateCurrentGizmo(); 
 	void CalculateAllGizmos(); 
+	bool IsMouseOver(); 
 
 	// Tools -----------
 	ImageTool* AddImageTool(const char* imageTexturePath);
@@ -38,6 +39,7 @@ public:
 	std::list<Tool*> GetToolsList() const; 
 	void DeleteTool(std::string toolNameToDelete); 
 
+private: 
 	// Draw UI ---------
 	void DrawImageToolSettings(); 
 

@@ -89,7 +89,7 @@ bool ModuleRender::Init()
 
 	glViewport(0, 0, windowWidth, windowHeight);
 	//glOrtho(-400.0 * aspectRatio, 400.0 * aspectRatio, -400.0, 400.0, 1.0, -1.0);
-	glOrtho(-100.0, 100.0, -100.0, 100.0, 1.0, -1.0);
+	glOrtho(-500.0f, 500.0f, -500.0f, 500.0f, 1.0, -1.0);
 
 	FLY_WARNING("glOrtho resized in Init");
 

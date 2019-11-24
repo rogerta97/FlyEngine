@@ -46,6 +46,18 @@ void ViewportManager::ResizeViewport()
 {
 }
 
+list<FlyObject*> ViewportManager::RaycastMouseClick()
+{
+	list<FlyObject*> objectCandidates = list<FlyObject*>();
+	for (auto& currentObject : App->moduleRoomManager->GetSelectedRoom()->objectsInRoom)
+	{
+		if (currentObject->IsMouseOver())
+			objectCandidates.push_back(currentObject);
+	}
+
+	return objectCandidates;
+}
+
 float ViewportManager::GetWidthFromHeight(float viewportHeight)
 {
 	switch (instance->viewportAspectRatio)

@@ -8,6 +8,7 @@
 #include <list>
 #include <string>
 
+class FlyObject; 
 class ModuleManager : public Module
 {
 public:
@@ -15,11 +16,17 @@ public:
 	~ModuleManager();
 
 	bool Init();
+
 	bool CleanUp(); 
 
+	// Utils -----------------------
 	void LoadEngineIcons();
 	int GetToolsAmount() const; 
 	ToolSelectableInfo* DrawToolDictionaryUI(); 
+
+	// Easy Acces -------
+	FlyObject* GetSelectedFlyObject(); 
+	void SetSelectedFlyObject(FlyObject* newSelectedObject); 
 
 	// Desctiption Dictionary -----
 	std::list<ToolSelectableInfo> GetToolsNamesDescriptionsList() const; 

@@ -104,6 +104,11 @@ void FlyObject::CalculateAllGizmos()
 	gizmos->CalculateMoveGizmo(this);
 }
 
+bool FlyObject::IsMouseOver()
+{
+	return gizmos->IsMouseOver(); 
+}
+
 void FlyObject::CalculateCurrentGizmo()
 {
 	switch (App->moduleImGui->gameViewportDockPanel->GetGizmoMode())

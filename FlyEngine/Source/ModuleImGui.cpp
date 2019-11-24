@@ -93,9 +93,9 @@ bool ModuleImGui::Start()
 	string spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources\\Images\\TransformerYellow.png";
 	parrot->AddImageTool(spritePath.c_str());
 
-	//FlyObject* test = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer");
-	//string spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources/Images/Transformer.png"; 
-	//test->AddImageTool(spritePath.c_str());
+	FlyObject* test = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer");
+	spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources/Images/Transformer.png"; 
+	test->AddImageTool(spritePath.c_str());
 
 	ViewportManager::getInstance();
 

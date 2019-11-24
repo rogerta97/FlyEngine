@@ -4,6 +4,8 @@
 #include "ResourceManager.h"
 #include "MyFileSystem.h"
 #include "Application.h"
+#include "ModuleRoomManager.h"
+#include "Room.h"
 #include "ModuleImGui.h"
 #include "ViewportManager.h"
 #include "imgui.h"
@@ -107,6 +109,16 @@ ToolSelectableInfo* ModuleManager::DrawToolDictionaryUI()
 	}
 
 	return returnInfo; 
+}
+
+FlyObject* ModuleManager::GetSelectedFlyObject()
+{
+	return App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();
+}
+
+void ModuleManager::SetSelectedFlyObject(FlyObject* newSelectedObject)
+{
+	App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(newSelectedObject);
 }
 
 std::list<ToolSelectableInfo> ModuleManager::GetToolsNamesDescriptionsList() const

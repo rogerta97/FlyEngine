@@ -68,17 +68,21 @@ public:
 	void HandleDrag();
 	void HandleSelectionGizmo();
 
-	void Draw();
+	// Utils -----------------
+	bool IsMouseOver(); 
 
+	// Draw ------------------
+	void Draw();
 	void DrawMoveGizmo();
 	void DrawSelectGizmo(); 
 
+	// Fitting ---------------
 	void CalculateSelectGizmo(FlyObject* objectAttached);
 	void CalculateMoveGizmo(FlyObject* objectAttached);
-
 	void FitBoxToObject(); 
-
 	void SetCenterSquareSize(float& centerSize);
+
+	// Set & Get -------------
 	void SetLineLength(float& lineLenght);
 	void SetLineWidth(float& _arrowWidth);
 	void SetArrowLenght(float& lineLenght);
@@ -86,6 +90,7 @@ public:
 	void SetBoxSize(float& boxSizeX, float& boxSizeY);
 	void SetBoxColor(float4 color); 
 
+	// Style -----------------
 	void SetMoveGizmoStyle(float centerSize, float lineLenght, float _arrowWidth, float arrowLength, float arrowWidth, float xySquareSize);
 
 public: 
