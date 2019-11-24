@@ -185,6 +185,11 @@ void FlyObject::DeleteTool(std::string toolNameToDelete)
 	}
 }
 
+BoundingBox* FlyObject::GetClickableArea()
+{
+	return clickableArea;
+}
+
 void FlyObject::DrawImageToolSettings()
 {
 	ImageTool* imageTool = (ImageTool*)GetTool("Image"); 

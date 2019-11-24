@@ -36,7 +36,21 @@ bool ObjectCreatorDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible))
 	{
-		DrawObjectCreator(); 
+		if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
+		{
+			if (ImGui::BeginTabItem("Tools"))
+			{
+				DrawObjectCreator(); 
+				ImGui::EndTabItem();
+			}
+			if (ImGui::BeginTabItem("Clickable Area"))
+			{
+				DrawClickableAreaCreator(); 
+				ImGui::EndTabItem();
+			}
+			ImGui::EndTabBar();
+		}
+		DrawCreateButton();
 	}
 
 	ImGui::End(); 
@@ -55,7 +69,6 @@ void ObjectCreatorDockPanel::DrawObjectCreator()
 	DrawObjectToolsList(); 
 	DrawAddAndDeleteToolButtons(); 
 	//DrawSelectedToolSettings(); 
-	DrawCreateButton();
 }
 
 void ObjectCreatorDockPanel::DrawObjectToolsList()
@@ -159,6 +172,18 @@ void ObjectCreatorDockPanel::Close()
 {
 	selectedTool = nullptr;
 	visible = false; 
+}
+	
+void ObjectCreatorDockPanel::DrawClickableAreaCreator()
+{
+	ImGui::BeginChild("ShowClickableArea");
+	ImGui::Image(0, ImVec2(250, 250)); 
+	ImGui::EndChild();
+
+	IMGUI_SPACE_SEPARATOR; 
+
+	ImGui::DragFloat("X", &clickableAreaPos.x, 0.01f, 0, 1); 
+	ImGui::DragFloat("Y", &clickableAreaPos.y, 0.01f, 0, 1);
 }
 
 void ObjectCreatorDockPanel::DrawCreateButton()

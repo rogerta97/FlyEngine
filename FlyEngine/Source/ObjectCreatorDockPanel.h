@@ -3,6 +3,7 @@
 
 #include "DockPanel.h"
 #include "ModuleManager.h"
+#include "MathGeoLib/Math/float2.h"
 
 #include <string>
 
@@ -19,6 +20,10 @@ public:
 	void ResetObjectData();
 	void Close(); 
 
+	// Clickable Area -------------
+	void DrawClickableAreaCreator(); 
+
+	// Object Creator -------------
 	void DrawObjectCreator(); 
 	void DrawObjectToolsList(); 
 	void DrawSelectable(ToolSelectableInfo selectableInfo, bool& isSelected, Tool* currentTool);
@@ -30,8 +35,13 @@ public:
 
 private:
 
+	// Object Creator -------------
 	char searchNewToolBuffer[256]; 
 	char newObjectName[256]; 
+
+	// Clickable Area -------------
+	float2 clickableAreaSize; 
+	float2 clickableAreaPos;
 
 	FlyObject* creatingObject = nullptr; 
 	Tool* selectedTool = nullptr; 

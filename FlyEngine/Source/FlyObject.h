@@ -37,11 +37,15 @@ public:
 	Tool* GetTool(std::string toolName); 
 	Tool* GetTool(ToolType toolType); 
 	std::list<Tool*> GetToolsList() const; 
-	void DeleteTool(std::string toolNameToDelete); 
+	void DeleteTool(std::string toolNameToDelete);
+
+	// Sets & Gets ------
+	BoundingBox* GetClickableArea();
 
 private: 
 	// Draw UI ---------
 	void DrawImageToolSettings(); 
+	BoundingBox* clickableArea; 
 
 public:
 	Transform* transform;
