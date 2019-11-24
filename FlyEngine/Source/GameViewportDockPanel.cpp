@@ -236,5 +236,7 @@ float2& GameViewportDockPanel::ScreenToWorld(float screenPosX, float screenPosY)
 	returnV.x = (screenPosX * worldMaxX) / screenMaxX;
 	returnV.y = (screenPosY * worldMaxY) / screenMaxY;
 
+	returnV.y /= viewportSize.x / viewportSize.y; 
+
 	return returnV;
 }

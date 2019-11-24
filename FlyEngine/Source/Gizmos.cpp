@@ -66,6 +66,8 @@ void Gizmos::HandleMoveGizmo()
 			moveGizmo->dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos(); 
 			moveGizmo->dragCenterOffset -= (objectAttached->transform->GetPosition(false));
 			moveGizmo->dragCenterOffset = float2((int)moveGizmo->dragCenterOffset.x, (int)moveGizmo->dragCenterOffset.y);
+			
+			moveGizmo->initDragPos = objectAttached->transform->GetPosition(false);
 		}
 
 		if (moveGizmo->axisYBox->IsMouseOver())
@@ -75,6 +77,8 @@ void Gizmos::HandleMoveGizmo()
 			moveGizmo->dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos();
 			moveGizmo->dragCenterOffset -= (objectAttached->transform->GetPosition(false));
 			moveGizmo->dragCenterOffset = float2((int)moveGizmo->dragCenterOffset.x, (int)moveGizmo->dragCenterOffset.y);
+
+			moveGizmo->initDragPos = objectAttached->transform->GetPosition(false);
 		}
 	}
 
@@ -95,12 +99,12 @@ void Gizmos::HandleDrag()
 		{
 
 		case DRAG_X:
-			objectAttached->transform->SetPosition(float2(positionInDrag.x - moveGizmo->dragCenterOffset.x, 0));
+			objectAttached->transform->SetPosition(float2(positionInDrag.x - moveGizmo->dragCenterOffset.x, moveGizmo->initDragPos.y));
 			objectAttached->CalculateCurrentGizmo(); 
 			break;
 
 		case DRAG_Y:
-			objectAttached->transform->SetPosition(float2(0, positionInDrag.y - moveGizmo->dragCenterOffset.y));
+			objectAttached->transform->SetPosition(float2(moveGizmo->initDragPos.x, positionInDrag.y - moveGizmo->dragCenterOffset.y));
 			objectAttached->CalculateCurrentGizmo();
 			break;
 
