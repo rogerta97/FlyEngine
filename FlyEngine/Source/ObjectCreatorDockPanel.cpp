@@ -10,6 +10,7 @@
 #include "ImageImporter.h"
 #include "ImageTool.h"
 #include "ResourceManager.h"
+#include "GameViewportDockPanel.h"
 
 #include "FlyObject.h"
 #include "imgui.h"
@@ -20,6 +21,12 @@ ObjectCreatorDockPanel::ObjectCreatorDockPanel(bool isVisible) : DockPanel("Enti
 {
 	flyEngineSection = FLY_SECTION_null;
 	dockPanelType = DOCK_OBJECT_CREATOR;
+
+	previewClickableAreaTexture = nullptr; 
+
+	clickableAreaPos = float2(0, 0);
+	clickableAreaSize = float2(10.0f, 10.0f); 
+	previewTextureMaxSize = 220; 
 }
 
 ObjectCreatorDockPanel::~ObjectCreatorDockPanel()
@@ -68,7 +75,7 @@ void ObjectCreatorDockPanel::DrawObjectCreator()
 {
 	DrawObjectToolsList(); 
 	DrawAddAndDeleteToolButtons(); 
-	//DrawSelectedToolSettings(); 
+	DrawSelectedToolSettings(); 
 }
 
 void ObjectCreatorDockPanel::DrawObjectToolsList()
@@ -85,7 +92,7 @@ void ObjectCreatorDockPanel::DrawObjectToolsList()
 	for (auto& currentTool : creatingObject->GetToolsList())
 	{
 		ToolSelectableInfo selectableInfo = currentTool->GetToolSelectableInfo();
-		DrawSelectable(selectableInfo, currentTool->isSelected, currentTool);
+		DrawSelectable(selectableInfo, currentTool->IsSelected(), currentTool);
 	}
 
 	ImGui::EndChild();
@@ -176,43 +183,134 @@ void ObjectCreatorDockPanel::Close()
 	
 void ObjectCreatorDockPanel::DrawClickableAreaCreator()
 {
-	PrintObjectVisuals();
+	PrintClickableAreaObjectVisuals();
 	DrawClickableAreaSettings();
 }
 
 void ObjectCreatorDockPanel::DrawClickableAreaSettings()
 {
-	if ()
+	static bool clickableAreaActive; 
+	ImGui::Separator();
+	ImGui::Checkbox("Active", &clickableAreaActive);
+
+	if (clickableAreaActive)
 	{
+		if (!creatingObject->HasVisuals())
+		{		
+			ImGui::Separator();
 
+			ImGui::PushFont(App->moduleImGui->rudaRegularSmall); 
+			ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth() + 5);
+			ImGui::TextColored(ImVec4(1, 1, 0.2f, 0.8f), "The object being created has no tools with visible content. Clickable Area position will fit the center of the object");
+			ImGui::PopTextWrapPos(); 
+			ImGui::PopFont(); 
+
+			ImGui::Separator();		
+		}
+		else
+		{
+			ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+			ImGui::Text("Position:");
+			ImGui::PopFont();
+
+			if (ImGui::DragFloat("Horizontal", &clickableAreaPos.x, 0.01f, 0, 1))
+			{
+
+			}
+
+			if(ImGui::DragFloat("Vertical", &clickableAreaPos.y, 0.01f, 0, 1))
+			{
+
+			}
+
+			IMGUI_SPACED_SEPARATOR;
+		}
+		
+		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+		ImGui::Text("Size:");
+		ImGui::PopFont();
+
+		float2 viewportSize = App->moduleImGui->gameViewportDockPanel->GetViewportSize(); 
+		ImGui::DragFloat("Width", &clickableAreaSize.x, 1.0f, 0, viewportSize.x);
+		ImGui::DragFloat("Height", &clickableAreaSize.y, 1.0f, 0, viewportSize.y);
 	}
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	ImGui::Text("Position:");
-	ImGui::PopFont();
-
-	ImGui::DragFloat("X", &clickableAreaPos.x, 0.01f, 0, 1);
-	ImGui::DragFloat("Height", &clickableAreaPos.y, 0.01f, 0, 1);
-
-	IMGUI_SPACED_SEPARATOR;
-
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	ImGui::Text("Size:");
-	ImGui::PopFont();
-
-	ImGui::DragFloat("Width", &clickableAreaSize.x, 0.01f, 0, 1);
-	ImGui::DragFloat("Height", &clickableAreaSize.y, 0.01f, 0, 1);
 }
 
-void ObjectCreatorDockPanel::PrintObjectVisuals()
+void ObjectCreatorDockPanel::PrintClickableAreaObjectVisuals()
 {
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-	ImGui::BeginChild("ShowClickableArea", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
 
-	ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - 100, 0));
-	ImGui::Image(0, ImVec2(200, 200));
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Preview:");
+	ImGui::PopFont();
+
+	ImGui::BeginChild("ShowClickableArea", ImVec2(ImGui::GetContentRegionAvailWidth(), previewTextureMaxSize));
+
+	ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (previewTextureMaxSize / 2), 0));
+	
+	if (!creatingObject->HasVisuals())
+	{
+		// Show No Visual Text
+		ImGui::Image(0, ImVec2(previewTextureMaxSize, previewTextureMaxSize));
+		
+		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+		ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - 50, 90));
+		ImGui::TextColored(ImVec4(1, 0.8, 0.8f, 0.8f), "NO VISUALS");
+		ImGui::PopFont(); 
+	}
+	else
+	{
+		DrawPrevTextureCA();
+	}
 
 	ImGui::EndChild();
 	ImGui::PopStyleColor();
+}
+
+void ObjectCreatorDockPanel::DrawPrevTextureCA()
+{
+	// Prev Texture
+	ImageTool* imageTool = (ImageTool*)creatingObject->GetTool(AT_IMAGE);
+	if (imageTool != nullptr)
+	{
+		previewClickableAreaTexture = imageTool->GetTexture();
+
+		ImVec2 prevTextureSize;
+		prevTextureSize.x = previewClickableAreaTexture->GetWidth();
+		prevTextureSize.y = previewClickableAreaTexture->GetHeigth();
+
+		if (prevTextureSize.x <= prevTextureSize.y)
+		{
+			prevTextureSize.y = previewTextureMaxSize;
+			prevTextureSize.x = previewTextureMaxSize / previewClickableAreaTexture->GetAspectRatio();
+		}
+		else
+		{
+			prevTextureSize.x = previewTextureMaxSize;
+			prevTextureSize.y = previewTextureMaxSize / previewClickableAreaTexture->GetAspectRatio();
+		}
+
+		float yOffset = ImGui::GetContentRegionAvail().y / 2 - (prevTextureSize.y / 2);
+		ImGui::SetCursorPosY(yOffset);
+		ImGui::Image((ImTextureID)previewClickableAreaTexture->GetTextureID(), prevTextureSize);
+	}
+
+	DrawPreviewClickableAreaOnTexture();
+}
+
+void ObjectCreatorDockPanel::DrawPreviewClickableAreaOnTexture()
+{
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
+	glBegin(GL_TRIANGLES);
+
+	float2 prevImageScreenCenter = float2(); 
+
+	//glColor4f(255, 255, 255, 255); glVertex3f(); 
+	//glColor4f(255, 255, 255, 255); glVertex3f();
+	//glColor4f(255, 255, 255, 255); glVertex3f();
+	//glColor4f(255, 255, 255, 255); glVertex3f();
+
+	glEnd(); 
 }
 
 void ObjectCreatorDockPanel::DrawCreateButton()
@@ -290,7 +388,7 @@ void ObjectCreatorDockPanel::DrawToolImageSettings()
 		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", selectedImageTool->GetTexture()->GetWidth());
 
 		ImGui::Text("Height: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", selectedImageTool->GetTexture()->GetHeight());
+		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", selectedImageTool->GetTexture()->GetHeigth());
 
 		Texture* searchTexture = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));

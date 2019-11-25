@@ -20,6 +20,7 @@ ImageTool::ImageTool(FlyObject* _parentObject = nullptr)
 	quadMesh = nullptr; 
 	imageTexture = nullptr; 
 	parentObject = _parentObject; 
+	isVisual = true; 
 
 	SetToolName("Image"); 
 	SetToolDescription("This should be the description of the image"); 
@@ -117,7 +118,7 @@ bool ImageTool::CreateImage(const char* texturePath)
 	if (imageTexture != nullptr)
 	{
 		imageWidth = imageTexture->GetWidth();
-		imageHeight = imageTexture->GetHeight();
+		imageHeight = imageTexture->GetHeigth();
 	}
 
 	quadMesh = new Quad(); 
@@ -143,7 +144,7 @@ void ImageTool::SetTexture(Texture* newTexture)
 	delete quadMesh; 
 
 	quadMesh = new Quad(); 
-	quadMesh->Create(newTexture->GetWidth(), newTexture->GetHeight());
+	quadMesh->Create(newTexture->GetWidth(), newTexture->GetHeigth());
 
 	// Set Texture 
 	imageTexture = newTexture;

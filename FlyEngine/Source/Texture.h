@@ -27,8 +27,8 @@ public:
 	void SetWidth(float width);
 	unsigned int GetWidth() const;
 
-	void SetHeight(float height);
-	unsigned int GetHeight() const;
+	void SetHeigth(float height);
+	unsigned int GetHeigth() const;
 
 	//Buffers
 	uint CreateBuffer();

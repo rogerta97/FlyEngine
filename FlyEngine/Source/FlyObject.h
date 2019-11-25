@@ -32,6 +32,8 @@ public:
 	void CalculateAllGizmos(); 
 	bool IsMouseOver(); 
 
+	bool HasVisuals(); 
+
 	// Tools -----------
 	ImageTool* AddImageTool(const char* imageTexturePath);
 	Tool* GetTool(std::string toolName); 

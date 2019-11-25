@@ -70,14 +70,14 @@ Texture* ImageImporter::LoadTexture(std::string path, bool flipImage = false)
 		{
 			new_tex->SetTextureID(new_tex->CreateBuffer());
 			new_tex->SetWidth(ilGetInteger(IL_IMAGE_WIDTH));
-			new_tex->SetHeight(ilGetInteger(IL_IMAGE_HEIGHT));
+			new_tex->SetHeigth(ilGetInteger(IL_IMAGE_HEIGHT));
 
 			new_tex->SetPath(path.c_str());
 			new_tex->SetName(textureNameGenerated.c_str());
 
 			new_tex->Bind();
 			new_tex->SetTextureSettings();
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, new_tex->GetWidth(), new_tex->GetHeight(), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, new_tex->GetWidth(), new_tex->GetHeigth(), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 			new_tex->UnBind();
 		}
 	}

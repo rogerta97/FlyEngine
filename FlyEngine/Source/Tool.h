@@ -37,14 +37,17 @@ public:
 	ToolType GetToolType() const;
 	void SetToolType(ToolType newToolType);
 
+	bool& IsSelected(); 
+	bool& HasVisual(); 
+
 	ToolSelectableInfo GetToolSelectableInfo(); 
 
-public:
-
+protected:
 	ToolType toolType;
 	std::string toolName; 
 	std::string toolDescription; 
 	bool isSelected; 
+	bool isVisual; 
 }; 
 
 #endif

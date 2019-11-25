@@ -110,6 +110,17 @@ bool FlyObject::IsMouseOver()
 	return gizmos->IsMouseOver(); 
 }
 
+bool FlyObject::HasVisuals()
+{
+	for (auto& currentTool : toolsList)
+	{
+		if (currentTool->HasVisual())
+			return true; 
+	}
+
+	return false; 
+}
+
 void FlyObject::CalculateCurrentGizmo()
 {
 	switch (App->moduleImGui->gameViewportDockPanel->GetGizmoMode())
@@ -121,7 +132,6 @@ void FlyObject::CalculateCurrentGizmo()
 	case GIZMO_MOVE:
 		gizmos->CalculateMoveGizmo(this);
 		break;
-
 	}
 }
 
@@ -230,7 +240,7 @@ void FlyObject::DrawImageToolSettings()
 		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", imageTexture->GetWidth());
 
 		ImGui::Text("Height: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", imageTexture->GetHeight());
+		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", imageTexture->GetHeigth());
 
 		Texture* searchTexture = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));

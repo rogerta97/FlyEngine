@@ -23,12 +23,12 @@ unsigned int Texture::GetWidth() const
 	return width;
 }
 
-void Texture::SetHeight(float height)
+void Texture::SetHeigth(float height)
 {
 	this->height = height;
 }
 
-unsigned int Texture::GetHeight() const
+unsigned int Texture::GetHeigth() const
 {
 	return height;
 }

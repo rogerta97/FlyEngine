@@ -190,7 +190,7 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 void ObjectPropertiesDockPanel::DrawToolSelectable(ToolSelectableInfo& selectableInfo, Tool*& currentTool)
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
-	if (ImGui::Selectable(selectableInfo.toolName.c_str(), &currentTool->isSelected, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), 37))) {
+	if (ImGui::Selectable(selectableInfo.toolName.c_str(), currentTool->IsSelected(), ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), 37))) {
 		selectedObject->selectedTool = currentTool;
 	}
 	ImGui::PopFont();
@@ -285,7 +285,7 @@ void ObjectPropertiesDockPanel::DrawToolImageSettings()
 			ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", imageToolTexture->GetWidth());
 
 			ImGui::Text("Height: "); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", imageToolTexture->GetHeight());
+			ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", imageToolTexture->GetHeigth());
 
 			Texture* searchTexture = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));

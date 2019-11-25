@@ -59,6 +59,16 @@ void Tool::SetToolType(ToolType newToolType)
 	toolType = newToolType; 
 }
 
+bool& Tool::IsSelected()
+{
+	return isSelected;
+}
+
+bool& Tool::HasVisual()
+{
+	return isVisual; 
+}
+
 ToolSelectableInfo Tool::GetToolSelectableInfo()
 {
 	ToolSelectableInfo returnToolInfo; 

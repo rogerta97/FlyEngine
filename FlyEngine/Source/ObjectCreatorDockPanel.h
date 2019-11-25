@@ -9,6 +9,7 @@
 
 class FlyObject;
 class Tool; 
+class Texture; 
 class ObjectCreatorDockPanel : public DockPanel {
 
 public:
@@ -23,8 +24,9 @@ public:
 	// Clickable Area -------------
 	void DrawClickableAreaCreator();
 	void DrawClickableAreaSettings();
-	void PrintObjectVisuals();
-
+	void PrintClickableAreaObjectVisuals();
+	void DrawPrevTextureCA();
+	void DrawPreviewClickableAreaOnTexture(); 
 
 	// Object Creator -------------
 	void DrawObjectCreator(); 
@@ -45,6 +47,9 @@ private:
 	// Clickable Area -------------
 	float2 clickableAreaSize; 
 	float2 clickableAreaPos;
+	float previewTextureMaxSize; 
+	Texture* previewClickableAreaTexture; 
+	float2 prevTextureOriginPos; 
 
 	FlyObject* creatingObject = nullptr; 
 	Tool* selectedTool = nullptr; 
