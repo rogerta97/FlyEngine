@@ -176,19 +176,53 @@ void ObjectCreatorDockPanel::Close()
 	
 void ObjectCreatorDockPanel::DrawClickableAreaCreator()
 {
-	ImGui::BeginChild("ShowClickableArea");
-	ImGui::Image(0, ImVec2(250, 250)); 
+	PrintObjectVisuals();
+	DrawClickableAreaSettings();
+}
+
+void ObjectCreatorDockPanel::DrawClickableAreaSettings()
+{
+	if ()
+	{
+
+	}
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Position:");
+	ImGui::PopFont();
+
+	ImGui::DragFloat("X", &clickableAreaPos.x, 0.01f, 0, 1);
+	ImGui::DragFloat("Height", &clickableAreaPos.y, 0.01f, 0, 1);
+
+	IMGUI_SPACED_SEPARATOR;
+
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Size:");
+	ImGui::PopFont();
+
+	ImGui::DragFloat("Width", &clickableAreaSize.x, 0.01f, 0, 1);
+	ImGui::DragFloat("Height", &clickableAreaSize.y, 0.01f, 0, 1);
+}
+
+void ObjectCreatorDockPanel::PrintObjectVisuals()
+{
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	ImGui::BeginChild("ShowClickableArea", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
+
+	ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - 100, 0));
+	ImGui::Image(0, ImVec2(200, 200));
+
 	ImGui::EndChild();
-
-	IMGUI_SPACE_SEPARATOR; 
-
-	ImGui::DragFloat("X", &clickableAreaPos.x, 0.01f, 0, 1); 
-	ImGui::DragFloat("Y", &clickableAreaPos.y, 0.01f, 0, 1);
+	ImGui::PopStyleColor();
 }
 
 void ObjectCreatorDockPanel::DrawCreateButton()
 {
+
+
 	ImGui::SetCursorPosY(ImGui::GetContentRegionMax().y - 35); 
+
+	ImGui::Separator();
+	ImGui::Spacing();
 
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 	ImGui::InputTextWithHint("##ObjectNaming", "Object Name...", newObjectName, 256 * sizeof(char));

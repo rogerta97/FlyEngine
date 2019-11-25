@@ -21,7 +21,10 @@ public:
 	void Close(); 
 
 	// Clickable Area -------------
-	void DrawClickableAreaCreator(); 
+	void DrawClickableAreaCreator();
+	void DrawClickableAreaSettings();
+	void PrintObjectVisuals();
+
 
 	// Object Creator -------------
 	void DrawObjectCreator(); 

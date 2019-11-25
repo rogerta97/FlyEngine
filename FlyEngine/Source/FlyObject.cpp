@@ -21,6 +21,7 @@ FlyObject::FlyObject(std::string _name)
 	name = _name; 
 	id = RandomNumberGenerator::GenerateUID(); 
 	isSelected = false; 
+	hasVisuals = false; 
 
 	transform = new Transform();
 	gizmos = new Gizmos(this);

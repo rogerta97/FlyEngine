@@ -45,7 +45,6 @@ public:
 private: 
 	// Draw UI ---------
 	void DrawImageToolSettings(); 
-	BoundingBox* clickableArea; 
 
 public:
 	Transform* transform;
@@ -54,9 +53,12 @@ public:
 	bool isSelected; 
 
 private: 
+	BoundingBox* clickableArea; 
+
 	std::list<Tool*> toolsList; 
 	std::string name; 
 	UID id; 
+	bool hasVisuals;
 };
 
 #endif
