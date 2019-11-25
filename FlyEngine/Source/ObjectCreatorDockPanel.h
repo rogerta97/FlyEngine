@@ -4,6 +4,7 @@
 #include "DockPanel.h"
 #include "ModuleManager.h"
 #include "MathGeoLib/Math/float2.h"
+#include "ImGui/imgui.h"
 
 #include <string>
 
@@ -26,6 +27,7 @@ public:
 	void DrawClickableAreaSettings();
 	void PrintClickableAreaObjectVisuals();
 	void DrawPrevTextureCA();
+	void GetTextureSizeFitted(ImVec2& prevTextureSize);
 	void DrawPreviewClickableAreaOnTexture(float2 imageTopLeft);
 
 	// Object Creator -------------
@@ -43,6 +45,7 @@ private:
 	// Object Creator -------------
 	char searchNewToolBuffer[256]; 
 	char newObjectName[256]; 
+	bool showToolDictionary;
 
 	// Clickable Area -------------
 	float2 clickableAreaSize; 
@@ -50,6 +53,7 @@ private:
 	float previewTextureMaxSize; 
 	Texture* previewClickableAreaTexture; 
 	float2 prevTextureOriginPos; 
+	bool clickableAreaActive; 
 
 	FlyObject* creatingObject = nullptr; 
 	Tool* selectedTool = nullptr; 

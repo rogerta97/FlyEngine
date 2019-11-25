@@ -143,8 +143,11 @@ void ObjectCreatorDockPanel::DrawSelectedToolSettings()
 
 void ObjectCreatorDockPanel::OnAddToolButtonClicked()
 {
-	if (ImGui::BeginPopup("plusIconClicked"))
+	if (showToolDictionary)
 	{
+		ImGui::Separator();
+		ImGui::Spacing(); 
+
 		// Search Bar ---------------
 		ImGui::InputText("##SearchTool", searchNewToolBuffer, IM_ARRAYSIZE(searchNewToolBuffer));
 		ImGui::SameLine();
@@ -153,8 +156,10 @@ void ObjectCreatorDockPanel::OnAddToolButtonClicked()
 		ImGui::Image((ImTextureID)filterIcon->GetTextureID(), ImVec2(22, 22));
 
 		ImGui::Spacing();
-		ImGui::Separator();
-		ImGui::Spacing();
+
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(2.0f, 2.0f));
+		ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), 150));
 
 		// Tools Dictonary ----------
 		ToolSelectableInfo* newToolSelected = App->moduleManager->DrawToolDictionaryUI(); 
@@ -169,9 +174,13 @@ void ObjectCreatorDockPanel::OnAddToolButtonClicked()
 			case AT_null:
 				break;
 			}
-		}
 
-		ImGui::EndPopup();
+			showToolDictionary = false; 
+		}
+		ImGui::EndChild();
+		ImGui::PopStyleColor();
+		ImGui::PopStyleVar(); 
+		ImGui::Separator();
 	}
 }
 
@@ -189,9 +198,8 @@ void ObjectCreatorDockPanel::DrawClickableAreaCreator()
 
 void ObjectCreatorDockPanel::DrawClickableAreaSettings()
 {
-	static bool clickableAreaActive; 
 	ImGui::Separator();
-	ImGui::Checkbox("Active", &clickableAreaActive);
+
 
 	if (clickableAreaActive)
 	{
@@ -244,6 +252,16 @@ void ObjectCreatorDockPanel::PrintClickableAreaObjectVisuals()
 	ImGui::Text("Preview:");
 	ImGui::PopFont();
 
+	ImGui::SameLine();
+	ImGui::SetCursorPosX(ImGui::GetContentRegionAvailWidth() + 10); 
+	if (ImGui::Checkbox("Active", &clickableAreaActive))
+	{
+		if (clickableAreaActive && previewClickableAreaTexture != nullptr)
+		{
+			clickableAreaSize = float2(previewClickableAreaTexture->GetWidth(), previewClickableAreaTexture->GetHeigth()); 
+		}
+	}
+
 	ImGui::BeginChild("ShowClickableArea", ImVec2(ImGui::GetContentRegionAvailWidth(), previewTextureMaxSize));
 
 	if (!creatingObject->HasVisuals())
@@ -279,26 +297,34 @@ void ObjectCreatorDockPanel::DrawPrevTextureCA()
 			return; 
 
 		ImVec2 prevTextureSize;
-		prevTextureSize.x = previewClickableAreaTexture->GetWidth();
-		prevTextureSize.y = previewClickableAreaTexture->GetHeigth();
-
-		if (prevTextureSize.x <= prevTextureSize.y)
-		{
-			prevTextureSize.y = previewTextureMaxSize;
-			prevTextureSize.x = previewTextureMaxSize / previewClickableAreaTexture->GetAspectRatio();
-		}
-		else
-		{
-			prevTextureSize.x = previewTextureMaxSize;
-			prevTextureSize.y = previewTextureMaxSize / previewClickableAreaTexture->GetAspectRatio();
-		}
+		GetTextureSizeFitted(prevTextureSize);
 
 		float yOffset = ImGui::GetContentRegionAvail().y / 2 - (prevTextureSize.y / 2);
 		float2 imageTopLeft = float2(ImGui::GetContentRegionAvailWidth() / 2 - (previewTextureMaxSize / 2), yOffset); 
 
 		ImGui::SetCursorPos(ImVec2(imageTopLeft.x, imageTopLeft.y));
 		ImGui::Image((ImTextureID)previewClickableAreaTexture->GetTextureID(), prevTextureSize);
-		DrawPreviewClickableAreaOnTexture(imageTopLeft);
+		
+		if (clickableAreaActive) {
+			DrawPreviewClickableAreaOnTexture(imageTopLeft);
+		}
+	}
+}
+
+void ObjectCreatorDockPanel::GetTextureSizeFitted(ImVec2& prevTextureSize)
+{
+	prevTextureSize.x = previewClickableAreaTexture->GetWidth();
+	prevTextureSize.y = previewClickableAreaTexture->GetHeigth();
+
+	if (prevTextureSize.x <= prevTextureSize.y)
+	{
+		prevTextureSize.y = previewTextureMaxSize;
+		prevTextureSize.x = previewTextureMaxSize / previewClickableAreaTexture->GetAspectRatio();
+	}
+	else
+	{
+		prevTextureSize.x = previewTextureMaxSize;
+		prevTextureSize.y = previewTextureMaxSize / previewClickableAreaTexture->GetAspectRatio();
 	}
 }
 
@@ -313,8 +339,6 @@ void ObjectCreatorDockPanel::DrawPreviewClickableAreaOnTexture(float2 textureTop
 
 void ObjectCreatorDockPanel::DrawCreateButton()
 {
-
-
 	ImGui::SetCursorPosY(ImGui::GetContentRegionMax().y - 35); 
 
 	ImGui::Separator();
@@ -430,7 +454,8 @@ void ObjectCreatorDockPanel::DrawAddAndDeleteToolButtons()
 
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(18, 18)))
 	{
-		ImGui::OpenPopup("plusIconClicked");
+		showToolDictionary = true; 
+		//ImGui::OpenPopup("plusIconClicked");
 	}
 
 	ImGui::SameLine();

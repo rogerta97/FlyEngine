@@ -134,8 +134,8 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(18, 18)))
 	{
-		ImGui::OpenPopup("add_tool_from_object_properties"); 
-
+		//ImGui::OpenPopup("add_tool_from_object_properties"); 
+		showToolDictionary = true; 
 	}
 
 	ImGui::SameLine();
@@ -155,8 +155,9 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 	ImGui::PopStyleVar();
 	ImGui::PopStyleColor();	
 
-	if (ImGui::BeginPopup("add_tool_from_object_properties"))
+	if (showToolDictionary)
 	{
+		ImGui::BeginChild("AddToolObjectProperties", ImVec2(ImGui::GetContentRegionAvailWidth(), 150)); 
 		// Search Bar ---------------
 		ImGui::InputText("##SearchTool", searchNewToolBuffer, IM_ARRAYSIZE(searchNewToolBuffer));
 		ImGui::SameLine();
@@ -181,9 +182,11 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 			case AT_null:
 				break;
 			}
+
+			showToolDictionary = false; 
 		}
 
-		ImGui::EndPopup();
+		ImGui::EndChild();
 	}
 }
 

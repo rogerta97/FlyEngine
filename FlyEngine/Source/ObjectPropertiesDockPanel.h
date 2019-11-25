@@ -27,6 +27,7 @@ public:
 private: 
 	char searchNewToolBuffer[256]; 
 	FlyObject* selectedObject = nullptr; 
+	bool showToolDictionary; 
 };
 
 #endif 
