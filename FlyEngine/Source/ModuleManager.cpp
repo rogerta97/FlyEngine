@@ -78,6 +78,9 @@ void ModuleManager::LoadEngineIcons()
 
 	Texture* moveOption = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "MoveOption.png"), true);
 	ResourceManager::getInstance()->AddResource((Resource*)moveOption, "MoveOption");
+
+	Texture* clickableAreaPreviewColor = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ClickableAreaPreviewColor.png"), true);
+	ResourceManager::getInstance()->AddResource((Resource*)clickableAreaPreviewColor, "ClickableAreaPreviewColor");
 }
 
 int ModuleManager::GetToolsAmount() const

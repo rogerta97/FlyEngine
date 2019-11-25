@@ -246,13 +246,13 @@ void ObjectCreatorDockPanel::PrintClickableAreaObjectVisuals()
 
 	ImGui::BeginChild("ShowClickableArea", ImVec2(ImGui::GetContentRegionAvailWidth(), previewTextureMaxSize));
 
-	ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (previewTextureMaxSize / 2), 0));
-	
 	if (!creatingObject->HasVisuals())
 	{
-		// Show No Visual Text
+		// Background
+		ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (previewTextureMaxSize / 2), 0));
 		ImGui::Image(0, ImVec2(previewTextureMaxSize, previewTextureMaxSize));
 		
+		// Show No Visual Text
 		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 		ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - 50, 90));
 		ImGui::TextColored(ImVec4(1, 0.8, 0.8f, 0.8f), "NO VISUALS");
@@ -275,6 +275,9 @@ void ObjectCreatorDockPanel::DrawPrevTextureCA()
 	{
 		previewClickableAreaTexture = imageTool->GetTexture();
 
+		if (previewClickableAreaTexture == nullptr)
+			return; 
+
 		ImVec2 prevTextureSize;
 		prevTextureSize.x = previewClickableAreaTexture->GetWidth();
 		prevTextureSize.y = previewClickableAreaTexture->GetHeigth();
@@ -291,26 +294,21 @@ void ObjectCreatorDockPanel::DrawPrevTextureCA()
 		}
 
 		float yOffset = ImGui::GetContentRegionAvail().y / 2 - (prevTextureSize.y / 2);
-		ImGui::SetCursorPosY(yOffset);
-		ImGui::Image((ImTextureID)previewClickableAreaTexture->GetTextureID(), prevTextureSize);
-	}
+		float2 imageTopLeft = float2(ImGui::GetContentRegionAvailWidth() / 2 - (previewTextureMaxSize / 2), yOffset); 
 
-	DrawPreviewClickableAreaOnTexture();
+		ImGui::SetCursorPos(ImVec2(imageTopLeft.x, imageTopLeft.y));
+		ImGui::Image((ImTextureID)previewClickableAreaTexture->GetTextureID(), prevTextureSize);
+		DrawPreviewClickableAreaOnTexture(imageTopLeft);
+	}
 }
 
-void ObjectCreatorDockPanel::DrawPreviewClickableAreaOnTexture()
+void ObjectCreatorDockPanel::DrawPreviewClickableAreaOnTexture(float2 textureTopLeft)
 {
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
-	glBegin(GL_TRIANGLES);
+	float2 clickableAreaTopLeft = textureTopLeft + clickableAreaPos; 
+	ImGui::SetCursorPos(ImVec2(clickableAreaTopLeft.x, clickableAreaTopLeft.y));
 
-	float2 prevImageScreenCenter = float2(); 
-
-	//glColor4f(255, 255, 255, 255); glVertex3f(); 
-	//glColor4f(255, 255, 255, 255); glVertex3f();
-	//glColor4f(255, 255, 255, 255); glVertex3f();
-	//glColor4f(255, 255, 255, 255); glVertex3f();
-
-	glEnd(); 
+	Texture* colorTexture = (Texture*)ResourceManager::getInstance()->GetResource("ClickableAreaPreviewColor"); 
+	ImGui::Image((ImTextureID)colorTexture->GetTextureID(), ImVec2(clickableAreaSize.x, clickableAreaSize.y));
 }
 
 void ObjectCreatorDockPanel::DrawCreateButton()

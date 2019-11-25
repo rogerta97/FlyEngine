@@ -26,7 +26,7 @@ public:
 	void DrawClickableAreaSettings();
 	void PrintClickableAreaObjectVisuals();
 	void DrawPrevTextureCA();
-	void DrawPreviewClickableAreaOnTexture(); 
+	void DrawPreviewClickableAreaOnTexture(float2 imageTopLeft);
 
 	// Object Creator -------------
 	void DrawObjectCreator(); 
