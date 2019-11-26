@@ -227,11 +227,12 @@ void FlyObject::CreateClickableArea(float2 percentagePos, float2 percentageSize,
 	{
 		float2 objectSize = GetObjectVisualDimensions(); 
 		
+		float2 objectTopLeft = float2(-objectSize.x / 2, -objectSize.y / 2);
 		float2 clickable_area_size = float2(objectSize.x * percentageSize.x, objectSize.y * percentageSize.y);
 		float2 clickable_area_pos = float2(objectSize.x * percentagePos.x, objectSize.y * percentagePos.y);
 
-		clickableArea->SetMinPoint(float2(-clickable_area_size.x, clickable_area_size.y));
-		clickableArea->SetMaxPoint(float2(clickable_area_size.x, -clickable_area_size.y));
+		clickableArea->SetMinPoint(float2(objectTopLeft.x + clickable_area_pos.x, objectTopLeft.y + clickable_area_pos.y + clickable_area_size.y));
+		clickableArea->SetMaxPoint(float2(objectTopLeft.x + clickable_area_pos.x + clickable_area_size.x, objectTopLeft.y + clickable_area_pos.y));
 	}
 	
 }

@@ -18,7 +18,7 @@ void Quad::Create(const float desiredWidth, const float desiredHeight)
 {
 	float imageAspectRatio = desiredWidth / desiredHeight; 
 
-	float imageWidth = 100.0f; 
+	float imageWidth = 200.0f; 
 	float imageHeight = imageWidth / imageAspectRatio; 
 
 	SetQuadData(imageWidth, imageHeight);
@@ -30,7 +30,7 @@ void Quad::SetQuadData(const float desiredWidth, const float desiredHeight)
 	numVertices = 4;
 	vertices = new vec3[numVertices];
 
-	fvec2 half_size(desiredWidth, desiredHeight);
+	fvec2 half_size(desiredWidth / 2, desiredHeight / 2);
 
 	vertices[0] = { -half_size.x, half_size.y, 0 };
 	vertices[1] = { half_size.x, half_size.y, 0 };
