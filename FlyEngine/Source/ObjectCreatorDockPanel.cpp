@@ -5,6 +5,7 @@
 #include "ModuleImGui.h"
 #include "Tool.h"
 #include "ModuleRoomManager.h"
+#include "MyFileSystem.h"
 #include "Room.h"
 #include "Texture.h"
 #include "ImageImporter.h"
@@ -24,8 +25,8 @@ ObjectCreatorDockPanel::ObjectCreatorDockPanel(bool isVisible) : DockPanel("Enti
 
 	previewClickableAreaTexture = nullptr; 
 
-	clickableAreaPos = float2(0, 0);
-	clickableAreaSize = float2(10.0f, 10.0f); 
+	clickableAreaPosPerc = float2(0, 0);
+	clickableAreaSizePerc = float2(1.0f, 1.0f); 
 	previewTextureMaxSize = 220; 
 }
 
@@ -89,10 +90,11 @@ void ObjectCreatorDockPanel::DrawObjectToolsList()
 
 	ImGui::BeginChild("##AttributesChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
 
+	int pos = 0; 
 	for (auto& currentTool : creatingObject->GetToolsList())
 	{
 		ToolSelectableInfo selectableInfo = currentTool->GetToolSelectableInfo();
-		DrawSelectable(selectableInfo, currentTool->IsSelected(), currentTool);
+		DrawSelectable(selectableInfo, currentTool->IsSelected(), pos, 42, currentTool);
 	}
 
 	ImGui::EndChild();
@@ -101,19 +103,24 @@ void ObjectCreatorDockPanel::DrawObjectToolsList()
 	ImGui::PopStyleColor();
 }
 
-void ObjectCreatorDockPanel::DrawSelectable(ToolSelectableInfo selectableInfo, bool& isSelected, Tool* currentTool = nullptr)
+void ObjectCreatorDockPanel::DrawSelectable(ToolSelectableInfo selectableInfo, bool& isSelected, int posInList, int selectableHeight = 42, Tool* currentTool = nullptr)
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 
-	if (ImGui::Selectable(selectableInfo.toolName.c_str(), &isSelected, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), 37))) {
+	Texture* imageIcon = (Texture*)ResourceManager::getInstance()->GetResource("ImageIcon");
+	ImGui::SetCursorPos(ImVec2(12, 5 + (selectableHeight * posInList)));
+	ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
+
+	ImGui::SetCursorPos(ImVec2(50, +(selectableHeight * posInList)));
+	if (ImGui::Selectable(selectableInfo.toolName.c_str(), &isSelected, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, selectableHeight - 3))) {
 		creatingObject->selectedTool = currentTool;
 		selectedTool = currentTool; 
 	}
 	ImGui::PopFont();
 
 	// Description -----
-	ImGui::SetCursorPosY(ImGui::GetCursorPos().y - 20);
-	ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 2);
+	ImGui::SetCursorPosY((selectableHeight * posInList) + 20);
+	ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 52);
 
 	ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
 	ImGui::TextWrapped(selectableInfo.toolDescription.c_str());
@@ -168,7 +175,7 @@ void ObjectCreatorDockPanel::OnAddToolButtonClicked()
 			switch (newToolSelected->toolType)
 			{
 			case AT_IMAGE:
-				creatingObject->AddImageTool("None"); 
+				creatingObject->AddImageTool(std::string(MyFileSystem::getInstance()->GetIconsDirectory() + "ImageNull.png").c_str()); 
 				break;
 
 			case AT_null:
@@ -200,9 +207,11 @@ void ObjectCreatorDockPanel::DrawClickableAreaSettings()
 {
 	ImGui::Separator();
 
-
 	if (clickableAreaActive)
 	{
+		float2 posLimit = float2(1,1);
+		float2 sizeLimit = float2(1, 1);
+
 		if (!creatingObject->HasVisuals())
 		{		
 			ImGui::Separator();
@@ -221,26 +230,41 @@ void ObjectCreatorDockPanel::DrawClickableAreaSettings()
 			ImGui::Text("Position:");
 			ImGui::PopFont();
 
-			if (ImGui::DragFloat("Horizontal", &clickableAreaPos.x, 0.01f, 0, 1))
+			posLimit = float2(1, 1) - clickableAreaSizePerc;
+			if (clickableAreaSizePerc.x > sizeLimit.x)
 			{
-
+				sizeLimit.x = 1 - clickableAreaPosPerc.x;
 			}
 
-			if(ImGui::DragFloat("Vertical", &clickableAreaPos.y, 0.01f, 0, 1))
+			if (clickableAreaSizePerc.y > sizeLimit.y)
 			{
-
+				sizeLimit.y = 1 - clickableAreaPosPerc.x;
 			}
+
+			ImGui::DragFloat("Horizontal", &clickableAreaPosPerc.x, 0.005f, 0.05f, posLimit.x);
+			ImGui::DragFloat("Vertical", &clickableAreaPosPerc.y, 0.005f, 0.05f, posLimit.y);
+	
+			ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+			ImGui::Text("Size:");
+			ImGui::PopFont();
+
+			float2 viewportSize = App->moduleImGui->gameViewportDockPanel->GetViewportSize();
+			sizeLimit = float2(1, 1) - clickableAreaPosPerc;
+			if (clickableAreaPosPerc.x > posLimit.x)
+			{
+				posLimit.x = 1 - clickableAreaSizePerc.x;
+			}
+
+			if (clickableAreaPosPerc.y > posLimit.y)
+			{
+				posLimit.y = 1 - clickableAreaSizePerc.x;
+			}
+
+			ImGui::DragFloat("Width", &clickableAreaSizePerc.x, 0.005f, 0.05f, sizeLimit.x);
+			ImGui::DragFloat("Height", &clickableAreaSizePerc.y, 0.005f, 0.05f, sizeLimit.y);
 
 			IMGUI_SPACED_SEPARATOR;
 		}
-		
-		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-		ImGui::Text("Size:");
-		ImGui::PopFont();
-
-		float2 viewportSize = App->moduleImGui->gameViewportDockPanel->GetViewportSize(); 
-		ImGui::DragFloat("Width", &clickableAreaSize.x, 1.0f, 0, viewportSize.x);
-		ImGui::DragFloat("Height", &clickableAreaSize.y, 1.0f, 0, viewportSize.y);
 	}
 }
 
@@ -258,7 +282,7 @@ void ObjectCreatorDockPanel::PrintClickableAreaObjectVisuals()
 	{
 		if (clickableAreaActive && previewClickableAreaTexture != nullptr)
 		{
-			clickableAreaSize = float2(previewClickableAreaTexture->GetWidth(), previewClickableAreaTexture->GetHeigth()); 
+			float2 textureSize = float2(previewClickableAreaTexture->GetWidth(), previewClickableAreaTexture->GetHeigth()); 
 		}
 	}
 
@@ -306,7 +330,7 @@ void ObjectCreatorDockPanel::DrawPrevTextureCA()
 		ImGui::Image((ImTextureID)previewClickableAreaTexture->GetTextureID(), prevTextureSize);
 		
 		if (clickableAreaActive) {
-			DrawPreviewClickableAreaOnTexture(imageTopLeft);
+			DrawPreviewClickableAreaOnTexture(imageTopLeft, float2(prevTextureSize.x, prevTextureSize.y));
 		}
 	}
 }
@@ -328,9 +352,12 @@ void ObjectCreatorDockPanel::GetTextureSizeFitted(ImVec2& prevTextureSize)
 	}
 }
 
-void ObjectCreatorDockPanel::DrawPreviewClickableAreaOnTexture(float2 textureTopLeft)
+void ObjectCreatorDockPanel::DrawPreviewClickableAreaOnTexture(float2 textureTopLeft, float2 prevTextureSize)
 {
-	float2 clickableAreaTopLeft = textureTopLeft + clickableAreaPos; 
+	float2 clickableAreaPos = float2(prevTextureSize.x * clickableAreaPosPerc.x, prevTextureSize.y * clickableAreaPosPerc.y); 
+	float2 clickableAreaSize = float2(prevTextureSize.x * clickableAreaSizePerc.x, prevTextureSize.y * clickableAreaSizePerc.y);
+
+	float2 clickableAreaTopLeft = textureTopLeft + clickableAreaPos;
 	ImGui::SetCursorPos(ImVec2(clickableAreaTopLeft.x, clickableAreaTopLeft.y));
 
 	Texture* colorTexture = (Texture*)ResourceManager::getInstance()->GetResource("ClickableAreaPreviewColor"); 

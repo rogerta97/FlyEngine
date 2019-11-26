@@ -28,6 +28,7 @@ public:
 
 	// Utils -----------
 	float2 GetObjectVisualDimensions();  
+
 	void CalculateCurrentGizmo(); 
 	void CalculateAllGizmos(); 
 	bool IsMouseOver(); 
@@ -43,6 +44,7 @@ public:
 
 	// Sets & Gets ------
 	BoundingBox* GetClickableArea();
+	void CreateClickableArea(float2 percentagePos, float2 percentageSize); 
 
 private: 
 	// Draw UI ---------

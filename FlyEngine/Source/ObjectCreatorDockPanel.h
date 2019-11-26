@@ -28,12 +28,12 @@ public:
 	void PrintClickableAreaObjectVisuals();
 	void DrawPrevTextureCA();
 	void GetTextureSizeFitted(ImVec2& prevTextureSize);
-	void DrawPreviewClickableAreaOnTexture(float2 imageTopLeft);
+	void DrawPreviewClickableAreaOnTexture(float2 imageTopLeft, float2 prevTextureSize);
 
 	// Object Creator -------------
 	void DrawObjectCreator(); 
 	void DrawObjectToolsList(); 
-	void DrawSelectable(ToolSelectableInfo selectableInfo, bool& isSelected, Tool* currentTool);
+	void DrawSelectable(ToolSelectableInfo selectableInfo, bool& isSelected, int posInList, int selectableHeight, Tool* currentTool);
 	void DrawAddAndDeleteToolButtons(); 
 	void DrawToolImageSettings(); 
 	void DrawSelectedToolSettings(); 
@@ -48,8 +48,8 @@ private:
 	bool showToolDictionary;
 
 	// Clickable Area -------------
-	float2 clickableAreaSize; 
-	float2 clickableAreaPos;
+	float2 clickableAreaSizePerc; 
+	float2 clickableAreaPosPerc;
 	float previewTextureMaxSize; 
 	Texture* previewClickableAreaTexture; 
 	float2 prevTextureOriginPos; 

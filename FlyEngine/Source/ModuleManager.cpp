@@ -7,6 +7,7 @@
 #include "ModuleRoomManager.h"
 #include "Room.h"
 #include "ModuleImGui.h"
+#include "Texture.h"
 #include "ViewportManager.h"
 #include "imgui.h"
 #include "SceneDockPanel.h"
@@ -52,7 +53,7 @@ void ModuleManager::LoadEngineIcons()
 	Texture* searchIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "SearchIcon.png"), false);
 	ResourceManager::getInstance()->AddResource((Resource*)searchIcon, "SearchIcon");
 
-	Texture* imageNull = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ImageNull.jpg"), false);
+	Texture* imageNull = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ImageNull.png"), false);
 	ResourceManager::getInstance()->AddResource((Resource*)imageNull, "ImageNull");
 
 	Texture* objectIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ObjectIcon.png"), false);
@@ -81,6 +82,9 @@ void ModuleManager::LoadEngineIcons()
 
 	Texture* clickableAreaPreviewColor = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ClickableAreaPreviewColor.png"), true);
 	ResourceManager::getInstance()->AddResource((Resource*)clickableAreaPreviewColor, "ClickableAreaPreviewColor");
+
+	Texture* imageIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ImageIcon.png"), true);
+	ResourceManager::getInstance()->AddResource((Resource*)imageIcon, "ImageIcon");
 }
 
 int ModuleManager::GetToolsAmount() const
@@ -92,26 +96,59 @@ ToolSelectableInfo* ModuleManager::DrawToolDictionaryUI()
 {
 	ToolSelectableInfo* returnInfo = nullptr; 
 
+	int count = 0; 
+	int selectableHeight = 42;
+
 	for (auto& currentToolDescription : toolNamesDescriptions)
 	{
 		ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 
-		if (ImGui::Selectable(currentToolDescription.toolName.c_str(), false, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), 37)))
+		Texture* iconTexture = GetToolTypeIcon(currentToolDescription.toolType); 
+		ImGui::SetCursorPos(ImVec2(12, 5 + (selectableHeight * count)));
+		if (iconTexture) {
+			ImGui::Image((ImTextureID)iconTexture->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
+		}
+		else
+		{
+			ImGui::Image(0, ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
+		}
+
+		ImGui::SetCursorPos(ImVec2(50, (selectableHeight * count)));
+		if (ImGui::Selectable(currentToolDescription.toolName.c_str(), false, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), selectableHeight - 3)))
 		{
 			returnInfo = &currentToolDescription; 
 		}
 		ImGui::PopFont();
 
 		// Description -----
-		ImGui::SetCursorPosY(ImGui::GetCursorPos().y - 20);
-		ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 2);
+		ImGui::SetCursorPosY((selectableHeight * count) + 20);
+		ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 52);
 
 		ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
 		ImGui::TextWrapped(currentToolDescription.toolDescription.c_str());
 		ImGui::PopFont();
+
+		count++;
 	}
 
 	return returnInfo; 
+}
+
+Texture* ModuleManager::GetToolTypeIcon(ToolType toolType)
+{
+	Texture* toolIconTexture = nullptr;
+	switch (toolType)
+	{
+
+	case AT_IMAGE:
+		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageIcon");
+		break;
+
+	default:
+		break;
+	}
+
+	return toolIconTexture;
 }
 
 FlyObject* ModuleManager::GetSelectedFlyObject()

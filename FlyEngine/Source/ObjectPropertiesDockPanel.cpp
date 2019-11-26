@@ -43,30 +43,26 @@ bool ObjectPropertiesDockPanel::Draw()
 
 		if (selectedObject != nullptr)
 		{
-			Texture* objectIconTextue = (Texture*)ResourceManager::getInstance()->GetResource("ObjectIcon");
-			ImGui::Image((ImTextureID)objectIconTextue->GetTextureID(), ImVec2(35, 35));
+			DrawFixedPartObjectUI(selectedObject);
 
-			ImGui::Separator();
-
-			ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 45, ImGui::GetCursorPosY() - 35));
-
-			ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
-			ImGui::Text("%s", selectedObject->GetName().c_str());
-			ImGui::PopFont();
-
-			ImGui::Spacing();
-
-			DrawObjectPlacementCH();
-
-			ImGui::Spacing();
-			ImGui::Separator(); 
-			ImGui::Spacing();
-
-			DrawObjectTools();
+			if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
+			{
+				if (ImGui::BeginTabItem("Tools"))
+				{
+					DrawObjectToolsTab();
+					ImGui::EndTabItem();
+				}
+				if (ImGui::BeginTabItem("Clickable Area"))
+				{
+					DrawClickableAreaTab(); 
+					ImGui::EndTabItem();
+				}
+				ImGui::EndTabBar();
+			}		
 		}
 		else
 		{
-			ImGui::TextColored(ImVec4(0.2f, 0.2f, 0.2f, 1.0f), "No Object Selected");
+			ImGui::TextColored(ImVec4(0.8f, 0.5f, 0.5f, 1.0f), "No Object Selected");
 		}
 	}
 
@@ -74,7 +70,25 @@ bool ObjectPropertiesDockPanel::Draw()
 	return true;
 }
 
-void ObjectPropertiesDockPanel::DrawObjectTools()
+void ObjectPropertiesDockPanel::DrawFixedPartObjectUI(FlyObject* selectedObject)
+{
+	Texture* objectIconTextue = (Texture*)ResourceManager::getInstance()->GetResource("ObjectIcon");
+	ImGui::Image((ImTextureID)objectIconTextue->GetTextureID(), ImVec2(35, 35));
+
+	ImGui::Separator();
+
+	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 45, ImGui::GetCursorPosY() - 35));
+
+	ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
+	ImGui::Text("%s", selectedObject->GetName().c_str());
+	ImGui::PopFont();
+
+	ImGui::Spacing();
+	DrawObjectPlacementCH();
+	ImGui::Spacing();
+}
+
+void ObjectPropertiesDockPanel::DrawObjectToolsTab()
 {
 	// Draw Objects List ---------
 	DrawToolList();
@@ -85,6 +99,11 @@ void ObjectPropertiesDockPanel::DrawObjectTools()
 
 	// Draw Tool --------
 	DrawToolAdjustments();
+}
+
+void ObjectPropertiesDockPanel::DrawClickableAreaTab()
+{
+
 }
 
 void ObjectPropertiesDockPanel::DrawToolAdjustments()
@@ -213,11 +232,7 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 	if (ImGui::CollapsingHeader("Object Placement"))
 	{
 		ImGui::Spacing(); 
-
 		float2 showPosition = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos(); 
-
-		/*FLY_LOG("Game Pos: %f %f", showPosition.x, showPosition.y);
-		FLY_LOG("Relative: %f %f", App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition().x, App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition().y);*/ 
 
 		float showPositionArr[2] = { selectedObject->transform->GetPosition().x, selectedObject->transform->GetPosition().y };
 		float showRotationArr[2] = { selectedObject->transform->GetRotation().x, selectedObject->transform->GetRotation().y };
@@ -246,6 +261,7 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 	}
 	POP_FONT;
 }
+
 
 void ObjectPropertiesDockPanel::DrawToolImageSettings()
 {
@@ -334,3 +350,4 @@ FlyObject* ObjectPropertiesDockPanel::GetSelectedObject() const
 {
 	return selectedObject;
 }
+

@@ -109,9 +109,7 @@ void Gizmos::HandleMoveGizmo()
 void Gizmos::HandleDrag()
 {
 	if (moveGizmo->dragAxis != NOT_DRAG)
-	{
-		FLY_LOG("Draggin");
-		
+	{		
 		float2 positionInDrag = float2(App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().x, App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().y);
 		float2 positionInDragGame = float2(App->moduleImGui->gameViewportDockPanel->ScreenToWorld(positionInDrag.x, positionInDrag.y));
 		positionInDragGame = float2((int)positionInDragGame.x, (int)positionInDragGame.y);

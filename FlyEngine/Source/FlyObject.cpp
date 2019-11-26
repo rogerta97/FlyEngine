@@ -60,6 +60,12 @@ void FlyObject::CleanUp()
 
 	gizmos->CleanUp();
 	delete gizmos; 
+
+	if (clickableArea)
+	{
+		clickableArea->CleanUp();
+		delete clickableArea;
+	}
 }
 
 std::string FlyObject::GetName() const
@@ -199,6 +205,17 @@ void FlyObject::DeleteTool(std::string toolNameToDelete)
 BoundingBox* FlyObject::GetClickableArea()
 {
 	return clickableArea;
+}
+
+void FlyObject::CreateClickableArea(float2 percentagePos, float2 percentageSize)
+{
+	clickableArea = new BoundingBox(this);
+
+	float2 objectSize = GetObjectVisualDimensions(); 
+	
+	float2 clickable_area_size = float2(objectSize.x * percentageSize.x, objectSize.y * percentageSize.y);
+	float2 clickable_area_pos = float2(objectSize.x * percentagePos.x, objectSize.y * percentagePos.y);
+
 }
 
 void FlyObject::DrawImageToolSettings()

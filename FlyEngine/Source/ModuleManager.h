@@ -9,6 +9,7 @@
 #include <string>
 
 class FlyObject; 
+class Texture; 
 class ModuleManager : public Module
 {
 public:
@@ -23,6 +24,7 @@ public:
 	void LoadEngineIcons();
 	int GetToolsAmount() const; 
 	ToolSelectableInfo* DrawToolDictionaryUI(); 
+	Texture* GetToolTypeIcon(ToolType toolType); 
 
 	// Easy Acces -------
 	FlyObject* GetSelectedFlyObject(); 

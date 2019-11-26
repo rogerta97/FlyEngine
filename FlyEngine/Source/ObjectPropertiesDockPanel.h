@@ -13,10 +13,15 @@ public:
 
 	bool Draw();
 
+	void DrawFixedPartObjectUI(FlyObject* selectedObject);
+
 	void SetSelectedObject(FlyObject* newSelectedObject);
 	FlyObject* GetSelectedObject() const;
 
-	void DrawObjectTools();
+	void DrawClickableAreaTab(); 
+
+	// Object Tools Tab
+	void DrawObjectToolsTab();
 	void DrawToolAdjustments();
 	void DrawToolList();
 	void DrawAddAndDeleteButtons();
