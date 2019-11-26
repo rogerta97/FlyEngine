@@ -10,10 +10,10 @@ public:
 	BoundingBox(FlyObject* objectAttached); 
 	~BoundingBox();
 
-	void Draw();
+	void Draw(bool fill, float4 color);
 	void CleanUp(); 
 
-	void DrawSquare(float4 color);
+	void DrawSquare(float4 color = float4(1.0f, 1.0f, 1.0f, 0.4f), bool fill = false);
 	void DrawControlPoint(float2 pointPos, float pointSize);
 	void DrawMinAndMaxPoints(); 
 

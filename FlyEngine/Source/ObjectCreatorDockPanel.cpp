@@ -10,6 +10,7 @@
 #include "Texture.h"
 #include "ImageImporter.h"
 #include "ImageTool.h"
+#include "ViewportManager.h"
 #include "ResourceManager.h"
 #include "GameViewportDockPanel.h"
 
@@ -108,7 +109,7 @@ void ObjectCreatorDockPanel::DrawSelectable(ToolSelectableInfo selectableInfo, b
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 
 	Texture* imageIcon = (Texture*)ResourceManager::getInstance()->GetResource("ImageIcon");
-	ImGui::SetCursorPos(ImVec2(12, 5 + (selectableHeight * posInList)));
+	ImGui::SetCursorPos(ImVec2(10, 5 + (selectableHeight * posInList)));
 	ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
 
 	ImGui::SetCursorPos(ImVec2(50, +(selectableHeight * posInList)));
@@ -205,8 +206,6 @@ void ObjectCreatorDockPanel::DrawClickableAreaCreator()
 
 void ObjectCreatorDockPanel::DrawClickableAreaSettings()
 {
-	ImGui::Separator();
-
 	if (clickableAreaActive)
 	{
 		float2 posLimit = float2(1,1);
@@ -223,6 +222,9 @@ void ObjectCreatorDockPanel::DrawClickableAreaSettings()
 			ImGui::PopFont(); 
 
 			ImGui::Separator();		
+			
+			ImGui::DragFloat("Width", &clickableAreaSizePerc.x, 1.0f, 0.1f, App->moduleImGui->gameViewportDockPanel->GetViewportSize().x);
+			ImGui::DragFloat("Height", &clickableAreaSizePerc.y, 1.0f, 0.1f, App->moduleImGui->gameViewportDockPanel->GetViewportSize().y);
 		}
 		else
 		{
@@ -296,7 +298,7 @@ void ObjectCreatorDockPanel::PrintClickableAreaObjectVisuals()
 		
 		// Show No Visual Text
 		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-		ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - 50, 90));
+		ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - 50, 100));
 		ImGui::TextColored(ImVec4(1, 0.8, 0.8f, 0.8f), "NO VISUALS");
 		ImGui::PopFont(); 
 	}
@@ -387,14 +389,32 @@ void ObjectCreatorDockPanel::DrawCreateButton()
 		}
 		else 
 		{
-			creatingObject->SetName(newObjectName); 
-			App->moduleRoomManager->GetSelectedRoom()->AddFlyObject(creatingObject);				
+			AddCreatingObject();
 		}
 
 		Close();
 	}
 
 	ImGui::PopFont();
+}
+
+void ObjectCreatorDockPanel::AddCreatingObject()
+{
+
+	if (clickableAreaActive)
+	{
+		if (!creatingObject->HasVisuals())
+		{
+			creatingObject->CreateClickableArea(clickableAreaPosPerc, clickableAreaSizePerc, true);
+		}
+		else
+		{
+			creatingObject->CreateClickableArea(clickableAreaPosPerc, clickableAreaSizePerc); 
+		}
+	}
+
+	creatingObject->SetName(newObjectName);
+	App->moduleRoomManager->GetSelectedRoom()->AddFlyObject(creatingObject);
 }
 
 void ObjectCreatorDockPanel::DrawToolImageSettings()

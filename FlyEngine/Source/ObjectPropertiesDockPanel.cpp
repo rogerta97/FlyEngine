@@ -103,7 +103,11 @@ void ObjectPropertiesDockPanel::DrawObjectToolsTab()
 
 void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 {
+	static bool a, b; 
+	ImGui::Checkbox("Draw Area", &a); ImGui::SameLine(); 
+	ImGui::Checkbox("Active", &b); 
 
+	IMGUI_SPACE_SEPARATOR;
 }
 
 void ObjectPropertiesDockPanel::DrawToolAdjustments()
@@ -130,10 +134,12 @@ void ObjectPropertiesDockPanel::DrawToolList()
 
 	ImGui::BeginChild("##ToolsListObjectProperties", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
 
+	int count = 0;
 	for (auto& currentTool : selectedObject->GetToolsList()) 
 	{
 		ToolSelectableInfo selectableInfo = currentTool->GetToolSelectableInfo(); 
-		DrawToolSelectable(selectableInfo, currentTool);
+		DrawToolSelectable(selectableInfo, currentTool, count, 42);
+		count++; 
 	}
 
 	ImGui::EndChild();
@@ -189,37 +195,51 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 		ImGui::Spacing();
 
 		// Tools Dictonary ----------
-		ToolSelectableInfo* newToolSelected = App->moduleManager->DrawToolDictionaryUI();
-		if (newToolSelected != nullptr)
-		{
-			switch (newToolSelected->toolType)
-			{
-			case AT_IMAGE:
-				selectedObject->AddImageTool("None");
-				break;
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(2.0f, 2.0f));
+			ImGui::BeginChild("##5ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), 150));
 
-			case AT_null:
-				break;
+			ToolSelectableInfo* newToolSelected = App->moduleManager->DrawToolDictionaryUI();
+			if (newToolSelected != nullptr)
+			{
+				switch (newToolSelected->toolType)
+				{
+				case AT_IMAGE:
+					selectedObject->AddImageTool("None");
+					break;
+
+				case AT_null:
+					break;
+				}
+
+				showToolDictionary = false; 
 			}
 
-			showToolDictionary = false; 
-		}
+			ImGui::EndChild();
+		ImGui::PopStyleColor();
+		ImGui::PopStyleVar();
 
 		ImGui::EndChild();
 	}
 }
 
-void ObjectPropertiesDockPanel::DrawToolSelectable(ToolSelectableInfo& selectableInfo, Tool*& currentTool)
+void ObjectPropertiesDockPanel::DrawToolSelectable(ToolSelectableInfo& selectableInfo, Tool*& currentTool, int posInList, int selectableHeigth = 42)
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
-	if (ImGui::Selectable(selectableInfo.toolName.c_str(), currentTool->IsSelected(), ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), 37))) {
+
+	Texture* imageIcon = (Texture*)ResourceManager::getInstance()->GetResource("ImageIcon");
+	ImGui::SetCursorPos(ImVec2(10, 5 + (selectableHeigth * posInList)));
+	ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
+
+	ImGui::SetCursorPos(ImVec2(50, +(selectableHeigth * posInList)));
+	if (ImGui::Selectable(selectableInfo.toolName.c_str(), currentTool->IsSelected(), ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), selectableHeigth))) {
 		selectedObject->selectedTool = currentTool;
 	}
 	ImGui::PopFont();
 
 	// Description -----
-	ImGui::SetCursorPosY(ImGui::GetCursorPos().y - 20);
-	ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 2);
+	ImGui::SetCursorPosY((selectableHeigth * posInList) + 20);
+	ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 52);
 
 	ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
 	ImGui::TextWrapped(selectableInfo.toolDescription.c_str());

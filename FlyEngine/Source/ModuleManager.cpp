@@ -85,6 +85,9 @@ void ModuleManager::LoadEngineIcons()
 
 	Texture* imageIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ImageIcon.png"), true);
 	ResourceManager::getInstance()->AddResource((Resource*)imageIcon, "ImageIcon");
+
+	Texture* background_1_1 = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "Background_1_1.png"), true);
+	ResourceManager::getInstance()->AddResource((Resource*)background_1_1, "Background_1_1");
 }
 
 int ModuleManager::GetToolsAmount() const
@@ -103,8 +106,8 @@ ToolSelectableInfo* ModuleManager::DrawToolDictionaryUI()
 	{
 		ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 
-		Texture* iconTexture = GetToolTypeIcon(currentToolDescription.toolType); 
-		ImGui::SetCursorPos(ImVec2(12, 5 + (selectableHeight * count)));
+		Texture* iconTexture = GetIconFromToolType(currentToolDescription.toolType); 
+		ImGui::SetCursorPos(ImVec2(10, 5 + (selectableHeight * count)));
 		if (iconTexture) {
 			ImGui::Image((ImTextureID)iconTexture->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
 		}
@@ -134,7 +137,7 @@ ToolSelectableInfo* ModuleManager::DrawToolDictionaryUI()
 	return returnInfo; 
 }
 
-Texture* ModuleManager::GetToolTypeIcon(ToolType toolType)
+Texture* ModuleManager::GetIconFromToolType(ToolType toolType)
 {
 	Texture* toolIconTexture = nullptr;
 	switch (toolType)

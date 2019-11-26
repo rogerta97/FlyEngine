@@ -23,9 +23,9 @@ BoundingBox::~BoundingBox()
 {
 }
 
-void BoundingBox::Draw()
+void BoundingBox::Draw(bool fill, float4 color)
 {
-	DrawSquare(float4(1.0f, 1.0f, 1.0f, 1.0f));
+	DrawSquare(color, fill);
 
 	if (showCornerDots)
 	{
@@ -41,11 +41,12 @@ void BoundingBox::CleanUp()
 	objectAttached = nullptr; 
 }
 
-void BoundingBox::DrawSquare(float4 color = float4(1.0f, 1.0f, 1.0f, 0.4f))
+void BoundingBox::DrawSquare(float4 color, bool fill)
 {
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	if(fill) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	else glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	
 	glLineWidth(2.0f);
-
 	glBegin(GL_QUAD_STRIP); 
 
 	glColor4f(color.x, color.y, color.z, color.w); glVertex3f(minPoint.x, maxPoint.y, 0.f);

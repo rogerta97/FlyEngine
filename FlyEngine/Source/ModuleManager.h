@@ -24,7 +24,7 @@ public:
 	void LoadEngineIcons();
 	int GetToolsAmount() const; 
 	ToolSelectableInfo* DrawToolDictionaryUI(); 
-	Texture* GetToolTypeIcon(ToolType toolType); 
+	Texture* GetIconFromToolType(ToolType toolType); 
 
 	// Easy Acces -------
 	FlyObject* GetSelectedFlyObject(); 

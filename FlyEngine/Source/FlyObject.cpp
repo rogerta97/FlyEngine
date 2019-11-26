@@ -25,6 +25,7 @@ FlyObject::FlyObject(std::string _name)
 
 	transform = new Transform();
 	gizmos = new Gizmos(this);
+	clickableArea = nullptr; 
 }
 
 FlyObject::~FlyObject()
@@ -34,13 +35,19 @@ FlyObject::~FlyObject()
 
 void FlyObject::Update()
 {
-	gizmos->Update(); 
+	gizmos->Update();
 }
 
 void FlyObject::Draw()
 {
 	for (auto& it : toolsList) {
 		(it)->Draw(); 
+	}
+
+	if (clickableArea != nullptr)
+	{
+		float4 clickableAreaColor = float4(1.0f, 0.8f, 0.8f, 0.4f); 
+		clickableArea->Draw(true, clickableAreaColor);
 	}
 
 	if(isSelected)
@@ -60,12 +67,12 @@ void FlyObject::CleanUp()
 
 	gizmos->CleanUp();
 	delete gizmos; 
-
-	if (clickableArea)
+	if (clickableArea != nullptr)
 	{
 		clickableArea->CleanUp();
 		delete clickableArea;
 	}
+
 }
 
 std::string FlyObject::GetName() const
@@ -207,15 +214,26 @@ BoundingBox* FlyObject::GetClickableArea()
 	return clickableArea;
 }
 
-void FlyObject::CreateClickableArea(float2 percentagePos, float2 percentageSize)
+void FlyObject::CreateClickableArea(float2 percentagePos, float2 percentageSize, bool directPosition)
 {
 	clickableArea = new BoundingBox(this);
 
-	float2 objectSize = GetObjectVisualDimensions(); 
-	
-	float2 clickable_area_size = float2(objectSize.x * percentageSize.x, objectSize.y * percentageSize.y);
-	float2 clickable_area_pos = float2(objectSize.x * percentagePos.x, objectSize.y * percentagePos.y);
+	if (directPosition)
+	{
+		clickableArea->SetMinPoint(float2(-percentageSize.x, percentageSize.y));
+		clickableArea->SetMaxPoint(float2(percentageSize.x, -percentageSize.y));
+	}
+	else
+	{
+		float2 objectSize = GetObjectVisualDimensions(); 
+		
+		float2 clickable_area_size = float2(objectSize.x * percentageSize.x, objectSize.y * percentageSize.y);
+		float2 clickable_area_pos = float2(objectSize.x * percentagePos.x, objectSize.y * percentagePos.y);
 
+		clickableArea->SetMinPoint(float2(-clickable_area_size.x, clickable_area_size.y));
+		clickableArea->SetMaxPoint(float2(clickable_area_size.x, -clickable_area_size.y));
+	}
+	
 }
 
 void FlyObject::DrawImageToolSettings()

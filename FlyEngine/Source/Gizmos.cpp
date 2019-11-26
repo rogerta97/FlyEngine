@@ -165,7 +165,7 @@ void Gizmos::DrawSelectGizmo()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	selectGizmo->objectBorderBox->Draw();
+	selectGizmo->objectBorderBox->Draw(false, float4(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
 void Gizmos::CalculateSelectGizmo(FlyObject* objectAttached)

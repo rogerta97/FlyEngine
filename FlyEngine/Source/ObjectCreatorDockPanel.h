@@ -38,7 +38,9 @@ public:
 	void DrawToolImageSettings(); 
 	void DrawSelectedToolSettings(); 
 	void OnAddToolButtonClicked(); 
-	void DrawCreateButton(); 
+	void DrawCreateButton();
+	void AddCreatingObject();
+
 
 private:
 

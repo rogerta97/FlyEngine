@@ -25,7 +25,7 @@ public:
 	void DrawToolAdjustments();
 	void DrawToolList();
 	void DrawAddAndDeleteButtons();
-	void DrawToolSelectable(ToolSelectableInfo& selectableInfo, Tool*& currentTool);
+	void DrawToolSelectable(ToolSelectableInfo& selectableInfo, Tool*& currentTool, int posInList, int selectableHeigth);
 	void DrawObjectPlacementCH();
 	void DrawToolImageSettings();
 

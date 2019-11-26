@@ -44,7 +44,7 @@ public:
 
 	// Sets & Gets ------
 	BoundingBox* GetClickableArea();
-	void CreateClickableArea(float2 percentagePos, float2 percentageSize); 
+	void CreateClickableArea(float2 percentagePos, float2 percentageSize, bool directPosition = false);
 
 private: 
 	// Draw UI ---------
