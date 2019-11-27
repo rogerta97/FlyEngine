@@ -85,6 +85,12 @@
     <Filter Include="Source\3rdParty\TinyFileDialog">
       <UniqueIdentifier>{f000d78e-964c-4839-b830-1e0567f605e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Utilities\BoundingBox">
+      <UniqueIdentifier>{cdc0d945-cbcb-4bac-b35e-f044dd02a65e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Utilities\Gizmos">
+      <UniqueIdentifier>{48081e44-e47a-4e2c-80a5-60e2c7c13b99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -319,10 +325,13 @@
       <Filter>Source\Modules\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\BoundingBox.cpp">
-      <Filter>Source\Utilities</Filter>
+      <Filter>Source\Utilities\BoundingBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ScalarBoundingBox.cpp">
+      <Filter>Source\Utilities\BoundingBox</Filter>
     </ClCompile>
     <ClCompile Include="Source\Gizmos.cpp">
-      <Filter>Source\Utilities</Filter>
+      <Filter>Source\Utilities\Gizmos</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -687,10 +696,13 @@
       <Filter>Source\Modules\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\BoundingBox.h">
-      <Filter>Source\Utilities</Filter>
+      <Filter>Source\Utilities\BoundingBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ScalarBoundingBox.h">
+      <Filter>Source\Utilities\BoundingBox</Filter>
     </ClInclude>
     <ClInclude Include="Source\Gizmos.h">
-      <Filter>Source\Utilities</Filter>
+      <Filter>Source\Utilities\Gizmos</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

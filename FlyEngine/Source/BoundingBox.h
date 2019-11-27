@@ -10,8 +10,8 @@ public:
 	BoundingBox(FlyObject* objectAttached); 
 	~BoundingBox();
 
-	void Draw(bool fill, float4 color);
-	void CleanUp(); 
+	virtual void Draw(bool fill, float4 color);
+	virtual void CleanUp(); 
 
 	void DrawSquare(float4 color = float4(1.0f, 1.0f, 1.0f, 0.4f), bool fill = false);
 	void DrawControlPoint(float2 pointPos, float pointSize);
@@ -42,7 +42,7 @@ public:
 public:
 	bool showCornerDots; 
 
-private: 
+protected:
 	float2 size;
 	float4 squareColor; 
 

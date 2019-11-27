@@ -26,14 +26,6 @@ BoundingBox::~BoundingBox()
 void BoundingBox::Draw(bool fill, float4 color)
 {
 	DrawSquare(color, fill);
-
-	if (showCornerDots)
-	{
-		DrawControlPoint(float2(minPoint.x, maxPoint.y), 4);
-		DrawControlPoint(float2(maxPoint.x, maxPoint.y), 4);
-		DrawControlPoint(float2(minPoint.x, minPoint.y), 4);
-		DrawControlPoint(float2(maxPoint.x, minPoint.y), 4);
-	}
 }
 
 void BoundingBox::CleanUp()

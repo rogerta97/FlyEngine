@@ -74,6 +74,7 @@
     <ClCompile Include="Source\ObjectCreatorDockPanel.cpp" />
     <ClCompile Include="Source\Resource.cpp" />
     <ClCompile Include="Source\ResourceManager.cpp" />
+    <ClCompile Include="Source\ScalarBoundingBox.cpp" />
     <ClCompile Include="Source\SceneDockPanel.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\TinyFileDialog.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="Source\ObjectCreatorDockPanel.h" />
     <ClInclude Include="Source\Resource.h" />
     <ClInclude Include="Source\ResourceManager.h" />
+    <ClInclude Include="Source\ScalarBoundingBox.h" />
     <ClInclude Include="Source\SceneDockPanel.h" />
     <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\TinyFileDialog.h" />

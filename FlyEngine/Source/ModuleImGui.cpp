@@ -95,6 +95,7 @@ bool ModuleImGui::Start()
 
 	parrot->CreateClickableArea(float2(0, 0), float2(1, 1));
 	parrot->clickableAreaActive = true; 
+	ViewportManager::getInstance()->drawClickableArea = false; 
 
 	//FlyObject* test = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer");
 	//spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources/Images/Transformer.png"; 

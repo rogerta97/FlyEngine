@@ -61,6 +61,14 @@ public:
 	float centerSquareSize;
 };
 
+class ScaleGizmo
+{
+public:
+
+	ScaleGizmo(FlyObject* parentObject);
+	~ScaleGizmo();
+};
+
 class Gizmos
 {
 public:
