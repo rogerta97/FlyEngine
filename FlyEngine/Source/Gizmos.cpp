@@ -186,7 +186,7 @@ void Gizmos::FitSelectBoxSize()
 		if (objectAttached->GetTool(AT_IMAGE) != nullptr)
 		{
 			float2 objectDimensions = objectAttached->GetObjectVisualDimensions(); 
-			selectGizmo->objectBorderBox->SetSize(objectDimensions.x, objectDimensions.y); 
+			selectGizmo->objectBorderBox->SetSize(objectDimensions.x / 2, objectDimensions.y / 2); 
 		}
 	}
 }
