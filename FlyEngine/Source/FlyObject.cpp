@@ -25,8 +25,8 @@ FlyObject::FlyObject(std::string _name)
 	hasVisuals = false; 
 	clickableAreaActive = false;
 
-	clickableAreaPosOne = float2(-1, -1); 
-	clickableAreaSizeOne = float2(-1, -1); 
+	clickableAreaPosPerc = float2(-1, -1); 
+	clickableAreaSizePerc = float2(-1, -1); 
 
 	transform = new Transform();
 	gizmos = new Gizmos(this);
@@ -49,7 +49,7 @@ void FlyObject::Draw()
 		(it)->Draw(); 
 	}
 
-	if (clickableArea != nullptr)
+	if (clickableArea != nullptr && ViewportManager::getInstance()->drawClickableArea && clickableAreaActive)
 	{
 		DrawClickableArea();
 	}
@@ -230,57 +230,38 @@ BoundingBox* FlyObject::GetClickableArea()
 	return clickableArea;
 }
 
+void FlyObject::CreateClickableArea(float2 percentagePos, float2 percentageSize, bool directPosition)
+{
+	if (clickableArea == nullptr)
+		clickableArea = new BoundingBox(this);
+
+	SetCASizeFromOne(percentagePos, percentageSize, directPosition); 
+}
+
 float2& FlyObject::GetClickableAreaPosOne()
 {
-	return clickableAreaPosOne; 
-
-	/*if (clickableArea)
-	{
-		float2 minPoint = clickableArea->GetMinPoint(); 
-		float2 visualsSize = GetObjectVisualDimensions(); 
-
-		return float2(minPoint.x / visualsSize.x, minPoint.y / visualsSize.y);
-	}
-
-	return float2();*/
+	return clickableAreaPosPerc; 
 }
 
 float2& FlyObject::GetClickableAreaSizeOne()
 {
-	return clickableAreaSizeOne; 
-
-	/*if (clickableArea != nullptr)
-	{
-		float2 minPoint = clickableArea->GetMinPoint();
-		float2 maxPoint = clickableArea->GetMinPoint();
-		float2 visualsSize = GetObjectVisualDimensions();
-
-		float worldDistanceX = maxPoint.x - minPoint.x; 
-		float oneDistanceX = worldDistanceX / visualsSize.x;
-
-		float worldDistanceY = minPoint.y - maxPoint.y;
-		float oneDistanceY = worldDistanceY / visualsSize.y;
-
-		return float2(oneDistanceX, oneDistanceY);
-	}
-
-	return float2(); */
+	return clickableAreaSizePerc; 
 }
 
 void FlyObject::SetClickableAreaPosOne(float2 newAreaPosOne)
 {
-	clickableAreaPosOne = newAreaPosOne; 
+	clickableAreaPosPerc = newAreaPosOne; 
 }
 
 void FlyObject::SetClickableAreaSizeOne(float2 newAreaSizeOne)
 {
-	clickableAreaSizeOne = newAreaSizeOne; 
+	clickableAreaSizePerc = newAreaSizeOne; 
 }
 
 void FlyObject::SetCASizeFromOne(float2 percentagePos, float2 percentageSize, bool directPosition)
 {
-	if(clickableArea == nullptr)
-		clickableArea = new BoundingBox(this);
+	if (clickableArea == nullptr)
+		return; 
 
 	if (directPosition)
 	{
@@ -297,6 +278,9 @@ void FlyObject::SetCASizeFromOne(float2 percentagePos, float2 percentageSize, bo
 
 		clickableArea->SetMinPoint(float2(objectTopLeft.x + clickable_area_pos.x, objectTopLeft.y + clickable_area_pos.y + clickable_area_size.y));
 		clickableArea->SetMaxPoint(float2(objectTopLeft.x + clickable_area_pos.x + clickable_area_size.x, objectTopLeft.y + clickable_area_pos.y));
+
+		this->clickableAreaPosPerc = percentagePos;
+		this->clickableAreaSizePerc = percentageSize;
 	}
 	
 }

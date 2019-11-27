@@ -106,7 +106,8 @@ void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 {
 	ImGui::Spacing();
 
-	ImGui::Checkbox("Active##Ceckbox", &selectedObject->clickableAreaActive); 
+	ImGui::Checkbox("Draw##DrawCA", &ViewportManager::getInstance()->drawClickableArea); 
+	ImGui::Checkbox("Active##ActiveCA", &selectedObject->clickableAreaActive); 
 
 	IMGUI_SPACE_SEPARATOR;
 
@@ -116,22 +117,29 @@ void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 
 	float2 posPerc = selectedObject->GetClickableAreaPosOne(); 
 
-	if (ImGui::DragFloat("Horizontal", &selectedObject->GetClickableAreaPosOne().x, 0.01f, 0.01f, 1.0f))
+	if (ImGui::DragFloat("Horizontal", &selectedObject->GetClickableAreaPosOne().x, 0.01f, 0.01f, (1.0f - selectedObject->GetClickableAreaSizeOne().x)))
 	{
 		selectedObject->SetCASizeFromOne(selectedObject->GetClickableAreaPosOne(), selectedObject->GetClickableAreaSizeOne());
 	}
 
-	if (ImGui::DragFloat("Vertical", &selectedObject->GetClickableAreaPosOne().y, 0.01f, 0.01f, 1.0f))
+	if (ImGui::DragFloat("Vertical", &selectedObject->GetClickableAreaPosOne().y, 0.01f, 0.01f, (1.0f - selectedObject->GetClickableAreaSizeOne().y)))
 	{
-		//selectedObject->SetCASizeFromOne(selectedObject->GetClickableAreaPosOne(), selectedObject->GetClickableAreaSizeOne());
+		selectedObject->SetCASizeFromOne(selectedObject->GetClickableAreaPosOne(), selectedObject->GetClickableAreaSizeOne());
 	}
 
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Size");
 	ImGui::PopFont();
 
-	ImGui::DragFloat("Width", &selectedObject->GetClickableAreaSizeOne().x, 0.01f, 0.01f, 1.0f);
-	ImGui::DragFloat("Heigth", &selectedObject->GetClickableAreaSizeOne().y, 0.01f, 0.01f, 1.0f);
+	if(ImGui::DragFloat("Width", &selectedObject->GetClickableAreaSizeOne().x, 0.01f, 0.01f, (1.0f - selectedObject->GetClickableAreaPosOne().x)))
+	{
+		selectedObject->SetCASizeFromOne(selectedObject->GetClickableAreaPosOne(), selectedObject->GetClickableAreaSizeOne());
+	}
+
+	if(ImGui::DragFloat("Heigth", &selectedObject->GetClickableAreaSizeOne().y, 0.01f, 0.01f, (1.0f - selectedObject->GetClickableAreaPosOne().y)))
+	{
+		selectedObject->SetCASizeFromOne(selectedObject->GetClickableAreaPosOne(), selectedObject->GetClickableAreaSizeOne());
+	}
 
 	IMGUI_SPACE_SEPARATOR;
 

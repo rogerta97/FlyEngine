@@ -46,6 +46,7 @@ public:
 
 	// Clickable Area ---
 	BoundingBox* GetClickableArea();
+	void CreateClickableArea(float2 percentagePos, float2 percentageSize, bool directPosition = false);
 	void SetCASizeFromOne(float2 percentagePos, float2 percentageSize, bool directPosition = false);
 	
 	// Sets & Gets ------
@@ -69,8 +70,8 @@ public:
 
 private: 
 	BoundingBox* clickableArea; 
-	float2 clickableAreaPosOne; 
-	float2 clickableAreaSizeOne; 
+	float2 clickableAreaPosPerc; 
+	float2 clickableAreaSizePerc; 
 
 	std::list<Tool*> toolsList; 
 	std::string name; 
