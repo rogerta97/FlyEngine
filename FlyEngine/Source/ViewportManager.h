@@ -48,6 +48,10 @@ public:
 	TextureMSAA* viewportTexture;
 	ViewportAspectRatio viewportAspectRatio; 
 
+	// Render Viewport Settings 
+	bool drawClickableArea;
+	bool drawGizmos;
+
 };
 
 #endif // !_MODULE_GAME_VIEWPORT_H_

@@ -3,6 +3,7 @@
 
 #include "DockPanel.h"
 #include "ModuleManager.h"
+#include "MathGeoLib/Math/float2.h"
 
 class FlyObject;
 class ObjectPropertiesDockPanel : public DockPanel {
@@ -33,6 +34,10 @@ private:
 	char searchNewToolBuffer[256]; 
 	FlyObject* selectedObject = nullptr; 
 	bool showToolDictionary; 
+
+	// Clickable Area 
+	float2 clickableAreaPosOne; 
+	float2 clickableAreaSizeOne; 
 };
 
 #endif 

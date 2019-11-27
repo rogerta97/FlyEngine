@@ -400,19 +400,23 @@ void ObjectCreatorDockPanel::DrawCreateButton()
 
 void ObjectCreatorDockPanel::AddCreatingObject()
 {
-
+	// Clickable Area
 	if (clickableAreaActive)
 	{
 		if (!creatingObject->HasVisuals())
 		{
-			creatingObject->CreateClickableArea(clickableAreaPosPerc, clickableAreaSizePerc, true);
+			creatingObject->SetCASizeFromOne(clickableAreaPosPerc, clickableAreaSizePerc, true);
 		}
 		else
 		{
-			creatingObject->CreateClickableArea(clickableAreaPosPerc, clickableAreaSizePerc); 
+			creatingObject->SetCASizeFromOne(clickableAreaPosPerc, clickableAreaSizePerc); 
 		}
 	}
 
+	creatingObject->SetClickableAreaPosOne(clickableAreaPosPerc);
+	creatingObject->SetClickableAreaSizeOne(clickableAreaSizePerc);
+
+	// Add Object
 	creatingObject->SetName(newObjectName);
 	App->moduleRoomManager->GetSelectedRoom()->AddFlyObject(creatingObject);
 }

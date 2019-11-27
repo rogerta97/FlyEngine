@@ -10,6 +10,7 @@
 #include "ImageTool.h"
 #include "GameViewportDockPanel.h"
 #include "ImageImporter.h"
+#include "ViewportManager.h"
 #include "TinyFileDialog.h"
 #include "Texture.h"
 #include "FlyObject.h"
@@ -103,11 +104,41 @@ void ObjectPropertiesDockPanel::DrawObjectToolsTab()
 
 void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 {
-	static bool a, b; 
-	ImGui::Checkbox("Draw Area", &a); ImGui::SameLine(); 
-	ImGui::Checkbox("Active", &b); 
+	ImGui::Spacing();
+
+	ImGui::Checkbox("Active##Ceckbox", &selectedObject->clickableAreaActive); 
 
 	IMGUI_SPACE_SEPARATOR;
+
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig); 
+	ImGui::Text("Position");
+	ImGui::PopFont();
+
+	float2 posPerc = selectedObject->GetClickableAreaPosOne(); 
+
+	if (ImGui::DragFloat("Horizontal", &selectedObject->GetClickableAreaPosOne().x, 0.01f, 0.01f, 1.0f))
+	{
+		selectedObject->SetCASizeFromOne(selectedObject->GetClickableAreaPosOne(), selectedObject->GetClickableAreaSizeOne());
+	}
+
+	if (ImGui::DragFloat("Vertical", &selectedObject->GetClickableAreaPosOne().y, 0.01f, 0.01f, 1.0f))
+	{
+		//selectedObject->SetCASizeFromOne(selectedObject->GetClickableAreaPosOne(), selectedObject->GetClickableAreaSizeOne());
+	}
+
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Size");
+	ImGui::PopFont();
+
+	ImGui::DragFloat("Width", &selectedObject->GetClickableAreaSizeOne().x, 0.01f, 0.01f, 1.0f);
+	ImGui::DragFloat("Heigth", &selectedObject->GetClickableAreaSizeOne().y, 0.01f, 0.01f, 1.0f);
+
+	IMGUI_SPACE_SEPARATOR;
+
+	if (ImGui::Button("Edit From Viewport"))
+	{
+
+	}
 }
 
 void ObjectPropertiesDockPanel::DrawToolAdjustments()

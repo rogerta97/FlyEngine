@@ -7,6 +7,7 @@
 #include "Quad.h"
 #include "ImageImporter.h"
 #include "GameViewportDockPanel.h"
+#include "ViewportManager.h"
 #include "ResourceManager.h"
 #include "imgui.h"
 #include "MyFileSystem.h"
@@ -22,6 +23,10 @@ FlyObject::FlyObject(std::string _name)
 	id = RandomNumberGenerator::GenerateUID(); 
 	isSelected = false; 
 	hasVisuals = false; 
+	clickableAreaActive = false;
+
+	clickableAreaPosOne = float2(-1, -1); 
+	clickableAreaSizeOne = float2(-1, -1); 
 
 	transform = new Transform();
 	gizmos = new Gizmos(this);
@@ -46,12 +51,22 @@ void FlyObject::Draw()
 
 	if (clickableArea != nullptr)
 	{
-		float4 clickableAreaColor = float4(1.0f, 0.8f, 0.8f, 0.4f); 
-		clickableArea->Draw(true, clickableAreaColor);
+		DrawClickableArea();
 	}
 
 	if(isSelected)
 		gizmos->Draw();
+}
+
+void FlyObject::DrawClickableArea()
+{
+
+	if (ViewportManager::getInstance()->drawClickableArea && clickableAreaActive)
+	{
+		float4 clickableAreaColor = float4(1.0f, 0.8f, 0.8f, 0.4f);
+		clickableArea->Draw(true, clickableAreaColor);
+	}
+
 }
 
 void FlyObject::CleanUp()
@@ -67,6 +82,7 @@ void FlyObject::CleanUp()
 
 	gizmos->CleanUp();
 	delete gizmos; 
+
 	if (clickableArea != nullptr)
 	{
 		clickableArea->CleanUp();
@@ -214,9 +230,57 @@ BoundingBox* FlyObject::GetClickableArea()
 	return clickableArea;
 }
 
-void FlyObject::CreateClickableArea(float2 percentagePos, float2 percentageSize, bool directPosition)
+float2& FlyObject::GetClickableAreaPosOne()
 {
-	clickableArea = new BoundingBox(this);
+	return clickableAreaPosOne; 
+
+	/*if (clickableArea)
+	{
+		float2 minPoint = clickableArea->GetMinPoint(); 
+		float2 visualsSize = GetObjectVisualDimensions(); 
+
+		return float2(minPoint.x / visualsSize.x, minPoint.y / visualsSize.y);
+	}
+
+	return float2();*/
+}
+
+float2& FlyObject::GetClickableAreaSizeOne()
+{
+	return clickableAreaSizeOne; 
+
+	/*if (clickableArea != nullptr)
+	{
+		float2 minPoint = clickableArea->GetMinPoint();
+		float2 maxPoint = clickableArea->GetMinPoint();
+		float2 visualsSize = GetObjectVisualDimensions();
+
+		float worldDistanceX = maxPoint.x - minPoint.x; 
+		float oneDistanceX = worldDistanceX / visualsSize.x;
+
+		float worldDistanceY = minPoint.y - maxPoint.y;
+		float oneDistanceY = worldDistanceY / visualsSize.y;
+
+		return float2(oneDistanceX, oneDistanceY);
+	}
+
+	return float2(); */
+}
+
+void FlyObject::SetClickableAreaPosOne(float2 newAreaPosOne)
+{
+	clickableAreaPosOne = newAreaPosOne; 
+}
+
+void FlyObject::SetClickableAreaSizeOne(float2 newAreaSizeOne)
+{
+	clickableAreaSizeOne = newAreaSizeOne; 
+}
+
+void FlyObject::SetCASizeFromOne(float2 percentagePos, float2 percentageSize, bool directPosition)
+{
+	if(clickableArea == nullptr)
+		clickableArea = new BoundingBox(this);
 
 	if (directPosition)
 	{

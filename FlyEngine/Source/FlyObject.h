@@ -16,7 +16,9 @@ public:
 	~FlyObject(); 
 
 	void Update(); 
-	void Draw(); 
+	void Draw();
+	void DrawClickableArea();
+
 	void CleanUp(); 
 
 	std::string GetName() const;
@@ -42,9 +44,16 @@ public:
 	std::list<Tool*> GetToolsList() const; 
 	void DeleteTool(std::string toolNameToDelete);
 
-	// Sets & Gets ------
+	// Clickable Area ---
 	BoundingBox* GetClickableArea();
-	void CreateClickableArea(float2 percentagePos, float2 percentageSize, bool directPosition = false);
+	void SetCASizeFromOne(float2 percentagePos, float2 percentageSize, bool directPosition = false);
+	
+	// Sets & Gets ------
+	float2& GetClickableAreaPosOne(); 
+	float2& GetClickableAreaSizeOne(); 
+
+	void SetClickableAreaPosOne(float2 newAreaPosOne);
+	void SetClickableAreaSizeOne(float2 newAreaSizeOne);
 
 private: 
 	// Draw UI ---------
@@ -54,10 +63,14 @@ public:
 	Transform* transform;
 	Tool* selectedTool; 
 	Gizmos* gizmos; 
+	
 	bool isSelected; 
+	bool clickableAreaActive; 
 
 private: 
 	BoundingBox* clickableArea; 
+	float2 clickableAreaPosOne; 
+	float2 clickableAreaSizeOne; 
 
 	std::list<Tool*> toolsList; 
 	std::string name; 
