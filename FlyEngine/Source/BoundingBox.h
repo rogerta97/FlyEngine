@@ -14,8 +14,6 @@ public:
 	virtual void CleanUp(); 
 
 	void DrawSquare(float4 color = float4(1.0f, 1.0f, 1.0f, 0.4f), bool fill = false);
-	//void DrawControlPoint(float2 pointPos, float pointSize);
-	//void DrawMinAndMaxPoints(); 
 
 	bool IsMouseOver();
 	void FitToObject(); 
