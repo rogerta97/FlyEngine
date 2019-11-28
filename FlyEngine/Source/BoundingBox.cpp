@@ -52,23 +52,23 @@ void BoundingBox::DrawSquare(float4 color, bool fill)
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
-void BoundingBox::DrawControlPoint(float2 pointPos, float pointSize)
-{
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glBegin(GL_QUAD_STRIP);
-	
-	glColor3f(1.0f, 0, 1.0f); glVertex3f(pointPos.x - pointSize, pointPos.y - pointSize, 0.f);
-	glColor3f(1.0f, 0, 1.0f); glVertex3f(pointPos.x + pointSize, pointPos.y - pointSize, 0.f);
-	glColor3f(1.0f, 0, 1.0f); glVertex3f(pointPos.x - pointSize, pointPos.y + pointSize, 0.f);
-	glColor3f(1.0f, 0, 1.0f); glVertex3f(pointPos.x + pointSize, pointPos.y + pointSize, 0.f);
-
-	glEnd();
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-}
-
-void BoundingBox::DrawMinAndMaxPoints()
-{
-}
+//void BoundingBox::DrawControlPoint(float2 pointPos, float pointSize)
+//{
+//	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+//	glBegin(GL_QUAD_STRIP);
+//	
+//	glColor3f(1.0f, 0, 1.0f); glVertex3f(pointPos.x - pointSize, pointPos.y - pointSize, 0.f);
+//	glColor3f(1.0f, 0, 1.0f); glVertex3f(pointPos.x + pointSize, pointPos.y - pointSize, 0.f);
+//	glColor3f(1.0f, 0, 1.0f); glVertex3f(pointPos.x - pointSize, pointPos.y + pointSize, 0.f);
+//	glColor3f(1.0f, 0, 1.0f); glVertex3f(pointPos.x + pointSize, pointPos.y + pointSize, 0.f);
+//
+//	glEnd();
+//	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+//}
+//
+//void BoundingBox::DrawMinAndMaxPoints()
+//{
+//}
 
 void BoundingBox::SetSize(float sizeX, float sizeY)
 {

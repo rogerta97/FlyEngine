@@ -6,7 +6,7 @@
 #include "Globals.h"
 #include "Tool.h"
 #include "Transform.h"
-#include "BoundingBox.h"
+#include "ScalarBoundingBox.h"
 
 class Gizmos; 
 class ImageTool; 
@@ -45,7 +45,7 @@ public:
 	void DeleteTool(std::string toolNameToDelete);
 
 	// Clickable Area ---
-	BoundingBox* GetClickableArea();
+	ScalarBoundingBox* GetClickableArea();
 	void CreateClickableArea(float2 percentagePos, float2 percentageSize, bool directPosition = false);
 	void SetCASizeFromOne(float2 percentagePos, float2 percentageSize, bool directPosition = false);
 	
@@ -69,7 +69,7 @@ public:
 	bool clickableAreaActive; 
 
 private: 
-	BoundingBox* clickableArea; 
+	ScalarBoundingBox* clickableArea; 
 	float2 clickableAreaPosPerc; 
 	float2 clickableAreaSizePerc; 
 

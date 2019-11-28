@@ -225,7 +225,7 @@ void FlyObject::DeleteTool(std::string toolNameToDelete)
 	}
 }
 
-BoundingBox* FlyObject::GetClickableArea()
+ScalarBoundingBox* FlyObject::GetClickableArea()
 {
 	return clickableArea;
 }
@@ -233,9 +233,10 @@ BoundingBox* FlyObject::GetClickableArea()
 void FlyObject::CreateClickableArea(float2 percentagePos, float2 percentageSize, bool directPosition)
 {
 	if (clickableArea == nullptr)
-		clickableArea = new BoundingBox(this);
+		clickableArea = new ScalarBoundingBox(this);
 
 	SetCASizeFromOne(percentagePos, percentageSize, directPosition); 
+	clickableArea->SetCornerBoxSize(6.0f); 
 }
 
 float2& FlyObject::GetClickableAreaPosOne()
