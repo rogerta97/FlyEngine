@@ -40,7 +40,7 @@ void ScalarBoundingBox::Update()
 {
 	if (topLeftScaleBox->IsMouseOver())
 	{
-		topLeftScaleBox->HandleDrag(); 
+		//topLeftScaleBox->HandleDrag(); 
 	}
 
 	if (topRightScaleBox->IsMouseOver()) FLY_LOG("Mouse over top right"); 

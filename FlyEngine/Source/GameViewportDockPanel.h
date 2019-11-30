@@ -36,7 +36,7 @@ public:
 
 	float2& GetViewportCenterGlobal(); 
 	float2& GetMouseRelativePosition(); 
-	float2& GetMouseGamePos(); 
+	float2 GetMouseGamePos(); 
 
 	float2& ScreenToWorld(float screenPosX, float screenPosY);
 	float2& ScreenToWorld(float2 screenPos);

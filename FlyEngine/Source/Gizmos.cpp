@@ -44,6 +44,9 @@ void Gizmos::Update()
 	if (!App->moduleImGui->gameViewportDockPanel->IsMouseInViewport())
 		return; 
 
+	selectGizmo->objectBorderBox->EnableDrag(true); 
+	selectGizmo->objectBorderBox->HandleDrag(CardinalAxis::AxisY); 
+
 	GizmoMode gizmoMode = App->moduleImGui->gameViewportDockPanel->GetGizmoMode(); 
 	if (gizmoMode != GIZMO_null)
 	{
@@ -186,7 +189,7 @@ void Gizmos::FitSelectBoxSize()
 		if (objectAttached->GetTool(AT_IMAGE) != nullptr)
 		{
 			float2 objectDimensions = objectAttached->GetObjectVisualDimensions(); 
-			selectGizmo->objectBorderBox->SetSize(objectDimensions.x / 2, objectDimensions.y / 2); 
+			selectGizmo->objectBorderBox->SetSize(objectDimensions.x, objectDimensions.y); 
 		}
 	}
 }

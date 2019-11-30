@@ -212,7 +212,7 @@ float2& GameViewportDockPanel::GetMouseRelativePosition()
 	return mouseRelativePos; 
 }
 
-float2& GameViewportDockPanel::GetMouseGamePos()
+float2 GameViewportDockPanel::GetMouseGamePos()
 {
 	float2 ret = GetMouseRelativePosition(); 
 	ret = float2((int)ScreenToWorld(ret).x, (int)ScreenToWorld(ret).y); 

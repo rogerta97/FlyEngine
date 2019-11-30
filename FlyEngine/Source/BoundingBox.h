@@ -15,12 +15,15 @@ public:
 
 	// Draw ----------
 	void DrawSquare(float4 color = float4(1.0f, 1.0f, 1.0f, 0.4f), bool fill = false);
-	void FitToObject(); 
+
+	// Utility -------
+	float2 GetCenter(); 
 	void CenterMinMaxPointsToScreen();
+	void EnableDrag(bool enable); 
 
 	//Input ----------
 	bool IsMouseOver();
-	void HandleDrag(); 
+	float2 HandleDrag(CardinalAxis limitOnAxis = CardinalAxis::AxisNone);
 
 	// Set & Get 
 	void SetSize(float newMaxPointX, float newMaxPointY);
@@ -35,6 +38,7 @@ public:
 	float2& GetMaxPoint();
 	void SetMaxPoint(float2 _maxPoint);
 
+
 protected:
 	float2 size;
 	float4 squareColor; 
@@ -44,10 +48,13 @@ protected:
 
 	FlyObject* objectAttached; 
 
-	// Drag 
-	bool isDragEnabled = true;
+	// Drag -----------
+	bool isDragEnabled = false;
 	bool isDragging = false;
-	float2 dragCenterOffset = float2::zero; 
+
+	float2 initDragPos = float2::zero; 
+	float2 initDragMinPoint = float2::zero; 
+	float2 initDragMaxPoint = float2::zero; 
 };
 
 #endif // ! _2D_BOUNDING_BOX_H_

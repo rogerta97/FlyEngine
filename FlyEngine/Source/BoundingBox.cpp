@@ -55,8 +55,8 @@ void BoundingBox::DrawSquare(float4 color, bool fill)
 void BoundingBox::SetSize(float sizeX, float sizeY)
 {
 	size = float2(sizeX, sizeY);
-	minPoint = objectAttached->transform->GetPosition(true) + float2(-sizeX, sizeY);
-	maxPoint = objectAttached->transform->GetPosition(true) + float2(sizeX, -sizeY);
+	minPoint = objectAttached->transform->GetPosition(true) + float2(-sizeX / 2, sizeY / 2);
+	maxPoint = objectAttached->transform->GetPosition(true) + float2(sizeX / 2, -sizeY / 2);
 }
 
 float2& BoundingBox::GetSize()
@@ -85,7 +85,6 @@ void BoundingBox::SetMinPoint(float2 _minPoint)
 
 	size.x = abs(maxPoint.x - minPoint.x);
 	size.y = abs(maxPoint.y - minPoint.y);
-	size /= 2;
 }
 
 float2& BoundingBox::GetMaxPoint()
@@ -99,13 +98,24 @@ void BoundingBox::SetMaxPoint(float2 _maxPoint)
 
 	size.x = abs(maxPoint.x - minPoint.x);
 	size.y = abs(maxPoint.y - minPoint.y);
-	size /= 2; 
+}
+
+void BoundingBox::EnableDrag(bool enable)
+{
+	isDragEnabled = enable; 
+}
+
+float2 BoundingBox::GetCenter()
+{
+	float2 relativeCenterPoint(size.x / 2, size.y / 2); 
+	float2 worldCenterPoint(minPoint.x + relativeCenterPoint.x, maxPoint.y + relativeCenterPoint.y); 
+	return worldCenterPoint;
 }
 
 void BoundingBox::CenterMinMaxPointsToScreen()
 {
-	minPoint = float2(-size.x, size.y);
-	maxPoint = float2(size.x, -size.y);
+	minPoint = float2(-size.x / 2, size.y / 2);
+	maxPoint = float2(size.x / 2, -size.y / 2);
 }
 
 bool BoundingBox::IsMouseOver()
@@ -118,46 +128,58 @@ bool BoundingBox::IsMouseOver()
 	mousePosGame.y *= ViewportManager::getInstance()->GetAspectRatio(); 
 
 	// Calculate Final Position Values
-	if (mousePosGame.x > (minPoint.x) && (mousePosGame.x < (maxPoint.x)))
-	{
+	if (mousePosGame.x > (minPoint.x) && (mousePosGame.x < (maxPoint.x)))	
 		ret = true;
-	}
-
-	if (mousePosGame.y > (minPoint.y) || mousePosGame.y < (maxPoint.y))
-	{
+	
+	if (mousePosGame.y > (minPoint.y) || mousePosGame.y < (maxPoint.y))	
 		ret = false;
-	}
-
+	
 	return ret;
 
 }
 
-void BoundingBox::HandleDrag()
+float2 BoundingBox::HandleDrag(CardinalAxis limitOnAxis)
 {
 	if (!isDragEnabled)
-		return; 
+		return float2::zero; 
 
 	if (!isDragging && App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN)
 	{
-		isDragging = true;
-		dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos();
-		dragCenterOffset -= (objectAttached->transform->GetPosition(false));
-		dragCenterOffset = float2((int)dragCenterOffset.x, (int)dragCenterOffset.y);
+		isDragging = true;	
+		initDragPos = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos(); 
+		initDragMinPoint = minPoint; 
+		initDragMaxPoint = maxPoint; 
 	}
 
 	if (isDragging)
-	{
-		float2 positionInDrag = float2(App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().x, App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().y);
-		float2 positionInDragGame = float2(App->moduleImGui->gameViewportDockPanel->ScreenToWorld(positionInDrag.x, positionInDrag.y));
-		positionInDragGame = float2((int)positionInDragGame.x, (int)positionInDragGame.y);
+	{	
+		float2 dragIncrement = float2(initDragPos.x - App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().x, initDragPos.y - App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().y);
 
-		minPoint += positionInDragGame;
-		maxPoint += positionInDragGame;
+		switch (limitOnAxis)
+		{
+		case math::AxisX:
+			minPoint = float2(initDragMinPoint.x - (dragIncrement.x * App->moduleImGui->gameViewportDockPanel->GetAspectRatio()), initDragMinPoint.y);
+			maxPoint = float2(initDragMaxPoint.x - (dragIncrement.x * App->moduleImGui->gameViewportDockPanel->GetAspectRatio()), initDragMaxPoint.y);
+			break;
+
+		case math::AxisY:
+			minPoint = float2(initDragMinPoint.x, initDragMinPoint.y - (dragIncrement.y * App->moduleImGui->gameViewportDockPanel->GetAspectRatio()));
+			maxPoint = float2(initDragMaxPoint.x, initDragMaxPoint.y - (dragIncrement.y * App->moduleImGui->gameViewportDockPanel->GetAspectRatio()));
+			break;
+
+		case math::AxisNone:
+			minPoint = initDragMinPoint - (dragIncrement * App->moduleImGui->gameViewportDockPanel->GetAspectRatio());
+			maxPoint = initDragMaxPoint - (dragIncrement * App->moduleImGui->gameViewportDockPanel->GetAspectRatio());
+			break;
+		}
+
+		if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_UP) {
+			isDragging = false; 
+		}
+
+		return dragIncrement;
 	}
-}
 
-void BoundingBox::FitToObject()
-{
-	//minPoint += objectAttached->transform->GetPosition();
+	return float2::zero;
 }
 
