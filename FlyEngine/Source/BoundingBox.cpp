@@ -134,19 +134,26 @@ bool BoundingBox::IsMouseOver()
 
 void BoundingBox::HandleDrag()
 {
-	if (isDragEnabled && !isDragging)
+	if (!isDragEnabled)
+		return; 
+
+	if (!isDragging && App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN)
 	{
+		isDragging = true;
 		dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos();
 		dragCenterOffset -= (objectAttached->transform->GetPosition(false));
 		dragCenterOffset = float2((int)dragCenterOffset.x, (int)dragCenterOffset.y);
 	}
 
-	float2 positionInDrag = float2(App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().x, App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().y);
-	float2 positionInDragGame = float2(App->moduleImGui->gameViewportDockPanel->ScreenToWorld(positionInDrag.x, positionInDrag.y));
-	positionInDragGame = float2((int)positionInDragGame.x, (int)positionInDragGame.y);
+	if (isDragging)
+	{
+		float2 positionInDrag = float2(App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().x, App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().y);
+		float2 positionInDragGame = float2(App->moduleImGui->gameViewportDockPanel->ScreenToWorld(positionInDrag.x, positionInDrag.y));
+		positionInDragGame = float2((int)positionInDragGame.x, (int)positionInDragGame.y);
 
-	minPoint += positionInDragGame;
-	maxPoint += positionInDragGame;
+		minPoint += positionInDragGame;
+		maxPoint += positionInDragGame;
+	}
 }
 
 void BoundingBox::FitToObject()

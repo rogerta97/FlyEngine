@@ -45,7 +45,7 @@ protected:
 	FlyObject* objectAttached; 
 
 	// Drag 
-	bool isDragEnabled = false; 
+	bool isDragEnabled = true;
 	bool isDragging = false;
 	float2 dragCenterOffset = float2::zero; 
 };
