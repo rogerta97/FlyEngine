@@ -1,21 +1,21 @@
 #include "ScalarBoundingBox.h"
 #include "Globals.h"
 
-ScalarBoundingBox::ScalarBoundingBox(FlyObject* objectAttached) : BoundingBox(objectAttached)
+ScalarBoundingBox::ScalarBoundingBox(FlyObject* objectAttached) : BoundingBox()
 {
-	topLeftScaleBox = new BoundingBox(objectAttached); 
+	topLeftScaleBox = new BoundingBox(); 
 	topLeftScaleBox->SetMinPoint(float2(0, 0));
 	topLeftScaleBox->SetMaxPoint(float2(0, 0));
 
-	topRightScaleBox = new BoundingBox(objectAttached); 
+	topRightScaleBox = new BoundingBox(); 
 	topRightScaleBox->SetMinPoint(float2(0, 0));
 	topRightScaleBox->SetMaxPoint(float2(0, 0));
 
-	bottomLeftScaleBox = new BoundingBox(objectAttached); 
+	bottomLeftScaleBox = new BoundingBox(); 
 	bottomLeftScaleBox->SetMinPoint(float2(0, 0));
 	bottomLeftScaleBox->SetMaxPoint(float2(0, 0));
 
-	bottomRightScaleBox = new BoundingBox(objectAttached); 
+	bottomRightScaleBox = new BoundingBox(); 
 	bottomRightScaleBox->SetMinPoint(float2(0, 0));
 	bottomRightScaleBox->SetMaxPoint(float2(0, 0));
 }

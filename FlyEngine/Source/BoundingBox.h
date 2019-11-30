@@ -7,7 +7,7 @@ class FlyObject;
 class BoundingBox 
 {
 public: 
-	BoundingBox(FlyObject* objectAttached); 
+	BoundingBox(); 
 	~BoundingBox();
 
 	virtual void Draw(bool fill, float4 color);

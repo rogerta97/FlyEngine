@@ -44,9 +44,6 @@ void Gizmos::Update()
 	if (!App->moduleImGui->gameViewportDockPanel->IsMouseInViewport())
 		return; 
 
-	selectGizmo->objectBorderBox->EnableDrag(true); 
-	selectGizmo->objectBorderBox->HandleDrag(CardinalAxis::AxisY); 
-
 	GizmoMode gizmoMode = App->moduleImGui->gameViewportDockPanel->GetGizmoMode(); 
 	if (gizmoMode != GIZMO_null)
 	{
@@ -64,7 +61,12 @@ void Gizmos::Update()
 
 void Gizmos::HandleMoveGizmo()
 {
-	if (App->moduleInput->GetMouseButton(LEFT_CLICK) == KEY_DOWN)
+	if (moveGizmo->axisXBox->HandleDrag(CardinalAxis::AxisX).x != 0)
+	{
+
+	}
+	 
+	/*if (App->moduleInput->GetMouseButton(LEFT_CLICK) == KEY_DOWN)
 	{
 		if (selectGizmo->objectBorderBox->IsMouseOver())
 		{
@@ -106,7 +108,7 @@ void Gizmos::HandleMoveGizmo()
 		}
 	}
 
-	HandleDrag();
+	HandleDrag();*/
 }
 
 void Gizmos::HandleDrag()
@@ -196,6 +198,10 @@ void Gizmos::FitSelectBoxSize()
 
 void Gizmos::DrawMoveGizmo()
 {
+	moveGizmo->axisXBox->Draw(false, float4(255, 255, 255, 255)); 
+	moveGizmo->axisYBox->Draw(false, float4(255, 255, 255, 255));
+	moveGizmo->axisXYBox->Draw(false, float4(255, 255, 255, 255));
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
@@ -318,7 +324,8 @@ void Gizmos::SetLineWidth(float& _arrowWidth)
 
 SelectGizmo::SelectGizmo(FlyObject* parentObject)
 {
-	objectBorderBox = new BoundingBox(parentObject); 
+	objectBorderBox = new BoundingBox(); 
+	objectBorderBox->EnableDrag(false); 
 }
 
 SelectGizmo::~SelectGizmo()
@@ -358,11 +365,13 @@ void SelectGizmo::AddaptSelectBox(FlyObject* objectAttached)
 
 MoveGizmo::MoveGizmo(FlyObject* parentObject)
 {
-	axisXBox = new BoundingBox(parentObject);
-	axisYBox = new BoundingBox(parentObject);
-	axisXYBox = new BoundingBox(parentObject);
+	axisXBox = new BoundingBox();
+	axisYBox = new BoundingBox();
+	axisXYBox = new BoundingBox();
 
-	dragAxis = NOT_DRAG; 
+	axisXBox->EnableDrag(true); 
+	axisYBox->EnableDrag(true); 
+	axisXYBox->EnableDrag(true); 
 }
 
 MoveGizmo::~MoveGizmo()

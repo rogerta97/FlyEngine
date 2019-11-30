@@ -10,10 +10,9 @@
 #include "ModuleInput.h"
 #include "mmgr.h"
 
-BoundingBox::BoundingBox(FlyObject* _objectAttached)
+BoundingBox::BoundingBox()
 {
 	size = float2(100.0f, 100.0f); 
-	objectAttached = _objectAttached; 
 
 	minPoint = float2(0, 0); 
 	maxPoint = float2(0, 0); 
@@ -30,7 +29,7 @@ void BoundingBox::Draw(bool fill, float4 color)
 
 void BoundingBox::CleanUp()
 {
-	objectAttached = nullptr; 
+
 }
 
 void BoundingBox::DrawSquare(float4 color, bool fill)
@@ -55,8 +54,8 @@ void BoundingBox::DrawSquare(float4 color, bool fill)
 void BoundingBox::SetSize(float sizeX, float sizeY)
 {
 	size = float2(sizeX, sizeY);
-	minPoint = objectAttached->transform->GetPosition(true) + float2(-sizeX / 2, sizeY / 2);
-	maxPoint = objectAttached->transform->GetPosition(true) + float2(sizeX / 2, -sizeY / 2);
+	minPoint = float2(-sizeX / 2, sizeY / 2);
+	maxPoint = float2(sizeX / 2, -sizeY / 2);
 }
 
 float2& BoundingBox::GetSize()
@@ -143,7 +142,7 @@ float2 BoundingBox::HandleDrag(CardinalAxis limitOnAxis)
 	if (!isDragEnabled)
 		return float2::zero; 
 
-	if (!isDragging && App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN)
+	if (!isDragging && App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && IsMouseOver())
 	{
 		isDragging = true;	
 		initDragPos = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos(); 
