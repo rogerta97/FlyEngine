@@ -102,25 +102,10 @@ void BoundingBox::SetMaxPoint(float2 _maxPoint)
 	size /= 2; 
 }
 
-void BoundingBox::Move(float2 newPosition)
-{
-
-}
-
 void BoundingBox::CenterMinMaxPointsToScreen()
 {
 	minPoint = float2(-size.x, size.y);
 	maxPoint = float2(size.x, -size.y);
-}
-
-void BoundingBox::Rotate(float2 newRotationEuler)
-{
-
-}
-
-void BoundingBox::Scale(float2 newScale)
-{
-	
 }
 
 bool BoundingBox::IsMouseOver()
@@ -145,6 +130,23 @@ bool BoundingBox::IsMouseOver()
 
 	return ret;
 
+}
+
+void BoundingBox::HandleDrag()
+{
+	if (isDragEnabled && !isDragging)
+	{
+		dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos();
+		dragCenterOffset -= (objectAttached->transform->GetPosition(false));
+		dragCenterOffset = float2((int)dragCenterOffset.x, (int)dragCenterOffset.y);
+	}
+
+	float2 positionInDrag = float2(App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().x, App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().y);
+	float2 positionInDragGame = float2(App->moduleImGui->gameViewportDockPanel->ScreenToWorld(positionInDrag.x, positionInDrag.y));
+	positionInDragGame = float2((int)positionInDragGame.x, (int)positionInDragGame.y);
+
+	minPoint += positionInDragGame;
+	maxPoint += positionInDragGame;
 }
 
 void BoundingBox::FitToObject()

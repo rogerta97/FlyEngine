@@ -41,6 +41,7 @@ FlyObject::~FlyObject()
 void FlyObject::Update()
 {
 	gizmos->Update();
+	clickableArea->Update(); 
 }
 
 void FlyObject::Draw()

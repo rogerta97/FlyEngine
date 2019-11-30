@@ -11,18 +11,16 @@ public:
 	~BoundingBox();
 
 	virtual void Draw(bool fill, float4 color);
-	virtual void CleanUp(); 
+	virtual void CleanUp();
 
+	// Draw ----------
 	void DrawSquare(float4 color = float4(1.0f, 1.0f, 1.0f, 0.4f), bool fill = false);
-
-	bool IsMouseOver();
 	void FitToObject(); 
-
-	void Move(float2 newPositon);
 	void CenterMinMaxPointsToScreen();
 
-	void Rotate(float2 newRotationEuler);
-	void Scale(float2 newScale);
+	//Input ----------
+	bool IsMouseOver();
+	void HandleDrag(); 
 
 	// Set & Get 
 	void SetSize(float newMaxPointX, float newMaxPointY);
@@ -45,6 +43,11 @@ protected:
 	float2 maxPoint; 
 
 	FlyObject* objectAttached; 
+
+	// Drag 
+	bool isDragEnabled = false; 
+	bool isDragging = false;
+	float2 dragCenterOffset = float2::zero; 
 };
 
 #endif // ! _2D_BOUNDING_BOX_H_

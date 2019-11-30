@@ -1,5 +1,5 @@
 #include "ScalarBoundingBox.h"
-
+#include "Globals.h"
 
 ScalarBoundingBox::ScalarBoundingBox(FlyObject* objectAttached) : BoundingBox(objectAttached)
 {
@@ -34,6 +34,18 @@ void ScalarBoundingBox::Draw(bool fill, float4 color)
 	topRightScaleBox->Draw(true, float4(255, 255, 255, 255));
 	bottomLeftScaleBox->Draw(true, float4(255, 255, 255, 255));
 	bottomRightScaleBox->Draw(true, float4(255, 255, 255, 255));
+}
+
+void ScalarBoundingBox::Update()
+{
+	if (topLeftScaleBox->IsMouseOver())
+	{
+
+	}
+
+	if (topRightScaleBox->IsMouseOver()) FLY_LOG("Mouse over top right"); 
+	if (bottomLeftScaleBox->IsMouseOver()) FLY_LOG("Mouse over bottom left"); 
+	if (bottomRightScaleBox->IsMouseOver()) FLY_LOG("Mouse over bottom right"); 
 }
 
 void ScalarBoundingBox::CleanUp()

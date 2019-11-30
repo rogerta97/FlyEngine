@@ -10,6 +10,7 @@ public:
 	~ScalarBoundingBox();
 
 	void Draw(bool fill, float4 color); 
+	void Update();
 	void CleanUp(); 
 
 	void SetCornerBoxSize(float newSize);
