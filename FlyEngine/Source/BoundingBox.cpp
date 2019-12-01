@@ -61,6 +61,12 @@ void BoundingBox::SetPosition(float2 newPositon)
 	maxPoint += newPositon; 
 }
 
+void BoundingBox::SetPositionInc(float2 newPositon)
+{
+	minPoint += newPositon;
+	maxPoint += newPositon;
+}
+
 float2 BoundingBox::GetPosition()
 {
 	return GetCenter(); 

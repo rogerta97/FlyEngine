@@ -48,7 +48,7 @@ public:
 	// Clickable Area ---
 	ScalarBoundingBox* GetClickableArea();
 	void CreateClickableArea(float2 percentagePos, float2 percentageSize, bool directPosition = false);
-	void SetCASizeFromOne(float2 percentagePos, float2 percentageSize, bool directPosition = false);
+	float2 SetCASizeFromOne(float2 percentagePos, float2 percentageSize, bool directPosition = false);
 	
 	// Sets & Gets ------
 	float2& GetClickableAreaPosOne(); 

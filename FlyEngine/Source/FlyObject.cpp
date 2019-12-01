@@ -136,7 +136,10 @@ void FlyObject::CalculateAllGizmos()
 void FlyObject::FitObjectUtils()
 {
 	CalculateAllGizmos();
-	clickableArea->SetPosition(float2(transform->GetPosition(true).x,transform->GetPosition(true).y)); 
+	float2 offset = SetCASizeFromOne(clickableAreaPosPerc, clickableAreaSizePerc); 
+	FLY_LOG("%f %f", offset.x, offset.y); 
+
+	clickableArea->SetPosition(float2(transform->GetPosition(true).x + offset.x,transform->GetPosition(true).y + offset.y)); 
 }
 
 bool FlyObject::IsMouseOver()
@@ -264,15 +267,18 @@ void FlyObject::SetClickableAreaSizeOne(float2 newAreaSizeOne)
 	clickableAreaSizePerc = newAreaSizeOne; 
 }
 
-void FlyObject::SetCASizeFromOne(float2 percentagePos, float2 percentageSize, bool directPosition)
+float2 FlyObject::SetCASizeFromOne(float2 percentagePos, float2 percentageSize, bool directPosition)
 {
 	if (clickableArea == nullptr)
-		return; 
+		return float2::zero; 
+
+	float2 offsetFromCenter; 
 
 	if (directPosition)
 	{
 		clickableArea->SetMinPoint(float2(-percentageSize.x, percentageSize.y));
 		clickableArea->SetMaxPoint(float2(percentageSize.x, -percentageSize.y));
+		float2 offsetFromCenter = float2::zero;
 	}
 	else
 	{
@@ -287,8 +293,12 @@ void FlyObject::SetCASizeFromOne(float2 percentagePos, float2 percentageSize, bo
 
 		this->clickableAreaPosPerc = percentagePos;
 		this->clickableAreaSizePerc = percentageSize;
-	}
-	
+
+		float2 objectCenter = objectTopLeft + GetObjectVisualDimensions() / 2;
+		offsetFromCenter = clickableArea->GetCenter() - objectCenter; 
+	}	
+
+	return offsetFromCenter; 
 }
 
 void FlyObject::DrawImageToolSettings()

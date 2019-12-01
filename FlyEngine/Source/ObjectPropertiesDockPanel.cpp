@@ -125,29 +125,21 @@ void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 	float2 posPerc = selectedObject->GetClickableAreaPosOne(); 
 
 	if (ImGui::DragFloat("Horizontal", &selectedObject->GetClickableAreaPosOne().x, 0.01f, 0.01f, (1.0f - selectedObject->GetClickableAreaSizeOne().x)))
-	{
-		selectedObject->SetCASizeFromOne(selectedObject->GetClickableAreaPosOne(), selectedObject->GetClickableAreaSizeOne());
-	}
+		selectedObject->FitObjectUtils();
 
 	if (ImGui::DragFloat("Vertical", &selectedObject->GetClickableAreaPosOne().y, 0.01f, 0.01f, (1.0f - selectedObject->GetClickableAreaSizeOne().y)))
-	{
-		selectedObject->SetCASizeFromOne(selectedObject->GetClickableAreaPosOne(), selectedObject->GetClickableAreaSizeOne());
-	}
+		selectedObject->FitObjectUtils();
 
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Size");
 	ImGui::PopFont();
 
 	if(ImGui::DragFloat("Width", &selectedObject->GetClickableAreaSizeOne().x, 0.01f, 0.01f, (1.0f - selectedObject->GetClickableAreaPosOne().x)))
-	{
-		selectedObject->SetCASizeFromOne(selectedObject->GetClickableAreaPosOne(), selectedObject->GetClickableAreaSizeOne());
-	}
+		selectedObject->FitObjectUtils();
 
-	if(ImGui::DragFloat("Heigth", &selectedObject->GetClickableAreaSizeOne().y, 0.01f, 0.01f, (1.0f - selectedObject->GetClickableAreaPosOne().y)))
-	{
-		selectedObject->SetCASizeFromOne(selectedObject->GetClickableAreaPosOne(), selectedObject->GetClickableAreaSizeOne());
-	}
-
+	if(ImGui::DragFloat("Heigth", &selectedObject->GetClickableAreaSizeOne().y, 0.01f, 0.01f, (1.0f - selectedObject->GetClickableAreaPosOne().y)))	
+		selectedObject->FitObjectUtils(); 
+	
 	IMGUI_SPACE_SEPARATOR;
 
 	if (ImGui::Button("Edit From Viewport"))
