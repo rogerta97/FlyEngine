@@ -222,10 +222,16 @@ void ModuleImGui::DrawMainMenuBar()
 		ImGui::EndMenu();
 	}
 
-	if (App->flySection == FLY_SECTION_ROOM_EDIT) {
+
+
+	if (App->flySection == FLY_SECTION_ROOM_EDIT) 
+	{
 		if (ImGui::SmallButton("Back To World")) {
 			App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_GRAPH); 
 		}
+
+		ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x / 2 - 100);
+		ImGui::Text("Room Editor - %s", App->moduleRoomManager->GetSelectedRoom()->GetName().c_str()); 
 	}
 
 	ImGui::EndMainMenuBar();

@@ -131,6 +131,7 @@ void GameViewportDockPanel::DrawTopBar()
 	ImGui::PushStyleColor(ImGuiCol_MenuBarBg, ImVec4(0, 0, 0, 0.2f)); 
 	ImGui::BeginMenuBar();
 
+	// Gizmos ------------------
 	Texture* arrowSelect = (Texture*)ResourceManager::getInstance()->GetResource("SelectArrow");
 
 	bool currentMode = false; 
@@ -175,6 +176,14 @@ void GameViewportDockPanel::DrawTopBar()
 	if (currentMode) {
 		currentMode = false;
 		ImGui::PopStyleColor();
+	}
+
+	// Play Button ------------
+	ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x / 2 - 8); 
+	Texture* playIcon = (Texture*)ResourceManager::getInstance()->GetResource("PlayIcon");
+	if (ImGui::ImageButton((ImTextureID)playIcon->GetTextureID(), ImVec2(16, 16)))
+	{
+		App->engineMode = ENGINE_PLAY; 
 	}
 
 	ImGui::EndMenuBar();
