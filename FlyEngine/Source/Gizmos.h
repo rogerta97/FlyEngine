@@ -77,7 +77,7 @@ public:
 
 	void Update();
 	void HandleMoveGizmo();
-	void HandleDrag();
+	void HandleDrag(float dragMovementIncX, math::float2& inc, float& prevPosX, float aspectRatio, float dragMovementIncY, float& prevPosY, math::float2& dragMovementIncXY, math::float2& prevPos);
 	void CleanUp(); 
 
 	// Utils -----------------

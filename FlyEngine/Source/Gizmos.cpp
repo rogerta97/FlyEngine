@@ -61,95 +61,73 @@ void Gizmos::Update()
 
 void Gizmos::HandleMoveGizmo()
 {
-	float2 dragMovementInc = moveGizmo->axisXYBox->HandleDrag(CardinalAxis::AxisNone);
+
+	// Get drag movement 
+	float dragMovementIncX = moveGizmo->axisXBox->HandleDrag(CardinalAxis::AxisX).x;
+	float dragMovementIncY = moveGizmo->axisYBox->HandleDrag(CardinalAxis::AxisY).y;
+	float2 dragMovementIncXY = moveGizmo->axisXYBox->HandleDrag(CardinalAxis::AxisNone);
+
+	static float prevPosX; 
+	static float prevPosY; 
+	static float2 prevPos; 
+
+	float aspectRatio = App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
+	float2 inc = float2::zero; 
+
+	if (App->moduleInput->GetMouseButton(RI_MOUSE_LEFT_BUTTON_DOWN) == KEY_DOWN && moveGizmo->axisXBox->IsMouseOver())
+		prevPosX = dragMovementIncX;
+
+	if (App->moduleInput->GetMouseButton(RI_MOUSE_LEFT_BUTTON_DOWN) == KEY_DOWN && moveGizmo->axisYBox->IsMouseOver())
+		prevPosY = dragMovementIncY;
+
+	if (App->moduleInput->GetMouseButton(RI_MOUSE_LEFT_BUTTON_DOWN) == KEY_DOWN && moveGizmo->axisXYBox->IsMouseOver())
+		prevPos = dragMovementIncXY;
 	
-	// Get pos increment
-	static float2 prevPos = dragMovementInc;
-	float2 inc = dragMovementInc - prevPos;
-	prevPos = dragMovementInc;
-
-
-
-	objectAttached->transform->SetPosition(objectAttached->transform->GetPosition().x - inc.x, objectAttached->transform->GetPosition().y);
-
-	 
-	/*if (App->moduleInput->GetMouseButton(LEFT_CLICK) == KEY_DOWN)
-	{
-		if (selectGizmo->objectBorderBox->IsMouseOver())
-		{
-			if (App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject() != objectAttached)				
-				return;
-						
-			if (moveGizmo->axisXBox->IsMouseOver() && objectAttached->isSelected)
-			{
-				moveGizmo->dragAxis = DRAG_X;
-
-				moveGizmo->dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos();
-				moveGizmo->dragCenterOffset -= (objectAttached->transform->GetPosition(false));
-				moveGizmo->dragCenterOffset = float2((int)moveGizmo->dragCenterOffset.x, (int)moveGizmo->dragCenterOffset.y);
-
-				moveGizmo->initDragPos = objectAttached->transform->GetPosition(false);
-			}
-
-			if (moveGizmo->axisYBox->IsMouseOver() && objectAttached->isSelected)
-			{
-				moveGizmo->dragAxis = DRAG_Y;
-
-				moveGizmo->dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos();
-				moveGizmo->dragCenterOffset -= (objectAttached->transform->GetPosition(false));
-				moveGizmo->dragCenterOffset = float2((int)moveGizmo->dragCenterOffset.x, (int)moveGizmo->dragCenterOffset.y);
-
-				moveGizmo->initDragPos = objectAttached->transform->GetPosition(false);
-			}
-
-			if (moveGizmo->axisXYBox->IsMouseOver() && objectAttached->isSelected)
-			{
-				moveGizmo->dragAxis = DRAG_XY;
-
-				moveGizmo->dragCenterOffset = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos();
-				moveGizmo->dragCenterOffset -= (objectAttached->transform->GetPosition(false));
-				moveGizmo->dragCenterOffset = float2((int)moveGizmo->dragCenterOffset.x, (int)moveGizmo->dragCenterOffset.y);
-
-				moveGizmo->initDragPos = objectAttached->transform->GetPosition(false);
-			}
-		}
-	}
-
-	HandleDrag();*/
+	HandleDrag(dragMovementIncX, inc, prevPosX, aspectRatio, dragMovementIncY, prevPosY, dragMovementIncXY, prevPos);
 }
 
-void Gizmos::HandleDrag()
+void Gizmos::HandleDrag(float dragMovementIncX, math::float2& inc, float& prevPosX, float aspectRatio, float dragMovementIncY, float& prevPosY, math::float2& dragMovementIncXY, math::float2& prevPos)
 {
-	if (moveGizmo->dragAxis != NOT_DRAG)
-	{		
-		float2 positionInDrag = float2(App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().x, App->moduleImGui->gameViewportDockPanel->GetMouseGamePos().y);
-		float2 positionInDragGame = float2(App->moduleImGui->gameViewportDockPanel->ScreenToWorld(positionInDrag.x, positionInDrag.y));
-		positionInDragGame = float2((int)positionInDragGame.x, (int)positionInDragGame.y);
+	// Set Object's new position from drag
+	if (dragMovementIncX != 0)
+	{
+		//prevPosX = dragMovementIncX;
+		inc.x = dragMovementIncX - prevPosX;
+		prevPosX = dragMovementIncX;
+		objectAttached->transform->SetPosition(objectAttached->transform->GetPosition().x - inc.x, objectAttached->transform->GetPosition().y);
+		FLY_LOG("%f", inc.x);
 
-		switch (moveGizmo->dragAxis)
-		{
+		// Fit other Boxes
+		moveGizmo->axisYBox->SetPosition(float2(objectAttached->transform->GetPosition().x * aspectRatio, moveGizmo->axisYBox->GetCenter().y));
+		moveGizmo->axisXYBox->SetPosition(float2((objectAttached->transform->GetPosition().x * aspectRatio) + moveGizmo->xySquarePos.x, moveGizmo->axisXYBox->GetCenter().y));
 
-		case DRAG_X:
-			objectAttached->transform->SetPosition(float2(positionInDrag.x - moveGizmo->dragCenterOffset.x, moveGizmo->initDragPos.y));
-			objectAttached->CalculateAllGizmos(); 
-			break;
+		selectGizmo->AddaptSelectBox(objectAttached);
+	}
 
-		case DRAG_Y:
-			objectAttached->transform->SetPosition(float2(moveGizmo->initDragPos.x, positionInDrag.y - moveGizmo->dragCenterOffset.y));
-			objectAttached->CalculateAllGizmos();
-			break;
+	if (dragMovementIncY != 0)
+	{
+		inc.y = dragMovementIncY - prevPosY;
+		prevPosY = dragMovementIncY;
+		objectAttached->transform->SetPosition(objectAttached->transform->GetPosition().x, objectAttached->transform->GetPosition().y - inc.y);
 
-		case DRAG_XY:
-			objectAttached->transform->SetPosition(float2(positionInDrag.x - moveGizmo->dragCenterOffset.x, positionInDrag.y - moveGizmo->dragCenterOffset.y));
-			objectAttached->CalculateAllGizmos();
-			break;
+		// Fit other Boxes
+		moveGizmo->axisXBox->SetPosition(float2(moveGizmo->axisXBox->GetCenter().x, objectAttached->transform->GetPosition().y * aspectRatio));
+		moveGizmo->axisXYBox->SetPosition(float2(moveGizmo->axisXYBox->GetCenter().x, (objectAttached->transform->GetPosition().y * aspectRatio) + moveGizmo->xySquarePos.y));
 
-		}
+		selectGizmo->AddaptSelectBox(objectAttached);
+	}
 
-		if (App->moduleInput->GetMouseButton(LEFT_CLICK) == KEY_UP)
-		{
-			moveGizmo->dragAxis = NOT_DRAG;
-		}
+	if (!dragMovementIncXY.Equals(float2(0, 0)))
+	{
+		float2 inc = dragMovementIncXY - prevPos;
+		prevPos = dragMovementIncXY;
+		objectAttached->transform->SetPosition(objectAttached->transform->GetPosition().x - inc.x, objectAttached->transform->GetPosition().y - inc.y);
+
+		// Fit other Boxes
+		moveGizmo->axisXBox->SetPosition(float2(moveGizmo->axisXBox->GetPosition().x - inc.x * aspectRatio, objectAttached->transform->GetPosition().y * aspectRatio));
+		moveGizmo->axisYBox->SetPosition(float2(objectAttached->transform->GetPosition().x * aspectRatio, moveGizmo->axisYBox->GetCenter().y - inc.y * aspectRatio));
+
+		selectGizmo->AddaptSelectBox(objectAttached);
 	}
 }
 

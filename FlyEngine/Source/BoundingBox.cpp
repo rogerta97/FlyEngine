@@ -61,6 +61,11 @@ void BoundingBox::SetPosition(float2 newPositon)
 	maxPoint += newPositon; 
 }
 
+float2 BoundingBox::GetPosition()
+{
+	return GetCenter(); 
+}
+
 void BoundingBox::SetSize(float sizeX, float sizeY)
 {
 	size = float2(sizeX, sizeY);

@@ -27,6 +27,7 @@ public:
 
 	// Set & Get 
 	void SetPosition(float2 newPositon); 
+	float2 GetPosition();
 
 	void SetSize(float newMaxPointX, float newMaxPointY);
 	float2& GetSize();
