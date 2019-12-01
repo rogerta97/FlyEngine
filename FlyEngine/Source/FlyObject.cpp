@@ -7,6 +7,7 @@
 #include "Quad.h"
 #include "ImageImporter.h"
 #include "GameViewportDockPanel.h"
+#include "ChangeSceeneTool.h"
 #include "ViewportManager.h"
 #include "ResourceManager.h"
 #include "imgui.h"
@@ -188,6 +189,24 @@ ImageTool* FlyObject::AddImageTool(const char* imageTexturePath)
 	}
 
 	return (ImageTool*)GetTool(AT_IMAGE); 	
+}
+
+ChangeSceneTool* FlyObject::AddChangeSceneTool()
+{
+
+	if (GetTool(AT_CHANGE_SCENE) == nullptr)
+	{
+		ChangeSceneTool* changeSceneTool = new ChangeSceneTool(this);
+
+		toolsList.push_back(changeSceneTool);
+
+		// Addapt Gizmo Rect to new Image
+		gizmos->FitSelectBoxSize();
+
+		return changeSceneTool;
+	}
+
+	return (ChangeSceneTool*)GetTool(AT_CHANGE_SCENE);
 }
 
 Tool* FlyObject::GetTool(std::string toolName)

@@ -59,6 +59,7 @@
     <ClCompile Include="3rdParty\PCGRandom\pcg_basic.c" />
     <ClCompile Include="Source\BoundingBox.cpp" />
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\ChangeSceeneTool.cpp" />
     <ClCompile Include="Source\Gizmos.cpp" />
     <ClCompile Include="Source\ImageTool.cpp" />
     <ClCompile Include="Source\Color.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Source\BoundingBox.h" />
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\ChangeSceeneTool.h" />
     <ClInclude Include="Source\Gizmos.h" />
     <ClInclude Include="Source\ImageTool.h" />
     <ClInclude Include="Source\Color.h" />

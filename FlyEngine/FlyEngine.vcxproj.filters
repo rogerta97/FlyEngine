@@ -333,6 +333,9 @@
     <ClCompile Include="Source\Gizmos.cpp">
       <Filter>Source\Utilities\Gizmos</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ChangeSceeneTool.cpp">
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -703,6 +706,9 @@
     </ClInclude>
     <ClInclude Include="Source\Gizmos.h">
       <Filter>Source\Utilities\Gizmos</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ChangeSceeneTool.h">
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

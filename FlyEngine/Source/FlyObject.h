@@ -10,6 +10,7 @@
 
 class Gizmos; 
 class ImageTool; 
+class ChangeSceneTool; 
 class FlyObject {
 public: 
 	FlyObject(std::string objectName); 
@@ -40,6 +41,8 @@ public:
 
 	// Tools -----------
 	ImageTool* AddImageTool(const char* imageTexturePath);
+	ChangeSceneTool* AddChangeSceneTool();
+
 	Tool* GetTool(std::string toolName); 
 	Tool* GetTool(ToolType toolType); 
 	std::list<Tool*> GetToolsList() const; 

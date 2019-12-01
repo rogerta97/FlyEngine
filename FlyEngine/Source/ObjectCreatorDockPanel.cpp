@@ -143,6 +143,10 @@ void ObjectCreatorDockPanel::DrawSelectedToolSettings()
 			break;
 
 		case AT_CHANGE_SCENE:
+			if (ImGui::CollapsingHeader("Change Scene Action Settings"))
+			{
+				
+			}
 			break;
 		}
 
@@ -177,6 +181,10 @@ void ObjectCreatorDockPanel::OnAddToolButtonClicked()
 			{
 			case AT_IMAGE:
 				creatingObject->AddImageTool(std::string(MyFileSystem::getInstance()->GetIconsDirectory() + "ImageNull.png").c_str()); 
+				break;
+
+			case AT_CHANGE_SCENE:
+				creatingObject->AddChangeSceneTool();
 				break;
 
 			case AT_null:
