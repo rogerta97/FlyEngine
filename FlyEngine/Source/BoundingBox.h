@@ -26,6 +26,8 @@ public:
 	float2 HandleDrag(CardinalAxis limitOnAxis = CardinalAxis::AxisNone);
 
 	// Set & Get 
+	void SetPosition(float2 newPositon); 
+
 	void SetSize(float newMaxPointX, float newMaxPointY);
 	float2& GetSize();
 

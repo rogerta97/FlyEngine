@@ -36,6 +36,9 @@ void BoundingBox::DrawSquare(float4 color, bool fill)
 {
 	if(fill) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	else glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 	
 	glLineWidth(2.0f);
 	glBegin(GL_QUAD_STRIP); 
@@ -49,6 +52,13 @@ void BoundingBox::DrawSquare(float4 color, bool fill)
 	glLineWidth(1.0f);
 	glColor4f(1,1,1,1);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void BoundingBox::SetPosition(float2 newPositon)
+{
+	CenterMinMaxPointsToScreen(); 
+	minPoint += newPositon; 
+	maxPoint += newPositon; 
 }
 
 void BoundingBox::SetSize(float sizeX, float sizeY)

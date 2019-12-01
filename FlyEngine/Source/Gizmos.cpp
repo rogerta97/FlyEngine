@@ -61,10 +61,17 @@ void Gizmos::Update()
 
 void Gizmos::HandleMoveGizmo()
 {
-	if (moveGizmo->axisXBox->HandleDrag(CardinalAxis::AxisX).x != 0)
-	{
+	float2 dragMovementInc = moveGizmo->axisXYBox->HandleDrag(CardinalAxis::AxisNone);
+	
+	// Get pos increment
+	static float2 prevPos = dragMovementInc;
+	float2 inc = dragMovementInc - prevPos;
+	prevPos = dragMovementInc;
 
-	}
+
+
+	objectAttached->transform->SetPosition(objectAttached->transform->GetPosition().x - inc.x, objectAttached->transform->GetPosition().y);
+
 	 
 	/*if (App->moduleInput->GetMouseButton(LEFT_CLICK) == KEY_DOWN)
 	{
@@ -175,8 +182,8 @@ void Gizmos::DrawSelectGizmo()
 
 void Gizmos::CalculateSelectGizmo(FlyObject* objectAttached)
 {			
-	selectGizmo->AddaptSelectBox(objectAttached);
 	FitSelectBoxSize(); 
+	selectGizmo->AddaptSelectBox(objectAttached);
 }
 
 void Gizmos::CalculateMoveGizmo(FlyObject* objectAttached)
