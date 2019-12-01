@@ -15,6 +15,9 @@ public:
 
 	void SetCornerBoxSize(float newSize);
 
+public: 
+	bool drawCornerPoints = false; 
+
 private:
 	
 	float cornerBoxesSize; 

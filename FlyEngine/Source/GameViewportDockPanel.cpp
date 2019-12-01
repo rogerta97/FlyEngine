@@ -139,7 +139,7 @@ void GameViewportDockPanel::DrawTopBar()
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(35, 35, 37, 1.0f));
 	}
 
-	if (ImGui::ImageButton((ImTextureID)arrowSelect->GetTextureID(), ImVec2(17, 17)))
+	if (ImGui::ImageButton((ImTextureID)arrowSelect->GetTextureID(), ImVec2(16, 16)))
 	{
 		gizmoMode = GIZMO_SELECT;
 		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject(); 
@@ -162,7 +162,7 @@ void GameViewportDockPanel::DrawTopBar()
 
 	ImGui::SameLine();
 	Texture* moveArrows = (Texture*)ResourceManager::getInstance()->GetResource("MoveOption");
-	if (ImGui::ImageButton((ImTextureID)moveArrows->GetTextureID(), ImVec2(17, 17)))
+	if (ImGui::ImageButton((ImTextureID)moveArrows->GetTextureID(), ImVec2(16, 16)))
 	{
 		gizmoMode = GIZMO_MOVE;
 		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();

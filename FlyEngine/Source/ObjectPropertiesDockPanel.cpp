@@ -118,6 +118,8 @@ void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 	static float color[4]; 
 	ImGui::ColorEdit4("", color); 
 
+	ImGui::Spacing(); 
+
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Position");
 	ImGui::PopFont();
@@ -144,7 +146,7 @@ void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 
 	if (ImGui::Button("Edit From Viewport"))
 	{
-
+		selectedObject->GetClickableArea()->drawCornerPoints = true; 
 	}
 }
 

@@ -35,10 +35,13 @@ void ScalarBoundingBox::Draw(bool fill, float4 color)
 	BoundingBox::Draw(fill, color); 
 	BoundingBox::Draw(false, float4(255, 255, 255, 255)); 
 
-	/*topLeftScaleBox->Draw(true, float4(255, 255, 255, 255)); 
-	topRightScaleBox->Draw(true, float4(255, 255, 255, 255));
-	bottomLeftScaleBox->Draw(true, float4(255, 255, 255, 255));
-	bottomRightScaleBox->Draw(true, float4(255, 255, 255, 255));*/
+	if (drawCornerPoints)
+	{
+		topLeftScaleBox->Draw(true, float4(255, 255, 255, 255)); 
+		topRightScaleBox->Draw(true, float4(255, 255, 255, 255));
+		bottomLeftScaleBox->Draw(true, float4(255, 255, 255, 255));
+		bottomRightScaleBox->Draw(true, float4(255, 255, 255, 255));
+	}
 }
 
 void ScalarBoundingBox::Update()
