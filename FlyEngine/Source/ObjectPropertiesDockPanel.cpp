@@ -106,12 +106,19 @@ void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 {
 	ImGui::Spacing();
 
-	ImGui::Checkbox("Draw##DrawCA", &ViewportManager::getInstance()->drawClickableArea); 
+	ImGui::Checkbox("Draw##DrawCA", &ViewportManager::getInstance()->drawClickableArea); ImGui::SameLine(); 
 	ImGui::Checkbox("Active##ActiveCA", &selectedObject->clickableAreaActive); 
 
 	IMGUI_SPACE_SEPARATOR;
 
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig); 
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Color");
+	ImGui::PopFont();
+
+	static float color[4]; 
+	ImGui::ColorEdit4("", color); 
+
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Position");
 	ImGui::PopFont();
 
@@ -198,7 +205,6 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(18, 18)))
 	{
-		//ImGui::OpenPopup("add_tool_from_object_properties"); 
 		showToolDictionary = true; 
 	}
 
@@ -222,6 +228,7 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 	if (showToolDictionary)
 	{
 		ImGui::BeginChild("AddToolObjectProperties", ImVec2(ImGui::GetContentRegionAvailWidth(), 150)); 
+
 		// Search Bar ---------------
 		ImGui::InputText("##SearchTool", searchNewToolBuffer, IM_ARRAYSIZE(searchNewToolBuffer));
 		ImGui::SameLine();
@@ -303,7 +310,7 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 		if (ImGui::DragFloat2("Position", showPositionArr, 0.5f))
 		{
 			selectedObject->transform->SetPosition(showPositionArr[0], showPositionArr[1]);
-			selectedObject->CalculateAllGizmos();
+			selectedObject->FitObjectUtils();
 		}
 
 		if (ImGui::DragFloat2("Rotation", showRotationArr))
@@ -314,7 +321,7 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 		if (ImGui::DragFloat2("Scale", showScaleArr, 0.1f))
 		{
 			selectedObject->transform->SetScale(float2(showScaleArr[0], showScaleArr[1]));
-			selectedObject->CalculateAllGizmos();
+			selectedObject->FitObjectUtils();
 		}
 		POP_FONT;
 	}

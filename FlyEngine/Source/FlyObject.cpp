@@ -61,13 +61,11 @@ void FlyObject::Draw()
 
 void FlyObject::DrawClickableArea()
 {
-
 	if (ViewportManager::getInstance()->drawClickableArea && clickableAreaActive)
 	{
 		float4 clickableAreaColor = float4(1.0f, 0.8f, 0.8f, 0.4f);
 		clickableArea->Draw(true, clickableAreaColor);
 	}
-
 }
 
 void FlyObject::CleanUp()
@@ -133,6 +131,12 @@ void FlyObject::CalculateAllGizmos()
 {
 	gizmos->CalculateSelectGizmo(this);
 	gizmos->CalculateMoveGizmo(this);
+}
+
+void FlyObject::FitObjectUtils()
+{
+	CalculateAllGizmos();
+	clickableArea->SetPosition(float2(transform->GetPosition(true).x,transform->GetPosition(true).y)); 
 }
 
 bool FlyObject::IsMouseOver()
@@ -237,7 +241,7 @@ void FlyObject::CreateClickableArea(float2 percentagePos, float2 percentageSize,
 		clickableArea = new ScalarBoundingBox(this);
 
 	SetCASizeFromOne(percentagePos, percentageSize, directPosition); 
-	clickableArea->SetCornerBoxSize(6.0f); 
+	clickableArea->SetCornerBoxSize(4.0f); 
 }
 
 float2& FlyObject::GetClickableAreaPosOne()

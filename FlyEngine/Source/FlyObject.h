@@ -33,6 +33,7 @@ public:
 
 	void CalculateCurrentGizmo(); 
 	void CalculateAllGizmos(); 
+	void FitObjectUtils(); 
 	bool IsMouseOver(); 
 
 	bool HasVisuals(); 

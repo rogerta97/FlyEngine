@@ -61,7 +61,6 @@ void Gizmos::Update()
 
 void Gizmos::HandleMoveGizmo()
 {
-
 	// Get drag movement 
 	float dragMovementIncX = moveGizmo->axisXBox->HandleDrag(CardinalAxis::AxisX).x;
 	float dragMovementIncY = moveGizmo->axisYBox->HandleDrag(CardinalAxis::AxisY).y;
@@ -101,7 +100,7 @@ void Gizmos::HandleDrag(float dragMovementIncX, math::float2& inc, float& prevPo
 		moveGizmo->axisYBox->SetPosition(float2(objectAttached->transform->GetPosition().x * aspectRatio, moveGizmo->axisYBox->GetCenter().y));
 		moveGizmo->axisXYBox->SetPosition(float2((objectAttached->transform->GetPosition().x * aspectRatio) + moveGizmo->xySquarePos.x, moveGizmo->axisXYBox->GetCenter().y));
 
-		selectGizmo->AddaptSelectBox(objectAttached);
+		objectAttached->FitObjectUtils(); 
 	}
 
 	if (dragMovementIncY != 0)
@@ -114,7 +113,7 @@ void Gizmos::HandleDrag(float dragMovementIncX, math::float2& inc, float& prevPo
 		moveGizmo->axisXBox->SetPosition(float2(moveGizmo->axisXBox->GetCenter().x, objectAttached->transform->GetPosition().y * aspectRatio));
 		moveGizmo->axisXYBox->SetPosition(float2(moveGizmo->axisXYBox->GetCenter().x, (objectAttached->transform->GetPosition().y * aspectRatio) + moveGizmo->xySquarePos.y));
 
-		selectGizmo->AddaptSelectBox(objectAttached);
+		objectAttached->FitObjectUtils();
 	}
 
 	if (!dragMovementIncXY.Equals(float2(0, 0)))
@@ -127,7 +126,7 @@ void Gizmos::HandleDrag(float dragMovementIncX, math::float2& inc, float& prevPo
 		moveGizmo->axisXBox->SetPosition(float2(moveGizmo->axisXBox->GetPosition().x - inc.x * aspectRatio, objectAttached->transform->GetPosition().y * aspectRatio));
 		moveGizmo->axisYBox->SetPosition(float2(objectAttached->transform->GetPosition().x * aspectRatio, moveGizmo->axisYBox->GetCenter().y - inc.y * aspectRatio));
 
-		selectGizmo->AddaptSelectBox(objectAttached);
+		objectAttached->FitObjectUtils();
 	}
 }
 
@@ -183,10 +182,6 @@ void Gizmos::FitSelectBoxSize()
 
 void Gizmos::DrawMoveGizmo()
 {
-	moveGizmo->axisXBox->Draw(false, float4(255, 255, 255, 255)); 
-	moveGizmo->axisYBox->Draw(false, float4(255, 255, 255, 255));
-	moveGizmo->axisXYBox->Draw(false, float4(255, 255, 255, 255));
-
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 

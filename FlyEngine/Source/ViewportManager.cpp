@@ -123,6 +123,6 @@ void ViewportManager::SetAspectRatioType(ViewportAspectRatio newAR)
 
 	if (selectedObject != nullptr)
 	{
-		selectedObject->CalculateAllGizmos(); 
+		selectedObject->FitObjectUtils();
 	}
 }
