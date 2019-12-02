@@ -5,7 +5,7 @@
 #include "ModuleManager.h"
 #include "ResourceManager.h"
 
-#include "SceneDockPanel.h"
+#include "RoomDockPanel.h"
 #include "ImageImporter.h"
 #include "TinyFileDialog.h"
 
@@ -15,20 +15,18 @@
 #include "FlyObject.h"
 #include "mmgr.h"
 
-SceneDockPanel::SceneDockPanel(bool isVisible) : DockPanel("Scene", isVisible)
+RoomDockPanel::RoomDockPanel(bool isVisible) : DockPanel("Room", isVisible)
 {
 	flyEngineSection = FLY_SECTION_ROOM_EDIT;
 	dockPanelType = DOCK_SCENE;
-
-	
 }
 
-SceneDockPanel::~SceneDockPanel()
+RoomDockPanel::~RoomDockPanel()
 {
 
 }
 
-bool SceneDockPanel::Draw()
+bool RoomDockPanel::Draw()
 {
 
 #pragma region secutiryChecks
@@ -38,6 +36,12 @@ bool SceneDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible))
 	{
+		ImGui::ImageButton(0, ImVec2(30, 30)); 
+
+		ImGui::SameLine();
+		ImGui::ImageButton(0, ImVec2(30, 30));
+		
+
 		ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
 		if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
 		{
@@ -55,7 +59,7 @@ bool SceneDockPanel::Draw()
 	return true;
 }
 
-void SceneDockPanel::ShowViewportSettingsTab()
+void RoomDockPanel::ShowViewportSettingsTab()
 {
 	ImGui::Spacing(); 
 

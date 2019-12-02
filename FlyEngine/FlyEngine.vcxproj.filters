@@ -300,9 +300,6 @@
     <ClCompile Include="Source\Texture.cpp">
       <Filter>Source\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneDockPanel.cpp">
-      <Filter>Source\Modules\DockingPanels</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ModuleManager.cpp">
       <Filter>Source\Modules</Filter>
     </ClCompile>
@@ -335,6 +332,9 @@
     </ClCompile>
     <ClCompile Include="Source\ChangeSceeneTool.cpp">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RoomDockPanel.cpp">
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -677,9 +677,6 @@
     <ClInclude Include="3rdParty\DevILWindowsSDK\include\IL\ilut_config.h">
       <Filter>Source\3rdParty\Devil</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneDockPanel.h">
-      <Filter>Source\Modules\DockingPanels</Filter>
-    </ClInclude>
     <ClInclude Include="Source\ModuleManager.h">
       <Filter>Source\Modules</Filter>
     </ClInclude>
@@ -709,6 +706,9 @@
     </ClInclude>
     <ClInclude Include="Source\ChangeSceeneTool.h">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RoomDockPanel.h">
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

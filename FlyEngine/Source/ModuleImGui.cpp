@@ -20,7 +20,7 @@
 
 #include "GameViewportDockPanel.h"
 #include "RoomObjectsDockPanel.h"
-#include "SceneDockPanel.h"
+#include "RoomDockPanel.h"
 #include "ObjectPropertiesDockPanel.h"
 
 #include "Room.h"
@@ -117,7 +117,7 @@ void ModuleImGui::CreatePanels()
 	ObjectCreatorDockPanel* objectCreatorPanel = new ObjectCreatorDockPanel(false); 
 	RoomObjectsDockPanel* roomObjectsDockPanel = new RoomObjectsDockPanel(false);
 	ObjectPropertiesDockPanel* objectPropertiesDockPanel = new ObjectPropertiesDockPanel(false);
-	SceneDockPanel* sceneDockPanel = new SceneDockPanel(false); 
+	RoomDockPanel* sceneDockPanel = new RoomDockPanel(false); 
 
 	dockPanels.push_back(consolePanel); 
 	dockPanels.push_back(roomsGraphPanel);
