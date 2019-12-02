@@ -5,6 +5,8 @@
 #include "ModuleManager.h"
 #include "ModuleInput.h"
 #include "ResourceManager.h"
+#include "ObjectCreatorDockPanel.h"
+#include "ModuleImGui.h"
 
 #include "RoomDockPanel.h"
 #include "ImageImporter.h"
@@ -70,7 +72,8 @@ void RoomDockPanel::DrawTopButtons()
 	Texture* plusObjectTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
 	if(ImGui::ImageButton((ImTextureID)plusObjectTexture->GetTextureID(), ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, 1)))
 	{
-
+		App->moduleImGui->objectCreatorDockPanel->ResetObjectData();
+		App->moduleImGui->objectCreatorDockPanel->ToggleVisibility();
 	}
 
 	// Save Button ------------

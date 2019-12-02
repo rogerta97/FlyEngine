@@ -18,9 +18,10 @@
 
 #include <string>
 
-FlyObject::FlyObject(std::string _name)
+FlyObject::FlyObject(std::string _name, std::string _description)
 {
 	name = _name; 
+	description = _description;
 	id = RandomNumberGenerator::GenerateUID(); 
 	isSelected = false; 
 	hasVisuals = false; 
@@ -101,17 +102,14 @@ void FlyObject::SetName(std::string newName)
 	name = newName; 
 }
 
-void FlyObject::Move()
+std::string FlyObject::GetDescription() const
 {
-
+	return description;
 }
 
-void FlyObject::Rotate()
+void FlyObject::SetDescription(std::string newDescription)
 {
-}
-
-void FlyObject::Scale()
-{
+	description = newDescription;
 }
 
 float2 FlyObject::GetObjectVisualDimensions()
@@ -138,8 +136,6 @@ void FlyObject::FitObjectUtils()
 {
 	CalculateAllGizmos();
 	float2 offset = SetCASizeFromOne(clickableAreaPosPerc, clickableAreaSizePerc); 
-	FLY_LOG("%f %f", offset.x, offset.y); 
-
 	clickableArea->SetPosition(float2(transform->GetPosition(true).x + offset.x,transform->GetPosition(true).y + offset.y)); 
 }
 

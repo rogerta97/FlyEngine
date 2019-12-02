@@ -48,8 +48,6 @@ void ScalarBoundingBox::Update()
 {
 	float2 dragtopLeft = topLeftScaleBox->HandleDrag();
 
-	FLY_LOG("%f %f", dragtopLeft.x, dragtopLeft.y); 
-
 	minPoint.x -= dragtopLeft.x; 
 	
 	if (topLeftScaleBox->IsMouseOver()) FLY_LOG("Mouse over top left");

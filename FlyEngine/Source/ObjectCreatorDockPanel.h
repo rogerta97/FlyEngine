@@ -17,7 +17,9 @@ public:
 	ObjectCreatorDockPanel(bool isVisible);
 	~ObjectCreatorDockPanel();
 
-	bool Draw(); 
+	bool Draw();
+	void DrawPropertiesTab();
+
 
 	void ResetObjectData();
 	void Close(); 
@@ -47,6 +49,7 @@ private:
 	// Object Creator -------------
 	char searchNewToolBuffer[256]; 
 	char newObjectName[256]; 
+	char newObjectDescription[256]; 
 	bool showToolDictionary;
 
 	// Clickable Area -------------

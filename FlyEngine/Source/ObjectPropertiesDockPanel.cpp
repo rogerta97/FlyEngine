@@ -84,6 +84,8 @@ void ObjectPropertiesDockPanel::DrawFixedPartObjectUI(FlyObject* selectedObject)
 	ImGui::Text("%s", selectedObject->GetName().c_str());
 	ImGui::PopFont();
 
+	ImGui::TextColored(ImVec4(0.1f, 0.1f, 0.1f, 1.0f), "%s", selectedObject->GetDescription().c_str()); 
+
 	ImGui::Spacing();
 	DrawObjectPlacementCH();
 	ImGui::Spacing();

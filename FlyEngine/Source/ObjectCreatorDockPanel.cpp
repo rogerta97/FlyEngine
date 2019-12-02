@@ -47,11 +47,18 @@ bool ObjectCreatorDockPanel::Draw()
 	{
 		if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
 		{
+			if (ImGui::BeginTabItem("Properties"))
+			{
+				DrawPropertiesTab();
+				ImGui::EndTabItem();
+			}
+
 			if (ImGui::BeginTabItem("Tools"))
 			{
 				DrawObjectCreator(); 
 				ImGui::EndTabItem();
 			}
+
 			if (ImGui::BeginTabItem("Clickable Area"))
 			{
 				DrawClickableAreaCreator(); 
@@ -63,6 +70,21 @@ bool ObjectCreatorDockPanel::Draw()
 	}
 
 	ImGui::End(); 
+}
+
+
+void ObjectCreatorDockPanel::DrawPropertiesTab()
+{
+	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
+	ImGui::InputTextWithHint("Name##ObjectNaming", "Name...", newObjectName, 256 * sizeof(char));
+	ImGui::PopFont();
+
+	ImGui::InputTextMultiline("Description##ObjectDescription", newObjectDescription, 256 * sizeof(char));
+
+	IMGUI_SPACE_SEPARATOR; 
+
+	static bool t;
+	ImGui::Checkbox("Interactable", &t);
 }
 
 void ObjectCreatorDockPanel::ResetObjectData()
@@ -83,7 +105,7 @@ void ObjectCreatorDockPanel::DrawObjectCreator()
 void ObjectCreatorDockPanel::DrawObjectToolsList()
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-	ImGui::Text("Add Object Actions: ");
+	ImGui::Text("Add Tools: ");
 	ImGui::PopFont();
 
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
@@ -376,18 +398,11 @@ void ObjectCreatorDockPanel::DrawPreviewClickableAreaOnTexture(float2 textureTop
 
 void ObjectCreatorDockPanel::DrawCreateButton()
 {
-	ImGui::SetCursorPosY(ImGui::GetContentRegionMax().y - 35); 
-
-	ImGui::Separator();
+	ImGui::SetCursorPosY(ImGui::GetContentRegionMax().y - 40); 
 	ImGui::Spacing();
-
-	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
-	ImGui::InputTextWithHint("##ObjectNaming", "Object Name...", newObjectName, 256 * sizeof(char));
-	ImGui::PopFont();
-
+	ImGui::Separator();
 	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
-	ImGui::SameLine();
-	if (ImGui::Button("Create", ImVec2(80, 25)))
+	if (ImGui::Button("Create", ImVec2(100, 30)))
 	{
 		std::string newObjectNameStr(newObjectName);
 		if (newObjectNameStr.empty()) {

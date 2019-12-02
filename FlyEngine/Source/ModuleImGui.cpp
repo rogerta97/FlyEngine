@@ -222,8 +222,6 @@ void ModuleImGui::DrawMainMenuBar()
 		ImGui::EndMenu();
 	}
 
-
-
 	if (App->flySection == FLY_SECTION_ROOM_EDIT) 
 	{
 		if (ImGui::SmallButton("Back To World")) {

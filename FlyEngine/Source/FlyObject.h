@@ -13,21 +13,12 @@ class ImageTool;
 class ChangeSceneTool; 
 class FlyObject {
 public: 
-	FlyObject(std::string objectName); 
+	FlyObject(std::string objectName, std::string description = ""); 
 	~FlyObject(); 
 
 	void Update(); 
 	void Draw();
-	void DrawClickableArea();
-
 	void CleanUp(); 
-
-	std::string GetName() const;
-	void SetName(std::string newName); 
-
-	void Move();
-	void Rotate(); 
-	void Scale(); 
 
 	// Utils -----------
 	float2 GetObjectVisualDimensions();  
@@ -49,6 +40,7 @@ public:
 	void DeleteTool(std::string toolNameToDelete);
 
 	// Clickable Area ---
+	void DrawClickableArea();
 	ScalarBoundingBox* GetClickableArea();
 	void CreateClickableArea(float2 percentagePos, float2 percentageSize, bool directPosition = false);
 	float2 SetCASizeFromOne(float2 percentagePos, float2 percentageSize, bool directPosition = false);
@@ -59,6 +51,12 @@ public:
 
 	void SetClickableAreaPosOne(float2 newAreaPosOne);
 	void SetClickableAreaSizeOne(float2 newAreaSizeOne);
+
+	std::string GetName() const;
+	void SetName(std::string newName); 
+
+	std::string GetDescription() const;
+	void SetDescription(std::string newDescription);
 
 private: 
 	// Draw UI ---------
@@ -79,6 +77,7 @@ private:
 
 	std::list<Tool*> toolsList; 
 	std::string name; 
+	std::string description;
 	UID id; 
 	bool hasVisuals;
 };

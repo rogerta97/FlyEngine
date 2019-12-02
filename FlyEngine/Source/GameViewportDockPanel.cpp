@@ -26,6 +26,8 @@ GameViewportDockPanel::GameViewportDockPanel(bool isVisible) : DockPanel("Game V
 
 	aspectRatioChanged = false; 
 	gizmoMode = GIZMO_SELECT; 
+
+	backgroundColor = ImVec4(0.09f, 0.11f, 0.13f, 1.0f); 
 }
 
 GameViewportDockPanel::~GameViewportDockPanel()
@@ -47,12 +49,12 @@ bool GameViewportDockPanel::Draw()
 	glEnable(GL_TEXTURE_2D);
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.09f, 0.11f, 0.13f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, backgroundColor);
 
 	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_MenuBar)) 
 	{
 		DrawTopBar(); 
-
+		
 		float2 regionSizeThisTick = float2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
 		if (!regionSizeThisTick.Equals(regionSize) && regionSize.x != -1.0f)
 		{
@@ -87,11 +89,27 @@ void GameViewportDockPanel::ReceiveEvent(FlyEngineEvent eventType)
 {	
 	switch (eventType)
 	{
-		case WINDOW_RESIZED:
+		case FlyEngineEvent::WINDOW_RESIZED:
 		{
 			FitViewportToRegion();
 			break;
 		}
+
+		case FlyEngineEvent::ENGINE_PLAY:
+		{
+			// Change background color
+			backgroundColor = ImVec4(0.50f, 0.50f, 0.80f, 0.25f);
+			break;
+		}
+
+		case FlyEngineEvent::ENGINE_STOP:
+		{
+			// Change background color
+			backgroundColor = ImVec4(0.09f, 0.11f, 0.13f, 1.0f);
+			break;
+		}
+
+	
 	}
 }
 

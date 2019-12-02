@@ -4,6 +4,7 @@
 #include "DockPanel.h"
 #include "Globals.h"
 #include "MathGeoLib.h"
+#include "imgui.h"
 
 enum GizmoMode
 {
@@ -51,6 +52,8 @@ private:
 	float2 viewportSize;
 	float aspectRatio;
 	GizmoMode gizmoMode; 
+
+	ImVec4 backgroundColor; 
 };
 
 #endif

@@ -94,7 +94,6 @@ void Gizmos::HandleDrag(float dragMovementIncX, math::float2& inc, float& prevPo
 		inc.x = dragMovementIncX - prevPosX;
 		prevPosX = dragMovementIncX;
 		objectAttached->transform->SetPosition(objectAttached->transform->GetPosition().x - inc.x, objectAttached->transform->GetPosition().y);
-		FLY_LOG("%f", inc.x);
 
 		// Fit other Boxes
 		moveGizmo->axisYBox->SetPosition(float2(objectAttached->transform->GetPosition().x * aspectRatio, moveGizmo->axisYBox->GetCenter().y));
