@@ -130,11 +130,11 @@ void ObjectCreatorDockPanel::DrawSelectable(ToolSelectableInfo selectableInfo, b
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 
-	Texture* imageIcon = (Texture*)ResourceManager::getInstance()->GetResource("ImageIcon");
+	Texture* imageIcon = App->moduleManager->GetIconFromToolType(selectableInfo.toolType);
 	ImGui::SetCursorPos(ImVec2(10, 5 + (selectableHeight * posInList)));
 	ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
 
-	ImGui::SetCursorPos(ImVec2(50, +(selectableHeight * posInList)));
+	ImGui::SetCursorPos(ImVec2(50, (selectableHeight * posInList) + 4));
 	if (ImGui::Selectable(selectableInfo.toolName.c_str(), &isSelected, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, selectableHeight - 3))) {
 		creatingObject->selectedTool = currentTool;
 		selectedTool = currentTool; 
@@ -142,7 +142,7 @@ void ObjectCreatorDockPanel::DrawSelectable(ToolSelectableInfo selectableInfo, b
 	ImGui::PopFont();
 
 	// Description -----
-	ImGui::SetCursorPosY((selectableHeight * posInList) + 20);
+	ImGui::SetCursorPosY((selectableHeight * posInList) + 24);
 	ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 52);
 
 	ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
@@ -529,7 +529,6 @@ void ObjectCreatorDockPanel::DrawAddAndDeleteToolButtons()
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(18, 18)))
 	{
 		showToolDictionary = true; 
-		//ImGui::OpenPopup("plusIconClicked");
 	}
 
 	ImGui::SameLine();

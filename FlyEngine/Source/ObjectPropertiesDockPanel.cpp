@@ -84,7 +84,10 @@ void ObjectPropertiesDockPanel::DrawFixedPartObjectUI(FlyObject* selectedObject)
 	ImGui::Text("%s", selectedObject->GetName().c_str());
 	ImGui::PopFont();
 
-	ImGui::TextColored(ImVec4(0.1f, 0.1f, 0.1f, 1.0f), "%s", selectedObject->GetDescription().c_str()); 
+	if (!selectedObject->GetDescription().empty()) {
+		ImGui::Spacing();	
+		ImGui::TextColored(ImVec4(0.8f, 0.8f, 1.0f, 1.0f), "%s", selectedObject->GetDescription().c_str());
+	}
 
 	ImGui::Spacing();
 	DrawObjectPlacementCH();
@@ -226,7 +229,7 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 		ImGui::BeginChild("AddToolObjectProperties", ImVec2(ImGui::GetContentRegionAvailWidth(), 150)); 
 
 		// Search Bar ---------------
-		ImGui::InputText("##SearchTool", searchNewToolBuffer, IM_ARRAYSIZE(searchNewToolBuffer));
+		ImGui::InputTextWithHint("##SearchTool", "Search...", searchNewToolBuffer, IM_ARRAYSIZE(searchNewToolBuffer));
 		ImGui::SameLine();
 
 		Texture* filterIcon = (Texture*)ResourceManager::getInstance()->GetResource("FilterIcon");

@@ -97,6 +97,9 @@ void ModuleManager::LoadEngineIcons()
 
 	Texture* stopIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "StopIcon.png"), false);
 	ResourceManager::getInstance()->AddResource((Resource*)stopIcon, "StopIcon");
+
+	Texture* changeScene = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ChangeScene.png"), true);
+	ResourceManager::getInstance()->AddResource((Resource*)changeScene, "ChangeScene");
 }
 
 int ModuleManager::GetToolsAmount() const
@@ -154,6 +157,10 @@ Texture* ModuleManager::GetIconFromToolType(ToolType toolType)
 
 	case AT_IMAGE:
 		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageIcon");
+		break;
+
+	case AT_CHANGE_SCENE:
+		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("ChangeScene");
 		break;
 
 	default:

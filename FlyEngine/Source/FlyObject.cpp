@@ -306,6 +306,9 @@ float2 FlyObject::SetCASizeFromOne(float2 percentagePos, float2 percentageSize, 
 		clickableArea->SetMinPoint(float2(objectTopLeft.x + clickable_area_pos.x, objectTopLeft.y + clickable_area_pos.y + clickable_area_size.y));
 		clickableArea->SetMaxPoint(float2(objectTopLeft.x + clickable_area_pos.x + clickable_area_size.x, objectTopLeft.y + clickable_area_pos.y));
 
+		clickableArea->SetMinPoint(float2(clickableArea->GetMinPoint().x * transform->GetScale().x, clickableArea->GetMinPoint().y * transform->GetScale().y));
+		clickableArea->SetMaxPoint(float2(clickableArea->GetMaxPoint().x * transform->GetScale().x, clickableArea->GetMaxPoint().y * transform->GetScale().y));
+
 		this->clickableAreaPosPerc = percentagePos;
 		this->clickableAreaSizePerc = percentageSize;
 

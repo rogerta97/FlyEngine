@@ -89,7 +89,7 @@ bool ModuleImGui::Start()
 
 	AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
 
-	FlyObject* parrot = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer Yellow");
+	FlyObject* parrot = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer Yellow", "This is a simple Fly Object to test descriptions");
 	string spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources\\Images\\TransformerYellow.png";
 	parrot->AddImageTool(spritePath.c_str());
 

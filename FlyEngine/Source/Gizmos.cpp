@@ -327,11 +327,11 @@ void SelectGizmo::AddaptSelectBox(FlyObject* objectAttached)
 	float2 selectMinPoint = objectBorderBox->GetMinPoint();
 
 	// Scale							
-	selectMaxPoint.x /= objectAttached->transform->GetScaleInc().x;
-	selectMaxPoint.y /= objectAttached->transform->GetScaleInc().y;
+	selectMaxPoint.x *= objectAttached->transform->GetScale().x;
+	selectMaxPoint.y *= objectAttached->transform->GetScale().y;
 								
-	selectMinPoint.x /= objectAttached->transform->GetScaleInc().x;
-	selectMinPoint.y /= objectAttached->transform->GetScaleInc().y;
+	selectMinPoint.x *= objectAttached->transform->GetScale().x;
+	selectMinPoint.y *= objectAttached->transform->GetScale().y;
 
 	// Position
 	selectMaxPoint.x += objectAttached->transform->GetPosition(true).x;
