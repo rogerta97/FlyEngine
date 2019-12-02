@@ -15,6 +15,12 @@ enum FlyEngineSection
 	FLY_SECTION_null
 };
 
+enum EngineMode
+{
+	ENGINE_EDIT,
+	ENGINE_PLAY,
+};
+
 // Forward Declarations 
 class ModuleWindow;
 class ModuleInput;
@@ -52,6 +58,7 @@ public:
 	void BroadCastEvent(FlyEngineEvent eventType); 
 
 	FlyEngineSection flySection = FlyEngineSection::FLY_SECTION_null; 
+	EngineMode engineMode = EngineMode::ENGINE_EDIT; 
 
 private:
 

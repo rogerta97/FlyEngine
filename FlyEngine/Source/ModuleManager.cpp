@@ -88,6 +88,9 @@ void ModuleManager::LoadEngineIcons()
 
 	Texture* background_1_1 = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "Background_1_1.png"), true);
 	ResourceManager::getInstance()->AddResource((Resource*)background_1_1, "Background_1_1");
+
+	Texture* playIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "play.png"), true);
+	ResourceManager::getInstance()->AddResource((Resource*)playIcon, "PlayIcon");
 }
 
 int ModuleManager::GetToolsAmount() const
