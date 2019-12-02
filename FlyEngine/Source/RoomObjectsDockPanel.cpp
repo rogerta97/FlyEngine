@@ -23,28 +23,6 @@ RoomObjectsDockPanel::~RoomObjectsDockPanel()
 
 bool RoomObjectsDockPanel::Draw()
 {
-
-#pragma region secutiryChecks
-	if (!DockPanel::Draw())
-		return false;
-#pragma endregion
-
-	if (ImGui::Begin(panelName.c_str(), &visible))
-	{
-		// Searcher ---
-		static char searchToolBuffer[256] = "";
-		ImGui::InputTextWithHint("##SearchTool", "Search...", searchToolBuffer, IM_ARRAYSIZE(searchToolBuffer));
-		ImGui::SameLine();
-
-		Texture* filterIcon = (Texture*)ResourceManager::getInstance()->GetResource("FilterIcon");
-		ImGui::Image((ImTextureID)filterIcon->GetTextureID(), ImVec2(22, 22));
-
-		// Objects List -------
-		DrawObjectHierarchy();
-		DrawControlButtons();
-	}
-
-	ImGui::End();
 	return true;
 }
 
@@ -107,7 +85,7 @@ void RoomObjectsDockPanel::DrawControlButtons()
 	}
 
 	ImGui::SameLine();
-	if(ImGui::ImageButton((ImTextureID)minusObjectTexture->GetTextureID(), ImVec2(20, 20), ImVec2(0, 0), ImVec2(1, 1), 0))
+	if(ImGui::ImageButton((ImTextureID)minusObjectTexture->GetTextureID(), ImVec2(20, 20), ImVec2(0, 1), ImVec2(1, 0), 0))
 	{
 		App->moduleRoomManager->GetSelectedRoom()->DeleteSelectedObject();
 	}

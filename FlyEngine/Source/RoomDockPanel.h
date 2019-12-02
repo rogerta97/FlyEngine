@@ -3,6 +3,7 @@
 
 #include "DockPanel.h"
 #include "Tool.h"
+#include "MathGeoLib/Math/float4.h"
 
 class Texture; 
 class RoomDockPanel : public DockPanel {
@@ -14,10 +15,18 @@ public:
 
 	bool Draw();
 
+	void DrawTopButtons();
+
+	// Hierarchy ---
+	void DrawRoomHierarchy();
+	void DrawMoveLayerSelectableButtons();
+
+	// Viewport ----
 	void ShowViewportSettingsTab();
 
-private: 
-	std::list<Tool*> tmpToolsToAdd; 
+private:
+	float4 playStopButtonBackgroundColor; 
+	Texture* playStopButtonTexture;
 
 };
 

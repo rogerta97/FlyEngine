@@ -41,7 +41,7 @@ void Gizmos::CleanUp()
 
 void Gizmos::Update()
 {
-	if (!App->moduleImGui->gameViewportDockPanel->IsMouseInViewport())
+	if (!App->moduleImGui->gameViewportDockPanel->IsMouseInViewport() || !ViewportManager::getInstance()->drawGizmos)
 		return; 
 
 	GizmoMode gizmoMode = App->moduleImGui->gameViewportDockPanel->GetGizmoMode(); 
@@ -137,6 +137,9 @@ bool Gizmos::IsMouseOver()
 
 void Gizmos::Draw()
 {
+	if (!ViewportManager::getInstance()->drawGizmos)
+		return;
+
 	switch (App->moduleImGui->gameViewportDockPanel->GetGizmoMode())
 	{
 	case GIZMO_SELECT:

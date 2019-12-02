@@ -24,6 +24,8 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
+	void ReceiveEvent(FlyEngineEvent eventType);
+
 	// Rooms
 	Room* CreateEmptyRoom(string roomName = "New Room"); 
 	const char* GetRoomsAsCombo(bool includeSelected = false); 

@@ -91,6 +91,12 @@ void ModuleManager::LoadEngineIcons()
 
 	Texture* playIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "play.png"), true);
 	ResourceManager::getInstance()->AddResource((Resource*)playIcon, "PlayIcon");
+
+	Texture* saveIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "SaveIcon.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)saveIcon, "SaveIcon");
+
+	Texture* stopIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "StopIcon.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)stopIcon, "StopIcon");
 }
 
 int ModuleManager::GetToolsAmount() const

@@ -4,6 +4,7 @@
 #include "ModuleImGui.h"
 #include "RandomNumberGenerator.h"
 #include "GraphPropertiesDockPanel.h"
+#include "ViewportManager.h"
 #include "Room.h"
 #include "NodeGraph.h"
 #include "MyFileSystem.h"
@@ -72,6 +73,32 @@ bool ModuleRoomManager::CleanUp()
 	RandomNumberGenerator::getInstance()->Delete();
 
 	return true;
+}
+
+void ModuleRoomManager::ReceiveEvent(FlyEngineEvent eventType)
+{
+	switch (eventType)
+	{
+	case FlyEngineEvent::ENGINE_PLAY:
+		
+		if (App->flySection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && GetSelectedRoom() != nullptr){
+			ViewportManager::getInstance()->drawClickableArea = false; 
+			ViewportManager::getInstance()->drawGizmos = false; 
+		}
+
+		break; 
+
+	case FlyEngineEvent::ENGINE_STOP:
+
+		if (App->flySection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && GetSelectedRoom() != nullptr)
+		{
+			// For now they will be set to true, in the future they are going to be loaded from the viewportConfig.json
+			//ViewportManager::getInstance()->drawClickableArea = true;
+			ViewportManager::getInstance()->drawGizmos = true;
+		}
+
+		break; 
+	}
 }
 
 Room* ModuleRoomManager::CreateEmptyRoom(string roomName)

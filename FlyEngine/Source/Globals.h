@@ -17,6 +17,8 @@ enum consoleMessageType {
 enum FlyEngineEvent
 {
 	WINDOW_RESIZED, 
+	ENGINE_PLAY, 
+	ENGINE_STOP, 
 };
 
 #define LOG(format, ...) log(__FILE__, __LINE__, CM_DEBUG, format, __VA_ARGS__)

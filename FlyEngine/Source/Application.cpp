@@ -24,6 +24,8 @@ Application::Application()
 	AddModule(moduleRender);
 	AddModule(moduleImGui);
 	AddModule(moduleManager); 
+
+	isEngineInPlayMode = false; 
 }
 
 Application::~Application()

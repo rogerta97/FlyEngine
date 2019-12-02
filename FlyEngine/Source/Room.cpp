@@ -31,11 +31,11 @@ Room::~Room()
 
 void Room::Update()
 {
-	if (App->moduleRoomManager->GetSelectedRoom() == this)
+	if (App->moduleRoomManager->GetSelectedRoom() == this && App->isEngineInPlayMode == false)
 	{
 		UpdateRoomObjects();
 
-		// Check for new Selected Objects 
+		// Check for new Selected Objects -------
 		if (App->moduleRoomManager->GetSelectedRoom()->objectsInRoom.empty())
 			return;
 
