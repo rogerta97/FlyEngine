@@ -120,19 +120,19 @@ void RoomDockPanel::DrawRoomHierarchy()
 	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
 	FlyObject* selectedObject = selectedRoom->GetSelectedObject();
 
-	for (auto& it : selectedRoom->objectsInRoom) {
+	for (list<FlyObject*>::reverse_iterator it = selectedRoom->objectsInRoom.rbegin(); it != selectedRoom->objectsInRoom.rend(); it++) {
 
 		PUSH_FONT(App->moduleImGui->rudaBlackMid);
 
 		bool objectSelected = false;
 
 		if (selectedObject != nullptr)
-			objectSelected = (selectedObject->GetName() == (it)->GetName());
+			objectSelected = (selectedObject->GetName() == (*it)->GetName());
 
-		if (ImGui::Selectable(string("  " + (it)->GetName()).c_str(), objectSelected, ImGuiSelectableFlags_AllowDoubleClick))
+		if (ImGui::Selectable(string("  " + (*it)->GetName()).c_str(), objectSelected, ImGuiSelectableFlags_AllowDoubleClick))
 		{
-			(it)->isSelected = true;
-			App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(it);
+			(*it)->isSelected = true;
+			App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(*it);
 
 			if (App->moduleInput->GetMouseButton(RIGHT_CLICK)) {
 				FLY_LOG("CLICKED RIGHT BUTTON");

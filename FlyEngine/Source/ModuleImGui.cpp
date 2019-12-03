@@ -89,17 +89,17 @@ bool ModuleImGui::Start()
 
 	AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
 
-	//FlyObject* parrot = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer Yellow", "This is a simple Fly Object to test descriptions");
-	//string spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources\\Images\\TransformerYellow.png";
-	//parrot->AddImageTool(spritePath.c_str());
+	FlyObject* parrot = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer Yellow", "This is a simple Fly Object to test descriptions");
+	string spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources\\Images\\TransformerYellow.png";
+	parrot->AddImageTool(spritePath.c_str());
 
 	//parrot->CreateClickableArea(float2(0, 0), float2(1, 1));
 	//parrot->clickableAreaActive = true; 
 	//ViewportManager::getInstance()->drawClickableArea = false; 
 
-	//FlyObject* test = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer");
-	//spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources/Images/Transformer.png"; 
-	//test->AddImageTool(spritePath.c_str());
+	FlyObject* test = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer");
+	spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources/Images/Transformer.png"; 
+	test->AddImageTool(spritePath.c_str());
 
 	ViewportManager::getInstance();
 

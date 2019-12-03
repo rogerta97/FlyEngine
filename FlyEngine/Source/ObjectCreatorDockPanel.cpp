@@ -45,6 +45,10 @@ bool ObjectCreatorDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible))
 	{
+		ImGui::PushFont(App->moduleImGui->rudaBoldMid);
+		ImGui::InputTextWithHint("Name##ObjectNaming", "Name...", newObjectName, 256 * sizeof(char));
+		ImGui::PopFont();
+
 		if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
 		{
 			if (ImGui::BeginTabItem("Properties"))
@@ -76,12 +80,7 @@ bool ObjectCreatorDockPanel::Draw()
 void ObjectCreatorDockPanel::DrawPropertiesTab()
 {
 	ImGui::Spacing(); 
-	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
-	ImGui::InputTextWithHint("Name##ObjectNaming", "Name...", newObjectName, 256 * sizeof(char));
-	ImGui::PopFont();
-
 	ImGui::InputTextMultiline("Description##ObjectDescription", newObjectDescription, 256 * sizeof(char));
-
 	IMGUI_SPACE_SEPARATOR; 
 
 	static bool t;
@@ -331,7 +330,12 @@ void ObjectCreatorDockPanel::PrintClickableAreaObjectVisuals()
 		// Show No Visual Text
 		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 		ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - 50, 100));
-		ImGui::TextColored(ImVec4(1, 0.8, 0.8f, 0.8f), "NO VISUALS");
+
+		if(clickableAreaActive)
+			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.7f, 0.8f), "NO VISUALS");
+		else
+			ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.5f), "INACTIVE");
+
 		ImGui::PopFont(); 
 	}
 	else

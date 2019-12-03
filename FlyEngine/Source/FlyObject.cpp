@@ -42,10 +42,13 @@ FlyObject::~FlyObject()
 
 void FlyObject::Update()
 {
-	gizmos->Update();
+	if (isSelected) 
+	{
+		gizmos->Update();
 
-	if(clickableArea != nullptr)
-		clickableArea->Update(); 
+		if(clickableArea != nullptr)
+			clickableArea->Update(); 
+	}
 }
 
 void FlyObject::Draw()
