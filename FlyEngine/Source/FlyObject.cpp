@@ -29,6 +29,7 @@ FlyObject::FlyObject(std::string _name, std::string _description)
 
 	clickableAreaPosPerc = float2(-1, -1); 
 	clickableAreaSizePerc = float2(-1, -1); 
+	clickableAreaColor = float4(1.0f, 0.8f, 0.8f, 0.4f);
 
 	transform = new Transform();
 	gizmos = new Gizmos(this);
@@ -70,7 +71,6 @@ void FlyObject::DrawClickableArea()
 {
 	if (ViewportManager::getInstance()->drawClickableArea && clickableAreaActive)
 	{
-		float4 clickableAreaColor = float4(1.0f, 0.8f, 0.8f, 0.4f);
 		clickableArea->Draw(true, clickableAreaColor);
 	}
 }
@@ -115,6 +115,16 @@ std::string FlyObject::GetDescription() const
 void FlyObject::SetDescription(std::string newDescription)
 {
 	description = newDescription;
+}
+
+float4 FlyObject::GetClickableAreaColor() const
+{
+	return clickableAreaColor;
+}
+
+void FlyObject::SetClickableAreaColor(float4 newColor)
+{
+	clickableAreaColor = newColor; 
 }
 
 float2 FlyObject::GetObjectVisualDimensions()

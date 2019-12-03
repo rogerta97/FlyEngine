@@ -119,9 +119,19 @@ void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Color");
 	ImGui::PopFont();
+ 
+	float color[4] =
+	{
+		selectedObject->GetClickableAreaColor().x,
+		selectedObject->GetClickableAreaColor().y,
+		selectedObject->GetClickableAreaColor().z,
+		selectedObject->GetClickableAreaColor().w,
+	};
 
-	static float color[4]; 
-	ImGui::ColorEdit4("", color); 
+	if (ImGui::ColorEdit4("", color))
+	{
+		selectedObject->SetClickableAreaColor(float4(color[0], color[1], color[2], color[3]));
+	}
 
 	ImGui::Spacing(); 
 	if (selectedObject->HasVisuals())

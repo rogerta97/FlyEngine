@@ -7,6 +7,7 @@
 #include "Tool.h"
 #include "Transform.h"
 #include "ScalarBoundingBox.h"
+#include "ImGui/imgui.h"
 
 class Gizmos; 
 class ImageTool; 
@@ -58,6 +59,9 @@ public:
 	std::string GetDescription() const;
 	void SetDescription(std::string newDescription);
 
+	float4 GetClickableAreaColor() const;
+	void SetClickableAreaColor(float4 newColor);
+
 private: 
 	// Draw UI ---------
 	void DrawImageToolSettings(); 
@@ -71,10 +75,13 @@ public:
 	bool clickableAreaActive; 
 
 private: 
+	// Clickable Area -----
 	ScalarBoundingBox* clickableArea; 
 	float2 clickableAreaPosPerc; 
 	float2 clickableAreaSizePerc; 
+	float4 clickableAreaColor; 
 
+	// Fly Object Vars ----
 	std::list<Tool*> toolsList; 
 	std::string name; 
 	std::string description;
