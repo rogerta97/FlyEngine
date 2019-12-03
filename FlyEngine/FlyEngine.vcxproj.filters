@@ -306,12 +306,6 @@
     <ClCompile Include="Source\MyFileSystem.cpp">
       <Filter>Source\Tools\FileSystem</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Tool.cpp">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ImageTool.cpp">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\TinyFileDialog.cpp">
       <Filter>Source\3rdParty\TinyFileDialog</Filter>
     </ClCompile>
@@ -335,6 +329,12 @@
     </ClCompile>
     <ClCompile Include="Source\RoomDockPanel.cpp">
       <Filter>Source\Modules\DockingPanels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Action.cpp">
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DisplayImageAction.cpp">
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -683,12 +683,6 @@
     <ClInclude Include="Source\MyFileSystem.h">
       <Filter>Source\Tools\FileSystem</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Tool.h">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ImageTool.h">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
-    </ClInclude>
     <ClInclude Include="Source\TinyFileDialog.h">
       <Filter>Source\3rdParty\TinyFileDialog</Filter>
     </ClInclude>
@@ -709,6 +703,12 @@
     </ClInclude>
     <ClInclude Include="Source\RoomDockPanel.h">
       <Filter>Source\Modules\DockingPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Action.h">
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DisplayImageAction.h">
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

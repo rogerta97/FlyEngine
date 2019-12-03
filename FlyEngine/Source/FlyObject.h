@@ -4,13 +4,13 @@
 #include <list>
 
 #include "Globals.h"
-#include "Tool.h"
+#include "Action.h"
 #include "Transform.h"
 #include "ScalarBoundingBox.h"
 #include "ImGui/imgui.h"
 
 class Gizmos; 
-class ImageTool; 
+class DisplayImageAction; 
 class ChangeSceneTool; 
 class FlyObject {
 public: 
@@ -32,13 +32,13 @@ public:
 	bool HasVisuals(); 
 
 	// Tools -----------
-	ImageTool* AddImageTool(const char* imageTexturePath);
-	ChangeSceneTool* AddChangeSceneTool();
+	DisplayImageAction* AddDisplayImageAction(const char* imageTexturePath);
+	ChangeSceneTool* AddChangeRoomAction();
 
-	Tool* GetTool(std::string toolName); 
-	Tool* GetTool(ToolType toolType); 
-	std::list<Tool*> GetToolsList() const; 
-	void DeleteTool(std::string toolNameToDelete);
+	Action* GetAction(std::string toolName); 
+	Action* GetAction(ToolType toolType); 
+	std::list<Action*> GetActionsList() const; 
+	void DeleteAction(std::string toolNameToDelete);
 
 	// Clickable Area ---
 	void DrawClickableArea();
@@ -64,11 +64,11 @@ public:
 
 private: 
 	// Draw UI ---------
-	void DrawImageToolSettings(); 
+	void DrawDisplayImageSettings(); 
 
 public:
 	Transform* transform;
-	Tool* selectedTool; 
+	Action* selectedAction; 
 	Gizmos* gizmos; 
 	
 	bool isSelected; 
@@ -82,7 +82,7 @@ private:
 	float4 clickableAreaColor; 
 
 	// Fly Object Vars ----
-	std::list<Tool*> toolsList; 
+	std::list<Action*> actionsList; 
 	std::string name; 
 	std::string description;
 	UID id; 

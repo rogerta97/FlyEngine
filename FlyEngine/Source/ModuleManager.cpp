@@ -107,9 +107,9 @@ int ModuleManager::GetToolsAmount() const
 	return toolNamesDescriptions.size();
 }
 
-ToolSelectableInfo* ModuleManager::DrawToolDictionaryUI()
+ActionSelectableInfo* ModuleManager::DrawActionDictionaryUI()
 {
-	ToolSelectableInfo* returnInfo = nullptr; 
+	ActionSelectableInfo* returnInfo = nullptr; 
 
 	int count = 0; 
 	int selectableHeight = 42;
@@ -118,7 +118,7 @@ ToolSelectableInfo* ModuleManager::DrawToolDictionaryUI()
 	{
 		ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 
-		Texture* iconTexture = GetIconFromToolType(currentToolDescription.toolType); 
+		Texture* iconTexture = GetIconFromActionType(currentToolDescription.actionType); 
 		ImGui::SetCursorPos(ImVec2(10, 5 + (selectableHeight * count)));
 		if (iconTexture) {
 			ImGui::Image((ImTextureID)iconTexture->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
@@ -129,7 +129,7 @@ ToolSelectableInfo* ModuleManager::DrawToolDictionaryUI()
 		}
 
 		ImGui::SetCursorPos(ImVec2(50, (selectableHeight * count)));
-		if (ImGui::Selectable(currentToolDescription.toolName.c_str(), false, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), selectableHeight - 3)))
+		if (ImGui::Selectable(currentToolDescription.actionName.c_str(), false, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), selectableHeight - 3)))
 		{
 			returnInfo = &currentToolDescription; 
 		}
@@ -140,7 +140,7 @@ ToolSelectableInfo* ModuleManager::DrawToolDictionaryUI()
 		ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 52);
 
 		ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
-		ImGui::TextWrapped(currentToolDescription.toolDescription.c_str());
+		ImGui::TextWrapped(currentToolDescription.actionDescription.c_str());
 		ImGui::PopFont();
 
 		count++;
@@ -149,7 +149,7 @@ ToolSelectableInfo* ModuleManager::DrawToolDictionaryUI()
 	return returnInfo; 
 }
 
-Texture* ModuleManager::GetIconFromToolType(ToolType toolType)
+Texture* ModuleManager::GetIconFromActionType(ToolType toolType)
 {
 	Texture* toolIconTexture = nullptr;
 	switch (toolType)
@@ -180,32 +180,32 @@ void ModuleManager::SetSelectedFlyObject(FlyObject* newSelectedObject)
 	App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(newSelectedObject);
 }
 
-std::list<ToolSelectableInfo> ModuleManager::GetToolsNamesDescriptionsList() const
+std::list<ActionSelectableInfo> ModuleManager::GetToolsNamesDescriptionsList() const
 {
 	return toolNamesDescriptions;
 }
 
 void ModuleManager::AddToolsNameDescription(std::string name, std::string description, ToolType newTooltype)
 {
-	ToolSelectableInfo newtsi; 
+	ActionSelectableInfo newtsi; 
 
-	newtsi.toolName = name; 
-	newtsi.toolDescription = description; 
-	newtsi.toolType = newTooltype; 
+	newtsi.actionName = name; 
+	newtsi.actionDescription = description; 
+	newtsi.actionType = newTooltype; 
 
 	toolNamesDescriptions.push_back(newtsi);
 }
 
-ToolSelectableInfo ModuleManager::GetToolNameDescription(std::string toolCheckName) const
+ActionSelectableInfo ModuleManager::GetToolNameDescription(std::string toolCheckName) const
 {
 	for (auto& it : toolNamesDescriptions)
 	{
-		if ((it).toolName == toolCheckName)
+		if ((it).actionName == toolCheckName)
 			return (it);
 	}
 }
 
-ToolSelectableInfo ModuleManager::GetToolNameDescription(int pos) const
+ActionSelectableInfo ModuleManager::GetToolNameDescription(int pos) const
 {
 	int count = 0;
 	for (auto& it : toolNamesDescriptions)
@@ -216,6 +216,6 @@ ToolSelectableInfo ModuleManager::GetToolNameDescription(int pos) const
 		count++;
 	}
 
-	return ToolSelectableInfo();
+	return ActionSelectableInfo();
 }
 

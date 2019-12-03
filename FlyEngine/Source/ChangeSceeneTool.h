@@ -1,13 +1,13 @@
 #ifndef _CHANGE_SCENE_TOOL_H_
 #define _CHANGE_SCENE_TOOL_H_
 
-#include "Tool.h"
+#include "Action.h"
 
 using namespace std;
 
 class Room;
 class FlyObject; 
-class ChangeSceneTool : public Tool
+class ChangeSceneTool : public Action
 {
 public:
 	ChangeSceneTool(FlyObject* _parentObject);

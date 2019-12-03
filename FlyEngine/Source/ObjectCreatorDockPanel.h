@@ -9,7 +9,7 @@
 #include <string>
 
 class FlyObject;
-class Tool; 
+class Action; 
 class Texture; 
 class ObjectCreatorDockPanel : public DockPanel {
 
@@ -34,12 +34,12 @@ public:
 
 	// Object Creator -------------
 	void DrawObjectCreator(); 
-	void DrawObjectToolsList(); 
-	void DrawSelectable(ToolSelectableInfo selectableInfo, bool& isSelected, int posInList, int selectableHeight, Tool* currentTool);
-	void DrawAddAndDeleteToolButtons(); 
-	void DrawToolImageSettings(); 
-	void DrawSelectedToolSettings(); 
-	void OnAddToolButtonClicked(); 
+	void DrawObjectActionsList(); 
+	void DrawSelectable(ActionSelectableInfo selectableInfo, bool& isSelected, int posInList, int selectableHeight, Action* currentTool);
+	void DrawAddAndDeleteActionButtons(); 
+	void DrawDisplayImageSettings(); 
+	void DrawSelectedActionSettings(); 
+	void OnAddActionButtonClicked(); 
 	void DrawCreateButton();
 	void AddCreatingObject();
 
@@ -47,10 +47,10 @@ public:
 private:
 
 	// Object Creator -------------
-	char searchNewToolBuffer[256]; 
+	char searchNewActionBuffer[256]; 
 	char newObjectName[256]; 
 	char newObjectDescription[256]; 
-	bool showToolDictionary;
+	bool showActionDictionary;
 
 	// Clickable Area -------------
 	float2 clickableAreaSizePerc; 
@@ -61,7 +61,7 @@ private:
 	bool clickableAreaActive; 
 
 	FlyObject* creatingObject = nullptr; 
-	Tool* selectedTool = nullptr; 
+	Action* selectedAction = nullptr; 
 };
 
 #endif 

@@ -3,13 +3,13 @@
 #include "Application.h"
 #include "TinyFileDialog.h"
 #include "ModuleImGui.h"
-#include "Tool.h"
+#include "Action.h"
 #include "ModuleRoomManager.h"
 #include "MyFileSystem.h"
 #include "Room.h"
 #include "Texture.h"
 #include "ImageImporter.h"
-#include "ImageTool.h"
+#include "DisplayImageAction.h"
 #include "ViewportManager.h"
 #include "ResourceManager.h"
 #include "GameViewportDockPanel.h"
@@ -57,7 +57,7 @@ bool ObjectCreatorDockPanel::Draw()
 				ImGui::EndTabItem();
 			}
 
-			if (ImGui::BeginTabItem("Tools"))
+			if (ImGui::BeginTabItem("Actions"))
 			{
 				DrawObjectCreator(); 
 				ImGui::EndTabItem();
@@ -90,22 +90,22 @@ void ObjectCreatorDockPanel::DrawPropertiesTab()
 void ObjectCreatorDockPanel::ResetObjectData()
 {
 	strcpy(newObjectName, ""); 
-	strcpy(searchNewToolBuffer, ""); 
-	selectedTool = nullptr; 
+	strcpy(searchNewActionBuffer, ""); 
+	selectedAction = nullptr; 
 	creatingObject = new FlyObject("Prev");
 }
 
 void ObjectCreatorDockPanel::DrawObjectCreator()
 {
-	DrawObjectToolsList(); 
-	DrawAddAndDeleteToolButtons(); 
-	DrawSelectedToolSettings(); 
+	DrawObjectActionsList(); 
+	DrawAddAndDeleteActionButtons(); 
+	DrawSelectedActionSettings(); 
 }
 
-void ObjectCreatorDockPanel::DrawObjectToolsList()
+void ObjectCreatorDockPanel::DrawObjectActionsList()
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-	ImGui::Text("Add Tools: ");
+	ImGui::Text("Add Actions: ");
 	ImGui::PopFont();
 
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
@@ -114,10 +114,10 @@ void ObjectCreatorDockPanel::DrawObjectToolsList()
 	ImGui::BeginChild("##AttributesChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
 
 	int pos = 0; 
-	for (auto& currentTool : creatingObject->GetToolsList())
+	for (auto& currentAction : creatingObject->GetActionsList())
 	{
-		ToolSelectableInfo selectableInfo = currentTool->GetToolSelectableInfo();
-		DrawSelectable(selectableInfo, currentTool->IsSelected(), pos, 42, currentTool);
+		ActionSelectableInfo selectableInfo = currentAction->GetActionSelectableInfo();
+		DrawSelectable(selectableInfo, currentAction->IsSelected(), pos, 42, currentAction);
 		pos++;
 	}
 
@@ -127,18 +127,18 @@ void ObjectCreatorDockPanel::DrawObjectToolsList()
 	ImGui::PopStyleColor();
 }
 
-void ObjectCreatorDockPanel::DrawSelectable(ToolSelectableInfo selectableInfo, bool& isSelected, int posInList, int selectableHeight = 42, Tool* currentTool = nullptr)
+void ObjectCreatorDockPanel::DrawSelectable(ActionSelectableInfo selectableInfo, bool& isSelected, int posInList, int selectableHeight = 42, Action* currentAction = nullptr)
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 
-	Texture* imageIcon = App->moduleManager->GetIconFromToolType(selectableInfo.toolType);
+	Texture* imageIcon = App->moduleManager->GetIconFromActionType(selectableInfo.actionType);
 	ImGui::SetCursorPos(ImVec2(10, 5 + (selectableHeight * posInList)));
 	ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
 
 	ImGui::SetCursorPos(ImVec2(50, (selectableHeight * posInList) + 4));
-	if (ImGui::Selectable(selectableInfo.toolName.c_str(), &isSelected, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, selectableHeight - 3))) {
-		creatingObject->selectedTool = currentTool;
-		selectedTool = currentTool; 
+	if (ImGui::Selectable(selectableInfo.actionName.c_str(), &isSelected, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, selectableHeight - 3))) {
+		creatingObject->selectedAction = currentAction;
+		selectedAction = currentAction; 
 	}
 	ImGui::PopFont();
 
@@ -147,22 +147,22 @@ void ObjectCreatorDockPanel::DrawSelectable(ToolSelectableInfo selectableInfo, b
 	ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 52);
 
 	ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
-	ImGui::TextWrapped(selectableInfo.toolDescription.c_str());
+	ImGui::TextWrapped(selectableInfo.actionDescription.c_str());
 	ImGui::PopFont();
 }
 
-void ObjectCreatorDockPanel::DrawSelectedToolSettings()
+void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 {
-	if (selectedTool)
+	if (selectedAction)
 	{
-		if (selectedTool->GetToolType() != AT_null) {
+		if (selectedAction->GetActionType() != AT_null) {
 			IMGUI_SPACED_SEPARATOR
 		}
 
-		switch (selectedTool->GetToolType())
+		switch (selectedAction->GetActionType())
 		{
 		case AT_IMAGE:
-			DrawToolImageSettings();
+			DrawDisplayImageSettings();
 			break;
 
 		case AT_CHANGE_SCENE:
@@ -176,15 +176,15 @@ void ObjectCreatorDockPanel::DrawSelectedToolSettings()
 	}
 }
 
-void ObjectCreatorDockPanel::OnAddToolButtonClicked()
+void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 {
-	if (showToolDictionary)
+	if (showActionDictionary)
 	{
 		ImGui::Separator();
 		ImGui::Spacing(); 
 
 		// Search Bar ---------------
-		ImGui::InputText("##SearchTool", searchNewToolBuffer, IM_ARRAYSIZE(searchNewToolBuffer));
+		ImGui::InputText("##SearchTool", searchNewActionBuffer, IM_ARRAYSIZE(searchNewActionBuffer));
 		ImGui::SameLine();
 
 		Texture* filterIcon = (Texture*)ResourceManager::getInstance()->GetResource("FilterIcon");
@@ -197,24 +197,24 @@ void ObjectCreatorDockPanel::OnAddToolButtonClicked()
 		ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), 150));
 
 		// Tools Dictonary ----------
-		ToolSelectableInfo* newToolSelected = App->moduleManager->DrawToolDictionaryUI(); 
-		if (newToolSelected != nullptr)
+		ActionSelectableInfo* newActionSelected = App->moduleManager->DrawActionDictionaryUI(); 
+		if (newActionSelected != nullptr)
 		{
-			switch (newToolSelected->toolType)
+			switch (newActionSelected->actionType)
 			{
 			case AT_IMAGE:
-				creatingObject->AddImageTool(std::string(MyFileSystem::getInstance()->GetIconsDirectory() + "ImageNull.png").c_str()); 
+				creatingObject->AddDisplayImageAction(std::string(MyFileSystem::getInstance()->GetIconsDirectory() + "ImageNull.png").c_str()); 
 				break;
 
 			case AT_CHANGE_SCENE:
-				creatingObject->AddChangeSceneTool();
+				creatingObject->AddChangeRoomAction();
 				break;
 
 			case AT_null:
 				break;
 			}
 
-			showToolDictionary = false; 
+			showActionDictionary = false; 
 		}
 		ImGui::EndChild();
 		ImGui::PopStyleColor();
@@ -225,7 +225,7 @@ void ObjectCreatorDockPanel::OnAddToolButtonClicked()
 
 void ObjectCreatorDockPanel::Close() 
 {
-	selectedTool = nullptr;
+	selectedAction = nullptr;
 	visible = false; 
 }
 	
@@ -248,7 +248,7 @@ void ObjectCreatorDockPanel::DrawClickableAreaSettings()
 
 			ImGui::PushFont(App->moduleImGui->rudaRegularSmall); 
 			ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth() + 5);
-			ImGui::TextColored(ImVec4(1, 1, 0.2f, 0.8f), "The object being created has no tools with visible content. Clickable Area position will fit the center of the object");
+			ImGui::TextColored(ImVec4(1, 1, 0.2f, 0.8f), "The object being created has no actions with visible content. Clickable Area position will fit the center of the object");
 			ImGui::PopTextWrapPos(); 
 			ImGui::PopFont(); 
 
@@ -350,10 +350,10 @@ void ObjectCreatorDockPanel::PrintClickableAreaObjectVisuals()
 void ObjectCreatorDockPanel::DrawPrevTextureCA()
 {
 	// Prev Texture
-	ImageTool* imageTool = (ImageTool*)creatingObject->GetTool(AT_IMAGE);
-	if (imageTool != nullptr)
+	DisplayImageAction* displayImageAction = (DisplayImageAction*)creatingObject->GetAction(AT_IMAGE);
+	if (displayImageAction != nullptr)
 	{
-		previewClickableAreaTexture = imageTool->GetTexture();
+		previewClickableAreaTexture = displayImageAction->GetTexture();
 
 		if (previewClickableAreaTexture == nullptr)
 			return; 
@@ -456,19 +456,19 @@ void ObjectCreatorDockPanel::AddCreatingObject()
 	App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GizmoMode::GIZMO_SELECT); 
 }
 
-void ObjectCreatorDockPanel::DrawToolImageSettings()
+void ObjectCreatorDockPanel::DrawDisplayImageSettings()
 {
 	if (ImGui::CollapsingHeader("Image Adjustments"))
 	{
 		static char buf[256] = "";
-		ImageTool* selectedImageTool = (ImageTool*)this->selectedTool; 
+		DisplayImageAction* selectedImageAction = (DisplayImageAction*)this->selectedAction; 
 
-		if (selectedImageTool->GetTexture() == nullptr)
-			selectedImageTool->SetTexture((Texture*)ResourceManager::getInstance()->GetResource("ImageNull"));
+		if (selectedImageAction->GetTexture() == nullptr)
+			selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResource("ImageNull"));
 		else
-			selectedImageTool->SetTexture((Texture*)ResourceManager::getInstance()->GetResource(selectedImageTool->GetTexture()->GetName()));
+			selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResource(selectedImageAction->GetTexture()->GetName()));
 
-		float aspect_ratio = selectedImageTool->GetTexture()->GetAspectRatio();
+		float aspect_ratio = selectedImageAction->GetTexture()->GetAspectRatio();
 		float previewQuadWidth = 150;
 		float previewQuadHeight = previewQuadWidth / aspect_ratio;
 
@@ -484,19 +484,19 @@ void ObjectCreatorDockPanel::DrawToolImageSettings()
 		ImGui::SetColumnWidth(0, previewQuadWidth + 10);
 
 		ImGui::Spacing();
-		ImGui::Image((ImTextureID)selectedImageTool->GetTexture()->GetTextureID(), ImVec2(previewQuadWidth, previewQuadHeight));
+		ImGui::Image((ImTextureID)selectedImageAction->GetTexture()->GetTextureID(), ImVec2(previewQuadWidth, previewQuadHeight));
 
 		ImGui::NextColumn();
 
 		ImGui::Spacing();
 		ImGui::Text("Name: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%s", selectedImageTool->GetTexture()->GetName().c_str());
+		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%s", selectedImageAction->GetTexture()->GetName().c_str());
 
 		ImGui::Text("Width: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", selectedImageTool->GetTexture()->GetWidth());
+		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", selectedImageAction->GetTexture()->GetWidth());
 
 		ImGui::Text("Height: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", selectedImageTool->GetTexture()->GetHeigth());
+		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", selectedImageAction->GetTexture()->GetHeigth());
 
 		Texture* searchTexture = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
@@ -510,12 +510,12 @@ void ObjectCreatorDockPanel::DrawToolImageSettings()
 			{
 				if (!ResourceManager::getInstance()->ExistResourcePath(path))
 				{
-					selectedImageTool->SetTexture(ImageImporter::getInstance()->LoadTexture(path, false));
-					ResourceManager::getInstance()->AddResource(selectedImageTool->GetTexture(), selectedImageTool->GetTexture()->GetName());
+					selectedImageAction->SetTexture(ImageImporter::getInstance()->LoadTexture(path, false));
+					ResourceManager::getInstance()->AddResource(selectedImageAction->GetTexture(), selectedImageAction->GetTexture()->GetName());
 				}
 				else
 				{
-					selectedImageTool->SetTexture((Texture*)ResourceManager::getInstance()->GetResourceByPath(path));
+					selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResourceByPath(path));
 				}
 
 				strcpy(buf, path);
@@ -530,7 +530,7 @@ void ObjectCreatorDockPanel::DrawToolImageSettings()
 	}
 }
 
-void ObjectCreatorDockPanel::DrawAddAndDeleteToolButtons()
+void ObjectCreatorDockPanel::DrawAddAndDeleteActionButtons()
 {
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
@@ -540,15 +540,15 @@ void ObjectCreatorDockPanel::DrawAddAndDeleteToolButtons()
 
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(18, 18)))
 	{
-		showToolDictionary = true; 
+		showActionDictionary = true; 
 	}
 
 	ImGui::SameLine();
 	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
 	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(18, 18)))
 	{
-		if (selectedTool != nullptr) {
-			creatingObject->DeleteTool(selectedTool->GetToolName()); 
+		if (selectedAction != nullptr) {
+			creatingObject->DeleteAction(selectedAction->GetActionName()); 
 		}
 	}
 
@@ -556,5 +556,5 @@ void ObjectCreatorDockPanel::DrawAddAndDeleteToolButtons()
 	ImGui::PopStyleColor();
 
 	// Callbacks for buttons 
-	OnAddToolButtonClicked(); 
+	OnAddActionButtonClicked(); 
 }

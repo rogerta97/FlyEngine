@@ -1,5 +1,5 @@
-#ifndef _TOOL_H_
-#define _TOOL_H_
+#ifndef _ACTION_H_
+#define _ACTION_H_
 
 #include <string>
 
@@ -10,37 +10,37 @@ enum ToolType
 	AT_null,
 };
 
-struct ToolSelectableInfo
+struct ActionSelectableInfo
 {
-	std::string toolName;
-	std::string toolDescription;
-	ToolType toolType;
+	std::string actionName;
+	std::string actionDescription;
+	ToolType actionType;
 };
 
-class Tool
+class Action
 {
 public:
-	Tool();
-	~Tool();
+	Action();
+	~Action();
 
 	virtual void Init();
 	virtual void Update();
 	virtual void Draw();
 	virtual void CleanUp();
 
-	std::string GetToolName() const; 
+	std::string GetActionName() const; 
 	void SetToolName(std::string newName);
 
 	std::string GetToolDescription() const;
 	void SetToolDescription(std::string newDescription);
 
-	ToolType GetToolType() const;
+	ToolType GetActionType() const;
 	void SetToolType(ToolType newToolType);
 
 	bool& IsSelected(); 
 	bool& HasVisual(); 
 
-	ToolSelectableInfo GetToolSelectableInfo(); 
+	ActionSelectableInfo GetActionSelectableInfo(); 
 
 protected:
 	ToolType toolType;

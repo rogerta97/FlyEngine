@@ -1,7 +1,7 @@
 #include "FlyObject.h"
 #include "RandomNumberGenerator.h"
 #include "ModuleImGui.h"
-#include "ImageTool.h"
+#include "DisplayImageAction.h"
 #include "Texture.h"
 #include "TinyFileDialog.h"
 #include "Quad.h"
@@ -61,7 +61,7 @@ void FlyObject::Update()
 
 void FlyObject::Draw()
 {
-	for (auto& it : toolsList) {
+	for (auto& it : actionsList) {
 		(it)->Draw(); 
 	}
 
@@ -84,13 +84,13 @@ void FlyObject::DrawClickableArea()
 
 void FlyObject::CleanUp()
 {
-	for (auto& it : toolsList)
+	for (auto& it : actionsList)
 	{
 		(it)->CleanUp(); 
 		delete it; 
 	}
 
-	toolsList.clear(); 
+	actionsList.clear(); 
 	delete transform; 
 
 	gizmos->CleanUp();
@@ -139,7 +139,7 @@ float2 FlyObject::GetObjectVisualDimensions()
 	float2 objectVisualSize; 
 
 	// For now we will just take into account ImageTool, if you are deleting this you advanced really. 
-	ImageTool* imageTool = (ImageTool*)GetTool(AT_IMAGE); 
+	DisplayImageAction* imageTool = (DisplayImageAction*)GetAction(AT_IMAGE); 
 	if (imageTool != nullptr)
 	{
 		objectVisualSize = float2(imageTool->GetQuad()->quadWidth, imageTool->GetQuad()->quadHeight); 
@@ -171,7 +171,7 @@ bool FlyObject::IsMouseOver()
 
 bool FlyObject::HasVisuals()
 {
-	for (auto& currentTool : toolsList)
+	for (auto& currentTool : actionsList)
 	{
 		if (currentTool->HasVisual())
 			return true; 
@@ -194,14 +194,14 @@ void FlyObject::CalculateCurrentGizmo()
 	}
 }
 
-ImageTool* FlyObject::AddImageTool(const char* imageTexturePath)
+DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePath)
 {
-	if (GetTool(AT_IMAGE) == nullptr)
+	if (GetAction(AT_IMAGE) == nullptr)
 	{
-		ImageTool* newAtrImage = new ImageTool(this);
+		DisplayImageAction* newAtrImage = new DisplayImageAction(this);
 		newAtrImage->CreateImage(imageTexturePath);
 
-		toolsList.push_back(newAtrImage);
+		actionsList.push_back(newAtrImage);
 
 		// Addapt Gizmo Rect to new Image
 		gizmos->FitSelectBoxSize();
@@ -210,17 +210,17 @@ ImageTool* FlyObject::AddImageTool(const char* imageTexturePath)
 		return newAtrImage;
 	}
 
-	return (ImageTool*)GetTool(AT_IMAGE); 	
+	return (DisplayImageAction*)GetAction(AT_IMAGE); 	
 }
 
-ChangeSceneTool* FlyObject::AddChangeSceneTool()
+ChangeSceneTool* FlyObject::AddChangeRoomAction()
 {
 
-	if (GetTool(AT_CHANGE_SCENE) == nullptr)
+	if (GetAction(AT_CHANGE_SCENE) == nullptr)
 	{
 		ChangeSceneTool* changeSceneTool = new ChangeSceneTool(this);
 
-		toolsList.push_back(changeSceneTool);
+		actionsList.push_back(changeSceneTool);
 
 		// Addapt Gizmo Rect to new Image
 		gizmos->FitSelectBoxSize();
@@ -228,47 +228,47 @@ ChangeSceneTool* FlyObject::AddChangeSceneTool()
 		return changeSceneTool;
 	}
 
-	return (ChangeSceneTool*)GetTool(AT_CHANGE_SCENE);
+	return (ChangeSceneTool*)GetAction(AT_CHANGE_SCENE);
 }
 
-Tool* FlyObject::GetTool(std::string toolName)
+Action* FlyObject::GetAction(std::string toolName)
 {
-	for (auto& currentTool : toolsList)
+	for (auto& currentTool : actionsList)
 	{
-		if (currentTool->GetToolName() == toolName)
+		if (currentTool->GetActionName() == toolName)
 			return currentTool;
 	}
 
 	return nullptr; 
 }
 
-Tool* FlyObject::GetTool(ToolType toolType)
+Action* FlyObject::GetAction(ToolType toolType)
 {
-	for (auto& currentTool : toolsList)
+	for (auto& currentTool : actionsList)
 	{
-		if (currentTool->GetToolType() == toolType)
+		if (currentTool->GetActionType() == toolType)
 			return currentTool;
 	}
 
 	return nullptr;
 }
 
-std::list<Tool*> FlyObject::GetToolsList() const
+std::list<Action*> FlyObject::GetActionsList() const
 {
-	return toolsList;
+	return actionsList;
 }
 
-void FlyObject::DeleteTool(std::string toolNameToDelete)
+void FlyObject::DeleteAction(std::string toolNameToDelete)
 {
-	for (auto currentTool = toolsList.begin(); currentTool != toolsList.end(); currentTool++)
+	for (auto currentTool = actionsList.begin(); currentTool != actionsList.end(); currentTool++)
 	{
-		if ((*currentTool)->GetToolName() == toolNameToDelete)
+		if ((*currentTool)->GetActionName() == toolNameToDelete)
 		{
 			(*currentTool)->CleanUp();
 			delete (*currentTool);
-			currentTool = toolsList.erase(currentTool); 
+			currentTool = actionsList.erase(currentTool); 
 
-			if (toolsList.size() == 0)
+			if (actionsList.size() == 0)
 				return;
 		}
 	}
@@ -345,9 +345,9 @@ float2 FlyObject::SetCASizeFromOne(float2 percentagePos, float2 percentageSize, 
 	return offsetFromCenter; 
 }
 
-void FlyObject::DrawImageToolSettings()
+void FlyObject::DrawDisplayImageSettings()
 {
-	ImageTool* imageTool = (ImageTool*)GetTool("Image"); 
+	DisplayImageAction* imageTool = (DisplayImageAction*)GetAction("Image"); 
 	Texture* imageTexture = imageTool->GetTexture(); 
 
 	if (ImGui::CollapsingHeader("Image Adjustments"))

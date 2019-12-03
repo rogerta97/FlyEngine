@@ -3,11 +3,11 @@
 #include "ModuleImGui.h"
 #include "ModuleManager.h"
 #include "imgui.h"
-#include "Tool.h"
+#include "Action.h"
 #include "ModuleRoomManager.h"
 #include "Gizmos.h"
 #include "ResourceManager.h"
-#include "ImageTool.h"
+#include "DisplayImageAction.h"
 #include "GameViewportDockPanel.h"
 #include "ImageImporter.h"
 #include "ViewportManager.h"
@@ -48,9 +48,9 @@ bool ObjectPropertiesDockPanel::Draw()
 
 			if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
 			{
-				if (ImGui::BeginTabItem("Tools"))
+				if (ImGui::BeginTabItem("Actions"))
 				{
-					DrawObjectToolsTab();
+					DrawObjectActionsTab();
 					ImGui::EndTabItem();
 				}
 				if (ImGui::BeginTabItem("Clickable Area"))
@@ -94,17 +94,17 @@ void ObjectPropertiesDockPanel::DrawFixedPartObjectUI(FlyObject* selectedObject)
 	ImGui::Spacing();
 }
 
-void ObjectPropertiesDockPanel::DrawObjectToolsTab()
+void ObjectPropertiesDockPanel::DrawObjectActionsTab()
 {
 	// Draw Objects List ---------
-	DrawToolList();
+	DrawActionsList();
 
 	ImGui::Spacing();
 	ImGui::Separator();
 	ImGui::Spacing(); 
 
 	// Draw Tool --------
-	DrawToolAdjustments();
+	DrawActionSettings();
 }
 
 void ObjectPropertiesDockPanel::DrawClickableAreaTab()
@@ -175,11 +175,11 @@ void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 	}
 }
 
-void ObjectPropertiesDockPanel::DrawToolAdjustments()
+void ObjectPropertiesDockPanel::DrawActionSettings()
 {
-	if (selectedObject->selectedTool)
+	if (selectedObject->selectedAction)
 	{
-		switch (selectedObject->selectedTool->GetToolType())
+		switch (selectedObject->selectedAction->GetActionType())
 		{
 		case AT_IMAGE:
 			DrawToolImageSettings(); 
@@ -188,7 +188,7 @@ void ObjectPropertiesDockPanel::DrawToolAdjustments()
 	}
 }
 
-void ObjectPropertiesDockPanel::DrawToolList()
+void ObjectPropertiesDockPanel::DrawActionsList()
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 	ImGui::Text("Object Actions: ");
@@ -200,10 +200,10 @@ void ObjectPropertiesDockPanel::DrawToolList()
 	ImGui::BeginChild("##ToolsListObjectProperties", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
 
 	int count = 0;
-	for (auto& currentTool : selectedObject->GetToolsList()) 
+	for (auto& currentTool : selectedObject->GetActionsList()) 
 	{
-		ToolSelectableInfo selectableInfo = currentTool->GetToolSelectableInfo(); 
-		DrawToolSelectable(selectableInfo, currentTool, count, 42);
+		ActionSelectableInfo selectableInfo = currentTool->GetActionSelectableInfo(); 
+		DrawActionSelectable(selectableInfo, currentTool, count, 42);
 		count++; 
 	}
 
@@ -231,12 +231,12 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
 	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(18, 18)))
 	{	
-		Tool* selectedTool = selectedObject->selectedTool; 
+		Action* selectedTool = selectedObject->selectedAction; 
 
 		if (selectedTool != nullptr)
 		{
 			selectedTool->CleanUp();
-			selectedObject->DeleteTool(selectedTool->GetToolName());
+			selectedObject->DeleteAction(selectedTool->GetActionName());
 			selectedTool = nullptr;
 		}
 	}
@@ -264,13 +264,13 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(2.0f, 2.0f));
 			ImGui::BeginChild("##5ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), 150));
 
-			ToolSelectableInfo* newToolSelected = App->moduleManager->DrawToolDictionaryUI();
-			if (newToolSelected != nullptr)
+			ActionSelectableInfo* newActionSelected = App->moduleManager->DrawActionDictionaryUI();
+			if (newActionSelected != nullptr)
 			{
-				switch (newToolSelected->toolType)
+				switch (newActionSelected->actionType)
 				{
 				case AT_IMAGE:
-					selectedObject->AddImageTool("None");
+					selectedObject->AddDisplayImageAction("None");
 					break;
 
 				case AT_null:
@@ -288,7 +288,7 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 	}
 }
 
-void ObjectPropertiesDockPanel::DrawToolSelectable(ToolSelectableInfo& selectableInfo, Tool*& currentTool, int posInList, int selectableHeigth = 42)
+void ObjectPropertiesDockPanel::DrawActionSelectable(ActionSelectableInfo& selectableInfo, Action*& currentTool, int posInList, int selectableHeigth = 42)
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 
@@ -297,8 +297,8 @@ void ObjectPropertiesDockPanel::DrawToolSelectable(ToolSelectableInfo& selectabl
 	ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
 
 	ImGui::SetCursorPos(ImVec2(50, +(selectableHeigth * posInList)));
-	if (ImGui::Selectable(selectableInfo.toolName.c_str(), currentTool->IsSelected(), ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), selectableHeigth))) {
-		selectedObject->selectedTool = currentTool;
+	if (ImGui::Selectable(selectableInfo.actionName.c_str(), currentTool->IsSelected(), ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), selectableHeigth))) {
+		selectedObject->selectedAction = currentTool;
 	}
 	ImGui::PopFont();
 
@@ -307,7 +307,7 @@ void ObjectPropertiesDockPanel::DrawToolSelectable(ToolSelectableInfo& selectabl
 	ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 52);
 
 	ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
-	ImGui::TextWrapped(selectableInfo.toolDescription.c_str());
+	ImGui::TextWrapped(selectableInfo.actionDescription.c_str());
 	ImGui::PopFont();
 }
 
@@ -350,7 +350,7 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 
 void ObjectPropertiesDockPanel::DrawToolImageSettings()
 {
-	ImageTool* imageTool = (ImageTool*)selectedObject->GetTool("Image");
+	DisplayImageAction* imageTool = (DisplayImageAction*)selectedObject->GetAction("Image");
 
 	if (imageTool != nullptr)
 	{

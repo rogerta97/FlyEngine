@@ -1,4 +1,4 @@
-#include "ImageTool.h"
+#include "DisplayImageAction.h"
 #include "Quad.h"
 #include "Globals.h"
 #include "OpenGL.h"
@@ -14,7 +14,7 @@
 
 #include "mmgr.h"
 
-ImageTool::ImageTool(FlyObject* _parentObject = nullptr)
+DisplayImageAction::DisplayImageAction(FlyObject* _parentObject = nullptr)
 {
 	toolType = AT_IMAGE; 
 	quadMesh = nullptr; 
@@ -26,21 +26,21 @@ ImageTool::ImageTool(FlyObject* _parentObject = nullptr)
 	SetToolDescription("This should be the description of the image"); 
 }
 
-ImageTool::~ImageTool()
+DisplayImageAction::~DisplayImageAction()
 {
 }
 
-void ImageTool::Init()
-{
-
-}
-
-void ImageTool::Update()
+void DisplayImageAction::Init()
 {
 
 }
 
-void ImageTool::Draw()
+void DisplayImageAction::Update()
+{
+
+}
+
+void DisplayImageAction::Draw()
 {
 	glEnableClientState(GL_VERTEX_ARRAY); 
 	glBindBuffer(GL_ARRAY_BUFFER, quadMesh->verticesID); 
@@ -97,7 +97,7 @@ void ImageTool::Draw()
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
-void ImageTool::CleanUp()
+void DisplayImageAction::CleanUp()
 {
 	quadMesh->CleanUp();
 	delete quadMesh; 
@@ -111,7 +111,7 @@ void ImageTool::CleanUp()
 	parentObject = nullptr; 
 }
 
-bool ImageTool::CreateImage(const char* texturePath)
+bool DisplayImageAction::CreateImage(const char* texturePath)
 {
 	imageTexture = ImageImporter::getInstance()->LoadTexture(texturePath, false);
 
@@ -127,17 +127,17 @@ bool ImageTool::CreateImage(const char* texturePath)
 	return true; 
 }
 
-Quad* ImageTool::GetQuad() const
+Quad* DisplayImageAction::GetQuad() const
 {
 	return quadMesh; 
 }
 
-void ImageTool::SetQuad(Quad* newQuad)
+void DisplayImageAction::SetQuad(Quad* newQuad)
 {
 	quadMesh = newQuad;
 }
 
-void ImageTool::SetTexture(Texture* newTexture)
+void DisplayImageAction::SetTexture(Texture* newTexture)
 {
 	// Addapt Quad 
 	quadMesh->UnloadFromMemory();
@@ -150,7 +150,7 @@ void ImageTool::SetTexture(Texture* newTexture)
 	imageTexture = newTexture;
 }
 
-Texture* ImageTool::GetTexture() const
+Texture* DisplayImageAction::GetTexture() const
 {
 	return imageTexture; 
 }

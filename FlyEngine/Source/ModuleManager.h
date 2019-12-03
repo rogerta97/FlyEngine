@@ -3,7 +3,7 @@
 
 #include "Module.h"
 #include "Globals.h"
-#include "Tool.h"
+#include "Action.h"
 
 #include <list>
 #include <string>
@@ -23,21 +23,21 @@ public:
 	// Utils -----------------------
 	void LoadEngineIcons();
 	int GetToolsAmount() const; 
-	ToolSelectableInfo* DrawToolDictionaryUI(); 
-	Texture* GetIconFromToolType(ToolType toolType); 
+	ActionSelectableInfo* DrawActionDictionaryUI(); 
+	Texture* GetIconFromActionType(ToolType toolType); 
 
 	// Easy Acces -------
 	FlyObject* GetSelectedFlyObject(); 
 	void SetSelectedFlyObject(FlyObject* newSelectedObject); 
 
 	// Desctiption Dictionary -----
-	std::list<ToolSelectableInfo> GetToolsNamesDescriptionsList() const; 
+	std::list<ActionSelectableInfo> GetToolsNamesDescriptionsList() const; 
 	void AddToolsNameDescription(std::string name, std::string description, ToolType newTooltype);
-	ToolSelectableInfo GetToolNameDescription(std::string toolName) const;
-	ToolSelectableInfo GetToolNameDescription(int pos) const;
+	ActionSelectableInfo GetToolNameDescription(std::string toolName) const;
+	ActionSelectableInfo GetToolNameDescription(int pos) const;
 
 private: 
-	std::list<ToolSelectableInfo> toolNamesDescriptions; 
+	std::list<ActionSelectableInfo> toolNamesDescriptions; 
 };
 
 #endif

@@ -61,7 +61,7 @@
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\ChangeSceeneTool.cpp" />
     <ClCompile Include="Source\Gizmos.cpp" />
-    <ClCompile Include="Source\ImageTool.cpp" />
+    <ClCompile Include="Source\DisplayImageAction.cpp" />
     <ClCompile Include="Source\Color.cpp" />
     <ClCompile Include="Source\ConsoleDockPanel.cpp" />
     <ClCompile Include="Source\DockPanel.cpp" />
@@ -89,7 +89,7 @@
     <ClCompile Include="Source\ImNode.cpp" />
     <ClCompile Include="Source\ImNodeEz.cpp" />
     <ClCompile Include="Source\NodeGraph.cpp" />
-    <ClCompile Include="Source\Tool.cpp" />
+    <ClCompile Include="Source\Action.cpp" />
     <ClCompile Include="Source\ObjectPropertiesDockPanel.cpp" />
     <ClCompile Include="Source\GraphPropertiesDockPanel.cpp" />
     <ClCompile Include="Source\Quad.cpp" />
@@ -185,7 +185,7 @@
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\ChangeSceeneTool.h" />
     <ClInclude Include="Source\Gizmos.h" />
-    <ClInclude Include="Source\ImageTool.h" />
+    <ClInclude Include="Source\DisplayImageAction.h" />
     <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\ConsoleDockPanel.h" />
     <ClInclude Include="Source\DockPanel.h" />
@@ -214,7 +214,7 @@
     <ClInclude Include="Source\ImNode.h" />
     <ClInclude Include="Source\ImNodeEz.h" />
     <ClInclude Include="Source\NodeGraph.h" />
-    <ClInclude Include="Source\Tool.h" />
+    <ClInclude Include="Source\Action.h" />
     <ClInclude Include="Source\ObjectPropertiesDockPanel.h" />
     <ClInclude Include="Source\GraphPropertiesDockPanel.h" />
     <ClInclude Include="Source\OpenGL.h" />

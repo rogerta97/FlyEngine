@@ -22,11 +22,11 @@ public:
 	void DrawClickableAreaTab(); 
 
 	// Object Tools Tab
-	void DrawObjectToolsTab();
-	void DrawToolAdjustments();
-	void DrawToolList();
+	void DrawObjectActionsTab();
+	void DrawActionSettings();
+	void DrawActionsList();
 	void DrawAddAndDeleteButtons();
-	void DrawToolSelectable(ToolSelectableInfo& selectableInfo, Tool*& currentTool, int posInList, int selectableHeigth);
+	void DrawActionSelectable(ActionSelectableInfo& selectableInfo, Action*& currentTool, int posInList, int selectableHeigth);
 	void DrawObjectPlacementCH();
 	void DrawToolImageSettings();
 

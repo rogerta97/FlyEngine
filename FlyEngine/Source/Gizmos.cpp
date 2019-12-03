@@ -3,7 +3,7 @@
 #include "FlyObject.h"
 #include "ViewportManager.h"
 #include "Application.h"
-#include "ImageTool.h"
+#include "DisplayImageAction.h"
 #include "Quad.h"
 #include "ModuleImGui.h"
 #include "ModuleInput.h"
@@ -174,7 +174,7 @@ void Gizmos::FitSelectBoxSize()
 {
 	if (objectAttached != nullptr) 
 	{
-		if (objectAttached->GetTool(AT_IMAGE) != nullptr)
+		if (objectAttached->GetAction(AT_IMAGE) != nullptr)
 		{
 			float2 objectDimensions = objectAttached->GetObjectVisualDimensions(); 
 			selectGizmo->objectBorderBox->SetSize(objectDimensions.x, objectDimensions.y); 

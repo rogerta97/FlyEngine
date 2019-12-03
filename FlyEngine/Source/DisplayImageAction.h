@@ -1,7 +1,7 @@
-#ifndef _IMAGE_TOOL_H_
-#define _IMAGE_TOOL_H_
+#ifndef _DISPLAY_IMAGE_ACTION_H_
+#define _DISPLAY_IMAGE_ACTION_H_
 
-#include "Tool.h"
+#include "Action.h"
 
 using namespace std; 
 
@@ -9,11 +9,11 @@ class FlyObject;
 class Quad; 
 class Texture; 
 
-class ImageTool : public Tool
+class DisplayImageAction : public Action
 {
 public: 
-	ImageTool(FlyObject* _parentObject);
-	~ImageTool(); 
+	DisplayImageAction(FlyObject* _parentObject);
+	~DisplayImageAction(); 
 
 	void Init(); 
 	void Update(); 
