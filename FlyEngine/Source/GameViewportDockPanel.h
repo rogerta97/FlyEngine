@@ -34,6 +34,7 @@ public:
 	float GetAspectRatio(); 
 
 	GizmoMode GetGizmoMode() const;
+	void SetGizmoMode(GizmoMode gizmoMode);
 
 	float2& GetViewportCenterGlobal(); 
 	float2& GetMouseRelativePosition(); 

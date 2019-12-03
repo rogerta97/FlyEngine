@@ -124,27 +124,39 @@ void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 	ImGui::ColorEdit4("", color); 
 
 	ImGui::Spacing(); 
+	if (selectedObject->HasVisuals())
+	{
+		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+		ImGui::Text("Position");
+		ImGui::PopFont();
 
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	ImGui::Text("Position");
-	ImGui::PopFont();
+		float2 posPerc = selectedObject->GetClickableAreaPosOne(); 
+		if (ImGui::DragFloat("Horizontal", &selectedObject->GetClickableAreaPosOne().x, 0.01f, 0.05f, (1.0f - selectedObject->GetClickableAreaSizeOne().x)))
+			selectedObject->FitObjectUtils();
 
-	float2 posPerc = selectedObject->GetClickableAreaPosOne(); 
-
-	if (ImGui::DragFloat("Horizontal", &selectedObject->GetClickableAreaPosOne().x, 0.01f, 0.01f, (1.0f - selectedObject->GetClickableAreaSizeOne().x)))
-		selectedObject->FitObjectUtils();
-
-	if (ImGui::DragFloat("Vertical", &selectedObject->GetClickableAreaPosOne().y, 0.01f, 0.01f, (1.0f - selectedObject->GetClickableAreaSizeOne().y)))
-		selectedObject->FitObjectUtils();
+		if (ImGui::DragFloat("Vertical", &selectedObject->GetClickableAreaPosOne().y, 0.01f, 0.05f, (1.0f - selectedObject->GetClickableAreaSizeOne().y)))
+			selectedObject->FitObjectUtils();
+	}
 
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Size");
 	ImGui::PopFont();
 
-	if(ImGui::DragFloat("Width", &selectedObject->GetClickableAreaSizeOne().x, 0.01f, 0.01f, (1.0f - selectedObject->GetClickableAreaPosOne().x)))
+	float widthLimit = 500.0f;
+	float heigthLimit = 500.0f; 
+	float dragInc = 1.0f;
+
+	if (selectedObject->HasVisuals())
+	{
+		widthLimit = (1.0f - selectedObject->GetClickableAreaPosOne().x);
+		heigthLimit = (1.0f - selectedObject->GetClickableAreaPosOne().y);
+		dragInc = 0.01f; 
+	}
+
+	if(ImGui::DragFloat("Width", &selectedObject->GetClickableAreaSizeOne().x, dragInc, 0.05f, widthLimit))
 		selectedObject->FitObjectUtils();
 
-	if(ImGui::DragFloat("Heigth", &selectedObject->GetClickableAreaSizeOne().y, 0.01f, 0.01f, (1.0f - selectedObject->GetClickableAreaPosOne().y)))	
+	if(ImGui::DragFloat("Heigth", &selectedObject->GetClickableAreaSizeOne().y, dragInc, 0.05f, heigthLimit))
 		selectedObject->FitObjectUtils(); 
 	
 	IMGUI_SPACE_SEPARATOR;

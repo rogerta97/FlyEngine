@@ -148,8 +148,6 @@ void ImageTool::SetTexture(Texture* newTexture)
 
 	// Set Texture 
 	imageTexture = newTexture;
-
-	parentObject->FitObjectUtils(); 
 }
 
 Texture* ImageTool::GetTexture() const

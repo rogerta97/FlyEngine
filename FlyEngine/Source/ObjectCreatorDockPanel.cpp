@@ -75,6 +75,7 @@ bool ObjectCreatorDockPanel::Draw()
 
 void ObjectCreatorDockPanel::DrawPropertiesTab()
 {
+	ImGui::Spacing(); 
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 	ImGui::InputTextWithHint("Name##ObjectNaming", "Name...", newObjectName, 256 * sizeof(char));
 	ImGui::PopFont();
@@ -429,12 +430,15 @@ void ObjectCreatorDockPanel::AddCreatingObject()
 	{		
 		if (!creatingObject->HasVisuals())
 		{
-			creatingObject->CreateClickableArea(clickableAreaPosPerc, clickableAreaSizePerc, true);
+			creatingObject->CreateClickableArea(clickableAreaPosPerc, clickableAreaSizePerc, true);		
+			ViewportManager::getInstance()->drawClickableArea = true; 
 		}
 		else
 		{
 			creatingObject->CreateClickableArea(clickableAreaPosPerc, clickableAreaSizePerc);
+			ViewportManager::getInstance()->drawClickableArea = false;
 		}
+		creatingObject->clickableAreaActive = true;
 	}
 
 	creatingObject->SetClickableAreaPosOne(clickableAreaPosPerc);
@@ -443,6 +447,9 @@ void ObjectCreatorDockPanel::AddCreatingObject()
 	// Add Object
 	creatingObject->SetName(newObjectName);
 	App->moduleRoomManager->GetSelectedRoom()->AddFlyObject(creatingObject);
+
+	App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(creatingObject); 
+	App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GizmoMode::GIZMO_SELECT); 
 }
 
 void ObjectCreatorDockPanel::DrawToolImageSettings()

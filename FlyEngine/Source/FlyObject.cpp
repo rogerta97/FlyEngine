@@ -54,13 +54,13 @@ void FlyObject::Draw()
 		(it)->Draw(); 
 	}
 
-	if (clickableArea != nullptr && ViewportManager::getInstance()->drawClickableArea && clickableAreaActive)
+	if (isSelected)
 	{
-		DrawClickableArea();
-	}
-
-	if(isSelected)
+		if (clickableArea != nullptr && ViewportManager::getInstance()->drawClickableArea && clickableAreaActive)		
+			DrawClickableArea();
+		
 		gizmos->Draw();
+	}
 }
 
 void FlyObject::DrawClickableArea()
@@ -137,8 +137,11 @@ void FlyObject::CalculateAllGizmos()
 void FlyObject::FitObjectUtils()
 {
 	CalculateAllGizmos();
-	float2 offset = SetCASizeFromOne(clickableAreaPosPerc, clickableAreaSizePerc); 
-	clickableArea->SetPosition(float2(transform->GetPosition(true).x + offset.x,transform->GetPosition(true).y + offset.y)); 
+	if (clickableArea)
+	{
+		float2 offset = SetCASizeFromOne(clickableAreaPosPerc, clickableAreaSizePerc, !hasVisuals); 
+		clickableArea->SetPosition(float2(transform->GetPosition(true).x + offset.x,transform->GetPosition(true).y + offset.y)); 
+	}
 }
 
 bool FlyObject::IsMouseOver()
@@ -182,6 +185,7 @@ ImageTool* FlyObject::AddImageTool(const char* imageTexturePath)
 
 		// Addapt Gizmo Rect to new Image
 		gizmos->FitSelectBoxSize();
+		hasVisuals = true; 
 
 		return newAtrImage;
 	}
@@ -284,18 +288,18 @@ void FlyObject::SetClickableAreaSizeOne(float2 newAreaSizeOne)
 	clickableAreaSizePerc = newAreaSizeOne; 
 }
 
-float2 FlyObject::SetCASizeFromOne(float2 percentagePos, float2 percentageSize, bool directPosition)
+float2 FlyObject::SetCASizeFromOne(float2 percentagePos, float2 percentageSize, bool directiPosition)
 {
 	if (clickableArea == nullptr)
 		return float2::zero; 
 
 	float2 offsetFromCenter; 
 
-	if (directPosition)
+	if (directiPosition)
 	{
 		clickableArea->SetMinPoint(float2(-percentageSize.x, percentageSize.y));
 		clickableArea->SetMaxPoint(float2(percentageSize.x, -percentageSize.y));
-		float2 offsetFromCenter = float2::zero;
+		offsetFromCenter = float2::zero;
 	}
 	else
 	{

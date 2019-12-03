@@ -220,6 +220,11 @@ GizmoMode GameViewportDockPanel::GetGizmoMode() const
 	return gizmoMode;
 }
 
+void GameViewportDockPanel::SetGizmoMode(GizmoMode _gizmoMode)
+{
+	gizmoMode = _gizmoMode; 
+}
+
 float2& GameViewportDockPanel::GetViewportCenterGlobal()
 {
 	return viewportCenterGlobalPos; 
