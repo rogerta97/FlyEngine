@@ -46,14 +46,7 @@ void ScalarBoundingBox::Draw(bool fill, float4 color)
 
 void ScalarBoundingBox::Update()
 {
-	float2 dragtopLeft = topLeftScaleBox->HandleDrag();
-
-	minPoint.x -= dragtopLeft.x; 
-	
-	if (topLeftScaleBox->IsMouseOver()) FLY_LOG("Mouse over top left");
-	if (topRightScaleBox->IsMouseOver()) FLY_LOG("Mouse over top right"); 
-	if (bottomLeftScaleBox->IsMouseOver()) FLY_LOG("Mouse over bottom left"); 
-	if (bottomRightScaleBox->IsMouseOver()) FLY_LOG("Mouse over bottom right"); 
+	topLeftScaleBox->HandleDrag();
 }
 
 void ScalarBoundingBox::CleanUp()

@@ -48,7 +48,14 @@ void FlyObject::Update()
 		gizmos->Update();
 
 		if(clickableArea != nullptr)
-			clickableArea->Update(); 
+		{
+			clickableArea->Update();	
+		}		
+	}
+
+	if (App->isEngineInPlayMode && clickableArea->IsBoxClicked())
+	{
+		FLY_LOG("Clickable Area Clicked");
 	}
 }
 

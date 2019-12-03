@@ -31,12 +31,12 @@ Room::~Room()
 
 void Room::Update()
 {
-	if (App->moduleRoomManager->GetSelectedRoom() == this && App->isEngineInPlayMode == false)
+	if (App->moduleRoomManager->GetSelectedRoom() == this)
 	{
 		UpdateRoomObjects();
 
 		// Check for new Selected Objects -------
-		if (App->moduleRoomManager->GetSelectedRoom()->objectsInRoom.empty())
+		if (App->moduleRoomManager->GetSelectedRoom()->objectsInRoom.empty() && App->isEngineInPlayMode)
 			return;
 
 		if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && App->moduleImGui->gameViewportDockPanel->IsMouseInViewport())

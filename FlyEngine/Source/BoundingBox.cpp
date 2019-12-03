@@ -158,6 +158,14 @@ bool BoundingBox::IsMouseOver()
 
 }
 
+bool BoundingBox::IsBoxClicked()
+{
+	if(App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && IsMouseOver())
+		return true;
+
+	return false;
+}
+
 float2 BoundingBox::HandleDrag(CardinalAxis limitOnAxis)
 {
 	if (!isDragEnabled)

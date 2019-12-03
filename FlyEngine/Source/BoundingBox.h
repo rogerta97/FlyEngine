@@ -23,6 +23,7 @@ public:
 
 	//Input ----------
 	bool IsMouseOver();
+	bool IsBoxClicked();
 	float2 HandleDrag(CardinalAxis limitOnAxis = CardinalAxis::AxisNone);
 
 	// Set & Get 

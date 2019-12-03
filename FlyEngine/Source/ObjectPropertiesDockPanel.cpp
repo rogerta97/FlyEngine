@@ -129,10 +129,8 @@ void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 	};
 
 	if (ImGui::ColorEdit4("", color))
-	{
 		selectedObject->SetClickableAreaColor(float4(color[0], color[1], color[2], color[3]));
-	}
-
+	
 	ImGui::Spacing(); 
 	if (selectedObject->HasVisuals())
 	{
