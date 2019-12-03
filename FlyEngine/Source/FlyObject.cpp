@@ -43,7 +43,9 @@ FlyObject::~FlyObject()
 void FlyObject::Update()
 {
 	gizmos->Update();
-	clickableArea->Update(); 
+
+	if(clickableArea != nullptr)
+		clickableArea->Update(); 
 }
 
 void FlyObject::Draw()

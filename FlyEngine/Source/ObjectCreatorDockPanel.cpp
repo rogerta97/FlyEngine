@@ -118,6 +118,7 @@ void ObjectCreatorDockPanel::DrawObjectToolsList()
 	{
 		ToolSelectableInfo selectableInfo = currentTool->GetToolSelectableInfo();
 		DrawSelectable(selectableInfo, currentTool->IsSelected(), pos, 42, currentTool);
+		pos++;
 	}
 
 	ImGui::EndChild();
@@ -425,14 +426,14 @@ void ObjectCreatorDockPanel::AddCreatingObject()
 {
 	// Clickable Area
 	if (clickableAreaActive)
-	{
+	{		
 		if (!creatingObject->HasVisuals())
 		{
-			creatingObject->SetCASizeFromOne(clickableAreaPosPerc, clickableAreaSizePerc, true);
+			creatingObject->CreateClickableArea(clickableAreaPosPerc, clickableAreaSizePerc, true);
 		}
 		else
 		{
-			creatingObject->SetCASizeFromOne(clickableAreaPosPerc, clickableAreaSizePerc); 
+			creatingObject->CreateClickableArea(clickableAreaPosPerc, clickableAreaSizePerc);
 		}
 	}
 
