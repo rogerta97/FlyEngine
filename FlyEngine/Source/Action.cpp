@@ -34,7 +34,7 @@ std::string Action::GetActionName() const
 	return toolName;
 }
 
-void Action::SetToolName(std::string newName)
+void Action::SetActionName(std::string newName)
 {
 	toolName = newName;
 }

@@ -29,7 +29,7 @@ public:
 	virtual void CleanUp();
 
 	std::string GetActionName() const; 
-	void SetToolName(std::string newName);
+	void SetActionName(std::string newName);
 
 	std::string GetToolDescription() const;
 	void SetToolDescription(std::string newDescription);

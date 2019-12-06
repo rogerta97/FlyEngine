@@ -19,7 +19,7 @@
 
 #include "mmgr.h"
 
-ObjectCreatorDockPanel::ObjectCreatorDockPanel(bool isVisible) : DockPanel("Entity Creator", isVisible)
+ObjectCreatorDockPanel::ObjectCreatorDockPanel(bool isVisible) : DockPanel("Object Creator", isVisible)
 {
 	flyEngineSection = FLY_SECTION_null;
 	dockPanelType = DOCK_OBJECT_CREATOR;
@@ -43,19 +43,38 @@ bool ObjectCreatorDockPanel::Draw()
 		return false;
 #pragma endregion
 
-	if (ImGui::Begin(panelName.c_str(), &visible))
+	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_NoTitleBar))
 	{
-		ImGui::PushFont(App->moduleImGui->rudaBoldMid);
+
+
+		ImGui::PushFont(App->moduleImGui->rudaBlackHuge);
+		ImGui::Text("Object Creator:");
+		ImGui::PopFont();
+
+		ImGui::Separator();
+		ImGui::Spacing(); 
+
+
+		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
 		ImGui::InputTextWithHint("Name##ObjectNaming", "Name...", newObjectName, 256 * sizeof(char));
+		ImGui::PopFont();
+
+		ImGui::SameLine();
+		static bool t;
+		ImGui::Checkbox("Interactable", &t);
+
+		ImGui::Spacing();
+		ImGui::InputTextMultiline("Description##ObjectDescription", newObjectDescription, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 10, 100));
+
+		ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
+		ImGui::Text("Object Attributes:");
 		ImGui::PopFont();
 
 		if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
 		{
-			if (ImGui::BeginTabItem("Properties"))
+			/*if (ImGui::BeginTabItem("Properties"))
 			{
-				DrawPropertiesTab();
-				ImGui::EndTabItem();
-			}
+			}*/
 
 			if (ImGui::BeginTabItem("Actions"))
 			{
@@ -74,14 +93,17 @@ bool ObjectCreatorDockPanel::Draw()
 	}
 
 	ImGui::End(); 
+	
 }
 
 
 void ObjectCreatorDockPanel::DrawPropertiesTab()
 {
-	ImGui::Spacing(); 
-	ImGui::InputTextMultiline("Description##ObjectDescription", newObjectDescription, 256 * sizeof(char));
-	IMGUI_SPACE_SEPARATOR; 
+	ImGui::PushFont(App->moduleImGui->rudaBlackHuge);
+	ImGui::Text("Object Creator:");
+	ImGui::PopFont();
+
+	ImGui::Separator();
 
 	static bool t;
 	ImGui::Checkbox("Interactable", &t);
@@ -532,20 +554,21 @@ void ObjectCreatorDockPanel::DrawDisplayImageSettings()
 
 void ObjectCreatorDockPanel::DrawAddAndDeleteActionButtons()
 {
+	ImGui::Spacing();
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
 
 	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
 	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
 
-	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(18, 18)))
+	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
 		showActionDictionary = true; 
 	}
 
 	ImGui::SameLine();
 	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
-	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(18, 18)))
+	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
 		if (selectedAction != nullptr) {
 			creatingObject->DeleteAction(selectedAction->GetActionName()); 

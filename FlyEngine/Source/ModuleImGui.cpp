@@ -89,7 +89,7 @@ bool ModuleImGui::Start()
 
 	AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
 
-	FlyObject* parrot = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer Yellow", "This is a simple Fly Object to test descriptions");
+	/*FlyObject* parrot = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer Yellow", "This is a simple Fly Object to test descriptions");
 	string spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources\\Images\\TransformerYellow.png";
 	parrot->AddDisplayImageAction(spritePath.c_str());
 
@@ -102,7 +102,7 @@ bool ModuleImGui::Start()
 	test->AddDisplayImageAction(spritePath.c_str());
 
 	test->CreateClickableArea(float2(0, 0), float2(1, 1));
-	test->clickableAreaActive = true;
+	test->clickableAreaActive = true;*/
 
 	return true; 
 }

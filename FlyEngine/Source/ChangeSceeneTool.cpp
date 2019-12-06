@@ -5,7 +5,7 @@ ChangeSceneTool::ChangeSceneTool(FlyObject* _parentObject)
 	toolType = AT_CHANGE_SCENE;
 	isVisual = false;
 
-	SetToolName("Change Scene");
+	SetActionName("Change Scene");
 	SetToolDescription("This should be the description of the scene change");
 }
 
