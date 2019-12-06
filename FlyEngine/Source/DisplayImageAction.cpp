@@ -22,7 +22,7 @@ DisplayImageAction::DisplayImageAction(FlyObject* _parentObject = nullptr)
 	parentObject = _parentObject; 
 	isVisual = true; 
 
-	SetActionName("Image"); 
+	SetActionName("Display Image"); 
 	SetToolDescription("This should be the description of the image"); 
 }
 
@@ -109,6 +109,22 @@ void DisplayImageAction::CleanUp()
 	}
 
 	parentObject = nullptr; 
+}
+
+void DisplayImageAction::DrawActionOccurenceCheckboxes()
+{
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text("Action Happens At:");
+	ImGui::PopFont();
+
+	ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+
+	ImGui::Checkbox("On Scene Enter", &occ_SceneEnter);
+	ImGui::Checkbox("On Scene Leave", &occ_SceneLeave);
+	ImGui::Checkbox("On Object Clicked", &occ_AreaClicked);
+
+	ImGui::Spacing(); 
+	ImGui::PopFont();
 }
 
 bool DisplayImageAction::CreateImage(const char* texturePath)

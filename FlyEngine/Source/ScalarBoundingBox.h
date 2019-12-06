@@ -18,16 +18,13 @@ public:
 public: 
 	bool drawCornerPoints = false; 
 
-private:
-	
+private:	
 	float cornerBoxesSize; 
 
 	BoundingBox* topLeftScaleBox; 
 	BoundingBox* topRightScaleBox; 
 	BoundingBox* bottomLeftScaleBox; 
 	BoundingBox* bottomRightScaleBox; 
-
-
 };
 
 #endif

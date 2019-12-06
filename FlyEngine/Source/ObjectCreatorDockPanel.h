@@ -45,7 +45,6 @@ public:
 
 
 private:
-
 	// Object Creator -------------
 	char searchNewActionBuffer[256]; 
 	char newObjectName[256]; 

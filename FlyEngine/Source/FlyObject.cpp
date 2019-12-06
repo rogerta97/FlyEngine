@@ -134,6 +134,16 @@ void FlyObject::SetClickableAreaColor(float4 newColor)
 	clickableAreaColor = newColor; 
 }
 
+bool& FlyObject::IsInteractable()
+{
+	return isInteractable; 
+}
+
+void FlyObject::SetInteractable(bool _isInteractable)
+{
+	isInteractable = _isInteractable; 
+}
+
 float2 FlyObject::GetObjectVisualDimensions()
 {
 	float2 objectVisualSize; 
@@ -147,6 +157,16 @@ float2 FlyObject::GetObjectVisualDimensions()
 
 	return objectVisualSize; 
 }
+
+//bool& FlyObject::IsInteractable()
+//{
+//	return isInteractable;
+//}
+//
+//void FlyObject::SetInteractable(bool isInteractable)
+//{
+//	this->isInteractable = isInteractable;
+//}
 
 void FlyObject::CalculateAllGizmos()
 {
@@ -354,7 +374,7 @@ void FlyObject::DrawDisplayImageSettings()
 	{
 		static char buf[256] = "";
 		if (imageTexture == nullptr)
-			imageTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageNull");
+			imageTexture = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject");
 		else
 			imageTexture = (Texture*)ResourceManager::getInstance()->GetResource(imageTool->GetTexture()->GetName());
 

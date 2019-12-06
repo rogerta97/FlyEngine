@@ -62,6 +62,9 @@ public:
 	float4 GetClickableAreaColor() const;
 	void SetClickableAreaColor(float4 newColor);
 
+	bool& IsInteractable();
+	void SetInteractable(bool _isInteractable);
+
 private: 
 	// Draw UI ---------
 	void DrawDisplayImageSettings(); 
@@ -87,6 +90,7 @@ private:
 	std::string description;
 	UID id; 
 	bool hasVisuals;
+	bool isInteractable; 
 };
 
 #endif

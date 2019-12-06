@@ -217,7 +217,6 @@ void ObjectPropertiesDockPanel::DrawActionsList()
 
 void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 {
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
 
 	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
@@ -242,7 +241,6 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 	}
 
 	ImGui::PopStyleVar();
-	ImGui::PopStyleColor();	
 
 	if (showToolDictionary)
 	{
@@ -314,7 +312,7 @@ void ObjectPropertiesDockPanel::DrawActionSelectable(ActionSelectableInfo& selec
 void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
-	if (ImGui::CollapsingHeader("Object Placement"))
+	if (ImGui::CollapsingHeader("Object Placement", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::Spacing(); 
 		float2 showPosition = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos(); 
@@ -361,7 +359,7 @@ void ObjectPropertiesDockPanel::DrawToolImageSettings()
 			Texture* imageToolTexture = imageTool->GetTexture(); 
 
 			if (imageToolTexture == nullptr)
-				imageToolTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageNull");
+				imageToolTexture = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject");
 
 			float aspect_ratio = imageToolTexture->GetAspectRatio();
 			float previewQuadWidth = 150;

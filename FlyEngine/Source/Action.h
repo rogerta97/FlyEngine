@@ -10,6 +10,15 @@ enum ToolType
 	AT_null,
 };
 
+enum ActionOccurrence
+{
+	occ_SceneEnter, 
+	occ_SceneLeave,
+	occ_AreaClicked,
+	occ_continuous,
+	occ_None
+};
+
 struct ActionSelectableInfo
 {
 	std::string actionName;
@@ -28,11 +37,13 @@ public:
 	virtual void Draw();
 	virtual void CleanUp();
 
+	// Set and Get ---------------------
 	std::string GetActionName() const; 
 	void SetActionName(std::string newName);
 
 	std::string GetToolDescription() const;
 	void SetToolDescription(std::string newDescription);
+
 
 	ToolType GetActionType() const;
 	void SetToolType(ToolType newToolType);
@@ -41,9 +52,16 @@ public:
 	bool& HasVisual(); 
 
 	ActionSelectableInfo GetActionSelectableInfo(); 
-
+ 
 protected:
 	ToolType toolType;
+
+	// Occurrence ----------------
+	bool occ_SceneEnter = false; 
+	bool occ_SceneLeave = false;
+	bool occ_AreaClicked = false;
+	bool occ_continuous = false;
+
 	std::string toolName; 
 	std::string toolDescription; 
 	bool isSelected; 

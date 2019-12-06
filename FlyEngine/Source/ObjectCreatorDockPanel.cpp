@@ -45,23 +45,26 @@ bool ObjectCreatorDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_NoTitleBar))
 	{
-
-
 		ImGui::PushFont(App->moduleImGui->rudaBlackHuge);
 		ImGui::Text("Object Creator:");
 		ImGui::PopFont();
 
+		ImGui::SameLine(); 
+		DrawCreateButton();
+
 		ImGui::Separator();
 		ImGui::Spacing(); 
-
 
 		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
 		ImGui::InputTextWithHint("Name##ObjectNaming", "Name...", newObjectName, 256 * sizeof(char));
 		ImGui::PopFont();
 
 		ImGui::SameLine();
-		static bool t;
-		ImGui::Checkbox("Interactable", &t);
+
+		if (ImGui::Checkbox("Interactable", &creatingObject->IsInteractable()))
+		{
+
+		}
 
 		ImGui::Spacing();
 		ImGui::InputTextMultiline("Description##ObjectDescription", newObjectDescription, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 10, 100));
@@ -72,24 +75,23 @@ bool ObjectCreatorDockPanel::Draw()
 
 		if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
 		{
-			/*if (ImGui::BeginTabItem("Properties"))
-			{
-			}*/
-
 			if (ImGui::BeginTabItem("Actions"))
 			{
 				DrawObjectCreator(); 
 				ImGui::EndTabItem();
 			}
 
-			if (ImGui::BeginTabItem("Clickable Area"))
+			if (creatingObject->IsInteractable())
 			{
-				DrawClickableAreaCreator(); 
-				ImGui::EndTabItem();
+				if (ImGui::BeginTabItem("Clickable Area"))
+				{
+					DrawClickableAreaCreator(); 
+					ImGui::EndTabItem();
+				}				
 			}
+
 			ImGui::EndTabBar();
-		}
-		DrawCreateButton();
+		}	
 	}
 
 	ImGui::End(); 
@@ -126,7 +128,7 @@ void ObjectCreatorDockPanel::DrawObjectCreator()
 
 void ObjectCreatorDockPanel::DrawObjectActionsList()
 {
-	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::PushFont(App->moduleImGui->rudaBlackHuge);
 	ImGui::Text("Add Actions: ");
 	ImGui::PopFont();
 
@@ -177,10 +179,14 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 {
 	if (selectedAction)
 	{
-		if (selectedAction->GetActionType() != AT_null) {
-			IMGUI_SPACED_SEPARATOR
-		}
+		ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
+		ImGui::Text("Display Image Settings:");
+		ImGui::PopFont(); 
 
+		if (selectedAction->GetActionType() != AT_null) {
+			ImGui::Separator(); 
+		}
+	 
 		switch (selectedAction->GetActionType())
 		{
 		case AT_IMAGE:
@@ -188,13 +194,8 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 			break;
 
 		case AT_CHANGE_SCENE:
-			if (ImGui::CollapsingHeader("Change Scene Action Settings"))
-			{
-				
-			}
 			break;
 		}
-
 	}
 }
 
@@ -225,7 +226,7 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 			switch (newActionSelected->actionType)
 			{
 			case AT_IMAGE:
-				creatingObject->AddDisplayImageAction(std::string(MyFileSystem::getInstance()->GetIconsDirectory() + "ImageNull.png").c_str()); 
+				selectedAction = creatingObject->AddDisplayImageAction(std::string(MyFileSystem::getInstance()->GetIconsDirectory() + "EmptyObject.png").c_str());	
 				break;
 
 			case AT_CHANGE_SCENE:
@@ -426,9 +427,7 @@ void ObjectCreatorDockPanel::DrawPreviewClickableAreaOnTexture(float2 textureTop
 
 void ObjectCreatorDockPanel::DrawCreateButton()
 {
-	ImGui::SetCursorPosY(ImGui::GetContentRegionMax().y - 40); 
-	ImGui::Spacing();
-	ImGui::Separator();
+	ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 70); 
 	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
 	if (ImGui::Button("Create", ImVec2(100, 30)))
 	{
@@ -479,83 +478,83 @@ void ObjectCreatorDockPanel::AddCreatingObject()
 }
 
 void ObjectCreatorDockPanel::DrawDisplayImageSettings()
-{
-	if (ImGui::CollapsingHeader("Image Adjustments"))
+{	
+	static char buf[256] = "";
+	DisplayImageAction* selectedImageAction = (DisplayImageAction*)this->selectedAction;
+
+	// Object Occurrence -----------------------
+	selectedImageAction->DrawActionOccurenceCheckboxes();
+
+	IMGUI_SPACE_SEPARATOR;
+
+	if (selectedImageAction->GetTexture() == nullptr)
+		selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResource("EmptyObject"));
+	else
+		selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResource(selectedImageAction->GetTexture()->GetName()));
+
+	float aspect_ratio = selectedImageAction->GetTexture()->GetAspectRatio();
+	float previewQuadWidth = 150;
+	float previewQuadHeight = previewQuadWidth / aspect_ratio;
+
+	ImGui::Spacing();
+	PUSH_FONT(App->moduleImGui->rudaRegularMid);
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+
+	int childHeight = previewQuadHeight + 20;
+
+	// Settings ---------------------------------
+	ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), childHeight));
+
+	ImGui::Columns(2);
+	ImGui::SetColumnWidth(0, previewQuadWidth + 10);
+
+	ImGui::Spacing();
+	ImGui::Image((ImTextureID)selectedImageAction->GetTexture()->GetTextureID(), ImVec2(previewQuadWidth, previewQuadHeight));
+
+	ImGui::NextColumn();
+
+	ImGui::Spacing();
+	ImGui::Text("Name: "); ImGui::SameLine();
+	ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%s", selectedImageAction->GetTexture()->GetName().c_str());
+
+	ImGui::Text("Width: "); ImGui::SameLine();
+	ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", selectedImageAction->GetTexture()->GetWidth());
+
+	ImGui::Text("Height: "); ImGui::SameLine();
+	ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", selectedImageAction->GetTexture()->GetHeigth());
+
+	Texture* searchTexture = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
+	if (ImGui::Button("Change Image"))
 	{
-		static char buf[256] = "";
-		DisplayImageAction* selectedImageAction = (DisplayImageAction*)this->selectedAction; 
+		char const* lFilterPatterns[2] = { "*.jpg" , "*.png" };
+		const char* path = tinyfd_openFileDialog("Load Image...", NULL, 2, lFilterPatterns, NULL, 0);
 
-		if (selectedImageAction->GetTexture() == nullptr)
-			selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResource("ImageNull"));
-		else
-			selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResource(selectedImageAction->GetTexture()->GetName()));
-
-		float aspect_ratio = selectedImageAction->GetTexture()->GetAspectRatio();
-		float previewQuadWidth = 150;
-		float previewQuadHeight = previewQuadWidth / aspect_ratio;
-
-		ImGui::Spacing();
-		PUSH_FONT(App->moduleImGui->rudaRegularMid);
-
-		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-
-		int childHeight = previewQuadHeight + 20; 
-		ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), childHeight));
-
-		ImGui::Columns(2);
-		ImGui::SetColumnWidth(0, previewQuadWidth + 10);
-
-		ImGui::Spacing();
-		ImGui::Image((ImTextureID)selectedImageAction->GetTexture()->GetTextureID(), ImVec2(previewQuadWidth, previewQuadHeight));
-
-		ImGui::NextColumn();
-
-		ImGui::Spacing();
-		ImGui::Text("Name: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%s", selectedImageAction->GetTexture()->GetName().c_str());
-
-		ImGui::Text("Width: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", selectedImageAction->GetTexture()->GetWidth());
-
-		ImGui::Text("Height: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", selectedImageAction->GetTexture()->GetHeigth());
-
-		Texture* searchTexture = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-
-		if (ImGui::ImageButton((ImTextureID)searchTexture->GetTextureID(), ImVec2(24, 24)))
+		if (path != NULL)
 		{
-			char const* lFilterPatterns[2] = { "*.jpg" , "*.png" };
-			const char* path = tinyfd_openFileDialog("Load Image...", NULL, 2, lFilterPatterns, NULL, 0);
-
-			if (path != NULL)
+			if (!ResourceManager::getInstance()->ExistResourcePath(path))
 			{
-				if (!ResourceManager::getInstance()->ExistResourcePath(path))
-				{
-					selectedImageAction->SetTexture(ImageImporter::getInstance()->LoadTexture(path, false));
-					ResourceManager::getInstance()->AddResource(selectedImageAction->GetTexture(), selectedImageAction->GetTexture()->GetName());
-				}
-				else
-				{
-					selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResourceByPath(path));
-				}
-
-				strcpy(buf, path);
-				FLY_LOG("Player Opened %s", path);
+				selectedImageAction->SetTexture(ImageImporter::getInstance()->LoadTexture(path, false));
+				ResourceManager::getInstance()->AddResource(selectedImageAction->GetTexture(), selectedImageAction->GetTexture()->GetName());
+			}
+			else
+			{
+				selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResourceByPath(path));
 			}
 
+			strcpy(buf, path);
+			FLY_LOG("Player Opened %s", path);
 		}
 
-		ImGui::PopStyleColor(2);
-		ImGui::EndChild();
-		ImGui::PopFont();
 	}
+	ImGui::PopStyleColor();
+	ImGui::EndChild();
+
+	POP_FONT;
 }
 
 void ObjectCreatorDockPanel::DrawAddAndDeleteActionButtons()
 {
 	ImGui::Spacing();
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
 
 	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
@@ -576,7 +575,7 @@ void ObjectCreatorDockPanel::DrawAddAndDeleteActionButtons()
 	}
 
 	ImGui::PopStyleVar();
-	ImGui::PopStyleColor();
+	ImGui::Spacing(); 
 
 	// Callbacks for buttons 
 	OnAddActionButtonClicked(); 

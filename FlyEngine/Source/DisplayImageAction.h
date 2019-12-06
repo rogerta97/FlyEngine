@@ -20,6 +20,8 @@ public:
 	void Draw(); 
 	void CleanUp(); 
 
+	void DrawActionOccurenceCheckboxes(); 
+
 	bool CreateImage(const char* texturePath); 
 
 	Quad* GetQuad() const;

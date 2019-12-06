@@ -28,7 +28,7 @@ bool ModuleManager::Init()
 	LoadEngineIcons();
 
 	// Tools Descriptions 
-	AddToolsNameDescription("Image", "This should be the description of the image tool", AT_IMAGE);
+	AddToolsNameDescription("Display Image", "This should be the description of the image tool", AT_IMAGE);
 	AddToolsNameDescription("Change Scene", "This should be the description of the change scene tool", AT_CHANGE_SCENE);
 
 	return true;
@@ -52,9 +52,6 @@ void ModuleManager::LoadEngineIcons()
 
 	Texture* searchIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "SearchIcon.png"), false);
 	ResourceManager::getInstance()->AddResource((Resource*)searchIcon, "SearchIcon");
-
-	Texture* imageNull = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ImageNull.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)imageNull, "ImageNull");
 
 	Texture* objectIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ObjectIcon.png"), false);
 	ResourceManager::getInstance()->AddResource((Resource*)objectIcon, "ObjectIcon");
@@ -100,6 +97,9 @@ void ModuleManager::LoadEngineIcons()
 
 	Texture* changeScene = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ChangeScene.png"), true);
 	ResourceManager::getInstance()->AddResource((Resource*)changeScene, "ChangeScene");
+
+	Texture* emptyObject = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "EmptyObject.png"), true);
+	ResourceManager::getInstance()->AddResource((Resource*)emptyObject, "EmptyObject");
 }
 
 int ModuleManager::GetToolsAmount() const
