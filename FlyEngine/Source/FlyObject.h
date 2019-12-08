@@ -11,7 +11,7 @@
 
 class Gizmos; 
 class DisplayImageAction; 
-class ChangeSceneTool; 
+class ChangeSceneAction; 
 class FlyObject {
 public: 
 	FlyObject(std::string objectName, std::string description = ""); 
@@ -33,7 +33,7 @@ public:
 
 	// Tools -----------
 	DisplayImageAction* AddDisplayImageAction(const char* imageTexturePath);
-	ChangeSceneTool* AddChangeRoomAction();
+	ChangeSceneAction* AddChangeRoomAction();
 
 	Action* GetAction(std::string toolName); 
 	Action* GetAction(ToolType toolType); 

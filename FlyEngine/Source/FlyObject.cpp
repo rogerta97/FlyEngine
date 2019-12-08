@@ -7,7 +7,7 @@
 #include "Quad.h"
 #include "ImageImporter.h"
 #include "GameViewportDockPanel.h"
-#include "ChangeSceeneTool.h"
+#include "ChangeSceeneAction.h"
 #include "ViewportManager.h"
 #include "ResourceManager.h"
 #include "imgui.h"
@@ -233,12 +233,11 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 	return (DisplayImageAction*)GetAction(AT_IMAGE); 	
 }
 
-ChangeSceneTool* FlyObject::AddChangeRoomAction()
+ChangeSceneAction* FlyObject::AddChangeRoomAction()
 {
-
 	if (GetAction(AT_CHANGE_SCENE) == nullptr)
 	{
-		ChangeSceneTool* changeSceneTool = new ChangeSceneTool(this);
+		ChangeSceneAction* changeSceneTool = new ChangeSceneAction(this);
 
 		actionsList.push_back(changeSceneTool);
 
@@ -248,7 +247,7 @@ ChangeSceneTool* FlyObject::AddChangeRoomAction()
 		return changeSceneTool;
 	}
 
-	return (ChangeSceneTool*)GetAction(AT_CHANGE_SCENE);
+	return (ChangeSceneAction*)GetAction(AT_CHANGE_SCENE);
 }
 
 Action* FlyObject::GetAction(std::string toolName)

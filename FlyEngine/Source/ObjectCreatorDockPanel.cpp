@@ -67,7 +67,7 @@ bool ObjectCreatorDockPanel::Draw()
 		}
 
 		ImGui::Spacing();
-		ImGui::InputTextMultiline("Description##ObjectDescription", newObjectDescription, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 10, 100));
+		ImGui::InputTextMultiline("Description##ObjectDescription", newObjectDescription, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 100, 100));
 
 		ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
 		ImGui::Text("Object Attributes:");
@@ -128,7 +128,7 @@ void ObjectCreatorDockPanel::DrawObjectCreator()
 
 void ObjectCreatorDockPanel::DrawObjectActionsList()
 {
-	ImGui::PushFont(App->moduleImGui->rudaBlackHuge);
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Add Actions: ");
 	ImGui::PopFont();
 
@@ -179,13 +179,13 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 {
 	if (selectedAction)
 	{
-		ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
-		ImGui::Text("Display Image Settings:");
-		ImGui::PopFont(); 
+		ImGui::Separator();
+		ImGui::Separator();
 
-		if (selectedAction->GetActionType() != AT_null) {
-			ImGui::Separator(); 
-		}
+	/*	ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
+		string settingsName = selectedAction->GetActionName() + string(" Settings:");
+		ImGui::Text(settingsName.c_str());
+		ImGui::PopFont(); */
 	 
 		switch (selectedAction->GetActionType())
 		{
@@ -194,6 +194,8 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 			break;
 
 		case AT_CHANGE_SCENE:
+			static char destinationRoomName[256];
+			ImGui::InputText("Prosivisional", destinationRoomName, IM_ARRAYSIZE(destinationRoomName));
 			break;
 		}
 	}
@@ -496,13 +498,16 @@ void ObjectCreatorDockPanel::DrawDisplayImageSettings()
 	float previewQuadWidth = 150;
 	float previewQuadHeight = previewQuadWidth / aspect_ratio;
 
-	ImGui::Spacing();
 	PUSH_FONT(App->moduleImGui->rudaRegularMid);
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 
 	int childHeight = previewQuadHeight + 20;
 
 	// Settings ---------------------------------
+	PUSH_FONT(App->moduleImGui->rudaBoldBig); 
+	ImGui::Text("Image Settings:"); 
+	POP_FONT; 
+
 	ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), childHeight));
 
 	ImGui::Columns(2);

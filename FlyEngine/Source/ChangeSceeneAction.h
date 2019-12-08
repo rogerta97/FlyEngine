@@ -7,15 +7,17 @@ using namespace std;
 
 class Room;
 class FlyObject; 
-class ChangeSceneTool : public Action
+class ChangeSceneAction : public Action
 {
 public:
-	ChangeSceneTool(FlyObject* _parentObject);
-	~ChangeSceneTool();
+	ChangeSceneAction(FlyObject* _parentObject);
+	~ChangeSceneAction();
 
 	void Init();
 	void Update();
 	void CleanUp();
+
+	void DrawActionOccurenceCheckboxes(); 
 
 	void SetDestination(Room* dstRoom); 
 	Room* GetDesination(); 

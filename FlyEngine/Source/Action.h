@@ -44,7 +44,6 @@ public:
 	std::string GetToolDescription() const;
 	void SetToolDescription(std::string newDescription);
 
-
 	ToolType GetActionType() const;
 	void SetToolType(ToolType newToolType);
 

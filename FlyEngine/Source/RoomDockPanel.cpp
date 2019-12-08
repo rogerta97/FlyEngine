@@ -45,16 +45,17 @@ bool RoomDockPanel::Draw()
 		ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
 		if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
 		{
-			if (ImGui::BeginTabItem("Viewport Settings")) 
-			{
-				ShowViewportSettingsTab();
-				ImGui::EndTabItem();
-			}
-
 			if (ImGui::BeginTabItem("Room Object List"))
 			{
 				DrawRoomHierarchy(); 
 				ImGui::EndTabItem();
+			}
+
+			if (ImGui::BeginTabItem("Viewport Settings")) 
+			{
+				ShowViewportSettingsTab();
+				ImGui::EndTabItem();
+
 			}
 
 			ImGui::EndTabBar();

@@ -48,16 +48,11 @@ void DisplayImageAction::Draw()
 
 	if (parentObject->transform != nullptr)
 	{
-		//float4x4 view_mat; 
-		//GLfloat matrix[16];
-		//glGetFloatv(GL_MODELVIEW_MATRIX, matrix);
-		//view_mat.Set((float*)matrix);
-
 		float2 appliedArPos = parentObject->transform->GetPosition(true);
 		parentObject->transform->SetPosition(appliedArPos);
 
 		glMatrixMode(GL_MODELVIEW);	
-		glLoadMatrixf((GLfloat*)((parentObject->transform->CalculateViewMatrix()).Transposed() /** view_mat*/).v);
+		glLoadMatrixf((GLfloat*)((parentObject->transform->CalculateViewMatrix()).Transposed()).v);
 
 		float2 unAppliedArPos = parentObject->transform->GetPosition() / App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
 		parentObject->transform->SetPosition(unAppliedArPos);
@@ -114,17 +109,25 @@ void DisplayImageAction::CleanUp()
 void DisplayImageAction::DrawActionOccurenceCheckboxes()
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-	ImGui::Text("Action Happens At:");
+	ImGui::Text("Action Happens On:");
 	ImGui::PopFont();
 
 	ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
 
-	ImGui::Checkbox("On Scene Enter", &occ_SceneEnter);
-	ImGui::Checkbox("On Scene Leave", &occ_SceneLeave);
-	ImGui::Checkbox("On Object Clicked", &occ_AreaClicked);
+	ImGui::SetCursorPos(ImVec2(5, 8)); 
+	ImGui::Checkbox("Scene Enter", &occ_SceneEnter);
+	ImGui::SetCursorPos(ImVec2(5, 38)); 
+	ImGui::Checkbox("Scene Leave", &occ_SceneLeave);
+	ImGui::SetCursorPos(ImVec2(5, 68)); 
+	ImGui::Checkbox("Object Clicked", &occ_AreaClicked);
 
 	ImGui::Spacing(); 
+	ImGui::EndChild(); 
+
 	ImGui::PopFont();
+	ImGui::PopStyleColor(); 
 }
 
 bool DisplayImageAction::CreateImage(const char* texturePath)

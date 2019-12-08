@@ -324,9 +324,6 @@
     <ClCompile Include="Source\Gizmos.cpp">
       <Filter>Source\Utilities\Gizmos</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ChangeSceeneTool.cpp">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\RoomDockPanel.cpp">
       <Filter>Source\Modules\DockingPanels</Filter>
     </ClCompile>
@@ -334,6 +331,9 @@
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClCompile>
     <ClCompile Include="Source\DisplayImageAction.cpp">
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ChangeSceeneAction.cpp">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -698,9 +698,6 @@
     <ClInclude Include="Source\Gizmos.h">
       <Filter>Source\Utilities\Gizmos</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ChangeSceeneTool.h">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
-    </ClInclude>
     <ClInclude Include="Source\RoomDockPanel.h">
       <Filter>Source\Modules\DockingPanels</Filter>
     </ClInclude>
@@ -708,6 +705,9 @@
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClInclude>
     <ClInclude Include="Source\DisplayImageAction.h">
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ChangeSceeneAction.h">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClInclude>
   </ItemGroup>
