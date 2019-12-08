@@ -8,6 +8,7 @@
 #include "Transform.h"
 #include "ScalarBoundingBox.h"
 #include "ImGui/imgui.h"
+#include "JSON/parson.h"
 
 class Gizmos; 
 class DisplayImageAction; 
@@ -30,6 +31,9 @@ public:
 	bool IsMouseOver(); 
 
 	bool HasVisuals(); 
+
+	// Save & Load 
+	void SaveObjectData(JSON_Object* jsonObject);
 
 	// Actions ---------
 	void DoOnClickActions(); 

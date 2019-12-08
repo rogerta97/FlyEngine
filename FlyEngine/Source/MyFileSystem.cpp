@@ -78,6 +78,17 @@ string MyFileSystem::GetSolutionDirectory()
 	return instance->solutionDirectory;
 }
 
+string MyFileSystem::GetGameDirectory()
+{
+	if (instance->gameDirectory == "")
+	{
+		instance->gameDirectory = instance->GetSolutionDirectory();
+		instance->gameDirectory += "Source\\Game"; 
+	}
+
+	return instance->gameDirectory;
+}
+
 void MyFileSystem::Delete()
 {
 	delete instance; 

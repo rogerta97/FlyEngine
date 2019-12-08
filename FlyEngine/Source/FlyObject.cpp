@@ -13,8 +13,8 @@
 #include "imgui.h"
 #include "MyFileSystem.h"
 #include "Gizmos.h"
-#include "mmgr.h"
 
+#include "mmgr.h"
 
 #include <string>
 
@@ -159,16 +159,6 @@ float2 FlyObject::GetObjectVisualDimensions()
 	return objectVisualSize; 
 }
 
-//bool& FlyObject::IsInteractable()
-//{
-//	return isInteractable;
-//}
-//
-//void FlyObject::SetInteractable(bool isInteractable)
-//{
-//	this->isInteractable = isInteractable;
-//}
-
 void FlyObject::CalculateAllGizmos()
 {
 	gizmos->CalculateSelectGizmo(this);
@@ -199,6 +189,15 @@ bool FlyObject::HasVisuals()
 	}
 
 	return false; 
+}
+
+void FlyObject::SaveObjectData(JSON_Object* jsonObject)
+{
+	for (auto& it : actionsList)
+	{
+		it->SaveAction(jsonObject);
+	}
+
 }
 
 void FlyObject::DoOnClickActions()

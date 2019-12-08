@@ -91,6 +91,12 @@
     <Filter Include="Source\Utilities\Gizmos">
       <UniqueIdentifier>{48081e44-e47a-4e2c-80a5-60e2c7c13b99}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\3rdParty\JSON">
+      <UniqueIdentifier>{353ea04c-87ab-4881-b4e3-297ab426a6ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Tools\Save&amp;Load">
+      <UniqueIdentifier>{92e7d195-7240-46c3-8722-11fa62d0e0ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -335,6 +341,15 @@
     </ClCompile>
     <ClCompile Include="Source\ChangeRoomAction.cpp">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\JSONParser.cpp">
+      <Filter>Source\Tools\Save&amp;Load</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\JSON\parson.c">
+      <Filter>Source\3rdParty\JSON</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SaveAndLoad.cpp">
+      <Filter>Source\Tools\Save&amp;Load</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -709,6 +724,15 @@
     </ClInclude>
     <ClInclude Include="Source\ChangeRoomAction.h">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\JSONParser.h">
+      <Filter>Source\Tools\Save&amp;Load</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\JSON\parson.h">
+      <Filter>Source\3rdParty\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SaveAndLoad.h">
+      <Filter>Source\Tools\Save&amp;Load</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

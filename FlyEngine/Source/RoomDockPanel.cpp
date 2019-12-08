@@ -11,6 +11,7 @@
 #include "RoomDockPanel.h"
 #include "ImageImporter.h"
 #include "TinyFileDialog.h"
+#include "SaveAndLoad.h"
 
 #include "Room.h"
 #include "Texture.h"
@@ -80,7 +81,10 @@ void RoomDockPanel::DrawTopButtons()
 	// Save Button ------------
 	ImGui::SameLine();
 	Texture* saveTexture = (Texture*)ResourceManager::getInstance()->GetResource("SaveIcon");
-	ImGui::ImageButton((ImTextureID)saveTexture->GetTextureID(), ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, 1));
+	if (ImGui::ImageButton((ImTextureID)saveTexture->GetTextureID(), ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, 1)))
+	{
+		SaveAndLoad::getInstance()->SaveCurrentRoom(); 
+	}
 
 	// Play Button ------------
 	ImGui::SameLine();

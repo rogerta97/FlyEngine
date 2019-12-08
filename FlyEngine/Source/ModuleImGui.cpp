@@ -65,9 +65,7 @@ bool ModuleImGui::Start()
 
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags = ImGuiConfigFlags_DockingEnable;
-	string fontsDirectory = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources/Fonts/Exo-Regular.otf";
-
-	fontsDirectory = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources/Fonts/";
+	string fontsDirectory = MyFileSystem::getInstance()->GetGameDirectory() + "\\Resources\\EngineFonts\\";
 
 	rudaRegularMid = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Regular.ttf").c_str(), 19);
 	rudaBoldMid = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Bold.ttf").c_str(), 19);
@@ -215,7 +213,6 @@ void ModuleImGui::DrawMainMenuBar()
 			}
 		}
 
-		// TODO: Rude Way to Show Demo Window
 		if (ImGui::MenuItem("ImGui Demo")){
 			demoOpened = !demoOpened; 
 		}

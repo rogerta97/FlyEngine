@@ -2,6 +2,7 @@
 #define _ACTION_H_
 
 #include <string>
+#include "JSON/parson.h"
 
 enum ToolType
 {
@@ -37,6 +38,8 @@ public:
 	virtual void Update();
 	virtual void Draw();
 	virtual void CleanUp();
+
+	virtual void SaveAction(JSON_Object* jsonObject); 
 
 	virtual void DoAction(); 
 

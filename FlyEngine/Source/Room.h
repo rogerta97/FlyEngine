@@ -2,6 +2,8 @@
 #define _ROOM_H_
 
 #include "Globals.h"
+#include "JSON\parson.h"
+
 #include <list>
 #include <vector>
 #include <string>
@@ -34,7 +36,10 @@ public:
 
 	void CleanUp(); 
 
-	// Connections --------------------------------------------------------------------
+	// Save & Load ---------------
+	void SaveRoomData(JSON_Object* jsonObject);
+
+	// Connections ---------------
 	RoomConnection* ConnectToRoom(Room* destinationRoom);
 	RoomConnection* GetConnectionToRoom(UID dstRoomUID) const;
 
