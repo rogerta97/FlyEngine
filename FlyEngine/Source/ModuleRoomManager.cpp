@@ -156,19 +156,16 @@ void ModuleRoomManager::CleanUpRooms()
 	roomsInWoldAmount = 0;
 }
 
-const char* ModuleRoomManager::GetRoomsAsCombo(bool includeSelected)
+string* ModuleRoomManager::GetRoomsAsCombo(bool includeSelected)
 {
-	string resultStr; 
+	string* roomsNameRet = new string[GetRoomsAmount()]; 
+	
+	int count = 0; 
 	for (auto& it : roomsInWorldList) {
-
-		if ((it) == selectedRoom && !includeSelected) {
-			continue; 
-		}
-
-		resultStr += (it)->GetName() + '\0';
+		roomsNameRet[count++] = it->GetName(); 
 	}
 
-	return resultStr.c_str(); 
+	return roomsNameRet;
 }
 
 Room* ModuleRoomManager::GetRoom(std::string roomName) const

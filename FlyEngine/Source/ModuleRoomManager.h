@@ -28,7 +28,7 @@ public:
 
 	// Rooms
 	Room* CreateEmptyRoom(string roomName = "New Room"); 
-	const char* GetRoomsAsCombo(bool includeSelected = false); 
+	string* GetRoomsAsCombo(bool includeSelected = false); 
 
 	void DeleteRoom(string roomName); 
 	void DeleteRoom(UID roomID); 

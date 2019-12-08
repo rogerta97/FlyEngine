@@ -194,6 +194,14 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 			break;
 
 		case AT_CHANGE_SCENE:
+
+			
+			string* rooms = App->moduleRoomManager->GetRoomsAsCombo(); 
+			
+			const char* roomsToCombo[] = { rooms[0].c_str(), rooms[1].c_str(), rooms[2].c_str() };
+			static int ci = 0; 
+			ImGui::Combo("testing", &ci, roomsToCombo);
+
 			static char destinationRoomName[256];
 			ImGui::InputText("Prosivisional", destinationRoomName, IM_ARRAYSIZE(destinationRoomName));
 			break;
