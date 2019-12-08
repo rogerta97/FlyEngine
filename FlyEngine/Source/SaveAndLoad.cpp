@@ -37,7 +37,7 @@ void SaveAndLoad::SaveCurrentRoom()
 	JSON_Object* scene_obj = json_value_get_object(scene_v);
 
 	//Save Meta Info
-	json_object_dotset_number(scene_obj, "TestSave", 50);
+	currentRoom->SaveRoomData(scene_obj); 
 
 	json_serialize_to_file(scene_v, testPath.c_str());
 }

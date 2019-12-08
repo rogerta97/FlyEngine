@@ -17,6 +17,8 @@ public:
 	void Update();
 	void CleanUp();
 
+	void SaveAction(JSON_Object* jsonObject, string serializeObjectString);
+
 	void DoAction(); 
 
 	void DrawActionOccurenceCheckboxes(); 

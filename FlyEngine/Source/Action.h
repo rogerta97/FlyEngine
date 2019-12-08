@@ -4,6 +4,8 @@
 #include <string>
 #include "JSON/parson.h"
 
+using namespace std; 
+
 enum ToolType
 {
 	AT_IMAGE,
@@ -39,7 +41,7 @@ public:
 	virtual void Draw();
 	virtual void CleanUp();
 
-	virtual void SaveAction(JSON_Object* jsonObject); 
+	virtual void SaveAction(JSON_Object* jsonObject, string serializeObjectString);
 
 	virtual void DoAction(); 
 

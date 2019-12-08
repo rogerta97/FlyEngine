@@ -31,7 +31,7 @@ void Action::CleanUp()
 {
 }
 
-void Action::SaveAction(JSON_Object* jsonObject)
+void Action::SaveAction(JSON_Object* jsonObject, std::string serializeObjectString)
 {
 }
 

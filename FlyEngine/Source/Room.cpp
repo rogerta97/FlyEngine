@@ -73,8 +73,9 @@ void Room::CleanUp()
 
 void Room::SaveRoomData(JSON_Object* jsonObject)
 {
+	int count = 0; 
 	for (auto& it : objectsInRoom)
-		it->SaveObjectData(jsonObject);
+		it->SaveObjectData(jsonObject, count++);
 }
 
 RoomConnection* Room::ConnectToRoom(Room* destinationRoom)

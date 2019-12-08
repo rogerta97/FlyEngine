@@ -4,6 +4,7 @@
 
 #include "Application.h"
 #include "ModuleImGui.h"
+#include "Room.h"
 #include "ModuleRoomManager.h"
 
 ChangeRoomAction::ChangeRoomAction(FlyObject* _parentObject)
@@ -35,6 +36,13 @@ void ChangeRoomAction::Update()
 void ChangeRoomAction::CleanUp()
 {
 
+}
+
+void ChangeRoomAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString)
+{
+	string toolsSerializeSection = serializeObjectString + string("Tools.ChangeRoom.");
+
+	json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("Destination")).c_str(), destinationRoom->GetName().c_str());
 }
 
 void ChangeRoomAction::DoAction()

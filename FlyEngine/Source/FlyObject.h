@@ -33,7 +33,9 @@ public:
 	bool HasVisuals(); 
 
 	// Save & Load 
-	void SaveObjectData(JSON_Object* jsonObject);
+	void SaveObjectData(JSON_Object* jsonObject, int objectIndex);
+
+	void SerializeClickableArea(std::string& serializeObjectName, JSON_Object* jsonObject);
 
 	// Actions ---------
 	void DoOnClickActions(); 

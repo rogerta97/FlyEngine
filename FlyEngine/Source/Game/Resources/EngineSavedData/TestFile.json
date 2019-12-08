@@ -1,1 +1,1 @@
-{"TestSave":50}
+{"Forest":{"FlyObject_0":{"Name":"Transformer Yellow","Tools":{"ChangeRoom":{"Destination":"Lake"}},"ClickableArea":{"Active":true,"Color":{"r":1,"g":0.80000001192092896,"b":0.80000001192092896,"a":0.40000000596046448},"MinPoint":{"x":-150,"y":150},"MaxPoint":{"x":150,"y":-150}}}}}

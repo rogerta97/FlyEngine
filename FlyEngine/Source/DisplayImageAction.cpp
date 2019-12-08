@@ -106,6 +106,11 @@ void DisplayImageAction::CleanUp()
 	parentObject = nullptr; 
 }
 
+void DisplayImageAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString)
+{
+	json_object_dotset_number(jsonObject, "Display Image Save", 50);
+}
+
 void DisplayImageAction::DrawActionOccurenceCheckboxes()
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldBig);

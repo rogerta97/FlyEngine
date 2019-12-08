@@ -8,10 +8,12 @@
 #include "ImageImporter.h"
 #include "GameViewportDockPanel.h"
 #include "ChangeRoomAction.h"
+#include "ModuleRoomManager.h"
 #include "ViewportManager.h"
 #include "ResourceManager.h"
 #include "imgui.h"
 #include "MyFileSystem.h"
+#include "Room.h"
 #include "Gizmos.h"
 
 #include "mmgr.h"
@@ -191,13 +193,39 @@ bool FlyObject::HasVisuals()
 	return false; 
 }
 
-void FlyObject::SaveObjectData(JSON_Object* jsonObject)
+void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 {
+	// Save Object Properties
+	string serializeObjectName(App->moduleRoomManager->GetSelectedRoom()->GetName().c_str() + string(".")); 
+	serializeObjectName += "FlyObject_" + to_string(objectIndex) + string(".");
+	json_object_dotset_string(jsonObject, string(serializeObjectName + "Name").c_str(), GetName().c_str());
+
+	// Save Object Action Settings
 	for (auto& it : actionsList)
 	{
-		it->SaveAction(jsonObject);
+		it->SaveAction(jsonObject, serializeObjectName);
 	}
 
+	// Save Object Clickable Area
+	SerializeClickableArea(serializeObjectName, jsonObject);
+}
+
+void FlyObject::SerializeClickableArea(std::string& serializeObjectName, JSON_Object* jsonObject)
+{
+	serializeObjectName += "ClickableArea.";
+
+	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "Active").c_str(), clickableAreaActive);
+
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "Color.r").c_str(), clickableAreaColor.x);
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "Color.g").c_str(), clickableAreaColor.y);
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "Color.b").c_str(), clickableAreaColor.z);
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "Color.a").c_str(), clickableAreaColor.w);
+
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "MinPoint.x").c_str(), clickableArea->GetMinPoint().x);
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "MinPoint.y").c_str(), clickableArea->GetMinPoint().y);
+
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "MaxPoint.x").c_str(), clickableArea->GetMaxPoint().x);
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "MaxPoint.y").c_str(), clickableArea->GetMaxPoint().y);
 }
 
 void FlyObject::DoOnClickActions()
