@@ -29,7 +29,7 @@ bool ModuleManager::Init()
 
 	// Tools Descriptions 
 	AddToolsNameDescription("Display Image", "This should be the description of the image tool", AT_IMAGE);
-	AddToolsNameDescription("Change Scene", "This should be the description of the change scene tool", AT_CHANGE_SCENE);
+	AddToolsNameDescription("Change Scene", "This should be the description of the change scene tool", AT_CHANGE_ROOM);
 
 	return true;
 }
@@ -159,7 +159,7 @@ Texture* ModuleManager::GetIconFromActionType(ToolType toolType)
 		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageIcon");
 		break;
 
-	case AT_CHANGE_SCENE:
+	case AT_CHANGE_ROOM:
 		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("ChangeScene");
 		break;
 

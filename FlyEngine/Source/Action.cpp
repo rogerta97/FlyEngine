@@ -1,4 +1,6 @@
 #include "Action.h"
+#include "FlyObject.h"
+
 #include "mmgr.h"
 
 Action::Action()
@@ -29,6 +31,11 @@ void Action::CleanUp()
 {
 }
 
+void Action::DoAction()
+{
+	
+}
+
 std::string Action::GetActionName() const
 {
 	return toolName;
@@ -37,6 +44,46 @@ std::string Action::GetActionName() const
 void Action::SetActionName(std::string newName)
 {
 	toolName = newName;
+}
+
+bool& Action::IsOccSceneEnter()
+{
+	return occ_SceneEnter; 
+}
+
+bool& Action::IsOccSceneLeave()
+{
+	return occ_SceneLeave;
+}
+
+bool& Action::IsOccObjectClicked()
+{
+	return occ_ObjectClicked;
+}
+
+void Action::SetOccSceneEnter(bool newOccSceneEnter)
+{
+	occ_SceneEnter = newOccSceneEnter; 
+}
+
+void Action::SetOccSceneLeave(bool newOccSceneLeave)
+{
+	occ_SceneLeave = newOccSceneLeave;
+}
+
+void Action::SetOccObjectClicked(bool newOccObjectClicked)
+{
+	occ_ObjectClicked = newOccObjectClicked;
+}
+
+FlyObject* Action::GetParentObject() const
+{
+	return parentObject;
+}
+
+void Action::SetParentObject(FlyObject* newParentObject)
+{
+	parentObject = newParentObject; 
 }
 
 std::string Action::GetToolDescription() const

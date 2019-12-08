@@ -6,6 +6,7 @@
 #include "Action.h"
 #include "ModuleRoomManager.h"
 #include "MyFileSystem.h"
+#include "ChangeRoomAction.h"
 #include "Room.h"
 #include "Texture.h"
 #include "ImageImporter.h"
@@ -63,7 +64,7 @@ bool ObjectCreatorDockPanel::Draw()
 
 		if (ImGui::Checkbox("Interactable", &creatingObject->IsInteractable()))
 		{
-
+			focusClickableAreaTab = true; 
 		}
 
 		ImGui::Spacing();
@@ -75,6 +76,7 @@ bool ObjectCreatorDockPanel::Draw()
 
 		if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
 		{
+
 			if (ImGui::BeginTabItem("Actions"))
 			{
 				DrawObjectCreator(); 
@@ -83,7 +85,14 @@ bool ObjectCreatorDockPanel::Draw()
 
 			if (creatingObject->IsInteractable())
 			{
-				if (ImGui::BeginTabItem("Clickable Area"))
+				ImGuiTabItemFlags tabFlags = 0; 
+				if (focusClickableAreaTab)
+				{
+					tabFlags |= ImGuiTabItemFlags_SetSelected; 
+					focusClickableAreaTab = false; 
+				}
+				
+				if (ImGui::BeginTabItem("Clickable Area", 0, tabFlags))
 				{
 					DrawClickableAreaCreator(); 
 					ImGui::EndTabItem();
@@ -179,8 +188,7 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 {
 	if (selectedAction)
 	{
-		ImGui::Separator();
-		ImGui::Separator();
+		IMGUI_SPACED_SEPARATOR; 
 
 	/*	ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
 		string settingsName = selectedAction->GetActionName() + string(" Settings:");
@@ -193,20 +201,54 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 			DrawDisplayImageSettings();
 			break;
 
-		case AT_CHANGE_SCENE:
-
-			
-			string* rooms = App->moduleRoomManager->GetRoomsAsCombo(); 
-			
-			const char* roomsToCombo[] = { rooms[0].c_str(), rooms[1].c_str(), rooms[2].c_str() };
-			static int ci = 0; 
-			ImGui::Combo("testing", &ci, roomsToCombo);
-
-			static char destinationRoomName[256];
-			ImGui::InputText("Prosivisional", destinationRoomName, IM_ARRAYSIZE(destinationRoomName));
+		case AT_CHANGE_ROOM:	
+			DrawChangeRoomActionSettings();
 			break;
 		}
 	}
+}
+
+void ObjectCreatorDockPanel::DrawChangeRoomActionSettings()
+{
+	ChangeRoomAction* changeRoomAction = (ChangeRoomAction*)this->selectedAction;
+
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text("Action Happens On:");
+	ImGui::PopFont();
+
+	ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
+
+	ImGui::SetCursorPos(ImVec2(5, 8));
+	ImGui::Checkbox("Scene Enter", &changeRoomAction->IsOccSceneEnter());
+	ImGui::SetCursorPos(ImVec2(5, 38));
+	ImGui::Checkbox("Scene Leave", &changeRoomAction->IsOccSceneLeave());
+	ImGui::SetCursorPos(ImVec2(5, 68));
+	ImGui::Checkbox("Object Clicked", &changeRoomAction->IsOccObjectClicked());
+
+	ImGui::SameLine();
+	if (ImGui::SmallButton("Adjust Clickable Area"))
+	{
+		focusClickableAreaTab = true; 
+	}
+
+	ImGui::Spacing();
+	ImGui::EndChild();
+
+	ImGui::PopFont();
+	ImGui::PopStyleColor();
+
+	IMGUI_SPACED_SEPARATOR; 
+
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text("Change Room Settings: ");
+	ImGui::PopFont();
+	
+	string* rooms = App->moduleRoomManager->GetRoomsAsCombo();
+	const char* roomsToCombo[] = { "None", rooms[0].c_str(), rooms[1].c_str(), rooms[2].c_str() };
+	static int ci = 0;
+	ImGui::ComboArray("Destination", &ci, roomsToCombo, IM_ARRAYSIZE(roomsToCombo));
 }
 
 void ObjectCreatorDockPanel::OnAddActionButtonClicked()
@@ -239,7 +281,7 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 				selectedAction = creatingObject->AddDisplayImageAction(std::string(MyFileSystem::getInstance()->GetIconsDirectory() + "EmptyObject.png").c_str());	
 				break;
 
-			case AT_CHANGE_SCENE:
+			case AT_CHANGE_ROOM:
 				creatingObject->AddChangeRoomAction();
 				break;
 
@@ -437,7 +479,7 @@ void ObjectCreatorDockPanel::DrawPreviewClickableAreaOnTexture(float2 textureTop
 
 void ObjectCreatorDockPanel::DrawCreateButton()
 {
-	ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 70); 
+	ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 100); 
 	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
 	if (ImGui::Button("Create", ImVec2(100, 30)))
 	{

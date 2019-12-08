@@ -38,13 +38,16 @@ public:
 	void DrawSelectable(ActionSelectableInfo selectableInfo, bool& isSelected, int posInList, int selectableHeight, Action* currentTool);
 	void DrawAddAndDeleteActionButtons(); 
 	void DrawDisplayImageSettings(); 
-	void DrawSelectedActionSettings(); 
+	void DrawSelectedActionSettings();
+	void DrawChangeRoomActionSettings();
+
 	void OnAddActionButtonClicked(); 
 	void DrawCreateButton();
 	void AddCreatingObject();
 
 
 private:
+
 	// Object Creator -------------
 	char searchNewActionBuffer[256]; 
 	char newObjectName[256]; 
@@ -57,7 +60,8 @@ private:
 	float previewTextureMaxSize; 
 	Texture* previewClickableAreaTexture; 
 	float2 prevTextureOriginPos; 
-	bool clickableAreaActive; 
+	bool clickableAreaActive = false;
+	bool focusClickableAreaTab = false; 
 
 	FlyObject* creatingObject = nullptr; 
 	Action* selectedAction = nullptr; 

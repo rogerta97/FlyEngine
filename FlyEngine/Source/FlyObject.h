@@ -11,7 +11,7 @@
 
 class Gizmos; 
 class DisplayImageAction; 
-class ChangeSceneAction; 
+class ChangeRoomAction; 
 class FlyObject {
 public: 
 	FlyObject(std::string objectName, std::string description = ""); 
@@ -31,9 +31,12 @@ public:
 
 	bool HasVisuals(); 
 
+	// Actions ---------
+	void DoOnClickActions(); 
+
 	// Tools -----------
 	DisplayImageAction* AddDisplayImageAction(const char* imageTexturePath);
-	ChangeSceneAction* AddChangeRoomAction();
+	ChangeRoomAction* AddChangeRoomAction();
 
 	Action* GetAction(std::string toolName); 
 	Action* GetAction(ToolType toolType); 

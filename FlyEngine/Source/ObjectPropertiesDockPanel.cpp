@@ -58,6 +58,7 @@ bool ObjectPropertiesDockPanel::Draw()
 					DrawClickableAreaTab(); 
 					ImGui::EndTabItem();
 				}
+
 				ImGui::EndTabBar();
 			}		
 		}
@@ -184,6 +185,10 @@ void ObjectPropertiesDockPanel::DrawActionSettings()
 		case AT_IMAGE:
 			DrawToolImageSettings(); 
 			break; 
+
+		case AT_CHANGE_ROOM:
+			DrawToolImageSettings();
+			break;
 		}
 	}
 }
@@ -290,7 +295,7 @@ void ObjectPropertiesDockPanel::DrawActionSelectable(ActionSelectableInfo& selec
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 
-	Texture* imageIcon = (Texture*)ResourceManager::getInstance()->GetResource("ImageIcon");
+	Texture* imageIcon = App->moduleManager->GetIconFromActionType(selectableInfo.actionType); 
 	ImGui::SetCursorPos(ImVec2(10, 5 + (selectableHeigth * posInList)));
 	ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
 
@@ -344,7 +349,6 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 	}
 	POP_FONT;
 }
-
 
 void ObjectPropertiesDockPanel::DrawToolImageSettings()
 {

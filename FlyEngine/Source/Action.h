@@ -6,17 +6,17 @@
 enum ToolType
 {
 	AT_IMAGE,
-	AT_CHANGE_SCENE,
+	AT_CHANGE_ROOM,
 	AT_null,
 };
 
 enum ActionOccurrence
 {
-	occ_SceneEnter, 
-	occ_SceneLeave,
-	occ_AreaClicked,
-	occ_continuous,
-	occ_None
+	ON_SCENE_ENTER, 
+	ON_SCENE_LEAVE,
+	ON_OBJECT_CLICKED,
+	ON_CONTINUOUS,
+	ON_None
 };
 
 struct ActionSelectableInfo
@@ -26,6 +26,7 @@ struct ActionSelectableInfo
 	ToolType actionType;
 };
 
+class FlyObject; 
 class Action
 {
 public:
@@ -37,9 +38,22 @@ public:
 	virtual void Draw();
 	virtual void CleanUp();
 
+	virtual void DoAction(); 
+
 	// Set and Get ---------------------
 	std::string GetActionName() const; 
 	void SetActionName(std::string newName);
+
+	bool& IsOccSceneEnter();
+	bool& IsOccSceneLeave();
+	bool& IsOccObjectClicked();
+
+	void SetOccSceneEnter(bool newOccSceneEnter);
+	void SetOccSceneLeave(bool newOccSceneLeave);
+	void SetOccObjectClicked(bool newOccObjectClicked);
+
+	FlyObject* GetParentObject() const;
+	void SetParentObject(FlyObject* newName);
 
 	std::string GetToolDescription() const;
 	void SetToolDescription(std::string newDescription);
@@ -54,11 +68,12 @@ public:
  
 protected:
 	ToolType toolType;
+	FlyObject* parentObject;
 
 	// Occurrence ----------------
 	bool occ_SceneEnter = false; 
 	bool occ_SceneLeave = false;
-	bool occ_AreaClicked = false;
+	bool occ_ObjectClicked = false;
 	bool occ_continuous = false;
 
 	std::string toolName; 

@@ -33,8 +33,6 @@ public:
 private:
 	Quad*		quadMesh;
 	Texture*	imageTexture;
-
-	FlyObject*	parentObject; 
 	
 	float		imageWidth; 
 	float		imageHeight; 

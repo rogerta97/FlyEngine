@@ -333,7 +333,7 @@
     <ClCompile Include="Source\DisplayImageAction.cpp">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ChangeSceeneAction.cpp">
+    <ClCompile Include="Source\ChangeRoomAction.cpp">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -707,7 +707,7 @@
     <ClInclude Include="Source\DisplayImageAction.h">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ChangeSceeneAction.h">
+    <ClInclude Include="Source\ChangeRoomAction.h">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClInclude>
   </ItemGroup>

@@ -15087,7 +15087,7 @@ void ImGui::ShowMetricsWindow(bool* p_open)
         ImGui::Checkbox("Show windows rectangles", &show_windows_rects);
         ImGui::SameLine();
         ImGui::SetNextItemWidth(ImGui::GetFontSize() * 12);
-        show_windows_rects |= ImGui::Combo("##show_windows_rect_type", &show_windows_rect_type, wrt_rects_names, WRT_Count);
+        show_windows_rects |= ImGui::ComboArray("##show_windows_rect_type", &show_windows_rect_type, wrt_rects_names, WRT_Count);
         if (show_windows_rects && g.NavWindow)
         {
             ImGui::BulletText("'%s':", g.NavWindow->Name);

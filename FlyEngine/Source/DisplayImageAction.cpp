@@ -121,7 +121,7 @@ void DisplayImageAction::DrawActionOccurenceCheckboxes()
 	ImGui::SetCursorPos(ImVec2(5, 38)); 
 	ImGui::Checkbox("Scene Leave", &occ_SceneLeave);
 	ImGui::SetCursorPos(ImVec2(5, 68)); 
-	ImGui::Checkbox("Object Clicked", &occ_AreaClicked);
+	ImGui::Checkbox("Object Clicked", &occ_ObjectClicked);
 
 	ImGui::Spacing(); 
 	ImGui::EndChild(); 

@@ -7,7 +7,7 @@
 #include "Quad.h"
 #include "ImageImporter.h"
 #include "GameViewportDockPanel.h"
-#include "ChangeSceeneAction.h"
+#include "ChangeRoomAction.h"
 #include "ViewportManager.h"
 #include "ResourceManager.h"
 #include "imgui.h"
@@ -55,7 +55,8 @@ void FlyObject::Update()
 
 	if (App->isEngineInPlayMode && clickableArea->IsBoxClicked())
 	{
-		FLY_LOG("Clickable Area Clicked");
+		FLY_LOG("Object Clicked"); 
+		DoOnClickActions();
 	}
 }
 
@@ -200,6 +201,15 @@ bool FlyObject::HasVisuals()
 	return false; 
 }
 
+void FlyObject::DoOnClickActions()
+{
+	for (auto& it : actionsList)
+	{
+		if (it->IsOccObjectClicked())
+			it->DoAction(); 
+	}
+}
+
 void FlyObject::CalculateCurrentGizmo()
 {
 	switch (App->moduleImGui->gameViewportDockPanel->GetGizmoMode())
@@ -233,11 +243,11 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 	return (DisplayImageAction*)GetAction(AT_IMAGE); 	
 }
 
-ChangeSceneAction* FlyObject::AddChangeRoomAction()
+ChangeRoomAction* FlyObject::AddChangeRoomAction()
 {
-	if (GetAction(AT_CHANGE_SCENE) == nullptr)
+	if (GetAction(AT_CHANGE_ROOM) == nullptr)
 	{
-		ChangeSceneAction* changeSceneTool = new ChangeSceneAction(this);
+		ChangeRoomAction* changeSceneTool = new ChangeRoomAction(this);
 
 		actionsList.push_back(changeSceneTool);
 
@@ -247,7 +257,7 @@ ChangeSceneAction* FlyObject::AddChangeRoomAction()
 		return changeSceneTool;
 	}
 
-	return (ChangeSceneAction*)GetAction(AT_CHANGE_SCENE);
+	return (ChangeRoomAction*)GetAction(AT_CHANGE_ROOM);
 }
 
 Action* FlyObject::GetAction(std::string toolName)

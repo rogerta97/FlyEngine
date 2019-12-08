@@ -544,7 +544,7 @@ static void ShowDemoWindowWidgets()
             // See "Combo" section for examples of how to use the more complete BeginCombo()/EndCombo() api.
             const char* items[] = { "AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF", "GGGG", "HHHH", "IIII", "JJJJ", "KKKK", "LLLLLLL", "MMMM", "OOOOOOO" };
             static int item_current = 0;
-            ImGui::Combo("combo", &item_current, items, IM_ARRAYSIZE(items));
+            ImGui::ComboArray("combo", &item_current, items, IM_ARRAYSIZE(items));
             ImGui::SameLine(); HelpMarker("Refer to the \"Combo\" section below for an explanation of the full BeginCombo/EndCombo API, and demonstration of various flags.\n");
         }
 
@@ -889,7 +889,7 @@ static void ShowDemoWindowWidgets()
 
         // Simplified one-liner Combo() using an array of const char*
         static int item_current_3 = -1; // If the selection isn't within 0..count, Combo won't display a preview
-        ImGui::Combo("combo 3 (array)", &item_current_3, items, IM_ARRAYSIZE(items));
+        ImGui::ComboArray("combo 3 (array)", &item_current_3, items, IM_ARRAYSIZE(items));
 
         // Simplified one-liner Combo() using an accessor function
         struct FuncHolder { static bool ItemGetter(void* data, int idx, const char** out_str) { *out_str = ((const char**)data)[idx]; return true; } };
@@ -1903,7 +1903,7 @@ static void ShowDemoWindowLayout()
         ImGui::PushItemWidth(80);
         const char* items[] = { "AAAA", "BBBB", "CCCC", "DDDD" };
         static int item = -1;
-        ImGui::Combo("Combo", &item, items, IM_ARRAYSIZE(items)); ImGui::SameLine();
+        ImGui::ComboArray("Combo", &item, items, IM_ARRAYSIZE(items)); ImGui::SameLine();
         ImGui::SliderFloat("X", &f0, 0.0f, 5.0f); ImGui::SameLine();
         ImGui::SliderFloat("Y", &f1, 0.0f, 5.0f); ImGui::SameLine();
         ImGui::SliderFloat("Z", &f2, 0.0f, 5.0f);
@@ -4260,7 +4260,7 @@ static void ShowExampleAppConstrainedResize(bool* p_open)
         if (ImGui::Button("500x500")) { ImGui::SetWindowSize(ImVec2(500, 500)); } ImGui::SameLine();
         if (ImGui::Button("800x200")) { ImGui::SetWindowSize(ImVec2(800, 200)); }
         ImGui::SetNextItemWidth(200);
-        ImGui::Combo("Constraint", &type, desc, IM_ARRAYSIZE(desc));
+        ImGui::ComboArray("Constraint", &type, desc, IM_ARRAYSIZE(desc));
         ImGui::SetNextItemWidth(200);
         ImGui::DragInt("Lines", &display_lines, 0.2f, 1, 100);
         ImGui::Checkbox("Auto-resize", &auto_resize);

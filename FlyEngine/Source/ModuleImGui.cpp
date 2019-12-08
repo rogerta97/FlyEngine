@@ -10,6 +10,7 @@
 
 #include "ConsoleDockPanel.h"
 #include "RoomsGraphDockPanel.h"
+#include "ChangeRoomAction.h"
 #include "ViewportManager.h"
 #include "TextureMSAA.h"
 #include "WorldPropertiesDockPanel.h"
@@ -89,20 +90,19 @@ bool ModuleImGui::Start()
 
 	AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
 
-	/*FlyObject* parrot = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer Yellow", "This is a simple Fly Object to test descriptions");
+	// Test Change Scene Object
+	Room* parentRoom = App->moduleRoomManager->GetRoom("Lake"); 
+	FlyObject* parrot = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer Yellow", "This is a simple Fly Object to test descriptions");
 	string spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources\\Images\\TransformerYellow.png";
-	parrot->AddDisplayImageAction(spritePath.c_str());
 
-	parrot->CreateClickableArea(float2(0, 0), float2(1, 1));
+	ChangeRoomAction* changeRoomAction = parrot->AddChangeRoomAction();
+
+	changeRoomAction->SetOccObjectClicked(true); 
+	changeRoomAction->SetDestination(App->moduleRoomManager->GetRoom("Lake")); 
+
+	parrot->CreateClickableArea(float2(0, 0), float2(150, 150), true);
 	parrot->clickableAreaActive = true; 
-	ViewportManager::getInstance()->drawClickableArea = false; 
-
-	FlyObject* test = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer");
-	spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources/Images/Transformer.png"; 
-	test->AddDisplayImageAction(spritePath.c_str());
-
-	test->CreateClickableArea(float2(0, 0), float2(1, 1));
-	test->clickableAreaActive = true;*/
+	ViewportManager::getInstance()->drawClickableArea = true; 
 
 	return true; 
 }

@@ -1,5 +1,5 @@
-#ifndef _CHANGE_SCENE_TOOL_H_
-#define _CHANGE_SCENE_TOOL_H_
+#ifndef _CHANGE_ROOM_TOOL_H_
+#define _CHANGE_ROOM_TOOL_H_
 
 #include "Action.h"
 
@@ -7,15 +7,17 @@ using namespace std;
 
 class Room;
 class FlyObject; 
-class ChangeSceneAction : public Action
+class ChangeRoomAction : public Action
 {
 public:
-	ChangeSceneAction(FlyObject* _parentObject);
-	~ChangeSceneAction();
+	ChangeRoomAction(FlyObject* _parentObject);
+	~ChangeRoomAction();
 
 	void Init();
 	void Update();
 	void CleanUp();
+
+	void DoAction(); 
 
 	void DrawActionOccurenceCheckboxes(); 
 
