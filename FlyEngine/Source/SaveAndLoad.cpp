@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleRoomManager.h"
 #include "Room.h"
+#include "FlyObject.h"
 
 #include <fstream>
 
@@ -51,7 +52,43 @@ void SaveAndLoad::LoadDataToCurrentRoom(std::string roomDataFilePath)
 	JSON_Value* root = json_parse_file(roomDataFilePath.c_str());
 	JSON_Object* root_obj = json_value_get_object(root);
 
-	int obj_ammount = json_object_dotget_number(root_obj, string(currentRoom->GetName().c_str() + string("ObjectsAmount")).c_str());
+	int obj_ammount = json_object_dotget_number(root_obj, string(currentRoom->GetName().c_str() + string(".ObjectsAmount")).c_str());
+
+	int counter = 0; 
+	while (counter < obj_ammount)
+	{
+		string serializeObjectStr = currentRoom->GetName().c_str() + string(".FlyObject_") + to_string(counter) + string("."); 
+		CreateFlyObjectFromSavedData(root_obj, serializeObjectStr, currentRoom);
+		counter++;
+	}
+}
+
+void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::string& serializeObjectStr, Room* currentRoom)
+{
+	string newObjectName = json_object_dotget_string(root_obj, string(serializeObjectStr + string("Name")).c_str());
+	FlyObject* newObject = currentRoom->CreateFlyObject(newObjectName.c_str());
+	newObject->SetUID(json_object_dotget_number(root_obj, string(serializeObjectStr + string("UID")).c_str())); 
+
+	if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("Description")).c_str())) 
+	{
+		newObject->SetDescription(json_object_dotget_string(root_obj, string(serializeObjectStr + string("Description")).c_str()));
+	}
+
+	// Transform ------
+	float positionX = json_object_dotget_number(root_obj, string(serializeObjectStr + string("Transform.Position.x")).c_str()); 
+	float positionY = json_object_dotget_number(root_obj, string(serializeObjectStr + string("Transform.Position.y")).c_str()); 
+	float2 position(positionX, positionY); 
+	newObject->transform->SetPosition(position); 
+
+	float rotationX = json_object_dotget_number(root_obj, string(serializeObjectStr + string("Transform.Rotation.x")).c_str());
+	float rotationY = json_object_dotget_number(root_obj, string(serializeObjectStr + string("Transform.Rotation.y")).c_str());
+	float2 rotation(rotationX, rotationY);
+	newObject->transform->SetRotationEuler(position);
+
+	float scaleX = json_object_dotget_number(root_obj, string(serializeObjectStr + string("Transform.Scale.x")).c_str());
+	float scaleY = json_object_dotget_number(root_obj, string(serializeObjectStr + string("Transform.Scale.y")).c_str());
+	float2 scale(scaleX, scaleY);
+	newObject->transform->SetScale(position);
 }
 
 SaveAndLoad::SaveAndLoad()

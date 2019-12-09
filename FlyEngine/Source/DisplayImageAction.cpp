@@ -108,7 +108,7 @@ void DisplayImageAction::CleanUp()
 
 void DisplayImageAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString)
 {
-	string toolsSerializeSection = serializeObjectString + string("Tools.DisplayImage.");
+	string toolsSerializeSection = serializeObjectString + string("Actions.DisplayImage.");
 
 	if (imageTexture != nullptr)
 	{

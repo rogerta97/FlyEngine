@@ -117,6 +117,16 @@ void FlyObject::SetName(std::string newName)
 	name = newName; 
 }
 
+UID FlyObject::GetUID() const
+{
+	return uid;
+}
+
+void FlyObject::SetUID(UID newUID)
+{
+	uid = newUID;
+}
+
 std::string FlyObject::GetDescription() const
 {
 	return description;
@@ -204,8 +214,6 @@ void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 
 	if(!GetDescription().empty())
 		json_object_dotset_string(jsonObject, string(serializeObjectName + "Description").c_str(), GetDescription().c_str());
-	else
-		json_object_dotset_string(jsonObject, string(serializeObjectName + "Description").c_str(), "None");
 
 	SaveTransform(serializeObjectName, jsonObject);
 

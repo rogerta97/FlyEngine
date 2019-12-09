@@ -40,7 +40,7 @@ void ChangeRoomAction::CleanUp()
 
 void ChangeRoomAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString)
 {
-	string toolsSerializeSection = serializeObjectString + string("Tools.ChangeRoom.");
+	string toolsSerializeSection = serializeObjectString + string("Actions.ChangeRoom.");
 
 	if (destinationRoom != nullptr)
 		json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("Destination")).c_str(), destinationRoom->GetName().c_str());

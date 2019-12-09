@@ -18,6 +18,8 @@ public:
 	void SaveCurrentRoomData();
 	void LoadDataToCurrentRoom(std::string roomDataFilePath);
 
+	void CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::string& serializeObjectStr, Room* currentRoom);
+
 	static void Delete();
 };
 

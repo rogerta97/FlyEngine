@@ -78,11 +78,12 @@ int Room::GetObjectsInRoomAmount()
 
 void Room::SaveRoomData(JSON_Object* jsonObject)
 {
+	json_object_dotset_number(jsonObject, string(GetName() + ".ObjectsAmount").c_str(), GetObjectsInRoomAmount());
+
 	int count = 0; 
 	for (auto& it : objectsInRoom)
 		it->SaveObjectData(jsonObject, count++);
 
-	json_object_dotset_number(jsonObject, string(serializeObjectName + "UID").c_str(), uid);
 }
 
 RoomConnection* Room::ConnectToRoom(Room* destinationRoom)

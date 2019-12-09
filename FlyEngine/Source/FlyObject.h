@@ -65,6 +65,9 @@ public:
 	std::string GetName() const;
 	void SetName(std::string newName); 
 
+	UID GetUID() const;
+	void SetUID(UID newUID);
+
 	std::string GetDescription() const;
 	void SetDescription(std::string newDescription);
 
