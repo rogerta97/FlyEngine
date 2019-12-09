@@ -22,7 +22,7 @@ SaveAndLoad::~SaveAndLoad()
 	instance->Delete();
 }
 
-void SaveAndLoad::SaveCurrentRoom()
+void SaveAndLoad::SaveCurrentRoomData()
 {
 	// Get Current Room 
 	Room* currentRoom = App->moduleRoomManager->GetSelectedRoom(); 
@@ -40,6 +40,18 @@ void SaveAndLoad::SaveCurrentRoom()
 	currentRoom->SaveRoomData(scene_obj); 
 
 	json_serialize_to_file(scene_v, testPath.c_str());
+}
+
+void SaveAndLoad::LoadDataToCurrentRoom(std::string roomDataFilePath)
+{
+	// Get Current Room 
+	Room* currentRoom = App->moduleRoomManager->GetSelectedRoom();
+
+	// Open File To Read
+	JSON_Value* root = json_parse_file(roomDataFilePath.c_str());
+	JSON_Object* root_obj = json_value_get_object(root);
+
+	int obj_ammount = json_object_dotget_number(root_obj, string(currentRoom->GetName().c_str() + string("ObjectsAmount")).c_str());
 }
 
 SaveAndLoad::SaveAndLoad()

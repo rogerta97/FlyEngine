@@ -2,7 +2,9 @@
 #define _SAVE_AND_LOAD_H_
 
 #include "JSON/parson.h"
+#include <string>
 
+class Room; 
 struct SaveAndLoad {
 
 private:
@@ -13,7 +15,8 @@ public:
 	static SaveAndLoad* getInstance();
 	~SaveAndLoad();
 
-	void SaveCurrentRoom();
+	void SaveCurrentRoomData();
+	void LoadDataToCurrentRoom(std::string roomDataFilePath);
 
 	static void Delete();
 };

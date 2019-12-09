@@ -105,7 +105,7 @@ void RoomDockPanel::DrawTopButtons()
 			currentRoom->CleanUp(); 
 			
 			// Load New Data
-			SaveAndLoad::getInstance()->LoadDataToCurrentRoom(); 
+			SaveAndLoad::getInstance()->LoadDataToCurrentRoom(path); 
 		}
 
 	}
