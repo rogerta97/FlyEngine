@@ -71,6 +71,11 @@ void Room::CleanUp()
 	objectsInRoom.clear(); 
 }
 
+int Room::GetObjectsInRoomAmount()
+{
+	return objectsInRoom.size();
+}
+
 void Room::SaveRoomData(JSON_Object* jsonObject)
 {
 	int count = 0; 

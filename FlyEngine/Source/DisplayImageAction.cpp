@@ -108,9 +108,18 @@ void DisplayImageAction::CleanUp()
 
 void DisplayImageAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString)
 {
-	json_object_dotset_number(jsonObject, string(serializeObjectString + string("Quad_Width")).c_str(), imageWidth);
-	json_object_dotset_number(jsonObject, string(serializeObjectString + string("Quad_Hiegth")).c_str(), imageHeight);
-	json_object_dotset_string(jsonObject, string(serializeObjectString + string("Path")).c_str(), imageTexture->GetPath());
+	string toolsSerializeSection = serializeObjectString + string("Tools.DisplayImage.");
+
+	if (imageTexture != nullptr)
+	{
+		json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("Image_Width")).c_str(), imageWidth);
+		json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("Image_Heigth")).c_str(), imageHeight);
+
+		string relativePath = imageTexture->GetPath();
+		MyFileSystem::getInstance()->GetRelativeDirectory(relativePath);
+
+		json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("Image_Path")).c_str(), relativePath.c_str());
+	}
 }
 
 void DisplayImageAction::DrawActionOccurenceCheckboxes()

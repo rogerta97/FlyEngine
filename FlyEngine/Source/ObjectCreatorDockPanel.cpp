@@ -188,7 +188,10 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 {
 	if (selectedAction)
 	{
-		IMGUI_SPACED_SEPARATOR; 
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Separator();
+		ImGui::Spacing();
 
 	/*	ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
 		string settingsName = selectedAction->GetActionName() + string(" Settings:");

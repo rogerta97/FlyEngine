@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "MyFileSystem.h"
 #include "SDL/include/SDL_filesystem.h"
 #include "mmgr.h"
@@ -49,6 +51,19 @@ void MyFileSystem::DeleteLastPathItem(string& path)
 	path = path.substr(0, pos + 1);
 }
 
+void MyFileSystem::DeleteFrontItem(string& path)
+{
+	const char bars[] = 
+	{
+		'\\', 
+		'/', 
+	}; 
+
+	int firstBarPos = path.find_first_of('\\');
+	int pathSize = path.size() - 1 - firstBarPos; 
+	path = path.substr(firstBarPos + 1, pathSize); 
+}
+
 void MyFileSystem::DeleteFileExtension(string& path)
 {
 	int pos = path.find_first_of(".");
@@ -87,6 +102,21 @@ string MyFileSystem::GetGameDirectory()
 	}
 
 	return instance->gameDirectory;
+}
+
+void MyFileSystem::GetRelativeDirectory(string& directory)
+{
+	instance->DeleteFrontItem(directory);
+
+	if (instance->GetBarsCount(directory) == 2)
+		return; 
+	else
+		instance->GetRelativeDirectory(directory);
+}
+
+int MyFileSystem::GetBarsCount(string countStr)
+{
+	return (int)std::count(countStr.begin(), countStr.end(), '\\');
 }
 
 void MyFileSystem::Delete()

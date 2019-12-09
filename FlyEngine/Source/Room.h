@@ -36,6 +36,9 @@ public:
 
 	void CleanUp(); 
 
+	// Utility -------------------
+	int GetObjectsInRoomAmount(); 
+
 	// Save & Load ---------------
 	void SaveRoomData(JSON_Object* jsonObject);
 

@@ -34,8 +34,8 @@ public:
 
 	// Save & Load 
 	void SaveObjectData(JSON_Object* jsonObject, int objectIndex);
-
-	void SerializeClickableArea(std::string& serializeObjectName, JSON_Object* jsonObject);
+	void SaveTransform(std::string serializeObjectName, JSON_Object* jsonObject);
+	void SerializeClickableArea(std::string serializeObjectName, JSON_Object* jsonObject);
 
 	// Actions ---------
 	void DoOnClickActions(); 
@@ -97,7 +97,7 @@ private:
 	std::list<Action*> actionsList; 
 	std::string name; 
 	std::string description;
-	UID id; 
+	UID uid; 
 	bool hasVisuals;
 	bool isInteractable; 
 };

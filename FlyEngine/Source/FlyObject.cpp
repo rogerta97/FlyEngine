@@ -24,7 +24,7 @@ FlyObject::FlyObject(std::string _name, std::string _description)
 {
 	name = _name; 
 	description = _description;
-	id = RandomNumberGenerator::GenerateUID(); 
+	uid = RandomNumberGenerator::GenerateUID(); 
 	isSelected = false; 
 	hasVisuals = false; 
 	clickableAreaActive = false;
@@ -199,6 +199,15 @@ void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 	string serializeObjectName(App->moduleRoomManager->GetSelectedRoom()->GetName().c_str() + string(".")); 
 	serializeObjectName += "FlyObject_" + to_string(objectIndex) + string(".");
 	json_object_dotset_string(jsonObject, string(serializeObjectName + "Name").c_str(), GetName().c_str());
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "UID").c_str(), uid);
+	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "Interactable").c_str(), isInteractable);
+
+	if(!GetDescription().empty())
+		json_object_dotset_string(jsonObject, string(serializeObjectName + "Description").c_str(), GetDescription().c_str());
+	else
+		json_object_dotset_string(jsonObject, string(serializeObjectName + "Description").c_str(), "None");
+
+	SaveTransform(serializeObjectName, jsonObject);
 
 	// Save Object Action Settings
 	for (auto& it : actionsList)
@@ -210,7 +219,20 @@ void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 	SerializeClickableArea(serializeObjectName, jsonObject);
 }
 
-void FlyObject::SerializeClickableArea(std::string& serializeObjectName, JSON_Object* jsonObject)
+void FlyObject::SaveTransform(std::string serializeObjectName, JSON_Object* jsonObject)
+{
+	serializeObjectName += "Transform.";
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "Position.x").c_str(), transform->GetPosition().x);
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "Position.y").c_str(), transform->GetPosition().y);
+
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "Rotation.x").c_str(), transform->GetRotation().x);
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "Rotation.y").c_str(), transform->GetRotation().y);
+
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "Scale.x").c_str(), transform->GetScale().x);
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "Scale.y").c_str(), transform->GetScale().y);
+}
+
+void FlyObject::SerializeClickableArea(std::string serializeObjectName, JSON_Object* jsonObject)
 {
 	serializeObjectName += "ClickableArea.";
 

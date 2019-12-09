@@ -23,11 +23,16 @@ public:
 	static string GetLastPathItem(string path, bool keepTermination);
 	static void DeleteFileExtension(string& path);
 	static void DeleteLastPathItem(string& path);
+	static void DeleteFrontItem(string& path); 
 
 	// Get Directories ---
 	static string GetIconsDirectory();
 	static string GetSolutionDirectory();
 	static string GetGameDirectory(); 
+	static void GetRelativeDirectory(string& directory); 
+
+private: 
+	static int GetBarsCount(string countStr); 
 
 private: 
 	std::string solutionDirectory = "";

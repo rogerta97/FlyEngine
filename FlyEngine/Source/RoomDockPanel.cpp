@@ -12,6 +12,7 @@
 #include "ImageImporter.h"
 #include "TinyFileDialog.h"
 #include "SaveAndLoad.h"
+#include "MyFileSystem.h"
 
 #include "Room.h"
 #include "Texture.h"
@@ -70,7 +71,8 @@ bool RoomDockPanel::Draw()
 void RoomDockPanel::DrawTopButtons()
 {
 	// Create Object Button ---
-	static ImVec4 playButtonColor = ImVec4(0.20f, 0.25f, 0.29f, 1.00f);
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.29f, 0.35f, 0.39f, 1.00f));
+	static ImVec4 playButtonColor = ImVec4(0.35f, 0.39f, 0.50f, 1.00f);
 	Texture* plusObjectTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
 	if(ImGui::ImageButton((ImTextureID)plusObjectTexture->GetTextureID(), ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, 1)))
 	{
@@ -80,15 +82,44 @@ void RoomDockPanel::DrawTopButtons()
 
 	// Save Button ------------
 	ImGui::SameLine();
-	Texture* saveTexture = (Texture*)ResourceManager::getInstance()->GetResource("SaveIcon");
-	if (ImGui::ImageButton((ImTextureID)saveTexture->GetTextureID(), ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, 1)))
+	Texture* exportTexture = (Texture*)ResourceManager::getInstance()->GetResource("ExportIcon");
+	if (ImGui::ImageButton((ImTextureID)exportTexture->GetTextureID(), ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, 1)))
 	{
 		SaveAndLoad::getInstance()->SaveCurrentRoom(); 
+	}
+
+	// Save Button ------------
+	ImGui::SameLine();
+	Texture* importIcon = (Texture*)ResourceManager::getInstance()->GetResource("ImportIcon");
+	if (ImGui::ImageButton((ImTextureID)importIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, 1)))
+	{
+		char const* lFilterPatterns[1] = { "*.json" };
+		string defaultPath = MyFileSystem::getInstance()->GetSolutionDirectory(); 
+		defaultPath += "Source\\Game\\Resources\\EngineSavedData\\"; 
+		const char* path = tinyfd_openFileDialog("Load Image...", defaultPath.c_str(), 1, lFilterPatterns, NULL, 0);
+
+		/*if (path != NULL)
+		{
+			if (!ResourceManager::getInstance()->ExistResourcePath(path))
+			{
+				selectedImageAction->SetTexture(ImageImporter::getInstance()->LoadTexture(path, false));
+				ResourceManager::getInstance()->AddResource(selectedImageAction->GetTexture(), selectedImageAction->GetTexture()->GetName());
+			}
+			else
+			{
+				selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResourceByPath(path));
+			}
+
+			strcpy(buf, path);
+			FLY_LOG("Player Opened %s", path);
+		}*/
+
 	}
 
 	// Play Button ------------
 	ImGui::SameLine();
 	ImGui::PushStyleColor(ImGuiCol_Button, playButtonColor);
+	ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 37); 
 	if (ImGui::ImageButton((ImTextureID)playStopButtonTexture->GetTextureID(), ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, 1)))
 	{
 		App->isEngineInPlayMode = !App->isEngineInPlayMode; 
@@ -100,11 +131,11 @@ void RoomDockPanel::DrawTopButtons()
 		}
 		else {
 			App->BroadCastEvent(FlyEngineEvent::ENGINE_STOP);
-			playButtonColor = ImVec4(0.20f, 0.25f, 0.29f, 1.00f);
+			playButtonColor = ImVec4(0.35f, 0.39f, 0.50f, 1.00f);
 			playStopButtonTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlayIcon");
 		}
 	}
-	ImGui::PopStyleColor(); 
+	ImGui::PopStyleColor(2); 
 }
 
 void RoomDockPanel::DrawRoomHierarchy()
@@ -122,35 +153,42 @@ void RoomDockPanel::DrawRoomHierarchy()
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 	ImGui::Spacing();
 
-	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
-	FlyObject* selectedObject = selectedRoom->GetSelectedObject();
+	if (App->moduleRoomManager->GetSelectedRoom()->GetObjectsInRoomAmount() == 0)
+	{
+		ImGui::TextColored(ImVec4(0,1,1,1), " There are no objects in this room"); 
+	}
+	else
+	{
+		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+		FlyObject* selectedObject = selectedRoom->GetSelectedObject();
 
-	for (list<FlyObject*>::reverse_iterator it = selectedRoom->objectsInRoom.rbegin(); it != selectedRoom->objectsInRoom.rend(); it++) {
+		for (list<FlyObject*>::reverse_iterator it = selectedRoom->objectsInRoom.rbegin(); it != selectedRoom->objectsInRoom.rend(); it++) {
 
-		PUSH_FONT(App->moduleImGui->rudaBlackMid);
+			PUSH_FONT(App->moduleImGui->rudaBlackMid);
 
-		bool objectSelected = false;
+			bool objectSelected = false;
 
-		if (selectedObject != nullptr)
-			objectSelected = (selectedObject->GetName() == (*it)->GetName());
+			if (selectedObject != nullptr)
+				objectSelected = (selectedObject->GetName() == (*it)->GetName());
 
-		if (ImGui::Selectable(string("  " + (*it)->GetName()).c_str(), objectSelected, ImGuiSelectableFlags_AllowDoubleClick))
-		{
-			(*it)->isSelected = true;
-			App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(*it);
+			if (ImGui::Selectable(string("  " + (*it)->GetName()).c_str(), objectSelected, ImGuiSelectableFlags_AllowDoubleClick))
+			{
+				(*it)->isSelected = true;
+				App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(*it);
 
-			if (App->moduleInput->GetMouseButton(RIGHT_CLICK)) {
-				FLY_LOG("CLICKED RIGHT BUTTON");
+				if (App->moduleInput->GetMouseButton(RIGHT_CLICK)) {
+					FLY_LOG("CLICKED RIGHT BUTTON");
+				}
 			}
+
+			// Move Layer Arrows
+			DrawMoveLayerSelectableButtons();
+
+			POP_FONT;
 		}
-
-		// Move Layer Arrows
-		DrawMoveLayerSelectableButtons();
-
-		POP_FONT;
 	}
 
-	ImGui::PopStyleVar();
+	ImGui::PopStyleVar();	
 	ImGui::EndChild();
 }
 
