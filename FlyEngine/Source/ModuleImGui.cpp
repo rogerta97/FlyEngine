@@ -88,19 +88,19 @@ bool ModuleImGui::Start()
 
 	AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
 
-	// Test Change Scene Object
-	Room* parentRoom = App->moduleRoomManager->GetRoom("Lake"); 
-	FlyObject* parrot = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer Yellow", "This is a simple Fly Object to test descriptions");
-	string spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources\\Images\\TransformerYellow.png";
+	//// Test Change Scene Object
+	//Room* parentRoom = App->moduleRoomManager->GetRoom("Lake"); 
+	//FlyObject* parrot = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer Yellow", "This is a simple Fly Object to test descriptions");
+	//string spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources\\Images\\TransformerYellow.png";
 
-	ChangeRoomAction* changeRoomAction = parrot->AddChangeRoomAction();
+	//ChangeRoomAction* changeRoomAction = parrot->AddChangeRoomAction();
 
-	changeRoomAction->SetOccObjectClicked(true); 
-	changeRoomAction->SetDestination(App->moduleRoomManager->GetRoom("Lake")); 
+	//changeRoomAction->SetOccObjectClicked(true); 
+	//changeRoomAction->SetDestination(App->moduleRoomManager->GetRoom("Lake")); 
 
-	parrot->CreateClickableArea(float2(0, 0), float2(150, 150), true);
-	parrot->clickableAreaActive = true; 
-	ViewportManager::getInstance()->drawClickableArea = true; 
+	//parrot->CreateClickableArea(float2(0, 0), float2(150, 150), true);
+	//parrot->clickableAreaActive = true; 
+	//ViewportManager::getInstance()->drawClickableArea = true; 
 
 	return true; 
 }

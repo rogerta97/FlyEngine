@@ -39,9 +39,6 @@ public:
 private:
 	uint width = 0;
 	uint height = 0;
-
-
-
 };
 
 #endif#

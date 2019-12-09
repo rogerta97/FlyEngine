@@ -108,7 +108,9 @@ void DisplayImageAction::CleanUp()
 
 void DisplayImageAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString)
 {
-	json_object_dotset_number(jsonObject, "Display Image Save", 50);
+	json_object_dotset_number(jsonObject, string(serializeObjectString + string("Quad_Width")).c_str(), imageWidth);
+	json_object_dotset_number(jsonObject, string(serializeObjectString + string("Quad_Hiegth")).c_str(), imageHeight);
+	json_object_dotset_string(jsonObject, string(serializeObjectString + string("Path")).c_str(), imageTexture->GetPath());
 }
 
 void DisplayImageAction::DrawActionOccurenceCheckboxes()

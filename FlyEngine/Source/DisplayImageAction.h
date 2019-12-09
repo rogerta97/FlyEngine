@@ -38,7 +38,6 @@ private:
 	
 	float		imageWidth; 
 	float		imageHeight; 
-	bool		isFake; 
 };
 
 #endif 

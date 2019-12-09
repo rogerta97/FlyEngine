@@ -42,7 +42,10 @@ void ChangeRoomAction::SaveAction(JSON_Object* jsonObject, string serializeObjec
 {
 	string toolsSerializeSection = serializeObjectString + string("Tools.ChangeRoom.");
 
-	json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("Destination")).c_str(), destinationRoom->GetName().c_str());
+	if (destinationRoom != nullptr)
+		json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("Destination")).c_str(), destinationRoom->GetName().c_str());
+	else
+		json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("Destination")).c_str(), "None");
 }
 
 void ChangeRoomAction::DoAction()

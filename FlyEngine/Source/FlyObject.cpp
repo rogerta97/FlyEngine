@@ -221,11 +221,22 @@ void FlyObject::SerializeClickableArea(std::string& serializeObjectName, JSON_Ob
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "Color.b").c_str(), clickableAreaColor.z);
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "Color.a").c_str(), clickableAreaColor.w);
 
-	json_object_dotset_number(jsonObject, string(serializeObjectName + "MinPoint.x").c_str(), clickableArea->GetMinPoint().x);
-	json_object_dotset_number(jsonObject, string(serializeObjectName + "MinPoint.y").c_str(), clickableArea->GetMinPoint().y);
+	if (clickableAreaActive)
+	{
+		json_object_dotset_number(jsonObject, string(serializeObjectName + "MinPoint.x").c_str(), clickableArea->GetMinPoint().x);
+		json_object_dotset_number(jsonObject, string(serializeObjectName + "MinPoint.y").c_str(), clickableArea->GetMinPoint().y);
 
-	json_object_dotset_number(jsonObject, string(serializeObjectName + "MaxPoint.x").c_str(), clickableArea->GetMaxPoint().x);
-	json_object_dotset_number(jsonObject, string(serializeObjectName + "MaxPoint.y").c_str(), clickableArea->GetMaxPoint().y);
+		json_object_dotset_number(jsonObject, string(serializeObjectName + "MaxPoint.x").c_str(), clickableArea->GetMaxPoint().x);
+		json_object_dotset_number(jsonObject, string(serializeObjectName + "MaxPoint.y").c_str(), clickableArea->GetMaxPoint().y);
+	}
+	else
+	{
+		json_object_dotset_number(jsonObject, string(serializeObjectName + "MinPoint.x").c_str(), 0);
+		json_object_dotset_number(jsonObject, string(serializeObjectName + "MinPoint.y").c_str(), 0);
+
+		json_object_dotset_number(jsonObject, string(serializeObjectName + "MaxPoint.x").c_str(), 0);
+		json_object_dotset_number(jsonObject, string(serializeObjectName + "MaxPoint.y").c_str(), 0);
+	}
 }
 
 void FlyObject::DoOnClickActions()
