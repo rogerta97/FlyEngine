@@ -85,7 +85,7 @@ void RoomDockPanel::DrawTopButtons()
 	Texture* exportTexture = (Texture*)ResourceManager::getInstance()->GetResource("ExportIcon");
 	if (ImGui::ImageButton((ImTextureID)exportTexture->GetTextureID(), ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, 1)))
 	{
-		SaveAndLoad::getInstance()->SaveCurrentRoom(); 
+		SaveAndLoad::getInstance()->SaveCurrentRoomData(); 
 	}
 
 	// Save Button ------------
@@ -98,21 +98,15 @@ void RoomDockPanel::DrawTopButtons()
 		defaultPath += "Source\\Game\\Resources\\EngineSavedData\\"; 
 		const char* path = tinyfd_openFileDialog("Load Image...", defaultPath.c_str(), 1, lFilterPatterns, NULL, 0);
 
-		/*if (path != NULL)
+		if (path != "")
 		{
-			if (!ResourceManager::getInstance()->ExistResourcePath(path))
-			{
-				selectedImageAction->SetTexture(ImageImporter::getInstance()->LoadTexture(path, false));
-				ResourceManager::getInstance()->AddResource(selectedImageAction->GetTexture(), selectedImageAction->GetTexture()->GetName());
-			}
-			else
-			{
-				selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResourceByPath(path));
-			}
-
-			strcpy(buf, path);
-			FLY_LOG("Player Opened %s", path);
-		}*/
+			// Clean Current Room Content
+			Room* currentRoom = App->moduleRoomManager->GetSelectedRoom(); 
+			currentRoom->CleanUp(); 
+			
+			// Load New Data
+			SaveAndLoad::getInstance()->LoadDataToCurrentRoom(); 
+		}
 
 	}
 
