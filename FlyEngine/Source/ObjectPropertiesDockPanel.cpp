@@ -7,6 +7,7 @@
 #include "ModuleRoomManager.h"
 #include "Gizmos.h"
 #include "ResourceManager.h"
+#include "ChangeRoomAction.h"
 #include "DisplayImageAction.h"
 #include "GameViewportDockPanel.h"
 #include "ImageImporter.h"
@@ -186,9 +187,58 @@ void ObjectPropertiesDockPanel::DrawActionSettings()
 			DrawToolImageSettings(); 
 			break; 
 
-		case AT_CHANGE_ROOM:
-			DrawToolImageSettings();
+		case AT_CHANGE_ROOM:			
+			DrawChangeRoomSettings();
 			break;
+		}
+	}
+}
+
+void ObjectPropertiesDockPanel::DrawChangeRoomSettings()
+{
+	ChangeRoomAction* changeRoomAction = (ChangeRoomAction*)selectedObject->GetAction("ChangeRoom");
+
+	if (changeRoomAction != nullptr)
+	{
+		if (ImGui::CollapsingHeader("Change Room Settings", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+			ImGui::Text("Action Happens On:");
+			ImGui::PopFont();
+
+			ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
+
+			ImGui::SetCursorPos(ImVec2(5, 8));
+			ImGui::Checkbox("Scene Enter", &changeRoomAction->IsOccSceneEnter());
+			ImGui::SetCursorPos(ImVec2(5, 38));
+			ImGui::Checkbox("Scene Leave", &changeRoomAction->IsOccSceneLeave());
+			ImGui::SetCursorPos(ImVec2(5, 68));
+			ImGui::Checkbox("Object Clicked", &changeRoomAction->IsOccObjectClicked());
+
+			ImGui::SameLine();
+			if (ImGui::SmallButton("Adjust Clickable Area"))
+			{
+				
+			}
+
+			ImGui::Spacing();
+			ImGui::EndChild();
+
+			ImGui::PopFont();
+			ImGui::PopStyleColor();
+
+			IMGUI_SPACED_SEPARATOR;
+
+			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+			ImGui::Text("Change Room Settings: ");
+			ImGui::PopFont();
+
+			string* rooms = App->moduleRoomManager->GetRoomsAsCombo();
+			const char* roomsToCombo[] = { "None", rooms[0].c_str(), rooms[1].c_str(), rooms[2].c_str() };
+			static int ci = 0;
+			ImGui::ComboArray("Destination", &ci, roomsToCombo, IM_ARRAYSIZE(roomsToCombo));
 		}
 	}
 }
@@ -291,7 +341,7 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 	}
 }
 
-void ObjectPropertiesDockPanel::DrawActionSelectable(ActionSelectableInfo& selectableInfo, Action*& currentTool, int posInList, int selectableHeigth = 42)
+void ObjectPropertiesDockPanel::DrawActionSelectable(ActionSelectableInfo& selectableInfo, Action*& currentAction, int posInList, int selectableHeigth = 42)
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 
@@ -300,8 +350,8 @@ void ObjectPropertiesDockPanel::DrawActionSelectable(ActionSelectableInfo& selec
 	ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
 
 	ImGui::SetCursorPos(ImVec2(50, +(selectableHeigth * posInList)));
-	if (ImGui::Selectable(selectableInfo.actionName.c_str(), currentTool->IsSelected(), ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), selectableHeigth))) {
-		selectedObject->selectedAction = currentTool;
+	if (ImGui::Selectable(selectableInfo.actionName.c_str(), currentAction->IsSelected(), ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), selectableHeigth))) {
+		selectedObject->selectedAction = currentAction;
 	}
 	ImGui::PopFont();
 

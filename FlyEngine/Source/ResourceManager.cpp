@@ -95,6 +95,7 @@ void ResourceManager::CleanUp()
 	{
 		currentResource->CleanUp();
 		delete currentResource;
+		currentResource = nullptr; 
 	}
 
 	instance->resourceList.clear(); 

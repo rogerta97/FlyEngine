@@ -3,9 +3,11 @@
 #include "MyFileSystem.h"
 #include "Application.h"
 #include "ModuleRoomManager.h"
-#include "ChangeRoomAction.h"
 #include "Room.h"
 #include "FlyObject.h"
+
+#include "DisplayImageAction.h"
+#include "ChangeRoomAction.h"
 
 #include <fstream>
 
@@ -84,12 +86,12 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 	float rotationX = json_object_dotget_number(root_obj, string(serializeObjectStr + string("Transform.Rotation.x")).c_str());
 	float rotationY = json_object_dotget_number(root_obj, string(serializeObjectStr + string("Transform.Rotation.y")).c_str());
 	float2 rotation(rotationX, rotationY);
-	newObject->transform->SetRotationEuler(position);
+	newObject->transform->SetRotationEuler(rotation);
 
 	float scaleX = json_object_dotget_number(root_obj, string(serializeObjectStr + string("Transform.Scale.x")).c_str());
 	float scaleY = json_object_dotget_number(root_obj, string(serializeObjectStr + string("Transform.Scale.y")).c_str());
 	float2 scale(scaleX, scaleY);
-	newObject->transform->SetScale(position);
+	newObject->transform->SetScale(scale);
 
 	// Actions -------
 	if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("Actions")).c_str()))
@@ -97,7 +99,13 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		string serializeObjectStrActions = serializeObjectStr + "Actions.";
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayImage")).c_str()))
 		{
+			int quadWidth = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("DisplayImage.ImageWidth")).c_str());
+			int quadHeight = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("DisplayImage.ImageHeigth")).c_str());
 
+			string textureName = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("DisplayImage.TextureName")).c_str());
+			string imagePath(MyFileSystem::getInstance()->GetSolutionDirectory() + string("EngineResources\\Images\\" + textureName));
+
+			DisplayImageAction* displayImageAction = newObject->AddDisplayImageAction(imagePath.c_str()); 
 		}
 
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ChangeRoom")).c_str()))
@@ -109,6 +117,8 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 			changeRoomAction->SetDestination(room); 
 		}
 	}
+ 
+	newObject->FitObjectUtils();
 }
 
 SaveAndLoad::SaveAndLoad()

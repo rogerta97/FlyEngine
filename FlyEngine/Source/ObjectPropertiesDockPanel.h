@@ -24,6 +24,7 @@ public:
 	// Object Tools Tab
 	void DrawObjectActionsTab();
 	void DrawActionSettings();
+	void DrawChangeRoomSettings();
 	void DrawActionsList();
 	void DrawAddAndDeleteButtons();
 	void DrawActionSelectable(ActionSelectableInfo& selectableInfo, Action*& currentTool, int posInList, int selectableHeigth);

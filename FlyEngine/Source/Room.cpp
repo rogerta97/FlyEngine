@@ -49,6 +49,12 @@ void Room::Update()
 				App->moduleManager->SetSelectedFlyObject(nullptr);
 		}
 	}
+
+	// Check if SUPR is pressed to delete
+	if (App->moduleInput->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
+	{
+		DeleteSelectedObject(); 
+	}
 }
 
 

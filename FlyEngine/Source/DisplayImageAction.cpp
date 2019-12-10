@@ -100,7 +100,7 @@ void DisplayImageAction::CleanUp()
 	if (imageTexture != nullptr)
 	{
 		imageTexture->CleanUp();
-		delete imageTexture; 
+		//delete imageTexture;
 	}
 
 	parentObject = nullptr; 
@@ -112,13 +112,10 @@ void DisplayImageAction::SaveAction(JSON_Object* jsonObject, string serializeObj
 
 	if (imageTexture != nullptr)
 	{
-		json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("Image_Width")).c_str(), imageWidth);
-		json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("Image_Heigth")).c_str(), imageHeight);
+		json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("ImageWidth")).c_str(), imageWidth);
+		json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("ImageHeigth")).c_str(), imageHeight);
 
-		string relativePath = imageTexture->GetPath();
-		MyFileSystem::getInstance()->GetRelativeDirectory(relativePath);
-
-		json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("Image_Path")).c_str(), relativePath.c_str());
+		json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("TextureName")).c_str(), MyFileSystem::getInstance()->GetLastPathItem(imageTexture->GetPath(), true).c_str());
 	}
 }
 
