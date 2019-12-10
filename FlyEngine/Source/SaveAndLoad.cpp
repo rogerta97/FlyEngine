@@ -3,6 +3,7 @@
 #include "MyFileSystem.h"
 #include "Application.h"
 #include "ModuleRoomManager.h"
+#include "ChangeRoomAction.h"
 #include "Room.h"
 #include "FlyObject.h"
 
@@ -89,6 +90,25 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 	float scaleY = json_object_dotget_number(root_obj, string(serializeObjectStr + string("Transform.Scale.y")).c_str());
 	float2 scale(scaleX, scaleY);
 	newObject->transform->SetScale(position);
+
+	// Actions -------
+	if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("Actions")).c_str()))
+	{
+		string serializeObjectStrActions = serializeObjectStr + "Actions.";
+		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayImage")).c_str()))
+		{
+
+		}
+
+		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ChangeRoom")).c_str()))
+		{
+			string destinationRoomName = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("ChangeRoom.Destination")).c_str());
+			ChangeRoomAction* changeRoomAction = newObject->AddChangeRoomAction(); 
+
+			Room* room = App->moduleRoomManager->GetRoom(destinationRoomName); 
+			changeRoomAction->SetDestination(room); 
+		}
+	}
 }
 
 SaveAndLoad::SaveAndLoad()
