@@ -9,10 +9,10 @@
 
 ChangeRoomAction::ChangeRoomAction(FlyObject* _parentObject)
 {
-	toolType = AT_CHANGE_ROOM;
+	actionType = AT_CHANGE_ROOM;
 	isVisual = false;
 
-	SetActionName("Change Scene");
+	SetActionName("Change Room");
 	SetToolDescription("This should be the description of the scene change");
 }
 

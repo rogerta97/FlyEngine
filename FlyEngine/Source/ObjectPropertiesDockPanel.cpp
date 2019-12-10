@@ -11,6 +11,7 @@
 #include "DisplayImageAction.h"
 #include "GameViewportDockPanel.h"
 #include "ImageImporter.h"
+#include "Action.h"
 #include "ViewportManager.h"
 #include "TinyFileDialog.h"
 #include "Texture.h"
@@ -179,9 +180,9 @@ void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 
 void ObjectPropertiesDockPanel::DrawActionSettings()
 {
-	if (selectedObject->selectedAction)
+	if (selectedObject->GetSelectedActionType() != AT_null)
 	{
-		switch (selectedObject->selectedAction->GetActionType())
+		switch (selectedObject->GetSelectedActionType())
 		{
 		case AT_IMAGE:
 			DrawToolImageSettings(); 
@@ -196,11 +197,11 @@ void ObjectPropertiesDockPanel::DrawActionSettings()
 
 void ObjectPropertiesDockPanel::DrawChangeRoomSettings()
 {
-	ChangeRoomAction* changeRoomAction = (ChangeRoomAction*)selectedObject->GetAction("ChangeRoom");
+	ChangeRoomAction* changeRoomAction = (ChangeRoomAction*)selectedObject->GetAction("Change Room");
 
 	if (changeRoomAction != nullptr)
 	{
-		if (ImGui::CollapsingHeader("Change Room Settings", ImGuiTreeNodeFlags_DefaultOpen))
+		if (ImGui::CollapsingHeader("Change Room Attributes", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 			ImGui::Text("Action Happens On:");
@@ -285,13 +286,13 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
 	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(18, 18)))
 	{	
-		Action* selectedTool = selectedObject->selectedAction; 
+		Action* selectedAction = selectedObject->selectedAction; 
 
-		if (selectedTool != nullptr)
+		if (selectedAction != nullptr)
 		{
-			selectedTool->CleanUp();
-			selectedObject->DeleteAction(selectedTool->GetActionName());
-			selectedTool = nullptr;
+			selectedAction->CleanUp();
+			selectedObject->DeleteAction(selectedAction->GetActionName());
+			selectedAction = nullptr;
 		}
 	}
 
@@ -351,7 +352,7 @@ void ObjectPropertiesDockPanel::DrawActionSelectable(ActionSelectableInfo& selec
 
 	ImGui::SetCursorPos(ImVec2(50, +(selectableHeigth * posInList)));
 	if (ImGui::Selectable(selectableInfo.actionName.c_str(), currentAction->IsSelected(), ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), selectableHeigth))) {
-		selectedObject->selectedAction = currentAction;
+		selectedObject->SetSelectedAction(selectableInfo.actionType);
 	}
 	ImGui::PopFont();
 
@@ -402,7 +403,7 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
 
 void ObjectPropertiesDockPanel::DrawToolImageSettings()
 {
-	DisplayImageAction* imageTool = (DisplayImageAction*)selectedObject->GetAction("Image");
+	DisplayImageAction* imageTool = (DisplayImageAction*)selectedObject->GetAction("Display Image");
 
 	if (imageTool != nullptr)
 	{

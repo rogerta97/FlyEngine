@@ -6,7 +6,7 @@
 
 using namespace std; 
 
-enum ToolType
+enum ActionType
 {
 	AT_IMAGE,
 	AT_CHANGE_ROOM,
@@ -26,7 +26,7 @@ struct ActionSelectableInfo
 {
 	std::string actionName;
 	std::string actionDescription;
-	ToolType actionType;
+	ActionType actionType;
 };
 
 class FlyObject; 
@@ -63,16 +63,17 @@ public:
 	std::string GetToolDescription() const;
 	void SetToolDescription(std::string newDescription);
 
-	ToolType GetActionType() const;
-	void SetToolType(ToolType newToolType);
+	ActionType GetActionType() const;
+	void SetToolType(ActionType newToolType);
 
 	bool& IsSelected(); 
+	void SetSelected(bool newSelected); 
 	bool& HasVisual(); 
 
 	ActionSelectableInfo GetActionSelectableInfo(); 
  
 protected:
-	ToolType toolType;
+	ActionType actionType;
 	FlyObject* parentObject;
 
 	// Occurrence ----------------

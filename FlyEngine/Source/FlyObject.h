@@ -44,8 +44,10 @@ public:
 	DisplayImageAction* AddDisplayImageAction(const char* imageTexturePath);
 	ChangeRoomAction* AddChangeRoomAction();
 
+	void SetSelectedAction(ActionType toolTypeSelected); 
+	ActionType GetSelectedActionType(); 
 	Action* GetAction(std::string toolName); 
-	Action* GetAction(ToolType toolType); 
+	Action* GetAction(ActionType toolType); 
 	std::list<Action*> GetActionsList() const; 
 	void DeleteAction(std::string toolNameToDelete);
 

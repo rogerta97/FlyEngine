@@ -328,6 +328,28 @@ ChangeRoomAction* FlyObject::AddChangeRoomAction()
 	return (ChangeRoomAction*)GetAction(AT_CHANGE_ROOM);
 }
 
+void FlyObject::SetSelectedAction(ActionType toolTypeSelected)
+{
+	for (auto& it : actionsList)
+	{
+		if (it->GetActionType() == toolTypeSelected)
+		{
+			it->SetSelected(true);
+			selectedAction = it; 
+		}
+		else
+			it->SetSelected(false); 
+	}
+}
+
+ActionType FlyObject::GetSelectedActionType()
+{
+	if (selectedAction == nullptr)
+		return AT_null; 
+
+	return selectedAction->GetActionType();
+}
+
 Action* FlyObject::GetAction(std::string toolName)
 {
 	for (auto& currentTool : actionsList)
@@ -339,7 +361,7 @@ Action* FlyObject::GetAction(std::string toolName)
 	return nullptr; 
 }
 
-Action* FlyObject::GetAction(ToolType toolType)
+Action* FlyObject::GetAction(ActionType toolType)
 {
 	for (auto& currentTool : actionsList)
 	{

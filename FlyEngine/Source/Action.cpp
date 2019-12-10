@@ -5,7 +5,7 @@
 
 Action::Action()
 {
-	toolType = AT_null; 
+	actionType = AT_null; 
 	isSelected = false; 
 	return; 
 }
@@ -100,19 +100,24 @@ void Action::SetToolDescription(std::string newDescription)
 	toolDescription = newDescription; 
 }
 
-ToolType Action::GetActionType() const
+ActionType Action::GetActionType() const
 {
-	return toolType;
+	return actionType;
 }
 
-void Action::SetToolType(ToolType newToolType)
+void Action::SetToolType(ActionType newToolType)
 {
-	toolType = newToolType; 
+	actionType = newToolType; 
 }
 
 bool& Action::IsSelected()
 {
 	return isSelected;
+}
+
+void Action::SetSelected(bool newSelected)
+{
+	isSelected = newSelected; 
 }
 
 bool& Action::HasVisual()
@@ -126,7 +131,7 @@ ActionSelectableInfo Action::GetActionSelectableInfo()
 
 	returnToolInfo.actionName = toolName; 
 	returnToolInfo.actionDescription = toolDescription; 
-	returnToolInfo.actionType = toolType; 
+	returnToolInfo.actionType = actionType; 
 
 	return returnToolInfo;
 }

@@ -152,7 +152,7 @@ ActionSelectableInfo* ModuleManager::DrawActionDictionaryUI()
 	return returnInfo; 
 }
 
-Texture* ModuleManager::GetIconFromActionType(ToolType toolType)
+Texture* ModuleManager::GetIconFromActionType(ActionType toolType)
 {
 	Texture* toolIconTexture = nullptr;
 	switch (toolType)
@@ -188,7 +188,7 @@ std::list<ActionSelectableInfo> ModuleManager::GetToolsNamesDescriptionsList() c
 	return toolNamesDescriptions;
 }
 
-void ModuleManager::AddToolsNameDescription(std::string name, std::string description, ToolType newTooltype)
+void ModuleManager::AddToolsNameDescription(std::string name, std::string description, ActionType newTooltype)
 {
 	ActionSelectableInfo newtsi; 
 

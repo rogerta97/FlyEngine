@@ -24,7 +24,7 @@ public:
 	void LoadEngineIcons();
 	int GetToolsAmount() const; 
 	ActionSelectableInfo* DrawActionDictionaryUI(); 
-	Texture* GetIconFromActionType(ToolType toolType); 
+	Texture* GetIconFromActionType(ActionType toolType); 
 
 	// Easy Acces -------
 	FlyObject* GetSelectedFlyObject(); 
@@ -32,7 +32,7 @@ public:
 
 	// Desctiption Dictionary -----
 	std::list<ActionSelectableInfo> GetToolsNamesDescriptionsList() const; 
-	void AddToolsNameDescription(std::string name, std::string description, ToolType newTooltype);
+	void AddToolsNameDescription(std::string name, std::string description, ActionType newTooltype);
 	ActionSelectableInfo GetToolNameDescription(std::string toolName) const;
 	ActionSelectableInfo GetToolNameDescription(int pos) const;
 

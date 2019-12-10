@@ -16,7 +16,7 @@
 
 DisplayImageAction::DisplayImageAction(FlyObject* _parentObject = nullptr)
 {
-	toolType = AT_IMAGE; 
+	actionType = AT_IMAGE; 
 	quadMesh = nullptr; 
 	imageTexture = nullptr; 
 	parentObject = _parentObject; 
@@ -99,7 +99,7 @@ void DisplayImageAction::CleanUp()
 
 	if (imageTexture != nullptr)
 	{
-		imageTexture->CleanUp();
+		//imageTexture->CleanUp();
 		//delete imageTexture;
 	}
 
