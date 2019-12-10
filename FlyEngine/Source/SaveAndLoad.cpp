@@ -117,6 +117,9 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 			changeRoomAction->SetDestination(room); 
 		}
 	}
+
+	// Clickable Area
+	newObject->clickableAreaActive = json_object_dotget_boolean(root_obj, string(serializeObjectStr + string("ClickableArea.Active")).c_str());
  
 	newObject->FitObjectUtils();
 }

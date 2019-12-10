@@ -75,6 +75,7 @@ void Room::CleanUp()
 	}
 
 	objectsInRoom.clear(); 
+	selectedObject = nullptr; 
 }
 
 int Room::GetObjectsInRoomAmount()

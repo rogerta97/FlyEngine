@@ -103,6 +103,7 @@ void RoomDockPanel::DrawTopButtons()
 			// Clean Current Room Content
 			Room* currentRoom = App->moduleRoomManager->GetSelectedRoom(); 
 			currentRoom->CleanUp(); 
+		
 			
 			// Load New Data
 			SaveAndLoad::getInstance()->LoadDataToCurrentRoom(path); 
