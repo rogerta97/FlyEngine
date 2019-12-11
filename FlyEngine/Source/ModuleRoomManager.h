@@ -36,6 +36,8 @@ public:
 
 	void CleanUpRooms();
 
+	void SerializeRoomListNames(); 
+
 	// Utility
 	Room* GetRoom(string roomName) const;
 	Room* GetRoom(UID roomID) const; 

@@ -95,7 +95,7 @@ void RoomDockPanel::DrawTopButtons()
 	{
 		char const* lFilterPatterns[1] = { "*.json" };
 		string defaultPath = MyFileSystem::getInstance()->GetSolutionDirectory(); 
-		defaultPath += "Source\\Game\\Resources\\EngineSavedData\\"; 
+		defaultPath += "Source\\Game\\Resources\\EngineSavedData\\RoomsData\\"; 
 		const char* path = tinyfd_openFileDialog("Load Image...", defaultPath.c_str(), 1, lFilterPatterns, NULL, 0);
 
 		if (path != "")
@@ -104,11 +104,9 @@ void RoomDockPanel::DrawTopButtons()
 			Room* currentRoom = App->moduleRoomManager->GetSelectedRoom(); 
 			currentRoom->CleanUp(); 
 		
-			
 			// Load New Data
 			SaveAndLoad::getInstance()->LoadDataToCurrentRoom(path); 
 		}
-
 	}
 
 	// Play Button ------------

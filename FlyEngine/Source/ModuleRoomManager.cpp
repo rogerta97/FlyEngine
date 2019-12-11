@@ -156,6 +156,22 @@ void ModuleRoomManager::CleanUpRooms()
 	roomsInWoldAmount = 0;
 }
 
+void ModuleRoomManager::SerializeRoomListNames()
+{
+	std::string saveFilePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "RoomNames.json";
+
+	JSON_Value* scene_v = json_value_init_object();
+	JSON_Object* scene_obj = json_value_get_object(scene_v);
+
+	for (auto& it : roomsInWorldList)
+	{
+		string saveNameString = "RoomNamesList." + it->GetName().c_str(); 
+		json_object_dotset_number(scene_obj, string(roomToLoad->GetName().c_str() + string(".ObjectsAmount")).c_str());
+	}
+
+	json_serialize_to_file(scene_v, saveFilePath.c_str());
+}
+
 string* ModuleRoomManager::GetRoomsAsCombo(bool includeSelected)
 {
 	string* roomsNameRet = new string[GetRoomsAmount()]; 

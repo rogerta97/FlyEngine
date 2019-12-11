@@ -48,7 +48,7 @@ void SaveAndLoad::SaveRoomData(Room* roomToSave)
 		return; 
 
 	std::string roomName = roomToSave->GetName(); 
-	std::string saveFilePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + roomName.c_str() + ".json"; 
+	std::string saveFilePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "\\RoomsData\\" + roomName.c_str() + ".json"; 
 
 	JSON_Value* scene_v = json_value_init_object();
 	JSON_Object* scene_obj = json_value_get_object(scene_v);
@@ -62,20 +62,7 @@ void SaveAndLoad::LoadDataToCurrentRoom(std::string roomDataFilePath)
 {
 	// Get Current Room 
 	Room* currentRoom = App->moduleRoomManager->GetSelectedRoom();
-
-	// Open File To Read
-	JSON_Value* root = json_parse_file(roomDataFilePath.c_str());
-	JSON_Object* root_obj = json_value_get_object(root);
-
-	int obj_ammount = json_object_dotget_number(root_obj, string(currentRoom->GetName().c_str() + string(".ObjectsAmount")).c_str());
-
-	int counter = 0; 
-	while (counter < obj_ammount)
-	{
-		string serializeObjectStr = currentRoom->GetName().c_str() + string(".FlyObject_") + to_string(counter) + string("."); 
-		instance->CreateFlyObjectFromSavedData(root_obj, serializeObjectStr, currentRoom);
-		counter++;
-	}
+	LoadDataToRoom(roomDataFilePath, currentRoom); 
 }
 
 void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::string& serializeObjectStr, Room* currentRoom)
@@ -155,6 +142,23 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 	newObject->CreateClickableArea(float2(posPercX, posPercY), float2(sizePercX, sizePercY), directPosition); 
  
 	newObject->FitObjectUtils();
+}
+
+void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
+{
+	// Open File To Read
+	JSON_Value* root = json_parse_file(roomDataFilePath.c_str());
+	JSON_Object* root_obj = json_value_get_object(root);
+
+	int obj_ammount = json_object_dotget_number(root_obj, string(roomToLoad->GetName().c_str() + string(".ObjectsAmount")).c_str());
+
+	int counter = 0;
+	while (counter < obj_ammount)
+	{
+		string serializeObjectStr = roomToLoad->GetName().c_str() + string(".FlyObject_") + to_string(counter) + string(".");
+		instance->CreateFlyObjectFromSavedData(root_obj, serializeObjectStr, roomToLoad);
+		counter++;
+	}
 }
 
 SaveAndLoad::SaveAndLoad()
