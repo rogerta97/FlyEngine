@@ -40,6 +40,7 @@ public:
 	// Utility
 	Room* GetRoom(string roomName) const;
 	Room* GetRoom(UID roomID) const; 
+	Room* GetFirstRoom(); 
 	int GetRoomsAmount() const;
 
 	void SetSelectedRoom(Room* selectedRoom); 

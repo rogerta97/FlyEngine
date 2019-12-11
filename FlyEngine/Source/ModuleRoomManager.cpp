@@ -26,11 +26,6 @@ ModuleRoomManager::~ModuleRoomManager()
 
 bool ModuleRoomManager::Start()
 {
-
-	Room* Lake = CreateEmptyRoom("Lake");
-
-	SetSelectedRoom(Lake); 
-	App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
 	
 	return true;
 }
@@ -219,6 +214,11 @@ Room* ModuleRoomManager::GetRoom(UID roomID) const
 
 	FLY_ERROR("Room with ID %f in ModuleRoomManager::GetRoom() could not be found", roomID);
 	return nullptr;
+}
+
+Room* ModuleRoomManager::GetFirstRoom()
+{
+	return roomsInWorldList.front();
 }
 
 int ModuleRoomManager::GetRoomsAmount() const

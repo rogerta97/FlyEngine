@@ -42,6 +42,9 @@ bool ModuleManager::Start()
 {
 	// Load Saved Rooms
 	App->moduleRoomManager->LoadRoomsData(); 
+	App->moduleRoomManager->SetSelectedRoom(App->moduleRoomManager->GetFirstRoom());
+	App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);
+
 	return true;
 }
 
