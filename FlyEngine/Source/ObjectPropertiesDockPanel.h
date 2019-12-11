@@ -19,6 +19,7 @@ public:
 	void SetSelectedObject(FlyObject* newSelectedObject);
 	FlyObject* GetSelectedObject() const;
 
+	// Clickable Area Tab
 	void DrawClickableAreaTab(); 
 
 	// Object Tools Tab

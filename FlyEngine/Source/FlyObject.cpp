@@ -258,6 +258,12 @@ void FlyObject::SerializeClickableArea(std::string serializeObjectName, JSON_Obj
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "MaxPoint.x").c_str(), clickableArea->GetMaxPoint().x);
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "MaxPoint.y").c_str(), clickableArea->GetMaxPoint().y);
 
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "PosPerc.x").c_str(), clickableAreaPosPerc.x);
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "PosPerc.y").c_str(), clickableAreaPosPerc.y);
+
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "SizePerc.x").c_str(), clickableAreaSizePerc.x);
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "SizePerc.y").c_str(), clickableAreaSizePerc.y);
+
 }
 
 void FlyObject::DoOnClickActions()
@@ -396,7 +402,11 @@ void FlyObject::CreateClickableArea(float2 percentagePos, float2 percentageSize,
 
 	SetCASizeFromOne(percentagePos, percentageSize, directPosition); 
 	clickableArea->SetCornerBoxSize(4.0f); 
+
+	clickableAreaPosPerc = percentagePos; 
+	clickableAreaSizePerc = percentageSize;
 }
+
 
 float2& FlyObject::GetClickableAreaPosOne()
 {

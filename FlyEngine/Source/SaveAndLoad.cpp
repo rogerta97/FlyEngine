@@ -28,22 +28,34 @@ SaveAndLoad::~SaveAndLoad()
 
 void SaveAndLoad::SaveCurrentRoomData()
 {
-	// Get Current Room 
 	Room* currentRoom = App->moduleRoomManager->GetSelectedRoom(); 
+	instance->SaveRoomData(currentRoom); 
+}
 
-	// Open File To Save 
-	std::ofstream stream;
-	string testPath = MyFileSystem::getInstance()->GetGameDirectory() + "\\Resources\\EngineSavedData\\TestFile.json";
-	stream.open(testPath, std::fstream::out);
+void SaveAndLoad::SaveRoomData(std::string roomName)
+{
+	instance->SaveRoomData(App->moduleRoomManager->GetRoom(roomName));
+}
 
-	// Save Data 
+void SaveAndLoad::SaveRoomData(UID roomUID)
+{
+	instance->SaveRoomData(App->moduleRoomManager->GetRoom(roomUID));
+}
+
+void SaveAndLoad::SaveRoomData(Room* roomToSave)
+{
+	if (roomToSave == nullptr)
+		return; 
+
+	std::string roomName = roomToSave->GetName(); 
+	std::string saveFilePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + roomName.c_str() + ".json"; 
+
 	JSON_Value* scene_v = json_value_init_object();
 	JSON_Object* scene_obj = json_value_get_object(scene_v);
 
-	//Save Meta Info
-	currentRoom->SaveRoomData(scene_obj); 
+	roomToSave->SaveRoomData(scene_obj);
 
-	json_serialize_to_file(scene_v, testPath.c_str());
+	json_serialize_to_file(scene_v, saveFilePath.c_str());
 }
 
 void SaveAndLoad::LoadDataToCurrentRoom(std::string roomDataFilePath)
@@ -61,7 +73,7 @@ void SaveAndLoad::LoadDataToCurrentRoom(std::string roomDataFilePath)
 	while (counter < obj_ammount)
 	{
 		string serializeObjectStr = currentRoom->GetName().c_str() + string(".FlyObject_") + to_string(counter) + string("."); 
-		CreateFlyObjectFromSavedData(root_obj, serializeObjectStr, currentRoom);
+		instance->CreateFlyObjectFromSavedData(root_obj, serializeObjectStr, currentRoom);
 		counter++;
 	}
 }
@@ -120,6 +132,27 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 
 	// Clickable Area
 	newObject->clickableAreaActive = json_object_dotget_boolean(root_obj, string(serializeObjectStr + string("ClickableArea.Active")).c_str());
+	bool directPosition = json_object_dotget_boolean(root_obj, string(serializeObjectStr + "ClickableArea.DirectPosition").c_str());
+
+	float4 color; 
+	color.x = json_object_dotget_number(root_obj, string(serializeObjectStr + string("ClickableArea.Color.r")).c_str());
+	color.y = json_object_dotget_number(root_obj, string(serializeObjectStr + string("ClickableArea.Color.g")).c_str());
+	color.z = json_object_dotget_number(root_obj, string(serializeObjectStr + string("ClickableArea.Color.b")).c_str());
+	color.w = json_object_dotget_number(root_obj, string(serializeObjectStr + string("ClickableArea.Color.w")).c_str());
+
+	float minPointX = json_object_dotget_number(root_obj, string(serializeObjectStr + string("ClickableArea.MinPoint.x")).c_str());
+	float minPointY = json_object_dotget_number(root_obj, string(serializeObjectStr + string("ClickableArea.MinPoint.y")).c_str());
+
+	float maxPointX = json_object_dotget_number(root_obj, string(serializeObjectStr + string("ClickableArea.MaxPoint.x")).c_str());
+	float maxPointY = json_object_dotget_number(root_obj, string(serializeObjectStr + string("ClickableArea.MaxPoint.y")).c_str());
+
+	float posPercX = json_object_dotget_number(root_obj, string(serializeObjectStr + "ClickableArea.PosPerc.x").c_str());
+	float posPercY = json_object_dotget_number(root_obj, string(serializeObjectStr + "ClickableArea.PosPerc.y").c_str());
+
+	float sizePercX = json_object_dotget_number(root_obj, string(serializeObjectStr + "ClickableArea.SizePerc.x").c_str());
+	float sizePercY = json_object_dotget_number(root_obj, string(serializeObjectStr + "ClickableArea.SizePerc.y").c_str());
+
+	newObject->CreateClickableArea(float2(posPercX, posPercY), float2(sizePercX, sizePercY), directPosition); 
  
 	newObject->FitObjectUtils();
 }

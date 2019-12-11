@@ -52,9 +52,10 @@ public:
 	void DeleteAction(std::string toolNameToDelete);
 
 	// Clickable Area ---
+	void CreateClickableArea(float2 percentagePos, float2 percentageSize, bool directPosition = false);
+
 	void DrawClickableArea();
 	ScalarBoundingBox* GetClickableArea();
-	void CreateClickableArea(float2 percentagePos, float2 percentageSize, bool directPosition = false);
 	float2 SetCASizeFromOne(float2 percentagePos, float2 percentageSize, bool directPosition = false);
 	
 	// Sets & Gets ------

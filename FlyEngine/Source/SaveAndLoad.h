@@ -2,6 +2,7 @@
 #define _SAVE_AND_LOAD_H_
 
 #include "JSON/parson.h"
+#include "Globals.h"
 #include <string>
 
 class Room; 
@@ -14,13 +15,18 @@ private:
 public:
 	static SaveAndLoad* getInstance();
 	~SaveAndLoad();
-
-	void SaveCurrentRoomData();
-	void LoadDataToCurrentRoom(std::string roomDataFilePath);
-
-	void CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::string& serializeObjectStr, Room* currentRoom);
-
 	static void Delete();
+
+	// Save ----
+	static void SaveCurrentRoomData();
+
+	static void SaveRoomData(std::string roomName);
+	static void SaveRoomData(UID hello);
+	static void SaveRoomData(Room* roomToSave);
+
+	// Load ----
+	static void LoadDataToCurrentRoom(std::string roomDataFilePath);
+	static void CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::string& serializeObjectStr, Room* currentRoom);
 };
 
 #endif 
