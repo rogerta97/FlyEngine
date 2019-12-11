@@ -24,6 +24,9 @@ ModuleManager::~ModuleManager()
 
 bool ModuleManager::Init()
 {
+	// Init File System 
+	MyFileSystem::getInstance()->Init(); 
+
 	// Load Engine Icons -----
 	LoadEngineIcons();
 
@@ -31,8 +34,18 @@ bool ModuleManager::Init()
 	AddToolsNameDescription("Display Image", "This should be the description of the image tool", AT_IMAGE);
 	AddToolsNameDescription("Change Scene", "This should be the description of the change scene tool", AT_CHANGE_ROOM);
 
+
 	return true;
 }
+
+bool ModuleManager::Start()
+{
+	// Load Saved Rooms
+	App->moduleRoomManager->LoadRoomsData(); 
+	return true;
+}
+
+
 
 bool ModuleManager::CleanUp()
 {
@@ -41,6 +54,7 @@ bool ModuleManager::CleanUp()
 	ViewportManager::getInstance()->Delete();
 	return true;
 }
+
 
 void ModuleManager::LoadEngineIcons()
 {

@@ -9,6 +9,8 @@
 #include "NodeGraph.h"
 #include "MyFileSystem.h"
 #include "FlyObject.h"
+#include "SaveAndLoad.h"
+
 #include "mmgr.h"
 
 ModuleRoomManager::ModuleRoomManager(bool start_enabled)
@@ -24,15 +26,10 @@ ModuleRoomManager::~ModuleRoomManager()
 
 bool ModuleRoomManager::Start()
 {
-	Room* forestRoom = CreateEmptyRoom("Forest");
+
 	Room* Lake = CreateEmptyRoom("Lake");
-	Room* Bridge = CreateEmptyRoom("Bridge");
 
-	forestRoom->ConnectToRoom(Lake);
-	forestRoom->ConnectToRoom(Bridge);
-	Lake->ConnectToRoom(forestRoom); 
-
-	SetSelectedRoom(forestRoom);
+	SetSelectedRoom(Lake); 
 	App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
 	
 	return true;
@@ -101,6 +98,20 @@ void ModuleRoomManager::ReceiveEvent(FlyEngineEvent eventType)
 	}
 }
 
+void ModuleRoomManager::LoadRoomsData()
+{
+	string roomsDirectory = MyFileSystem::getInstance()->GetSavedDataDirectory() + "RoomsData";
+	vector<string> roomsSavedFiles;
+	MyFileSystem::getInstance()->GetFilesInDirectory(roomsDirectory.c_str(), roomsSavedFiles, false);
+
+	for (auto& currentRoomFile : roomsSavedFiles)
+	{
+		MyFileSystem::getInstance()->DeleteFileExtension(currentRoomFile);
+		Room* newRoom = App->moduleRoomManager->CreateEmptyRoom(currentRoomFile);
+		SaveAndLoad::getInstance()->LoadDataToRoom(roomsDirectory + "\\" + currentRoomFile + ".json", newRoom);
+	}
+}
+
 Room* ModuleRoomManager::CreateEmptyRoom(string roomName)
 {
 	Room* newRoom = new Room(roomName);
@@ -165,8 +176,8 @@ void ModuleRoomManager::SerializeRoomListNames()
 
 	for (auto& it : roomsInWorldList)
 	{
-		string saveNameString = "RoomNamesList." + it->GetName().c_str(); 
-		json_object_dotset_number(scene_obj, string(roomToLoad->GetName().c_str() + string(".ObjectsAmount")).c_str());
+	//	string saveNameString = "RoomNamesList." + it->GetName().c_str(); 
+	//	json_object_dotset_number(scene_obj, string(roomToLoad->GetName().c_str() + string(".ObjectsAmount")).c_str());
 	}
 
 	json_serialize_to_file(scene_v, saveFilePath.c_str());

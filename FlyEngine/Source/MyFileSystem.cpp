@@ -106,7 +106,7 @@ string MyFileSystem::GetGameDirectory()
 
 string MyFileSystem::GetSavedDataDirectory()
 {
-	return instance->GetSolutionDirectory() + "\\Source\\Game\\Resources\\EngineSavedData\\";
+	return instance->GetSolutionDirectory() + "Source\\Game\\Resources\\EngineSavedData\\";
 }
 
 void MyFileSystem::GetRelativeDirectory(string& directory)
@@ -122,6 +122,42 @@ void MyFileSystem::GetRelativeDirectory(string& directory)
 int MyFileSystem::GetBarsCount(string countStr)
 {
 	return (int)std::count(countStr.begin(), countStr.end(), '\\');
+}
+
+void MyFileSystem::GetFilesInDirectory(const char* directory, std::vector<string>& list, bool include_path)
+{
+	std::string path(directory);
+	path.append("\\*");
+
+	WIN32_FIND_DATA data;
+	HANDLE hFind;
+
+	if ((hFind = FindFirstFile(path.c_str(), &data)) != INVALID_HANDLE_VALUE)
+	{
+		do
+		{
+			if (std::string(data.cFileName) != std::string(".") && std::string(data.cFileName) != std::string(".."))
+			{
+				if (include_path)
+				{
+					string new_str = directory + string("\\") + string(data.cFileName);
+					list.push_back(new_str);
+				}
+				else
+					list.push_back(data.cFileName);
+			}
+
+
+		} while (FindNextFile(hFind, &data) != 0);
+		FindClose(hFind);
+	}
+
+	return;
+}
+
+void MyFileSystem::Init()
+{
+	CreateDirectory(string(GetSavedDataDirectory() + "RoomsData").c_str(), NULL);
 }
 
 void MyFileSystem::Delete()

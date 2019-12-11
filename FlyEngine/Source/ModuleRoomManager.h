@@ -25,15 +25,14 @@ public:
 	bool CleanUp();
 
 	void ReceiveEvent(FlyEngineEvent eventType);
+	void LoadRoomsData(); 
 
 	// Rooms
 	Room* CreateEmptyRoom(string roomName = "New Room"); 
 	string* GetRoomsAsCombo(bool includeSelected = false); 
-
 	void DeleteRoom(string roomName); 
 	void DeleteRoom(UID roomID); 
 	void DeleteRoom(Room* roomToDelete); 
-
 	void CleanUpRooms();
 
 	void SerializeRoomListNames(); 

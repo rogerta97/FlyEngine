@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <string>
 #include <iostream>
+#include <vector>
 
 using namespace std; 
 
@@ -17,6 +18,8 @@ private:
 public: 
 	static MyFileSystem* getInstance();
 	~MyFileSystem();
+
+	static void Init(); 
 	static void Delete(); 
 
 	// Utility -----------
@@ -31,6 +34,9 @@ public:
 	static string GetGameDirectory(); 
 	static string GetSavedDataDirectory(); 
 	static void GetRelativeDirectory(string& directory); 
+
+	// File --------------
+	static void GetFilesInDirectory(const char* directory, std::vector<string>& list, bool include_path = false);
 
 private: 
 	static int GetBarsCount(string countStr); 
