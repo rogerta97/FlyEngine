@@ -80,34 +80,55 @@ bool ObjectCreatorDockPanel::Draw()
 		ImGui::Text("Object Attributes:");
 		ImGui::PopFont();
 
+		static int selectedObjectType = 0;
+		ImGui::Combo("Object Type", &selectedObjectType, "Action Object\0Inventory Item\0");
+
 		ImGui::Separator();
 
-		if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
+		if (selectedObjectType == ACTION_OBJECT)
 		{
-
-			if (ImGui::BeginTabItem("Actions"))
+			if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
 			{
-				DrawObjectCreator();
-				ImGui::EndTabItem();
-			}
 
-			if (creatingObject->IsInteractable())
-			{
-				ImGuiTabItemFlags tabFlags = 0;
-				if (focusClickableAreaTab)
+				if (ImGui::BeginTabItem("Actions"))
 				{
-					tabFlags |= ImGuiTabItemFlags_SetSelected;
-					focusClickableAreaTab = false;
-				}
-
-				if (ImGui::BeginTabItem("Clickable Area", 0, tabFlags))
-				{
-					DrawClickableAreaCreator();
+					DrawObjectCreator();
 					ImGui::EndTabItem();
 				}
-			}
 
-			ImGui::EndTabBar();
+				if (creatingObject->IsInteractable())
+				{
+					ImGuiTabItemFlags tabFlags = 0;
+					if (focusClickableAreaTab)
+					{
+						tabFlags |= ImGuiTabItemFlags_SetSelected;
+						focusClickableAreaTab = false;
+					}
+
+					if (ImGui::BeginTabItem("Clickable Area", 0, tabFlags))
+					{
+						DrawClickableAreaCreator();
+						ImGui::EndTabItem();
+					}
+				}
+
+				ImGui::EndTabBar();
+			}
+		}
+		else if (selectedObjectType == INVENTORY_ITEM)
+		{
+			ImGui::Columns(2); 
+
+			PUSH_CHILD_BG_COLOR; 
+			ImGui::BeginChild("kjfsh"); 
+			ImGui::EndChild(); 
+
+			ImGui::Image(0, ImVec2(100, 100)); 
+
+			ImGui::NextColumn();
+
+			ImGui::Text("Hello World"); 
+
 		}
 	}
 

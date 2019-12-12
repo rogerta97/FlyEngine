@@ -50,14 +50,11 @@ bool ModuleManager::Start()
 	return true;
 }
 
-
-
 bool ModuleManager::CleanUp()
 {
 
 	return true;
 }
-
 
 void ModuleManager::LoadEngineIcons()
 {

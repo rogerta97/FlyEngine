@@ -10,12 +10,18 @@
 #include "ImGui/imgui.h"
 #include "JSON/parson.h"
 
+enum FlyObjectType
+{
+	ACTION_OBJECT, 
+	INVENTORY_ITEM,
+};
+
 class Gizmos; 
 class DisplayImageAction; 
 class ChangeRoomAction; 
 class FlyObject {
 public: 
-	FlyObject(std::string objectName, std::string description = ""); 
+	FlyObject(std::string objectName, std::string description = "", FlyObjectType _flyObjectType = ACTION_OBJECT); 
 	~FlyObject(); 
 
 	void Update(); 
@@ -91,6 +97,7 @@ public:
 	
 	bool isSelected; 
 	bool clickableAreaActive; 
+	FlyObjectType flyObjectType; 
 
 private: 
 	// Clickable Area -----

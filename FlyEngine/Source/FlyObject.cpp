@@ -20,7 +20,7 @@
 
 #include <string>
 
-FlyObject::FlyObject(std::string _name, std::string _description)
+FlyObject::FlyObject(std::string _name, std::string _description, FlyObjectType _flyObjectType)
 {
 	name = _name; 
 	description = _description;
@@ -28,6 +28,7 @@ FlyObject::FlyObject(std::string _name, std::string _description)
 	isSelected = false; 
 	hasVisuals = false; 
 	clickableAreaActive = false;
+	flyObjectType = _flyObjectType; 
 
 	clickableArea = new ScalarBoundingBox(this); 
 	clickableAreaPosPerc = float2(0, 0); 

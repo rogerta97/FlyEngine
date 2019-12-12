@@ -61,6 +61,7 @@
     <ClCompile Include="Source\BoundingBox.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\ChangeRoomAction.cpp" />
+    <ClCompile Include="Source\GameInventory.cpp" />
     <ClCompile Include="Source\Gizmos.cpp" />
     <ClCompile Include="Source\DisplayImageAction.cpp" />
     <ClCompile Include="Source\Color.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Source\BoundingBox.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\ChangeRoomAction.h" />
+    <ClInclude Include="Source\GameInventory.h" />
     <ClInclude Include="Source\Gizmos.h" />
     <ClInclude Include="Source\DisplayImageAction.h" />
     <ClInclude Include="Source\Color.h" />

@@ -97,6 +97,9 @@
     <Filter Include="Source\Tools\Save&amp;Load">
       <UniqueIdentifier>{92e7d195-7240-46c3-8722-11fa62d0e0ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\FlyEngine\FlyObject\Inventory">
+      <UniqueIdentifier>{c0999ba8-7372-4bc9-adf1-0075e957c0fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -347,6 +350,9 @@
     </ClCompile>
     <ClCompile Include="Source\SaveAndLoad.cpp">
       <Filter>Source\Tools\Save&amp;Load</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameInventory.cpp">
+      <Filter>Source\FlyEngine\FlyObject\Inventory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -727,6 +733,9 @@
     </ClInclude>
     <ClInclude Include="Source\SaveAndLoad.h">
       <Filter>Source\Tools\Save&amp;Load</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameInventory.h">
+      <Filter>Source\FlyEngine\FlyObject\Inventory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
