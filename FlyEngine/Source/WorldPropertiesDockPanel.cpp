@@ -152,8 +152,10 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 	}
 
 	ImGui::SameLine(ImGui::GetContentRegionMax().x - 130);
-	if (ImGui::Button("Open Room Editor", ImVec2(130, 30))) {
-		App->moduleImGui->AddaptToFlySection(FlyEngineSection::FLY_SECTION_ROOM_EDIT);
+	if (ImGui::Button("Open Room Editor", ImVec2(130, 30))) 
+	{
+		if(App->moduleRoomManager->GetSelectedRoom() != nullptr)
+			App->moduleImGui->AddaptToFlySection(FlyEngineSection::FLY_SECTION_ROOM_EDIT);
 	}
 }
 

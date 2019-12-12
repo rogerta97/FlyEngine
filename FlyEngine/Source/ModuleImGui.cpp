@@ -14,6 +14,7 @@
 #include "ViewportManager.h"
 #include "TextureMSAA.h"
 #include "WorldPropertiesDockPanel.h"
+#include "ModuleInput.h"
 #include "GraphPropertiesDockPanel.h"
 #include "ObjectCreatorDockPanel.h"
 #include "MyFileSystem.h"
@@ -89,9 +90,7 @@ bool ModuleImGui::Start()
 	//AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
 
 	//// Test Change Scene Object
-	//Room* parentRoom = App->moduleRoomManager->GetRoom("Lake"); 
-	//FlyObject* parrot = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer Yellow", "This is a simple Fly Object to test descriptions");
-	//string spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources\\Images\\TransformerYellow.png";
+
 
 	//ChangeRoomAction* changeRoomAction = parrot->AddChangeRoomAction();
 
@@ -137,7 +136,8 @@ void ModuleImGui::CreatePanels()
 
 void ModuleImGui::DeletePanels()
 {
-	for (auto it = dockPanels.rbegin(); it != dockPanels.rend(); it++) {
+	for (auto it = dockPanels.rbegin(); it != dockPanels.rend(); it++) 
+	{
 		(*it)->CleanUp(); 
 		delete((*it));
 		(*it) = nullptr;
@@ -148,6 +148,15 @@ void ModuleImGui::DeletePanels()
 
 update_status ModuleImGui::PreUpdate(float dt)
 {
+
+	if (App->moduleInput->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+	{
+	//	Room* parentRoom = App->moduleRoomManager->GetRoom("Forest");
+		FlyObject* parrot = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer Yellow", "This is a simple Fly Object to test descriptions");
+		string spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources\\Images\\TransformerYellow.png";
+
+		parrot->AddDisplayImageAction(spritePath.c_str());
+	}
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->moduleWindow->mainWindow);
 
@@ -238,7 +247,11 @@ void ModuleImGui::DrawMainMenuBar()
 
 void ModuleImGui::DrawPanels()
 {
-	for (auto it = dockPanels.begin(); it != dockPanels.end(); it++) {
+	for (auto it = dockPanels.begin(); it != dockPanels.end(); it++) 
+	{
+		if (App->flySection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && App->moduleRoomManager->GetSelectedRoom() == nullptr)
+			continue; 
+
 		(*it)->Draw();
 	}
 }

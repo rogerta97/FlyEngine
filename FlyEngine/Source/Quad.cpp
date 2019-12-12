@@ -1,6 +1,7 @@
 #include "Quad.h"
 #include "OpenGL.h"
 #include "mmgr.h"
+#include "Globals.h"
 
 Quad::Quad()
 {
@@ -27,6 +28,8 @@ void Quad::Create(const float desiredWidth, const float desiredHeight)
 
 void Quad::SetQuadData(const float desiredWidth, const float desiredHeight)
 {
+	FLY_LOG("SetData"); 
+
 	numVertices = 4;
 	vertices = new vec3[numVertices];
 

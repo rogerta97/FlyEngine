@@ -7,6 +7,7 @@
 #include "FlyObject.h"
 #include "ImageImporter.h"
 #include "Gizmos.h"
+#include "ResourceManager.h"
 
 #include "Application.h"
 #include "ModuleImGui.h"
@@ -96,6 +97,7 @@ void DisplayImageAction::CleanUp()
 {
 	quadMesh->CleanUp();
 	delete quadMesh; 
+	quadMesh = nullptr; 
 
 	if (imageTexture != nullptr)
 	{
@@ -149,6 +151,7 @@ void DisplayImageAction::DrawActionOccurenceCheckboxes()
 bool DisplayImageAction::CreateImage(const char* texturePath)
 {
 	imageTexture = ImageImporter::getInstance()->LoadTexture(texturePath, false);
+	ResourceManager::getInstance()->AddResource(imageTexture, "test"); 
 
 	if (imageTexture != nullptr)
 	{
@@ -175,7 +178,7 @@ void DisplayImageAction::SetQuad(Quad* newQuad)
 void DisplayImageAction::SetTexture(Texture* newTexture)
 {
 	// Addapt Quad 
-	quadMesh->UnloadFromMemory();
+	quadMesh->CleanUp();
 	delete quadMesh; 
 
 	quadMesh = new Quad(); 

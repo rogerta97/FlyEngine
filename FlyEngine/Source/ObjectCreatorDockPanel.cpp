@@ -37,6 +37,12 @@ ObjectCreatorDockPanel::~ObjectCreatorDockPanel()
 
 }
 
+bool ObjectCreatorDockPanel::CleanUp()
+{
+
+	return true; 
+}
+
 bool ObjectCreatorDockPanel::Draw()
 {
 #pragma region secutiryChecks
@@ -124,6 +130,7 @@ void ObjectCreatorDockPanel::DrawPropertiesTab()
 
 void ObjectCreatorDockPanel::ResetObjectData()
 {
+	FLY_LOG("Object Data Reset"); 
 	strcpy(newObjectName, "");
 	strcpy(searchNewActionBuffer, "");
 	selectedAction = nullptr;
@@ -283,6 +290,7 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 			{
 			case AT_IMAGE:
 				selectedAction = creatingObject->AddDisplayImageAction(std::string(MyFileSystem::getInstance()->GetIconsDirectory() + "EmptyObject.png").c_str());
+
 				break;
 
 			case AT_CHANGE_ROOM:
@@ -294,6 +302,7 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 			}
 
 			showActionDictionary = false;
+			newActionSelected = nullptr; 
 		}
 		ImGui::EndChild();
 		ImGui::PopStyleColor();
@@ -550,10 +559,11 @@ void ObjectCreatorDockPanel::DrawDisplayImageSettings()
 
 	IMGUI_SPACE_SEPARATOR;
 
-	if (selectedImageAction->GetTexture() == nullptr)
-		selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResource("EmptyObject"));
-	else
-		selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResource(selectedImageAction->GetTexture()->GetName()));
+	// Settings ---------------------------------
+	//if (selectedImageAction->GetTexture() == nullptr)
+	//	selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResource("EmptyObject"));
+	//else
+	//	selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResource(selectedImageAction->GetTexture()->GetName()));
 
 	float aspect_ratio = selectedImageAction->GetTexture()->GetAspectRatio();
 	float previewQuadWidth = 150;
@@ -564,7 +574,6 @@ void ObjectCreatorDockPanel::DrawDisplayImageSettings()
 
 	int childHeight = previewQuadHeight + 20;
 
-	// Settings ---------------------------------
 	PUSH_FONT(App->moduleImGui->rudaBoldBig);
 	ImGui::Text("Image Settings:");
 	POP_FONT;

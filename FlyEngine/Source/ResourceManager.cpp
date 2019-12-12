@@ -27,8 +27,12 @@ bool ResourceManager::AddResource(Resource* newResource, std::string name)
 {
 	//assert(newResource->GetPath() == ""); 
 
-	newResource->SetName(name);
-	instance->resourceList.push_back(newResource);
+	if(newResource != nullptr)
+	{
+		newResource->SetName(name);
+		instance->resourceList.push_back(newResource);
+	}
+
 	return false;
 }
 

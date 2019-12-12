@@ -36,7 +36,7 @@ ObjectPropertiesDockPanel::~ObjectPropertiesDockPanel()
 bool ObjectPropertiesDockPanel::Draw()
 {
 #pragma region secutiryChecks
-	if (!DockPanel::Draw())
+	if (!DockPanel::Draw() || App->moduleRoomManager->GetSelectedRoom() == nullptr)
 		return false;
 #pragma endregion
 

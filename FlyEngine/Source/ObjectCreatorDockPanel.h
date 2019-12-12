@@ -19,7 +19,7 @@ public:
 
 	bool Draw();
 	void DrawPropertiesTab();
-
+	bool CleanUp(); 
 
 	void ResetObjectData();
 	void Close(); 
