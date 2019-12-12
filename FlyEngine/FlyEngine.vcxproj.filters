@@ -342,9 +342,6 @@
     <ClCompile Include="Source\ChangeRoomAction.cpp">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\JSONParser.cpp">
-      <Filter>Source\Tools\Save&amp;Load</Filter>
-    </ClCompile>
     <ClCompile Include="3rdParty\JSON\parson.c">
       <Filter>Source\3rdParty\JSON</Filter>
     </ClCompile>
@@ -724,9 +721,6 @@
     </ClInclude>
     <ClInclude Include="Source\ChangeRoomAction.h">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\JSONParser.h">
-      <Filter>Source\Tools\Save&amp;Load</Filter>
     </ClInclude>
     <ClInclude Include="3rdParty\JSON\parson.h">
       <Filter>Source\3rdParty\JSON</Filter>

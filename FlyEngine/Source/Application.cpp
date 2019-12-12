@@ -60,7 +60,7 @@ bool Application::Init()
 		module_iterator++;
 	}
 
-	flySection = FLY_SECTION_ROOM_EDIT; 
+	//flySection = FLY_SECTION_ROOM_EDIT; 
 	ms_timer.Start();
 	return ret;
 }

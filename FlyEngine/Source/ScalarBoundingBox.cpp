@@ -1,6 +1,8 @@
 #include "ScalarBoundingBox.h"
 #include "Globals.h"
 
+#include "mmgr.h"
+
 ScalarBoundingBox::ScalarBoundingBox(FlyObject* objectAttached) : BoundingBox()
 {
 	topLeftScaleBox = new BoundingBox(); 
@@ -51,6 +53,17 @@ void ScalarBoundingBox::Update()
 
 void ScalarBoundingBox::CleanUp()
 {
+	topLeftScaleBox->CleanUp();
+	delete topLeftScaleBox;
+
+	topRightScaleBox->CleanUp();
+	delete topRightScaleBox;
+
+	bottomLeftScaleBox->CleanUp();
+	delete bottomLeftScaleBox;
+
+	bottomRightScaleBox->CleanUp();
+	delete bottomRightScaleBox;
 }
 
 void ScalarBoundingBox::SetCornerBoxSize(float newSize)

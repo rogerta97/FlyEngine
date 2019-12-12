@@ -7,6 +7,8 @@
 #include "ViewportManager.h"
 #include "Room.h"
 #include "NodeGraph.h"
+#include "ImageImporter.h"
+#include "ResourceManager.h"
 #include "MyFileSystem.h"
 #include "FlyObject.h"
 #include "SaveAndLoad.h"
@@ -64,6 +66,10 @@ bool ModuleRoomManager::CleanUp()
 	MyFileSystem::getInstance()->Delete();
 	RandomNumberGenerator::getInstance()->Delete();
 
+	ImageImporter::getInstance()->Delete();
+	ResourceManager::getInstance()->CleanUp();
+	ViewportManager::getInstance()->Delete();
+
 	return true;
 }
 
@@ -93,7 +99,7 @@ void ModuleRoomManager::ReceiveEvent(FlyEngineEvent eventType)
 	}
 }
 
-void ModuleRoomManager::LoadRoomsData()
+bool ModuleRoomManager::LoadRoomsData()
 {
 	string roomsDirectory = MyFileSystem::getInstance()->GetSavedDataDirectory() + "RoomsData";
 	vector<string> roomsSavedFiles;
@@ -105,6 +111,11 @@ void ModuleRoomManager::LoadRoomsData()
 		Room* newRoom = App->moduleRoomManager->CreateEmptyRoom(currentRoomFile);
 		SaveAndLoad::getInstance()->LoadDataToRoom(roomsDirectory + "\\" + currentRoomFile + ".json", newRoom);
 	}
+
+	if (roomsSavedFiles.size() > 0)
+		return true; 
+
+	return false; 
 }
 
 Room* ModuleRoomManager::CreateEmptyRoom(string roomName)

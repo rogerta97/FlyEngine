@@ -116,18 +116,19 @@ update_status ModuleRender::PostUpdate(float dt)
 	//	selectedRoom->DrawRoomObjects();
 	//}
 
-	ViewportManager::getInstance()->viewportTexture->Bind();
+	if (App->flySection == FLY_SECTION_ROOM_EDIT) 
+	{
+		ViewportManager::getInstance()->viewportTexture->Bind();
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.1, 0.1, 0.1, 1);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClearColor(0.1, 0.1, 0.1, 1);
 
-	if (App->flySection == FLY_SECTION_ROOM_EDIT) {
 		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
 		selectedRoom->DrawRoomObjects();
-	}
 
-	ViewportManager::getInstance()->viewportTexture->Render();
-	ViewportManager::getInstance()->viewportTexture->Unbind();
+		ViewportManager::getInstance()->viewportTexture->Render();
+		ViewportManager::getInstance()->viewportTexture->Unbind();
+	}
 
 	GLenum err = glGetError(); 
 	

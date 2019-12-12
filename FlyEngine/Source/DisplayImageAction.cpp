@@ -99,8 +99,11 @@ void DisplayImageAction::CleanUp()
 
 	if (imageTexture != nullptr)
 	{
-		//imageTexture->CleanUp();
 		//delete imageTexture;
+
+		/*imageTexture->CleanUp();
+		
+		imageTexture = nullptr; */
 	}
 
 	parentObject = nullptr; 

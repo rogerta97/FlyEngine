@@ -25,7 +25,7 @@ public:
 	bool CleanUp();
 
 	void ReceiveEvent(FlyEngineEvent eventType);
-	void LoadRoomsData(); 
+	bool LoadRoomsData(); 
 
 	// Rooms
 	Room* CreateEmptyRoom(string roomName = "New Room"); 

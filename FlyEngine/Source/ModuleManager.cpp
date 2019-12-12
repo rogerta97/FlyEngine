@@ -41,9 +41,11 @@ bool ModuleManager::Init()
 bool ModuleManager::Start()
 {
 	// Load Saved Rooms
-	App->moduleRoomManager->LoadRoomsData(); 
-	App->moduleRoomManager->SetSelectedRoom(App->moduleRoomManager->GetFirstRoom());
-	App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);
+	if (App->moduleRoomManager->LoadRoomsData())
+	{
+		App->moduleRoomManager->SetSelectedRoom(App->moduleRoomManager->GetFirstRoom());
+		App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);
+	}
 
 	return true;
 }
@@ -52,9 +54,7 @@ bool ModuleManager::Start()
 
 bool ModuleManager::CleanUp()
 {
-	ImageImporter::getInstance()->Delete(); 
-	ResourceManager::getInstance()->CleanUp(); 
-	ViewportManager::getInstance()->Delete();
+
 	return true;
 }
 

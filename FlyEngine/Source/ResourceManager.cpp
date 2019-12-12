@@ -93,9 +93,12 @@ void ResourceManager::CleanUp()
 {
 	for (auto& currentResource : instance->resourceList)
 	{
-		currentResource->CleanUp();
-		delete currentResource;
-		currentResource = nullptr; 
+		if (currentResource != nullptr && currentResource->GetType() != RESOURCE_null)
+		{
+			currentResource->CleanUp();
+			delete currentResource;
+			currentResource = nullptr; 
+		}
 	}
 
 	instance->resourceList.clear(); 

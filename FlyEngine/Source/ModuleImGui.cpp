@@ -86,7 +86,7 @@ bool ModuleImGui::Start()
 	CreatePanels();
 	SetStyle();
 
-	AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
+	//AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
 
 	//// Test Change Scene Object
 	//Room* parentRoom = App->moduleRoomManager->GetRoom("Lake"); 
