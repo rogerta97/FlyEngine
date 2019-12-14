@@ -50,11 +50,44 @@ bool ObjectPropertiesDockPanel::Draw()
 
 			if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
 			{
-				if (ImGui::BeginTabItem("Actions"))
+				if (selectedObject->IsInventoryItem())
 				{
-					DrawObjectActionsTab();
-					ImGui::EndTabItem();
+					if (ImGui::BeginTabItem("Item"))
+					{
+						ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
+						ImGui::Text("Item Inventory Attributes:");
+						ImGui::PopFont();
+
+						static char inventoryBrowcseImageBuffer[512];
+						ImGui::InputTextWithHint("", "Search...", inventoryBrowcseImageBuffer, IM_ARRAYSIZE(inventoryBrowcseImageBuffer));
+						if (ImGui::Button("Properties##Browse Image"))
+						{
+							ImGui::Columns(2);
+
+							ImGui::Text("Position");
+							ImGui::DragFloat("X", &selectedObject->GetClickableAreaPosOne().x);
+							ImGui::DragFloat("Y", &selectedObject->GetClickableAreaPosOne().y);
+
+							ImGui::NextColumn();
+
+							ImGui::Text("Dimensions");
+							ImGui::DragFloat("Width", &selectedObject->GetClickableAreaSizeOne().x);
+							ImGui::DragFloat("Heigth", &selectedObject->GetClickableAreaSizeOne().y);
+							ImGui::EndChild();
+						}
+						
+						ImGui::EndTabItem();
+					}
 				}
+				else
+				{
+					if (ImGui::BeginTabItem("Actions"))
+					{
+						DrawObjectActionsTab();
+						ImGui::EndTabItem();
+					}
+				}
+
 				if (ImGui::BeginTabItem("Clickable Area"))
 				{
 					DrawClickableAreaTab(); 

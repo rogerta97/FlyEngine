@@ -204,6 +204,14 @@ bool FlyObject::HasVisuals()
 	return false; 
 }
 
+bool FlyObject::IsInventoryItem()
+{
+	if (flyObjectType == INVENTORY_ITEM)
+		return true; 
+
+	return false; 
+}
+
 void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 {
 	// Save Object Properties

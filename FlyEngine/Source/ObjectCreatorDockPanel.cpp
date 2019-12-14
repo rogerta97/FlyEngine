@@ -151,7 +151,7 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 	ImGui::InputTextWithHint("", "Search...", inventoryBrowcseImageBuffer, IM_ARRAYSIZE(inventoryBrowcseImageBuffer));
 	ImGui::SameLine();
 
-	if (ImGui::Button("Browse Image"))
+	if (ImGui::Button("Creator##Browse Image"))
 	{
 		clickableAreaActive = true; 
 		displayImageAction_Inv = creatingObject->AddDisplayImageAction("None"); 
