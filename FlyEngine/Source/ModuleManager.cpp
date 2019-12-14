@@ -31,7 +31,7 @@ bool ModuleManager::Init()
 	LoadEngineIcons();
 
 	// Tools Descriptions 
-	AddToolsNameDescription("Display Image", "This should be the description of the image tool", AT_IMAGE);
+	AddToolsNameDescription("Display Image", "This should be the description of the image tool", AT_DISPLAY_IMAGE);
 	AddToolsNameDescription("Change Scene", "This should be the description of the change scene tool", AT_CHANGE_ROOM);
 
 
@@ -172,7 +172,7 @@ Texture* ModuleManager::GetIconFromActionType(ActionType toolType)
 	switch (toolType)
 	{
 
-	case AT_IMAGE:
+	case AT_DISPLAY_IMAGE:
 		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageIcon");
 		break;
 

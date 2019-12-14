@@ -184,7 +184,7 @@ void ObjectPropertiesDockPanel::DrawActionSettings()
 	{
 		switch (selectedObject->GetSelectedActionType())
 		{
-		case AT_IMAGE:
+		case AT_DISPLAY_IMAGE:
 			DrawToolImageSettings(); 
 			break; 
 
@@ -323,7 +323,7 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 			{
 				switch (newActionSelected->actionType)
 				{
-				case AT_IMAGE:
+				case AT_DISPLAY_IMAGE:
 					selectedObject->AddDisplayImageAction("None");
 					break;
 

@@ -163,7 +163,7 @@ float2 FlyObject::GetObjectVisualDimensions()
 	float2 objectVisualSize; 
 
 	// For now we will just take into account ImageTool, if you are deleting this you advanced really. 
-	DisplayImageAction* imageTool = (DisplayImageAction*)GetAction(AT_IMAGE); 
+	DisplayImageAction* imageTool = (DisplayImageAction*)GetAction(AT_DISPLAY_IMAGE); 
 	if (imageTool != nullptr)
 	{
 		objectVisualSize = float2(imageTool->GetQuad()->quadWidth, imageTool->GetQuad()->quadHeight); 
@@ -292,7 +292,7 @@ void FlyObject::CalculateCurrentGizmo()
 
 DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePath)
 {
-	if (GetAction(AT_IMAGE) == nullptr)
+	if (GetAction(AT_DISPLAY_IMAGE) == nullptr)
 	{
 		DisplayImageAction* newAtrImage = new DisplayImageAction(this);
 		newAtrImage->CreateImage(imageTexturePath);
@@ -306,7 +306,7 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 		return newAtrImage;
 	}
 
-	return (DisplayImageAction*)GetAction(AT_IMAGE); 	
+	return (DisplayImageAction*)GetAction(AT_DISPLAY_IMAGE); 	
 }
 
 ChangeRoomAction* FlyObject::AddChangeRoomAction()

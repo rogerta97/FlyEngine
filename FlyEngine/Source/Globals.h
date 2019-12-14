@@ -49,6 +49,8 @@ enum update_status
 
 #define IMGUI_SPACE_SEPARATOR ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
 #define PUSH_CHILD_BG_COLOR ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+#define SPACING ImGui::Spacing(); 
+#define SEPARATOR ImGui::Separator(); 
 
 // Configuration -----------
 #define SCREEN_WIDTH 1500

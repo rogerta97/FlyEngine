@@ -11,6 +11,7 @@
 class FlyObject;
 class Action; 
 class Texture; 
+class DisplayImageAction; 
 class ObjectCreatorDockPanel : public DockPanel {
 
 public:
@@ -18,6 +19,7 @@ public:
 	~ObjectCreatorDockPanel();
 
 	bool Draw();
+	void DrawInventorySettings();
 	void DrawPropertiesTab();
 	bool CleanUp(); 
 
@@ -27,8 +29,8 @@ public:
 	// Clickable Area -------------
 	void DrawClickableAreaCreator();
 	void DrawClickableAreaSettings();
-	void PrintClickableAreaObjectVisuals();
-	void DrawPrevTextureCA();
+	void PrintClickableAreaObjectVisuals(bool drawClickableArea = true);
+	void DrawPrevTextureCA(bool drawClickableArea = true);
 	void GetTextureSizeFitted(ImVec2& prevTextureSize);
 	void DrawPreviewClickableAreaOnTexture(float2 imageTopLeft, float2 prevTextureSize);
 
@@ -65,6 +67,10 @@ private:
 
 	FlyObject* creatingObject = nullptr; 
 	Action* selectedAction = nullptr; 
+
+	// Inventory
+	DisplayImageAction* displayImageAction_Inv;
+	bool drawClickableAreaOver = true; 
 };
 
 #endif 

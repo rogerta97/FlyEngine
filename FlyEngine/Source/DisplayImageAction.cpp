@@ -17,7 +17,7 @@
 
 DisplayImageAction::DisplayImageAction(FlyObject* _parentObject = nullptr)
 {
-	actionType = AT_IMAGE; 
+	actionType = AT_DISPLAY_IMAGE; 
 	quadMesh = nullptr; 
 	imageTexture = nullptr; 
 	parentObject = _parentObject; 

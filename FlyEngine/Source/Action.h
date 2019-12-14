@@ -8,7 +8,7 @@ using namespace std;
 
 enum ActionType
 {
-	AT_IMAGE,
+	AT_DISPLAY_IMAGE,
 	AT_CHANGE_ROOM,
 	AT_null,
 };

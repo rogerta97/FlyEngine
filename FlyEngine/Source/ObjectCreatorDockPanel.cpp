@@ -26,6 +26,7 @@ ObjectCreatorDockPanel::ObjectCreatorDockPanel(bool isVisible) : DockPanel("Obje
 	dockPanelType = DOCK_OBJECT_CREATOR;
 
 	previewClickableAreaTexture = nullptr;
+	displayImageAction_Inv = nullptr; 
 
 	clickableAreaPosPerc = float2(0, 0);
 	clickableAreaSizePerc = float2(1.0f, 1.0f);
@@ -66,27 +67,37 @@ bool ObjectCreatorDockPanel::Draw()
 		ImGui::InputTextWithHint("Name##ObjectNaming", "Name...", newObjectName, 256 * sizeof(char));
 		ImGui::PopFont();
 
-		ImGui::SameLine();
+		ImGui::InputTextMultiline("Description##ObjectDescription", newObjectDescription, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 100, 100));
+
+		static int selectedObjectType = 0;
+		if (ImGui::Combo("Object Type", &selectedObjectType, "Action Object\0Inventory Item\0"))
+		{
+
+			switch (selectedObjectType)
+			{
+			case ACTION_OBJECT: 
+				ResetObjectData();
+				break; 
+
+			case INVENTORY_ITEM: 
+				ResetObjectData();
+				clickableAreaActive = true; 
+				break; 
+			}
+		}
 
 		if (ImGui::Checkbox("Interactable", &creatingObject->IsInteractable()))
 		{
 			focusClickableAreaTab = true;
 		}
 
-		ImGui::Spacing();
-		ImGui::InputTextMultiline("Description##ObjectDescription", newObjectDescription, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 100, 100));
-
-		ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
-		ImGui::Text("Object Attributes:");
-		ImGui::PopFont();
-
-		static int selectedObjectType = 0;
-		ImGui::Combo("Object Type", &selectedObjectType, "Action Object\0Inventory Item\0");
-
-		ImGui::Separator();
+		ImGui::Separator(); 
 
 		if (selectedObjectType == ACTION_OBJECT)
 		{
+			ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
+			ImGui::Text("Object Attributes:");
+			ImGui::PopFont();
 			if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
 			{
 
@@ -116,24 +127,111 @@ bool ObjectCreatorDockPanel::Draw()
 			}
 		}
 		else if (selectedObjectType == INVENTORY_ITEM)
-		{
-			ImGui::Columns(2); 
-
-			PUSH_CHILD_BG_COLOR; 
-			ImGui::BeginChild("kjfsh"); 
-			ImGui::EndChild(); 
-
-			ImGui::Image(0, ImVec2(100, 100)); 
-
-			ImGui::NextColumn();
-
-			ImGui::Text("Hello World"); 
-
+		{	
+			ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
+			ImGui::Text("Item Inventory Attributes:");
+			ImGui::PopFont();
+			DrawInventorySettings();
 		}
 	}
 
 	ImGui::End();
 
+}
+
+void ObjectCreatorDockPanel::DrawInventorySettings()
+{
+	// Preview of the object -----------------
+	SPACING;
+	PrintClickableAreaObjectVisuals(drawClickableAreaOver);
+	SPACING; 
+
+	// Input Text to Browse Image ------------
+	static char inventoryBrowcseImageBuffer[512];
+	ImGui::InputTextWithHint("", "Search...", inventoryBrowcseImageBuffer, IM_ARRAYSIZE(inventoryBrowcseImageBuffer));
+	ImGui::SameLine();
+
+	if (ImGui::Button("Browse Image"))
+	{
+		clickableAreaActive = true; 
+		displayImageAction_Inv = creatingObject->AddDisplayImageAction("None"); 
+
+		char const* lFilterPatterns[2] = { "*.jpg" , "*.png" };
+		const char* path = tinyfd_openFileDialog("Load Image...", NULL, 2, lFilterPatterns, NULL, 0);
+
+		if (path != NULL)
+		{
+			if (!ResourceManager::getInstance()->ExistResourcePath(path))
+			{
+				displayImageAction_Inv->SetTexture(ImageImporter::getInstance()->LoadTexture(path, false));
+				ResourceManager::getInstance()->AddResource(displayImageAction_Inv->GetTexture(), displayImageAction_Inv->GetTexture()->GetName());
+			}
+			else
+			{
+				displayImageAction_Inv->SetTexture((Texture*)ResourceManager::getInstance()->GetResourceByPath(path));
+			}
+
+			strcpy(inventoryBrowcseImageBuffer, path);
+		}
+	}
+
+	// Clickable Zone Settings ---------------
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Clickable Zone:");
+	ImGui::PopFont();
+
+	ImGui::Separator(); 
+	ImGui::Spacing();
+
+	if (displayImageAction_Inv != nullptr && displayImageAction_Inv->GetTexture() != nullptr)
+	{
+		if (ImGui::Checkbox("Draw", &drawClickableAreaOver))
+		{
+
+		}
+
+		PUSH_CHILD_BG_COLOR;
+		ImGui::BeginChild("InventoryCASett", ImVec2(ImGui::GetContentRegionAvail().x, 90));
+		ImGui::Columns(2);
+
+		ImGui::Text("Position");
+		ImGui::DragFloat("X", &creatingObject->GetClickableAreaPosOne().x);
+		ImGui::DragFloat("Y", &creatingObject->GetClickableAreaPosOne().y);
+
+		ImGui::NextColumn();
+
+		ImGui::Text("Dimensions");
+		ImGui::DragFloat("Width", &creatingObject->GetClickableAreaSizeOne().x);
+		ImGui::DragFloat("Heigth", &creatingObject->GetClickableAreaSizeOne().y);
+		ImGui::EndChild(); 
+
+		ImGui::PopStyleColor();
+	}
+	else
+	{
+		ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
+		ImGui::TextColored(ImVec4(0,1,1,1), "Inventory Items need images assigned to enable the clickable zone. Assign an image.");
+		ImGui::PopFont();
+	}
+
+	// On Picked Actions ------------------
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Perform Action When Picked:");
+	ImGui::PopFont();
+
+	ImGui::Separator();
+	ImGui::Spacing();
+
+	static int onPickAction = 0; 
+	ImGui::Combo("On Pick Action", &onPickAction, "None\0Do Sound\0Change Variable\0"); 
+
+	PUSH_CHILD_BG_COLOR; 
+	ImGui::BeginChild("OnPickActions", ImVec2(ImGui::GetContentRegionMax().x, 150)); 
+
+	// Add On Pick Action
+
+	ImGui::EndChild(); 
+	ImGui::PopStyleColor(); 
 }
 
 
@@ -145,8 +243,8 @@ void ObjectCreatorDockPanel::DrawPropertiesTab()
 
 	ImGui::Separator();
 
-	static bool t;
-	ImGui::Checkbox("Interactable", &t);
+	//static bool t;
+	//ImGui::Checkbox("Interactable", &t);
 }
 
 void ObjectCreatorDockPanel::ResetObjectData()
@@ -222,7 +320,7 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 
 		switch (selectedAction->GetActionType())
 		{
-		case AT_IMAGE:
+		case AT_DISPLAY_IMAGE:
 			DrawDisplayImageSettings();
 			break;
 
@@ -309,7 +407,7 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 		{
 			switch (newActionSelected->actionType)
 			{
-			case AT_IMAGE:
+			case AT_DISPLAY_IMAGE:
 				selectedAction = creatingObject->AddDisplayImageAction(std::string(MyFileSystem::getInstance()->GetIconsDirectory() + "EmptyObject.png").c_str());
 
 				break;
@@ -340,6 +438,20 @@ void ObjectCreatorDockPanel::Close()
 
 void ObjectCreatorDockPanel::DrawClickableAreaCreator()
 {
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Preview:");
+	ImGui::PopFont();
+
+	ImGui::SameLine();
+	ImGui::SetCursorPosX(ImGui::GetContentRegionAvailWidth() + 10);
+	if (ImGui::Checkbox("Active", &clickableAreaActive))
+	{
+		if (clickableAreaActive && previewClickableAreaTexture != nullptr)
+		{
+			float2 textureSize = float2(previewClickableAreaTexture->GetWidth(), previewClickableAreaTexture->GetHeigth());
+		}
+	}
+
 	PrintClickableAreaObjectVisuals();
 	DrawClickableAreaSettings();
 }
@@ -410,26 +522,15 @@ void ObjectCreatorDockPanel::DrawClickableAreaSettings()
 	}
 }
 
-void ObjectCreatorDockPanel::PrintClickableAreaObjectVisuals()
+void ObjectCreatorDockPanel::PrintClickableAreaObjectVisuals(bool drawClickableArea)
 {
-	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 	ImGui::Text("Preview:");
 	ImGui::PopFont();
 
-	ImGui::SameLine();
-	ImGui::SetCursorPosX(ImGui::GetContentRegionAvailWidth() + 10);
-	if (ImGui::Checkbox("Active", &clickableAreaActive))
-	{
-		if (clickableAreaActive && previewClickableAreaTexture != nullptr)
-		{
-			float2 textureSize = float2(previewClickableAreaTexture->GetWidth(), previewClickableAreaTexture->GetHeigth());
-		}
-	}
-
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 	ImGui::BeginChild("ShowClickableArea", ImVec2(ImGui::GetContentRegionAvailWidth(), previewTextureMaxSize));
-
 	if (!creatingObject->HasVisuals())
 	{
 		// Background
@@ -438,28 +539,31 @@ void ObjectCreatorDockPanel::PrintClickableAreaObjectVisuals()
 
 		// Show No Visual Text
 		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-		ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - 50, 100));
-
-		if (clickableAreaActive)
+		
+		if (clickableAreaActive) {
+			ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - 45, 98));
 			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.7f, 0.8f), "NO VISUALS");
-		else
+		}
+		else {
+			ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - 40, 98));
 			ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.5f), "INACTIVE");
+		}
 
 		ImGui::PopFont();
 	}
 	else
 	{
-		DrawPrevTextureCA();
+		DrawPrevTextureCA(drawClickableArea);
 	}
 
 	ImGui::EndChild();
 	ImGui::PopStyleColor();
 }
 
-void ObjectCreatorDockPanel::DrawPrevTextureCA()
+void ObjectCreatorDockPanel::DrawPrevTextureCA(bool drawClickableArea)
 {
 	// Prev Texture
-	DisplayImageAction* displayImageAction = (DisplayImageAction*)creatingObject->GetAction(AT_IMAGE);
+	DisplayImageAction* displayImageAction = (DisplayImageAction*)creatingObject->GetAction(AT_DISPLAY_IMAGE);
 	if (displayImageAction != nullptr)
 	{
 		previewClickableAreaTexture = displayImageAction->GetTexture();
@@ -476,7 +580,7 @@ void ObjectCreatorDockPanel::DrawPrevTextureCA()
 		ImGui::SetCursorPos(ImVec2(imageTopLeft.x, imageTopLeft.y));
 		ImGui::Image((ImTextureID)previewClickableAreaTexture->GetTextureID(), prevTextureSize);
 
-		if (clickableAreaActive) {
+		if (clickableAreaActive && drawClickableArea) {
 			DrawPreviewClickableAreaOnTexture(imageTopLeft, float2(prevTextureSize.x, prevTextureSize.y));
 		}
 	}
