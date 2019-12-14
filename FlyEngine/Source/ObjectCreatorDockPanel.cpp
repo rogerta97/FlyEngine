@@ -242,9 +242,6 @@ void ObjectCreatorDockPanel::DrawPropertiesTab()
 	ImGui::PopFont();
 
 	ImGui::Separator();
-
-	//static bool t;
-	//ImGui::Checkbox("Interactable", &t);
 }
 
 void ObjectCreatorDockPanel::ResetObjectData()

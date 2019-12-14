@@ -148,15 +148,6 @@ void ModuleImGui::DeletePanels()
 
 update_status ModuleImGui::PreUpdate(float dt)
 {
-
-	if (App->moduleInput->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
-	{
-	//	Room* parentRoom = App->moduleRoomManager->GetRoom("Forest");
-		FlyObject* parrot = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Transformer Yellow", "This is a simple Fly Object to test descriptions");
-		string spritePath = MyFileSystem::getInstance()->GetSolutionDirectory() + "EngineResources\\Images\\TransformerYellow.png";
-
-		parrot->AddDisplayImageAction(spritePath.c_str());
-	}
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->moduleWindow->mainWindow);
 

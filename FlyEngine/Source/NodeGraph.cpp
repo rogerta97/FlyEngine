@@ -88,6 +88,9 @@ std::string NodeGraph::GetNodesAsCombo()
 
 void NodeGraph::DeleteAllNodes()
 {
+	if (instance->graphNodeList.empty())
+		return; 
+
 	for (auto it = instance->graphNodeList.begin(); it != instance->graphNodeList.end(); it++) {
 		delete (*it);
 	}
@@ -195,6 +198,10 @@ void NodeGraph::DeleteConnections(vector<UID> connectionsToDelIDVector)
 int NodeGraph::DeleteAllConnections()
 {
 	int conexionsDeletedAmount = instance->connectionsList.size(); 
+
+	if (conexionsDeletedAmount == 0)
+		return false; 
+
 	for (auto it = instance->connectionsList.begin(); it != instance->connectionsList.end(); it++) {
 		delete (*it);
 	}
