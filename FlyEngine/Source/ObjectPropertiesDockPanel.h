@@ -16,6 +16,8 @@ public:
 
 	void DrawFixedPartObjectUI(FlyObject* selectedObject);
 
+	void DrawTransformButtons();
+
 	void SetSelectedObject(FlyObject* newSelectedObject);
 	FlyObject* GetSelectedObject() const;
 

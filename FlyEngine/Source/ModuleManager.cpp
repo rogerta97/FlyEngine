@@ -49,7 +49,7 @@ bool ModuleManager::Start()
 	}
 
 	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
-	FlyObject* itemInventoryObject = selectedRoom->CreateInventoryItem("Inventory", "This is the first inventory object :D");
+	FlyObject* itemInventoryObject = selectedRoom->CreateInventoryItem("Key", "This is the first inventory object :D");
 	string keyPath = MyFileSystem::getInstance()->GetSolutionDirectory() + "\\EngineResources\\Images\\Key.png";
 	itemInventoryObject->AddDisplayImageAction(keyPath.c_str()); 
 
@@ -126,6 +126,9 @@ void ModuleManager::LoadEngineIcons()
 
 	Texture* emptyObject = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "EmptyObject.png"), true);
 	ResourceManager::getInstance()->AddResource((Resource*)emptyObject, "EmptyObject");
+
+	Texture* inventoryItemIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "InventoryItemIcon.png"), true);
+	ResourceManager::getInstance()->AddResource((Resource*)inventoryItemIcon, "InventoryItemIcon");
 }
 
 int ModuleManager::GetToolsAmount() const

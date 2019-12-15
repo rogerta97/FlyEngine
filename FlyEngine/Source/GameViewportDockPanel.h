@@ -22,7 +22,6 @@ public:
 
 	// Draw ---
 	bool Draw();
-	void DrawTopBar();
 	void FitViewportToRegion();
 
 	void ReceiveEvent(FlyEngineEvent eventType);

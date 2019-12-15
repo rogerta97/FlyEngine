@@ -114,12 +114,18 @@ bool ObjectPropertiesDockPanel::Draw()
 
 void ObjectPropertiesDockPanel::DrawFixedPartObjectUI(FlyObject* selectedObject)
 {
+	// Draw Top Manage Buttons ----------
+	DrawTransformButtons();
+
+	ImGui::Separator();
+	ImGui::Separator();
+
 	Texture* objectIconTextue = (Texture*)ResourceManager::getInstance()->GetResource("ObjectIcon");
 	ImGui::Image((ImTextureID)objectIconTextue->GetTextureID(), ImVec2(35, 35));
 
 	ImGui::Separator();
 
-	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 45, ImGui::GetCursorPosY() - 35));
+	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 45, ImGui::GetCursorPosY() - 38));
 
 	ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
 	ImGui::Text("%s", selectedObject->GetName().c_str());
@@ -133,6 +139,56 @@ void ObjectPropertiesDockPanel::DrawFixedPartObjectUI(FlyObject* selectedObject)
 	ImGui::Spacing();
 	DrawObjectPlacementCH();
 	ImGui::Spacing();
+}
+
+void ObjectPropertiesDockPanel::DrawTransformButtons()
+{
+	bool currentMode = false;
+
+	if (App->moduleImGui->gameViewportDockPanel->GetGizmoMode() == GIZMO_SELECT) {
+		currentMode = true;
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.7f, 1, 0.35f));
+	}
+
+	Texture* arrowSelect = (Texture*)ResourceManager::getInstance()->GetResource("SelectArrow");
+	if (ImGui::ImageButton((ImTextureID)arrowSelect->GetTextureID(), ImVec2(22, 22)))
+	{
+		App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GIZMO_SELECT); 
+
+		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();
+		if (selectedObject != nullptr)
+		{
+			selectedObject->CalculateCurrentGizmo();
+		}
+	}
+
+	if (currentMode) {
+		currentMode = false;
+		ImGui::PopStyleColor();
+	}
+
+	currentMode = false;
+	if (App->moduleImGui->gameViewportDockPanel->GetGizmoMode() == GIZMO_MOVE) {
+		currentMode = true;
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.7f, 1, 0.35f));
+	}
+
+	ImGui::SameLine();
+	Texture* moveArrows = (Texture*)ResourceManager::getInstance()->GetResource("MoveOption");
+	if (ImGui::ImageButton((ImTextureID)moveArrows->GetTextureID(), ImVec2(22, 22)))
+	{
+		App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GIZMO_MOVE);
+		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();
+		if (selectedObject != nullptr)
+		{
+			selectedObject->CalculateCurrentGizmo();
+		}
+	}
+
+	if (currentMode) {
+		currentMode = false;
+		ImGui::PopStyleColor();
+	}
 }
 
 void ObjectPropertiesDockPanel::DrawObjectActionsTab()
