@@ -71,6 +71,7 @@ public:
 
 	// Factory ------------------------------------------------------------------------
 	FlyObject* CreateFlyObject(std::string objectName, std::string description = "");
+	FlyObject* CreateInventoryItem(std::string objectName, std::string description = "");
 	void AddFlyObject(FlyObject* newFlyObject);
 	void DeleteFlyObject(FlyObject* objectToDelete);
 	void DeleteSelectedObject(); 

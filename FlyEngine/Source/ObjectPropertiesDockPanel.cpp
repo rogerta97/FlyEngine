@@ -48,19 +48,24 @@ bool ObjectPropertiesDockPanel::Draw()
 		{
 			DrawFixedPartObjectUI(selectedObject);
 
+			ImGui::Separator();
+
+			ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
+			ImGui::Text("Item Inventory Attributes:");
+			ImGui::PopFont();
+
 			if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
 			{
 				if (selectedObject->IsInventoryItem())
 				{
-					if (ImGui::BeginTabItem("Item"))
+
+					if (ImGui::BeginTabItem("Item Settings"))
 					{
-						ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
-						ImGui::Text("Item Inventory Attributes:");
-						ImGui::PopFont();
 
 						static char inventoryBrowcseImageBuffer[512];
 						ImGui::InputTextWithHint("", "Search...", inventoryBrowcseImageBuffer, IM_ARRAYSIZE(inventoryBrowcseImageBuffer));
-						if (ImGui::Button("Properties##Browse Image"))
+						ImGui::SameLine(); 
+						if (ImGui::Button("Change Image##Properties"))
 						{
 							ImGui::Columns(2);
 
@@ -75,7 +80,7 @@ bool ObjectPropertiesDockPanel::Draw()
 							ImGui::DragFloat("Heigth", &selectedObject->GetClickableAreaSizeOne().y);
 							ImGui::EndChild();
 						}
-						
+
 						ImGui::EndTabItem();
 					}
 				}
@@ -86,16 +91,17 @@ bool ObjectPropertiesDockPanel::Draw()
 						DrawObjectActionsTab();
 						ImGui::EndTabItem();
 					}
+
 				}
 
 				if (ImGui::BeginTabItem("Clickable Area"))
 				{
-					DrawClickableAreaTab(); 
+					DrawClickableAreaTab();
 					ImGui::EndTabItem();
 				}
 
 				ImGui::EndTabBar();
-			}		
+			}
 		}
 		else
 		{

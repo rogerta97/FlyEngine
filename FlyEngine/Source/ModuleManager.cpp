@@ -8,6 +8,7 @@
 #include "Room.h"
 #include "ModuleImGui.h"
 #include "Texture.h"
+#include "FlyObject.h"
 #include "ViewportManager.h"
 #include "imgui.h"
 #include "RoomDockPanel.h"
@@ -48,7 +49,11 @@ bool ModuleManager::Start()
 	}
 
 	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
-	FlyObject* itemInventoryObject = selectedRoom->CreateFlyObject("Inventory", "This is the first inventory object :D");
+	FlyObject* itemInventoryObject = selectedRoom->CreateInventoryItem("Inventory", "This is the first inventory object :D");
+	string keyPath = MyFileSystem::getInstance()->GetSolutionDirectory() + "\\EngineResources\\Images\\Key.png";
+	itemInventoryObject->AddDisplayImageAction(keyPath.c_str()); 
+
+	itemInventoryObject->CreateClickableArea(float2(0, 0), float2(1, 1), false); 
 
 	return true;
 }

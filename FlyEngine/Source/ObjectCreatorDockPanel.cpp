@@ -136,7 +136,6 @@ bool ObjectCreatorDockPanel::Draw()
 	}
 
 	ImGui::End();
-
 }
 
 void ObjectCreatorDockPanel::DrawInventorySettings()
@@ -614,6 +613,17 @@ void ObjectCreatorDockPanel::DrawPreviewClickableAreaOnTexture(float2 textureTop
 
 void ObjectCreatorDockPanel::DrawCreateButton()
 {
+	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1,0,0, 0.1f)); 
+	ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 205);
+	if (ImGui::Button("Close", ImVec2(100, 30)))
+	{
+
+	}
+	ImGui::SameLine(); 
+	ImGui::PopStyleColor();
+	ImGui::PopFont();
+
 	ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 100);
 	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
 	if (ImGui::Button("Create", ImVec2(100, 30)))

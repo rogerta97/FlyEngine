@@ -237,6 +237,13 @@ FlyObject* Room::CreateFlyObject(std::string objectName, std::string description
 	return newObject; 
 }
 
+FlyObject* Room::CreateInventoryItem(std::string objectName, std::string description)
+{
+	FlyObject* newObject = new FlyObject(objectName, description, INVENTORY_ITEM);
+	objectsInRoom.push_back(newObject);
+	return newObject;
+}
+
 void Room::AddFlyObject(FlyObject* newFlyObject)
 {
 	if (newFlyObject == nullptr) {
