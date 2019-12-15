@@ -44,7 +44,7 @@ public:
 	void DrawChangeRoomActionSettings();
 
 	void OnAddActionButtonClicked(); 
-	void DrawCreateButton();
+	bool DrawCloseAndCreateButton();
 	void AddCreatingObject();
 
 

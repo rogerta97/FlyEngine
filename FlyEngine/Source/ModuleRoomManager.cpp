@@ -5,6 +5,7 @@
 #include "RandomNumberGenerator.h"
 #include "GraphPropertiesDockPanel.h"
 #include "ViewportManager.h"
+#include "GameInventory.h"
 #include "Room.h"
 #include "NodeGraph.h"
 #include "ImageImporter.h"
@@ -61,6 +62,7 @@ update_status ModuleRoomManager::PostUpdate(float dt)
 
 bool ModuleRoomManager::CleanUp()
 {
+	GameInventory::getInstance()->CleanUp(); 
 	CleanUpRooms();
 
 	MyFileSystem::getInstance()->Delete();
@@ -80,7 +82,6 @@ void ModuleRoomManager::ReceiveEvent(FlyEngineEvent eventType)
 	case FlyEngineEvent::ENGINE_PLAY:
 		
 		if (App->flySection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && GetSelectedRoom() != nullptr){
-			//drawClickableArea = false; 
 			ViewportManager::getInstance()->drawGizmos = false; 
 		}
 

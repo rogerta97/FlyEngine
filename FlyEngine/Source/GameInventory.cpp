@@ -9,6 +9,7 @@
 #include "Room.h"
 
 #include "MathGeoLib.h"
+#include "mmgr.h"
 
 GameInventory* GameInventory::instance = 0; 
 
@@ -28,6 +29,11 @@ GameInventory* GameInventory::getInstance()
 GameInventory::~GameInventory()
 {
 
+}
+
+void GameInventory::CleanUp()
+{
+	delete instance; 
 }
 
 void GameInventory::AddObjectToInventoryList(FlyObject* newObject)

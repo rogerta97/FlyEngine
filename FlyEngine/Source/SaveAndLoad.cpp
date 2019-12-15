@@ -58,6 +58,26 @@ void SaveAndLoad::SaveRoomData(Room* roomToSave)
 	json_serialize_to_file(scene_v, saveFilePath.c_str());
 }
 
+void SaveAndLoad::SaveSelectedRoomToOnPlayData()
+{
+	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom(); 
+
+	string provisionalPath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "OnPlaySaveData.json"; 
+
+	JSON_Value* scene_v = json_value_init_object();
+	JSON_Object* scene_obj = json_value_get_object(scene_v);
+
+	selectedRoom->SaveRoomData(scene_obj);
+
+	json_serialize_to_file(scene_v, provisionalPath.c_str());
+}
+
+void SaveAndLoad::LoadOnPlayToSelectedRoom()
+{
+	string provisionalPath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "OnPlaySaveData.json";
+	instance->LoadDataToCurrentRoom(provisionalPath);
+}
+
 void SaveAndLoad::LoadDataToCurrentRoom(std::string roomDataFilePath)
 {
 	// Get Current Room 

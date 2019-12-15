@@ -126,7 +126,8 @@ void ObjectPropertiesDockPanel::DrawFixedPartObjectUI(FlyObject* selectedObject)
 	else if (selectedObject->flyObjectType == INVENTORY_ITEM)
 		objectIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("InventoryItemIcon");
 
-	ImGui::Image((ImTextureID)objectIconTexture->GetTextureID(), ImVec2(35, 35));
+	if(objectIconTexture != nullptr)
+		ImGui::Image((ImTextureID)objectIconTexture->GetTextureID(), ImVec2(35, 35));
 
 	ImGui::Separator();
 

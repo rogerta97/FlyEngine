@@ -13,6 +13,7 @@ private:
 public:
 	static GameInventory* getInstance();
 	~GameInventory();
+	void CleanUp(); 
 
 	static void AddObjectToInventoryList(FlyObject* newObject);
 

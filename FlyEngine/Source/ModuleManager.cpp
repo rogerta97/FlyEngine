@@ -35,7 +35,6 @@ bool ModuleManager::Init()
 	AddToolsNameDescription("Display Image", "This should be the description of the image tool", AT_DISPLAY_IMAGE);
 	AddToolsNameDescription("Change Scene", "This should be the description of the change scene tool", AT_CHANGE_ROOM);
 
-
 	return true;
 }
 
@@ -48,20 +47,19 @@ bool ModuleManager::Start()
 		App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);
 	}
 
-	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
-	FlyObject* itemInventoryObject = selectedRoom->CreateInventoryItem("Key", "This is the first inventory object :D");
-	string keyPath = MyFileSystem::getInstance()->GetSolutionDirectory() + "\\EngineResources\\Images\\Key.png";
-	itemInventoryObject->AddDisplayImageAction(keyPath.c_str()); 
+	//Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+	//FlyObject* itemInventoryObject = selectedRoom->CreateInventoryItem("Key", "This is the first inventory object :D");
+	//string keyPath = MyFileSystem::getInstance()->GetSolutionDirectory() + "\\EngineResources\\Images\\Key.png";
+	//itemInventoryObject->AddDisplayImageAction(keyPath.c_str()); 
 
-	itemInventoryObject->CreateClickableArea(float2(0, 0), float2(1, 1), false); 
-	itemInventoryObject->clickableAreaActive = true; 
+	//itemInventoryObject->CreateClickableArea(float2(0, 0), float2(1, 1), false); 
+	//itemInventoryObject->clickableAreaActive = true; 
 
 	return true;
 }
 
 bool ModuleManager::CleanUp()
 {
-
 	return true;
 }
 
@@ -111,6 +109,9 @@ void ModuleManager::LoadEngineIcons()
 
 	Texture* playIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "play.png"), true);
 	ResourceManager::getInstance()->AddResource((Resource*)playIcon, "PlayIcon");
+
+	Texture* scaleIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ScaleIcon.png"), true);
+	ResourceManager::getInstance()->AddResource((Resource*)scaleIcon, "ScaleIcon");
 
 	Texture* exportIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ExportIcon.png"), false);
 	ResourceManager::getInstance()->AddResource((Resource*)exportIcon, "ExportIcon");

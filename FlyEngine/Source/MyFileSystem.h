@@ -30,9 +30,9 @@ public:
 
 	// Get Directories ---
 	static string GetIconsDirectory();
+	static string GetSavedDataDirectory(); 
 	static string GetSolutionDirectory();
 	static string GetGameDirectory(); 
-	static string GetSavedDataDirectory(); 
 	static void GetRelativeDirectory(string& directory); 
 
 	// File --------------

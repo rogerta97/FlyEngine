@@ -58,7 +58,12 @@ bool ObjectCreatorDockPanel::Draw()
 		ImGui::PopFont();
 
 		ImGui::SameLine();
-		DrawCreateButton();
+
+		if (DrawCloseAndCreateButton())
+		{
+			ImGui::End();
+			return true; 
+		}
 
 		ImGui::Separator();
 		ImGui::Spacing();
@@ -72,16 +77,17 @@ bool ObjectCreatorDockPanel::Draw()
 		static int selectedObjectType = 0;
 		if (ImGui::Combo("Object Type", &selectedObjectType, "Action Object\0Inventory Item\0"))
 		{
-
 			switch (selectedObjectType)
 			{
 			case ACTION_OBJECT: 
 				ResetObjectData();
+				creatingObject->flyObjectType = ACTION_OBJECT;
 				break; 
 
 			case INVENTORY_ITEM: 
 				ResetObjectData();
 				clickableAreaActive = true; 
+				creatingObject->flyObjectType = INVENTORY_ITEM; 
 				break; 
 			}
 		}
@@ -150,7 +156,7 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 	ImGui::InputTextWithHint("", "Search...", inventoryBrowcseImageBuffer, IM_ARRAYSIZE(inventoryBrowcseImageBuffer));
 	ImGui::SameLine();
 
-	if (ImGui::Button("Creator##Browse Image"))
+	if (ImGui::Button("Change Image##Creator"))
 	{
 		clickableAreaActive = true; 
 		displayImageAction_Inv = creatingObject->AddDisplayImageAction("None"); 
@@ -382,7 +388,7 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 		ImGui::Spacing();
 
 		// Search Bar ---------------
-		ImGui::InputText("##SearchTool", searchNewActionBuffer, IM_ARRAYSIZE(searchNewActionBuffer));
+		ImGui::InputTextWithHint("##SearchTool", "Search...", searchNewActionBuffer, IM_ARRAYSIZE(searchNewActionBuffer));
 		ImGui::SameLine();
 
 		Texture* filterIcon = (Texture*)ResourceManager::getInstance()->GetResource("FilterIcon");
@@ -425,6 +431,9 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 
 void ObjectCreatorDockPanel::Close()
 {
+	creatingObject->CleanUp(); 
+	delete creatingObject; 
+
 	selectedAction = nullptr;
 	visible = false;
 }
@@ -608,15 +617,22 @@ void ObjectCreatorDockPanel::DrawPreviewClickableAreaOnTexture(float2 textureTop
 	ImGui::Image((ImTextureID)colorTexture->GetTextureID(), ImVec2(clickableAreaSize.x, clickableAreaSize.y));
 }
 
-void ObjectCreatorDockPanel::DrawCreateButton()
+bool ObjectCreatorDockPanel::DrawCloseAndCreateButton()
 {
 	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1,0,0, 0.1f)); 
 	ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 205);
+
 	if (ImGui::Button("Close", ImVec2(100, 30)))
 	{
+		ToggleVisibility();
+		Close();
 
+		ImGui::PopStyleColor();
+		ImGui::PopFont();
+		return true; 
 	}
+
 	ImGui::SameLine(); 
 	ImGui::PopStyleColor();
 	ImGui::PopFont();
@@ -629,17 +645,21 @@ void ObjectCreatorDockPanel::DrawCreateButton()
 		if (newObjectNameStr.empty()) {
 			FLY_ERROR("Object with no name can not be created");
 			ImGui::PopFont();
-			return;
+			return false;
 		}
 		else
 		{
+			ToggleVisibility();
 			AddCreatingObject();
-		}
-
-		Close();
+			
+			ImGui::PopFont();
+			return false;
+		}	
 	}
 
 	ImGui::PopFont();
+
+	return false; 
 }
 
 void ObjectCreatorDockPanel::AddCreatingObject()

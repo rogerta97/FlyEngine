@@ -24,6 +24,9 @@ public:
 	static void SaveRoomData(UID hello);
 	static void SaveRoomData(Room* roomToSave);
 
+	static void SaveSelectedRoomToOnPlayData(); 
+	static void LoadOnPlayToSelectedRoom(); 
+
 	// Load ----
 	static void LoadDataToCurrentRoom(std::string roomDataFilePath);
 	static void CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::string& serializeObjectStr, Room* currentRoom);
