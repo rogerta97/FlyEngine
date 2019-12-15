@@ -24,7 +24,7 @@ public:
 	FlyObject(std::string objectName, std::string description = "", FlyObjectType _flyObjectType = ACTION_OBJECT); 
 	~FlyObject(); 
 
-	void Update(); 
+	bool Update(); 
 	void Draw();
 	void CleanUp(); 
 
@@ -95,8 +95,11 @@ public:
 	Gizmos* gizmos; 
 	
 	bool isSelected; 
-	bool clickableAreaActive; 
 	FlyObjectType flyObjectType; 
+
+	// Clickable Area Public ------
+	bool clickableAreaActive; 
+	bool drawClickableArea; 
 
 private: 
 	// Clickable Area -----

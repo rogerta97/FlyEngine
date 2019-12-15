@@ -7,6 +7,7 @@
 #include "ModuleInput.h"
 #include "FlyObject.h"
 #include "GameViewportDockPanel.h"
+#include "GameInventory.h"
 #include "ModuleImGui.h"
 #include "TextureMSAA.h"
 #include "ObjectPropertiesDockPanel.h"
@@ -31,7 +32,7 @@ Room::~Room()
 
 void Room::Update()
 {
-	if (App->moduleRoomManager->GetSelectedRoom() == this)
+	if (App->moduleRoomManager->GetSelectedRoom() == this && !objectsInRoom.empty())
 	{
 		UpdateRoomObjects();
 
@@ -54,6 +55,15 @@ void Room::Update()
 	if (App->moduleInput->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
 	{
 		DeleteSelectedObject(); 
+	}
+
+	// Check if 1 is pressed to pick from inventory
+	if (App->moduleInput->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	{
+		FlyObject* pickedObject = GameInventory::getInstance()->PickObjectFromInventory(0); 
+
+		if(pickedObject != nullptr)
+			AddFlyObject(pickedObject); 
 	}
 }
 
@@ -83,6 +93,17 @@ int Room::GetObjectsInRoomAmount()
 	return objectsInRoom.size();
 }
 
+void Room::AddItemToInventory(FlyObject* newObject_Inv)
+{
+#pragma region sanityChecks
+	if (newObject_Inv == nullptr) // TODO: Assume the object is in the scene 
+		return; 
+#pragma endregion
+
+	// Delete the object from the room (now it will lay in the inventory) 
+	GameInventory::getInstance()->AddObjectToInventoryList(newObject_Inv); 
+}
+
 void Room::SaveRoomData(JSON_Object* jsonObject)
 {
 	json_object_dotset_number(jsonObject, string(GetName() + ".ObjectsAmount").c_str(), GetObjectsInRoomAmount());
@@ -90,7 +111,6 @@ void Room::SaveRoomData(JSON_Object* jsonObject)
 	int count = 0; 
 	for (auto& it : objectsInRoom)
 		it->SaveObjectData(jsonObject, count++);
-
 }
 
 RoomConnection* Room::ConnectToRoom(Room* destinationRoom)
@@ -220,8 +240,15 @@ void Room::DrawRoomObjects()
 
 void Room::UpdateRoomObjects()
 {
-	for (auto& it : objectsInRoom) {
-		(it)->Update();
+	for (auto currentObject = objectsInRoom.begin(); currentObject != objectsInRoom.end(); currentObject++)
+	{
+		if ((*currentObject)->Update())
+		{
+			currentObject = objectsInRoom.erase(currentObject); 
+
+			if (objectsInRoom.empty())
+				return; 
+		}
 	}
 }
 
@@ -268,6 +295,20 @@ void Room::DeleteFlyObject(FlyObject* objectToDelete)
 
 			if (objectsInRoom.empty())
 				break; 
+		}
+	}
+}
+
+void Room::DeleteFlyObjectFromList(FlyObject* objectToDelete)
+{
+	for (auto it = objectsInRoom.begin(); it != objectsInRoom.end(); it++)
+	{
+		if ((*it)->GetName() == objectToDelete->GetName())
+		{
+			it = objectsInRoom.erase(it);
+
+			if (objectsInRoom.empty())
+				break;
 		}
 	}
 }

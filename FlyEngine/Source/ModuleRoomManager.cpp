@@ -80,7 +80,7 @@ void ModuleRoomManager::ReceiveEvent(FlyEngineEvent eventType)
 	case FlyEngineEvent::ENGINE_PLAY:
 		
 		if (App->flySection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && GetSelectedRoom() != nullptr){
-			ViewportManager::getInstance()->drawClickableArea = false; 
+			//drawClickableArea = false; 
 			ViewportManager::getInstance()->drawGizmos = false; 
 		}
 

@@ -49,7 +49,6 @@ public:
 	ViewportAspectRatio viewportAspectRatio; 
 
 	// Render Viewport Settings 
-	bool drawClickableArea;
 	bool drawGizmos;
 
 };

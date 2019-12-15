@@ -14,8 +14,13 @@ public:
 	static GameInventory* getInstance();
 	~GameInventory();
 
-	std::list<FlyObject*> objectsInInventory; 
+	static void AddObjectToInventoryList(FlyObject* newObject);
 
+	// Pick ---
+	static FlyObject* PickObjectFromInventory(int index); 
+
+private:
+	std::list<FlyObject*> objectsInInventory; 
 };
 
 #endif

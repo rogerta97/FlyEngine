@@ -9,6 +9,7 @@
 #include "GameViewportDockPanel.h"
 #include "ChangeRoomAction.h"
 #include "ModuleRoomManager.h"
+#include "GameInventory.h"
 #include "ViewportManager.h"
 #include "ResourceManager.h"
 #include "imgui.h"
@@ -28,6 +29,7 @@ FlyObject::FlyObject(std::string _name, std::string _description, FlyObjectType 
 	isSelected = false; 
 	hasVisuals = false; 
 	clickableAreaActive = false;
+	drawClickableArea = false;
 	flyObjectType = _flyObjectType; 
 
 	clickableArea = new ScalarBoundingBox(this); 
@@ -44,8 +46,11 @@ FlyObject::~FlyObject()
 
 }
 
-void FlyObject::Update()
+//Returns true if this objects is deleted in the middle of the update
+bool FlyObject::Update()
 {
+	bool ret = false; 
+
 	if (isSelected) 
 	{
 		gizmos->Update();
@@ -59,8 +64,21 @@ void FlyObject::Update()
 	if (App->isEngineInPlayMode && clickableArea->IsBoxClicked())
 	{
 		FLY_LOG("Object Clicked"); 
-		DoOnClickActions();
+
+		switch (flyObjectType)
+		{
+		case ACTION_OBJECT:
+			DoOnClickActions();
+			break;
+
+		case INVENTORY_ITEM:
+			App->moduleRoomManager->GetSelectedRoom()->AddItemToInventory(this); 
+			ret = true; 
+			break;
+		}
 	}
+
+	return ret; 
 }
 
 void FlyObject::Draw()
@@ -71,7 +89,7 @@ void FlyObject::Draw()
 
 	if (isSelected)
 	{
-		if (clickableArea != nullptr && ViewportManager::getInstance()->drawClickableArea && clickableAreaActive)		
+		if (clickableArea != nullptr && drawClickableArea && clickableAreaActive)		
 			DrawClickableArea();
 		
 		gizmos->Draw();
@@ -80,7 +98,7 @@ void FlyObject::Draw()
 
 void FlyObject::DrawClickableArea()
 {
-	if (ViewportManager::getInstance()->drawClickableArea && clickableAreaActive)
+	if (drawClickableArea && clickableAreaActive)
 	{
 		clickableArea->Draw(true, clickableAreaColor);
 	}

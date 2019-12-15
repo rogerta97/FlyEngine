@@ -184,10 +184,7 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 
 	if (displayImageAction_Inv != nullptr && displayImageAction_Inv->GetTexture() != nullptr)
 	{
-		if (ImGui::Checkbox("Draw", &drawClickableAreaOver))
-		{
-
-		}
+		ImGui::Checkbox("Draw", &drawClickableAreaOver);
 
 		PUSH_CHILD_BG_COLOR;
 		ImGui::BeginChild("InventoryCASett", ImVec2(ImGui::GetContentRegionAvail().x, 90));
@@ -653,12 +650,12 @@ void ObjectCreatorDockPanel::AddCreatingObject()
 		if (!creatingObject->HasVisuals())
 		{
 			creatingObject->CreateClickableArea(clickableAreaPosPerc, clickableAreaSizePerc, true);
-			ViewportManager::getInstance()->drawClickableArea = true;
+			creatingObject->drawClickableArea = true;
 		}
 		else
 		{
 			creatingObject->CreateClickableArea(clickableAreaPosPerc, clickableAreaSizePerc);
-			ViewportManager::getInstance()->drawClickableArea = false;
+			creatingObject->drawClickableArea = false;
 		}
 		creatingObject->clickableAreaActive = true;
 	}

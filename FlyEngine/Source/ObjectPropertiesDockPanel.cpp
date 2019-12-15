@@ -61,7 +61,6 @@ bool ObjectPropertiesDockPanel::Draw()
 
 					if (ImGui::BeginTabItem("Item Settings"))
 					{
-
 						static char inventoryBrowcseImageBuffer[512];
 						ImGui::InputTextWithHint("", "Search...", inventoryBrowcseImageBuffer, IM_ARRAYSIZE(inventoryBrowcseImageBuffer));
 						ImGui::SameLine(); 
@@ -153,10 +152,8 @@ void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 {
 	ImGui::Spacing();
 
-	ImGui::Checkbox("Draw##DrawCA", &ViewportManager::getInstance()->drawClickableArea); ImGui::SameLine(); 
+	ImGui::Checkbox("Draw##DrawCA", &selectedObject->drawClickableArea); ImGui::SameLine();
 	ImGui::Checkbox("Active##ActiveCA", &selectedObject->clickableAreaActive); 
-
-	IMGUI_SPACE_SEPARATOR;
 
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Color");

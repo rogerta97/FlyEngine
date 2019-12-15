@@ -38,6 +38,7 @@ public:
 
 	// Utility -------------------
 	int GetObjectsInRoomAmount(); 
+	void AddItemToInventory(FlyObject* newObject_Inv); 
 
 	// Save & Load ---------------
 	void SaveRoomData(JSON_Object* jsonObject);
@@ -74,6 +75,7 @@ public:
 	FlyObject* CreateInventoryItem(std::string objectName, std::string description = "");
 	void AddFlyObject(FlyObject* newFlyObject);
 	void DeleteFlyObject(FlyObject* objectToDelete);
+	void DeleteFlyObjectFromList(FlyObject* objectToDelete);
 	void DeleteSelectedObject(); 
 
 	// Encapsulation ------------------------------------------------------------------

@@ -54,6 +54,7 @@ bool ModuleManager::Start()
 	itemInventoryObject->AddDisplayImageAction(keyPath.c_str()); 
 
 	itemInventoryObject->CreateClickableArea(float2(0, 0), float2(1, 1), false); 
+	itemInventoryObject->clickableAreaActive = true; 
 
 	return true;
 }
