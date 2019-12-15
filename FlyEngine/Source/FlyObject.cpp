@@ -194,6 +194,7 @@ void FlyObject::CalculateAllGizmos()
 {
 	gizmos->CalculateSelectGizmo(this);
 	gizmos->CalculateMoveGizmo(this);
+	gizmos->CalculateScaleGizmo(this); 
 }
 
 void FlyObject::FitObjectUtils()
@@ -312,6 +313,10 @@ void FlyObject::CalculateCurrentGizmo()
 
 	case GIZMO_MOVE:
 		gizmos->CalculateMoveGizmo(this);
+		break;
+
+	case GIZMO_SCALE:
+		gizmos->CalculateScaleGizmo(this);
 		break;
 	}
 }

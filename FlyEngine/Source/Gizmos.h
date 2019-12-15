@@ -3,6 +3,7 @@
 
 #include "MathGeoLib.h"
 
+class ScalarBoundingBox; 
 class BoundingBox; 
 class FlyObject;
 class Transform;
@@ -37,7 +38,6 @@ public:
 	~MoveGizmo(); 
 
 	void CleanUp();
-
 	void AddaptAxisBoxes(FlyObject* objectAttached);
 
 public:
@@ -67,6 +67,10 @@ public:
 
 	ScaleGizmo(FlyObject* parentObject);
 	~ScaleGizmo();
+
+	void AddaptScaleBox(FlyObject* objectAttached);
+ 
+	ScalarBoundingBox* borderBoundingBox; 
 };
 
 class Gizmos
@@ -91,7 +95,11 @@ public:
 	// Fitting ---------------
 	void CalculateSelectGizmo(FlyObject* objectAttached);
 	void CalculateMoveGizmo(FlyObject* objectAttached);
+	void CalculateScaleGizmo(FlyObject* objectAttached);
+
 	void FitSelectBoxSize(); 
+	void FitScaleBoxSize();
+
 	void SetCenterSquareSize(float& centerSize);
 
 	// Set & Get -------------
@@ -107,8 +115,9 @@ public:
 
 private:
 
-	MoveGizmo* moveGizmo;
 	SelectGizmo* selectGizmo; 
+	MoveGizmo* moveGizmo;
+	ScaleGizmo* scaleGizmo; 
 
 	FlyObject* objectAttached;
 };

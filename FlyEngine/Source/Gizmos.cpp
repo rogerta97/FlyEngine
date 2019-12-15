@@ -4,6 +4,7 @@
 #include "ViewportManager.h"
 #include "Application.h"
 #include "DisplayImageAction.h"
+#include "ScalarBoundingBox.h"
 #include "Quad.h"
 #include "ModuleImGui.h"
 #include "ModuleInput.h"
@@ -20,6 +21,7 @@ Gizmos::Gizmos(FlyObject* _objectAttached)
 
 	selectGizmo = new SelectGizmo(_objectAttached);
 	moveGizmo = new MoveGizmo(_objectAttached);
+	scaleGizmo = new ScaleGizmo(_objectAttached);
 
 	SetMoveGizmoStyle(7.0f, 100.0f, 5.0f, 20, 20, 25);
 	SetBoxColor(float4(0.4f, 0.4f, 1.0f, 0.2f)); 
@@ -148,6 +150,14 @@ void Gizmos::Draw()
 	case GIZMO_MOVE:
 		DrawMoveGizmo();
 		break;
+
+	case GIZMO_SCALE:
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+
+		scaleGizmo->borderBoundingBox->Draw(false, float4(1.0f, 1.0f, 1.0f, 1.0f));
+		
+		break;
 	}
 }
 
@@ -170,6 +180,12 @@ void Gizmos::CalculateMoveGizmo(FlyObject* objectAttached)
 	moveGizmo->AddaptAxisBoxes(objectAttached);
 }
 
+void Gizmos::CalculateScaleGizmo(FlyObject* objectAttached)
+{
+	FitScaleBoxSize();
+	scaleGizmo->AddaptScaleBox(objectAttached);
+}
+
 void Gizmos::FitSelectBoxSize()
 {
 	if (objectAttached != nullptr) 
@@ -178,6 +194,18 @@ void Gizmos::FitSelectBoxSize()
 		{
 			float2 objectDimensions = objectAttached->GetObjectVisualDimensions(); 
 			selectGizmo->objectBorderBox->SetSize(objectDimensions.x, objectDimensions.y); 
+		}
+	}
+}
+
+void Gizmos::FitScaleBoxSize()
+{
+	if (objectAttached != nullptr)
+	{
+		if (objectAttached->GetAction(AT_DISPLAY_IMAGE) != nullptr)
+		{
+			float2 objectDimensions = objectAttached->GetObjectVisualDimensions();
+			scaleGizmo->borderBoundingBox->SetSize(objectDimensions.x, objectDimensions.y);
 		}
 	}
 }
@@ -340,7 +368,6 @@ void SelectGizmo::AddaptSelectBox(FlyObject* objectAttached)
 	selectMinPoint.x += objectAttached->transform->GetPosition(true).x; 
 	selectMinPoint.y += objectAttached->transform->GetPosition(true).y; 
 								
-
 	objectBorderBox->SetMaxPoint(selectMaxPoint);
 	objectBorderBox->SetMinPoint(selectMinPoint);
 }
@@ -424,4 +451,40 @@ void MoveGizmo::AddaptAxisBoxes(FlyObject* objectAttached)
 
 	axisXYBox->SetMinPoint(moveMinPoint);
 	axisXYBox->SetMaxPoint(moveMaxPoint);
+}
+
+ScaleGizmo::ScaleGizmo(FlyObject* parentObject)
+{
+	borderBoundingBox = new ScalarBoundingBox(parentObject, true); 
+	borderBoundingBox->EnableScaling(true); 
+}
+
+ScaleGizmo::~ScaleGizmo()
+{
+}
+
+void ScaleGizmo::AddaptScaleBox(FlyObject* objectAttached)
+{
+	borderBoundingBox->CenterMinMaxPointsToScreen();
+	float2 selectMaxPoint = borderBoundingBox->GetMaxPoint();
+	float2 selectMinPoint = borderBoundingBox->GetMinPoint();
+
+	// Scale							
+	selectMaxPoint.x *= objectAttached->transform->GetScale().x;
+	selectMaxPoint.y *= objectAttached->transform->GetScale().y;
+
+	selectMinPoint.x *= objectAttached->transform->GetScale().x;
+	selectMinPoint.y *= objectAttached->transform->GetScale().y;
+
+	// Position
+	selectMaxPoint.x += objectAttached->transform->GetPosition(true).x;
+	selectMaxPoint.y += objectAttached->transform->GetPosition(true).y;
+
+	selectMinPoint.x += objectAttached->transform->GetPosition(true).x;
+	selectMinPoint.y += objectAttached->transform->GetPosition(true).y;
+
+	borderBoundingBox->SetMaxPoint(selectMaxPoint);
+	borderBoundingBox->SetMinPoint(selectMinPoint);
+
+	borderBoundingBox->SetCornerBoxSize(6);
 }

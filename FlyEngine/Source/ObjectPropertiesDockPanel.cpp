@@ -151,6 +151,7 @@ void ObjectPropertiesDockPanel::DrawTransformButtons()
 {
 	bool currentMode = false;
 
+	// Select Gizmo ----------------
 	if (App->moduleImGui->gameViewportDockPanel->GetGizmoMode() == GIZMO_SELECT) {
 		currentMode = true;
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.7f, 1, 0.35f));
@@ -173,6 +174,7 @@ void ObjectPropertiesDockPanel::DrawTransformButtons()
 		ImGui::PopStyleColor();
 	}
 
+	// Move Gizmo ----------------
 	currentMode = false;
 	if (App->moduleImGui->gameViewportDockPanel->GetGizmoMode() == GIZMO_MOVE) {
 		currentMode = true;
@@ -184,6 +186,30 @@ void ObjectPropertiesDockPanel::DrawTransformButtons()
 	if (ImGui::ImageButton((ImTextureID)moveArrows->GetTextureID(), ImVec2(22, 22)))
 	{
 		App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GIZMO_MOVE);
+		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();
+		if (selectedObject != nullptr)
+		{
+			selectedObject->CalculateCurrentGizmo();
+		}
+	}
+
+	if (currentMode) {
+		currentMode = false;
+		ImGui::PopStyleColor();
+	}
+
+	// Scale Gizmo ----------------
+	currentMode = false;
+	if (App->moduleImGui->gameViewportDockPanel->GetGizmoMode() == GIZMO_SCALE) {
+		currentMode = true;
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.7f, 1, 0.35f));
+	}
+
+	ImGui::SameLine();
+	Texture* scaleIcon = (Texture*)ResourceManager::getInstance()->GetResource("ScaleIcon");
+	if (ImGui::ImageButton((ImTextureID)scaleIcon->GetTextureID(), ImVec2(22, 22)))
+	{
+		App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GIZMO_SCALE);
 		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();
 		if (selectedObject != nullptr)
 		{

@@ -6,7 +6,7 @@
 class ScalarBoundingBox : public BoundingBox
 {
 public:
-	ScalarBoundingBox(FlyObject* objectAttached); 
+	ScalarBoundingBox(FlyObject* objectAttached, bool drawCornerPoints = false); 
 	~ScalarBoundingBox();
 
 	void Draw(bool fill, float4 color); 
@@ -14,12 +14,14 @@ public:
 	void CleanUp(); 
 
 	void SetCornerBoxSize(float newSize);
+	void EnableScaling(bool enableScaling); 
 
 public: 
 	bool drawCornerPoints = false; 
 
 private:	
 	float cornerBoxesSize; 
+	bool scalingEnabled; 
 
 	BoundingBox* topLeftScaleBox; 
 	BoundingBox* topRightScaleBox; 

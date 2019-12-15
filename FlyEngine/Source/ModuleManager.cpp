@@ -47,13 +47,15 @@ bool ModuleManager::Start()
 		App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);
 	}
 
-	//Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
-	//FlyObject* itemInventoryObject = selectedRoom->CreateInventoryItem("Key", "This is the first inventory object :D");
-	//string keyPath = MyFileSystem::getInstance()->GetSolutionDirectory() + "\\EngineResources\\Images\\Key.png";
-	//itemInventoryObject->AddDisplayImageAction(keyPath.c_str()); 
+	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+	FlyObject* itemInventoryObject = selectedRoom->CreateInventoryItem("Key", "This is the first inventory object :D");
+	string keyPath = MyFileSystem::getInstance()->GetSolutionDirectory() + "\\EngineResources\\Images\\Key.png";
+	itemInventoryObject->AddDisplayImageAction(keyPath.c_str()); 
 
-	//itemInventoryObject->CreateClickableArea(float2(0, 0), float2(1, 1), false); 
-	//itemInventoryObject->clickableAreaActive = true; 
+	itemInventoryObject->CreateClickableArea(float2(0, 0), float2(1, 1), false); 
+	itemInventoryObject->clickableAreaActive = true; 
+
+	
 
 	return true;
 }

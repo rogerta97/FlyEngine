@@ -10,6 +10,7 @@ enum GizmoMode
 {
 	GIZMO_SELECT,
 	GIZMO_MOVE,
+	GIZMO_SCALE,
 	GIZMO_null, 
 };
 

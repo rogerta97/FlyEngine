@@ -3,8 +3,10 @@
 
 #include "mmgr.h"
 
-ScalarBoundingBox::ScalarBoundingBox(FlyObject* objectAttached) : BoundingBox()
+ScalarBoundingBox::ScalarBoundingBox(FlyObject* objectAttached, bool drawCornerPoints) : BoundingBox()
 {
+	this->drawCornerPoints = drawCornerPoints; 
+
 	topLeftScaleBox = new BoundingBox(); 
 	topLeftScaleBox->SetMinPoint(float2(0, 0));
 	topLeftScaleBox->SetMaxPoint(float2(0, 0));
@@ -39,10 +41,10 @@ void ScalarBoundingBox::Draw(bool fill, float4 color)
 
 	if (drawCornerPoints)
 	{
-		topLeftScaleBox->Draw(true, float4(255, 255, 255, 255)); 
-		topRightScaleBox->Draw(true, float4(255, 255, 255, 255));
-		bottomLeftScaleBox->Draw(true, float4(255, 255, 255, 255));
-		bottomRightScaleBox->Draw(true, float4(255, 255, 255, 255));
+		topLeftScaleBox->Draw(true, float4(255, 0, 0, 255));
+		topRightScaleBox->Draw(true, float4(255, 0, 0, 255));
+		bottomLeftScaleBox->Draw(true, float4(255, 0, 0, 255));
+		bottomRightScaleBox->Draw(true, float4(255, 0, 0, 255));
 	}
 }
 
@@ -88,4 +90,15 @@ void ScalarBoundingBox::SetCornerBoxSize(float newSize)
 	float2 boxBottomRight = float2(maxPoint.x, minPoint.y);
 	bottomRightScaleBox->SetMinPoint(float2(boxBottomRight.x - cornerBoxesSize, boxBottomRight.y + cornerBoxesSize));
 	bottomRightScaleBox->SetMaxPoint(float2(boxBottomRight.x + cornerBoxesSize, boxBottomRight.y - cornerBoxesSize));
+}
+
+void ScalarBoundingBox::EnableScaling(bool enableScaling)
+{
+	scalingEnabled = enableScaling; 
+
+	topLeftScaleBox->EnableDrag(enableScaling);
+	topRightScaleBox->EnableDrag(enableScaling);
+	bottomLeftScaleBox->EnableDrag(enableScaling);
+	bottomRightScaleBox->EnableDrag(enableScaling);
+	
 }
