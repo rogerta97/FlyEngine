@@ -90,10 +90,11 @@ bool ModuleImGui::Start()
 	//AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
 
 	//// Test Change Scene Object
-	FlyObject* itemInventoryObject = App->moduleRoomManager->GetSelectedRoom()->CreateFlyObject("Inventory", "This is the first inventory object :D"); 
-	itemInventoryObject->flyObjectType = INVENTORY_ITEM; 
+	//Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom(); 
+	//FlyObject* itemInventoryObject = selectedRoom->CreateFlyObject("Inventory", "This is the first inventory object :D");
+	//itemInventoryObject->flyObjectType = INVENTORY_ITEM; 
 
-	itemInventoryObject->AddDisplayImageAction(string(MyFileSystem::GetSolutionDirectory() + "\\EngineResources\\Images\\Key.png").c_str()); 
+	//itemInventoryObject->AddDisplayImageAction(string(MyFileSystem::GetSolutionDirectory() + "\\EngineResources\\Images\\Key.png").c_str()); 
 
 
 	//ChangeRoomAction* changeRoomAction = parrot->AddChangeRoomAction();

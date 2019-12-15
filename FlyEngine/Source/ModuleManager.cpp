@@ -47,6 +47,9 @@ bool ModuleManager::Start()
 		App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);
 	}
 
+	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+	FlyObject* itemInventoryObject = selectedRoom->CreateFlyObject("Inventory", "This is the first inventory object :D");
+
 	return true;
 }
 
