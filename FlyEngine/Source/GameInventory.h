@@ -18,6 +18,9 @@ public:
 
 	// Pick ---
 	static FlyObject* PickObjectFromInventory(int index); 
+	static void DrawDroppingObject(); 
+
+	FlyObject* droppingObject; 
 
 private:
 	std::list<FlyObject*> objectsInInventory; 

@@ -37,17 +37,27 @@ void Room::Update()
 		UpdateRoomObjects();
 
 		// Check for new Selected Objects -------
-		if (App->moduleRoomManager->GetSelectedRoom()->objectsInRoom.empty() && App->isEngineInPlayMode)
+		if (App->moduleRoomManager->GetSelectedRoom()->objectsInRoom.empty())
 			return;
 
-		if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && App->moduleImGui->gameViewportDockPanel->IsMouseInViewport())
+		if (!App->isEngineInPlayMode)
 		{
-			list<FlyObject*> objectCandidates = ViewportManager::getInstance()->RaycastMouseClick();
+			if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && App->moduleImGui->gameViewportDockPanel->IsMouseInViewport())
+			{
+				list<FlyObject*> objectCandidates = ViewportManager::getInstance()->RaycastMouseClick();
 
-			if (!objectCandidates.empty())
-				App->moduleManager->SetSelectedFlyObject(objectCandidates.back());
-			else
-				App->moduleManager->SetSelectedFlyObject(nullptr);
+				if (!objectCandidates.empty())
+					App->moduleManager->SetSelectedFlyObject(objectCandidates.back());
+				else
+					App->moduleManager->SetSelectedFlyObject(nullptr);
+			}
+		}
+		else
+		{
+			if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && GameInventory::getInstance()->droppingObject != nullptr)
+			{
+				GameInventory::getInstance()->droppingObject = nullptr; 
+			}
 		}
 	}
 
@@ -236,6 +246,10 @@ void Room::DrawRoomObjects()
 	for (auto& it : objectsInRoom) {
 		(it)->Draw(); 
 	}
+
+	// Draw dropping inventory object 
+	GameInventory::getInstance()->DrawDroppingObject();
+	
 }
 
 void Room::UpdateRoomObjects()

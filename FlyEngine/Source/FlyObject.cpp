@@ -61,7 +61,7 @@ bool FlyObject::Update()
 		}		
 	}
 
-	if (App->isEngineInPlayMode && clickableArea->IsBoxClicked())
+	if (App->isEngineInPlayMode && clickableArea->IsBoxClicked() && GameInventory::getInstance()->droppingObject == nullptr)
 	{
 		FLY_LOG("Object Clicked"); 
 
