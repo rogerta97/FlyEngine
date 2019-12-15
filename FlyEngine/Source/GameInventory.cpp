@@ -3,7 +3,10 @@
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "GameViewportDockPanel.h"
+#include "ModuleRoomManager.h"
 #include "FlyObject.h"
+
+#include "Room.h"
 
 #include "MathGeoLib.h"
 
@@ -44,7 +47,6 @@ FlyObject* GameInventory::PickObjectFromInventory(int index)
 		if (count++ == index)
 		{	
 			retObject = *currentObject; 
-			currentObject = instance->objectsInInventory.erase(currentObject);
 			break;
 		}
 	}
@@ -60,8 +62,26 @@ void GameInventory::DrawDroppingObject()
 
 	// Set Object Position to Mouse Pos 
 	float2 mouseRelativePos = App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition(); 
+	mouseRelativePos = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos();
 	instance->droppingObject->transform->SetPosition(mouseRelativePos); 
+	instance->droppingObject->FitObjectUtils(); 
 	instance->droppingObject->Draw();
 
 	FLY_LOG("Object Dropping"); 
+}
+
+void GameInventory::DropDroppingObjectToRoom()
+{
+	for (auto it = instance->objectsInInventory.begin(); it != instance->objectsInInventory.end(); it++)
+	{
+		// TODO: this should be sone by UID for seccurity
+		if (instance->droppingObject->GetName() == (*it)->GetName())
+		{
+			Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom(); 
+			selectedRoom->AddFlyObject(*it);
+			instance->objectsInInventory.erase(it);
+			instance->droppingObject = nullptr; 
+			break; 
+		}
+	}
 }

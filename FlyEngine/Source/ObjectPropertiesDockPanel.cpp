@@ -120,8 +120,13 @@ void ObjectPropertiesDockPanel::DrawFixedPartObjectUI(FlyObject* selectedObject)
 	ImGui::Separator();
 	ImGui::Separator();
 
-	Texture* objectIconTextue = (Texture*)ResourceManager::getInstance()->GetResource("ObjectIcon");
-	ImGui::Image((ImTextureID)objectIconTextue->GetTextureID(), ImVec2(35, 35));
+	Texture* objectIconTexture = nullptr;
+	if(selectedObject->flyObjectType == ACTION_OBJECT)
+		objectIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("ObjectIcon");
+	else if (selectedObject->flyObjectType == INVENTORY_ITEM)
+		objectIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("InventoryItemIcon");
+
+	ImGui::Image((ImTextureID)objectIconTexture->GetTextureID(), ImVec2(35, 35));
 
 	ImGui::Separator();
 

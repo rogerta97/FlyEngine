@@ -36,29 +36,25 @@ void Room::Update()
 	{
 		UpdateRoomObjects();
 
-		// Check for new Selected Objects -------
-		if (App->moduleRoomManager->GetSelectedRoom()->objectsInRoom.empty())
+		if (App->moduleRoomManager->GetSelectedRoom()->objectsInRoom.empty() && App->isEngineInPlayMode)
 			return;
 
-		if (!App->isEngineInPlayMode)
+		// Check for new Selected Objects -------
+		if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && App->moduleImGui->gameViewportDockPanel->IsMouseInViewport())
 		{
-			if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && App->moduleImGui->gameViewportDockPanel->IsMouseInViewport())
-			{
-				list<FlyObject*> objectCandidates = ViewportManager::getInstance()->RaycastMouseClick();
+			list<FlyObject*> objectCandidates = ViewportManager::getInstance()->RaycastMouseClick();
 
-				if (!objectCandidates.empty())
-					App->moduleManager->SetSelectedFlyObject(objectCandidates.back());
-				else
-					App->moduleManager->SetSelectedFlyObject(nullptr);
-			}
+			if (!objectCandidates.empty())
+				App->moduleManager->SetSelectedFlyObject(objectCandidates.back());
+			else
+				App->moduleManager->SetSelectedFlyObject(nullptr);
 		}
-		else
-		{
-			if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && GameInventory::getInstance()->droppingObject != nullptr)
-			{
-				GameInventory::getInstance()->droppingObject = nullptr; 
-			}
-		}
+	}
+
+	if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && GameInventory::getInstance()->droppingObject != nullptr)
+	{
+		// For now we will simply drop the object on click
+		GameInventory::getInstance()->DropDroppingObjectToRoom();
 	}
 
 	// Check if SUPR is pressed to delete
@@ -71,12 +67,8 @@ void Room::Update()
 	if (App->moduleInput->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		FlyObject* pickedObject = GameInventory::getInstance()->PickObjectFromInventory(0); 
-
-		if(pickedObject != nullptr)
-			AddFlyObject(pickedObject); 
 	}
 }
-
 
 void Room::CleanUp()
 {
@@ -106,12 +98,24 @@ int Room::GetObjectsInRoomAmount()
 void Room::AddItemToInventory(FlyObject* newObject_Inv)
 {
 #pragma region sanityChecks
-	if (newObject_Inv == nullptr) // TODO: Assume the object is in the scene 
+	if (newObject_Inv == nullptr && IsObjectInRoom(newObject_Inv))
+	{
+		FLY_ERROR("Item Could Not Be Added To Inventory");
 		return; 
+	}
 #pragma endregion
 
 	// Delete the object from the room (now it will lay in the inventory) 
 	GameInventory::getInstance()->AddObjectToInventoryList(newObject_Inv); 
+}
+
+bool Room::IsObjectInRoom(FlyObject* newObject_Inv)
+{
+	for (auto& currentObject : objectsInRoom)
+	{
+		if (newObject_Inv->GetUID() == currentObject->GetUID())
+			return true; 
+	}
 }
 
 void Room::SaveRoomData(JSON_Object* jsonObject)

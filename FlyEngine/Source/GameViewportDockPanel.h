@@ -46,7 +46,6 @@ public:
 	float verticalOffset; 
 
 private: 
-
 	float2 viewportCenterGlobalPos; 
 	float2 regionSize;
 	float2 viewportSize;

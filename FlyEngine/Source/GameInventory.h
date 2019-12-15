@@ -19,6 +19,7 @@ public:
 	// Pick ---
 	static FlyObject* PickObjectFromInventory(int index); 
 	static void DrawDroppingObject(); 
+	static void DropDroppingObjectToRoom(); 
 
 	FlyObject* droppingObject; 
 

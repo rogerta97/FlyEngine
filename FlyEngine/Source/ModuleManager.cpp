@@ -127,7 +127,7 @@ void ModuleManager::LoadEngineIcons()
 	Texture* emptyObject = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "EmptyObject.png"), true);
 	ResourceManager::getInstance()->AddResource((Resource*)emptyObject, "EmptyObject");
 
-	Texture* inventoryItemIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "InventoryItemIcon.png"), true);
+	Texture* inventoryItemIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "InventoryItemIcon.png"), false);
 	ResourceManager::getInstance()->AddResource((Resource*)inventoryItemIcon, "InventoryItemIcon");
 }
 

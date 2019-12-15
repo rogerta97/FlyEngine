@@ -39,6 +39,7 @@ public:
 	// Utility -------------------
 	int GetObjectsInRoomAmount(); 
 	void AddItemToInventory(FlyObject* newObject_Inv); 
+	bool IsObjectInRoom(FlyObject* newObject_Inv);
 
 	// Save & Load ---------------
 	void SaveRoomData(JSON_Object* jsonObject);
