@@ -49,10 +49,19 @@ void ScalarBoundingBox::Draw(bool fill, float4 color)
 
 void ScalarBoundingBox::Update()
 {
-	topLeftScaleBox->HandleDrag(math::CardinalAxis::AxisNone); 
-	topRightScaleBox->HandleDrag(math::CardinalAxis::AxisNone);
-	bottomLeftScaleBox->HandleDrag(math::CardinalAxis::AxisNone);
-	bottomRightScaleBox->HandleDrag(math::CardinalAxis::AxisNone);
+	float2 topLeftDrag = topLeftScaleBox->HandleDrag(math::CardinalAxis::AxisNone);
+	float2 topRighttDrag = topRightScaleBox->HandleDrag(math::CardinalAxis::AxisNone);
+	float2 bottomLeftDrag = bottomLeftScaleBox->HandleDrag(math::CardinalAxis::AxisNone);
+	float2 bottomRightDrag = bottomRightScaleBox->HandleDrag(math::CardinalAxis::AxisNone);
+
+	if (topRighttDrag.x != 0 || topRighttDrag.y != 0)
+	{
+	  //Draw Function to get TopLeft TopRight...
+		// assign the functions to the minpoin corresponly
+
+		//If you draw 
+	}
+
 }
 
 void ScalarBoundingBox::CleanUp()
