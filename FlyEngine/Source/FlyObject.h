@@ -60,7 +60,7 @@ public:
 	// Clickable Area ---
 	void CreateClickableArea(float2 percentagePos, float2 percentageSize, bool directPosition = false);
 	void DrawClickableArea();
-	ScalarBoundingBox* GetClickableArea();
+	BoundingBox* GetClickableArea();
 	float2 SetCASizeFromOne(float2 percentagePos, float2 percentageSize, bool directPosition = false);
 	
 	// Sets & Gets ------
@@ -103,7 +103,7 @@ public:
 
 private: 
 	// Clickable Area -----
-	ScalarBoundingBox* clickableArea; 
+	BoundingBox* clickableArea; 
 	float2 clickableAreaPosPerc; 
 	float2 clickableAreaSizePerc; 
 	float4 clickableAreaColor; 

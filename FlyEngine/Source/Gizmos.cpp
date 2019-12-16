@@ -55,6 +55,10 @@ void Gizmos::Update()
 			HandleMoveGizmo();
 			break;
 
+		case GIZMO_SCALE:
+			scaleGizmo->borderBoundingBox->Update(); 
+			break;
+
 		case GIZMO_null:
 			break;
 		}
@@ -486,5 +490,5 @@ void ScaleGizmo::AddaptScaleBox(FlyObject* objectAttached)
 	borderBoundingBox->SetMaxPoint(selectMaxPoint);
 	borderBoundingBox->SetMinPoint(selectMinPoint);
 
-	borderBoundingBox->SetCornerBoxSize(6);
+	borderBoundingBox->SetCornerBoxSize(8);
 }

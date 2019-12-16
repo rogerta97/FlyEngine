@@ -298,7 +298,7 @@ void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 
 	if (ImGui::Button("Edit From Viewport"))
 	{
-		selectedObject->GetClickableArea()->drawCornerPoints = true; 
+		//selectedObject->GetClickableArea()->drawCornerPoints = true; 
 	}
 }
 

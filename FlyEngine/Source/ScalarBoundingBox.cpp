@@ -36,7 +36,6 @@ ScalarBoundingBox::~ScalarBoundingBox()
 
 void ScalarBoundingBox::Draw(bool fill, float4 color)
 {
-	BoundingBox::Draw(fill, color); 
 	BoundingBox::Draw(false, float4(255, 255, 255, 255)); 
 
 	if (drawCornerPoints)
@@ -50,7 +49,10 @@ void ScalarBoundingBox::Draw(bool fill, float4 color)
 
 void ScalarBoundingBox::Update()
 {
-	topLeftScaleBox->HandleDrag();
+	topLeftScaleBox->HandleDrag(math::CardinalAxis::AxisNone); 
+	topRightScaleBox->HandleDrag(math::CardinalAxis::AxisNone);
+	bottomLeftScaleBox->HandleDrag(math::CardinalAxis::AxisNone);
+	bottomRightScaleBox->HandleDrag(math::CardinalAxis::AxisNone);
 }
 
 void ScalarBoundingBox::CleanUp()
@@ -76,20 +78,20 @@ void ScalarBoundingBox::SetCornerBoxSize(float newSize)
 	cornerBoxesSize = newSize; 
 
 	float2 boxTopLeft = float2(minPoint.x, maxPoint.y); 
-	topLeftScaleBox->SetMinPoint(float2(boxTopLeft.x - cornerBoxesSize, boxTopLeft.y + cornerBoxesSize));
-	topLeftScaleBox->SetMaxPoint(float2(boxTopLeft.x + cornerBoxesSize, boxTopLeft.y - cornerBoxesSize));
+	topLeftScaleBox->SetMinPoint(float2(boxTopLeft.x, boxTopLeft.y + cornerBoxesSize * 2));
+	topLeftScaleBox->SetMaxPoint(float2(boxTopLeft.x + cornerBoxesSize * 2, boxTopLeft.y));
 
 	float2 boxTopRight = float2(maxPoint.x, maxPoint.y);
-	topRightScaleBox->SetMinPoint(float2(boxTopRight.x - cornerBoxesSize, boxTopRight.y + cornerBoxesSize));
-	topRightScaleBox->SetMaxPoint(float2(boxTopRight.x + cornerBoxesSize, boxTopRight.y - cornerBoxesSize));
+	topRightScaleBox->SetMinPoint(float2(boxTopRight.x - cornerBoxesSize * 2, boxTopRight.y + cornerBoxesSize * 2));
+	topRightScaleBox->SetMaxPoint(float2(boxTopRight.x, boxTopRight.y));
 
 	float2 boxBottomLeft = float2(minPoint.x, minPoint.y);
-	bottomLeftScaleBox->SetMinPoint(float2(boxBottomLeft.x - cornerBoxesSize, boxBottomLeft.y + cornerBoxesSize));
-	bottomLeftScaleBox->SetMaxPoint(float2(boxBottomLeft.x + cornerBoxesSize, boxBottomLeft.y - cornerBoxesSize));
+	bottomLeftScaleBox->SetMinPoint(float2(boxBottomLeft.x, boxBottomLeft.y));
+	bottomLeftScaleBox->SetMaxPoint(float2(boxBottomLeft.x + cornerBoxesSize * 2, boxBottomLeft.y - cornerBoxesSize * 2));
 
 	float2 boxBottomRight = float2(maxPoint.x, minPoint.y);
-	bottomRightScaleBox->SetMinPoint(float2(boxBottomRight.x - cornerBoxesSize, boxBottomRight.y + cornerBoxesSize));
-	bottomRightScaleBox->SetMaxPoint(float2(boxBottomRight.x + cornerBoxesSize, boxBottomRight.y - cornerBoxesSize));
+	bottomRightScaleBox->SetMinPoint(float2(boxBottomRight.x - cornerBoxesSize * 2, boxBottomRight.y));
+	bottomRightScaleBox->SetMaxPoint(float2(boxBottomRight.x, boxBottomRight.y - cornerBoxesSize * 2));
 }
 
 void ScalarBoundingBox::EnableScaling(bool enableScaling)

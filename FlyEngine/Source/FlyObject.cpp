@@ -8,6 +8,7 @@
 #include "ImageImporter.h"
 #include "GameViewportDockPanel.h"
 #include "ChangeRoomAction.h"
+#include "ModuleInput.h"
 #include "ModuleRoomManager.h"
 #include "GameInventory.h"
 #include "ViewportManager.h"
@@ -32,7 +33,7 @@ FlyObject::FlyObject(std::string _name, std::string _description, FlyObjectType 
 	drawClickableArea = false;
 	flyObjectType = _flyObjectType; 
 
-	clickableArea = new ScalarBoundingBox(this); 
+	clickableArea = new BoundingBox(); 
 	clickableAreaPosPerc = float2(0, 0); 
 	clickableAreaSizePerc = float2(0, 0); 
 	clickableAreaColor = float4(1.0f, 0.8f, 0.8f, 0.4f);
@@ -57,24 +58,27 @@ bool FlyObject::Update()
 
 		if(clickableArea != nullptr)
 		{
-			clickableArea->Update();	
+			//clickableArea->Update();	
 		}		
 	}
 
-	if (App->isEngineInPlayMode && clickableArea->IsBoxClicked() && GameInventory::getInstance()->droppingObject == nullptr)
+	if (App->isEngineInPlayMode && App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && GameInventory::getInstance()->droppingObject == nullptr)
 	{
-		FLY_LOG("Object Clicked"); 
-
-		switch (flyObjectType)
+		if (clickableArea->IsBoxClicked())
 		{
-		case ACTION_OBJECT:
-			DoOnClickActions();
-			break;
+			FLY_LOG("Object Clicked"); 
 
-		case INVENTORY_ITEM:
-			App->moduleRoomManager->GetSelectedRoom()->AddItemToInventory(this); 
-			ret = true; 
-			break;
+			switch (flyObjectType)
+			{
+			case ACTION_OBJECT:
+				DoOnClickActions();
+				break;
+
+			case INVENTORY_ITEM:
+				App->moduleRoomManager->GetSelectedRoom()->AddItemToInventory(this); 
+				ret = true; 
+				break;
+			}
 		}
 	}
 
@@ -422,7 +426,7 @@ void FlyObject::DeleteAction(std::string toolNameToDelete)
 	}
 }
 
-ScalarBoundingBox* FlyObject::GetClickableArea()
+BoundingBox* FlyObject::GetClickableArea()
 {
 	return clickableArea;
 }
@@ -430,10 +434,9 @@ ScalarBoundingBox* FlyObject::GetClickableArea()
 void FlyObject::CreateClickableArea(float2 percentagePos, float2 percentageSize, bool directPosition)
 {
 	if (clickableArea == nullptr)
-		clickableArea = new ScalarBoundingBox(this);
+		clickableArea = new BoundingBox();
 
 	SetCASizeFromOne(percentagePos, percentageSize, directPosition); 
-	clickableArea->SetCornerBoxSize(4.0f); 
 
 	clickableAreaPosPerc = percentagePos; 
 	clickableAreaSizePerc = percentageSize;

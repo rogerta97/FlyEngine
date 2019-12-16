@@ -40,7 +40,7 @@ void BoundingBox::DrawSquare(float4 color, bool fill)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
-	glLineWidth(2.0f);
+	glLineWidth(3.0f);
 	glBegin(GL_QUAD_STRIP); 
 
 	glColor4f(color.x, color.y, color.z, color.w); glVertex3f(minPoint.x, maxPoint.y, 0.f);
