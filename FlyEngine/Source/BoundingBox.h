@@ -43,6 +43,8 @@ public:
 	float2& GetMaxPoint();
 	void SetMaxPoint(float2 _maxPoint);
 
+	bool& IsDragging();
+
 
 protected:
 	float2 size;

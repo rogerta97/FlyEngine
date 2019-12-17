@@ -120,6 +120,11 @@ void BoundingBox::SetMaxPoint(float2 _maxPoint)
 	size.y = abs(maxPoint.y - minPoint.y);
 }
 
+bool& BoundingBox::IsDragging()
+{
+	return isDragging; 
+}
+
 void BoundingBox::EnableDrag(bool enable)
 {
 	isDragEnabled = enable; 
@@ -188,11 +193,13 @@ float2 BoundingBox::HandleDrag(CardinalAxis limitOnAxis)
 		case math::AxisX:
 			minPoint = float2(initDragMinPoint.x - (dragIncrement.x * App->moduleImGui->gameViewportDockPanel->GetAspectRatio()), initDragMinPoint.y);
 			maxPoint = float2(initDragMaxPoint.x - (dragIncrement.x * App->moduleImGui->gameViewportDockPanel->GetAspectRatio()), initDragMaxPoint.y);
+			dragIncrement.y = 0; 
 			break;
 
 		case math::AxisY:
 			minPoint = float2(initDragMinPoint.x, initDragMinPoint.y - (dragIncrement.y * App->moduleImGui->gameViewportDockPanel->GetAspectRatio()));
 			maxPoint = float2(initDragMaxPoint.x, initDragMaxPoint.y - (dragIncrement.y * App->moduleImGui->gameViewportDockPanel->GetAspectRatio()));
+			dragIncrement.x = 0; 
 			break;
 
 		case math::AxisNone:

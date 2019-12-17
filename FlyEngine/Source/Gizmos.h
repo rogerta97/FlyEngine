@@ -69,17 +69,23 @@ public:
 
 	void CleanUp(); 
 	void AddaptScaleBox(FlyObject* objectAttached);
+	void AddaptAxisBoxes(FlyObject* objectAttached);
  
 public: 
+	float2 endAxisBoxXPos = float2::zero;
+	float2 endAxisBoxYPos = float2::zero;
 
-	float lineWidth; 
-	float lineLength; 
+	float2 initDragEndBoxXPos = float2::zero;
+	float2 initDragEndBoxYPos = float2::zero; 
 
-	float lineSquareSize;
-	float centerSquareSize;
+	float lineWidth = 0; 
+	float lineLength = 0; 
 
-	float xySquareSize;
-	float2 xySquarePos;
+	float lineSquareSize = 0;
+	float centerSquareSize = 0;
+
+	float xySquareSize = 0;
+	float2 xySquarePos = float2::zero;
 
 	BoundingBox* axisXBox;
 	BoundingBox* axisYBox;

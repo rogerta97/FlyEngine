@@ -60,7 +60,33 @@ void Gizmos::Update()
 			break;
 
 		case GIZMO_SCALE:
-			//scaleGizmo->borderBoundingBox->Update(); 
+		{
+			if (scaleGizmo->axisXBox->IsBoxClicked())
+			{
+				scaleGizmo->initDragEndBoxXPos = scaleGizmo->endAxisBoxXPos;
+			}
+
+			float2 scaleIncX = scaleGizmo->axisXBox->HandleDrag(math::CardinalAxis::AxisX); 
+			if (scaleGizmo->axisXBox->IsDragging())
+			{
+				float2 nextBoxPos = scaleGizmo->initDragEndBoxXPos - (scaleIncX * App->moduleImGui->gameViewportDockPanel->GetAspectRatio());
+				scaleGizmo->endAxisBoxXPos = nextBoxPos;
+				FLY_LOG("%f %f", scaleIncX.x, scaleIncX.y);
+			}
+
+			if (scaleGizmo->axisYBox->IsBoxClicked())
+			{
+				scaleGizmo->initDragEndBoxYPos = scaleGizmo->endAxisBoxYPos;
+			}
+
+			float2 scaleIncY = scaleGizmo->axisYBox->HandleDrag(math::CardinalAxis::AxisY);
+			if (scaleGizmo->axisYBox->IsDragging())
+			{
+				float2 nextBoxPos = scaleGizmo->initDragEndBoxYPos + scaleIncX;
+				scaleGizmo->endAxisBoxYPos = -nextBoxPos;
+			}
+		}
+
 			break;
 
 		case GIZMO_null:
@@ -305,13 +331,13 @@ void Gizmos::DrawScaleGizmo()
 	glColor3f(0, 255, 0); glVertex3f(0, -scaleGizmo->lineLength, 0.f);
 	glEnd();
 
-	float3 squareBase = float3(0, -scaleGizmo->lineLength, 0);
+	//float3 squareBase = float3(0, scaleGizmo->endAxisBoxXPos, 0);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glBegin(GL_QUADS);
-	glColor3f(0, 255, 0); glVertex3f(squareBase.x - scaleGizmo->lineSquareSize / 2, squareBase.y - scaleGizmo->lineSquareSize / 2, 0.0f);
-	glColor3f(0, 255, 0); glVertex3f(squareBase.x + scaleGizmo->lineSquareSize / 2, squareBase.y - scaleGizmo->lineSquareSize / 2, 0.0f);
-	glColor3f(0, 255, 0); glVertex3f(squareBase.x + scaleGizmo->lineSquareSize / 2, squareBase.y + scaleGizmo->lineSquareSize / 2, 0.0f);
-	glColor3f(0, 255, 0); glVertex3f(squareBase.x - scaleGizmo->lineSquareSize / 2, squareBase.y + scaleGizmo->lineSquareSize / 2, 0.0f);
+	glColor3f(0, 255, 0); glVertex3f(scaleGizmo->endAxisBoxYPos.x - scaleGizmo->lineSquareSize / 2, scaleGizmo->endAxisBoxYPos.y - scaleGizmo->lineSquareSize / 2, 0.0f);
+	glColor3f(0, 255, 0); glVertex3f(scaleGizmo->endAxisBoxYPos.x + scaleGizmo->lineSquareSize / 2, scaleGizmo->endAxisBoxYPos.y - scaleGizmo->lineSquareSize / 2, 0.0f);
+	glColor3f(0, 255, 0); glVertex3f(scaleGizmo->endAxisBoxYPos.x + scaleGizmo->lineSquareSize / 2, scaleGizmo->endAxisBoxYPos.y + scaleGizmo->lineSquareSize / 2, 0.0f);
+	glColor3f(0, 255, 0); glVertex3f(scaleGizmo->endAxisBoxYPos.x - scaleGizmo->lineSquareSize / 2, scaleGizmo->endAxisBoxYPos.y + scaleGizmo->lineSquareSize / 2, 0.0f);
 	glEnd();
 
 	// Yellow XY Square
@@ -328,13 +354,12 @@ void Gizmos::DrawScaleGizmo()
 	glColor3f(0, 0, 255); glVertex3f(scaleGizmo->lineLength, 0, 0.f);
 	glEnd();
 
-	squareBase = float3(scaleGizmo->lineLength, 0, 0);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glBegin(GL_QUADS);
-	glColor3f(0, 0, 255); glVertex3f(squareBase.x - scaleGizmo->lineSquareSize / 2, squareBase.y - scaleGizmo->lineSquareSize / 2, 0.0f);
-	glColor3f(0, 0, 255); glVertex3f(squareBase.x + scaleGizmo->lineSquareSize / 2, squareBase.y - scaleGizmo->lineSquareSize / 2, 0.0f);
-	glColor3f(0, 0, 255); glVertex3f(squareBase.x + scaleGizmo->lineSquareSize / 2, squareBase.y + scaleGizmo->lineSquareSize / 2, 0.0f);
-	glColor3f(0, 0, 255); glVertex3f(squareBase.x - scaleGizmo->lineSquareSize / 2, squareBase.y + scaleGizmo->lineSquareSize / 2, 0.0f);
+	glColor3f(0, 0, 255); glVertex3f(scaleGizmo->endAxisBoxXPos.x - scaleGizmo->lineSquareSize / 2, scaleGizmo->endAxisBoxXPos.y - scaleGizmo->lineSquareSize / 2, 0.0f);
+	glColor3f(0, 0, 255); glVertex3f(scaleGizmo->endAxisBoxXPos.x + scaleGizmo->lineSquareSize / 2, scaleGizmo->endAxisBoxXPos.y - scaleGizmo->lineSquareSize / 2, 0.0f);
+	glColor3f(0, 0, 255); glVertex3f(scaleGizmo->endAxisBoxXPos.x + scaleGizmo->lineSquareSize / 2, scaleGizmo->endAxisBoxXPos.y + scaleGizmo->lineSquareSize / 2, 0.0f);
+	glColor3f(0, 0, 255); glVertex3f(scaleGizmo->endAxisBoxXPos.x - scaleGizmo->lineSquareSize / 2, scaleGizmo->endAxisBoxXPos.y + scaleGizmo->lineSquareSize / 2, 0.0f);
 	glEnd();
 
 	// Center Square
@@ -379,16 +404,19 @@ void Gizmos::SetScaleGizmoStyle(float centerSize, float lineLength, float _lineW
 	scaleGizmo->lineLength = lineLength;
 	scaleGizmo->lineWidth = _lineWidth;
 
+	scaleGizmo->endAxisBoxXPos = float2(lineLength, 0);
+	scaleGizmo->endAxisBoxYPos = float2(0, -lineLength);
+
 	scaleGizmo->lineSquareSize = _lineSquareSize;
 
 	scaleGizmo->xySquareSize = _xySquareSize;
 	scaleGizmo->xySquarePos = float2(moveGizmo->lineLength / 4, -moveGizmo->lineLength / 4);
 
 	scaleGizmo->axisXBox->SetMinPoint(float2(0, _lineSquareSize / 2));
-	scaleGizmo->axisXBox->SetMaxPoint(float2(lineLength, -_lineSquareSize / 2));
+	scaleGizmo->axisXBox->SetMaxPoint(float2(lineLength + _lineSquareSize / 2, -_lineSquareSize / 2));
 
 	scaleGizmo->axisYBox->SetMinPoint(float2(-_lineSquareSize / 2, 0));
-	scaleGizmo->axisYBox->SetMaxPoint(float2(_lineSquareSize / 2, -lineLength));
+	scaleGizmo->axisYBox->SetMaxPoint(float2(_lineSquareSize / 2, -lineLength - _lineSquareSize / 2));
 
 	scaleGizmo->axisXYBox->SetMinPoint(float2(moveGizmo->xySquarePos.x - moveGizmo->xySquareSize / 2, moveGizmo->xySquarePos.y + moveGizmo->xySquareSize / 2));
 	scaleGizmo->axisXYBox->SetMaxPoint(float2(moveGizmo->xySquarePos.x + moveGizmo->xySquareSize / 2, moveGizmo->xySquarePos.y - moveGizmo->xySquareSize / 2));
@@ -565,4 +593,55 @@ void ScaleGizmo::AddaptScaleBox(FlyObject* objectAttached)
 	borderBoundingBox->SetMinPoint(selectMinPoint);
 
 	//borderBoundingBox->SetCornerBoxSize(8);
+}
+
+void ScaleGizmo::AddaptAxisBoxes(FlyObject* objectAttached)
+{
+	// X Axis 
+	axisXBox->CenterMinMaxPointsToScreen();
+	float2 moveMaxPoint = float2(axisXBox->GetMaxPoint().x, axisXBox->GetMaxPoint().y);
+	float2 moveMinPoint = float2(axisXBox->GetMinPoint().x, axisXBox->GetMinPoint().y);
+
+	moveMaxPoint.x += lineLength / 2;
+	moveMinPoint.x += lineLength / 2;
+
+	moveMinPoint.x += objectAttached->transform->GetPosition(true).x;
+	moveMinPoint.y += objectAttached->transform->GetPosition(true).y;
+
+	moveMaxPoint.x += objectAttached->transform->GetPosition(true).x;
+	moveMaxPoint.y += objectAttached->transform->GetPosition(true).y;
+
+	axisXBox->SetMinPoint(moveMinPoint);
+	axisXBox->SetMaxPoint(moveMaxPoint);
+
+	// Y Axis 
+	axisYBox->CenterMinMaxPointsToScreen();
+	moveMaxPoint = float2(axisYBox->GetMaxPoint().x, axisYBox->GetMaxPoint().y);
+	moveMinPoint = float2(axisYBox->GetMinPoint().x, axisYBox->GetMinPoint().y);
+
+	moveMaxPoint.y -= lineLength / 2;
+	moveMinPoint.y -= lineLength / 2;
+
+	moveMinPoint.x += objectAttached->transform->GetPosition(true).x;
+	moveMinPoint.y += objectAttached->transform->GetPosition(true).y;
+
+	moveMaxPoint.x += objectAttached->transform->GetPosition(true).x;
+	moveMaxPoint.y += objectAttached->transform->GetPosition(true).y;
+
+	axisYBox->SetMinPoint(moveMinPoint);
+	axisYBox->SetMaxPoint(moveMaxPoint);
+
+	// Center Box 
+	axisXYBox->CenterMinMaxPointsToScreen();
+	moveMaxPoint = float2(axisXYBox->GetMaxPoint().x, axisXYBox->GetMaxPoint().y);
+	moveMinPoint = float2(axisXYBox->GetMinPoint().x, axisXYBox->GetMinPoint().y);
+
+	moveMinPoint.x += objectAttached->transform->GetPosition(true).x + xySquarePos.x;
+	moveMinPoint.y += objectAttached->transform->GetPosition(true).y + xySquarePos.y;
+
+	moveMaxPoint.x += objectAttached->transform->GetPosition(true).x + xySquarePos.x;
+	moveMaxPoint.y += objectAttached->transform->GetPosition(true).y + xySquarePos.y;
+
+	axisXYBox->SetMinPoint(moveMinPoint);
+	axisXYBox->SetMaxPoint(moveMaxPoint);
 }

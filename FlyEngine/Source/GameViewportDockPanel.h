@@ -42,6 +42,7 @@ public:
 
 	float2& ScreenToWorld(float screenPosX, float screenPosY);
 	float2& ScreenToWorld(float2 screenPos);
+	float2& WorldToScreen(float screenPosX, float screenPosY);
 
 	bool aspectRatioChanged; 
 	float verticalOffset; 
