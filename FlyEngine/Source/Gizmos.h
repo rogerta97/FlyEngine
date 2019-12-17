@@ -40,7 +40,7 @@ public:
 	void AddaptAxisBoxes(FlyObject* objectAttached);
 
 public:
-	float lineLength;
+	float lineLength; 
 	float lineWidth;
 
 	float arrowLength;
@@ -72,6 +72,9 @@ public:
 	void AddaptAxisBoxes(FlyObject* objectAttached);
  
 public: 
+	float lineLengthX;
+	float lineLengthY;
+
 	float2 endAxisBoxXPos = float2::zero;
 	float2 endAxisBoxYPos = float2::zero;
 
@@ -101,6 +104,7 @@ public:
 	~Gizmos();
 
 	void Update();
+	void HandleScaleGizmo();
 	void HandleMoveGizmo();
 	void HandleDrag(float dragMovementIncX, math::float2& inc, float& prevPosX, float aspectRatio, float dragMovementIncY, float& prevPosY, math::float2& dragMovementIncXY, math::float2& prevPos);
 	void CleanUp(); 

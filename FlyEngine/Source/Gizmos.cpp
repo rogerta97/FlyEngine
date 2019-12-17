@@ -48,9 +48,9 @@ void Gizmos::CleanUp()
 void Gizmos::Update()
 {
 	if (!App->moduleImGui->gameViewportDockPanel->IsMouseInViewport() || !ViewportManager::getInstance()->drawGizmos)
-		return; 
+		return;
 
-	GizmoMode gizmoMode = App->moduleImGui->gameViewportDockPanel->GetGizmoMode(); 
+	GizmoMode gizmoMode = App->moduleImGui->gameViewportDockPanel->GetGizmoMode();
 	if (gizmoMode != GIZMO_null)
 	{
 		switch (gizmoMode)
@@ -60,40 +60,84 @@ void Gizmos::Update()
 			break;
 
 		case GIZMO_SCALE:
-		{
-			if (scaleGizmo->axisXBox->IsBoxClicked())
-			{
-				scaleGizmo->initDragEndBoxXPos = scaleGizmo->endAxisBoxXPos;
-			}
-
-			float2 scaleIncX = scaleGizmo->axisXBox->HandleDrag(math::CardinalAxis::AxisX); 
-			if (scaleGizmo->axisXBox->IsDragging())
-			{
-				float2 nextBoxPos = scaleGizmo->initDragEndBoxXPos - (scaleIncX * App->moduleImGui->gameViewportDockPanel->GetAspectRatio());
-				float2 increment = nextBoxPos - scaleGizmo->endAxisBoxXPos;
-				scaleGizmo->endAxisBoxXPos = nextBoxPos;
-				scaleGizmo->lineLength += increment.x;
-			}
-
-			if (scaleGizmo->axisYBox->IsBoxClicked())
-			{
-				scaleGizmo->initDragEndBoxYPos = scaleGizmo->endAxisBoxYPos;
-			}
-
-			float2 scaleIncY = scaleGizmo->axisYBox->HandleDrag(math::CardinalAxis::AxisY);
-			if (scaleGizmo->axisYBox->IsDragging())
-			{
-				float2 nextBoxPos = scaleGizmo->initDragEndBoxYPos + scaleIncX;
-				scaleGizmo->endAxisBoxYPos = -nextBoxPos;
-			}
-		}
-
+			HandleScaleGizmo();
 			break;
 
 		case GIZMO_null:
 			break;
 		}
 	}
+}
+
+void Gizmos::Draw()
+{
+	if (!ViewportManager::getInstance()->drawGizmos)
+		return;
+
+	switch (App->moduleImGui->gameViewportDockPanel->GetGizmoMode())
+	{
+	case GIZMO_SELECT:
+		DrawSelectGizmo();
+		break;
+
+	case GIZMO_MOVE:
+		DrawMoveGizmo();
+		break;
+
+	case GIZMO_SCALE:
+		DrawScaleGizmo();
+		break;
+	}
+}
+
+void Gizmos::HandleScaleGizmo()
+{
+	if (scaleGizmo->axisXBox->IsBoxClicked())
+	{
+		scaleGizmo->initDragEndBoxXPos = scaleGizmo->endAxisBoxXPos;
+	}
+
+	float2 scaleIncX = scaleGizmo->axisXBox->HandleDrag(math::CardinalAxis::AxisX);
+	if (scaleGizmo->axisXBox->IsDragging())
+	{
+		float2 nextBoxPos = scaleGizmo->initDragEndBoxXPos - (scaleIncX * App->moduleImGui->gameViewportDockPanel->GetAspectRatio());
+		float2 increment = nextBoxPos - scaleGizmo->endAxisBoxXPos;
+		scaleGizmo->endAxisBoxXPos = nextBoxPos;
+		scaleGizmo->lineLengthX += increment.x;
+	}
+
+	if (scaleGizmo->axisYBox->IsBoxClicked())
+	{
+		scaleGizmo->initDragEndBoxYPos = scaleGizmo->endAxisBoxYPos;
+	}
+
+	float2 scaleIncY = scaleGizmo->axisYBox->HandleDrag(math::CardinalAxis::AxisY);
+	if (scaleGizmo->axisYBox->IsDragging())
+	{
+		float2 nextBoxPos = scaleGizmo->initDragEndBoxYPos - (scaleIncY * App->moduleImGui->gameViewportDockPanel->GetAspectRatio());
+		float2 increment = nextBoxPos - scaleGizmo->endAxisBoxYPos;
+		scaleGizmo->endAxisBoxYPos = nextBoxPos;
+		scaleGizmo->lineLengthY -= increment.y;
+	}
+
+	if (App->moduleInput->GetMouseButton(MOUSE_BUTTON::LEFT_CLICK) == KEY_UP)
+	{
+		scaleGizmo->lineLengthX = scaleGizmo->lineLength; 
+		scaleGizmo->endAxisBoxXPos = scaleGizmo->initDragEndBoxXPos; 
+
+		// Get AxisX AABB back to center of the object
+		scaleGizmo->axisXBox->CenterMinMaxPointsToScreen();
+		float2 returnPosX = objectAttached->transform->GetPosition() + (float2(scaleGizmo->lineLength + scaleGizmo->lineSquareSize / 2) / 2);
+		returnPosX.y = 0;
+		scaleGizmo->axisXBox->SetPosition(returnPosX);
+
+		// Get AxisY AABB back to center of the object
+		scaleGizmo->axisYBox->CenterMinMaxPointsToScreen();
+		float2 returnPosY = objectAttached->transform->GetPosition() - (float2(scaleGizmo->lineLength + scaleGizmo->lineSquareSize / 2) / 2);
+		returnPosY.x = 0;
+		scaleGizmo->axisYBox->SetPosition(returnPosY);
+	}
+
 }
 
 void Gizmos::HandleMoveGizmo()
@@ -171,26 +215,7 @@ bool Gizmos::IsMouseOver()
 	return selectGizmo->objectBorderBox->IsMouseOver();
 }
 
-void Gizmos::Draw()
-{
-	if (!ViewportManager::getInstance()->drawGizmos)
-		return;
 
-	switch (App->moduleImGui->gameViewportDockPanel->GetGizmoMode())
-	{
-	case GIZMO_SELECT:
-		DrawSelectGizmo(); 
-		break;
-
-	case GIZMO_MOVE:
-		DrawMoveGizmo();
-		break;
-
-	case GIZMO_SCALE:
-		DrawScaleGizmo(); 
-		break;
-	}
-}
 
 void Gizmos::DrawSelectGizmo()
 {
@@ -322,14 +347,14 @@ void Gizmos::DrawScaleGizmo()
 	moveGizmoViewMat.SetTranslatePart(float3(objectPosition.x * ViewportManager::getInstance()->GetAspectRatio(), objectPosition.y * ViewportManager::getInstance()->GetAspectRatio(), 0));
 	glLoadMatrixf((GLfloat*)moveGizmoViewMat.Transposed().v);
 
-	glLineWidth(scaleGizmo->lineWidth);
+	glLineWidth(3.0f);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	// Y Axis
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glBegin(GL_LINES);
 	glColor3f(0, 255, 0); glVertex3f(0, 0, 0.f);
-	glColor3f(0, 255, 0); glVertex3f(0, -scaleGizmo->lineLength, 0.f);
+	glColor3f(0, 255, 0); glVertex3f(0, -scaleGizmo->lineLengthY, 0.f);
 	glEnd();
 
 	//float3 squareBase = float3(0, scaleGizmo->endAxisBoxXPos, 0);
@@ -352,7 +377,7 @@ void Gizmos::DrawScaleGizmo()
 	// X Axis
 	glBegin(GL_LINES);
 	glColor3f(0, 0, 255); glVertex3f(0, 0, 0.f);
-	glColor3f(0, 0, 255); glVertex3f(scaleGizmo->lineLength, 0, 0.f);
+	glColor3f(0, 0, 255); glVertex3f(scaleGizmo->lineLengthX, 0, 0.f);
 	glEnd();
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -402,8 +427,9 @@ void Gizmos::SetMoveGizmoStyle(float centerSize, float lineLength, float _lineWi
 void Gizmos::SetScaleGizmoStyle(float centerSize, float lineLength, float _lineWidth, float arrowLength, float _lineSquareSize, float _xySquareSize)
 {
 	scaleGizmo->centerSquareSize = centerSize;
-	scaleGizmo->lineLength = lineLength;
-	scaleGizmo->lineWidth = _lineWidth;
+	scaleGizmo->lineLength = lineLength; 
+	scaleGizmo->lineLengthX = lineLength; 
+	scaleGizmo->lineLengthY = lineLength; 
 
 	scaleGizmo->endAxisBoxXPos = float2(lineLength, 0);
 	scaleGizmo->endAxisBoxYPos = float2(0, -lineLength);
@@ -411,7 +437,7 @@ void Gizmos::SetScaleGizmoStyle(float centerSize, float lineLength, float _lineW
 	scaleGizmo->lineSquareSize = _lineSquareSize;
 
 	scaleGizmo->xySquareSize = _xySquareSize;
-	scaleGizmo->xySquarePos = float2(moveGizmo->lineLength / 4, -moveGizmo->lineLength / 4);
+	scaleGizmo->xySquarePos = float2(scaleGizmo->lineLength / 4, -scaleGizmo->lineLength / 4);
 
 	scaleGizmo->axisXBox->SetMinPoint(float2(0, _lineSquareSize / 2));
 	scaleGizmo->axisXBox->SetMaxPoint(float2(lineLength + _lineSquareSize / 2, -_lineSquareSize / 2));
@@ -419,8 +445,8 @@ void Gizmos::SetScaleGizmoStyle(float centerSize, float lineLength, float _lineW
 	scaleGizmo->axisYBox->SetMinPoint(float2(-_lineSquareSize / 2, 0));
 	scaleGizmo->axisYBox->SetMaxPoint(float2(_lineSquareSize / 2, -lineLength - _lineSquareSize / 2));
 
-	scaleGizmo->axisXYBox->SetMinPoint(float2(moveGizmo->xySquarePos.x - moveGizmo->xySquareSize / 2, moveGizmo->xySquarePos.y + moveGizmo->xySquareSize / 2));
-	scaleGizmo->axisXYBox->SetMaxPoint(float2(moveGizmo->xySquarePos.x + moveGizmo->xySquareSize / 2, moveGizmo->xySquarePos.y - moveGizmo->xySquareSize / 2));
+	scaleGizmo->axisXYBox->SetMinPoint(float2(scaleGizmo->xySquarePos.x - scaleGizmo->xySquareSize / 2, scaleGizmo->xySquarePos.y + scaleGizmo->xySquareSize / 2));
+	scaleGizmo->axisXYBox->SetMaxPoint(float2(scaleGizmo->xySquarePos.x + scaleGizmo->xySquareSize / 2, scaleGizmo->xySquarePos.y - scaleGizmo->xySquareSize / 2));
 }
 
 void Gizmos::SetCenterSquareSize(float& _centerSize)
@@ -505,8 +531,8 @@ void MoveGizmo::AddaptAxisBoxes(FlyObject* objectAttached)
 	float2 moveMaxPoint = float2(axisXBox->GetMaxPoint().x, axisXBox->GetMaxPoint().y);
 	float2 moveMinPoint = float2(axisXBox->GetMinPoint().x, axisXBox->GetMinPoint().y);
 
-	moveMaxPoint.x += lineLength / 2; 
-	moveMinPoint.x += lineLength / 2; 
+	moveMaxPoint.x += lineLength / 2;
+	moveMinPoint.x += lineLength / 2;
 
 	moveMinPoint.x += objectAttached->transform->GetPosition(true).x;
 	moveMinPoint.y += objectAttached->transform->GetPosition(true).y;
