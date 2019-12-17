@@ -25,7 +25,7 @@ Gizmos::Gizmos(FlyObject* _objectAttached)
 
 	selectGizmo->objectBorderBox->SetSquareColor(float4(0.4f, 0.4f, 1.0f, 0.2f));
 	SetMoveGizmoStyle(7.0f, 100.0f, 5.0f, 20, 20, 25);
-	SetScaleGizmoStyle(7.0f, 100.0f, 5.0f, 20, 23, 25); 
+	SetScaleGizmoStyle(7.0f, 90.0f, 5.0f, 20, 23, 25); 
 }
 
 Gizmos::~Gizmos()
@@ -40,6 +40,9 @@ void Gizmos::CleanUp()
 
 	moveGizmo->CleanUp();
 	delete moveGizmo; 
+
+	scaleGizmo->CleanUp();
+	delete scaleGizmo;
 }
 
 void Gizmos::Update()
@@ -281,6 +284,10 @@ void Gizmos::DrawScaleGizmo()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+	scaleGizmo->axisXBox->Draw(false, float4(1,1,1,1));
+	scaleGizmo->axisYBox->Draw(false, float4(1,1,1,1));
+	scaleGizmo->axisXYBox->Draw(false, float4(1,1,1,1));
+
 	float4x4 moveGizmoViewMat = float4x4::identity;
 	moveGizmoViewMat.RotateX(0);
 	moveGizmoViewMat.RotateY(0);
@@ -298,7 +305,7 @@ void Gizmos::DrawScaleGizmo()
 	glColor3f(0, 255, 0); glVertex3f(0, -scaleGizmo->lineLength, 0.f);
 	glEnd();
 
-	float3 squareBase = float3(0, -scaleGizmo->lineLength - 4, 0);
+	float3 squareBase = float3(0, -scaleGizmo->lineLength, 0);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glBegin(GL_QUADS);
 	glColor3f(0, 255, 0); glVertex3f(squareBase.x - scaleGizmo->lineSquareSize / 2, squareBase.y - scaleGizmo->lineSquareSize / 2, 0.0f);
@@ -321,7 +328,7 @@ void Gizmos::DrawScaleGizmo()
 	glColor3f(0, 0, 255); glVertex3f(scaleGizmo->lineLength, 0, 0.f);
 	glEnd();
 
-	squareBase = float3(scaleGizmo->lineLength - 4, 0, 0);
+	squareBase = float3(scaleGizmo->lineLength, 0, 0);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glBegin(GL_QUADS);
 	glColor3f(0, 0, 255); glVertex3f(squareBase.x - scaleGizmo->lineSquareSize / 2, squareBase.y - scaleGizmo->lineSquareSize / 2, 0.0f);
@@ -377,14 +384,14 @@ void Gizmos::SetScaleGizmoStyle(float centerSize, float lineLength, float _lineW
 	scaleGizmo->xySquareSize = _xySquareSize;
 	scaleGizmo->xySquarePos = float2(moveGizmo->lineLength / 4, -moveGizmo->lineLength / 4);
 
-	//scaleGizmo->axisXBox->SetMinPoint(float2(0, arrowWidth / 2));
-	//scaleGizmo->axisXBox->SetMaxPoint(float2(lineLength, -arrowWidth / 2));
+	scaleGizmo->axisXBox->SetMinPoint(float2(0, _lineSquareSize / 2));
+	scaleGizmo->axisXBox->SetMaxPoint(float2(lineLength, -_lineSquareSize / 2));
 
-	//scaleGizmo->axisYBox->SetMinPoint(float2(-arrowWidth / 2, 0));
-	//scaleGizmo->axisYBox->SetMaxPoint(float2(arrowWidth / 2, -lineLength));
+	scaleGizmo->axisYBox->SetMinPoint(float2(-_lineSquareSize / 2, 0));
+	scaleGizmo->axisYBox->SetMaxPoint(float2(_lineSquareSize / 2, -lineLength));
 
-	//scaleGizmo->axisXYBox->SetMinPoint(float2(moveGizmo->xySquarePos.x - moveGizmo->xySquareSize / 2, moveGizmo->xySquarePos.y + moveGizmo->xySquareSize / 2));
-	//scaleGizmo->axisXYBox->SetMaxPoint(float2(moveGizmo->xySquarePos.x + moveGizmo->xySquareSize / 2, moveGizmo->xySquarePos.y - moveGizmo->xySquareSize / 2));
+	scaleGizmo->axisXYBox->SetMinPoint(float2(moveGizmo->xySquarePos.x - moveGizmo->xySquareSize / 2, moveGizmo->xySquarePos.y + moveGizmo->xySquareSize / 2));
+	scaleGizmo->axisXYBox->SetMaxPoint(float2(moveGizmo->xySquarePos.x + moveGizmo->xySquareSize / 2, moveGizmo->xySquarePos.y - moveGizmo->xySquareSize / 2));
 }
 
 void Gizmos::SetCenterSquareSize(float& _centerSize)
@@ -516,12 +523,21 @@ void MoveGizmo::AddaptAxisBoxes(FlyObject* objectAttached)
 ScaleGizmo::ScaleGizmo(FlyObject* parentObject)
 {
 	borderBoundingBox = new BoundingBox(); 
-	lineWidth = 4.0f; 
-	lineLength = 90.0f; 
-	lineSquareSize = 23.0f; 
+
+	axisXBox = new BoundingBox();
+	axisYBox = new BoundingBox();
+	axisXYBox = new BoundingBox();
+
+	axisXBox->EnableDrag(true);
+	axisYBox->EnableDrag(true);
+	axisXYBox->EnableDrag(true);
 }
 
 ScaleGizmo::~ScaleGizmo()
+{
+}
+
+void ScaleGizmo::CleanUp()
 {
 }
 

@@ -67,6 +67,7 @@ public:
 	ScaleGizmo(FlyObject* parentObject);
 	~ScaleGizmo();
 
+	void CleanUp(); 
 	void AddaptScaleBox(FlyObject* objectAttached);
  
 public: 
@@ -79,6 +80,10 @@ public:
 
 	float xySquareSize;
 	float2 xySquarePos;
+
+	BoundingBox* axisXBox;
+	BoundingBox* axisYBox;
+	BoundingBox* axisXYBox;
 
 	BoundingBox* borderBoundingBox; 
 };
