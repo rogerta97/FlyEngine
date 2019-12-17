@@ -3,7 +3,6 @@
 
 #include "MathGeoLib.h"
 
-class ScalarBoundingBox; 
 class BoundingBox; 
 class FlyObject;
 class Transform;
@@ -70,7 +69,18 @@ public:
 
 	void AddaptScaleBox(FlyObject* objectAttached);
  
-	ScalarBoundingBox* borderBoundingBox; 
+public: 
+
+	float lineWidth; 
+	float lineLength; 
+
+	float lineSquareSize;
+	float centerSquareSize;
+
+	float xySquareSize;
+	float2 xySquarePos;
+
+	BoundingBox* borderBoundingBox; 
 };
 
 class Gizmos
@@ -89,8 +99,9 @@ public:
 
 	// Draw ------------------
 	void Draw();
-	void DrawMoveGizmo();
 	void DrawSelectGizmo(); 
+	void DrawMoveGizmo();
+	void DrawScaleGizmo();
 
 	// Fitting ---------------
 	void CalculateSelectGizmo(FlyObject* objectAttached);
@@ -99,26 +110,17 @@ public:
 
 	void FitSelectBoxSize(); 
 	void FitScaleBoxSize();
-
 	void SetCenterSquareSize(float& centerSize);
-
-	// Set & Get -------------
-	void SetLineLength(float& lineLenght);
-	void SetLineWidth(float& _arrowWidth);
-	void SetArrowLenght(float& lineLenght);
-	void SetArrowWidth(float& _arrowWidth);
-	void SetBoxSize(float& boxSizeX, float& boxSizeY);
-	void SetBoxColor(float4 color); 
 
 	// Style -----------------
 	void SetMoveGizmoStyle(float centerSize, float lineLenght, float _arrowWidth, float arrowLength, float arrowWidth, float xySquareSize);
-
-private:
+	void SetScaleGizmoStyle(float centerSize, float lineLenght, float _arrowWidth, float arrowLength, float arrowWidth, float xySquareSize);
 
 	SelectGizmo* selectGizmo; 
 	MoveGizmo* moveGizmo;
 	ScaleGizmo* scaleGizmo; 
 
+private: 
 	FlyObject* objectAttached;
 };
 

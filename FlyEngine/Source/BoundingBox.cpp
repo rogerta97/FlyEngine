@@ -84,7 +84,7 @@ float2& BoundingBox::GetSize()
 	return size; 
 }
 
-void BoundingBox::SetSquareColor(float4& newSquareColor)
+void BoundingBox::SetSquareColor(float4 newSquareColor)
 {
 	squareColor = newSquareColor;
 }

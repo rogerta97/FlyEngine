@@ -34,7 +34,7 @@ public:
 	void SetSize(float newMaxPointX, float newMaxPointY);
 	float2& GetSize();
 
-	void SetSquareColor(float4& newSquareColor);
+	void SetSquareColor(float4 newSquareColor);
 	float4& GetsquareColor();
 
 	float2& GetMinPoint();
