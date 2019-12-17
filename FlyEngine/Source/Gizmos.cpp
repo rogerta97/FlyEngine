@@ -70,8 +70,9 @@ void Gizmos::Update()
 			if (scaleGizmo->axisXBox->IsDragging())
 			{
 				float2 nextBoxPos = scaleGizmo->initDragEndBoxXPos - (scaleIncX * App->moduleImGui->gameViewportDockPanel->GetAspectRatio());
+				float2 increment = nextBoxPos - scaleGizmo->endAxisBoxXPos;
 				scaleGizmo->endAxisBoxXPos = nextBoxPos;
-				FLY_LOG("%f %f", scaleIncX.x, scaleIncX.y);
+				scaleGizmo->lineLength += increment.x;
 			}
 
 			if (scaleGizmo->axisYBox->IsBoxClicked())
