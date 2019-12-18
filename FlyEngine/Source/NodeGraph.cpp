@@ -147,8 +147,8 @@ void NodeGraph::ConnectNodes(string originNodeTitle, string originSlotName, stri
 
 	instance->connectionsList.push_back(newGraphConnection); 
 
-	FLY_LOG("NEW GRAPH CONNECTION: %s -> %s", originNodeTitle.c_str(), destinationNodeTitle.c_str());
-	FLY_LOG("NEW GRAPH CONNECTION ID: %f", logicConnectionID); 
+	flog("NEW GRAPH CONNECTION: %s -> %s", originNodeTitle.c_str(), destinationNodeTitle.c_str());
+	flog("NEW GRAPH CONNECTION ID: %f", logicConnectionID); 
 }
 
 void NodeGraph::ConnectNodes(Node* originNode, string originSlotName, Node* destinationNode, string destinationSlotName, UID logicConnectionID)

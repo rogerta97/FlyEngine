@@ -59,7 +59,7 @@ void RoomObjectsDockPanel::DrawObjectHierarchy()
 			App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(it);
 
 			if (App->moduleInput->GetMouseButton(RIGHT_CLICK)) {
-				FLY_LOG("CLICKED RIGHT BUTTON");
+				flog("CLICKED RIGHT BUTTON");
 			}
 		}
 		POP_FONT;

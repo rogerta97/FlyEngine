@@ -248,7 +248,7 @@ void ObjectCreatorDockPanel::DrawPropertiesTab()
 
 void ObjectCreatorDockPanel::ResetObjectData()
 {
-	FLY_LOG("Object Data Reset"); 
+	flog("Object Data Reset"); 
 	strcpy(newObjectName, "");
 	strcpy(searchNewActionBuffer, "");
 	selectedAction = nullptr;
@@ -766,7 +766,7 @@ void ObjectCreatorDockPanel::DrawDisplayImageSettings()
 			}
 
 			strcpy(buf, path);
-			FLY_LOG("Player Opened %s", path);
+			flog("Player Opened %s", path);
 		}
 
 	}

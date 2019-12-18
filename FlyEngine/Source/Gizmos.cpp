@@ -123,6 +123,38 @@ void Gizmos::HandleScaleGizmo()
 		scaleGizmo->endAxisBoxYPos = nextBoxPos;
 		scaleGizmo->lineLengthY -= increment.y;
 		objectAttached->transform->SetScale(float2(objectAttached->transform->GetScale().x, objectAttached->transform->GetScale().y - increment.y * 0.01f));
+		
+	}
+
+	//XY Box 
+	static float2 prevScaleXY = float2::zero; 
+	if (scaleGizmo->axisXYBox->IsBoxClicked())
+	{
+		scaleGizmo->initDragEndBoxXYPos = scaleGizmo->xySquarePos;
+		prevScaleXY = float2(0,0); 
+	}
+
+	float2 scaleIncXY = scaleGizmo->axisXYBox->HandleDrag(math::CardinalAxis::AxisNone);
+	if (scaleGizmo->axisXYBox->IsDragging())
+	{
+		float2 nextBoxPos = scaleGizmo->initDragEndBoxXYPos - (scaleIncXY * App->moduleImGui->gameViewportDockPanel->GetAspectRatio());
+
+		float2 increment = scaleIncXY - prevScaleXY; 
+		prevScaleXY = scaleIncXY; 
+
+		float incrementLength = 0;
+		if(increment.x < 0 && increment.y > 0)
+			incrementLength = increment.Length() * 0.5f;
+		else if (increment.x > 0 && increment.y < 0)
+			incrementLength = -increment.Length() * 0.5f;
+
+		scaleGizmo->lineLengthX += incrementLength; 
+		scaleGizmo->lineLengthY += incrementLength; 
+		scaleGizmo->endAxisBoxXPos.x += incrementLength;
+		scaleGizmo->endAxisBoxYPos.y -= incrementLength;
+	
+		objectAttached->transform->SetScale(float2(objectAttached->transform->GetScale().x + incrementLength * 0.01f, objectAttached->transform->GetScale().y + incrementLength * 0.01f));
+
 	}
 
 	// Mouse Up -----
@@ -131,19 +163,26 @@ void Gizmos::HandleScaleGizmo()
 		scaleGizmo->lineLengthX = scaleGizmo->lineLength; 
 		scaleGizmo->endAxisBoxXPos = scaleGizmo->initDragEndBoxXPos; 
 
+		scaleGizmo->lineLengthY = scaleGizmo->lineLength;
+		scaleGizmo->endAxisBoxYPos = scaleGizmo->initDragEndBoxYPos;
+
+		// Get AxisXY AABB back to center of the object
+		scaleGizmo->axisXYBox->SetPosition(scaleGizmo->initDragEndBoxXYPos);
+
 		// Get AxisX AABB back to center of the object
 		scaleGizmo->axisXBox->CenterMinMaxPointsToScreen();
 		float2 returnPosX = objectAttached->transform->GetPosition() + (float2(scaleGizmo->lineLength + scaleGizmo->lineSquareSize / 2) / 2);
-		returnPosX.y = 0;
+		returnPosX.y = scaleGizmo->initDragEndBoxYPos.y;
 		scaleGizmo->axisXBox->SetPosition(returnPosX);
 
 		// Get AxisY AABB back to center of the object
 		scaleGizmo->axisYBox->CenterMinMaxPointsToScreen();
 		float2 returnPosY = objectAttached->transform->GetPosition() - (float2(scaleGizmo->lineLength + scaleGizmo->lineSquareSize / 2) / 2);
-		returnPosY.x = 0;
+		returnPosY.x = scaleGizmo->initDragEndBoxXPos.x;
 		scaleGizmo->axisYBox->SetPosition(returnPosY);
-	}
 
+		objectAttached->FitObjectUtils();
+	}
 }
 
 void Gizmos::HandleMoveGizmo()
@@ -221,8 +260,6 @@ bool Gizmos::IsMouseOver()
 	return selectGizmo->objectBorderBox->IsMouseOver();
 }
 
-
-
 void Gizmos::DrawSelectGizmo()
 {
 	glMatrixMode(GL_MODELVIEW);
@@ -246,6 +283,7 @@ void Gizmos::CalculateScaleGizmo(FlyObject* objectAttached)
 {
 	FitScaleBoxSize();
 	scaleGizmo->AddaptScaleBox(objectAttached);
+	scaleGizmo->AddaptAxisBoxes(objectAttached); 
 }
 
 void Gizmos::FitSelectBoxSize()
@@ -342,9 +380,9 @@ void Gizmos::DrawScaleGizmo()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	//scaleGizmo->axisXBox->Draw(false, float4(1,1,1,1));
-	//scaleGizmo->axisYBox->Draw(false, float4(1,1,1,1));
-	//scaleGizmo->axisXYBox->Draw(false, float4(1,1,1,1));
+	scaleGizmo->axisXBox->Draw(false, float4(1,1,1,1));
+	scaleGizmo->axisYBox->Draw(false, float4(1,1,1,1));
+	scaleGizmo->axisXYBox->Draw(false, float4(1,1,1,1));
 
 	float4x4 moveGizmoViewMat = float4x4::identity;
 	moveGizmoViewMat.RotateX(0);
@@ -353,7 +391,7 @@ void Gizmos::DrawScaleGizmo()
 	moveGizmoViewMat.SetTranslatePart(float3(objectPosition.x * ViewportManager::getInstance()->GetAspectRatio(), objectPosition.y * ViewportManager::getInstance()->GetAspectRatio(), 0));
 	glLoadMatrixf((GLfloat*)moveGizmoViewMat.Transposed().v);
 
-	glLineWidth(3.0f);
+	glLineWidth(5.0f);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	// Y Axis
@@ -363,7 +401,6 @@ void Gizmos::DrawScaleGizmo()
 	glColor3f(0, 255, 0); glVertex3f(0, -scaleGizmo->lineLengthY, 0.f);
 	glEnd();
 
-	//float3 squareBase = float3(0, scaleGizmo->endAxisBoxXPos, 0);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glBegin(GL_QUADS);
 	glColor3f(0, 255, 0); glVertex3f(scaleGizmo->endAxisBoxYPos.x - scaleGizmo->lineSquareSize / 2, scaleGizmo->endAxisBoxYPos.y - scaleGizmo->lineSquareSize / 2, 0.0f);
@@ -372,13 +409,6 @@ void Gizmos::DrawScaleGizmo()
 	glColor3f(0, 255, 0); glVertex3f(scaleGizmo->endAxisBoxYPos.x - scaleGizmo->lineSquareSize / 2, scaleGizmo->endAxisBoxYPos.y + scaleGizmo->lineSquareSize / 2, 0.0f);
 	glEnd();
 
-	// Yellow XY Square
-	glBegin(GL_QUAD_STRIP);
-	glColor3f(255, 255, 0); glVertex3f(scaleGizmo->xySquarePos.x - scaleGizmo->xySquareSize / 2, scaleGizmo->xySquarePos.y - scaleGizmo->xySquareSize / 2, 0.f);
-	glColor3f(255, 255, 0); glVertex3f(scaleGizmo->xySquarePos.x + scaleGizmo->xySquareSize / 2, scaleGizmo->xySquarePos.y - scaleGizmo->xySquareSize / 2, 0.f);
-	glColor3f(255, 255, 0); glVertex3f(scaleGizmo->xySquarePos.x - scaleGizmo->xySquareSize / 2, scaleGizmo->xySquarePos.y + scaleGizmo->xySquareSize / 2, 0.f);
-	glColor3f(255, 255, 0); glVertex3f(scaleGizmo->xySquarePos.x + scaleGizmo->xySquareSize / 2, scaleGizmo->xySquarePos.y + scaleGizmo->xySquareSize / 2, 0.f);
-	glEnd();
 
 	// X Axis
 	glBegin(GL_LINES);
@@ -401,6 +431,14 @@ void Gizmos::DrawScaleGizmo()
 	glColor3f(255, 0, 0); glVertex3f(scaleGizmo->centerSquareSize, -scaleGizmo->centerSquareSize, 0.f);
 	glColor3f(255, 0, 0); glVertex3f(-scaleGizmo->centerSquareSize, scaleGizmo->centerSquareSize, 0.f);
 	glColor3f(255, 0, 0); glVertex3f(scaleGizmo->centerSquareSize, scaleGizmo->centerSquareSize, 0.f);
+	glEnd();
+
+	// Yellow XY Square
+	glBegin(GL_QUAD_STRIP);
+	glColor3f(255, 255, 0); glVertex3f(scaleGizmo->xySquarePos.x - scaleGizmo->xySquareSize / 2, scaleGizmo->xySquarePos.y - scaleGizmo->xySquareSize / 2, 0.f);
+	glColor3f(255, 255, 0); glVertex3f(scaleGizmo->xySquarePos.x + scaleGizmo->xySquareSize / 2, scaleGizmo->xySquarePos.y - scaleGizmo->xySquareSize / 2, 0.f);
+	glColor3f(255, 255, 0); glVertex3f(scaleGizmo->xySquarePos.x - scaleGizmo->xySquareSize / 2, scaleGizmo->xySquarePos.y + scaleGizmo->xySquareSize / 2, 0.f);
+	glColor3f(255, 255, 0); glVertex3f(scaleGizmo->xySquarePos.x + scaleGizmo->xySquareSize / 2, scaleGizmo->xySquarePos.y + scaleGizmo->xySquareSize / 2, 0.f);
 	glEnd();
 
 	glLineWidth(1.0f);
@@ -439,6 +477,11 @@ void Gizmos::SetScaleGizmoStyle(float centerSize, float lineLength, float _lineW
 
 	scaleGizmo->endAxisBoxXPos = float2(lineLength, 0);
 	scaleGizmo->endAxisBoxYPos = float2(0, -lineLength);
+	scaleGizmo->endAxisBoxXYPos = float2(lineLength, -lineLength);
+
+	scaleGizmo->initDragEndBoxXPos = scaleGizmo->endAxisBoxXPos; 
+	scaleGizmo->initDragEndBoxYPos = scaleGizmo->endAxisBoxYPos; 
+	scaleGizmo->initDragEndBoxXYPos = scaleGizmo->endAxisBoxXYPos; 
 
 	scaleGizmo->lineSquareSize = _lineSquareSize;
 
@@ -624,8 +667,6 @@ void ScaleGizmo::AddaptScaleBox(FlyObject* objectAttached)
 
 	borderBoundingBox->SetMaxPoint(selectMaxPoint);
 	borderBoundingBox->SetMinPoint(selectMinPoint);
-
-	//borderBoundingBox->SetCornerBoxSize(8);
 }
 
 void ScaleGizmo::AddaptAxisBoxes(FlyObject* objectAttached)

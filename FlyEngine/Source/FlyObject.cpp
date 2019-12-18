@@ -66,7 +66,7 @@ bool FlyObject::Update()
 	{
 		if (clickableArea->IsBoxClicked())
 		{
-			FLY_LOG("Object Clicked"); 
+			flog("Object Clicked"); 
 
 			switch (flyObjectType)
 			{
@@ -562,7 +562,7 @@ void FlyObject::DrawDisplayImageSettings()
 				}
 
 				strcpy(buf, path);
-				FLY_LOG("Player Opened %s", path);
+				flog("Player Opened %s", path);
 			}
 
 		}

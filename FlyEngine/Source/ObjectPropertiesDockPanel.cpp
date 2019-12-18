@@ -591,7 +591,7 @@ void ObjectPropertiesDockPanel::DrawToolImageSettings()
 					imageTool->SetTexture(imageToolTexture); 
 
 					strcpy(buf, path);
-					FLY_LOG("Player Opened %s", path);
+					flog("Player Opened %s", path);
 				}
 
 			}

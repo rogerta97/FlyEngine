@@ -23,7 +23,7 @@ enum FlyEngineEvent
 
 #define LOG(format, ...) log(__FILE__, __LINE__, CM_DEBUG, format, __VA_ARGS__)
 
-#define FLY_LOG(format, ...) flyLog(__FILE__, __LINE__, CM_DEBUG, format, __VA_ARGS__)
+#define flog(format, ...) flyLog(__FILE__, __LINE__, CM_DEBUG, format, __VA_ARGS__)
 #define FLY_WARNING(format, ...) flyLog(__FILE__, __LINE__, CM_WARNING, format, __VA_ARGS__)
 #define FLY_ERROR(format, ...) flyLog(__FILE__, __LINE__, CM_ERROR, format, __VA_ARGS__)
 

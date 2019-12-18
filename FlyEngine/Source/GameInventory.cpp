@@ -73,7 +73,7 @@ void GameInventory::DrawDroppingObject()
 	instance->droppingObject->FitObjectUtils(); 
 	instance->droppingObject->Draw();
 
-	FLY_LOG("Object Dropping"); 
+	flog("Object Dropping"); 
 }
 
 void GameInventory::DropDroppingObjectToRoom()

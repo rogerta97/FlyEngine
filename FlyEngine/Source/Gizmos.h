@@ -77,9 +77,11 @@ public:
 
 	float2 endAxisBoxXPos = float2::zero;
 	float2 endAxisBoxYPos = float2::zero;
+	float2 endAxisBoxXYPos = float2::zero;
 
 	float2 initDragEndBoxXPos = float2::zero;
 	float2 initDragEndBoxYPos = float2::zero; 
+	float2 initDragEndBoxXYPos = float2::zero; 
 
 	float lineWidth = 0; 
 	float lineLength = 0; 

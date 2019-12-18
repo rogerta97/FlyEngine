@@ -136,7 +136,7 @@ RoomConnection* Room::ConnectToRoom(Room* destinationRoom)
 
 	// Update Graph 
 	NodeGraph::getInstance()->ConnectNodes(GetName(), "Out", destinationRoom->GetName(), "In", newConnection->connectionID);
-	FLY_LOG("Room %s connected the LOGIC succesfuly with %s", roomName.c_str(), destinationRoom->GetName().c_str()); 
+	flog("Room %s connected the LOGIC succesfuly with %s", roomName.c_str(), destinationRoom->GetName().c_str()); 
 	App->moduleRoomManager->connectionsInWorldAmount++; 
 	return newConnection;
 }
