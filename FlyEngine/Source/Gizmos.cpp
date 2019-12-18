@@ -92,6 +92,7 @@ void Gizmos::Draw()
 
 void Gizmos::HandleScaleGizmo()
 {
+	// X axis -----
 	if (scaleGizmo->axisXBox->IsBoxClicked())
 	{
 		scaleGizmo->initDragEndBoxXPos = scaleGizmo->endAxisBoxXPos;
@@ -104,8 +105,11 @@ void Gizmos::HandleScaleGizmo()
 		float2 increment = nextBoxPos - scaleGizmo->endAxisBoxXPos;
 		scaleGizmo->endAxisBoxXPos = nextBoxPos;
 		scaleGizmo->lineLengthX += increment.x;
+
+		objectAttached->transform->SetScale(float2(objectAttached->transform->GetScale().x + increment.x * 0.01f, objectAttached->transform->GetScale().y));
 	}
 
+	// Y axis -----
 	if (scaleGizmo->axisYBox->IsBoxClicked())
 	{
 		scaleGizmo->initDragEndBoxYPos = scaleGizmo->endAxisBoxYPos;
@@ -118,8 +122,10 @@ void Gizmos::HandleScaleGizmo()
 		float2 increment = nextBoxPos - scaleGizmo->endAxisBoxYPos;
 		scaleGizmo->endAxisBoxYPos = nextBoxPos;
 		scaleGizmo->lineLengthY -= increment.y;
+		objectAttached->transform->SetScale(float2(objectAttached->transform->GetScale().x, objectAttached->transform->GetScale().y - increment.y * 0.01f));
 	}
 
+	// Mouse Up -----
 	if (App->moduleInput->GetMouseButton(MOUSE_BUTTON::LEFT_CLICK) == KEY_UP)
 	{
 		scaleGizmo->lineLengthX = scaleGizmo->lineLength; 
@@ -336,9 +342,9 @@ void Gizmos::DrawScaleGizmo()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	scaleGizmo->axisXBox->Draw(false, float4(1,1,1,1));
-	scaleGizmo->axisYBox->Draw(false, float4(1,1,1,1));
-	scaleGizmo->axisXYBox->Draw(false, float4(1,1,1,1));
+	//scaleGizmo->axisXBox->Draw(false, float4(1,1,1,1));
+	//scaleGizmo->axisYBox->Draw(false, float4(1,1,1,1));
+	//scaleGizmo->axisXYBox->Draw(false, float4(1,1,1,1));
 
 	float4x4 moveGizmoViewMat = float4x4::identity;
 	moveGizmoViewMat.RotateX(0);
