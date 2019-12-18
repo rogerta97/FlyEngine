@@ -60,12 +60,80 @@ bool RoomDockPanel::Draw()
 
 			}
 
+			if (ImGui::BeginTabItem("Blackboard"))
+			{
+				ShowBlackboardTab();
+				ImGui::EndTabItem();
+
+			}
+
 			ImGui::EndTabBar();
 		}
 	}
 
 	ImGui::End();
 	return true;
+}
+
+void RoomDockPanel::ShowBlackboardTab()
+{
+	// Add and delete variable Buttons -----------
+	ImGui::Spacing();
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
+	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
+	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
+	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
+	{
+
+	}
+
+	ImGui::SameLine();
+	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
+	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(30, 30)))
+	{
+
+	}
+
+	ImGui::PopStyleVar();
+
+	IMGUI_SPACED_SEPARATOR;
+
+	// Search Bar ---------------
+	static char searchVariableBuffer[256];
+	ImGui::InputTextWithHint("", "Search...", searchVariableBuffer, IM_ARRAYSIZE(searchVariableBuffer));
+
+	// Child Space --------------
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Blackboard Variables:");
+	POP_FONT;
+	PUSH_CHILD_BG_COLOR;
+	ImGui::BeginChild("BlackboardChild", ImVec2(ImGui::GetContentRegionMax().x - 5, ImGui::GetContentRegionAvail().y)); 
+
+	ImGui::Spacing();
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.28f, 0.43f, 0.56, 0.2f));
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5); 
+	ImGui::BeginChild("VariableUIGroup", ImVec2(ImGui::GetContentRegionAvail().x - 5, 65)); 
+
+	ImGui::Columns(2);
+	ImGui::SetColumnWidth(0, 70); 
+
+	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 5, (ImGui::GetCursorPos().y + 5)));
+	ImGui::Image(0, ImVec2(55, 55)); 
+
+	ImGui::NextColumn();
+	
+	ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5);
+	static int currentItemType = 0; 
+	ImGui::Combo("Test", &currentItemType, "Hello\0This\0Is A Simple\0Test"); 
+
+	static bool chee;
+	ImGui::Checkbox("Test Checkbox", &chee);
+
+	ImGui::EndChild();
+	ImGui::PopStyleColor(); 
+
+	ImGui::EndChild();
+	ImGui::PopStyleColor(); 
 }
 
 void RoomDockPanel::DrawTopButtons()

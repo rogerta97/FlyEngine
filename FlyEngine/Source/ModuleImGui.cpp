@@ -309,6 +309,7 @@ bool ModuleImGui::CleanUp()
 
 void ModuleImGui::SetStyle() 
 {
+	ImGui::GetStyle().ChildRounding = 5.0f;
 	ImGui::GetStyle().FrameRounding = 4.0f;
 	ImGui::GetStyle().GrabRounding = 4.0f;
 	ImGui::GetStyle().ItemSpacing = ImVec2(5.0f, 5.0f);

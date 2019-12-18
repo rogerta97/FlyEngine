@@ -370,10 +370,6 @@ void Gizmos::DrawScaleGizmo()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	scaleGizmo->axisXBox->Draw(false, float4(1,1,1,1));
-	scaleGizmo->axisYBox->Draw(false, float4(1,1,1,1));
-	scaleGizmo->axisXYBox->Draw(false, float4(1,1,1,1));
-
 	float4x4 moveGizmoViewMat = float4x4::identity;
 	moveGizmoViewMat.RotateX(0);
 	moveGizmoViewMat.RotateY(0);

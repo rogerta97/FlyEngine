@@ -15,6 +15,8 @@ public:
 
 	bool Draw();
 
+	void ShowBlackboardTab();
+
 	void DrawTopButtons();
 
 	// Hierarchy ---
