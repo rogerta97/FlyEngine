@@ -168,18 +168,8 @@ void Gizmos::HandleScaleGizmo()
 
 		// Get AxisXY AABB back to center of the object
 		scaleGizmo->axisXYBox->SetPosition(scaleGizmo->initDragEndBoxXYPos);
-
-		// Get AxisX AABB back to center of the object
 		scaleGizmo->axisXBox->CenterMinMaxPointsToScreen();
-		float2 returnPosX = objectAttached->transform->GetPosition() + (float2(scaleGizmo->lineLength + scaleGizmo->lineSquareSize / 2) / 2);
-		returnPosX.y = scaleGizmo->initDragEndBoxYPos.y;
-		scaleGizmo->axisXBox->SetPosition(returnPosX);
-
-		// Get AxisY AABB back to center of the object
 		scaleGizmo->axisYBox->CenterMinMaxPointsToScreen();
-		float2 returnPosY = objectAttached->transform->GetPosition() - (float2(scaleGizmo->lineLength + scaleGizmo->lineSquareSize / 2) / 2);
-		returnPosY.x = scaleGizmo->initDragEndBoxXPos.x;
-		scaleGizmo->axisYBox->SetPosition(returnPosY);
 
 		objectAttached->FitObjectUtils();
 	}
