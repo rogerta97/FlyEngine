@@ -100,6 +100,9 @@
     <Filter Include="Source\FlyEngine\FlyObject\Inventory">
       <UniqueIdentifier>{c0999ba8-7372-4bc9-adf1-0075e957c0fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\FlyEngine\FlyObject\Variables">
+      <UniqueIdentifier>{5e01b0eb-a218-4f7e-99ff-be53e30125ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">

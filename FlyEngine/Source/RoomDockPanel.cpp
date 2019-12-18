@@ -112,22 +112,26 @@ void RoomDockPanel::ShowBlackboardTab()
 	ImGui::Spacing();
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.28f, 0.43f, 0.56, 0.2f));
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5); 
-	ImGui::BeginChild("VariableUIGroup", ImVec2(ImGui::GetContentRegionAvail().x - 5, 65)); 
+	ImGui::BeginChild("VariableUIGroup", ImVec2(ImGui::GetContentRegionAvail().x - 5, 95)); 
 
-	ImGui::Columns(2);
+	ImGui::Columns(2, 0, true);
 	ImGui::SetColumnWidth(0, 70); 
 
-	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 5, (ImGui::GetCursorPos().y + 5)));
-	ImGui::Image(0, ImVec2(55, 55)); 
+	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 10, (ImGui::GetCursorPos().y + 10)));
+	Texture* variableType = (Texture*)ResourceManager::getInstance()->GetResource("ObjectIcon");
+	ImGui::Image((ImTextureID*)variableType->GetTextureID(), ImVec2(40, 40));
 
 	ImGui::NextColumn();
 	
 	ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5);
 	static int currentItemType = 0; 
-	ImGui::Combo("Test", &currentItemType, "Hello\0This\0Is A Simple\0Test"); 
+	ImGui::Combo("Test", &currentItemType, "Hello\0This\0"); 
 
 	static bool chee;
 	ImGui::Checkbox("Test Checkbox", &chee);
+
+	static char variableName[256];
+	ImGui::InputText("Name", variableName, IM_ARRAYSIZE(variableName));
 
 	ImGui::EndChild();
 	ImGui::PopStyleColor(); 
@@ -204,6 +208,9 @@ void RoomDockPanel::DrawTopButtons()
 
 void RoomDockPanel::DrawRoomHierarchy()
 {
+	static char searchObjectBuffer[256];
+	ImGui::InputTextWithHint("", "Search...", searchObjectBuffer, IM_ARRAYSIZE(searchObjectBuffer));
+
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 	ImGui::PushStyleColor(ImGuiCol_Separator, ImVec4(0.7f, 0.7f, 0.7f, 0.7f));
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2.0f, 0.5f));
