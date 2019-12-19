@@ -132,6 +132,12 @@ void ModuleManager::LoadEngineIcons()
 
 	Texture* inventoryItemIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "InventoryItemIcon.png"), false);
 	ResourceManager::getInstance()->AddResource((Resource*)inventoryItemIcon, "InventoryItemIcon");
+
+	Texture* toggleIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ToggleIcon.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)toggleIcon, "ToggleIcon");
+
+	Texture* naturalNumberIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "NaturalNumberIcon.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)naturalNumberIcon, "NaturalNumberIcon");
 }
 
 int ModuleManager::GetToolsAmount() const

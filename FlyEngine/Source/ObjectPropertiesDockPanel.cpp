@@ -20,7 +20,6 @@
 #include "mmgr.h"
 
 
-
 ObjectPropertiesDockPanel::ObjectPropertiesDockPanel(bool isVisible) : DockPanel("Object Properties", isVisible)
 {
 	flyEngineSection = FLY_SECTION_ROOM_EDIT;

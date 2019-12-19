@@ -17,6 +17,8 @@ public:
 
 	void ShowBlackboardTab();
 
+	void DrawRoomVariablesUI();
+
 	void DrawTopButtons();
 
 	// Hierarchy ---

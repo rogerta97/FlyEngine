@@ -12,12 +12,15 @@
 #include "TextureMSAA.h"
 #include "ObjectPropertiesDockPanel.h"
 #include "ModuleRoomManager.h"
+#include "Blackboard.h"
 #include "mmgr.h"
 
 Room::Room(string roomName)
 {
 	this->roomName = roomName;
 	roomID = RandomNumberGenerator::GenerateUID(); 
+	roomBlackboard = new Blackboard(); 
+
 	// Add The Room to the NodeGraph 
 	static int placer = 50;
 	NodeGraph::getInstance()->CreateNode(roomName, ImVec2(placer, 50), roomID);
@@ -386,6 +389,11 @@ void Room::SetSelectedObject(FlyObject* newObject)
 FlyObject* Room::GetSelectedObject() const
 {
 	return selectedObject;
+}
+
+Blackboard* Room::GetBlackboard()
+{
+	return roomBlackboard;
 }
 
 RoomConnection::RoomConnection(Room* _originRoom, Room* _roomConnected, string _connectionName, bool _isBidirectional)

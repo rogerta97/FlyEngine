@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -58,9 +58,11 @@
     <ClCompile Include="3rdParty\MathGeoLib\Time\Clock.cpp" />
     <ClCompile Include="3rdParty\mmgr\mmgr.cpp" />
     <ClCompile Include="3rdParty\PCGRandom\pcg_basic.c" />
+    <ClCompile Include="Source\Blackboard.cpp" />
     <ClCompile Include="Source\BoundingBox.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\ChangeRoomAction.cpp" />
+    <ClCompile Include="Source\FlyVariable.cpp" />
     <ClCompile Include="Source\GameInventory.cpp" />
     <ClCompile Include="Source\Gizmos.cpp" />
     <ClCompile Include="Source\DisplayImageAction.cpp" />
@@ -185,9 +187,11 @@
     <ClInclude Include="3rdParty\mmgr\nommgr.h" />
     <ClInclude Include="3rdParty\PCGRandom\pcg_basic.h" />
     <ClInclude Include="glmath.h" />
+    <ClInclude Include="Source\Blackboard.h" />
     <ClInclude Include="Source\BoundingBox.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\ChangeRoomAction.h" />
+    <ClInclude Include="Source\FlyVariable.h" />
     <ClInclude Include="Source\GameInventory.h" />
     <ClInclude Include="Source\Gizmos.h" />
     <ClInclude Include="Source\DisplayImageAction.h" />

@@ -3,6 +3,7 @@
 
 #include "Globals.h"
 #include "JSON\parson.h"
+#include "Blackboard.h"
 
 #include <list>
 #include <vector>
@@ -89,15 +90,19 @@ public:
 	void SetSelectedObject(FlyObject* newObject); 
 	FlyObject* GetSelectedObject() const;
 
-	// Vars ---------------------------------------------------------------------------
-	// Connections ---------
+	Blackboard* GetBlackboard(); 
+
+public: 
+	// Link Management -----
 	list<RoomConnection*> outConnections;
 	list<UID> inRoomUIDs;
 
-	// Objects ---------
+	// Object List ---------
 	list<FlyObject*> objectsInRoom;
 
+
 private: 
+	Blackboard* roomBlackboard; 
 	FlyObject* selectedObject; 
 	UID roomID; 
 	string roomName;

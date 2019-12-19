@@ -16,6 +16,7 @@
 
 #include "Room.h"
 #include "Texture.h"
+#include "FlyVariable.h"
 #include "ViewportManager.h"
 #include "FlyObject.h"
 #include "mmgr.h"
@@ -64,7 +65,6 @@ bool RoomDockPanel::Draw()
 			{
 				ShowBlackboardTab();
 				ImGui::EndTabItem();
-
 			}
 
 			ImGui::EndTabBar();
@@ -81,10 +81,11 @@ void RoomDockPanel::ShowBlackboardTab()
 	ImGui::Spacing();
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
 	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
+
 	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
-
+		App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->AddDefaultVariable(); 
 	}
 
 	ImGui::SameLine();
@@ -95,49 +96,95 @@ void RoomDockPanel::ShowBlackboardTab()
 	}
 
 	ImGui::PopStyleVar();
-
 	IMGUI_SPACED_SEPARATOR;
 
-	// Search Bar ---------------
+	// Search Bar --------------------
 	static char searchVariableBuffer[256];
 	ImGui::InputTextWithHint("", "Search...", searchVariableBuffer, IM_ARRAYSIZE(searchVariableBuffer));
 
-	// Child Space --------------
+	// Child List Space Title --------
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Blackboard Variables:");
 	POP_FONT;
+
+	// Variable List UI --------------
+	DrawRoomVariablesUI();
+}
+
+void RoomDockPanel::DrawRoomVariablesUI()
+{
+	Blackboard* roomBB = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard(); 
+
 	PUSH_CHILD_BG_COLOR;
-	ImGui::BeginChild("BlackboardChild", ImVec2(ImGui::GetContentRegionMax().x - 5, ImGui::GetContentRegionAvail().y)); 
+	ImGui::BeginChild("BlackboardChild", ImVec2(ImGui::GetContentRegionMax().x - 5, ImGui::GetContentRegionAvail().y));
 
-	ImGui::Spacing();
-	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.28f, 0.43f, 0.56, 0.2f));
-	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5); 
-	ImGui::BeginChild("VariableUIGroup", ImVec2(ImGui::GetContentRegionAvail().x - 5, 95)); 
+	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 5, (ImGui::GetCursorPos().y + 5)));
 
-	ImGui::Columns(2, 0, true);
-	ImGui::SetColumnWidth(0, 70); 
+	int counter = 0; 
+	for (auto& currentVar : roomBB->blackboardVariablesList)
+	{
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.28f, 0.43f, 0.56, 0.2f));
 
-	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 10, (ImGui::GetCursorPos().y + 10)));
-	Texture* variableType = (Texture*)ResourceManager::getInstance()->GetResource("ObjectIcon");
-	ImGui::Image((ImTextureID*)variableType->GetTextureID(), ImVec2(40, 40));
+		string varChildID = "VariableUIGroup" + to_string(counter);
+		ImGui::BeginChild(varChildID.c_str(), ImVec2(ImGui::GetContentRegionAvail().x - 5, 95));
+		
+		ImGui::Columns(2, 0, true);
+		ImGui::SetColumnWidth(0, 70);
 
-	ImGui::NextColumn();
-	
-	ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5);
-	static int currentItemType = 0; 
-	ImGui::Combo("Test", &currentItemType, "Hello\0This\0"); 
+		int iconSize = 47; 
+		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 8, (ImGui::GetContentRegionAvail().y / 2) - iconSize / 2));
+		Texture* variableType = nullptr;
+		if(currentVar->varType == Var_Integer)
+			variableType = (Texture*)ResourceManager::getInstance()->GetResource("NaturalNumberIcon");
+		else if (currentVar->varType == Var_Toggle)
+			variableType = (Texture*)ResourceManager::getInstance()->GetResource("ToggleIcon");
+		
+		ImGui::Image((ImTextureID*)variableType->GetTextureID(), ImVec2(iconSize, iconSize));
 
-	static bool chee;
-	ImGui::Checkbox("Test Checkbox", &chee);
+		ImGui::NextColumn();
+		ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5);
 
-	static char variableName[256];
-	ImGui::InputText("Name", variableName, IM_ARRAYSIZE(variableName));
+		string comboStringID = "Variable Type##VarType" + to_string(counter);
+		int currentItemType = currentVar->varType;
+		ImGui::Combo(comboStringID.c_str(), &currentItemType, "Integer\0Toggle\0");
 
-	ImGui::EndChild();
-	ImGui::PopStyleColor(); 
+		string valueStringID = "Value##ComboVar" + to_string(counter);
+		switch (currentItemType)
+		{
 
-	ImGui::EndChild();
-	ImGui::PopStyleColor(); 
+		case 0: 
+		{
+			ImGui::InputInt(valueStringID.c_str(), &currentVar->varInteger);
+			currentVar->varType = Var_Integer;
+			break; 
+		}
+
+		case 1:
+		{
+			ImGui::Checkbox(valueStringID.c_str(), &currentVar->varToogle);
+			currentVar->varType = Var_Toggle;
+			break;
+		}
+		}
+
+		char nameBuffer[256]; 
+		strcpy(nameBuffer, currentVar->name.c_str());
+		string nameStringID = "Name##VarName" + to_string(counter);
+
+		if(ImGui::InputText(nameStringID.c_str(), nameBuffer, IM_ARRAYSIZE(nameBuffer)))
+		{
+			currentVar->name = nameBuffer; 
+		}
+
+		ImGui::EndChild();
+		ImGui::PopStyleColor(); 
+
+		counter++;
+	}
+
+	ImGui::PopStyleColor();
+
+	ImGui::EndChild(); 
 }
 
 void RoomDockPanel::DrawTopButtons()
