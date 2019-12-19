@@ -392,6 +392,7 @@ void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 	if(modifyVariableAction == nullptr)
 		return; 
 
+	// Object Occurrence ---------
 	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 	ImGui::Text("Action Happens On:");
 	ImGui::PopFont();
@@ -412,6 +413,60 @@ void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 	ImGui::PopStyleColor();
 
 	IMGUI_SPACED_SEPARATOR;
+
+	// Object Settings ----------
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.28f, 0.43f, 0.56, 0.2f));
+
+	ImGui::BeginChild("Hello", ImVec2(ImGui::GetContentRegionAvail().x - 5, 95));
+
+	ImGui::Columns(2, 0, true);
+	ImGui::SetColumnWidth(0, 70);
+
+	int iconSize = 47;
+	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 8, (ImGui::GetContentRegionAvail().y / 2) - iconSize / 2));
+	Texture* variableType = (Texture*)ResourceManager::getInstance()->GetResource("ToggleIcon");
+
+	ImGui::Image((ImTextureID*)variableType->GetTextureID(), ImVec2(iconSize, iconSize));
+
+	ImGui::NextColumn();
+	ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5);
+
+	//string comboStringID = "Variable Type##VarType" + to_string(counter);
+	static int currentItemType = 0;
+	static int currentIetemType = 0;
+	ImGui::Combo("asdsda", &currentItemType, "Add\0Set\0Substract\0");
+	//ImGui::InputInt("lkdjnlk", &currentIetemType);
+	//
+	//string valueStringID = "Value##ComboVar" + to_string(counter);
+	//switch (currentItemType)
+	//{
+
+	//case 0:
+	//{
+	//	currentVar->varType = Var_Integer;
+	//	break;
+	//}
+
+	//case 1:
+	//{
+	//	ImGui::Checkbox(valueStringID.c_str(), &currentVar->varToogle);
+	//	currentVar->varType = Var_Toggle;
+	//	break;
+	//}
+	//}
+
+	static char nameBuffer[256];
+	//strcpy(nameBuffer, currentVar->name.c_str());
+	//string nameStringID = "Name##VarName" + to_string(counter);
+	//ImGui::InputText("kjbn", nameBuffer, IM_ARRAYSIZE(nameBuffer));
+/*
+	if ())
+	{
+		currentVar->name = nameBuffer;
+	}*/
+
+	ImGui::EndChild();
+	ImGui::PopStyleColor();
 }
 
 void ObjectCreatorDockPanel::OnAddActionButtonClicked()
