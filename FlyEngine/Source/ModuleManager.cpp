@@ -34,6 +34,7 @@ bool ModuleManager::Init()
 	// Tools Descriptions 
 	AddToolsNameDescription("Display Image", "This should be the description of the image tool", AT_DISPLAY_IMAGE);
 	AddToolsNameDescription("Change Scene", "This should be the description of the change scene tool", AT_CHANGE_ROOM);
+	AddToolsNameDescription("Modify Variable", "This should be the description of the mofdify variable tool", AT_MOD_VARIABLE);
 
 	return true;
 }
@@ -114,6 +115,9 @@ void ModuleManager::LoadEngineIcons()
 
 	Texture* scaleIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ScaleIcon.png"), true);
 	ResourceManager::getInstance()->AddResource((Resource*)scaleIcon, "ScaleIcon");
+
+	Texture* wrenchIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "WrenchIcon.png"), true);
+	ResourceManager::getInstance()->AddResource((Resource*)wrenchIcon, "WrenchIcon");
 
 	Texture* exportIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ExportIcon.png"), false);
 	ResourceManager::getInstance()->AddResource((Resource*)exportIcon, "ExportIcon");
@@ -199,6 +203,10 @@ Texture* ModuleManager::GetIconFromActionType(ActionType toolType)
 
 	case AT_CHANGE_ROOM:
 		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("ChangeScene");
+		break;
+
+	case AT_MOD_VARIABLE:
+		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("WrenchIcon");
 		break;
 
 	default:

@@ -8,6 +8,7 @@
 #include "MyFileSystem.h"
 #include "ChangeRoomAction.h"
 #include "Room.h"
+#include "ModifyVariableAction.h"
 #include "Texture.h"
 #include "ImageImporter.h"
 #include "DisplayImageAction.h"
@@ -326,6 +327,10 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 		case AT_CHANGE_ROOM:
 			DrawChangeRoomActionSettings();
 			break;
+
+		case AT_MOD_VARIABLE:
+			DrawModifyVariableActionSettings();
+			break;
 		}
 	}
 }
@@ -348,11 +353,11 @@ void ObjectCreatorDockPanel::DrawChangeRoomActionSettings()
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
 
-	ImGui::SetCursorPos(ImVec2(5, 8));
-	ImGui::Checkbox("Scene Enter", &changeRoomAction->IsOccSceneEnter());
-	ImGui::SetCursorPos(ImVec2(5, 38));
-	ImGui::Checkbox("Scene Leave", &changeRoomAction->IsOccSceneLeave());
-	ImGui::SetCursorPos(ImVec2(5, 68));
+	//ImGui::SetCursorPos(ImVec2(5, 8));
+	//ImGui::Checkbox("Scene Enter", &changeRoomAction->IsOccSceneEnter());
+	//ImGui::SetCursorPos(ImVec2(5, 38));
+	//ImGui::Checkbox("Scene Leave", &changeRoomAction->IsOccSceneLeave());
+	//ImGui::SetCursorPos(ImVec2(5, 68));
 	ImGui::Checkbox("Object Clicked", &changeRoomAction->IsOccObjectClicked());
 
 	ImGui::SameLine();
@@ -378,6 +383,35 @@ void ObjectCreatorDockPanel::DrawChangeRoomActionSettings()
 	static int ci = 0;
 	ImGui::ComboArray("Destination", &ci, roomsToCombo, IM_ARRAYSIZE(roomsToCombo));
 
+}
+
+void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
+{
+	ModifyVariableAction* modifyVariableAction = (ModifyVariableAction*)this->selectedAction;
+
+	if(modifyVariableAction == nullptr)
+		return; 
+
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text("Action Happens On:");
+	ImGui::PopFont();
+
+	ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
+
+	ImGui::SetCursorPos(ImVec2(5, 8));
+	ImGui::Checkbox("Scene Enter", &modifyVariableAction->IsOccSceneEnter());
+	ImGui::SetCursorPos(ImVec2(5, 38));
+	ImGui::Checkbox("Scene Leave", &modifyVariableAction->IsOccSceneLeave());
+	ImGui::SetCursorPos(ImVec2(5, 68));
+	ImGui::Checkbox("Object Clicked", &modifyVariableAction->IsOccObjectClicked());
+
+	ImGui::EndChild();
+	POP_FONT;
+	ImGui::PopStyleColor();
+
+	IMGUI_SPACED_SEPARATOR;
 }
 
 void ObjectCreatorDockPanel::OnAddActionButtonClicked()
@@ -413,6 +447,11 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 
 			case AT_CHANGE_ROOM:
 				creatingObject->AddChangeRoomAction();
+				break;
+
+
+			case AT_MOD_VARIABLE:
+				creatingObject->AddModifyVariableAction();
 				break;
 
 			case AT_null:

@@ -360,6 +360,12 @@
     <ClCompile Include="Source\Blackboard.cpp">
       <Filter>Source\FlyEngine\FlyObject\Blackboard</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FlyVariable.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModifyVariableAction.cpp">
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -748,6 +754,9 @@
     </ClInclude>
     <ClInclude Include="Source\Blackboard.h">
       <Filter>Source\FlyEngine\FlyObject\Blackboard</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModifyVariableAction.h">
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

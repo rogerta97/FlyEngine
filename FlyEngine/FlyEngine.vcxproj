@@ -69,6 +69,7 @@
     <ClCompile Include="Source\Color.cpp" />
     <ClCompile Include="Source\ConsoleDockPanel.cpp" />
     <ClCompile Include="Source\DockPanel.cpp" />
+    <ClCompile Include="Source\ModifyVariableAction.cpp" />
     <ClCompile Include="Source\MyFileSystem.cpp" />
     <ClCompile Include="Source\FlyObject.cpp" />
     <ClCompile Include="Source\GameViewportDockPanel.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\ConsoleDockPanel.h" />
     <ClInclude Include="Source\DockPanel.h" />
+    <ClInclude Include="Source\ModifyVariableAction.h" />
     <ClInclude Include="Source\MyFileSystem.h" />
     <ClInclude Include="Source\FlyObject.h" />
     <ClInclude Include="Source\GameViewportDockPanel.h" />

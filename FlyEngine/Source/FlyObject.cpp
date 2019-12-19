@@ -11,6 +11,7 @@
 #include "ModuleInput.h"
 #include "ModuleRoomManager.h"
 #include "GameInventory.h"
+#include "ModifyVariableAction.h"
 #include "ViewportManager.h"
 #include "ResourceManager.h"
 #include "imgui.h"
@@ -359,6 +360,18 @@ ChangeRoomAction* FlyObject::AddChangeRoomAction()
 	}
 
 	return (ChangeRoomAction*)GetAction(AT_CHANGE_ROOM);
+}
+
+ModifyVariableAction* FlyObject::AddModifyVariableAction()
+{
+	if (GetAction(AT_MOD_VARIABLE) == nullptr)
+	{
+		ModifyVariableAction* mofidyVarAction = new ModifyVariableAction(this);
+		actionsList.push_back(mofidyVarAction);
+		return mofidyVarAction;
+	}
+
+	return (ModifyVariableAction*)GetAction(AT_CHANGE_ROOM);
 }
 
 void FlyObject::SetSelectedAction(ActionType toolTypeSelected)

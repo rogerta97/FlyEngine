@@ -39,9 +39,12 @@ public:
 	void DrawObjectActionsList(); 
 	void DrawSelectable(ActionSelectableInfo selectableInfo, bool& isSelected, int posInList, int selectableHeight, Action* currentTool);
 	void DrawAddAndDeleteActionButtons(); 
-	void DrawDisplayImageSettings(); 
+	
+	// Draw Prev Object Settings --
 	void DrawSelectedActionSettings();
+	void DrawDisplayImageSettings(); 
 	void DrawChangeRoomActionSettings();
+	void DrawModifyVariableActionSettings();
 
 	void OnAddActionButtonClicked(); 
 	bool DrawCloseAndCreateButton();

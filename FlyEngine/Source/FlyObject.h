@@ -18,6 +18,7 @@ enum FlyObjectType
 
 class Gizmos; 
 class DisplayImageAction; 
+class ModifyVariableAction; 
 class ChangeRoomAction; 
 class FlyObject {
 public: 
@@ -49,6 +50,7 @@ public:
 	// Tools -----------
 	DisplayImageAction* AddDisplayImageAction(const char* imageTexturePath);
 	ChangeRoomAction* AddChangeRoomAction();
+	ModifyVariableAction* AddModifyVariableAction();
 
 	void SetSelectedAction(ActionType toolTypeSelected); 
 	ActionType GetSelectedActionType(); 
