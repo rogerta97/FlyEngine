@@ -27,11 +27,13 @@ public:
 	// Object Tools Tab
 	void DrawObjectActionsTab();
 	void DrawActionSettings();
-	void DrawChangeRoomSettings();
+	void DrawModifyVariableSettings();
 	void DrawActionsList();
 	void DrawAddAndDeleteButtons();
 	void DrawActionSelectable(ActionSelectableInfo& selectableInfo, Action*& currentTool, int posInList, int selectableHeigth);
 	void DrawObjectPlacementCH();
+	
+	void DrawChangeRoomSettings();
 	void DrawToolImageSettings();
 
 private: 

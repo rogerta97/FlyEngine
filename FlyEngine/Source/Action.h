@@ -52,6 +52,7 @@ public:
 
 	bool& IsOccSceneEnter();
 	bool& IsOccSceneLeave();
+	bool& IsOccBlackboardValue();
 	bool& IsOccObjectClicked();
 
 	void SetOccSceneEnter(bool newOccSceneEnter);
@@ -81,6 +82,7 @@ protected:
 	bool occ_SceneEnter = false; 
 	bool occ_SceneLeave = false;
 	bool occ_ObjectClicked = false;
+	bool occ_blackboardValue = false;
 	bool occ_continuous = false;
 
 	std::string toolName; 

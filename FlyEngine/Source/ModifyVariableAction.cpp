@@ -36,7 +36,7 @@ void ModifyVariableAction::DrawEffectVariablesUI()
 		string childStr = "ChildItem" + to_string(count++); 
 		ImGui::BeginChild(childStr.c_str(), ImVec2(ImGui::GetContentRegionAvail().x - 5, 100));
 
-		DrawEffectItem(currentEffect, 0);
+		DrawEffectItem(currentEffect, count);
 
 		ImGui::EndChild();
 		ImGui::PopStyleColor();
@@ -55,7 +55,8 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& currentVariable
 	static char selectedVarName[256];
 	strcpy(selectedVarName, currentVariable->targetVariable->name.c_str());
 
-	ImGui::InputTextWithHint("##", "Target Variable...", selectedVarName, IM_ARRAYSIZE(selectedVarName));
+	string textNameStr = "##" + to_string(pos); 
+	ImGui::InputTextWithHint(textNameStr.c_str(), "Target Variable...", selectedVarName, IM_ARRAYSIZE(selectedVarName));
 
 	ImGui::SameLine();
 	if (ImGui::Button("Search"))
@@ -68,45 +69,30 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& currentVariable
 	// Object Operator 
 	if (currentVariable->targetVariable->varType == Var_Integer)
 	{
-		static int intOperatorSelected = 0; 
+		int intOperatorSelected = currentVariable->variableEffect;
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-		ImGui::Combo("IntegerOperators##Operator", &intOperatorSelected, "Add\0Substract\0Set\0"); 
 
-		switch (intOperatorSelected)
-		{
-		case VarEffect_ADD:
-			break; 
+		string textNameStr = "Operator##IntegerOperator" + to_string(pos);
+		ImGui::Combo(textNameStr.c_str(), &intOperatorSelected, "Add\0Substract\0Set\0");
 
-		case VarEffect_SUBSTRACT:
-			break;
-
-		case VarEffect_SET:
-			break;
-		}
+		currentVariable->variableEffect = (VariableEffect)intOperatorSelected; 
 
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
 		ImGui::InputInt("Value", &currentVariable->targetVariable->varInteger);
 	}
 	else if (currentVariable->targetVariable->varType == Var_Toggle)
-	{
-		static int toggleOperatorSelected = 0;
+	{	
+		int toggleOperatorSelected = currentVariable->variableEffect;
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-		ImGui::Combo("IntegerOperators##Operator", &toggleOperatorSelected, "Toggle\0Set\0");
 
-		switch (toggleOperatorSelected)
-		{
-		case 0: // Toggle
-			break;
+		string textNameStr = "Operator##ToggleOperator" + to_string(pos);
+		ImGui::Combo(textNameStr.c_str(), &toggleOperatorSelected, "Set\0Toggle");
 
-		case 1: // Set
-
-			break;
-		}
+		currentVariable->variableEffect = (VariableEffect)toggleOperatorSelected;
 
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
 		ImGui::Checkbox("Value", &currentVariable->targetVariable->varToogle);
 	}
-
 }
 
 

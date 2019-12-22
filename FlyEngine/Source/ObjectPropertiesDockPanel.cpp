@@ -5,6 +5,7 @@
 #include "imgui.h"
 #include "Action.h"
 #include "ModuleRoomManager.h"
+#include "ModifyVariableAction.h"
 #include "Gizmos.h"
 #include "ResourceManager.h"
 #include "ChangeRoomAction.h"
@@ -308,12 +309,72 @@ void ObjectPropertiesDockPanel::DrawActionSettings()
 		switch (selectedObject->GetSelectedActionType())
 		{
 		case AT_DISPLAY_IMAGE:
-			DrawToolImageSettings(); 
-			break; 
+			DrawToolImageSettings();
+			break;
 
-		case AT_CHANGE_ROOM:			
+		case AT_CHANGE_ROOM:
 			DrawChangeRoomSettings();
 			break;
+
+		case AT_MOD_VARIABLE:
+			DrawModifyVariableSettings();
+			break;
+		}
+	}
+}
+
+void ObjectPropertiesDockPanel::DrawModifyVariableSettings()
+{
+	ModifyVariableAction* modifyVariableAction = (ModifyVariableAction*)selectedObject->GetAction("Modify Variable");
+
+	if (modifyVariableAction != nullptr)
+	{
+		if (ImGui::CollapsingHeader("Modify Variable Attributes", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			ImGui::Separator();
+			// Object Occurrence ---------
+			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+			ImGui::Text("Action Happens On:");
+			ImGui::PopFont();
+
+			ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
+
+			ImGui::SetCursorPos(ImVec2(5, 8));
+			ImGui::Checkbox("Scene Enter", &modifyVariableAction->IsOccSceneEnter());
+			ImGui::SetCursorPos(ImVec2(5, 38));
+			ImGui::Checkbox("Scene Leave", &modifyVariableAction->IsOccSceneLeave());
+			ImGui::SetCursorPos(ImVec2(5, 68));
+			ImGui::Checkbox("Object Clicked", &modifyVariableAction->IsOccObjectClicked());
+			ImGui::SetCursorPos(ImVec2(5, 68));
+			ImGui::Checkbox("Blackboard Value Changed", &modifyVariableAction->IsOccBlackboardValue());
+
+			ImGui::EndChild();
+			POP_FONT;
+			ImGui::PopStyleColor();
+
+			IMGUI_SPACED_SEPARATOR;
+
+			// Object Settings ----------
+			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+			ImGui::Text("Variables To Modify:");
+			ImGui::PopFont();
+
+			modifyVariableAction->DrawEffectVariablesUI();
+
+			Texture* plusIcon = (Texture*)ResourceManager::getInstance()->GetResource("PlusIcon");
+			if (ImGui::ImageButton((ImTextureID)plusIcon->GetTextureID(), ImVec2(30, 30)))
+			{
+				modifyVariableAction->AddEmptyEffect();
+			}
+
+			ImGui::SameLine();
+			Texture* minusIcon = (Texture*)ResourceManager::getInstance()->GetResource("MinusIcon");
+			if (ImGui::ImageButton((ImTextureID)minusIcon->GetTextureID(), ImVec2(30, 30)))
+			{
+
+			}
 		}
 	}
 }

@@ -60,6 +60,11 @@ bool& Action::IsOccSceneLeave()
 	return occ_SceneLeave;
 }
 
+bool& Action::IsOccBlackboardValue()
+{
+	return occ_blackboardValue;
+}
+
 bool& Action::IsOccObjectClicked()
 {
 	return occ_ObjectClicked;
