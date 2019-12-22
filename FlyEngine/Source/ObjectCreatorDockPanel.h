@@ -50,9 +50,7 @@ public:
 	bool DrawCloseAndCreateButton();
 	void AddCreatingObject();
 
-
 private:
-
 	// Object Creator -------------
 	char searchNewActionBuffer[256]; 
 	char newObjectName[256]; 

@@ -7,6 +7,7 @@
 #include "ModuleRoomManager.h"
 #include "MyFileSystem.h"
 #include "ChangeRoomAction.h"
+#include "FlyVariable.h"
 #include "Room.h"
 #include "ModifyVariableAction.h"
 #include "Texture.h"
@@ -353,11 +354,6 @@ void ObjectCreatorDockPanel::DrawChangeRoomActionSettings()
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
 
-	//ImGui::SetCursorPos(ImVec2(5, 8));
-	//ImGui::Checkbox("Scene Enter", &changeRoomAction->IsOccSceneEnter());
-	//ImGui::SetCursorPos(ImVec2(5, 38));
-	//ImGui::Checkbox("Scene Leave", &changeRoomAction->IsOccSceneLeave());
-	//ImGui::SetCursorPos(ImVec2(5, 68));
 	ImGui::Checkbox("Object Clicked", &changeRoomAction->IsOccObjectClicked());
 
 	ImGui::SameLine();
@@ -392,6 +388,7 @@ void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 	if(modifyVariableAction == nullptr)
 		return; 
 
+	ImGui::Separator();
 	// Object Occurrence ---------
 	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 	ImGui::Text("Action Happens On:");
@@ -415,9 +412,31 @@ void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 	IMGUI_SPACED_SEPARATOR;
 
 	// Object Settings ----------
-	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.28f, 0.43f, 0.56, 0.2f));
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text("Variables To Modify:");
+	ImGui::PopFont();
+
+	modifyVariableAction->DrawEffectVariablesUI();
+
+	Texture* plusIcon = (Texture*)ResourceManager::getInstance()->GetResource("PlusIcon"); 
+	if (ImGui::ImageButton((ImTextureID)plusIcon->GetTextureID(), ImVec2(30, 30)))
+	{
+		modifyVariableAction->AddEmptyEffect();
+	}
+
+	ImGui::SameLine();
+	Texture* minusIcon = (Texture*)ResourceManager::getInstance()->GetResource("MinusIcon"); 
+	if (ImGui::ImageButton((ImTextureID)minusIcon->GetTextureID(), ImVec2(30, 30)))
+	{
+
+	}
+
+	/*ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.28f, 0.43f, 0.56, 0.2f));
 	ImGui::BeginChild("Hello", ImVec2(ImGui::GetContentRegionAvail().x - 5, 95));
 	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 8, 8));
+
+	bool isInteger = false; 
+	bool isBool = false; 
 
 	static char selectedVarName[256];
 	ImGui::InputTextWithHint("", "Target Variable...", selectedVarName, IM_ARRAYSIZE(selectedVarName));
@@ -425,8 +444,38 @@ void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 	ImGui::SameLine();
 	if (ImGui::Button("Search"))
 	{
+		ImGui::OpenPopup("search_variable_popup");
+	}
+	
+	FlyVariable* newVariableSelectedTick = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup(); 
+	if (newVariableSelectedTick)
+	{
+		modifyVariableAction->AddVariableToEffect(newVariableSelectedTick);
+		strcpy(selectedVarName, newVariableSelectedTick->name.c_str());
+	}
+
+	if (modifyVariableAction->CountVariablesToEffect() > 0)
+	{
 
 	}
+
+		if (newVariableSelectedTick->varType == Var_Integer)
+		{
+			isInteger = true; 
+			isBool = false; 
+		}
+		else
+		{
+			isInteger = false;
+			isBool = true;
+		}
+	}
+
+	if (isInteger)
+	{
+		
+		ImGui::InputInt("Value",)
+	}*/
 
 	//ImGui::Columns(2, 0, true);
 	//ImGui::SetColumnWidth(0, 70);
@@ -473,8 +522,8 @@ void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 		currentVar->name = nameBuffer;
 	}*/
 
-	ImGui::EndChild();
-	ImGui::PopStyleColor();
+	//ImGui::EndChild();
+	//ImGui::PopStyleColor();
 }
 
 void ObjectCreatorDockPanel::OnAddActionButtonClicked()

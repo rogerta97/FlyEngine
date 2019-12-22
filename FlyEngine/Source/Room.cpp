@@ -20,6 +20,7 @@ Room::Room(string roomName)
 	this->roomName = roomName;
 	roomID = RandomNumberGenerator::GenerateUID(); 
 	roomBlackboard = new Blackboard(); 
+	roomBlackboard->AddDefaultVariable(); 
 
 	// Add The Room to the NodeGraph 
 	static int placer = 50;

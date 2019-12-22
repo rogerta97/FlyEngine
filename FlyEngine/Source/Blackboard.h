@@ -6,6 +6,7 @@
 #include "Globals.h"
 
 class FlyVariable; 
+class ModifyVariableEffect; 
 class Blackboard
 {
 
@@ -13,7 +14,9 @@ public:
 	Blackboard(); 
 	~Blackboard(); 
 
-	FlyVariable* AddDefaultVariable(); 
+	FlyVariable* DrawVariableListPopup();
+	FlyVariable* AddDefaultVariable();
+	FlyVariable* GetVariable(std::string name); 
 
 public: 
 	std::list<FlyVariable*> blackboardVariablesList; 
