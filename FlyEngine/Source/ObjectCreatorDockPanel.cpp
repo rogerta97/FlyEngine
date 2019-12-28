@@ -389,6 +389,7 @@ void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 		return; 
 
 	ImGui::Separator();
+
 	// Object Occurrence ---------
 	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 	ImGui::Text("Action Happens On:");

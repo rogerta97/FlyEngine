@@ -144,6 +144,15 @@ void RoomDockPanel::DrawRoomVariablesUI()
 		ImGui::NextColumn();
 		ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5);
 
+		char nameBuffer[256]; 
+		strcpy(nameBuffer, currentVar->name.c_str());
+		string nameStringID = "Name##VarName" + to_string(counter);
+
+		if(ImGui::InputText(nameStringID.c_str(), nameBuffer, IM_ARRAYSIZE(nameBuffer)))
+		{
+			currentVar->name = nameBuffer; 
+		}
+
 		string comboStringID = "Variable Type##VarType" + to_string(counter);
 		int currentItemType = currentVar->varType;
 		ImGui::Combo(comboStringID.c_str(), &currentItemType, "Integer\0Toggle\0");
@@ -167,14 +176,6 @@ void RoomDockPanel::DrawRoomVariablesUI()
 		}
 		}
 
-		char nameBuffer[256]; 
-		strcpy(nameBuffer, currentVar->name.c_str());
-		string nameStringID = "Name##VarName" + to_string(counter);
-
-		if(ImGui::InputText(nameStringID.c_str(), nameBuffer, IM_ARRAYSIZE(nameBuffer)))
-		{
-			currentVar->name = nameBuffer; 
-		}
 
 		ImGui::EndChild();
 		ImGui::PopStyleColor(); 

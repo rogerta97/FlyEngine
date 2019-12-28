@@ -10,6 +10,7 @@
 #include "GameInventory.h"
 #include "ModuleImGui.h"
 #include "TextureMSAA.h"
+#include "FlyVariable.h"
 #include "ObjectPropertiesDockPanel.h"
 #include "ModuleRoomManager.h"
 #include "Blackboard.h"
@@ -20,7 +21,13 @@ Room::Room(string roomName)
 	this->roomName = roomName;
 	roomID = RandomNumberGenerator::GenerateUID(); 
 	roomBlackboard = new Blackboard(); 
+
 	roomBlackboard->AddDefaultVariable(); 
+
+	FlyVariable* boolVar = roomBlackboard->AddDefaultVariable(); 
+	boolVar->name = "VarDefault_Toggle"; 
+	boolVar->varInteger = 0; 
+	boolVar->varType = Var_Toggle; 
 
 	// Add The Room to the NodeGraph 
 	static int placer = 50;

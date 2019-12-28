@@ -46,14 +46,22 @@ void ModifyVariableAction::DrawEffectVariablesUI()
 	ImGui::PopStyleColor();
 }
 
-void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& currentVariable, int pos)
+void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect, int pos)
 {
-	
+
+	ImGui::Columns(2); 
+
+	ImGui::SetColumnWidth(0, 40);
+	//ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorPosX() + 5, ImGui::GetContentRegionMax().y / 2 - 20)); 
+	ImGui::Image(0, ImVec2(35, 235)); 
+
+	ImGui::NextColumn(); 
+
 	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 8, ImGui::GetCursorPos().y + 8));
 
 	// Name Var ----
 	static char selectedVarName[256];
-	strcpy(selectedVarName, currentVariable->targetVariable->name.c_str());
+	strcpy(selectedVarName, modifyVarEffect->targetVariable->name.c_str());
 
 	string textNameStr = "##" + to_string(pos); 
 	ImGui::InputTextWithHint(textNameStr.c_str(), "Target Variable...", selectedVarName, IM_ARRAYSIZE(selectedVarName));
@@ -64,34 +72,41 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& currentVariable
 		ImGui::OpenPopup("search_variable_popup");
 	}
 
-	App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup();
+	FlyVariable* popupVarSelected = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup();
+	if (popupVarSelected != nullptr)
+	{
+		modifyVarEffect->targetVariable = popupVarSelected; 
+	}
 
 	// Object Operator 
-	if (currentVariable->targetVariable->varType == Var_Integer)
+	if (modifyVarEffect->targetVariable->varType == Var_Integer)
 	{
-		int intOperatorSelected = currentVariable->variableEffect;
+		int intOperatorSelected = modifyVarEffect->variableEffect;
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
 
 		string textNameStr = "Operator##IntegerOperator" + to_string(pos);
 		ImGui::Combo(textNameStr.c_str(), &intOperatorSelected, "Add\0Substract\0Set\0");
 
-		currentVariable->variableEffect = (VariableEffect)intOperatorSelected; 
+		modifyVarEffect->variableEffect = (VariableEffect)intOperatorSelected; 
 
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-		ImGui::InputInt("Value", &currentVariable->targetVariable->varInteger);
+		ImGui::InputInt("Value", &modifyVarEffect->targetVariable->varInteger);
 	}
-	else if (currentVariable->targetVariable->varType == Var_Toggle)
+	else if (modifyVarEffect->targetVariable->varType == Var_Toggle)
 	{	
-		int toggleOperatorSelected = currentVariable->variableEffect;
+		int toggleOperatorSelected = modifyVarEffect->variableEffect;
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
 
 		string textNameStr = "Operator##ToggleOperator" + to_string(pos);
 		ImGui::Combo(textNameStr.c_str(), &toggleOperatorSelected, "Set\0Toggle");
 
-		currentVariable->variableEffect = (VariableEffect)toggleOperatorSelected;
+		modifyVarEffect->variableEffect = (VariableEffect)toggleOperatorSelected;
 
-		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-		ImGui::Checkbox("Value", &currentVariable->targetVariable->varToogle);
+		if (modifyVarEffect->variableEffect != VariableEffect::VarEffect_TOGGLE)
+		{
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
+			ImGui::Checkbox("Value", &modifyVarEffect->targetVariable->varToogle);
+		}
 	}
 }
 
