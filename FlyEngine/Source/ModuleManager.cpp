@@ -142,6 +142,21 @@ void ModuleManager::LoadEngineIcons()
 
 	Texture* naturalNumberIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "NaturalNumberIcon.png"), false);
 	ResourceManager::getInstance()->AddResource((Resource*)naturalNumberIcon, "NaturalNumberIcon");
+
+	Texture* addOperatorIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "AddOperatorIcon.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)addOperatorIcon, "AddOperatorIcon");
+
+	Texture* multiplyOperatorIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "MultiplyOperatorIcon.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)multiplyOperatorIcon, "MultiplyOperatorIcon");
+
+	Texture* substractyOperatorIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "SubstractOperatorIcon.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)substractyOperatorIcon, "SubstractOperatorIcon");
+
+	Texture* divideOperatorIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "DivideOperatorIcon.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)divideOperatorIcon, "DivideOperatorIcon");
+
+	Texture* equalOperatorIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "EqualOperatorIcon.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)equalOperatorIcon, "EqualOperatorIcon");
 }
 
 int ModuleManager::GetToolsAmount() const

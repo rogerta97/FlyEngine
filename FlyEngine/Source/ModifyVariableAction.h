@@ -15,8 +15,11 @@ enum VariableEffect
 {
 	VarEffect_ADD,
 	VarEffect_SUBSTRACT,
-	VarEffect_SET,
+	VarEffect_SET_NUMBER,
+
 	VarEffect_TOGGLE, 
+	VarEffect_SET_TOGGLE, 
+
 	VarEffect_None
 };
 

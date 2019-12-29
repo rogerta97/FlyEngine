@@ -3,7 +3,9 @@
 #include "ModuleRoomManager.h"
 #include "Blackboard.h"
 #include "Room.h"
+#include "Texture.h"
 #include "FlyVariable.h"
+#include "ResourceManager.h"
 
 #include "imgui.h"
 
@@ -48,12 +50,34 @@ void ModifyVariableAction::DrawEffectVariablesUI()
 
 void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect, int pos)
 {
-
 	ImGui::Columns(2); 
 
-	ImGui::SetColumnWidth(0, 40);
-	//ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorPosX() + 5, ImGui::GetContentRegionMax().y / 2 - 20)); 
-	ImGui::Image(0, ImVec2(35, 235)); 
+	ImGui::SetColumnWidth(0, 60);
+
+	int operatorTextureID = 0;
+	Texture* operatorTexture = nullptr; 
+
+	switch (modifyVarEffect->variableEffect)
+	{
+
+	case VariableEffect::VarEffect_ADD:
+		operatorTexture = (Texture*)ResourceManager::getInstance()->GetResource("AddOperatorIcon");
+		operatorTextureID = operatorTexture->GetTextureID(); 
+		break; 
+
+	case VariableEffect::VarEffect_SUBSTRACT:
+		operatorTexture = (Texture*)ResourceManager::getInstance()->GetResource("SubstractOperatorIcon");
+		operatorTextureID = operatorTexture->GetTextureID();
+		break;
+
+	case VariableEffect::VarEffect_SET_NUMBER:
+		operatorTexture = (Texture*)ResourceManager::getInstance()->GetResource("EqualOperatorIcon");
+		operatorTextureID = operatorTexture->GetTextureID();
+		break;
+	}
+
+	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 7, ImGui::GetContentRegionMax().y / 2 - 25)); 
+	ImGui::Image((ImTextureID)operatorTextureID, ImVec2(45, 45)); 
 
 	ImGui::NextColumn(); 
 
@@ -94,14 +118,14 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 	}
 	else if (modifyVarEffect->targetVariable->varType == Var_Toggle)
 	{	
-		int toggleOperatorSelected = modifyVarEffect->variableEffect;
+		int toggleOperatorSelectedInt = modifyVarEffect->variableEffect;
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
 
 		string textNameStr = "Operator##ToggleOperator" + to_string(pos);
-		ImGui::Combo(textNameStr.c_str(), &toggleOperatorSelected, "Set\0Toggle");
+		if (ImGui::Combo(textNameStr.c_str(), &toggleOperatorSelectedInt, "\0Toggle\0Set"))
 
-		modifyVarEffect->variableEffect = (VariableEffect)toggleOperatorSelected;
-
+		modifyVarEffect->variableEffect = (VariableEffect)(toggleOperatorSelectedInt + 2);
+	
 		if (modifyVarEffect->variableEffect != VariableEffect::VarEffect_TOGGLE)
 		{
 			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
