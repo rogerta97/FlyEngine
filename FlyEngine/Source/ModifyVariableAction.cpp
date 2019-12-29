@@ -22,6 +22,15 @@ ModifyVariableAction::~ModifyVariableAction()
 {
 }
 
+void ModifyVariableAction::DoAction()
+{
+
+	for (auto& currentEffect : variablesEffectList)
+	{
+
+	}
+}
+
 void ModifyVariableAction::DrawEffectVariablesUI()
 {
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));	
@@ -79,6 +88,7 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 	FlyVariable* popupVarSelected = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup();
 	if (popupVarSelected != nullptr)
 	{
+		modifyVarEffect->variableEffect = (VariableEffect)0;
 		modifyVarEffect->targetVariable = popupVarSelected; 
 	}
 

@@ -339,15 +339,11 @@ void ObjectPropertiesDockPanel::DrawModifyVariableSettings()
 
 			ImGui::PushFont(App->moduleImGui->rudaRegularMid);
 			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
+			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
 
 			ImGui::SetCursorPos(ImVec2(5, 8));
-			ImGui::Checkbox("Scene Enter", &modifyVariableAction->IsOccSceneEnter());
-			ImGui::SetCursorPos(ImVec2(5, 38));
-			ImGui::Checkbox("Scene Leave", &modifyVariableAction->IsOccSceneLeave());
-			ImGui::SetCursorPos(ImVec2(5, 68));
 			ImGui::Checkbox("Object Clicked", &modifyVariableAction->IsOccObjectClicked());
-			ImGui::SetCursorPos(ImVec2(5, 68));
+			ImGui::SetCursorPos(ImVec2(5, 38));
 			ImGui::Checkbox("Blackboard Value Changed", &modifyVariableAction->IsOccBlackboardValue());
 
 			ImGui::EndChild();

@@ -35,8 +35,9 @@ public:
 	ModifyVariableAction(FlyObject* _parentObject);
 	~ModifyVariableAction();
 
-	void DrawEffectVariablesUI();
+	void DoAction(); 
 
+	void DrawEffectVariablesUI();
 	void DrawEffectItem(ModifyVariableEffect*& currentVariable, int pos);
 
 	ModifyVariableEffect* AddEmptyEffect();
