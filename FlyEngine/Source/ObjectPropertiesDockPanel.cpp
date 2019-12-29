@@ -439,7 +439,7 @@ void ObjectPropertiesDockPanel::DrawActionsList()
 	for (auto& currentTool : selectedObject->GetActionsList()) 
 	{
 		ActionSelectableInfo selectableInfo = currentTool->GetActionSelectableInfo(); 
-		DrawActionSelectable(selectableInfo, currentTool, count, 42);
+		DrawActionSelectable(selectableInfo, currentTool, count, 40);
 		count++; 
 	}
 
@@ -522,22 +522,22 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 	}
 }
 
-void ObjectPropertiesDockPanel::DrawActionSelectable(ActionSelectableInfo& selectableInfo, Action*& currentAction, int posInList, int selectableHeigth = 42)
+void ObjectPropertiesDockPanel::DrawActionSelectable(ActionSelectableInfo& selectableInfo, Action*& currentAction, int posInList, int selectableHeigth)
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 
 	Texture* imageIcon = App->moduleManager->GetIconFromActionType(selectableInfo.actionType); 
-	ImGui::SetCursorPos(ImVec2(10, 5 + (selectableHeigth * posInList)));
+	ImGui::SetCursorPos(ImVec2(10, 7 + (selectableHeigth * posInList)));
 	ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
 
-	ImGui::SetCursorPos(ImVec2(50, +(selectableHeigth * posInList)));
+	ImGui::SetCursorPos(ImVec2(50, ((selectableHeigth + 5) * posInList)));
 	if (ImGui::Selectable(selectableInfo.actionName.c_str(), currentAction->IsSelected(), ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), selectableHeigth))) {
 		selectedObject->SetSelectedAction(selectableInfo.actionType);
 	}
 	ImGui::PopFont();
 
 	// Description -----
-	ImGui::SetCursorPosY((selectableHeigth * posInList) + 20);
+	ImGui::SetCursorPosY(((selectableHeigth + 5) * posInList) + 24);
 	ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 52);
 
 	ImGui::PushFont(App->moduleImGui->rudaRegularSmall);

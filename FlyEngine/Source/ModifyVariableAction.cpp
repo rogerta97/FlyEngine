@@ -26,7 +26,11 @@ void ModifyVariableAction::DoAction()
 {
 	for (auto& currentEffect : variablesEffectList)
 	{
-	
+		// Get Correct Blackboard (For Now Room) 
+		Blackboard* roomBlackboard = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard(); 
+
+		if (currentEffect->targetVariable->varType == Var_Integer)
+			roomBlackboard->ModifyIntegerVariable(currentEffect); 
 	}
 }
 
@@ -87,7 +91,7 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 	FlyVariable* popupVarSelected = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup();
 	if (popupVarSelected != nullptr)
 	{
-		//modifyVarEffect->variableEffect = (VariableEffectType)0;
+		modifyVarEffect->variableEffect->variableOperatorType = (VariableOperatorType)0;
 		modifyVarEffect->targetVariable = popupVarSelected; 
 	}
 
@@ -103,7 +107,7 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 		modifyVarEffect->variableEffect->variableOperatorType = (VariableOperatorType)intOperatorSelected; 
 
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-		ImGui::InputInt("Value", &modifyVarEffect->variableEffect->integerValue);
+		ImGui::InputInt("Value", &modifyVarEffect->variableEffect->incIntegerValue);
 	}
 	else if (modifyVarEffect->targetVariable->varType == Var_Toggle)
 	{	
@@ -122,7 +126,7 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 		if (modifyVarEffect->variableEffect->variableOperatorType != VariableOperatorType::VarEffect_TOGGLE)
 		{
 			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-			ImGui::Checkbox("Value", &modifyVarEffect->variableEffect->booleanValue);
+			ImGui::Checkbox("Value", &modifyVarEffect->variableEffect->nextToggleValue);
 		}
 	}
 }
@@ -185,6 +189,37 @@ ModifyVariableEffect::~ModifyVariableEffect()
 {
 }
 
+void ModifyVariableEffect::ApplyEffect()
+{
+	switch (variableEffect->variableOperatorType)
+	{
+	case VarEffect_ADD: 
+		targetVariable->varIntegerValue += variableEffect->incIntegerValue; 
+		break; 
+
+	case VarEffect_SUBSTRACT:
+		targetVariable->varIntegerValue -= variableEffect->incIntegerValue;
+		break;
+
+	case VarEffect_SET_NUMBER:
+		targetVariable->varIntegerValue = variableEffect->incIntegerValue;
+		break;
+
+	case VarEffect_TOGGLE:
+		targetVariable->varToogleValue != targetVariable->varToogleValue;
+		break;
+
+	case VarEffect_SET_TOGGLE:
+		targetVariable->varToogleValue = variableEffect->nextToggleValue;
+		break;
+	}
+}
+
+void ModifyVariableEffect::AttachToVariable(FlyVariable* _targetVariable)
+{
+	targetVariable = _targetVariable; 
+}
+
 ModifyVariableEffect::ModifyVariableEffect()
 {
 	variableEffect = new VariableEffect(); 
@@ -199,6 +234,6 @@ VariableEffect::VariableEffect()
 {
 	variableOperatorType = VarEffect_ADD; 
 
-	integerValue = 0; 
-	booleanValue = false; 
+	incIntegerValue = 0; 
+	nextToggleValue = false; 
 }

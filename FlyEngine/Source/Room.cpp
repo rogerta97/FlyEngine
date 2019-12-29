@@ -26,7 +26,7 @@ Room::Room(string roomName)
 
 	FlyVariable* boolVar = roomBlackboard->AddDefaultVariable(); 
 	boolVar->name = "VarDefault_Toggle"; 
-	boolVar->varInteger = 0; 
+	boolVar->varIntegerValue = 0; 
 	boolVar->varType = Var_Toggle; 
 
 	// Add The Room to the NodeGraph 

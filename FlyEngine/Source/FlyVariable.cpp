@@ -13,7 +13,7 @@ void FlyVariable::SetDefault()
 {
 	name = "Default_Var";
 	varType = Var_Integer;
-	varInteger = 0;
-	varToogle = true;
+	varIntegerValue = 0;
+	varToogleValue = true;
 	uniqueID = RandomNumberGenerator::getInstance()->GenerateUID();
 }

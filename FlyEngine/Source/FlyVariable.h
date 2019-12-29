@@ -24,8 +24,8 @@ public:
 	std::string name;
 	VariableType varType;
 
-	int varInteger;
-	bool varToogle;
+	int varIntegerValue;
+	bool varToogleValue;
 
 	UID uniqueID;
 };

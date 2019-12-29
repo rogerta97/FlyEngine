@@ -134,6 +134,7 @@ void RoomDockPanel::DrawRoomVariablesUI()
 		int iconSize = 47; 
 		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 8, (ImGui::GetContentRegionAvail().y / 2) - iconSize / 2));
 		Texture* variableType = nullptr;
+
 		if(currentVar->varType == Var_Integer)
 			variableType = (Texture*)ResourceManager::getInstance()->GetResource("NaturalNumberIcon");
 		else if (currentVar->varType == Var_Toggle)
@@ -163,19 +164,22 @@ void RoomDockPanel::DrawRoomVariablesUI()
 
 		case 0: 
 		{
-			ImGui::InputInt(valueStringID.c_str(), &currentVar->varInteger);
+			flog("Real Var Integer Value: %d", currentVar->varIntegerValue);
+			ImGui::InputInt(valueStringID.c_str(), &currentVar->varIntegerValue);
 			currentVar->varType = Var_Integer;
+			
 			break; 
 		}
 
 		case 1:
 		{
-			ImGui::Checkbox(valueStringID.c_str(), &currentVar->varToogle);
+			ImGui::Checkbox(valueStringID.c_str(), &currentVar->varToogleValue);
 			currentVar->varType = Var_Toggle;
 			break;
 		}
 		}
 
+		
 
 		ImGui::EndChild();
 		ImGui::PopStyleColor(); 

@@ -14,6 +14,8 @@ public:
 	Blackboard(); 
 	~Blackboard(); 
 
+	void ModifyIntegerVariable(ModifyVariableEffect* variableEffect);
+
 	FlyVariable* DrawVariableListPopup();
 	FlyVariable* AddDefaultVariable();
 	FlyVariable* GetVariable(std::string name); 

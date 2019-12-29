@@ -8,6 +8,7 @@
 #include "Room.h"
 #include "ModuleImGui.h"
 #include "Texture.h"
+#include "ModifyVariableAction.h"
 #include "FlyObject.h"
 #include "ViewportManager.h"
 #include "imgui.h"
@@ -49,14 +50,18 @@ bool ModuleManager::Start()
 	}
 
 	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
-	FlyObject* itemInventoryObject = selectedRoom->CreateInventoryItem("Key", "This is the first inventory object :D");
+	FlyObject* addingObject = selectedRoom->CreateFlyObject("AddingObject", "TráTrá!");
 	string keyPath = MyFileSystem::getInstance()->GetSolutionDirectory() + "\\EngineResources\\Images\\Key.png";
-	itemInventoryObject->AddDisplayImageAction(keyPath.c_str()); 
 
-	itemInventoryObject->CreateClickableArea(float2(0, 0), float2(1, 1), false); 
-	itemInventoryObject->clickableAreaActive = true; 
+	addingObject->AddDisplayImageAction(keyPath.c_str());
+	addingObject->CreateClickableArea(float2(0, 0), float2(1, 1), false);
+	addingObject->clickableAreaActive = true;
 
-	
+	ModifyVariableAction* modVarAction = addingObject->AddModifyVariableAction(); 
+	ModifyVariableEffect* newEffect = modVarAction->AddEmptyEffect(); 
+
+	Blackboard* roomBB = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard(); 
+	newEffect->AttachToVariable(roomBB->GetVariable("Default_Var"));
 
 	return true;
 }

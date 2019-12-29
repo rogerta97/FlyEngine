@@ -15,6 +15,18 @@ Blackboard::~Blackboard()
 {
 }
 
+void Blackboard::ModifyIntegerVariable(ModifyVariableEffect* modifyVariableEffect)
+{
+	// Sanity Checks 
+	std::string targetVarName = modifyVariableEffect->targetVariable->name; 
+	FlyVariable* targetVar = GetVariable(targetVarName);
+
+	if (targetVar == nullptr)
+		return; 
+
+	modifyVariableEffect->ApplyEffect(); 
+}
+
 FlyVariable* Blackboard::DrawVariableListPopup()
 {
 	if (ImGui::BeginPopup("search_variable_popup"))

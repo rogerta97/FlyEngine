@@ -32,8 +32,8 @@ public:
 
 	VariableOperatorType variableOperatorType;
 
-	int integerValue; 
-	bool booleanValue; 
+	int incIntegerValue; 
+	bool nextToggleValue; 
 };
 
 class ModifyVariableEffect
@@ -42,6 +42,9 @@ public:
 
 	ModifyVariableEffect(); 
 	~ModifyVariableEffect(); 
+
+	void ApplyEffect(); 
+	void AttachToVariable(FlyVariable* _targetVariable); 
 
 	FlyVariable* targetVariable; 
 	VariableEffect* variableEffect; 
