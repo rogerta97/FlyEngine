@@ -24,10 +24,9 @@ ModifyVariableAction::~ModifyVariableAction()
 
 void ModifyVariableAction::DoAction()
 {
-
 	for (auto& currentEffect : variablesEffectList)
 	{
-
+	
 	}
 }
 
@@ -63,7 +62,7 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 
 	ImGui::SetColumnWidth(0, 60);
 
-	int operatorTextureID = GetOperatorTextureIDFromType(modifyVarEffect->variableEffect);
+	int operatorTextureID = GetOperatorTextureIDFromType(modifyVarEffect->variableEffect->variableOperatorType);
 
 	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 7, ImGui::GetContentRegionMax().y / 2 - 25)); 
 	ImGui::Image((ImTextureID)operatorTextureID, ImVec2(45, 45)); 
@@ -88,27 +87,27 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 	FlyVariable* popupVarSelected = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup();
 	if (popupVarSelected != nullptr)
 	{
-		modifyVarEffect->variableEffect = (VariableEffect)0;
+		//modifyVarEffect->variableEffect = (VariableEffectType)0;
 		modifyVarEffect->targetVariable = popupVarSelected; 
 	}
 
 	// Object Operator 
 	if (modifyVarEffect->targetVariable->varType == Var_Integer)
 	{
-		int intOperatorSelected = modifyVarEffect->variableEffect;
+		int intOperatorSelected = modifyVarEffect->variableEffect->variableOperatorType;
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
 
 		string textNameStr = "Operator##IntegerOperator" + to_string(pos);
 		ImGui::Combo(textNameStr.c_str(), &intOperatorSelected, "Add\0Substract\0Set\0");
 
-		modifyVarEffect->variableEffect = (VariableEffect)intOperatorSelected; 
+		modifyVarEffect->variableEffect->variableOperatorType = (VariableOperatorType)intOperatorSelected; 
 
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-		ImGui::InputInt("Value", &modifyVarEffect->targetVariable->varInteger);
+		ImGui::InputInt("Value", &modifyVarEffect->variableEffect->integerValue);
 	}
 	else if (modifyVarEffect->targetVariable->varType == Var_Toggle)
 	{	
-		int toggleOperatorSelectedInt = modifyVarEffect->variableEffect;
+		int toggleOperatorSelectedInt = modifyVarEffect->variableEffect->variableOperatorType;
 
 		if (toggleOperatorSelectedInt == VarEffect_TOGGLE) toggleOperatorSelectedInt = 0;
 		else if (toggleOperatorSelectedInt == VarEffect_SET_TOGGLE) toggleOperatorSelectedInt = 1; 
@@ -118,12 +117,12 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 		string textNameStr = "Operator##ToggleOperator" + to_string(pos);
 		ImGui::Combo(textNameStr.c_str(), &toggleOperatorSelectedInt, "Toggle\0Set");
 
-		modifyVarEffect->variableEffect = (VariableEffect)(toggleOperatorSelectedInt + 3);
+		modifyVarEffect->variableEffect->variableOperatorType = (VariableOperatorType)(toggleOperatorSelectedInt + 3);
 	
-		if (modifyVarEffect->variableEffect != VariableEffect::VarEffect_TOGGLE)
+		if (modifyVarEffect->variableEffect->variableOperatorType != VariableOperatorType::VarEffect_TOGGLE)
 		{
 			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-			ImGui::Checkbox("Value", &modifyVarEffect->targetVariable->varToogle);
+			ImGui::Checkbox("Value", &modifyVarEffect->variableEffect->booleanValue);
 		}
 	}
 }
@@ -133,11 +132,8 @@ ModifyVariableEffect* ModifyVariableAction::AddEmptyEffect()
 {
 	ModifyVariableEffect* newEffect = new ModifyVariableEffect(); 
 
-	FlyVariable* emptyVariable = new FlyVariable();
-	emptyVariable->SetDefault(); 
-
-	newEffect->targetVariable = emptyVariable; 
-	newEffect->variableEffect = VarEffect_ADD; 
+	newEffect->targetVariable = new FlyVariable();	
+	newEffect->targetVariable->SetDefault();
 
 	variablesEffectList.push_back(newEffect); 
 
@@ -154,33 +150,55 @@ list<ModifyVariableEffect*>& ModifyVariableAction::GetEffectVariablesList()
 	return variablesEffectList;
 }
 
-int ModifyVariableAction::GetOperatorTextureIDFromType(VariableEffect effectType)
+int ModifyVariableAction::GetOperatorTextureIDFromType(VariableOperatorType effectType)
 {
 	Texture* operatorTexture = nullptr;
 
 	switch (effectType)
 	{
 
-	case VariableEffect::VarEffect_ADD:
+	case VariableOperatorType::VarEffect_ADD:
 		operatorTexture = (Texture*)ResourceManager::getInstance()->GetResource("AddOperatorIcon");
 		return operatorTexture->GetTextureID();
 
-	case VariableEffect::VarEffect_SUBSTRACT:
+	case VariableOperatorType::VarEffect_SUBSTRACT:
 		operatorTexture = (Texture*)ResourceManager::getInstance()->GetResource("SubstractOperatorIcon");
 		return operatorTexture->GetTextureID();
 
-	case VariableEffect::VarEffect_SET_NUMBER:
+	case VariableOperatorType::VarEffect_SET_NUMBER:
 		operatorTexture = (Texture*)ResourceManager::getInstance()->GetResource("EqualOperatorIcon");
 		return operatorTexture->GetTextureID();
 
-	case VariableEffect::VarEffect_TOGGLE:
+	case VariableOperatorType::VarEffect_TOGGLE:
 		operatorTexture = (Texture*)ResourceManager::getInstance()->GetResource("ToggleOperatorIcon");
 		return operatorTexture->GetTextureID();
 
-	case VariableEffect::VarEffect_SET_TOGGLE:
+	case VariableOperatorType::VarEffect_SET_TOGGLE:
 		operatorTexture = (Texture*)ResourceManager::getInstance()->GetResource("EqualOperatorIcon");
 		return operatorTexture->GetTextureID();
 	}
 
 	return 0; 
+}
+
+ModifyVariableEffect::~ModifyVariableEffect()
+{
+}
+
+ModifyVariableEffect::ModifyVariableEffect()
+{
+	variableEffect = new VariableEffect(); 
+	targetVariable = nullptr; 
+}
+
+VariableEffect::~VariableEffect()
+{
+}
+
+VariableEffect::VariableEffect()
+{
+	variableOperatorType = VarEffect_ADD; 
+
+	integerValue = 0; 
+	booleanValue = false; 
 }

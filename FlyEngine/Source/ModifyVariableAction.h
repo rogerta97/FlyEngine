@@ -11,7 +11,7 @@ class Quad;
 class Texture;
 class FlyVariable;
 
-enum VariableEffect
+enum VariableOperatorType
 {
 	VarEffect_ADD,
 	VarEffect_SUBSTRACT,
@@ -23,10 +23,28 @@ enum VariableEffect
 	VarEffect_None
 };
 
-struct ModifyVariableEffect
+class VariableEffect
 {
+public: 
+
+	VariableEffect(); 
+	~VariableEffect(); 
+
+	VariableOperatorType variableOperatorType;
+
+	int integerValue; 
+	bool booleanValue; 
+};
+
+class ModifyVariableEffect
+{
+public: 
+
+	ModifyVariableEffect(); 
+	~ModifyVariableEffect(); 
+
 	FlyVariable* targetVariable; 
-	VariableEffect variableEffect; 
+	VariableEffect* variableEffect; 
 };
 
 class ModifyVariableAction : public Action
@@ -43,7 +61,7 @@ public:
 	ModifyVariableEffect* AddEmptyEffect();
 	int CountEffects();
 	list<ModifyVariableEffect*>& GetEffectVariablesList();
-	int GetOperatorTextureIDFromType(VariableEffect effectType); 
+	int GetOperatorTextureIDFromType(VariableOperatorType effectType); 
 
 private: 
 	list<ModifyVariableEffect*> variablesEffectList;
