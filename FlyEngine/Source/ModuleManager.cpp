@@ -157,6 +157,9 @@ void ModuleManager::LoadEngineIcons()
 
 	Texture* equalOperatorIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "EqualOperatorIcon.png"), false);
 	ResourceManager::getInstance()->AddResource((Resource*)equalOperatorIcon, "EqualOperatorIcon");
+
+	Texture* toggleOperatorIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ToggleOperatorIcon.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)toggleOperatorIcon, "ToggleOperatorIcon");
 }
 
 int ModuleManager::GetToolsAmount() const

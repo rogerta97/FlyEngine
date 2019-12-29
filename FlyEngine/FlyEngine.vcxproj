@@ -308,7 +308,7 @@
     <IncludePath>C:\Users\Roger\Documents\FlyEngine\FlyEngine\3rdParty\Glew\include;C:\Users\Roger\Documents\FlyEngine\FlyEngine\3rdParty\ImGui;C:\Users\Roger\Documents\FlyEngine\FlyEngine\3rdParty\mmgr;C:\Users\Roger\Documents\FlyEngine\FlyEngine\3rdParty\SDL\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\Users\FULLMAC\Documents\FlyEngine\FlyEngine\3rdParty\PCGRandom;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -356,7 +356,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;WINDOWS_IGNORE_PACKING_MISMATCH</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;$(SolutionDir)3rdParty/glm;$(SolutionDir)3rdParty/MathGeoLib;$(SolutionDir)3rdParty/DevILWindowsSDK/include;$(SolutionDir)3rdParty</AdditionalIncludeDirectories>
@@ -366,6 +366,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rdParty/DevILWindowsSDK\libx86\DevIL.lib;$(SolutionDir)3rdParty/DevILWindowsSDK\libx86\ILU.lib;$(SolutionDir)3rdParty/DevILWindowsSDK\libx86\ILUT.lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

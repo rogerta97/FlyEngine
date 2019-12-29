@@ -42,6 +42,7 @@ public:
 	ModifyVariableEffect* AddEmptyEffect();
 	int CountEffects();
 	list<ModifyVariableEffect*>& GetEffectVariablesList();
+	int GetOperatorTextureIDFromType(VariableEffect effectType); 
 
 private: 
 	list<ModifyVariableEffect*> variablesEffectList;

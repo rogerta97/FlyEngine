@@ -54,27 +54,7 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 
 	ImGui::SetColumnWidth(0, 60);
 
-	int operatorTextureID = 0;
-	Texture* operatorTexture = nullptr; 
-
-	switch (modifyVarEffect->variableEffect)
-	{
-
-	case VariableEffect::VarEffect_ADD:
-		operatorTexture = (Texture*)ResourceManager::getInstance()->GetResource("AddOperatorIcon");
-		operatorTextureID = operatorTexture->GetTextureID(); 
-		break; 
-
-	case VariableEffect::VarEffect_SUBSTRACT:
-		operatorTexture = (Texture*)ResourceManager::getInstance()->GetResource("SubstractOperatorIcon");
-		operatorTextureID = operatorTexture->GetTextureID();
-		break;
-
-	case VariableEffect::VarEffect_SET_NUMBER:
-		operatorTexture = (Texture*)ResourceManager::getInstance()->GetResource("EqualOperatorIcon");
-		operatorTextureID = operatorTexture->GetTextureID();
-		break;
-	}
+	int operatorTextureID = GetOperatorTextureIDFromType(modifyVarEffect->variableEffect);
 
 	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 7, ImGui::GetContentRegionMax().y / 2 - 25)); 
 	ImGui::Image((ImTextureID)operatorTextureID, ImVec2(45, 45)); 
@@ -119,12 +99,16 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 	else if (modifyVarEffect->targetVariable->varType == Var_Toggle)
 	{	
 		int toggleOperatorSelectedInt = modifyVarEffect->variableEffect;
+
+		if (toggleOperatorSelectedInt == VarEffect_TOGGLE) toggleOperatorSelectedInt = 0;
+		else if (toggleOperatorSelectedInt == VarEffect_SET_TOGGLE) toggleOperatorSelectedInt = 1; 
+
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
 
 		string textNameStr = "Operator##ToggleOperator" + to_string(pos);
-		if (ImGui::Combo(textNameStr.c_str(), &toggleOperatorSelectedInt, "\0Toggle\0Set"))
+		ImGui::Combo(textNameStr.c_str(), &toggleOperatorSelectedInt, "Toggle\0Set");
 
-		modifyVarEffect->variableEffect = (VariableEffect)(toggleOperatorSelectedInt + 2);
+		modifyVarEffect->variableEffect = (VariableEffect)(toggleOperatorSelectedInt + 3);
 	
 		if (modifyVarEffect->variableEffect != VariableEffect::VarEffect_TOGGLE)
 		{
@@ -158,4 +142,35 @@ int ModifyVariableAction::CountEffects()
 list<ModifyVariableEffect*>& ModifyVariableAction::GetEffectVariablesList()
 {
 	return variablesEffectList;
+}
+
+int ModifyVariableAction::GetOperatorTextureIDFromType(VariableEffect effectType)
+{
+	Texture* operatorTexture = nullptr;
+
+	switch (effectType)
+	{
+
+	case VariableEffect::VarEffect_ADD:
+		operatorTexture = (Texture*)ResourceManager::getInstance()->GetResource("AddOperatorIcon");
+		return operatorTexture->GetTextureID();
+
+	case VariableEffect::VarEffect_SUBSTRACT:
+		operatorTexture = (Texture*)ResourceManager::getInstance()->GetResource("SubstractOperatorIcon");
+		return operatorTexture->GetTextureID();
+
+	case VariableEffect::VarEffect_SET_NUMBER:
+		operatorTexture = (Texture*)ResourceManager::getInstance()->GetResource("EqualOperatorIcon");
+		return operatorTexture->GetTextureID();
+
+	case VariableEffect::VarEffect_TOGGLE:
+		operatorTexture = (Texture*)ResourceManager::getInstance()->GetResource("ToggleOperatorIcon");
+		return operatorTexture->GetTextureID();
+
+	case VariableEffect::VarEffect_SET_TOGGLE:
+		operatorTexture = (Texture*)ResourceManager::getInstance()->GetResource("EqualOperatorIcon");
+		return operatorTexture->GetTextureID();
+	}
+
+	return 0; 
 }
