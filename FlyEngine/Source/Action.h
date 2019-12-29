@@ -46,6 +46,9 @@ public:
 
 	virtual void DoAction(); 
 
+	// UI Draw 
+	void DrawValueConditionsPopup(); 
+
 	// Set and Get ---------------------
 	std::string GetActionName() const; 
 	void SetActionName(std::string newName);

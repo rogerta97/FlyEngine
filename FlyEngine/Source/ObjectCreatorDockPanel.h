@@ -69,6 +69,10 @@ private:
 	FlyObject* creatingObject = nullptr; 
 	Action* selectedAction = nullptr; 
 
+	// Occurrence 
+	bool showValueConditions = false; 
+	std::string showValueConditionButtonText = "Show Conditions"; 
+
 	// Inventory
 	DisplayImageAction* displayImageAction_Inv;
 	bool drawClickableAreaOver = true; 

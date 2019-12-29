@@ -352,18 +352,41 @@ void ObjectCreatorDockPanel::DrawChangeRoomActionSettings()
 
 	ImGui::PushFont(App->moduleImGui->rudaRegularMid);
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
 
+	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
+
+	ImGui::SetCursorPos(ImVec2(5, 8));
 	ImGui::Checkbox("Object Clicked", &changeRoomAction->IsOccObjectClicked());
 
-	ImGui::SameLine();
-	if (ImGui::SmallButton("Adjust Clickable Area"))
+	ImGui::SetCursorPos(ImVec2(5, 38));
+	ImGui::Checkbox("If Blackboard Value", &changeRoomAction->IsOccBlackboardValue());
+
+	ImGui::SameLine(); 
+	if (ImGui::Button(showValueConditionButtonText.c_str()))
 	{
-		focusClickableAreaTab = true;
+		if (showValueConditions)
+		{
+			showValueConditions = false; 
+			showValueConditionButtonText = "Show Conditions"; 
+		}
+		else
+		{
+			showValueConditions = true;
+			showValueConditionButtonText = "Hide Conditions";
+		}		
 	}
+
+	//ImGui::SameLine();
+	//if (ImGui::SmallButton("Adjust Clickable Area"))
+	//{
+	//	focusClickableAreaTab = true;
+	//}
 
 	ImGui::Spacing();
 	ImGui::EndChild();
+
+	if(showValueConditions)
+		changeRoomAction->DrawValueConditionsPopup();
 
 	ImGui::PopFont();
 	ImGui::PopStyleColor();
@@ -397,10 +420,16 @@ void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 
 	ImGui::PushFont(App->moduleImGui->rudaRegularMid);
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 35));
+	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 132));
 
-	ImGui::SetCursorPos(ImVec2(5, 5));
+	ImGui::SetCursorPos(ImVec2(5, 8));
+	ImGui::Checkbox("Enter Room", &modifyVariableAction->IsOccSceneEnter());
+	ImGui::SetCursorPos(ImVec2(5, 38));
+	ImGui::Checkbox("Exit Room", &modifyVariableAction->IsOccSceneLeave());
+	ImGui::SetCursorPos(ImVec2(5, 68));
 	ImGui::Checkbox("Object Clicked", &modifyVariableAction->IsOccObjectClicked());
+	ImGui::SetCursorPos(ImVec2(5, 98));
+	ImGui::Checkbox("Blackboard Value Changed", &modifyVariableAction->IsOccBlackboardValue());
 
 	ImGui::EndChild();
 	POP_FONT;
@@ -427,100 +456,6 @@ void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 	{
 
 	}
-
-	/*ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.28f, 0.43f, 0.56, 0.2f));
-	ImGui::BeginChild("Hello", ImVec2(ImGui::GetContentRegionAvail().x - 5, 95));
-	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 8, 8));
-
-	bool isInteger = false; 
-	bool isBool = false; 
-
-	static char selectedVarName[256];
-	ImGui::InputTextWithHint("", "Target Variable...", selectedVarName, IM_ARRAYSIZE(selectedVarName));
-
-	ImGui::SameLine();
-	if (ImGui::Button("Search"))
-	{
-		ImGui::OpenPopup("search_variable_popup");
-	}
-	
-	FlyVariable* newVariableSelectedTick = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup(); 
-	if (newVariableSelectedTick)
-	{
-		modifyVariableAction->AddVariableToEffect(newVariableSelectedTick);
-		strcpy(selectedVarName, newVariableSelectedTick->name.c_str());
-	}
-
-	if (modifyVariableAction->CountVariablesToEffect() > 0)
-	{
-
-	}
-
-		if (newVariableSelectedTick->varType == Var_Integer)
-		{
-			isInteger = true; 
-			isBool = false; 
-		}
-		else
-		{
-			isInteger = false;
-			isBool = true;
-		}
-	}
-
-	if (isInteger)
-	{
-		
-		ImGui::InputInt("Value",)
-	}*/
-
-	//ImGui::Columns(2, 0, true);
-	//ImGui::SetColumnWidth(0, 70);
-
-	//int iconSize = 47;
-	//Texture* variableType = (Texture*)ResourceManager::getInstance()->GetResource("ToggleIcon");
-
-	//ImGui::Image((ImTextureID*)variableType->GetTextureID(), ImVec2(iconSize, iconSize));
-
-	//ImGui::NextColumn();
-	//ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5);
-
-	////string comboStringID = "Variable Type##VarType" + to_string(counter);
-	//static int currentItemType = 0;
-	//static int currentIetemType = 0;
-	//ImGui::Combo("asdsda", &currentItemType, "Add\0Set\0Substract\0");
-	////ImGui::InputInt("lkdjnlk", &currentIetemType);
-	//
-	//string valueStringID = "Value##ComboVar" + to_string(counter);
-	//switch (currentItemType)
-	//{
-
-	//case 0:
-	//{
-	//	currentVar->varType = Var_Integer;
-	//	break;
-	//}
-
-	//case 1:
-	//{
-	//	ImGui::Checkbox(valueStringID.c_str(), &currentVar->varToogle);
-	//	currentVar->varType = Var_Toggle;
-	//	break;
-	//}
-	//}
-
-	//static char nameBuffer[256];
-	//strcpy(nameBuffer, currentVar->name.c_str());
-	//string nameStringID = "Name##VarName" + to_string(counter);
-	//ImGui::InputText("kjbn", nameBuffer, IM_ARRAYSIZE(nameBuffer));
-/*
-	if ())
-	{
-		currentVar->name = nameBuffer;
-	}*/
-
-	//ImGui::EndChild();
-	//ImGui::PopStyleColor();
 }
 
 void ObjectCreatorDockPanel::OnAddActionButtonClicked()

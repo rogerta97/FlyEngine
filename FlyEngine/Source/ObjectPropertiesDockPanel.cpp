@@ -230,7 +230,6 @@ void ObjectPropertiesDockPanel::DrawObjectActionsTab()
 
 	ImGui::Spacing();
 	ImGui::Separator();
-	ImGui::Spacing(); 
 
 	// Draw Tool --------
 	DrawActionSettings();
@@ -331,7 +330,6 @@ void ObjectPropertiesDockPanel::DrawModifyVariableSettings()
 	{
 		if (ImGui::CollapsingHeader("Modify Variable Attributes", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			ImGui::Separator();
 			// Object Occurrence ---------
 			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 			ImGui::Text("Action Happens On:");
@@ -389,13 +387,9 @@ void ObjectPropertiesDockPanel::DrawChangeRoomSettings()
 
 			ImGui::PushFont(App->moduleImGui->rudaRegularMid);
 			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
+			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 35));
 
-			ImGui::SetCursorPos(ImVec2(5, 8));
-			ImGui::Checkbox("Scene Enter", &changeRoomAction->IsOccSceneEnter());
-			ImGui::SetCursorPos(ImVec2(5, 38));
-			ImGui::Checkbox("Scene Leave", &changeRoomAction->IsOccSceneLeave());
-			ImGui::SetCursorPos(ImVec2(5, 68));
+			ImGui::SetCursorPos(ImVec2(5, 5));
 			ImGui::Checkbox("Object Clicked", &changeRoomAction->IsOccObjectClicked());
 
 			ImGui::SameLine();
@@ -455,16 +449,15 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 {
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
 
-	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
 	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
-	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(18, 18)))
+	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(25, 25)))
 	{
 		showToolDictionary = true; 
 	}
 
 	ImGui::SameLine();
 	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
-	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(18, 18)))
+	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(25, 25)))
 	{	
 		Action* selectedAction = selectedObject->selectedAction; 
 
@@ -507,6 +500,14 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 					selectedObject->AddDisplayImageAction("None");
 					break;
 
+				case AT_CHANGE_ROOM:
+					selectedObject->AddChangeRoomAction();
+					break;
+
+				case AT_MOD_VARIABLE:
+					selectedObject->AddModifyVariableAction();
+					break;
+
 				case AT_null:
 					break;
 				}
@@ -514,7 +515,7 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 				showToolDictionary = false; 
 			}
 
-			ImGui::EndChild();
+		ImGui::EndChild();
 		ImGui::PopStyleColor();
 		ImGui::PopStyleVar();
 

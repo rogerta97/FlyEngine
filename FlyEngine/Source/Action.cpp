@@ -40,6 +40,13 @@ void Action::DoAction()
 	
 }
 
+void Action::DrawValueConditionsPopup()
+{
+	ImGui::BeginChild("valueConditions", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
+	
+	ImGui::EndChild(); 
+}
+
 std::string Action::GetActionName() const
 {
 	return toolName;
