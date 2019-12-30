@@ -1,5 +1,6 @@
 #include "FlyVariable.h"
 #include "RandomNumberGenerator.h"
+#include "mmgr.h"
 
 FlyVariable::FlyVariable()
 {
@@ -9,9 +10,14 @@ FlyVariable::~FlyVariable()
 {
 }
 
+void FlyVariable::CleanUp()
+{
+
+}
+
 void FlyVariable::SetDefault()
 {
-	name = "Default_Var";
+	name = "";
 	varType = Var_Integer;
 	varIntegerValue = 0;
 	varToogleValue = true;

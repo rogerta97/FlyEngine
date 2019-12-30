@@ -8,11 +8,15 @@
 #include "ResourceManager.h"
 
 #include "imgui.h"
+#include "mmgr.h"
 
 ModifyVariableAction::ModifyVariableAction(FlyObject* _parentObject)
 {
 	actionType = AT_MOD_VARIABLE;
 	isVisual = false;
+
+	fakeVarInitAttach = new FlyVariable();
+	fakeVarInitAttach->SetDefault();
 
 	SetActionName("Modify Variable");
 	SetToolDescription("This should be the description of the modify variable action");
@@ -20,6 +24,21 @@ ModifyVariableAction::ModifyVariableAction(FlyObject* _parentObject)
 
 ModifyVariableAction::~ModifyVariableAction()
 {
+}
+
+void ModifyVariableAction::CleanUp()
+{
+	for (auto& currentVariableEffect : variablesEffectList)
+	{
+		currentVariableEffect->CleanUp(); 
+		delete currentVariableEffect;
+		currentVariableEffect = nullptr; 
+	}
+
+	variablesEffectList.clear(); 
+
+	fakeVarInitAttach->CleanUp();
+	delete fakeVarInitAttach; 
 }
 
 void ModifyVariableAction::DoAction()
@@ -136,8 +155,7 @@ ModifyVariableEffect* ModifyVariableAction::AddEmptyEffect()
 {
 	ModifyVariableEffect* newEffect = new ModifyVariableEffect(); 
 
-	newEffect->targetVariable = new FlyVariable();	
-	newEffect->targetVariable->SetDefault();
+	newEffect->targetVariable = fakeVarInitAttach;	
 
 	variablesEffectList.push_back(newEffect); 
 
@@ -187,6 +205,13 @@ int ModifyVariableAction::GetOperatorTextureIDFromType(VariableOperatorType effe
 
 ModifyVariableEffect::~ModifyVariableEffect()
 {
+}
+
+void ModifyVariableEffect::CleanUp()
+{
+	targetVariable = nullptr; 
+	delete variableEffect;
+	variableEffect = nullptr; 
 }
 
 void ModifyVariableEffect::ApplyEffect()

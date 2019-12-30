@@ -18,6 +18,8 @@ public:
 	FlyVariable(); 
 	~FlyVariable();
 
+	void CleanUp(); 
+
 	void SetDefault(); 
 	void Serialize(JSON_Object* jsonObject, std::string _baseObjectStr);
 	

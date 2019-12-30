@@ -24,12 +24,14 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
+	void DeleteSingletones();
+
 	void ReceiveEvent(FlyEngineEvent eventType);
 	bool LoadRoomsData(); 
 
 	// Rooms
 	Room* CreateEmptyRoom(string roomName = "New Room"); 
-	string* GetRoomsAsCombo(bool includeSelected = false); 
+	const char** GetRoomsAsCombo(bool includeSelected = false); 
 	void DeleteRoom(string roomName); 
 	void DeleteRoom(UID roomID); 
 	void DeleteRoom(Room* roomToDelete); 

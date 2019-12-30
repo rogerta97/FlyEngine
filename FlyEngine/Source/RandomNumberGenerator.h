@@ -12,7 +12,7 @@ private:
 public:
 	static RandomNumberGenerator* getInstance();
 	~RandomNumberGenerator() {}; 
-	void Delete(); 
+	static void Delete(); 
 
 	static int GetPCGRandomNumberInt(int miValue, int maValue);
 	static float GetPCGRandomNumberFloat(float maxValue, float minValue); 

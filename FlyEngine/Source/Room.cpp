@@ -99,6 +99,9 @@ void Room::CleanUp()
 
 	objectsInRoom.clear(); 
 	selectedObject = nullptr; 
+
+	roomBlackboard->CleanUp(); 
+	delete roomBlackboard; 
 }
 
 int Room::GetObjectsInRoomAmount()

@@ -62,17 +62,21 @@ update_status ModuleRoomManager::PostUpdate(float dt)
 
 bool ModuleRoomManager::CleanUp()
 {
-	GameInventory::getInstance()->CleanUp(); 
 	CleanUpRooms();
-
-	MyFileSystem::getInstance()->Delete();
-	RandomNumberGenerator::getInstance()->Delete();
-
-	ImageImporter::getInstance()->Delete();
-	ResourceManager::getInstance()->CleanUp();
-	ViewportManager::getInstance()->Delete();
+	DeleteSingletones();
 
 	return true;
+}
+
+void ModuleRoomManager::DeleteSingletones()
+{
+	GameInventory::getInstance()->CleanUp();
+	MyFileSystem::getInstance()->Delete();
+	RandomNumberGenerator::getInstance()->Delete();
+	ImageImporter::getInstance()->Delete();
+	SaveAndLoad::getInstance()->Delete();
+	ResourceManager::getInstance()->CleanUp();
+	ViewportManager::getInstance()->Delete();
 }
 
 void ModuleRoomManager::ReceiveEvent(FlyEngineEvent eventType)
@@ -190,13 +194,13 @@ void ModuleRoomManager::SerializeRoomListNames()
 	json_serialize_to_file(scene_v, saveFilePath.c_str());
 }
 
-string* ModuleRoomManager::GetRoomsAsCombo(bool includeSelected)
+const char** ModuleRoomManager::GetRoomsAsCombo(bool includeSelected)
 {
-	string* roomsNameRet = new string[GetRoomsAmount()]; 
+	const char* roomsNameRet[256]; // = new string[GetRoomsAmount()];
 	
 	int count = 0; 
 	for (auto& it : roomsInWorldList) {
-		roomsNameRet[count++] = it->GetName(); 
+		roomsNameRet[count++] = it->GetName().c_str(); 
 	}
 
 	return roomsNameRet;

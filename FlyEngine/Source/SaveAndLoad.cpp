@@ -8,8 +8,9 @@
 
 #include "DisplayImageAction.h"
 #include "ChangeRoomAction.h"
-
 #include <fstream>
+
+#include "mmgr.h"
 
 SaveAndLoad* SaveAndLoad::instance = 0;
 
@@ -23,7 +24,7 @@ SaveAndLoad* SaveAndLoad::getInstance()
 
 SaveAndLoad::~SaveAndLoad()
 {
-	instance->Delete();
+	
 }
 
 void SaveAndLoad::SaveCurrentRoomData()

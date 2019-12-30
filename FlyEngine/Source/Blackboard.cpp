@@ -17,6 +17,18 @@ Blackboard::~Blackboard()
 {
 }
 
+void Blackboard::CleanUp()
+{
+	for (auto& currentVariable : blackboardVariablesList)
+	{
+		currentVariable->CleanUp();
+		delete currentVariable; 
+		currentVariable = nullptr;
+	}
+
+	blackboardVariablesList.clear(); 
+}
+
 void Blackboard::SaveData(std::string _fileName)
 {
 	std::string path = MyFileSystem::getInstance()->GetSavedDataDirectory() + "BlackboardsData\\" + _fileName.c_str() + ".json";

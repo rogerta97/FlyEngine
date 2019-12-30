@@ -15,6 +15,7 @@ public:
 	DisplayImageAction(FlyObject* _parentObject);
 	~DisplayImageAction(); 
 
+	// Virtuals ----------
 	void Init(); 
 	void Update(); 
 	void Draw(); 

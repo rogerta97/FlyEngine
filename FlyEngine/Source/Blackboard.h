@@ -14,11 +14,14 @@ public:
 	Blackboard(); 
 	~Blackboard(); 
 
+	void CleanUp(); 
+
 	void SaveData(std::string fileName); 
 	void LoadData(std::string fileName); 
 
 	void ModifyIntegerVariable(ModifyVariableEffect* variableEffect);
 
+	// Utility 
 	FlyVariable* DrawVariableListPopup();
 	FlyVariable* AddDefaultVariable();
 	FlyVariable* GetVariable(std::string name); 

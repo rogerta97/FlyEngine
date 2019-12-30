@@ -629,6 +629,21 @@ ScaleGizmo::~ScaleGizmo()
 
 void ScaleGizmo::CleanUp()
 {
+	axisXBox->CleanUp();
+	delete axisXBox;
+	axisXBox = nullptr;
+
+	axisYBox->CleanUp();
+	delete axisYBox;
+	axisXBox = nullptr;
+
+	axisXYBox->CleanUp();
+	delete axisXYBox;
+	axisXBox = nullptr;
+
+	borderBoundingBox->CleanUp();
+	delete borderBoundingBox;
+	borderBoundingBox = nullptr;
 }
 
 void ScaleGizmo::AddaptScaleBox(FlyObject* objectAttached)

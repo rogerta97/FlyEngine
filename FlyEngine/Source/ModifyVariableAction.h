@@ -43,6 +43,8 @@ public:
 	ModifyVariableEffect(); 
 	~ModifyVariableEffect(); 
 
+	void CleanUp(); 
+
 	void ApplyEffect(); 
 	void AttachToVariable(FlyVariable* _targetVariable); 
 
@@ -56,11 +58,15 @@ public:
 	ModifyVariableAction(FlyObject* _parentObject);
 	~ModifyVariableAction();
 
+	// Virtuals -------
+	void CleanUp(); 
 	void DoAction(); 
 
+	// Draw -----------
 	void DrawEffectVariablesUI();
 	void DrawEffectItem(ModifyVariableEffect*& currentVariable, int pos);
 
+	// Utility --------
 	ModifyVariableEffect* AddEmptyEffect();
 	int CountEffects();
 	list<ModifyVariableEffect*>& GetEffectVariablesList();
@@ -68,6 +74,7 @@ public:
 
 private: 
 	list<ModifyVariableEffect*> variablesEffectList;
+	FlyVariable* fakeVarInitAttach; 
 };
 
 #endif 
