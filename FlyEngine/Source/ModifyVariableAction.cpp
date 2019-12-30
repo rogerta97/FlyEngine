@@ -6,17 +6,15 @@
 #include "Texture.h"
 #include "FlyVariable.h"
 #include "ResourceManager.h"
+#include "ModuleManager.h"
 
 #include "imgui.h"
-#include "mmgr.h"
+#include "mmgr/mmgr.h"
 
 ModifyVariableAction::ModifyVariableAction(FlyObject* _parentObject)
 {
 	actionType = AT_MOD_VARIABLE;
 	isVisual = false;
-
-	fakeVarInitAttach = new FlyVariable();
-	fakeVarInitAttach->SetDefault();
 
 	SetActionName("Modify Variable");
 	SetToolDescription("This should be the description of the modify variable action");
@@ -28,6 +26,8 @@ ModifyVariableAction::~ModifyVariableAction()
 
 void ModifyVariableAction::CleanUp()
 {
+	Action::CleanUp(); 
+
 	for (auto& currentVariableEffect : variablesEffectList)
 	{
 		currentVariableEffect->CleanUp(); 
@@ -36,9 +36,6 @@ void ModifyVariableAction::CleanUp()
 	}
 
 	variablesEffectList.clear(); 
-
-	fakeVarInitAttach->CleanUp();
-	delete fakeVarInitAttach; 
 }
 
 void ModifyVariableAction::DoAction()
@@ -155,7 +152,7 @@ ModifyVariableEffect* ModifyVariableAction::AddEmptyEffect()
 {
 	ModifyVariableEffect* newEffect = new ModifyVariableEffect(); 
 
-	newEffect->targetVariable = fakeVarInitAttach;	
+	newEffect->targetVariable = App->moduleManager->fakeVarInitAttach;
 
 	variablesEffectList.push_back(newEffect); 
 
@@ -209,9 +206,9 @@ ModifyVariableEffect::~ModifyVariableEffect()
 
 void ModifyVariableEffect::CleanUp()
 {
-	targetVariable = nullptr; 
 	delete variableEffect;
 	variableEffect = nullptr; 
+	targetVariable = nullptr; 
 }
 
 void ModifyVariableEffect::ApplyEffect()

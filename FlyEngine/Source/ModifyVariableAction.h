@@ -74,7 +74,6 @@ public:
 
 private: 
 	list<ModifyVariableEffect*> variablesEffectList;
-	FlyVariable* fakeVarInitAttach; 
 };
 
 #endif 

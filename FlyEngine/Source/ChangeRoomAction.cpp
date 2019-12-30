@@ -7,6 +7,8 @@
 #include "Room.h"
 #include "ModuleRoomManager.h"
 
+#include "mmgr.h"
+
 ChangeRoomAction::ChangeRoomAction(FlyObject* _parentObject)
 {
 	actionType = AT_CHANGE_ROOM;
@@ -49,7 +51,7 @@ void ChangeRoomAction::Update()
 
 void ChangeRoomAction::CleanUp()
 {
-
+	Action::CleanUp();
 }
 
 void ChangeRoomAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString)

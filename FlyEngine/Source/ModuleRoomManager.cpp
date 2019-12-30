@@ -196,7 +196,7 @@ void ModuleRoomManager::SerializeRoomListNames()
 
 const char** ModuleRoomManager::GetRoomsAsCombo(bool includeSelected)
 {
-	const char* roomsNameRet[256]; // = new string[GetRoomsAmount()];
+	const char* roomsNameRet[256];
 	
 	int count = 0; 
 	for (auto& it : roomsInWorldList) {

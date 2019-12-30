@@ -42,7 +42,6 @@ ObjectCreatorDockPanel::~ObjectCreatorDockPanel()
 
 bool ObjectCreatorDockPanel::CleanUp()
 {
-
 	return true; 
 }
 
@@ -395,7 +394,6 @@ void ObjectCreatorDockPanel::DrawChangeRoomActionSettings()
 	const char* roomsToCombo[] = { "None", *rooms, *rooms + 1, *rooms + 2 };
 	static int ci = 0;
 	ImGui::ComboArray("Destination", &ci, roomsToCombo, IM_ARRAYSIZE(roomsToCombo));
-
 }
 
 void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
@@ -425,7 +423,26 @@ void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 	ImGui::SetCursorPos(ImVec2(5, 98));
 	ImGui::Checkbox("Blackboard Value Condition", &modifyVariableAction->IsOccBlackboardValue());
 
+	ImGui::SameLine();
+	if (ImGui::Button(showValueConditionButtonText.c_str()))
+	{
+		if (showValueConditions)
+		{
+			showValueConditions = false;
+			showValueConditionButtonText = "Show Conditions";
+		}
+		else
+		{
+			showValueConditions = true;
+			showValueConditionButtonText = "Hide Conditions";
+		}
+	}
+
 	ImGui::EndChild();
+
+	if (showValueConditions)
+		modifyVariableAction->DrawValueConditionsList();
+
 	POP_FONT;
 	ImGui::PopStyleColor();
 
@@ -480,13 +497,11 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 			{
 			case AT_DISPLAY_IMAGE:
 				selectedAction = creatingObject->AddDisplayImageAction(std::string(MyFileSystem::getInstance()->GetIconsDirectory() + "EmptyObject.png").c_str());
-
 				break;
 
 			case AT_CHANGE_ROOM:
 				creatingObject->AddChangeRoomAction();
 				break;
-
 
 			case AT_MOD_VARIABLE:
 				creatingObject->AddModifyVariableAction();
@@ -499,6 +514,7 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 			showActionDictionary = false;
 			newActionSelected = nullptr; 
 		}
+
 		ImGui::EndChild();
 		ImGui::PopStyleColor();
 		ImGui::PopStyleVar();
@@ -719,7 +735,8 @@ bool ObjectCreatorDockPanel::DrawCloseAndCreateButton()
 	if (ImGui::Button("Create", ImVec2(100, 30)))
 	{
 		std::string newObjectNameStr(newObjectName);
-		if (newObjectNameStr.empty()) {
+		if (newObjectNameStr.empty()) 
+		{
 			FLY_ERROR("Object with no name can not be created");
 			ImGui::PopFont();
 			return false;
@@ -871,8 +888,10 @@ void ObjectCreatorDockPanel::DrawAddAndDeleteActionButtons()
 	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
 	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
-		if (selectedAction != nullptr) {
+		if (selectedAction != nullptr) 
+		{
 			creatingObject->DeleteAction(selectedAction->GetActionName());
+			selectedAction = nullptr; 
 		}
 	}
 

@@ -10,6 +10,7 @@
 
 class FlyObject; 
 class Texture; 
+class FlyVariable; 
 class ModuleManager : public Module
 {
 public:
@@ -35,6 +36,8 @@ public:
 	void AddToolsNameDescription(std::string name, std::string description, ActionType newTooltype);
 	ActionSelectableInfo GetToolNameDescription(std::string toolName) const;
 	ActionSelectableInfo GetToolNameDescription(int pos) const;
+
+	FlyVariable* fakeVarInitAttach = nullptr;
 
 private: 
 	std::list<ActionSelectableInfo> toolNamesDescriptions; 

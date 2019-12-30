@@ -95,6 +95,8 @@ void DisplayImageAction::Draw()
 
 void DisplayImageAction::CleanUp()
 {
+	Action::CleanUp();
+
 	quadMesh->CleanUp();
 	delete quadMesh; 
 	quadMesh = nullptr; 

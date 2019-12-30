@@ -301,7 +301,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\FULLMAC\Documents\FlyEngine\FlyEngine\3rdParty\PCGRandom;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\FULLMAC\Documents\FlyEngine\FlyEngine\3rdParty\PCGRandom</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -309,7 +309,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\FULLMAC\Documents\FlyEngine\FlyEngine\3rdParty\PCGRandom;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\FULLMAC\Documents\FlyEngine\FlyEngine\3rdParty\PCGRandom</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -359,7 +359,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;WINDOWS_IGNORE_PACKING_MISMATCH</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;$(SolutionDir)3rdParty/glm;$(SolutionDir)3rdParty/MathGeoLib;$(SolutionDir)3rdParty/DevILWindowsSDK/include;$(SolutionDir)3rdParty</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;$(SolutionDir)3rdParty/glm;$(SolutionDir)3rdParty/MathGeoLib;$(SolutionDir)3rdParty/DevILWindowsSDK/include;$(SolutionDir)3rdParty;$(SolutionDir)3rdParty/mmgr/mmgr.h</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

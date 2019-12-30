@@ -47,6 +47,8 @@ public:
 	ActionCondition();
 	~ActionCondition(); 
 
+	void CleanUp(); 
+
 	FlyVariable* targetVariable; 
 	ActionConditionOperator actionConditionOperator;
 

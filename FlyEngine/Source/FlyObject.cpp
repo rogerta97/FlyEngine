@@ -18,10 +18,9 @@
 #include "MyFileSystem.h"
 #include "Room.h"
 #include "Gizmos.h"
+#include <string>
 
 #include "mmgr.h"
-
-#include <string>
 
 FlyObject::FlyObject(std::string _name, std::string _description, FlyObjectType _flyObjectType)
 {
@@ -366,12 +365,13 @@ ModifyVariableAction* FlyObject::AddModifyVariableAction()
 {
 	if (GetAction(AT_MOD_VARIABLE) == nullptr)
 	{
+		flog("NewMod");
 		ModifyVariableAction* mofidyVarAction = new ModifyVariableAction(this);
 		actionsList.push_back(mofidyVarAction);
 		return mofidyVarAction;
 	}
 
-	return (ModifyVariableAction*)GetAction(AT_CHANGE_ROOM);
+	return (ModifyVariableAction*)GetAction(AT_MOD_VARIABLE);
 }
 
 void FlyObject::SetSelectedAction(ActionType toolTypeSelected)

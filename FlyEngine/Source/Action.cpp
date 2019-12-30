@@ -37,6 +37,11 @@ void Action::Draw()
 
 void Action::CleanUp()
 {
+	for (auto& currentCondition : actionVariableConditions)
+	{
+		currentCondition->CleanUp();
+		delete currentCondition; 
+	}
 }
 
 void Action::SaveAction(JSON_Object* jsonObject, std::string serializeObjectString)
@@ -305,4 +310,9 @@ ActionCondition::ActionCondition()
 
 ActionCondition::~ActionCondition()
 {
+}
+
+void ActionCondition::CleanUp()
+{
+	targetVariable = nullptr; 
 }

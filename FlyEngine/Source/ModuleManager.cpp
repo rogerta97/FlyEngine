@@ -13,11 +13,14 @@
 #include "ViewportManager.h"
 #include "imgui.h"
 #include "RoomDockPanel.h"
-#include "mmgr.h"
+#include "FlyVariable.h"
 
+#include "mmgr.h"
 
 ModuleManager::ModuleManager(bool start_enabled)
 {
+	fakeVarInitAttach = new FlyVariable();
+	fakeVarInitAttach->SetDefault(); 
 }
 
 ModuleManager::~ModuleManager()
@@ -75,6 +78,9 @@ bool ModuleManager::Start()
 
 bool ModuleManager::CleanUp()
 {
+	fakeVarInitAttach->CleanUp();
+	delete fakeVarInitAttach; 
+
 	return true;
 }
 
