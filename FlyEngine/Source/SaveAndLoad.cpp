@@ -28,8 +28,13 @@ SaveAndLoad::~SaveAndLoad()
 
 void SaveAndLoad::SaveCurrentRoomData()
 {
+	// Room Data 
 	Room* currentRoom = App->moduleRoomManager->GetSelectedRoom(); 
 	instance->SaveRoomData(currentRoom); 
+	
+	// Blackboard Data
+	std::string blackboardFileName = currentRoom->GetName() + "_Blackboard"; 
+	currentRoom->GetBlackboard()->SaveData(blackboardFileName.c_str());
 }
 
 void SaveAndLoad::SaveRoomData(std::string roomName)
@@ -83,6 +88,10 @@ void SaveAndLoad::LoadDataToCurrentRoom(std::string roomDataFilePath)
 	// Get Current Room 
 	Room* currentRoom = App->moduleRoomManager->GetSelectedRoom();
 	LoadDataToRoom(roomDataFilePath, currentRoom); 
+
+	// Load Room Blackboard 
+	std::string blackboardFileName = currentRoom->GetName() + "_Blackboard"; 
+	currentRoom->GetBlackboard()->LoadData(blackboardFileName); 
 }
 
 void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::string& serializeObjectStr, Room* currentRoom)

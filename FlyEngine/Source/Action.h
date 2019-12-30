@@ -82,7 +82,7 @@ public:
 	void SetOccSceneLeave(bool newOccSceneLeave);
 	void SetOccObjectClicked(bool newOccObjectClicked);
 
-	void AddEmptyCondition(); 
+	ActionCondition* AddEmptyCondition();
 
 	// UI Draw -------------------------
 	void DrawValueConditionsList(); 
@@ -118,7 +118,7 @@ protected:
 	bool occ_continuous = false;
 
 	// Conditions -----------------
-	list<ActionCondition*> actionVariableConditions; 
+	list<ActionCondition*> actionVariableConditions;
 
 	// Vars -----------------------
 	std::string toolName; 

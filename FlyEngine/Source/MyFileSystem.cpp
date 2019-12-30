@@ -158,6 +158,7 @@ void MyFileSystem::GetFilesInDirectory(const char* directory, std::vector<string
 void MyFileSystem::Init()
 {
 	CreateDirectory(string(GetSavedDataDirectory() + "RoomsData").c_str(), NULL);
+	CreateDirectory(string(GetSavedDataDirectory() + "BlackboardsData").c_str(), NULL);
 }
 
 void MyFileSystem::Delete()

@@ -22,12 +22,12 @@ Room::Room(string roomName)
 	roomID = RandomNumberGenerator::GenerateUID(); 
 	roomBlackboard = new Blackboard(); 
 
-	roomBlackboard->AddDefaultVariable(); 
+	//roomBlackboard->AddDefaultVariable(); 
 
-	FlyVariable* boolVar = roomBlackboard->AddDefaultVariable(); 
-	boolVar->name = "VarDefault_Toggle"; 
-	boolVar->varIntegerValue = 0; 
-	boolVar->varType = Var_Toggle; 
+	//FlyVariable* boolVar = roomBlackboard->AddDefaultVariable(); 
+	//boolVar->name = "VarDefault_Toggle"; 
+	//boolVar->varIntegerValue = 0; 
+	//boolVar->varType = Var_Toggle; 
 
 	// Add The Room to the NodeGraph 
 	static int placer = 50;

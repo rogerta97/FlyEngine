@@ -2,6 +2,7 @@
 #define _FLY_VARIABLE_H_
 
 #include "Globals.h"
+#include "SaveAndLoad.h"
 #include <string>
 
 enum VariableType
@@ -13,12 +14,12 @@ enum VariableType
 
 class FlyVariable
 {
-
 public: 
 	FlyVariable(); 
 	~FlyVariable();
 
 	void SetDefault(); 
+	void Serialize(JSON_Object* jsonObject, std::string _baseObjectStr);
 	
 public: 
 	std::string name;

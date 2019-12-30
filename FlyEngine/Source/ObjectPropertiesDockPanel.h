@@ -41,6 +41,9 @@ private:
 	FlyObject* selectedObject = nullptr; 
 	bool showToolDictionary; 
 
+	// Conditions 
+	bool showVariableConditions = false; 
+
 	// Clickable Area 
 	float2 clickableAreaPosOne; 
 	float2 clickableAreaSizeOne; 

@@ -157,7 +157,7 @@ void Action::DrawValueConditionsList()
 			}
 		}
 
-		if(count < actionVariableConditions.size())
+		if(count < actionVariableConditions.size() - 1)
 			ImGui::Separator();
 
 		count++; 
@@ -232,10 +232,11 @@ void Action::SetOccObjectClicked(bool newOccObjectClicked)
 	occ_ObjectClicked = newOccObjectClicked;
 }
 
-void Action::AddEmptyCondition()
+ActionCondition* Action::AddEmptyCondition()
 {
 	ActionCondition* newCondition = new ActionCondition(); 
 	actionVariableConditions.push_back(newCondition); 
+	return newCondition;
 }
 
 FlyObject* Action::GetParentObject() const

@@ -359,7 +359,7 @@ void ObjectCreatorDockPanel::DrawChangeRoomActionSettings()
 	ImGui::Checkbox("Object Clicked", &changeRoomAction->IsOccObjectClicked());
 
 	ImGui::SetCursorPos(ImVec2(5, 38));
-	ImGui::Checkbox("If Blackboard Value", &changeRoomAction->IsOccBlackboardValue());
+	ImGui::Checkbox("Blackboard Value Condition", &changeRoomAction->IsOccBlackboardValue());
 
 	ImGui::SameLine(); 
 	if (ImGui::Button(showValueConditionButtonText.c_str()))
@@ -375,12 +375,6 @@ void ObjectCreatorDockPanel::DrawChangeRoomActionSettings()
 			showValueConditionButtonText = "Hide Conditions";
 		}		
 	}
-
-	//ImGui::SameLine();
-	//if (ImGui::SmallButton("Adjust Clickable Area"))
-	//{
-	//	focusClickableAreaTab = true;
-	//}
 
 	ImGui::Spacing();
 	ImGui::EndChild();
@@ -429,7 +423,7 @@ void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 	ImGui::SetCursorPos(ImVec2(5, 68));
 	ImGui::Checkbox("Object Clicked", &modifyVariableAction->IsOccObjectClicked());
 	ImGui::SetCursorPos(ImVec2(5, 98));
-	ImGui::Checkbox("Blackboard Value Changed", &modifyVariableAction->IsOccBlackboardValue());
+	ImGui::Checkbox("Blackboard Value Condition", &modifyVariableAction->IsOccBlackboardValue());
 
 	ImGui::EndChild();
 	POP_FONT;

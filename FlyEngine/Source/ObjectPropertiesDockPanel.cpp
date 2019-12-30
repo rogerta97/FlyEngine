@@ -137,7 +137,8 @@ void ObjectPropertiesDockPanel::DrawFixedPartObjectUI(FlyObject* selectedObject)
 	ImGui::Text("%s", selectedObject->GetName().c_str());
 	ImGui::PopFont();
 
-	if (!selectedObject->GetDescription().empty()) {
+	if (!selectedObject->GetDescription().empty()) 
+	{
 		ImGui::Spacing();	
 		ImGui::TextColored(ImVec4(0.8f, 0.8f, 1.0f, 1.0f), "%s", selectedObject->GetDescription().c_str());
 	}
@@ -337,14 +338,35 @@ void ObjectPropertiesDockPanel::DrawModifyVariableSettings()
 
 			ImGui::PushFont(App->moduleImGui->rudaRegularMid);
 			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+
 			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
 
 			ImGui::SetCursorPos(ImVec2(5, 8));
 			ImGui::Checkbox("Object Clicked", &modifyVariableAction->IsOccObjectClicked());
 			ImGui::SetCursorPos(ImVec2(5, 38));
-			ImGui::Checkbox("Blackboard Value Changed", &modifyVariableAction->IsOccBlackboardValue());
+			ImGui::Checkbox("Blackboard Value Condition", &modifyVariableAction->IsOccBlackboardValue());
+
+			ImGui::SameLine();
+			static std::string showValueConditionButtonText = "Show Conditions"; 
+			if (ImGui::Button(showValueConditionButtonText.c_str()))
+			{
+				if (showVariableConditions)
+				{
+					showVariableConditions = false;
+					showValueConditionButtonText = "Show Conditions";
+				}
+				else
+				{
+					showVariableConditions = true;
+					showValueConditionButtonText = "Hide Conditions";
+				}
+			}
 
 			ImGui::EndChild();
+
+			if (showVariableConditions)
+				modifyVariableAction->DrawValueConditionsList();
+
 			POP_FONT;
 			ImGui::PopStyleColor();
 

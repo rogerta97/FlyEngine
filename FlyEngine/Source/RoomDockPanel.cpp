@@ -58,7 +58,6 @@ bool RoomDockPanel::Draw()
 			{
 				ShowViewportSettingsTab();
 				ImGui::EndTabItem();
-
 			}
 
 			if (ImGui::BeginTabItem("Blackboard"))
@@ -164,7 +163,6 @@ void RoomDockPanel::DrawRoomVariablesUI()
 
 		case 0: 
 		{
-			flog("Real Var Integer Value: %d", currentVar->varIntegerValue);
 			ImGui::InputInt(valueStringID.c_str(), &currentVar->varIntegerValue);
 			currentVar->varType = Var_Integer;
 			

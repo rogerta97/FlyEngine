@@ -49,19 +49,26 @@ bool ModuleManager::Start()
 		App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);
 	}
 
-	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
-	FlyObject* addingObject = selectedRoom->CreateFlyObject("AddingObject", "TráTrá!");
-	string keyPath = MyFileSystem::getInstance()->GetSolutionDirectory() + "\\EngineResources\\Images\\Key.png";
+	//// Create Debug Object 
+	//Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+	//FlyObject* addingObject = selectedRoom->CreateFlyObject("AddingObject", "TráTrá!");
+	//string keyPath = MyFileSystem::getInstance()->GetSolutionDirectory() + "\\EngineResources\\Images\\Key.png";
 
-	addingObject->AddDisplayImageAction(keyPath.c_str());
-	addingObject->CreateClickableArea(float2(0, 0), float2(1, 1), false);
-	addingObject->clickableAreaActive = true;
+	//addingObject->AddDisplayImageAction(keyPath.c_str());
+	//addingObject->CreateClickableArea(float2(0, 0), float2(1, 1), false);
+	//addingObject->clickableAreaActive = true;
 
-	ModifyVariableAction* modVarAction = addingObject->AddModifyVariableAction(); 
-	ModifyVariableEffect* newEffect = modVarAction->AddEmptyEffect(); 
+	//ModifyVariableAction* modVarAction = addingObject->AddModifyVariableAction(); 
+	//ModifyVariableEffect* newEffect = modVarAction->AddEmptyEffect(); 
 
-	Blackboard* roomBB = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard(); 
-	newEffect->AttachToVariable(roomBB->GetVariable("Default_Var"));
+	//Blackboard* roomBB = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard(); 
+	//newEffect->AttachToVariable(roomBB->GetVariable("Default_Var"));
+
+	//// Add Condition
+	//ActionCondition* actionCondition = modVarAction->AddEmptyCondition();
+	//actionCondition->targetVariable = roomBB->GetVariable("Default_Var");
+	//actionCondition->actionConditionOperator = AC_EQUALS_TO; 
+	//actionCondition->targetValueInteger = 2; 
 
 	return true;
 }
