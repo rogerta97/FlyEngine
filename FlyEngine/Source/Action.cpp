@@ -51,7 +51,7 @@ void Action::DoAction()
 void Action::DrawValueConditionsList()
 {
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.17f, 0.19f, 0.22f, 1.00f));
-	ImGui::BeginChild("valueConditions", ImVec2(ImGui::GetContentRegionAvailWidth(), 260), true);
+	ImGui::BeginChild("valueConditions", ImVec2(ImGui::GetContentRegionAvailWidth(), 310), true);
 
 	// Evalutation Criteria
 	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 8, ImGui::GetCursorPosY() + 4));
@@ -74,32 +74,43 @@ void Action::DrawValueConditionsList()
 	ImGui::PopFont();
 
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-	ImGui::BeginChild("valueConditionsHolder", ImVec2(ImGui::GetContentRegionAvailWidth() - 5, 100));
+	ImGui::BeginChild("valueConditionsHolder", ImVec2(ImGui::GetContentRegionAvailWidth() - 30, 150));
 
 	// Iterate Conditions 
 	int count = 0; 
+	static int showSelectionPopup = -1;
 	int itemDesiredWidth = ImGui::GetContentRegionMax().x / 3.5f;
-	int itemDesiredOffset = ImGui::GetContentRegionMax().x / 10; 
+	int itemDesiredOffset = 0; 
 	for (auto& currentCondition : actionVariableConditions)
 	{
 		// Target Variable 
-		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 3, ImGui::GetCursorPosY() + 4));
+		std::string findButtonID = "Find##FindButton" + to_string(count);
+
+		if (count == 0)
+			ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 3, ImGui::GetCursorPosY() + 4));
+		else
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 3); 
+
 		Texture* searchIcon = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
-		if (ImGui::ImageButton((ImTextureID)searchIcon->GetTextureID(), ImVec2(18, 18)))
+		if (ImGui::Button(findButtonID.c_str()))
 		{
 			ImGui::OpenPopup("search_variable_popup");
+			showSelectionPopup = count; 
 		}
 
-		FlyVariable* selectedPopupVar = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup();
-		if (selectedPopupVar != nullptr)
+		if (count == showSelectionPopup)
 		{
-			currentCondition->targetVariable = selectedPopupVar; 
+			FlyVariable* selectedPopupVar = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup();
+			if (selectedPopupVar != nullptr)
+			{
+				currentCondition->targetVariable = selectedPopupVar; 
+				showSelectionPopup = -1; 
+			}
 		}
 
 		ImGui::SameLine(); 
 		std::string inputTextID = "##InputTextCondition" + to_string(count); 
 		char varNameBuffer[256] = ""; 
-
 		if (currentCondition->targetVariable != nullptr)
 			strcpy(varNameBuffer, currentCondition->targetVariable->name.c_str()); 
 		
@@ -117,31 +128,37 @@ void Action::DrawValueConditionsList()
 				std::string comboID = "##ComboTextCondition" + to_string(count);
 				ImGui::SameLine();
 				ImGui::PushItemWidth(itemDesiredWidth - itemDesiredOffset / 2);
-				if (ImGui::Combo(comboID.c_str(), &conditionOperatorType, "This\0Is\0A\0Test\0"))
+				if (ImGui::Combo(comboID.c_str(), &conditionOperatorType, "Equals To\0Greater Than\0Less Than\0"))
 				{
 					currentCondition->actionConditionOperator = (ActionConditionOperator)conditionOperatorType;
 				}
 				ImGui::PopItemWidth();
 
+				std::string inputIntID = "##InputIntTarget" + to_string(count);
 				ImGui::SameLine();
 				ImGui::PushItemWidth(itemDesiredWidth - itemDesiredOffset / 2);
-				ImGui::InputInt("", &currentCondition->targetValueInteger); 
+				ImGui::InputInt(inputIntID.c_str(), &currentCondition->targetValueInteger);
 				ImGui::PopItemWidth();
 			
 			}
 			else if (currentCondition->targetVariable->varType == Var_Toggle)
 			{
+				std::string comboID = "##ComboTextBoolCondition" + to_string(count);
 				ImGui::SameLine();
-				ImGui::PushItemWidth(90);
-				ImGui::Combo("", &conditionOperatorType, "This\0Is\0A\0Bool\0Test\0");
+				ImGui::PushItemWidth(itemDesiredWidth);
+				ImGui::Combo(comboID.c_str(), &conditionOperatorType, "Equals To\0");
 				ImGui::PopItemWidth();
 
+				std::string inputBoolID = "Value##InputBoolTarget" + to_string(count);
 				ImGui::SameLine();
-				ImGui::PushItemWidth(90);
-				ImGui::Checkbox("", &currentCondition->targetValueBoolean);
+				ImGui::PushItemWidth(itemDesiredWidth);
+				ImGui::Checkbox(inputBoolID.c_str(), &currentCondition->targetValueBoolean);
 				ImGui::PopItemWidth();
 			}
 		}
+
+		if(count < actionVariableConditions.size())
+			ImGui::Separator();
 
 		count++; 
 	}
