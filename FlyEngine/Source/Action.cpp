@@ -78,6 +78,8 @@ void Action::DrawValueConditionsList()
 
 	// Iterate Conditions 
 	int count = 0; 
+	int itemDesiredWidth = ImGui::GetContentRegionMax().x / 3.5f;
+	int itemDesiredOffset = ImGui::GetContentRegionMax().x / 10; 
 	for (auto& currentCondition : actionVariableConditions)
 	{
 		// Target Variable 
@@ -101,12 +103,12 @@ void Action::DrawValueConditionsList()
 		if (currentCondition->targetVariable != nullptr)
 			strcpy(varNameBuffer, currentCondition->targetVariable->name.c_str()); 
 		
-		ImGui::PushItemWidth(150); 
+		ImGui::PushItemWidth(itemDesiredWidth + itemDesiredOffset);
 		ImGui::InputTextWithHint(inputTextID.c_str(), "Target Variable...", varNameBuffer, IM_ARRAYSIZE(varNameBuffer));
 		ImGui::PopItemWidth();
 		
 		int conditionOperatorType = currentCondition->actionConditionOperator;
-			
+		
 		// Operators and Target Value 
 		if (currentCondition->targetVariable != nullptr)
 		{
@@ -114,7 +116,7 @@ void Action::DrawValueConditionsList()
 			{
 				std::string comboID = "##ComboTextCondition" + to_string(count);
 				ImGui::SameLine();
-				ImGui::PushItemWidth(120);
+				ImGui::PushItemWidth(itemDesiredWidth - itemDesiredOffset / 2);
 				if (ImGui::Combo(comboID.c_str(), &conditionOperatorType, "This\0Is\0A\0Test\0"))
 				{
 					currentCondition->actionConditionOperator = (ActionConditionOperator)conditionOperatorType;
@@ -122,7 +124,7 @@ void Action::DrawValueConditionsList()
 				ImGui::PopItemWidth();
 
 				ImGui::SameLine();
-				ImGui::PushItemWidth(120);
+				ImGui::PushItemWidth(itemDesiredWidth - itemDesiredOffset / 2);
 				ImGui::InputInt("", &currentCondition->targetValueInteger); 
 				ImGui::PopItemWidth();
 			
