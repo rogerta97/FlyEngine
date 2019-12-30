@@ -386,7 +386,7 @@ void ObjectCreatorDockPanel::DrawChangeRoomActionSettings()
 	ImGui::EndChild();
 
 	if(showValueConditions)
-		changeRoomAction->DrawValueConditionsPopup();
+		changeRoomAction->DrawValueConditionsList();
 
 	ImGui::PopFont();
 	ImGui::PopStyleColor();

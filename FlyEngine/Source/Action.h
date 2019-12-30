@@ -2,6 +2,7 @@
 #define _ACTION_H_
 
 #include <string>
+#include <list>
 #include "JSON/parson.h"
 
 using namespace std; 
@@ -23,11 +24,34 @@ enum ActionOccurrence
 	ON_None
 };
 
+enum ActionConditionOperator
+{
+	AC_EQUALS_TO, 
+	AC_BIGGER_THAN,
+	AC_LESS_THAN, 
+	AC_DIFFERENT_THAN,
+	AC_None
+};
+
 struct ActionSelectableInfo
 {
 	std::string actionName;
 	std::string actionDescription;
 	ActionType actionType;
+};
+
+class FlyVariable; 
+class ActionCondition
+{
+public: 
+	ActionCondition();
+	~ActionCondition(); 
+
+	FlyVariable* targetVariable; 
+	ActionConditionOperator actionConditionOperator;
+
+	int targetValueInteger; 
+	bool targetValueBoolean; 
 };
 
 class FlyObject; 
@@ -42,17 +66,13 @@ public:
 	virtual void Draw();
 	virtual void CleanUp();
 
+	// Save & Load --------------------
 	virtual void SaveAction(JSON_Object* jsonObject, string serializeObjectString);
 
+	// Actions ------------------------
 	virtual void DoAction(); 
 
-	// UI Draw 
-	void DrawValueConditionsPopup(); 
-
-	// Set and Get ---------------------
-	std::string GetActionName() const; 
-	void SetActionName(std::string newName);
-
+	// Occurrence & Conditions --------
 	bool& IsOccSceneEnter();
 	bool& IsOccSceneLeave();
 	bool& IsOccBlackboardValue();
@@ -61,6 +81,15 @@ public:
 	void SetOccSceneEnter(bool newOccSceneEnter);
 	void SetOccSceneLeave(bool newOccSceneLeave);
 	void SetOccObjectClicked(bool newOccObjectClicked);
+
+	void AddEmptyCondition(); 
+
+	// UI Draw -------------------------
+	void DrawValueConditionsList(); 
+
+	// Set and Get ---------------------
+	std::string GetActionName() const; 
+	void SetActionName(std::string newName);
 
 	FlyObject* GetParentObject() const;
 	void SetParentObject(FlyObject* newName);
@@ -81,13 +110,17 @@ protected:
 	ActionType actionType;
 	FlyObject* parentObject;
 
-	// Occurrence ----------------
+	// Occurrence -----------------
 	bool occ_SceneEnter = false; 
 	bool occ_SceneLeave = false;
 	bool occ_ObjectClicked = false;
 	bool occ_blackboardValue = false;
 	bool occ_continuous = false;
 
+	// Conditions -----------------
+	list<ActionCondition*> actionVariableConditions; 
+
+	// Vars -----------------------
 	std::string toolName; 
 	std::string toolDescription; 
 	bool isSelected; 
