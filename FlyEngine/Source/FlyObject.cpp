@@ -432,9 +432,7 @@ void FlyObject::DeleteAction(std::string toolNameToDelete)
 			(*currentTool)->CleanUp();
 			delete (*currentTool);
 			currentTool = actionsList.erase(currentTool); 
-
-			if (actionsList.size() == 0)
-				return;
+			return; 
 		}
 	}
 }

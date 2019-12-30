@@ -50,6 +50,19 @@ void ModifyVariableAction::DoAction()
 	}
 }
 
+void ModifyVariableAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString)
+{
+	string toolsSerializeSection = serializeObjectString + string("Actions.ModifyVariable.");
+
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "EffectsAmount").c_str(), variablesEffectList.size());
+
+	int count = 0; 
+	for (auto& currentEffect : variablesEffectList)
+	{
+		currentEffect->SaveEffect(jsonObject, toolsSerializeSection, count++);
+	}
+}
+
 void ModifyVariableAction::DrawEffectVariablesUI()
 {
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));	
@@ -209,6 +222,27 @@ void ModifyVariableEffect::CleanUp()
 	delete variableEffect;
 	variableEffect = nullptr; 
 	targetVariable = nullptr; 
+}
+
+void ModifyVariableEffect::SaveEffect(JSON_Object* jsonObject, string serializeObjectString, int pos)
+{
+	serializeObjectString += "EffectsGroup.Effect_" + to_string(pos);
+	std::string saveString = serializeObjectString + ".TargetVariableName";
+
+	if(targetVariable != nullptr)
+		json_object_dotset_string(jsonObject, saveString.c_str(), targetVariable->name.c_str());
+
+	if (variableEffect != nullptr)
+	{
+		saveString = serializeObjectString + ".OperatorType";
+		json_object_dotset_number(jsonObject, saveString.c_str(), variableEffect->variableOperatorType);
+
+		saveString = serializeObjectString + ".IncIntegerValue";
+		json_object_dotset_number(jsonObject, saveString.c_str(), variableEffect->incIntegerValue);
+
+		saveString = serializeObjectString + ".NextToggleValue";
+		json_object_dotset_boolean(jsonObject, saveString.c_str(), variableEffect->nextToggleValue);
+	}
 }
 
 void ModifyVariableEffect::ApplyEffect()

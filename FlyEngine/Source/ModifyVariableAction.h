@@ -44,6 +44,7 @@ public:
 	~ModifyVariableEffect(); 
 
 	void CleanUp(); 
+	void SaveEffect(JSON_Object* jsonObject, string serializeObjectString, int pos);
 
 	void ApplyEffect(); 
 	void AttachToVariable(FlyVariable* _targetVariable); 
@@ -61,6 +62,7 @@ public:
 	// Virtuals -------
 	void CleanUp(); 
 	void DoAction(); 
+	void SaveAction(JSON_Object* jsonObject, string serializeObjectString);
 
 	// Draw -----------
 	void DrawEffectVariablesUI();
