@@ -36,6 +36,7 @@ void ModifyVariableAction::CleanUp()
 	}
 
 	variablesEffectList.clear(); 
+	parentObject = nullptr;
 }
 
 void ModifyVariableAction::DoAction()
@@ -95,7 +96,7 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 
 	ImGui::SetColumnWidth(0, 60);
 
-	int operatorTextureID = GetOperatorTextureIDFromType(modifyVarEffect->variableEffect->variableOperatorType);
+	int operatorTextureID = GetOperatorTextureIDFromType(modifyVarEffect->variableOperatorType);
 
 	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 7, ImGui::GetContentRegionMax().y / 2 - 25)); 
 	ImGui::Image((ImTextureID)operatorTextureID, ImVec2(45, 45)); 
@@ -109,7 +110,7 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 	strcpy(selectedVarName, modifyVarEffect->targetVariable->name.c_str());
 
 	string textNameStr = "##" + to_string(pos); 
-	ImGui::InputTextWithHint(textNameStr.c_str(), "Target Variable...", selectedVarName, IM_ARRAYSIZE(selectedVarName));
+	ImGui::InputTextWithHint(textNameStr.c_str(), "Target Variable...", selectedVarName, IM_ARRAYSIZE(selectedVarName), ImGuiInputTextFlags_ReadOnly);
 
 	ImGui::SameLine();
 	if (ImGui::Button("Search"))
@@ -120,27 +121,27 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 	FlyVariable* popupVarSelected = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup();
 	if (popupVarSelected != nullptr)
 	{
-		modifyVarEffect->variableEffect->variableOperatorType = (VariableOperatorType)0;
+		modifyVarEffect->variableOperatorType = (VariableOperatorType)0;
 		modifyVarEffect->targetVariable = popupVarSelected; 
 	}
 
 	// Object Operator 
 	if (modifyVarEffect->targetVariable->varType == Var_Integer)
 	{
-		int intOperatorSelected = modifyVarEffect->variableEffect->variableOperatorType;
+		int intOperatorSelected = modifyVarEffect->variableOperatorType;
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
 
 		string textNameStr = "Operator##IntegerOperator" + to_string(pos);
 		ImGui::Combo(textNameStr.c_str(), &intOperatorSelected, "Add\0Substract\0Set\0");
 
-		modifyVarEffect->variableEffect->variableOperatorType = (VariableOperatorType)intOperatorSelected; 
+		modifyVarEffect->variableOperatorType = (VariableOperatorType)intOperatorSelected; 
 
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-		ImGui::InputInt("Value", &modifyVarEffect->variableEffect->incIntegerValue);
+		ImGui::InputInt("Value", &modifyVarEffect->incIntegerValue);
 	}
 	else if (modifyVarEffect->targetVariable->varType == Var_Toggle)
 	{	
-		int toggleOperatorSelectedInt = modifyVarEffect->variableEffect->variableOperatorType;
+		int toggleOperatorSelectedInt = modifyVarEffect->variableOperatorType;
 
 		if (toggleOperatorSelectedInt == VarEffect_TOGGLE) toggleOperatorSelectedInt = 0;
 		else if (toggleOperatorSelectedInt == VarEffect_SET_TOGGLE) toggleOperatorSelectedInt = 1; 
@@ -150,12 +151,12 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 		string textNameStr = "Operator##ToggleOperator" + to_string(pos);
 		ImGui::Combo(textNameStr.c_str(), &toggleOperatorSelectedInt, "Toggle\0Set");
 
-		modifyVarEffect->variableEffect->variableOperatorType = (VariableOperatorType)(toggleOperatorSelectedInt + 3);
+		modifyVarEffect->variableOperatorType = (VariableOperatorType)(toggleOperatorSelectedInt + 3);
 	
-		if (modifyVarEffect->variableEffect->variableOperatorType != VariableOperatorType::VarEffect_TOGGLE)
+		if (modifyVarEffect->variableOperatorType != VariableOperatorType::VarEffect_TOGGLE)
 		{
 			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-			ImGui::Checkbox("Value", &modifyVarEffect->variableEffect->nextToggleValue);
+			ImGui::Checkbox("Value", &modifyVarEffect->nextToggleValue);
 		}
 	}
 }
@@ -167,6 +168,11 @@ ModifyVariableEffect* ModifyVariableAction::AddEmptyEffect()
 	newEffect->targetVariable = App->moduleManager->fakeVarInitAttach;
 	variablesEffectList.push_back(newEffect); 
 	return newEffect; 
+}
+
+void ModifyVariableAction::AddEffect(ModifyVariableEffect* newEffect)
+{
+	variablesEffectList.push_back(newEffect); 
 }
 
 int ModifyVariableAction::CountEffects()
@@ -211,9 +217,6 @@ ModifyVariableEffect::~ModifyVariableEffect()
 
 void ModifyVariableEffect::CleanUp()
 {
-	delete variableEffect;
-	variableEffect = nullptr; 
-
 	targetVariable = nullptr; 
 }
 
@@ -222,36 +225,34 @@ void ModifyVariableEffect::SaveEffect(JSON_Object* jsonObject, string serializeO
 	serializeObjectString += "EffectsGroup.Effect_" + to_string(pos);
 	std::string saveString = serializeObjectString + ".TargetVariableName";
 
-	if(targetVariable != nullptr)
+	if (targetVariable != nullptr)
 		json_object_dotset_string(jsonObject, saveString.c_str(), targetVariable->name.c_str());
 
-	if (variableEffect != nullptr)
-	{
-		saveString = serializeObjectString + ".OperatorType";
-		json_object_dotset_number(jsonObject, saveString.c_str(), variableEffect->variableOperatorType);
+	saveString = serializeObjectString + ".OperatorType";
+	json_object_dotset_number(jsonObject, saveString.c_str(), variableOperatorType);
 
-		saveString = serializeObjectString + ".IncIntegerValue";
-		json_object_dotset_number(jsonObject, saveString.c_str(), variableEffect->incIntegerValue);
+	saveString = serializeObjectString + ".IncIntegerValue";
+	json_object_dotset_number(jsonObject, saveString.c_str(), incIntegerValue);
 
-		saveString = serializeObjectString + ".NextToggleValue";
-		json_object_dotset_boolean(jsonObject, saveString.c_str(), variableEffect->nextToggleValue);
-	}
+	saveString = serializeObjectString + ".NextToggleValue";
+	json_object_dotset_boolean(jsonObject, saveString.c_str(), nextToggleValue);
+
 }
 
 void ModifyVariableEffect::ApplyEffect()
 {
-	switch (variableEffect->variableOperatorType)
+	switch (variableOperatorType)
 	{
 	case VarEffect_ADD: 
-		targetVariable->varIntegerValue += variableEffect->incIntegerValue; 
+		targetVariable->varIntegerValue += incIntegerValue; 
 		break; 
 
 	case VarEffect_SUBSTRACT:
-		targetVariable->varIntegerValue -= variableEffect->incIntegerValue;
+		targetVariable->varIntegerValue -= incIntegerValue;
 		break;
 
 	case VarEffect_SET_NUMBER:
-		targetVariable->varIntegerValue = variableEffect->incIntegerValue;
+		targetVariable->varIntegerValue = incIntegerValue;
 		break;
 
 	case VarEffect_TOGGLE:
@@ -259,7 +260,7 @@ void ModifyVariableEffect::ApplyEffect()
 		break;
 
 	case VarEffect_SET_TOGGLE:
-		targetVariable->varToogleValue = variableEffect->nextToggleValue;
+		targetVariable->varToogleValue = nextToggleValue;
 		break;
 	}
 }
@@ -271,18 +272,5 @@ void ModifyVariableEffect::AttachToVariable(FlyVariable* _targetVariable)
 
 ModifyVariableEffect::ModifyVariableEffect()
 {
-	variableEffect = new VariableEffect(); 
 	targetVariable = nullptr; 
-}
-
-VariableEffect::~VariableEffect()
-{
-}
-
-VariableEffect::VariableEffect()
-{
-	variableOperatorType = VarEffect_ADD; 
-
-	incIntegerValue = 0; 
-	nextToggleValue = false; 
 }

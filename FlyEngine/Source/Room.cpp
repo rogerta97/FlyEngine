@@ -267,7 +267,6 @@ void Room::DrawRoomObjects()
 
 	// Draw dropping inventory object 
 	GameInventory::getInstance()->DrawDroppingObject();
-	
 }
 
 void Room::UpdateRoomObjects()

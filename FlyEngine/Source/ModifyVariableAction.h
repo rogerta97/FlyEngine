@@ -23,19 +23,6 @@ enum VariableOperatorType
 	VarEffect_None
 };
 
-class VariableEffect
-{
-public: 
-
-	VariableEffect(); 
-	~VariableEffect(); 
-
-	VariableOperatorType variableOperatorType;
-
-	int incIntegerValue; 
-	bool nextToggleValue; 
-};
-
 class ModifyVariableEffect
 {
 public: 
@@ -50,7 +37,10 @@ public:
 	void AttachToVariable(FlyVariable* _targetVariable); 
 
 	FlyVariable* targetVariable; 
-	VariableEffect* variableEffect; 
+	VariableOperatorType variableOperatorType;
+
+	int incIntegerValue;
+	bool nextToggleValue;
 };
 
 class ModifyVariableAction : public Action
@@ -70,6 +60,7 @@ public:
 
 	// Utility --------
 	ModifyVariableEffect* AddEmptyEffect();
+	void AddEffect(ModifyVariableEffect* newEffect); 
 	int CountEffects();
 	int GetOperatorTextureIDFromType(VariableOperatorType effectType); 
 
