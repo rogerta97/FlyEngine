@@ -164,22 +164,14 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 ModifyVariableEffect* ModifyVariableAction::AddEmptyEffect()
 {
 	ModifyVariableEffect* newEffect = new ModifyVariableEffect(); 
-
 	newEffect->targetVariable = App->moduleManager->fakeVarInitAttach;
-
 	variablesEffectList.push_back(newEffect); 
-
 	return newEffect; 
 }
 
 int ModifyVariableAction::CountEffects()
 {
 	return variablesEffectList.size();
-}
-
-list<ModifyVariableEffect*>& ModifyVariableAction::GetEffectVariablesList()
-{
-	return variablesEffectList;
 }
 
 int ModifyVariableAction::GetOperatorTextureIDFromType(VariableOperatorType effectType)
@@ -221,6 +213,7 @@ void ModifyVariableEffect::CleanUp()
 {
 	delete variableEffect;
 	variableEffect = nullptr; 
+
 	targetVariable = nullptr; 
 }
 

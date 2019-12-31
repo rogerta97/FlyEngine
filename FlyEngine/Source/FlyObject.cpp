@@ -365,7 +365,6 @@ ModifyVariableAction* FlyObject::AddModifyVariableAction()
 {
 	if (GetAction(AT_MOD_VARIABLE) == nullptr)
 	{
-		flog("NewMod");
 		ModifyVariableAction* mofidyVarAction = new ModifyVariableAction(this);
 		actionsList.push_back(mofidyVarAction);
 		return mofidyVarAction;
@@ -431,6 +430,7 @@ void FlyObject::DeleteAction(std::string toolNameToDelete)
 		{
 			(*currentTool)->CleanUp();
 			delete (*currentTool);
+			(*currentTool) = nullptr; 
 			currentTool = actionsList.erase(currentTool); 
 			return; 
 		}
