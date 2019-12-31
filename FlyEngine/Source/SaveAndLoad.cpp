@@ -6,12 +6,10 @@
 #include "Room.h"
 #include "FlyObject.h"
 
-#include "ModifyVariableAction.h"
 #include "DisplayImageAction.h"
 #include "ChangeRoomAction.h"
-#include <fstream>
 
-#include "mmgr.h"
+#include <fstream>
 
 SaveAndLoad* SaveAndLoad::instance = 0;
 
@@ -25,18 +23,13 @@ SaveAndLoad* SaveAndLoad::getInstance()
 
 SaveAndLoad::~SaveAndLoad()
 {
-	
+
 }
 
 void SaveAndLoad::SaveCurrentRoomData()
 {
-	// Room Data 
 	Room* currentRoom = App->moduleRoomManager->GetSelectedRoom(); 
 	instance->SaveRoomData(currentRoom); 
-	
-	// Blackboard Data
-	std::string blackboardFileName = currentRoom->GetName() + "_Blackboard"; 
-	currentRoom->GetBlackboard()->SaveData(blackboardFileName.c_str());
 }
 
 void SaveAndLoad::SaveRoomData(std::string roomName)
@@ -142,29 +135,6 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 			Room* room = App->moduleRoomManager->GetRoom(destinationRoomName); 
 			changeRoomAction->SetDestination(room); 
 		}
-
-		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ModifyVariable")).c_str()))
-		{
-			ModifyVariableAction* modifyVariableAction = newObject->AddModifyVariableAction();
-			int effectsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.EffectsAmount")).c_str());
-
-			string baseEffectGroupStr = serializeObjectStrActions + string("ModifyVariable.EffectsGroup.");
-			for (int i = 0; i < effectsAmount; i++)
-			{
-				ModifyVariableEffect* newVariableEffect = new ModifyVariableEffect(); 
-
-				string baseEffectStr = baseEffectGroupStr + "Effect_" + to_string(i) + "."; 
-				string targetVariableName = json_object_dotget_string(root_obj, string(baseEffectStr + "TargetVariableName").c_str());
-
-				newVariableEffect->targetVariable = currentRoom->GetBlackboard()->GetVariable(targetVariableName); 
-				int v_operator = json_object_dotget_number(root_obj, string(baseEffectStr + "OperatorType").c_str());
-				newVariableEffect->variableOperatorType = (VariableOperatorType)v_operator; 
-				newVariableEffect->incIntegerValue = json_object_dotget_number(root_obj, string(baseEffectStr + "IncIntegerValue").c_str());
-				newVariableEffect->nextToggleValue = json_object_dotget_boolean(root_obj, string(baseEffectStr + "NextToggleValue").c_str());
-
-				modifyVariableAction->AddEffect(newVariableEffect); 
-			}
-		}
 	}
 
 	// Clickable Area
@@ -196,11 +166,10 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 
 void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 {
-	// Load Room Blackboard 
-	std::string blackboardFileName = roomToLoad->GetName() + "_Blackboard";
-	roomToLoad->GetBlackboard()->LoadData(blackboardFileName);
+	// Load Room Blackboard
+	roomToLoad->GetBlackboard()->LoadData(roomToLoad->GetName() + "_Blackboard"); 
 
-	// Load Room Data 
+	// Load Room Data
 	JSON_Value* root = json_parse_file(roomDataFilePath.c_str());
 	JSON_Object* root_obj = json_value_get_object(root);
 
@@ -212,7 +181,7 @@ void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 		string serializeObjectStr = roomToLoad->GetName().c_str() + string(".FlyObject_") + to_string(counter) + string(".");
 		instance->CreateFlyObjectFromSavedData(root_obj, serializeObjectStr, roomToLoad);
 		counter++;
-	}   
+	}
 }
 
 SaveAndLoad::SaveAndLoad()

@@ -55,6 +55,8 @@ void ModifyVariableAction::SaveAction(JSON_Object* jsonObject, string serializeO
 {
 	string toolsSerializeSection = serializeObjectString + string("Actions.ModifyVariable.");
 
+	Action::SaveOccurrence(jsonObject, toolsSerializeSection);
+
 	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "EffectsAmount").c_str(), variablesEffectList.size());
 
 	int count = 0; 

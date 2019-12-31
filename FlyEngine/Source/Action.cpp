@@ -48,6 +48,29 @@ void Action::SaveAction(JSON_Object* jsonObject, std::string serializeObjectStri
 {
 }
 
+void Action::SaveOccurrence(JSON_Object* jsonObject, string serializeObjectString)
+{
+	string serializeObjectOccurrenceStr = serializeObjectString + "Occurrence.";
+
+	json_object_dotset_boolean(jsonObject, string(serializeObjectOccurrenceStr + "SceneEnter").c_str(), IsOccSceneEnter());
+	json_object_dotset_boolean(jsonObject, string(serializeObjectOccurrenceStr + "SceneLeave").c_str(), IsOccSceneLeave());
+	json_object_dotset_boolean(jsonObject, string(serializeObjectOccurrenceStr + "ObjectClicked").c_str(), IsOccObjectClicked());
+	json_object_dotset_boolean(jsonObject, string(serializeObjectOccurrenceStr + "BlackboardCondition").c_str(), IsOccBlackboardValue());
+
+	if (!actionVariableConditions.empty())
+	{
+		std::string conditionsSaveStr = serializeObjectOccurrenceStr + "Conditions.";
+
+		json_object_dotset_number(jsonObject, string(conditionsSaveStr + "EvaluationCriteria").c_str(), evaluationCriteria);
+
+		int count = 0; 
+		for (auto& currentCondition : actionVariableConditions)
+		{
+			currentCondition->SaveCondition(jsonObject, conditionsSaveStr, count++); 	
+		}
+	}
+}
+
 void Action::DoAction()
 {
 	
@@ -64,9 +87,21 @@ void Action::DrawValueConditionsList()
 	ImGui::Text("Evaluation Criteria:");
 	ImGui::PopFont(); 
 
-	static int evaluationCritatiaComboInt = 0; 
+	int evaluationCritatiaComboInt = (int)evaluationCriteria; 
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-	ImGui::Combo("", &evaluationCritatiaComboInt, "All conditions must succed\0One condition must succed");
+	if (ImGui::Combo("", &evaluationCritatiaComboInt, "All conditions must succed\0One condition must succed"))
+	{
+		switch (evaluationCritatiaComboInt)
+		{
+		case 0:
+			evaluationCriteria = ALL_SUCCED; 
+			break; 
+
+		case 1: 
+			evaluationCriteria = ONE_SUCCED;
+			break; 
+		}
+	}
 
 	ImGui::Spacing();
 	ImGui::Separator(); 
@@ -315,4 +350,19 @@ ActionCondition::~ActionCondition()
 void ActionCondition::CleanUp()
 {
 	targetVariable = nullptr; 
+}
+
+void ActionCondition::SaveCondition(JSON_Object* jsonObject, string serializeObjectString, int pos)
+{
+	std::string saveStr = serializeObjectString + "Condition_" + to_string(pos); 
+	json_object_dotset_string(jsonObject, string(saveStr + ".TargetVariableName").c_str(), targetVariable->name.c_str()); 
+
+	saveStr = serializeObjectString + "Condition_" + to_string(pos);
+	json_object_dotset_number(jsonObject, string(saveStr + ".ConditionOperator").c_str(), actionConditionOperator);
+
+	saveStr = serializeObjectString + "Condition_" + to_string(pos);
+	json_object_dotset_number(jsonObject, string(saveStr + ".TargetValueInteger").c_str(), targetValueInteger);
+
+	saveStr = serializeObjectString + "Condition_" + to_string(pos);
+	json_object_dotset_boolean(jsonObject, string(saveStr + ".TargetValueBoolean").c_str(), targetValueBoolean);
 }

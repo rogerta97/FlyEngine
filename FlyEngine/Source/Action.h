@@ -15,6 +15,12 @@ enum ActionType
 	AT_null,
 };
 
+enum EvaluationCriteria
+{
+	ALL_SUCCED,
+	ONE_SUCCED,
+};
+
 enum ActionOccurrence
 {
 	ON_SCENE_ENTER, 
@@ -48,6 +54,7 @@ public:
 	~ActionCondition(); 
 
 	void CleanUp(); 
+	void SaveCondition(JSON_Object* jsonObject, string serializeObjectString, int pos);
 
 	FlyVariable* targetVariable; 
 	ActionConditionOperator actionConditionOperator;
@@ -70,6 +77,7 @@ public:
 
 	// Save & Load --------------------
 	virtual void SaveAction(JSON_Object* jsonObject, string serializeObjectString);
+	void SaveOccurrence(JSON_Object* jsonObject, string serializeObjectString);
 
 	// Actions ------------------------
 	virtual void DoAction(); 
@@ -121,6 +129,7 @@ protected:
 
 	// Conditions -----------------
 	list<ActionCondition*> actionVariableConditions;
+	EvaluationCriteria evaluationCriteria; 
 
 	// Vars -----------------------
 	std::string toolName; 
