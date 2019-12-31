@@ -102,6 +102,7 @@ void Room::CleanUp()
 
 	roomBlackboard->CleanUp(); 
 	delete roomBlackboard; 
+	roomBlackboard = nullptr; 
 }
 
 int Room::GetObjectsInRoomAmount()
@@ -399,6 +400,14 @@ void Room::SetSelectedObject(FlyObject* newObject)
 FlyObject* Room::GetSelectedObject() const
 {
 	return selectedObject;
+}
+
+Blackboard* Room::CreateBlackboard()
+{
+	delete roomBlackboard; 
+
+	roomBlackboard = new Blackboard(); 
+	return roomBlackboard;
 }
 
 Blackboard* Room::GetBlackboard()

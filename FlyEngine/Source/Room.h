@@ -91,6 +91,7 @@ public:
 	FlyObject* GetSelectedObject() const;
 
 	Blackboard* GetBlackboard(); 
+	Blackboard* CreateBlackboard();
 
 public: 
 	// Link Management -----

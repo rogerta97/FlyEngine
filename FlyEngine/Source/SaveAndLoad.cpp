@@ -167,7 +167,8 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 {
 	// Load Room Blackboard
-	roomToLoad->GetBlackboard()->LoadData(roomToLoad->GetName() + "_Blackboard"); 
+	Blackboard* roomBB = roomToLoad->CreateBlackboard(); 
+	roomBB->LoadData(roomToLoad->GetName() + "_Blackboard");
 
 	// Load Room Data
 	JSON_Value* root = json_parse_file(roomDataFilePath.c_str());
