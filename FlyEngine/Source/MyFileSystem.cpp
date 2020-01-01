@@ -23,10 +23,6 @@ MyFileSystem::~MyFileSystem() {
 
 }
 
-FileType MyFileSystem::GetFileType(string& full_path)
-{
-	return FileType();
-}
 
 bool MyFileSystem::IsFolder(string& directory)
 {
@@ -90,6 +86,19 @@ void MyFileSystem::DeleteFileExtension(string& path)
 	int pos = path.find_first_of(".");
 	int to_del = path.size() - pos;
 	path = path.substr(0, path.size() - to_del);
+}
+
+FileExtension MyFileSystem::GetFileExtension(string path)
+{
+	int pos = path.find_first_of(".");
+	int to_del = path.size() - pos;
+	path = path.substr(pos, to_del);
+
+	if (path == ".png" || path == ".PNG")
+		return FILE_PNG;
+
+	if (path == ".jpg" || path == ".JPG")
+		return FILE_JPG;
 }
 
 string MyFileSystem::GetIconsDirectory()

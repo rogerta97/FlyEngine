@@ -16,6 +16,7 @@ public:
 
 	static void Delete();
 	static Texture* LoadTexture(std::string path, bool flipImage);
+	static void LoadResourcesRecursive(std::string path);
 };
 
 #endif // !_IMAGE_IMPORTER_H_

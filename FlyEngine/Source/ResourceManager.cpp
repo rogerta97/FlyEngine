@@ -1,4 +1,8 @@
 #include "ResourceManager.h"
+#include "MyFileSystem.h"
+#include "Texture.h"
+#include "ImageImporter.h"
+
 #include <string>
 #include "mmgr.h"
 
@@ -91,6 +95,77 @@ bool ResourceManager::ExistResourcePath(std::string resourcePath)
 	}
 
 	return false;
+}
+
+void ResourceManager::LoadResource(string newResourcePath)
+{
+	FileExtension fileExtension = MyFileSystem::getInstance()->GetFileExtension(newResourcePath); 
+
+	switch (fileExtension)
+	{
+	case FILE_JSON:
+		break;
+
+	case FILE_WAV:
+		break;
+
+	case FILE_PNG:
+	{
+		Texture* newResource = ImageImporter::getInstance()->LoadTexture(newResourcePath, false);
+		string resourceName = MyFileSystem::getInstance()->GetLastPathItem(newResourcePath, false);
+		AddResource(newResource, resourceName.c_str());
+		flog("Added Resource %s", resourceName.c_str());
+		break;
+	}
+
+	case FILE_JPG:
+	{
+		Texture* newResource = ImageImporter::getInstance()->LoadTexture(newResourcePath, false);
+		string resourceName = MyFileSystem::getInstance()->GetLastPathItem(newResourcePath, false);
+		AddResource(newResource, resourceName.c_str());
+		flog("Added Resource %s", resourceName.c_str());
+		break;
+	}
+		
+	default:
+		FLY_ERROR("INVALID RESOURCE WITH PATH: %s", newResourcePath.c_str()); 
+		break;
+	}
+}
+
+void ResourceManager::LoadAllGameResources()
+{
+	std::string resourcesImagePath = MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Images"; 
+	LoadAllFilesFromFolder(resourcesImagePath);
+}
+
+void ResourceManager::LoadAllFilesFromFolder(string path)
+{
+	if (MyFileSystem::getInstance()->IsFolder(path))
+	{
+		vector<string> filesInPath;
+		MyFileSystem::getInstance()->GetFilesInDirectory(path.c_str(), filesInPath, true);
+
+		for (auto& currentFile : filesInPath)
+		{
+			std::string fileName = MyFileSystem::getInstance()->GetLastPathItem(currentFile, true);
+			std::string currentPath = path + "\\" + fileName.c_str();
+
+			if (MyFileSystem::getInstance()->IsFolder(currentPath))
+			{
+				LoadAllFilesFromFolder(currentPath);
+			}
+			else
+			{
+				LoadResource(currentPath);
+			}
+		}
+
+	}
+	else
+	{
+		LoadResource(path);
+	}
 }
 
 void ResourceManager::CleanUp()

@@ -29,6 +29,10 @@ public:
 	static bool ExistResourceUID(UID resourceUID);
 	static bool ExistResourcePath(std::string resourcePath);
 
+	static void LoadResource(string newResourcePath); 
+	static void LoadAllGameResources(); 
+	static void LoadAllFilesFromFolder(string path); 
+
 	static void CleanUp();
 
 private: 

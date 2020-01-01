@@ -34,6 +34,7 @@ bool ModuleManager::Init()
 
 	// Load Engine Icons -----
 	LoadEngineIcons();
+	ResourceManager::getInstance()->LoadAllGameResources(); 
 
 	// Tools Descriptions 
 	AddToolsNameDescription("Display Image", "This should be the description of the image tool", AT_DISPLAY_IMAGE);
@@ -180,13 +181,13 @@ void ModuleManager::LoadEngineIcons()
 	ResourceManager::getInstance()->AddResource((Resource*)toggleOperatorIcon, "ToggleOperatorIcon");
 
 	Texture* pngIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "PNGIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)divideOperatorIcon, "PNGIcon");
+	ResourceManager::getInstance()->AddResource((Resource*)pngIcon, "PNGIcon");
 
 	Texture* jpgIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "JPGIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)equalOperatorIcon, "JPGIcon");
+	ResourceManager::getInstance()->AddResource((Resource*)jpgIcon, "JPGIcon");
 
 	Texture* folderIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "FolderIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)toggleOperatorIcon, "FolderIcon");
+	ResourceManager::getInstance()->AddResource((Resource*)folderIcon, "FolderIcon");
 }
 
 int ModuleManager::GetToolsAmount() const

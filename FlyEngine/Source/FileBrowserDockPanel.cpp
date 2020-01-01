@@ -1,5 +1,7 @@
 #include "FileBrowserDockPanel.h"
 #include "MyFileSystem.h"
+#include "ResourceManager.h"
+#include "Texture.h"
 #include "imgui.h"
 
 #include "mmgr.h"
@@ -44,7 +46,10 @@ void FileBrowserDockPanel::DrawDirectoryRecursive(string& directory)
 	std::string fileName = MyFileSystem::getInstance()->GetLastPathItem(directory, true);
 	if (MyFileSystem::getInstance()->IsFolder(directory))
 	{
-		ImGui::Image(0, ImVec2(18, 18)); ImGui::SameLine(); 
+		Texture* folderTexture = (Texture*)ResourceManager::getInstance()->GetResource("FolderIcon"); 
+
+		ImGui::Image((ImTextureID)folderTexture->GetTextureID(), ImVec2(20, 20)); ImGui::SameLine();
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 3);
 		if(ImGui::TreeNodeEx(fileName.c_str()))
 		{
 			vector<string> directoryFiles; 
@@ -61,7 +66,37 @@ void FileBrowserDockPanel::DrawDirectoryRecursive(string& directory)
 	}
 	else
 	{
-		ImGui::Image(0, ImVec2(18, 18)); ImGui::SameLine();
-		ImGui::MenuItem(fileName.c_str());
+		string resourceName = fileName; 
+		MyFileSystem::getInstance()->DeleteFileExtension(resourceName);
+		Resource* currentResource = ResourceManager::getInstance()->GetResource(resourceName.c_str());
+		ImTextureID iconTextureID = 0;
+
+		switch (MyFileSystem::getInstance()->GetFileExtension(fileName))
+		{
+		case FILE_PNG: 
+		{
+			Texture* pngTexture = (Texture*)ResourceManager::getInstance()->GetResource("PNGIcon");
+			iconTextureID = (ImTextureID)pngTexture->GetTextureID(); 
+			break;
+		}
+		case FILE_JPG:
+		{
+			Texture* jpgTexture = (Texture*)ResourceManager::getInstance()->GetResource("JPGIcon");
+			iconTextureID = (ImTextureID)jpgTexture->GetTextureID();
+			break;
+		}
+		}
+
+		ImGui::Image(iconTextureID, ImVec2(20, 20)); ImGui::SameLine();
+		
+		bool selected = false; 
+		if (selectedResourceUID == currentResource->GetUID())
+			selected = true; 
+
+		if (ImGui::MenuItem(fileName.c_str(), "", &selected))
+		{
+			MyFileSystem::getInstance()->DeleteFileExtension(fileName);
+			selectedResourceUID = currentResource->GetUID();
+		}
 	}
 }

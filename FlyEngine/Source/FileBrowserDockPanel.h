@@ -13,6 +13,8 @@ public:
 	bool Draw(); 
 	void DrawDirectoryRecursive(string& directory); 
 
+private:
+	UID selectedResourceUID; 
 };
 
 #endif // !_FILE_BROWSER_DOCK_PANEL_H_
