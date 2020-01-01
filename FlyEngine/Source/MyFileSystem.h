@@ -8,6 +8,12 @@
 
 using namespace std; 
 
+enum FileType
+{
+	FILE_JSON,
+	FILE_WAV,
+};
+
 struct MyFileSystem {
 
 
@@ -27,6 +33,8 @@ public:
 	static void DeleteFileExtension(string& path);
 	static void DeleteLastPathItem(string& path);
 	static void DeleteFrontItem(string& path); 
+	static bool IsFolder(string& directory);
+	static FileType GetFileType(string& path);
 
 	// Get Directories ---
 	static string GetIconsDirectory();

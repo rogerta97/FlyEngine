@@ -23,6 +23,27 @@ MyFileSystem::~MyFileSystem() {
 
 }
 
+FileType MyFileSystem::GetFileType(string& full_path)
+{
+	return FileType();
+}
+
+bool MyFileSystem::IsFolder(string& directory)
+{
+	vector<string> files;
+	instance->GetFilesInDirectory(directory.c_str(), files, false);
+
+	for (auto it = files.begin(); it != files.end(); it++)
+	{
+		if ((*it) != "." && (*it) != "..")
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 string MyFileSystem::GetLastPathItem(string path, bool keepTermination = true)
 {
 	string resultString(path);
