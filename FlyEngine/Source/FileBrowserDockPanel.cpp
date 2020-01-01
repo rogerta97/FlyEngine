@@ -1,5 +1,5 @@
 #include "FileBrowserDockPanel.h"
-
+#include "MyFileSystem.h"
 #include "imgui.h"
 
 #include "mmgr.h"
@@ -28,10 +28,40 @@ bool FileBrowserDockPanel::Draw()
 		ImGui::NextColumn();	
 
 		ImGui::BeginChild("BrowserFiles", ImVec2(ImGui::GetContentRegionMax().x, ImGui::GetContentRegionMax().y - 40));
-		ImGui::EndChild();
 
+		std::string imagesFolderPath = MyFileSystem::getInstance()->GetResourcesDirectory(); 
+		DrawDirectoryRecursive(imagesFolderPath); 
+		
+		ImGui::EndChild();
 	}
 	ImGui::End(); 
 
 	return true;
+}
+
+void FileBrowserDockPanel::DrawDirectoryRecursive(string& directory)
+{
+	std::string fileName = MyFileSystem::getInstance()->GetLastPathItem(directory, true);
+	if (MyFileSystem::getInstance()->IsFolder(directory))
+	{
+		ImGui::Image(0, ImVec2(18, 18)); ImGui::SameLine(); 
+		if(ImGui::TreeNodeEx(fileName.c_str()))
+		{
+			vector<string> directoryFiles; 
+			MyFileSystem::getInstance()->GetFilesInDirectory(directory.c_str(),directoryFiles, true);
+
+			for (auto& currentFile : directoryFiles)
+			{
+				string currentFilePath = string(currentFile);
+				DrawDirectoryRecursive(currentFilePath); 
+			}
+
+			ImGui::TreePop();
+		}
+	}
+	else
+	{
+		ImGui::Image(0, ImVec2(18, 18)); ImGui::SameLine();
+		ImGui::MenuItem(fileName.c_str());
+	}
 }

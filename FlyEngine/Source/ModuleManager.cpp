@@ -178,6 +178,15 @@ void ModuleManager::LoadEngineIcons()
 
 	Texture* toggleOperatorIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ToggleOperatorIcon.png"), false);
 	ResourceManager::getInstance()->AddResource((Resource*)toggleOperatorIcon, "ToggleOperatorIcon");
+
+	Texture* pngIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "PNGIcon.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)divideOperatorIcon, "PNGIcon");
+
+	Texture* jpgIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "JPGIcon.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)equalOperatorIcon, "JPGIcon");
+
+	Texture* folderIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "FolderIcon.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)toggleOperatorIcon, "FolderIcon");
 }
 
 int ModuleManager::GetToolsAmount() const

@@ -11,6 +11,7 @@ public:
 	~FileBrowserDockPanel();
 
 	bool Draw(); 
+	void DrawDirectoryRecursive(string& directory); 
 
 };
 

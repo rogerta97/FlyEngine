@@ -125,6 +125,13 @@ string MyFileSystem::GetGameDirectory()
 	return instance->gameDirectory;
 }
 
+string MyFileSystem::GetResourcesDirectory()
+{
+	std::string resourcesDir = GetSolutionDirectory(); 
+	resourcesDir += "Source\\Game\\Resources";
+	return resourcesDir;
+}
+
 string MyFileSystem::GetSavedDataDirectory()
 {
 	return instance->GetSolutionDirectory() + "Source\\Game\\Resources\\EngineResources\\EngineSavedData\\";

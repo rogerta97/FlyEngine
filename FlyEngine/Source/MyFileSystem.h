@@ -41,6 +41,7 @@ public:
 	static string GetSavedDataDirectory(); 
 	static string GetSolutionDirectory();
 	static string GetGameDirectory(); 
+	static string GetResourcesDirectory(); 
 	static void GetRelativeDirectory(string& directory); 
 
 	// File --------------
