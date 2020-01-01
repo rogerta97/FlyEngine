@@ -76,7 +76,7 @@ string MyFileSystem::GetIconsDirectory()
 	if (instance->iconsDirectory == "")
 	{
 		instance->iconsDirectory = GetSolutionDirectory();
-		instance->iconsDirectory += "Source\\Game\\Resources\\EngineIcons\\";
+		instance->iconsDirectory += "Source\\Game\\Resources\\EngineResources\\EngineIcons\\";
 	}
 		
 	return instance->iconsDirectory;
@@ -106,7 +106,7 @@ string MyFileSystem::GetGameDirectory()
 
 string MyFileSystem::GetSavedDataDirectory()
 {
-	return instance->GetSolutionDirectory() + "Source\\Game\\Resources\\EngineSavedData\\";
+	return instance->GetSolutionDirectory() + "Source\\Game\\Resources\\EngineResources\\EngineSavedData\\";
 }
 
 void MyFileSystem::GetRelativeDirectory(string& directory)

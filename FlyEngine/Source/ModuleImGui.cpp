@@ -17,6 +17,7 @@
 #include "ModuleInput.h"
 #include "GraphPropertiesDockPanel.h"
 #include "ObjectCreatorDockPanel.h"
+#include "FileBrowserDockPanel.h"
 #include "MyFileSystem.h"
 #include "OpenGL.h"
 
@@ -66,7 +67,7 @@ bool ModuleImGui::Start()
 
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags = ImGuiConfigFlags_DockingEnable;
-	string fontsDirectory = MyFileSystem::getInstance()->GetGameDirectory() + "\\Resources\\EngineFonts\\";
+	string fontsDirectory = MyFileSystem::getInstance()->GetGameDirectory() + "\\Resources\\EngineResources\\EngineFonts\\";
 
 	rudaRegularMid = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Regular.ttf").c_str(), 19);
 	rudaBoldMid = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Bold.ttf").c_str(), 19);
@@ -116,6 +117,7 @@ void ModuleImGui::CreatePanels()
 	GraphPropertiesDockPanel* graphPropertiesPanel = new GraphPropertiesDockPanel(true);
 	WorldPropertiesDockPanel* roomPropertiesPanel = new WorldPropertiesDockPanel(true);
 
+	FileBrowserDockPanel* fileBrowserDockPanel = new FileBrowserDockPanel(false); 
 	GameViewportDockPanel* gameViewporPanel = new GameViewportDockPanel(false);
 	ObjectCreatorDockPanel* objectCreatorPanel = new ObjectCreatorDockPanel(false); 
 	RoomObjectsDockPanel* roomObjectsDockPanel = new RoomObjectsDockPanel(false);
@@ -132,6 +134,7 @@ void ModuleImGui::CreatePanels()
 	dockPanels.push_back(roomObjectsDockPanel);
 	dockPanels.push_back(objectPropertiesDockPanel);
 	dockPanels.push_back(sceneDockPanel);
+	dockPanels.push_back(fileBrowserDockPanel); 
 
 	consoleDockPanel = consolePanel; 
 	graphPropertiesDockPanel = graphPropertiesPanel;

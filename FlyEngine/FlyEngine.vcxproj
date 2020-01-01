@@ -62,6 +62,7 @@
     <ClCompile Include="Source\BoundingBox.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\ChangeRoomAction.cpp" />
+    <ClCompile Include="Source\FileBrowserDockPanel.cpp" />
     <ClCompile Include="Source\FlyVariable.cpp" />
     <ClCompile Include="Source\GameInventory.cpp" />
     <ClCompile Include="Source\Gizmos.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="Source\BoundingBox.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\ChangeRoomAction.h" />
+    <ClInclude Include="Source\FileBrowserDockPanel.h" />
     <ClInclude Include="Source\FlyVariable.h" />
     <ClInclude Include="Source\GameInventory.h" />
     <ClInclude Include="Source\Gizmos.h" />

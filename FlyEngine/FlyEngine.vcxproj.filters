@@ -366,6 +366,9 @@
     <ClCompile Include="Source\FlyVariable.cpp">
       <Filter>Source\FlyEngine\FlyObject\Blackboard</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FileBrowserDockPanel.cpp">
+      <Filter>Source\Modules\DockingPanels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -757,6 +760,9 @@
     </ClInclude>
     <ClInclude Include="Source\ModifyVariableAction.h">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FileBrowserDockPanel.h">
+      <Filter>Source\Modules\DockingPanels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

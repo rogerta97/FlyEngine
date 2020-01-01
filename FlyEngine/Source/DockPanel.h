@@ -17,6 +17,7 @@ enum DockPanelType
 	DOCK_SCENE, 
 	DOCK_ROOMS_GRAPH,
 	DOCK_OBJECT_CREATOR,
+	DOCK_FILE_BROWSER, 
 	DOCK_null,
 };
 
