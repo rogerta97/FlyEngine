@@ -8,6 +8,7 @@
 enum ResourceType
 {
 	RESOURCE_TEXTURE,
+	RESOURCE_SOUND,
 	RESOURCE_null,
 };
 

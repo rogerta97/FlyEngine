@@ -46,6 +46,14 @@ float Texture::GetAspectRatio()
 	return (float)width / (float)height;
 }
 
+bool Texture::IsVertical()
+{
+	if(height > width)
+		return true;
+
+	return false; 
+}
+
 void Texture::Bind()
 {
 	glBindTexture(GL_TEXTURE_2D, texture_id);

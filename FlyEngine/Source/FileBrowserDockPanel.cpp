@@ -1,6 +1,8 @@
 #include "FileBrowserDockPanel.h"
 #include "MyFileSystem.h"
 #include "ResourceManager.h"
+#include "ModuleImGui.h"
+#include "GameViewportDockPanel.h"
 #include "Texture.h"
 #include "imgui.h"
 
@@ -10,6 +12,7 @@ FileBrowserDockPanel::FileBrowserDockPanel(bool isVisible) : DockPanel("Resource
 {
 	flyEngineSection = FLY_SECTION_ROOM_EDIT;
 	dockPanelType = DOCK_FILE_BROWSER;
+	selectedResourceUID = 0; 
 }
 
 FileBrowserDockPanel::~FileBrowserDockPanel()
@@ -23,22 +26,59 @@ bool FileBrowserDockPanel::Draw()
 		
 		ImGui::Columns(2, NULL, true);
 		ImGui::SetColumnWidth(0, 225);
-		
-		ImGui::BeginChild("BrowserPreview", ImVec2(210, 250), true);
-		ImGui::EndChild();
+
+		DrawLeftColumn();
 
 		ImGui::NextColumn();	
 
-		ImGui::BeginChild("BrowserFiles", ImVec2(ImGui::GetContentRegionMax().x, ImGui::GetContentRegionMax().y - 40));
-
-		std::string imagesFolderPath = MyFileSystem::getInstance()->GetResourcesDirectory(); 
-		DrawDirectoryRecursive(imagesFolderPath); 
-		
-		ImGui::EndChild();
+		DrawRightColumn();
 	}
 	ImGui::End(); 
 
 	return true;
+}
+
+void FileBrowserDockPanel::DrawRightColumn()
+{
+	ImGui::BeginChild("BrowserFiles", ImVec2(ImGui::GetContentRegionMax().x, ImGui::GetContentRegionMax().y - 40));
+
+	std::string imagesFolderPath = MyFileSystem::getInstance()->GetResourcesDirectory();
+	DrawDirectoryRecursive(imagesFolderPath);
+
+	ImGui::EndChild();
+}
+
+void FileBrowserDockPanel::DrawLeftColumn()
+{
+	ImGui::BeginChild("BrowserPreview", ImVec2(210, 250), true);
+
+	if (selectedResourceUID == 0)
+	{
+		ImGui::EndChild();
+		return; 
+	}
+
+	Resource* selectedResource = ResourceManager::getInstance()->GetResource(selectedResourceUID);
+
+	switch (selectedResource->GetType())
+	{
+	case ResourceType::RESOURCE_TEXTURE:
+	{
+		Texture* resourceTexture = (Texture*)selectedResource; 
+		ImVec2 centerPoint = ImVec2(ImGui::GetContentRegionMax().x / 2, ImGui::GetContentRegionMax().y / 2); 
+		ImVec2 imageProportions = GetImageDimensionsInPreview(resourceTexture); 
+
+		ImGui::Image((ImTextureID)resourceTexture->GetTextureID(), ImVec2(100, 100)); 
+
+		break; 
+	}
+
+	case ResourceType::RESOURCE_SOUND:
+
+		break;
+	}
+
+	ImGui::EndChild();
 }
 
 void FileBrowserDockPanel::DrawDirectoryRecursive(string& directory)
@@ -98,5 +138,23 @@ void FileBrowserDockPanel::DrawDirectoryRecursive(string& directory)
 			MyFileSystem::getInstance()->DeleteFileExtension(fileName);
 			selectedResourceUID = currentResource->GetUID();
 		}
+	}
+}
+
+ImVec2 FileBrowserDockPanel::GetImageDimensionsInPreview(Texture* texture)
+{
+	ImVec2 imageSize; 
+	ImVec2 childSize = ImVec2(ImGui::GetContentRegionMax().x, ImGui::GetContentRegionMax().y); 
+	bool isVertical = texture->IsVertical(); 
+	float imageAspectRatio = texture->GetAspectRatio(); 
+
+	if (isVertical)
+	{
+		imageSize.y = childSize.y; 
+			
+	}
+	else
+	{
+
 	}
 }

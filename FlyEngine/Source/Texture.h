@@ -15,6 +15,7 @@ public:
 	//Utility
 	void SetTextureSettings();
 	float GetAspectRatio(); 
+	bool IsVertical(); 
 
 	//Memory management
 	void Bind();
