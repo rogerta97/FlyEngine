@@ -13,6 +13,7 @@
 #include "ChangeRoomAction.h"
 #include "ViewportManager.h"
 #include "TextureMSAA.h"
+#include "ResourceManager.h"
 #include "WorldPropertiesDockPanel.h"
 #include "ModuleInput.h"
 #include "GraphPropertiesDockPanel.h"
@@ -61,6 +62,8 @@ bool ModuleImGui::Init()
 bool ModuleImGui::Start()
 {
 	name = "ImGui";
+
+	ResourceManager::getInstance()->LoadEngineIconsResources();
 
 	ImGui_ImplSDL2_InitForOpenGL(App->moduleWindow->mainWindow, App->moduleRender->context);
 	ImGui_ImplOpenGL3_Init("#version 130");

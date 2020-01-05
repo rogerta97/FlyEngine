@@ -6,6 +6,7 @@
 #include "GraphPropertiesDockPanel.h"
 #include "ViewportManager.h"
 #include "GameInventory.h"
+#include "AudioImporter.h"
 #include "Room.h"
 #include "NodeGraph.h"
 #include "ImageImporter.h"
@@ -74,6 +75,7 @@ void ModuleRoomManager::DeleteSingletones()
 	MyFileSystem::getInstance()->Delete();
 	RandomNumberGenerator::getInstance()->Delete();
 	ImageImporter::getInstance()->Delete();
+	AudioImporter::getInstance()->Delete(); 
 	SaveAndLoad::getInstance()->Delete();
 	ResourceManager::getInstance()->CleanUp();
 	ViewportManager::getInstance()->Delete();

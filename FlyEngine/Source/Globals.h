@@ -7,7 +7,6 @@
 #include <windows.h>
 #include <stdio.h>
 
-
 enum consoleMessageType {
 	CM_DEBUG,
 	CM_WARNING,

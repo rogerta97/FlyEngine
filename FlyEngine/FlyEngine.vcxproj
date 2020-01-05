@@ -59,6 +59,7 @@
     <ClCompile Include="3rdParty\mmgr\mmgr.cpp" />
     <ClCompile Include="3rdParty\PCGRandom\pcg_basic.c" />
     <ClCompile Include="Source\Audio.cpp" />
+    <ClCompile Include="Source\AudioImporter.cpp" />
     <ClCompile Include="Source\ModuleAudioManager.cpp" />
     <ClCompile Include="Source\Blackboard.cpp" />
     <ClCompile Include="Source\BoundingBox.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="3rdParty\PCGRandom\pcg_basic.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Source\Audio.h" />
+    <ClInclude Include="Source\AudioImporter.h" />
     <ClInclude Include="Source\ModuleAudioManager.h" />
     <ClInclude Include="Source\Blackboard.h" />
     <ClInclude Include="Source\BoundingBox.h" />

@@ -43,11 +43,12 @@ bool ResourceManager::AddResource(Resource* newResource, std::string name)
 Resource* ResourceManager::GetResource(std::string resourceName) 
 {
 	for (auto& it : instance->resourceList)
+	{
 		if ((it)->GetName() == resourceName)
 			return (it);
+	}
 
-	FLY_ERROR("No resource %s found", resourceName.c_str());
-	return nullptr;
+	throw std::logic_error("A must be equal to B"); 
 }
 
 Resource* ResourceManager::GetResource(UID resourceUID) 
@@ -165,6 +166,21 @@ void ResourceManager::LoadAllFilesFromFolder(string path)
 	else
 	{
 		LoadResource(path);
+	}
+}
+
+void ResourceManager::LoadEngineIconsResources()
+{
+	std::vector<std::string> iconsFileName;
+	MyFileSystem::getInstance()->GetFilesInDirectory(MyFileSystem::getInstance()->GetIconsDirectory().c_str(), iconsFileName);
+
+	for (auto& currentFileName : iconsFileName)
+	{
+		string texturePath = string(MyFileSystem::getInstance()->GetIconsDirectory() + currentFileName);
+		string resourceName = MyFileSystem::getInstance()->GetLastPathItem(texturePath, false);
+
+		Texture* currentTexture = ImageImporter::getInstance()->LoadTexture(texturePath.c_str(), false);
+		ResourceManager::getInstance()->AddResource((Resource*)currentTexture, resourceName.c_str());
 	}
 }
 

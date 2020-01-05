@@ -294,7 +294,7 @@ void ObjectCreatorDockPanel::DrawSelectable(ActionSelectableInfo selectableInfo,
 
 	Texture* imageIcon = App->moduleManager->GetIconFromActionType(selectableInfo.actionType);
 	ImGui::SetCursorPos(ImVec2(10, 5 + (selectableHeight * posInList)));
-	ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30));
 
 	ImGui::SetCursorPos(ImVec2(50, (selectableHeight * posInList) + 4));
 	if (ImGui::Selectable(selectableInfo.actionName.c_str(), &isSelected, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, selectableHeight - 3))) {

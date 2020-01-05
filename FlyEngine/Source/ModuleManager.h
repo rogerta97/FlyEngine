@@ -22,7 +22,6 @@ public:
 	bool CleanUp(); 
 
 	// Utils -----------------------
-	void LoadEngineIcons();
 	int GetToolsAmount() const; 
 	ActionSelectableInfo* DrawActionDictionaryUI(); 
 	Texture* GetIconFromActionType(ActionType toolType); 

@@ -375,6 +375,9 @@
     <ClCompile Include="Source\Audio.cpp">
       <Filter>Source\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="Source\AudioImporter.cpp">
+      <Filter>Source\Tools\Importer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -772,6 +775,9 @@
     </ClInclude>
     <ClInclude Include="Source\Audio.h">
       <Filter>Source\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AudioImporter.h">
+      <Filter>Source\Tools\Importer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

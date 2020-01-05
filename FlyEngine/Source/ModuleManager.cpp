@@ -33,7 +33,6 @@ bool ModuleManager::Init()
 	MyFileSystem::getInstance()->Init(); 
 
 	// Load Engine Icons -----
-	LoadEngineIcons();
 	ResourceManager::getInstance()->LoadAllGameResources(); 
 
 	// Tools Descriptions 
@@ -83,114 +82,6 @@ bool ModuleManager::CleanUp()
 	delete fakeVarInitAttach; 
 
 	return true;
-}
-
-void ModuleManager::LoadEngineIcons()
-{
-	Texture* plusIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "PlusSign.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)plusIcon, "PlusIcon");
-
-	Texture* minusIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "MinusIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)minusIcon, "MinusIcon");
-
-	Texture* searchIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "SearchIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)searchIcon, "SearchIcon");
-
-	Texture* objectIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ObjectIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)objectIcon, "ObjectIcon");
-
-	Texture* filterIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "FilterIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)filterIcon, "FilterIcon");
-
-	Texture* plusIconWhite = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "PlusIconWhite.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)plusIconWhite, "PlusIconWhite");
-
-	Texture* minusIconWhite = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "MinusIconWhite.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)minusIconWhite, "MinusIconWhite");
-
-	Texture* arrowUpWhite = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ArrowUpWhite.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)arrowUpWhite, "ArrowUpWhite");
-
-	Texture* arrowDownWhite = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ArrowUpWhite.png"), true);
-	ResourceManager::getInstance()->AddResource((Resource*)arrowDownWhite, "ArrowDownWhite");
-
-	Texture* selectArrow = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "SelectArrow.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)selectArrow, "SelectArrow");
-
-	Texture* moveOption = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "MoveOption.png"), true);
-	ResourceManager::getInstance()->AddResource((Resource*)moveOption, "MoveOption");
-
-	Texture* clickableAreaPreviewColor = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ClickableAreaPreviewColor.png"), true);
-	ResourceManager::getInstance()->AddResource((Resource*)clickableAreaPreviewColor, "ClickableAreaPreviewColor");
-
-	Texture* imageIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ImageIcon.png"), true);
-	ResourceManager::getInstance()->AddResource((Resource*)imageIcon, "ImageIcon");
-
-	Texture* background_1_1 = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "Background_1_1.png"), true);
-	ResourceManager::getInstance()->AddResource((Resource*)background_1_1, "Background_1_1");
-
-	Texture* playIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "play.png"), true);
-	ResourceManager::getInstance()->AddResource((Resource*)playIcon, "PlayIcon");
-
-	Texture* scaleIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ScaleIcon.png"), true);
-	ResourceManager::getInstance()->AddResource((Resource*)scaleIcon, "ScaleIcon");
-
-	Texture* wrenchIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "WrenchIcon.png"), true);
-	ResourceManager::getInstance()->AddResource((Resource*)wrenchIcon, "WrenchIcon");
-
-	Texture* exportIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ExportIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)exportIcon, "ExportIcon");
-
-	Texture* importIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ImportIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)importIcon, "ImportIcon");
-
-	Texture* stopIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "StopIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)stopIcon, "StopIcon");
-
-	Texture* changeScene = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ChangeScene.png"), true);
-	ResourceManager::getInstance()->AddResource((Resource*)changeScene, "ChangeScene");
-
-	Texture* emptyObject = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "EmptyObject.png"), true);
-	ResourceManager::getInstance()->AddResource((Resource*)emptyObject, "EmptyObject");
-
-	Texture* inventoryItemIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "InventoryItemIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)inventoryItemIcon, "InventoryItemIcon");
-
-	Texture* toggleIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ToggleIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)toggleIcon, "ToggleIcon");
-
-	Texture* naturalNumberIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "NaturalNumberIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)naturalNumberIcon, "NaturalNumberIcon");
-
-	Texture* addOperatorIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "AddOperatorIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)addOperatorIcon, "AddOperatorIcon");
-
-	Texture* multiplyOperatorIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "MultiplyOperatorIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)multiplyOperatorIcon, "MultiplyOperatorIcon");
-
-	Texture* substractyOperatorIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "SubstractOperatorIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)substractyOperatorIcon, "SubstractOperatorIcon");
-
-	Texture* divideOperatorIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "DivideOperatorIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)divideOperatorIcon, "DivideOperatorIcon");
-
-	Texture* equalOperatorIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "EqualOperatorIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)equalOperatorIcon, "EqualOperatorIcon");
-
-	Texture* toggleOperatorIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "ToggleOperatorIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)toggleOperatorIcon, "ToggleOperatorIcon");
-
-	Texture* pngIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "PNGIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)pngIcon, "PNGIcon");
-
-	Texture* jpgIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "JPGIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)jpgIcon, "JPGIcon");
-
-	Texture* folderIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "FolderIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)folderIcon, "FolderIcon");
-
-	Texture* speakerIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "SpeakerIcon.png"), false);
-	ResourceManager::getInstance()->AddResource((Resource*)speakerIcon, "SpeakerIcon");
 }
 
 int ModuleManager::GetToolsAmount() const
