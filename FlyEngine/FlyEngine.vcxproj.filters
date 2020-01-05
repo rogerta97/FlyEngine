@@ -369,6 +369,12 @@
     <ClCompile Include="Source\FileBrowserDockPanel.cpp">
       <Filter>Source\Modules\DockingPanels</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ModuleAudioManager.cpp">
+      <Filter>Source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio.cpp">
+      <Filter>Source\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -418,9 +424,6 @@
     </ClInclude>
     <ClInclude Include="3rdParty\ImGui\imgui_impl_opengl3.h">
       <Filter>Source\3rdParty\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="3rdParty\Glew\include\glew.h">
-      <Filter>Source\3rdParty</Filter>
     </ClInclude>
     <ClInclude Include="Source\ConsoleDockPanel.h">
       <Filter>Source\Modules\DockingPanels</Filter>
@@ -763,6 +766,12 @@
     </ClInclude>
     <ClInclude Include="Source\FileBrowserDockPanel.h">
       <Filter>Source\Modules\DockingPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleAudioManager.h">
+      <Filter>Source\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Audio.h">
+      <Filter>Source\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

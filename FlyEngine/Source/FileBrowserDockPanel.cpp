@@ -50,7 +50,7 @@ void FileBrowserDockPanel::DrawRightColumn()
 
 void FileBrowserDockPanel::DrawLeftColumn()
 {
-	ImGui::BeginChild("BrowserPreview", ImVec2(210, 250), true);
+	ImGui::BeginChild("BrowserPreview", ImVec2(210, 240), true);
 
 	if (selectedResourceUID == 0)
 	{
@@ -68,17 +68,39 @@ void FileBrowserDockPanel::DrawLeftColumn()
 		ImVec2 centerPoint = ImVec2(ImGui::GetContentRegionMax().x / 2, ImGui::GetContentRegionMax().y / 2); 
 		ImVec2 imageProportions = GetImageDimensionsInPreview(resourceTexture); 
 
-		ImGui::Image((ImTextureID)resourceTexture->GetTextureID(), ImVec2(100, 100)); 
+		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + centerPoint.x - ((imageProportions.x - 5) / 2), ImGui::GetCursorPosY() + centerPoint.y - ((imageProportions.y - 5) / 2)));
+		ImGui::Image((ImTextureID)resourceTexture->GetTextureID(), ImVec2(imageProportions.x - 8, imageProportions.y - 10));
 
+		ImGui::EndChild();
+
+		DrawResourceTextureInfo(resourceTexture);
 		break; 
 	}
 
-	case ResourceType::RESOURCE_SOUND:
+	case ResourceType::RESOURCE_AUDIO:
 
 		break;
 	}
+}
+
+void FileBrowserDockPanel::DrawResourceTextureInfo(Texture* resourceTexture)
+{
+	ImGui::Spacing();
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	ImGui::BeginChild("TextureData", ImVec2(ImGui::GetContentRegionMax().x - 5, 60));
+
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5); 
+	ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5); 
+	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
+	ImGui::Text(std::string(resourceTexture->GetName() + ":").c_str());
+	ImGui::PopFont();
+
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+	ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5);
+	ImGui::Text("Dimensions: "); ImGui::SameLine(); 
 
 	ImGui::EndChild();
+	ImGui::PopStyleColor();
 }
 
 void FileBrowserDockPanel::DrawDirectoryRecursive(string& directory)
@@ -150,13 +172,14 @@ ImVec2 FileBrowserDockPanel::GetImageDimensionsInPreview(Texture* texture)
 
 	if (isVertical)
 	{
-		imageSize.y = childSize.y; 
-			
+		imageSize.y = childSize.y; 		
+		imageSize.x = imageSize.y * imageAspectRatio;
 	}
 	else
 	{
-
+		imageSize.x = childSize.x;
+		imageSize.y = imageSize.x / imageAspectRatio;
 	}
 
-	return ImVec2(); 
+	return imageSize;
 }

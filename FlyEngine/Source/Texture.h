@@ -42,4 +42,4 @@ private:
 	uint height = 0;
 };
 
-#endif#
+#endif

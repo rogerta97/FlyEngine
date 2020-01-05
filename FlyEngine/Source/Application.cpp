@@ -6,6 +6,7 @@
 #include "ModuleRender.h"
 #include "ModuleRoomManager.h"
 #include "ModuleManager.h"
+#include "ModuleAudioManager.h"
 #include "mmgr.h"
 
 Application::Application()
@@ -16,6 +17,7 @@ Application::Application()
 	moduleRoomManager = new ModuleRoomManager(this);
 	moduleRender = new ModuleRender(this);
 	moduleManager = new ModuleManager(this); 
+	moduleAudioManager = new ModuleAudioManager(this); 
 
 	AddModule(moduleInput);
 	AddModule(moduleWindow);
@@ -23,6 +25,7 @@ Application::Application()
 	AddModule(moduleRoomManager);
 	AddModule(moduleRender);
 	AddModule(moduleImGui);
+	AddModule(moduleAudioManager);
 	AddModule(moduleManager); 
 
 	isEngineInPlayMode = false; 

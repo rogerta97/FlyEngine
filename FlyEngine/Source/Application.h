@@ -22,6 +22,7 @@ class ModuleImGui;
 class ModuleRender;
 class ModuleRoomManager;
 class ModuleManager; 
+class ModuleAudioManager; 
 
 class Application
 {
@@ -33,6 +34,7 @@ public:
 	ModuleRender* moduleRender;
 	ModuleImGui* moduleImGui;
 	ModuleManager* moduleManager; 
+	ModuleAudioManager* moduleAudioManager; 
 
 private:
 

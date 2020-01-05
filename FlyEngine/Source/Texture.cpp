@@ -8,7 +8,6 @@ Texture::Texture() : Resource(RESOURCE_TEXTURE)
 	height = width = 0; 
 }
 
-
 Texture::~Texture()
 {
 }

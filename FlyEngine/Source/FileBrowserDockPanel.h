@@ -16,6 +16,8 @@ public:
 	void DrawRightColumn();
 	void DrawLeftColumn();
 
+	void DrawResourceTextureInfo(Texture* selectedResource);
+
 	void DrawDirectoryRecursive(string& directory); 
 	ImVec2 GetImageDimensionsInPreview(Texture* texture); 
 
