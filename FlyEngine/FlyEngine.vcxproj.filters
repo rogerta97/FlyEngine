@@ -34,9 +34,6 @@
     <Filter Include="Source\3rdParty\MemoryManager">
       <UniqueIdentifier>{7907c4ee-95c0-4af4-8dfa-cb3600ecc481}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Tools\NodeGraph">
-      <UniqueIdentifier>{4b410c40-2d86-44f5-9844-5dabee35f670}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\3rdParty\ImNode">
       <UniqueIdentifier>{94e6515c-6e59-4e37-8e15-8c60bcfef4bb}</UniqueIdentifier>
     </Filter>
@@ -102,6 +99,9 @@
     </Filter>
     <Filter Include="Source\FlyEngine\FlyObject\Blackboard">
       <UniqueIdentifier>{5e01b0eb-a218-4f7e-99ff-be53e30125ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Tools\NodeGraph">
+      <UniqueIdentifier>{4b410c40-2d86-44f5-9844-5dabee35f670}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
