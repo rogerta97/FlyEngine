@@ -1,26 +1,13 @@
 #ifndef _FILE_SYSTEM_H_
 #define _FILE_SYETEM_H_
 
+#include "Globals.h"
 #include <windows.h>
 #include <string>
 #include <iostream>
 #include <vector>
 
 using namespace std; 
-
-enum FileExtension
-{
-	// File
-	FILE_JSON,
-	
-	// Image
-	FILE_PNG,
-	FILE_JPG,
-	
-	// Audio
-	FILE_WAV,
-	FILE_MP3,
-};
 
 struct MyFileSystem {
 

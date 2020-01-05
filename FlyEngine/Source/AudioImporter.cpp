@@ -25,12 +25,30 @@ AudioImporter::~AudioImporter()
 
 AudioClip* AudioImporter::LoadAudioClip(std::string audioPath)
 {
-	return new AudioClip(); 
+	Mix_Chunk* audioChunk = Mix_LoadWAV(audioPath.c_str());
+
+	if (audioChunk != nullptr)
+	{
+		AudioClip* newAudioClip = new AudioClip(); 
+		newAudioClip->SetChunk(audioChunk); 
+		return newAudioClip;
+	}
+
+	return nullptr; 
 }
 
 MusicTrack* AudioImporter::LoadMusicTrack(std::string trackPath)
 {
-	return new MusicTrack();
+	Mix_Music* audioMixMusic = Mix_LoadMUS(trackPath.c_str());
+
+	if (audioMixMusic != nullptr)
+	{
+		MusicTrack* newMusicTrack = new MusicTrack();
+		newMusicTrack->SetMixMusic(audioMixMusic);
+		return newMusicTrack;
+	}
+
+	return nullptr;
 }
 
 void AudioImporter::Delete()

@@ -20,6 +20,20 @@ enum FlyEngineEvent
 	ENGINE_STOP, 
 };
 
+enum FileExtension
+{
+	// File
+	FILE_JSON,
+
+	// Image
+	FILE_PNG,
+	FILE_JPG,
+
+	// Audio
+	FILE_WAV,
+	FILE_MP3,
+};
+
 #define LOG(format, ...) log(__FILE__, __LINE__, CM_DEBUG, format, __VA_ARGS__)
 
 #define flog(format, ...) flyLog(__FILE__, __LINE__, CM_DEBUG, format, __VA_ARGS__)

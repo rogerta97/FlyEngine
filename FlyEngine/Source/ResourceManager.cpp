@@ -1,7 +1,11 @@
 #include "ResourceManager.h"
-#include "MyFileSystem.h"
 #include "Texture.h"
 #include "ImageImporter.h"
+#include "MyFileSystem.h"
+
+#include "AudioClip.h"
+#include "MusicTrack.h"
+#include "AudioImporter.h"
 
 #include <string>
 #include "mmgr.h"
@@ -40,12 +44,42 @@ bool ResourceManager::AddResource(Resource* newResource, std::string name)
 	return false;
 }
 
-Resource* ResourceManager::GetResource(std::string resourceName) 
+ResourceType ResourceManager::GetResourceTypeFromExtension(FileExtension ext)
+{
+	switch (ext)
+	{
+	case FILE_WAV:
+		return ResourceType::RESOURCE_SFX;
+
+	case FILE_MP3:
+		return ResourceType::RESOURCE_MUSIC;
+
+	case FILE_PNG:
+		return ResourceType::RESOURCE_TEXTURE;
+
+	case FILE_JPG:
+		return ResourceType::RESOURCE_TEXTURE;
+	}
+
+	return ResourceType::RESOURCE_null; 
+}
+
+Resource* ResourceManager::GetResource(std::string resourceName, ResourceType type) 
 {
 	for (auto& it : instance->resourceList)
 	{
 		if ((it)->GetName() == resourceName)
+		{
+			if (type != RESOURCE_null)
+			{
+				if ((it)->GetType() == type)
+					return (it);
+				else
+					continue; 
+			}
+
 			return (it);
+		}
 	}
 
 	throw std::logic_error("A must be equal to B"); 
@@ -98,40 +132,50 @@ bool ResourceManager::ExistResourcePath(std::string resourcePath)
 	return false;
 }
 
-void ResourceManager::LoadResource(string newResourcePath)
+void ResourceManager::LoadResource(string newResourcePath, ResourceType forceType)
 {
 	FileExtension fileExtension = MyFileSystem::getInstance()->GetFileExtension(newResourcePath); 
+	ResourceType loadingResourceType = ResourceType::RESOURCE_null;
 
-	switch (fileExtension)
+	bool forced = false; 
+	if (forceType != RESOURCE_null)
 	{
-	case FILE_JSON:
-		break;
-
-	case FILE_WAV:
-		break;
-
-	case FILE_PNG:
-	{
-		Texture* newResource = ImageImporter::getInstance()->LoadTexture(newResourcePath, false);
-		string resourceName = MyFileSystem::getInstance()->GetLastPathItem(newResourcePath, false);
-		AddResource(newResource, resourceName.c_str());
-		flog("Added Resource %s", resourceName.c_str());
-		break;
+		loadingResourceType = forceType; 
+		forced = true; 
 	}
 
-	case FILE_JPG:
+	if (!forced)
+		loadingResourceType = GetResourceTypeFromExtension(fileExtension); 
+	
+	switch (loadingResourceType)
+	{
+	case RESOURCE_TEXTURE:
 	{
 		Texture* newResource = ImageImporter::getInstance()->LoadTexture(newResourcePath, false);
 		string resourceName = MyFileSystem::getInstance()->GetLastPathItem(newResourcePath, false);
 		AddResource(newResource, resourceName.c_str());
 		flog("Added Resource %s", resourceName.c_str());
-		break;
 	}
-		
-	default:
-		FLY_ERROR("INVALID RESOURCE WITH PATH: %s", newResourcePath.c_str()); 
-		break;
+		break; 
+
+	case RESOURCE_SFX:
+	{
+		AudioClip* newResource = AudioImporter::getInstance()->LoadAudioClip(newResourcePath);
+		string resourceName = MyFileSystem::getInstance()->GetLastPathItem(newResourcePath, false);
+		AddResource(newResource, resourceName.c_str());
+		flog("Added Resource %s", resourceName.c_str());
 	}
+
+	case RESOURCE_MUSIC:
+	{
+		MusicTrack *newResource = AudioImporter::getInstance()->LoadMusicTrack(newResourcePath);
+		string resourceName = MyFileSystem::getInstance()->GetLastPathItem(newResourcePath, false);
+		AddResource(newResource, resourceName.c_str());
+		flog("Added Resource %s", resourceName.c_str());
+	}
+	break;
+	}
+	
 }
 
 void ResourceManager::LoadAllGameResources()
@@ -139,11 +183,14 @@ void ResourceManager::LoadAllGameResources()
 	std::string resourcesImagePath = MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Images"; 
 	LoadAllFilesFromFolder(resourcesImagePath);
 
-	std::string resourcesAudioPath = MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Audio";
-	LoadAllFilesFromFolder(resourcesAudioPath);
+	std::string resourcesAudioPath = MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Audio\\Effects";
+	LoadAllFilesFromFolder(resourcesAudioPath, RESOURCE_SFX);
+
+	std::string resourcesMusicPath = MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Audio\\Music";
+	LoadAllFilesFromFolder(resourcesMusicPath, RESOURCE_MUSIC);
 }
 
-void ResourceManager::LoadAllFilesFromFolder(string path)
+void ResourceManager::LoadAllFilesFromFolder(string path, ResourceType forceType)
 {
 	if (MyFileSystem::getInstance()->IsFolder(path))
 	{
@@ -161,14 +208,14 @@ void ResourceManager::LoadAllFilesFromFolder(string path)
 			}
 			else
 			{
-				LoadResource(currentPath);
+				LoadResource(currentPath, forceType);
 			}
 		}
 
 	}
 	else
 	{
-		LoadResource(path);
+		LoadResource(path, forceType);
 	}
 }
 

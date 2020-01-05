@@ -20,8 +20,9 @@ public:
 
 	// Utility --------------------------------
 	static bool AddResource(Resource* newResource, std::string name);
+	static ResourceType GetResourceTypeFromExtension(FileExtension ext); 
 
-	static Resource* GetResource(std::string resourceName);
+	static Resource* GetResource(std::string resourceName, ResourceType type = ResourceType::RESOURCE_null);
 	static Resource* GetResource(UID resourceUID);
 	static Resource* GetResourceByPath(std::string resourcePath);
 
@@ -30,8 +31,8 @@ public:
 	static bool ExistResourcePath(std::string resourcePath);
 
 	// User Resources Loads 
-	static void LoadResource(string newResourcePath); 
-	static void LoadAllFilesFromFolder(string path); 
+	static void LoadResource(string newResourcePath, ResourceType forceType = ResourceType::RESOURCE_null);
+	static void LoadAllFilesFromFolder(string path, ResourceType forceType = ResourceType::RESOURCE_null);
 	
 	static void LoadAllGameResources(); 
 
