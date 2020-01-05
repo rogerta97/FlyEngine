@@ -157,4 +157,6 @@ ImVec2 FileBrowserDockPanel::GetImageDimensionsInPreview(Texture* texture)
 	{
 
 	}
+
+	return ImVec2(); 
 }

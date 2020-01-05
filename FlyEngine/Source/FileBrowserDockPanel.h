@@ -2,7 +2,9 @@
 #define _FILE_BROWSER_DOCK_PANEL_H_
 
 #include "DockPanel.h"
+#include "ImGui/imgui.h"
 
+class Texture; 
 class FileBrowserDockPanel : public DockPanel {
 
 public:
