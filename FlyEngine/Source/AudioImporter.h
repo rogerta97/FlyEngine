@@ -3,7 +3,8 @@
 
 #include <string>
 
-class Audio;
+class AudioClip;
+class MusicTrack;
 struct AudioImporter {
 
 private:
@@ -15,6 +16,9 @@ public:
 	~AudioImporter();
 
 	static void Delete();
+
+	static AudioClip* LoadAudioClip(std::string audioPath); 
+	static MusicTrack* LoadMusicTrack(std::string trackPath); 
 };
 
 #endif // !_IMAGE_IMPORTER_H_

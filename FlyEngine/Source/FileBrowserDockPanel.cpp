@@ -77,7 +77,7 @@ void FileBrowserDockPanel::DrawLeftColumn()
 		break; 
 	}
 
-	case ResourceType::RESOURCE_AUDIO:
+	case ResourceType::RESOURCE_SFX:
 
 		break;
 	}

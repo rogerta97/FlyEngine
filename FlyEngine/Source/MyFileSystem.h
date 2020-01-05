@@ -10,10 +10,15 @@ using namespace std;
 
 enum FileExtension
 {
+	// File
 	FILE_JSON,
-	FILE_WAV,
+	
+	// Image
 	FILE_PNG,
 	FILE_JPG,
+	
+	// Audio
+	FILE_WAV,
 	FILE_MP3,
 };
 

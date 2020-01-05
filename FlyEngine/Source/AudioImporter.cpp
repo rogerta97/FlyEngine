@@ -1,4 +1,8 @@
 #include "AudioImporter.h"
+#include "SDL_Mixer/SDL_mixer.h"
+
+#include "AudioClip.h"
+#include "MusicTrack.h"
 
 AudioImporter* AudioImporter::instance = 0;
 
@@ -17,6 +21,16 @@ AudioImporter* AudioImporter::getInstance()
 
 AudioImporter::~AudioImporter()
 {
+}
+
+AudioClip* AudioImporter::LoadAudioClip(std::string audioPath)
+{
+	return new AudioClip(); 
+}
+
+MusicTrack* AudioImporter::LoadMusicTrack(std::string trackPath)
+{
+	return new MusicTrack();
 }
 
 void AudioImporter::Delete()

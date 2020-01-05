@@ -372,11 +372,14 @@
     <ClCompile Include="Source\ModuleAudioManager.cpp">
       <Filter>Source\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Audio.cpp">
-      <Filter>Source\Resources</Filter>
-    </ClCompile>
     <ClCompile Include="Source\AudioImporter.cpp">
       <Filter>Source\Tools\Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AudioClip.cpp">
+      <Filter>Source\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MusicTrack.cpp">
+      <Filter>Source\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -773,11 +776,14 @@
     <ClInclude Include="Source\ModuleAudioManager.h">
       <Filter>Source\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Audio.h">
-      <Filter>Source\Resources</Filter>
-    </ClInclude>
     <ClInclude Include="Source\AudioImporter.h">
       <Filter>Source\Tools\Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AudioClip.h">
+      <Filter>Source\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MusicTrack.h">
+      <Filter>Source\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
