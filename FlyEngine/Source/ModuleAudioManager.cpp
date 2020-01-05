@@ -22,3 +22,10 @@ bool ModuleAudioManager::Init()
 	
 	return true;
 }
+
+bool ModuleAudioManager::CleanUp()
+{
+	Mix_CloseAudio(); 
+
+	return true;
+}

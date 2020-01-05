@@ -11,6 +11,7 @@ public:
 	~ModuleAudioManager();
 
 	bool Init();
+	bool CleanUp(); 
 
 };
 

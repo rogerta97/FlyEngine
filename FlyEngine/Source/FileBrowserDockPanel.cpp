@@ -50,11 +50,13 @@ void FileBrowserDockPanel::DrawRightColumn()
 
 void FileBrowserDockPanel::DrawLeftColumn()
 {
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.05f, 0.05f, 0.05f, 1.00f));
 	ImGui::BeginChild("BrowserPreview", ImVec2(210, 240), true);
 
 	if (selectedResourceUID == 0)
 	{
 		ImGui::EndChild();
+		ImGui::PopStyleColor();
 		return; 
 	}
 
@@ -62,6 +64,7 @@ void FileBrowserDockPanel::DrawLeftColumn()
 
 	switch (selectedResource->GetType())
 	{
+
 	case ResourceType::RESOURCE_TEXTURE:
 	{
 		Texture* resourceTexture = (Texture*)selectedResource; 
@@ -72,8 +75,10 @@ void FileBrowserDockPanel::DrawLeftColumn()
 		ImGui::Image((ImTextureID)resourceTexture->GetTextureID(), ImVec2(imageProportions.x - 8, imageProportions.y - 10));
 
 		ImGui::EndChild();
+		ImGui::PopStyleColor();
 
 		DrawResourceTextureInfo(resourceTexture);
+
 		break; 
 	}
 
