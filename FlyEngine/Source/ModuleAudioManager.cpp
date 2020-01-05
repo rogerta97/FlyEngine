@@ -2,7 +2,7 @@
 #include "SDL.h"
 #include "SDL_mixer.h"
 
-#pragma comment(lib, "3rdParty/SDL_Mixer/lib/x86/SDL2_mixer.lib")
+#pragma comment(lib, "3rdParty/SDL_Mixer/libx86/SDL2_mixer.lib")
 
 ModuleAudioManager::ModuleAudioManager(bool start_enabled)
 {
