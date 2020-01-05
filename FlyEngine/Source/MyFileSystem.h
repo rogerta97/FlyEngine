@@ -14,6 +14,7 @@ enum FileExtension
 	FILE_WAV,
 	FILE_PNG,
 	FILE_JPG,
+	FILE_MP3,
 };
 
 struct MyFileSystem {

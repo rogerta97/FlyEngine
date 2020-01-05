@@ -188,6 +188,9 @@ void ModuleManager::LoadEngineIcons()
 
 	Texture* folderIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "FolderIcon.png"), false);
 	ResourceManager::getInstance()->AddResource((Resource*)folderIcon, "FolderIcon");
+
+	Texture* speakerIcon = ImageImporter::getInstance()->LoadTexture(string(MyFileSystem::getInstance()->GetIconsDirectory() + "SpeakerIcon.png"), false);
+	ResourceManager::getInstance()->AddResource((Resource*)speakerIcon, "SpeakerIcon");
 }
 
 int ModuleManager::GetToolsAmount() const

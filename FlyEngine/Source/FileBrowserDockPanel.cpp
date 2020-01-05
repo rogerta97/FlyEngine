@@ -131,9 +131,11 @@ void FileBrowserDockPanel::DrawDirectoryRecursive(string& directory)
 		string resourceName = fileName; 
 		MyFileSystem::getInstance()->DeleteFileExtension(resourceName);
 		Resource* currentResource = ResourceManager::getInstance()->GetResource(resourceName.c_str());
+
 		ImTextureID iconTextureID = 0;
 
-		switch (MyFileSystem::getInstance()->GetFileExtension(fileName))
+		FileExtension fileExtension = MyFileSystem::getInstance()->GetFileExtension(fileName);
+		switch (fileExtension)
 		{
 		case FILE_PNG: 
 		{
@@ -147,13 +149,22 @@ void FileBrowserDockPanel::DrawDirectoryRecursive(string& directory)
 			iconTextureID = (ImTextureID)jpgTexture->GetTextureID();
 			break;
 		}
+		case FILE_MP3:
+		{
+			Texture* speakerIcon = (Texture*)ResourceManager::getInstance()->GetResource("SpeakerIcon");
+			iconTextureID = (ImTextureID)speakerIcon->GetTextureID();
+			break;
 		}
-
-		ImGui::Image(iconTextureID, ImVec2(20, 20)); ImGui::SameLine();
+		}
 		
-		bool selected = false; 
-		if (selectedResourceUID == currentResource->GetUID())
-			selected = true; 
+		ImGui::Image(iconTextureID, ImVec2(20, 20)); ImGui::SameLine();
+
+		bool selected = false;
+		if (currentResource != nullptr)
+		{
+			if (selectedResourceUID == currentResource->GetUID())
+				selected = true; 
+		}
 
 		if (ImGui::MenuItem(fileName.c_str(), "", &selected))
 		{
