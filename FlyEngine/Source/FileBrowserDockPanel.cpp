@@ -106,6 +106,10 @@ void FileBrowserDockPanel::DrawResourceTextureInfo(Texture* resourceTexture)
 void FileBrowserDockPanel::DrawDirectoryRecursive(string& directory)
 {
 	std::string fileName = MyFileSystem::getInstance()->GetLastPathItem(directory, true);
+
+	if (fileName == "EngineResources")
+		return; 
+
 	if (MyFileSystem::getInstance()->IsFolder(directory))
 	{
 		Texture* folderTexture = (Texture*)ResourceManager::getInstance()->GetResource("FolderIcon"); 

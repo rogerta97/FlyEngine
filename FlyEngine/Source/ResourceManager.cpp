@@ -138,6 +138,9 @@ void ResourceManager::LoadAllGameResources()
 {
 	std::string resourcesImagePath = MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Images"; 
 	LoadAllFilesFromFolder(resourcesImagePath);
+
+	std::string resourcesAudioPath = MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Audio";
+	LoadAllFilesFromFolder(resourcesAudioPath);
 }
 
 void ResourceManager::LoadAllFilesFromFolder(string path)

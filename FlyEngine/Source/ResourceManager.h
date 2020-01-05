@@ -29,11 +29,13 @@ public:
 	static bool ExistResourceUID(UID resourceUID);
 	static bool ExistResourcePath(std::string resourcePath);
 
-	// Default Loads 
+	// User Resources Loads 
 	static void LoadResource(string newResourcePath); 
-	static void LoadAllGameResources(); 
 	static void LoadAllFilesFromFolder(string path); 
+	
+	static void LoadAllGameResources(); 
 
+	// Engine Resources Loads
 	static void LoadEngineIconsResources(); 
 
 	static void CleanUp();
