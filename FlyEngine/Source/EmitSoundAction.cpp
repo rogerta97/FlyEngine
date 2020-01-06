@@ -14,3 +14,11 @@ EmitSoundAction::~EmitSoundAction()
 {
 
 }
+
+void EmitSoundAction::SaveAction(JSON_Object* jsonObject, std::string serializeStr)
+{
+}
+
+void EmitSoundAction::DoAction()
+{
+}

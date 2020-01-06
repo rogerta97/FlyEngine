@@ -3,6 +3,7 @@
 #include "ImageImporter.h"
 #include "ResourceManager.h"
 #include "MyFileSystem.h"
+#include "EmitSoundAction.h"
 #include "Application.h"
 #include "ModuleRoomManager.h"
 #include "Room.h"
@@ -53,26 +54,18 @@ bool ModuleManager::Start()
 		App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);
 	}
 
-	//// Create Debug Object 
-	//Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
-	//FlyObject* addingObject = selectedRoom->CreateFlyObject("AddingObject", "TráTrá!");
-	//string keyPath = MyFileSystem::getInstance()->GetSolutionDirectory() + "\\EngineResources\\Images\\Key.png";
+	// Create Debug Object 
+	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+	FlyObject* addingObject = selectedRoom->CreateFlyObject("AddingObject", "TráTrá!");
 
-	//addingObject->AddDisplayImageAction(keyPath.c_str());
-	//addingObject->CreateClickableArea(float2(0, 0), float2(1, 1), false);
-	//addingObject->clickableAreaActive = true;
+	string keyPath = MyFileSystem::getInstance()->GetSolutionDirectory() + "\\Source\\Game\\Resources\\Images";
+	addingObject->AddDisplayImageAction(keyPath.c_str());
 
-	//ModifyVariableAction* modVarAction = addingObject->AddModifyVariableAction(); 
-	//ModifyVariableEffect* newEffect = modVarAction->AddEmptyEffect(); 
-
-	//Blackboard* roomBB = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard(); 
-	//newEffect->AttachToVariable(roomBB->GetVariable("Default_Var"));
-
-	//// Add Condition
-	//ActionCondition* actionCondition = modVarAction->AddEmptyCondition();
-	//actionCondition->targetVariable = roomBB->GetVariable("Default_Var");
-	//actionCondition->actionConditionOperator = AC_EQUALS_TO; 
-	//actionCondition->targetValueInteger = 2; 
+	addingObject->CreateClickableArea(float2(0, 0), float2(1, 1), false);
+	addingObject->clickableAreaActive = true;
+	
+	EmitSoundAction* emitSoundAction = addingObject->AddEmitSoundAction(); 
+	emitSoundAction->audioClip = (AudioClip*)ResourceManager::getInstance()->GetResource("SlidingDoor"); 
 
 	return true;
 }

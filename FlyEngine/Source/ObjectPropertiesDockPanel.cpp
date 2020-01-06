@@ -415,6 +415,8 @@ void ObjectPropertiesDockPanel::DrawEmitSoundSettings()
 
 			static char soundNameBuffer[256] = "";
 
+			strcpy(soundNameBuffer, emitSoundAction->audioClip->GetName().c_str());
+
 			Texture* speakerIcon = (Texture*)ResourceManager::getInstance()->GetResource("SpeakerIcon");
 			ImGui::Image((ImTextureID)speakerIcon->GetTextureID(), ImVec2(22, 22));
 			ImGui::SameLine();
@@ -431,9 +433,7 @@ void ObjectPropertiesDockPanel::DrawEmitSoundSettings()
 					if (resourceDropped->GetType() == RESOURCE_SFX)
 					{
 						AudioClip* audioClipDropped = (AudioClip*)resourceDropped;
-						emitSoundAction->audioClip = audioClipDropped;
-
-						strcpy(soundNameBuffer, resourceDropped->GetName().c_str());
+						emitSoundAction->audioClip = audioClipDropped;				
 					}
 				}
 
@@ -455,9 +455,7 @@ void ObjectPropertiesDockPanel::DrawEmitSoundSettings()
 				{
 					AudioClip* audioClipDropped = (AudioClip*)selectedSound;
 					emitSoundAction->audioClip = audioClipDropped;
-
 					showSoundSelectionPopup = false;
-					strcpy(soundNameBuffer, selectedSound->GetName().c_str());
 				}
 			}
 		}

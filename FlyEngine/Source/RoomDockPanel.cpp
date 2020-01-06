@@ -127,7 +127,7 @@ void RoomDockPanel::DrawRoomVariablesUI()
 		string varChildID = "VariableUIGroup" + to_string(counter);
 		ImGui::BeginChild(varChildID.c_str(), ImVec2(ImGui::GetContentRegionAvail().x - 5, 95));
 		
-		ImGui::Columns(2, 0, true);
+		ImGui::Columns(2, 0, false);
 		ImGui::SetColumnWidth(0, 70);
 
 		int iconSize = 47; 
@@ -239,13 +239,15 @@ void RoomDockPanel::DrawTopButtons()
 	{
 		App->isEngineInPlayMode = !App->isEngineInPlayMode; 
 
-		if (App->isEngineInPlayMode) {
+		if (App->isEngineInPlayMode) 
+		{
 			App->BroadCastEvent(FlyEngineEvent::ENGINE_PLAY);
 			playButtonColor = ImVec4(0.50f, 0.50f, 0.80f, 1.0f);
 			playStopButtonTexture = (Texture*)ResourceManager::getInstance()->GetResource("StopIcon");
 			SaveAndLoad::getInstance()->SaveSelectedRoomToOnPlayData();
 		}
-		else {
+		else 
+		{
 			App->BroadCastEvent(FlyEngineEvent::ENGINE_STOP);
 			playButtonColor = ImVec4(0.35f, 0.39f, 0.50f, 1.00f);
 			playStopButtonTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlayIcon");	
