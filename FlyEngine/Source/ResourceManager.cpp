@@ -6,6 +6,7 @@
 #include "AudioClip.h"
 #include "MusicTrack.h"
 #include "AudioImporter.h"
+#include "imgui.h"
 
 #include <string>
 #include "mmgr.h"
@@ -95,6 +96,23 @@ Resource* ResourceManager::GetResource(UID resourceUID)
 	return nullptr;
 }
 
+vector<Resource*> ResourceManager::GetResources(ResourceType type)
+{
+	vector<Resource*> retList = vector<Resource*>();
+	for (auto& currentResource : instance->resourceList)
+	{
+		if (currentResource->GetType() == type)
+			retList.push_back(currentResource); 
+	}
+
+	return retList;
+}
+
+list<Resource*>& ResourceManager::GetResourceList()
+{
+	return instance->resourceList; 
+}
+
 Resource* ResourceManager::GetResourceByPath(std::string resourcePath) 
 {
 	for (auto& it : instance->resourceList)
@@ -130,6 +148,45 @@ bool ResourceManager::ExistResourcePath(std::string resourcePath)
 	}
 
 	return false;
+}
+
+void ResourceManager::PrintImagesSelectionPopup()
+{
+}
+
+Resource* ResourceManager::PrintSoundsSelectionPopup()
+{
+	if (ImGui::BeginPopup("print_sound_selection_popup"))
+	{
+		static char searchSoundBuffer[256];
+		ImGui::InputTextWithHint("##SearchSound", "Search...", searchSoundBuffer, IM_ARRAYSIZE(searchSoundBuffer));
+		ImGui::Separator();
+
+		for (auto& currentResource : instance->resourceList)
+		{
+			if (currentResource->GetType() != ResourceType::RESOURCE_SFX)
+				continue; 
+
+			Texture* speakerIcon = (Texture*)ResourceManager::getInstance()->GetResource("SpeakerIcon");
+
+			ImGui::Image((ImTextureID)speakerIcon->GetTextureID(), ImVec2(20, 20));
+			ImGui::SameLine();
+
+			if (ImGui::Selectable(currentResource->GetName().c_str()))
+			{
+				ImGui::EndPopup();
+				return currentResource;
+			}
+		}
+
+		ImGui::EndPopup(); 
+	}
+
+	return nullptr; 
+}
+
+void ResourceManager::PrintMusicSelectionPopup()
+{
 }
 
 void ResourceManager::LoadResource(string newResourcePath, ResourceType forceType)

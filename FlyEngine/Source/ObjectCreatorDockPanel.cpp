@@ -8,6 +8,7 @@
 #include "MyFileSystem.h"
 #include "ChangeRoomAction.h"
 #include "FlyVariable.h"
+#include "EmitSoundAction.h"
 #include "Room.h"
 #include "ModifyVariableAction.h"
 #include "Texture.h"
@@ -331,6 +332,10 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 		case AT_MOD_VARIABLE:
 			DrawModifyVariableActionSettings();
 			break;
+
+		case AT_EMIT_SOUND:
+			DrawEmitSoundActionSettings();
+			break;
 		}
 	}
 }
@@ -469,6 +474,90 @@ void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 	}
 }
 
+void ObjectCreatorDockPanel::DrawEmitSoundActionSettings()
+{
+	ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
+	ImGui::Text("Emit Sound Attributes:");
+	ImGui::PopFont();
+
+	ImGui::Separator();
+
+	EmitSoundAction* emitSoundAction = (EmitSoundAction*)this->selectedAction;
+
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text("Action Happens On:");
+	ImGui::PopFont();
+
+	ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+
+	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 130));
+
+	ImGui::SetCursorPos(ImVec2(5, 8));
+	ImGui::Checkbox("Scene Enter", &emitSoundAction->IsOccSceneEnter());
+
+	ImGui::SetCursorPos(ImVec2(5, 38));
+	ImGui::Checkbox("Scene Leave", &emitSoundAction->IsOccSceneLeave());
+
+	ImGui::SetCursorPos(ImVec2(5, 68));
+	ImGui::Checkbox("Object Clicked", &emitSoundAction->IsOccObjectClicked());
+
+	ImGui::SetCursorPos(ImVec2(5, 98));
+	ImGui::Checkbox("Blackboard Value Condition", &emitSoundAction->IsOccBlackboardValue());
+
+	ImGui::SameLine();
+	if (ImGui::Button(showValueConditionButtonText.c_str()))
+	{
+		if (showValueConditions)
+		{
+			showValueConditions = false;
+			showValueConditionButtonText = "Show Conditions";
+		}
+		else
+		{
+			showValueConditions = true;
+			showValueConditionButtonText = "Hide Conditions";
+		}
+	}
+
+	ImGui::Spacing();
+	ImGui::EndChild();
+
+	if (showValueConditions)
+		emitSoundAction->DrawValueConditionsList();
+
+	ImGui::PopFont();
+	ImGui::PopStyleColor();
+
+	IMGUI_SPACED_SEPARATOR;
+
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text("Emit Sound Settings: ");
+	ImGui::PopFont();
+
+	static char soundNameBuffer[256] = "";
+	ImGui::InputTextWithHint("", "Select Sound...", soundNameBuffer, IM_ARRAYSIZE(soundNameBuffer), ImGuiInputTextFlags_ReadOnly);
+	ImGui::SameLine(); 
+
+	if (ImGui::Button("Search##SearchSound"))
+	{
+		ImGui::OpenPopup("print_sound_selection_popup");
+		showSoundSelectionPopup = true; 
+	}
+
+	if (showSoundSelectionPopup)
+	{
+		Resource* selectedSound = ResourceManager::getInstance()->PrintSoundsSelectionPopup();
+
+		if (selectedSound != nullptr)
+		{
+			showSoundSelectionPopup = false;
+			strcpy(soundNameBuffer, selectedSound->GetName().c_str()); 
+		}
+	}
+
+}
+
 void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 {
 	if (showActionDictionary)
@@ -505,6 +594,10 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 
 			case AT_MOD_VARIABLE:
 				creatingObject->AddModifyVariableAction();
+				break;
+
+			case AT_EMIT_SOUND:
+				creatingObject->AddEmitSoundAction();
 				break;
 
 			case AT_null:

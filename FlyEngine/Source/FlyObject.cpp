@@ -9,6 +9,7 @@
 #include "GameViewportDockPanel.h"
 #include "ChangeRoomAction.h"
 #include "ModuleInput.h"
+#include "EmitSoundAction.h"
 #include "ModuleRoomManager.h"
 #include "GameInventory.h"
 #include "ModifyVariableAction.h"
@@ -372,6 +373,18 @@ ModifyVariableAction* FlyObject::AddModifyVariableAction()
 	}
 
 	return (ModifyVariableAction*)GetAction(AT_MOD_VARIABLE);
+}
+
+EmitSoundAction* FlyObject::AddEmitSoundAction()
+{
+	if (GetAction(AT_EMIT_SOUND) == nullptr)
+	{
+		EmitSoundAction* emitSoundAction = new EmitSoundAction(this);
+		actionsList.push_back(emitSoundAction);
+		return emitSoundAction;
+	}
+
+	return (EmitSoundAction*)GetAction(AT_EMIT_SOUND);
 }
 
 void FlyObject::SetSelectedAction(ActionType toolTypeSelected)

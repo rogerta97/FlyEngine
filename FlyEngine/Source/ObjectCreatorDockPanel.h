@@ -45,6 +45,7 @@ public:
 	void DrawDisplayImageSettings(); 
 	void DrawChangeRoomActionSettings();
 	void DrawModifyVariableActionSettings();
+	void DrawEmitSoundActionSettings();
 
 	void OnAddActionButtonClicked(); 
 	bool DrawCloseAndCreateButton();
@@ -56,6 +57,11 @@ private:
 	char newObjectName[256]; 
 	char newObjectDescription[256]; 
 	bool showActionDictionary;
+
+	// Sound Emitter 
+	bool showMusicSelectionPopup = false; 
+	bool showSoundSelectionPopup = false; 
+	bool showImageSelectionPopup = false; 
 
 	// Clickable Area -------------
 	float2 clickableAreaSizePerc; 

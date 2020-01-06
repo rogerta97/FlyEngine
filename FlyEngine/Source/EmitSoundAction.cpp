@@ -12,4 +12,5 @@ EmitSoundAction::EmitSoundAction(FlyObject* _parentObject)
 
 EmitSoundAction::~EmitSoundAction()
 {
+
 }

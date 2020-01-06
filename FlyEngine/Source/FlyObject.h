@@ -20,6 +20,7 @@ class Gizmos;
 class DisplayImageAction; 
 class ModifyVariableAction; 
 class ChangeRoomAction; 
+class EmitSoundAction; 
 class FlyObject {
 public: 
 	FlyObject(std::string objectName, std::string description = "", FlyObjectType _flyObjectType = ACTION_OBJECT); 
@@ -51,6 +52,7 @@ public:
 	DisplayImageAction* AddDisplayImageAction(const char* imageTexturePath);
 	ChangeRoomAction* AddChangeRoomAction();
 	ModifyVariableAction* AddModifyVariableAction();
+	EmitSoundAction* AddEmitSoundAction();
 
 	void SetSelectedAction(ActionType toolTypeSelected); 
 	ActionType GetSelectedActionType(); 
