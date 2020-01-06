@@ -5,14 +5,15 @@
 
 using namespace std;
 
+class AudioClip; 
 class EmitSoundAction : public Action
 {
 public:
 	EmitSoundAction(FlyObject* _parentObject);
 	~EmitSoundAction();
 
-private:
-
+public:
+	AudioClip* audioClip; 
 };
 
 #endif 

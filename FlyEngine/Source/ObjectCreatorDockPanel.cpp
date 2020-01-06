@@ -15,6 +15,7 @@
 #include "ImageImporter.h"
 #include "DisplayImageAction.h"
 #include "ViewportManager.h"
+#include "AudioClip.h"
 #include "ResourceManager.h"
 #include "GameViewportDockPanel.h"
 
@@ -536,7 +537,32 @@ void ObjectCreatorDockPanel::DrawEmitSoundActionSettings()
 	ImGui::PopFont();
 
 	static char soundNameBuffer[256] = "";
+
+	Texture* speakerIcon = (Texture*)ResourceManager::getInstance()->GetResource("SpeakerIcon"); 
+	ImGui::Image((ImTextureID)speakerIcon->GetTextureID(), ImVec2(22, 22));
+	ImGui::SameLine(); 
+	
 	ImGui::InputTextWithHint("", "Select Sound...", soundNameBuffer, IM_ARRAYSIZE(soundNameBuffer), ImGuiInputTextFlags_ReadOnly);
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if(const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+		{
+			int* selectedResourceUID = (int*)payload->Data;
+			Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID); 
+			
+			if (resourceDropped->GetType() == RESOURCE_SFX)
+			{
+				AudioClip* audioClipDropped = (AudioClip*)resourceDropped; 
+				emitSoundAction->audioClip = audioClipDropped; 
+
+				strcpy(soundNameBuffer, resourceDropped->GetName().c_str());
+			}	
+		}
+
+		ImGui::EndDragDropTarget();
+	}
+
 	ImGui::SameLine(); 
 
 	if (ImGui::Button("Search##SearchSound"))
@@ -551,6 +577,9 @@ void ObjectCreatorDockPanel::DrawEmitSoundActionSettings()
 
 		if (selectedSound != nullptr)
 		{
+			AudioClip* audioClipDropped = (AudioClip*)selectedSound;
+			emitSoundAction->audioClip = audioClipDropped;
+			
 			showSoundSelectionPopup = false;
 			strcpy(soundNameBuffer, selectedSound->GetName().c_str()); 
 		}

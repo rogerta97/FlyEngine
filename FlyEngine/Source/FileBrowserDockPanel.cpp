@@ -237,7 +237,7 @@ void FileBrowserDockPanel::DrawDirectoryRecursive(string& directory)
 
 		ImGui::Image((ImTextureID)folderTexture->GetTextureID(), ImVec2(20, 20)); ImGui::SameLine();
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 5);
-		if(ImGui::TreeNodeEx(fileName.c_str()))
+		if(ImGui::TreeNodeEx(fileName.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			vector<string> directoryFiles; 
 			MyFileSystem::getInstance()->GetFilesInDirectory(directory.c_str(),directoryFiles, true);
@@ -291,10 +291,30 @@ void FileBrowserDockPanel::DrawDirectoryRecursive(string& directory)
 				selected = true; 
 		}
 
-		if (ImGui::MenuItem(fileName.c_str(), "", &selected))
+		if (ImGui::Selectable(fileName.c_str(), &selected))
 		{
 			MyFileSystem::getInstance()->DeleteFileExtension(fileName);
-			selectedResourceUID = currentResource->GetUID();
+
+			if(currentResource != nullptr)
+				selectedResourceUID = currentResource->GetUID();
+		}
+
+		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+		{
+			int resTypeIntCast = (int)currentResource->GetUID(); 
+			ImGui::SetDragDropPayload("drag_resource", &resTypeIntCast, 256);
+
+			ImGui::Image(iconTextureID, ImVec2(35, 35)); 
+			ImGui::SameLine();
+
+			std::string resourceName = currentResource->GetName(); 
+
+			ImGui::SetCursorPosY(ImGui::GetContentRegionMax().y / 2);
+			ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+			ImGui::Text(resourceName.c_str());
+			ImGui::PopFont(); 
+
+			ImGui::EndDragDropSource();
 		}
 	}
 }
