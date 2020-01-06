@@ -26,7 +26,7 @@ bool FileBrowserDockPanel::Draw()
 {
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
 		
-		ImGui::Columns(2, NULL, false);
+		ImGui::Columns(2, NULL, true);
 		ImGui::SetColumnWidth(0, 225);
 
 		DrawLeftColumn();
@@ -309,7 +309,7 @@ void FileBrowserDockPanel::DrawDirectoryRecursive(string& directory)
 
 			std::string resourceName = currentResource->GetName(); 
 
-			ImGui::SetCursorPosY(ImGui::GetContentRegionMax().y / 2);
+			ImGui::SetCursorPosY(16);
 			ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 			ImGui::Text(resourceName.c_str());
 			ImGui::PopFont(); 

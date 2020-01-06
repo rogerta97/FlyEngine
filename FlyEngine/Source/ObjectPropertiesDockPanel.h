@@ -27,7 +27,7 @@ public:
 	// Object Tools Tab
 	void DrawObjectActionsTab();
 	void DrawActionSettings();
-	void DrawModifyVariableSettings();
+
 	void DrawActionsList();
 	void DrawAddAndDeleteButtons();
 	void DrawActionSelectable(ActionSelectableInfo& selectableInfo, Action*& currentTool, int posInList, int selectableHeigth);
@@ -35,11 +35,16 @@ public:
 	
 	void DrawChangeRoomSettings();
 	void DrawToolImageSettings();
+	void DrawModifyVariableSettings();
+	void DrawEmitSoundSettings();
 
 private: 
 	char searchNewToolBuffer[256]; 
 	FlyObject* selectedObject = nullptr; 
 	bool showToolDictionary; 
+
+	// Emit Sound 
+	bool showSoundSelectionPopup = false; 
 
 	// Conditions 
 	bool showVariableConditions = false; 

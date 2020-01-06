@@ -10,9 +10,11 @@
 #include "ResourceManager.h"
 #include "ChangeRoomAction.h"
 #include "DisplayImageAction.h"
+#include "AudioClip.h"
 #include "GameViewportDockPanel.h"
 #include "ImageImporter.h"
 #include "Action.h"
+#include "EmitSoundAction.h"
 #include "ViewportManager.h"
 #include "TinyFileDialog.h"
 #include "Texture.h"
@@ -319,6 +321,10 @@ void ObjectPropertiesDockPanel::DrawActionSettings()
 		case AT_MOD_VARIABLE:
 			DrawModifyVariableSettings();
 			break;
+
+		case AT_EMIT_SOUND:
+			DrawEmitSoundSettings();
+			break;
 		}
 	}
 }
@@ -390,6 +396,69 @@ void ObjectPropertiesDockPanel::DrawModifyVariableSettings()
 			if (ImGui::ImageButton((ImTextureID)minusIcon->GetTextureID(), ImVec2(30, 30)))
 			{
 
+			}
+		}
+	}
+}
+
+void ObjectPropertiesDockPanel::DrawEmitSoundSettings()
+{
+	EmitSoundAction* emitSoundAction = (EmitSoundAction*)selectedObject->GetAction("Emit Sound");
+
+	if (emitSoundAction != nullptr)
+	{
+		if (ImGui::CollapsingHeader("Emit Sound Attributes", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+			ImGui::Text("Sound To Play:"); 
+			ImGui::PopFont(); 
+
+			static char soundNameBuffer[256] = "";
+
+			Texture* speakerIcon = (Texture*)ResourceManager::getInstance()->GetResource("SpeakerIcon");
+			ImGui::Image((ImTextureID)speakerIcon->GetTextureID(), ImVec2(22, 22));
+			ImGui::SameLine();
+
+			ImGui::InputTextWithHint("", "Select Sound...", soundNameBuffer, IM_ARRAYSIZE(soundNameBuffer), ImGuiInputTextFlags_ReadOnly);
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+				{
+					int* selectedResourceUID = (int*)payload->Data;
+					Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+					if (resourceDropped->GetType() == RESOURCE_SFX)
+					{
+						AudioClip* audioClipDropped = (AudioClip*)resourceDropped;
+						emitSoundAction->audioClip = audioClipDropped;
+
+						strcpy(soundNameBuffer, resourceDropped->GetName().c_str());
+					}
+				}
+
+				ImGui::EndDragDropTarget();
+			}
+
+			ImGui::SameLine();
+			if (ImGui::Button("Search##SearchSound"))
+			{
+				ImGui::OpenPopup("print_sound_selection_popup");
+				showSoundSelectionPopup = true;
+			}
+
+			if (showSoundSelectionPopup)
+			{
+				Resource* selectedSound = ResourceManager::getInstance()->PrintSoundsSelectionPopup();
+
+				if (selectedSound != nullptr)
+				{
+					AudioClip* audioClipDropped = (AudioClip*)selectedSound;
+					emitSoundAction->audioClip = audioClipDropped;
+
+					showSoundSelectionPopup = false;
+					strcpy(soundNameBuffer, selectedSound->GetName().c_str());
+				}
 			}
 		}
 	}
@@ -528,6 +597,10 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 
 				case AT_MOD_VARIABLE:
 					selectedObject->AddModifyVariableAction();
+					break;
+
+				case AT_EMIT_SOUND:
+					selectedObject->AddEmitSoundAction();
 					break;
 
 				case AT_null:
