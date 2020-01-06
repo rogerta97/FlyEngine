@@ -563,7 +563,7 @@ void ObjectPropertiesDockPanel::DrawActionSelectable(ActionSelectableInfo& selec
 	ImGui::SetCursorPosY(((selectableHeigth + 5) * posInList) + 24);
 	ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 52);
 
-	ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
+	ImGui::PushFont(App->moduleImGui->rudaRegularTiny);
 	ImGui::TextWrapped(selectableInfo.actionDescription.c_str());
 	ImGui::PopFont();
 }

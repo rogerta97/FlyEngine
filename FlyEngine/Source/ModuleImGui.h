@@ -59,6 +59,10 @@ public:
 	ImFont* rudaBoldSmall;
 	ImFont* rudaBlackSmall;
 
+	ImFont* rudaRegularTiny;
+	ImFont* rudaBoldTiny;
+	ImFont* rudaBlackTiny;
+
 	ImFont* rudaRegularBig;
 	ImFont* rudaBoldBig;
 	ImFont* rudaBlackBig;

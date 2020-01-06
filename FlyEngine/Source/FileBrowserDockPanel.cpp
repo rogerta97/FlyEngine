@@ -4,6 +4,8 @@
 #include "ModuleImGui.h"
 #include "GameViewportDockPanel.h"
 #include "Texture.h"
+#include "AudioClip.h"
+#include "MusicTrack.h"
 #include "imgui.h"
 
 #include "mmgr.h"
@@ -24,7 +26,7 @@ bool FileBrowserDockPanel::Draw()
 {
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
 		
-		ImGui::Columns(2, NULL, true);
+		ImGui::Columns(2, NULL, false);
 		ImGui::SetColumnWidth(0, 225);
 
 		DrawLeftColumn();
@@ -50,16 +52,8 @@ void FileBrowserDockPanel::DrawRightColumn()
 
 void FileBrowserDockPanel::DrawLeftColumn()
 {
-	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.05f, 0.05f, 0.05f, 1.00f));
-	ImGui::BeginChild("BrowserPreview", ImVec2(210, 240), true);
-
-	if (selectedResourceUID == 0)
-	{
-		ImGui::EndChild();
-		ImGui::PopStyleColor();
-		return; 
-	}
-
+	if (selectedResourceUID == 0) return; 
+	
 	Resource* selectedResource = ResourceManager::getInstance()->GetResource(selectedResourceUID);
 
 	switch (selectedResource->GetType())
@@ -67,45 +61,146 @@ void FileBrowserDockPanel::DrawLeftColumn()
 
 	case ResourceType::RESOURCE_TEXTURE:
 	{
-		Texture* resourceTexture = (Texture*)selectedResource; 
-		ImVec2 centerPoint = ImVec2(ImGui::GetContentRegionMax().x / 2, ImGui::GetContentRegionMax().y / 2); 
-		ImVec2 imageProportions = GetImageDimensionsInPreview(resourceTexture); 
-
-		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + centerPoint.x - ((imageProportions.x - 5) / 2), ImGui::GetCursorPosY() + centerPoint.y - ((imageProportions.y - 5) / 2)));
-		ImGui::Image((ImTextureID)resourceTexture->GetTextureID(), ImVec2(imageProportions.x - 8, imageProportions.y - 10));
-
-		ImGui::EndChild();
-		ImGui::PopStyleColor();
-
-		DrawResourceTextureInfo(resourceTexture);
-
+		DrawTextureResourcePreview(selectedResource);
 		break; 
 	}
 
 	case ResourceType::RESOURCE_SFX:
-
 	{
-		Texture* resourceTexture = (Texture*)ResourceManager::getInstance()->GetResource("MusicNote"); 
-		ImVec2 centerPoint = ImVec2(ImGui::GetContentRegionMax().x / 2, ImGui::GetContentRegionMax().y / 2);
-		ImVec2 imageProportions = GetImageDimensionsInPreview(resourceTexture);
-
-		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + centerPoint.x - ((imageProportions.x - 5) / 2), ImGui::GetCursorPosY() + centerPoint.y - ((imageProportions.y - 5) / 2)));
-		ImGui::Image((ImTextureID)resourceTexture->GetTextureID(), ImVec2(imageProportions.x - 8, imageProportions.y - 10));
-
-		ImGui::EndChild();
-		ImGui::PopStyleColor();
-
+		DrawAudioClipResourcePreview(selectedResource);
 		break;
-
 	}
 
 	case ResourceType::RESOURCE_MUSIC:
-
-		ImGui::EndChild();
-		ImGui::PopStyleColor();
-
+	{
+		DrawMusicTrackResourcePreview(selectedResource);
 		break;
 	}
+	}
+}
+
+void FileBrowserDockPanel::DrawMusicTrackResourcePreview(Resource* selectedResource)
+{
+	MusicTrack* selectedMusicTrack = (MusicTrack*)selectedResource;
+	FileExtension ext = MyFileSystem::getInstance()->GetFileExtension(selectedResource->GetPath());
+	Texture* fileTypeTexture = nullptr;
+
+	switch (ext)
+	{
+	case FILE_MP3:
+		fileTypeTexture = (Texture*)ResourceManager::getInstance()->GetResource("MP3Icon");
+		break;
+	case FILE_WAV:
+		fileTypeTexture = (Texture*)ResourceManager::getInstance()->GetResource("WAVIcon");
+		break;
+	}
+
+	if (fileTypeTexture != nullptr)
+	{
+		ImVec2 drawPoint = ImVec2((ImGui::GetContentRegionMax().x / 2) - 10, 80);
+		float imageMaxWidth = 130;
+		ImVec2 imageDimensions = ImVec2(imageMaxWidth, imageMaxWidth * fileTypeTexture->GetAspectRatio());
+
+		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + drawPoint.x - ((imageDimensions.x) / 2), ImGui::GetCursorPosY() + drawPoint.y - ((imageDimensions.y) / 2)));
+		ImGui::Image((ImTextureID)fileTypeTexture->GetTextureID(), ImVec2(imageDimensions.x, imageDimensions.y));
+	}
+
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	ImGui::BeginChild("BrowserPreview", ImVec2(210, 70));
+
+	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 8, ImGui::GetCursorPos().y + 8));
+
+	Texture* playAudioTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlayAudio");
+	ImGui::ImageButton((ImTextureID)playAudioTexture->GetTextureID(), ImVec2(25, 25));
+	ImGui::SameLine();
+
+	Texture* stopAudioTexture = (Texture*)ResourceManager::getInstance()->GetResource("PauseAudio");
+	ImGui::ImageButton((ImTextureID)stopAudioTexture->GetTextureID(), ImVec2(25, 25));
+	ImGui::SameLine();
+
+	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 5, 12));
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text(selectedMusicTrack->GetName().c_str());
+	ImGui::PopFont();
+
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+	ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
+	ImGui::Text("Audio Duration: ");
+	ImGui::PopFont();
+
+	ImGui::EndChild();
+	ImGui::PopStyleColor();
+}
+
+void FileBrowserDockPanel::DrawTextureResourcePreview(Resource* selectedResource)
+{
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.05f, 0.05f, 0.05f, 1.00f));
+	ImGui::BeginChild("BrowserPreview", ImVec2(210, 240), true);
+
+	Texture* resourceTexture = (Texture*)selectedResource;
+	ImVec2 centerPoint = ImVec2(ImGui::GetContentRegionMax().x / 2, ImGui::GetContentRegionMax().y / 2);
+	ImVec2 imageProportions = GetImageDimensionsInPreview(resourceTexture);
+
+	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + centerPoint.x - ((imageProportions.x) / 2), ImGui::GetCursorPosY() + centerPoint.y - ((imageProportions.y) / 2)));
+	ImGui::Image((ImTextureID)resourceTexture->GetTextureID(), ImVec2(imageProportions.x - 8, imageProportions.y - 10));
+
+	ImGui::EndChild();
+	ImGui::PopStyleColor();
+
+	DrawResourceTextureInfo(resourceTexture);
+}
+
+void FileBrowserDockPanel::DrawAudioClipResourcePreview(Resource* selectedResource)
+{
+	AudioClip* selectedAudioClip = (AudioClip*)selectedResource;
+	FileExtension ext = MyFileSystem::getInstance()->GetFileExtension(selectedResource->GetPath());
+	Texture* fileTypeTexture = nullptr;
+
+	switch (ext)
+	{
+	case FILE_MP3:
+		fileTypeTexture = (Texture*)ResourceManager::getInstance()->GetResource("MP3Icon");
+		break;
+	case FILE_WAV:
+		fileTypeTexture = (Texture*)ResourceManager::getInstance()->GetResource("WAVIcon");
+		break;
+	}
+
+	if (fileTypeTexture != nullptr)
+	{
+		ImVec2 drawPoint = ImVec2((ImGui::GetContentRegionMax().x / 2) - 10, 80);
+		float imageMaxWidth = 130;
+		ImVec2 imageDimensions = ImVec2(imageMaxWidth, imageMaxWidth * fileTypeTexture->GetAspectRatio());
+
+		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + drawPoint.x - ((imageDimensions.x) / 2), ImGui::GetCursorPosY() + drawPoint.y - ((imageDimensions.y) / 2)));
+		ImGui::Image((ImTextureID)fileTypeTexture->GetTextureID(), ImVec2(imageDimensions.x, imageDimensions.y));
+	}
+
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	ImGui::BeginChild("BrowserPreview", ImVec2(210, 70));
+
+	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 8, ImGui::GetCursorPos().y + 8));
+
+	Texture* playAudioTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlayAudio");
+	ImGui::ImageButton((ImTextureID)playAudioTexture->GetTextureID(), ImVec2(25, 25));
+	ImGui::SameLine();
+
+	Texture* stopAudioTexture = (Texture*)ResourceManager::getInstance()->GetResource("PauseAudio");
+	ImGui::ImageButton((ImTextureID)stopAudioTexture->GetTextureID(), ImVec2(25, 25));
+	ImGui::SameLine();
+
+	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 5, 12));
+	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
+	ImGui::Text(selectedAudioClip->GetName().c_str());
+	ImGui::PopFont();
+
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+	ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
+	ImGui::Text("Audio Duration: ");
+	ImGui::PopFont();
+
+	ImGui::EndChild();
+	ImGui::PopStyleColor();
 }
 
 void FileBrowserDockPanel::DrawResourceTextureInfo(Texture* resourceTexture)
@@ -140,7 +235,7 @@ void FileBrowserDockPanel::DrawDirectoryRecursive(string& directory)
 		Texture* folderTexture = (Texture*)ResourceManager::getInstance()->GetResource("FolderIcon"); 
 
 		ImGui::Image((ImTextureID)folderTexture->GetTextureID(), ImVec2(20, 20)); ImGui::SameLine();
-		ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 3);
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 5);
 		if(ImGui::TreeNodeEx(fileName.c_str()))
 		{
 			vector<string> directoryFiles; 

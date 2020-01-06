@@ -31,6 +31,7 @@ AudioClip* AudioImporter::LoadAudioClip(std::string audioPath)
 	{
 		AudioClip* newAudioClip = new AudioClip(); 
 		newAudioClip->SetChunk(audioChunk); 
+		newAudioClip->SetPath(audioPath.c_str()); 
 		return newAudioClip;
 	}
 
@@ -45,6 +46,7 @@ MusicTrack* AudioImporter::LoadMusicTrack(std::string trackPath)
 	{
 		MusicTrack* newMusicTrack = new MusicTrack();
 		newMusicTrack->SetMixMusic(audioMixMusic);
+		newMusicTrack->SetPath(trackPath.c_str());
 		return newMusicTrack;
 	}
 

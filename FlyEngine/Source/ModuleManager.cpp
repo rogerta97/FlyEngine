@@ -121,7 +121,7 @@ ActionSelectableInfo* ModuleManager::DrawActionDictionaryUI()
 		ImGui::SetCursorPosY((selectableHeight * count) + 20);
 		ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 52);
 
-		ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
+		ImGui::PushFont(App->moduleImGui->rudaRegularTiny);
 		ImGui::TextWrapped(currentToolDescription.actionDescription.c_str());
 		ImGui::PopFont();
 

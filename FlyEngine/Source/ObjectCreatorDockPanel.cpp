@@ -212,7 +212,7 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 	}
 	else
 	{
-		ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
+		ImGui::PushFont(App->moduleImGui->rudaRegularTiny);
 		ImGui::TextColored(ImVec4(0,1,1,1), "Inventory Items need images assigned to enable the clickable zone. Assign an image.");
 		ImGui::PopFont();
 	}
@@ -307,7 +307,7 @@ void ObjectCreatorDockPanel::DrawSelectable(ActionSelectableInfo selectableInfo,
 	ImGui::SetCursorPosY((selectableHeight * posInList) + 24);
 	ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 52);
 
-	ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
+	ImGui::PushFont(App->moduleImGui->rudaRegularTiny);
 	ImGui::TextWrapped(selectableInfo.actionDescription.c_str());
 	ImGui::PopFont();
 }
@@ -562,7 +562,7 @@ void ObjectCreatorDockPanel::DrawClickableAreaSettings()
 		{
 			ImGui::Separator();
 
-			ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
+			ImGui::PushFont(App->moduleImGui->rudaRegularTiny);
 			ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth() + 5);
 			ImGui::TextColored(ImVec4(1, 1, 0.2f, 0.8f), "The object being created has no actions with visible content. Clickable Area position will fit the center of the object");
 			ImGui::PopTextWrapPos();
