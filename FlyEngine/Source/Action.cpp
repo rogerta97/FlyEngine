@@ -257,6 +257,11 @@ bool& Action::IsOccObjectClicked()
 	return occ_ObjectClicked;
 }
 
+void Action::SetOccBlackboardValue(bool newValue)
+{
+	occ_blackboardValue = newValue; 
+}
+
 void Action::SetOccSceneEnter(bool newOccSceneEnter)
 {
 	occ_SceneEnter = newOccSceneEnter; 

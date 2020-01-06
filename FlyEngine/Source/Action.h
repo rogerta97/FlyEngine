@@ -89,9 +89,10 @@ public:
 	bool& IsOccBlackboardValue();
 	bool& IsOccObjectClicked();
 
-	void SetOccSceneEnter(bool newOccSceneEnter);
-	void SetOccSceneLeave(bool newOccSceneLeave);
-	void SetOccObjectClicked(bool newOccObjectClicked);
+	void SetOccSceneEnter(bool newValue);
+	void SetOccSceneLeave(bool newValue);
+	void SetOccBlackboardValue(bool newValue);
+	void SetOccObjectClicked(bool newValue);
 
 	ActionCondition* AddEmptyCondition();
 

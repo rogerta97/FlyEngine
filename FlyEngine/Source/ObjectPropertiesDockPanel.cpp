@@ -409,6 +409,45 @@ void ObjectPropertiesDockPanel::DrawEmitSoundSettings()
 	{
 		if (ImGui::CollapsingHeader("Emit Sound Attributes", ImGuiTreeNodeFlags_DefaultOpen))
 		{
+			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+			ImGui::Text("Action Happens On:");
+			ImGui::PopFont();
+
+			ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
+
+			ImGui::SetCursorPos(ImVec2(5, 8));
+			ImGui::Checkbox("Object Clicked", &emitSoundAction->IsOccObjectClicked());
+			ImGui::SetCursorPos(ImVec2(5, 38));
+			ImGui::Checkbox("Blackboard Value Condition", &emitSoundAction->IsOccBlackboardValue());
+
+			ImGui::SameLine();
+			static std::string showValueConditionButtonText = "Show Conditions";
+			if (ImGui::Button(showValueConditionButtonText.c_str()))
+			{
+				if (showVariableConditions)
+				{
+					showVariableConditions = false;
+					showValueConditionButtonText = "Show Conditions";
+				}
+				else
+				{
+					showVariableConditions = true;
+					showValueConditionButtonText = "Hide Conditions";
+				}
+			}
+
+			if (showVariableConditions)
+				emitSoundAction->DrawValueConditionsList();
+
+			ImGui::Spacing();
+			ImGui::EndChild();
+
+			ImGui::PopFont();
+			ImGui::PopStyleColor();
+
+
 			ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 			ImGui::Text("Sound To Play:"); 
 			ImGui::PopFont(); 

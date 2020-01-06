@@ -1,5 +1,9 @@
 #include "EmitSoundAction.h"
 #include "AudioClip.h"
+#include "imgui.h"
+
+#include "Application.h"
+#include "ModuleImGui.h"
 
 EmitSoundAction::EmitSoundAction(FlyObject* _parentObject)
 {
@@ -16,6 +20,11 @@ EmitSoundAction::~EmitSoundAction()
 
 }
 
+void EmitSoundAction::DrawActionOccurenceCheckboxes()
+{
+	
+}
+
 void EmitSoundAction::Play()
 {
 	audioClip->Play(); 
@@ -27,4 +36,5 @@ void EmitSoundAction::SaveAction(JSON_Object* jsonObject, std::string serializeS
 
 void EmitSoundAction::DoAction()
 {
+	Play(); 
 }
