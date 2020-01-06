@@ -82,6 +82,7 @@ bool ConsoleDockPanel::Draw()
 		PrintMessageStack(); 
 
 		ImGui::EndChild();
+		ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 6); 
 		ImGui::Separator();
 
 		// Command Bar

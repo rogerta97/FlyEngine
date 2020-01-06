@@ -84,6 +84,26 @@ void FileBrowserDockPanel::DrawLeftColumn()
 
 	case ResourceType::RESOURCE_SFX:
 
+	{
+		Texture* resourceTexture = (Texture*)ResourceManager::getInstance()->GetResource("MusicNote"); 
+		ImVec2 centerPoint = ImVec2(ImGui::GetContentRegionMax().x / 2, ImGui::GetContentRegionMax().y / 2);
+		ImVec2 imageProportions = GetImageDimensionsInPreview(resourceTexture);
+
+		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + centerPoint.x - ((imageProportions.x - 5) / 2), ImGui::GetCursorPosY() + centerPoint.y - ((imageProportions.y - 5) / 2)));
+		ImGui::Image((ImTextureID)resourceTexture->GetTextureID(), ImVec2(imageProportions.x - 8, imageProportions.y - 10));
+
+		ImGui::EndChild();
+		ImGui::PopStyleColor();
+
+		break;
+
+	}
+
+	case ResourceType::RESOURCE_MUSIC:
+
+		ImGui::EndChild();
+		ImGui::PopStyleColor();
+
 		break;
 	}
 }
