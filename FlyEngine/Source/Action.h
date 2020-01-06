@@ -12,6 +12,7 @@ enum ActionType
 	AT_DISPLAY_IMAGE,
 	AT_CHANGE_ROOM,
 	AT_MOD_VARIABLE,
+	AT_EMIT_SOUND,
 	AT_null,
 };
 

@@ -12,6 +12,11 @@ AudioClip::~AudioClip()
 
 }
 
+void AudioClip::Play(int loops)
+{
+	Mix_PlayChannel(-1, mixChunk, loops); 
+}
+
 Mix_Chunk* AudioClip::GetChunk()
 {
 	return mixChunk;

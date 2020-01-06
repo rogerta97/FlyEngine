@@ -12,6 +12,26 @@ MusicTrack::~MusicTrack()
 
 }
 
+void MusicTrack::Play(int loops)
+{
+
+	if (Mix_PausedMusic())
+	{
+		Mix_ResumeMusic();
+	}
+	else
+	{
+		Mix_PlayMusic(mixMusic, loops);
+	}
+	
+}
+
+void MusicTrack::Stop()
+{
+	if (Mix_PlayingMusic())
+		Mix_PauseMusic(); 
+}
+
 Mix_Music* MusicTrack::GetMixMusic()
 {
 	return mixMusic;

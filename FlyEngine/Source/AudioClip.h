@@ -10,6 +10,9 @@ public:
 	AudioClip();
 	~AudioClip();
 
+	// Play
+	void Play(int loops = 0); 
+
 	// Set & Get 
 	Mix_Chunk* GetChunk();
 	void SetChunk(Mix_Chunk* newMixChunk);

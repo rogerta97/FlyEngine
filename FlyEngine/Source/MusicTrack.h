@@ -10,6 +10,10 @@ public:
 	MusicTrack();
 	~MusicTrack();
 
+	// Play 
+	void Play(int loops = 0); 
+	void Stop(); 
+
 	// Set & Get 
 	Mix_Music* GetMixMusic();
 	void SetMixMusic(Mix_Music* newMixChunk);

@@ -106,22 +106,26 @@ void FileBrowserDockPanel::DrawMusicTrackResourcePreview(Resource* selectedResou
 	}
 
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-	ImGui::BeginChild("BrowserPreview", ImVec2(210, 70));
+	ImGui::BeginChild("BrowserPreview", ImVec2(210, 95));
 
 	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 8, ImGui::GetCursorPos().y + 8));
-
-	Texture* playAudioTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlayAudio");
-	ImGui::ImageButton((ImTextureID)playAudioTexture->GetTextureID(), ImVec2(25, 25));
-	ImGui::SameLine();
-
-	Texture* stopAudioTexture = (Texture*)ResourceManager::getInstance()->GetResource("PauseAudio");
-	ImGui::ImageButton((ImTextureID)stopAudioTexture->GetTextureID(), ImVec2(25, 25));
-	ImGui::SameLine();
-
-	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 5, 12));
 	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 	ImGui::Text(selectedMusicTrack->GetName().c_str());
 	ImGui::PopFont();
+
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+	Texture* playAudioTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlayAudio");
+	if (ImGui::ImageButton((ImTextureID)playAudioTexture->GetTextureID(), ImVec2(25, 25)))
+	{
+		selectedMusicTrack->Play(); 
+	}
+	ImGui::SameLine();
+
+	Texture* stopAudioTexture = (Texture*)ResourceManager::getInstance()->GetResource("PauseAudio");
+	if (ImGui::ImageButton((ImTextureID)stopAudioTexture->GetTextureID(), ImVec2(25, 25)))
+	{
+		selectedMusicTrack->Stop(); 
+	}
 
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 	ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
@@ -177,22 +181,19 @@ void FileBrowserDockPanel::DrawAudioClipResourcePreview(Resource* selectedResour
 	}
 
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-	ImGui::BeginChild("BrowserPreview", ImVec2(210, 70));
+	ImGui::BeginChild("BrowserPreview", ImVec2(210, 95));
 
 	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 8, ImGui::GetCursorPos().y + 8));
-
-	Texture* playAudioTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlayAudio");
-	ImGui::ImageButton((ImTextureID)playAudioTexture->GetTextureID(), ImVec2(25, 25));
-	ImGui::SameLine();
-
-	Texture* stopAudioTexture = (Texture*)ResourceManager::getInstance()->GetResource("PauseAudio");
-	ImGui::ImageButton((ImTextureID)stopAudioTexture->GetTextureID(), ImVec2(25, 25));
-	ImGui::SameLine();
-
-	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 5, 12));
-	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
-	ImGui::Text(selectedAudioClip->GetName().c_str());
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text(string(selectedAudioClip->GetName() + ":").c_str());
 	ImGui::PopFont();
+
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+	Texture* playAudioTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlayAudio");
+	if (ImGui::ImageButton((ImTextureID)playAudioTexture->GetTextureID(), ImVec2(25, 25)))
+	{
+		selectedAudioClip->Play(); 
+	}
 
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 	ImGui::PushFont(App->moduleImGui->rudaRegularSmall);

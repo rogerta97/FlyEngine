@@ -39,6 +39,7 @@ bool ModuleManager::Init()
 	AddToolsNameDescription("Display Image", "This should be the description of the image tool", AT_DISPLAY_IMAGE);
 	AddToolsNameDescription("Change Scene", "This should be the description of the change scene tool", AT_CHANGE_ROOM);
 	AddToolsNameDescription("Modify Variable", "This should be the description of the mofdify variable tool", AT_MOD_VARIABLE);
+	AddToolsNameDescription("Emit Sound", "This should be the description of the emit sound tool", AT_EMIT_SOUND);
 
 	return true;
 }
@@ -147,6 +148,10 @@ Texture* ModuleManager::GetIconFromActionType(ActionType toolType)
 
 	case AT_MOD_VARIABLE:
 		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("WrenchIcon");
+		break;
+
+	case AT_EMIT_SOUND:
+		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("SpeakerIcon");
 		break;
 
 	default:
