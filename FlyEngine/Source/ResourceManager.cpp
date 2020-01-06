@@ -185,8 +185,35 @@ Resource* ResourceManager::PrintSoundsSelectionPopup()
 	return nullptr; 
 }
 
-void ResourceManager::PrintMusicSelectionPopup()
+Resource* ResourceManager::PrintMusicSelectionPopup()
 {
+	if (ImGui::BeginPopup("print_music_selection_popup"))
+	{
+		static char searchSoundBuffer[256];
+		ImGui::InputTextWithHint("##SearchMusic", "Search...", searchSoundBuffer, IM_ARRAYSIZE(searchSoundBuffer));
+		ImGui::Separator();
+
+		for (auto& currentResource : instance->resourceList)
+		{
+			if (currentResource->GetType() != ResourceType::RESOURCE_MUSIC)
+				continue;
+
+			Texture* speakerIcon = (Texture*)ResourceManager::getInstance()->GetResource("SpeakerIcon");
+
+			ImGui::Image((ImTextureID)speakerIcon->GetTextureID(), ImVec2(20, 20));
+			ImGui::SameLine();
+
+			if (ImGui::Selectable(currentResource->GetName().c_str()))
+			{
+				ImGui::EndPopup();
+				return currentResource;
+			}
+		}
+
+		ImGui::EndPopup();
+	}
+
+	return nullptr;
 }
 
 void ResourceManager::LoadResource(string newResourcePath, ResourceType forceType)

@@ -32,6 +32,8 @@ private:
 	float4 playStopButtonBackgroundColor; 
 	Texture* playStopButtonTexture;
 
+	bool showMusicSelectionPopup = false; 
+
 };
 
 #endif 

@@ -13,6 +13,7 @@
 #include "TinyFileDialog.h"
 #include "SaveAndLoad.h"
 #include "MyFileSystem.h"
+#include "MusicTrack.h"
 
 #include "Room.h"
 #include "Texture.h"
@@ -54,7 +55,7 @@ bool RoomDockPanel::Draw()
 				ImGui::EndTabItem();
 			}
 
-			if (ImGui::BeginTabItem("Viewport Settings")) 
+			if (ImGui::BeginTabItem("Room Settings")) 
 			{
 				ShowViewportSettingsTab();
 				ImGui::EndTabItem();
@@ -340,9 +341,61 @@ void RoomDockPanel::DrawMoveLayerSelectableButtons()
 void RoomDockPanel::ShowViewportSettingsTab()
 {
 	ImGui::Spacing(); 
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Music:");
+	ImGui::PopFont();
+
+	Room* currentRoom = App->moduleRoomManager->GetSelectedRoom(); 
+
+	static char trackNameBuffer[256] = ""; 
+
+	if(currentRoom->backgroundMusic != nullptr)
+		strcpy(trackNameBuffer, currentRoom->backgroundMusic->GetName().c_str());
+
+	ImGui::InputTextWithHint("", "Select Music...", trackNameBuffer, IM_ARRAYSIZE(trackNameBuffer), ImGuiInputTextFlags_ReadOnly);
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+		{
+			int* selectedResourceUID = (int*)payload->Data;
+			Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+			if (resourceDropped->GetType() == RESOURCE_MUSIC)
+			{
+				MusicTrack* musicTrackDropped = (MusicTrack*)resourceDropped;
+				currentRoom->backgroundMusic = musicTrackDropped;
+			}
+		}
+
+		ImGui::EndDragDropTarget();
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Search##SearchMusic"))
+	{
+		ImGui::OpenPopup("print_music_selection_popup");
+		showMusicSelectionPopup = true;
+	}
+
+	if (showMusicSelectionPopup)
+	{
+		Resource* selectedSound = ResourceManager::getInstance()->PrintMusicSelectionPopup();
+
+		if (selectedSound != nullptr)
+		{
+			MusicTrack* audioTrackDropped = (MusicTrack*)selectedSound;
+			currentRoom->backgroundMusic = audioTrackDropped;
+			showMusicSelectionPopup = false;
+		}
+	}
 
 	static int resolutionSelected = 0;
-	if (ImGui::Combo("Resolution", &resolutionSelected, "4:3\0 1:1\0")) {
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Resolution:");
+	ImGui::PopFont();
+
+	if (ImGui::Combo("ResolutionCombo##", &resolutionSelected, "4:3\0 1:1\0")) {
 
 		switch (resolutionSelected)
 		{

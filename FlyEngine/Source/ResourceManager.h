@@ -38,7 +38,7 @@ public:
 	// Selection Popups 
 	static void PrintImagesSelectionPopup(); 
 	static Resource* PrintSoundsSelectionPopup(); 
-	static void PrintMusicSelectionPopup(); 
+	static Resource* PrintMusicSelectionPopup(); 
 
 	// User Resources Loads 
 	static void LoadResource(string newResourcePath, ResourceType forceType = ResourceType::RESOURCE_null);

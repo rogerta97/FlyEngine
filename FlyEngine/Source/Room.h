@@ -11,6 +11,7 @@
 
 using namespace std; 
 
+class MusicTrack; 
 class Room; 
 struct RoomConnection {
 
@@ -97,6 +98,9 @@ public:
 	// Link Management -----
 	list<RoomConnection*> outConnections;
 	list<UID> inRoomUIDs;
+
+	// Music ---------------
+	MusicTrack* backgroundMusic; 
 
 	// Object List ---------
 	list<FlyObject*> objectsInRoom;

@@ -9,6 +9,7 @@
 #include "GameViewportDockPanel.h"
 #include "GameInventory.h"
 #include "ModuleImGui.h"
+#include "MusicTrack.h"
 #include "TextureMSAA.h"
 #include "FlyVariable.h"
 #include "ObjectPropertiesDockPanel.h"
@@ -21,15 +22,8 @@ Room::Room(string roomName)
 	this->roomName = roomName;
 	roomID = RandomNumberGenerator::GenerateUID(); 
 	roomBlackboard = new Blackboard(); 
+	backgroundMusic = nullptr; 
 
-	//roomBlackboard->AddDefaultVariable(); 
-
-	//FlyVariable* boolVar = roomBlackboard->AddDefaultVariable(); 
-	//boolVar->name = "VarDefault_Toggle"; 
-	//boolVar->varIntegerValue = 0; 
-	//boolVar->varType = Var_Toggle; 
-
-	// Add The Room to the NodeGraph 
 	static int placer = 50;
 	NodeGraph::getInstance()->CreateNode(roomName, ImVec2(placer, 50), roomID);
 	
