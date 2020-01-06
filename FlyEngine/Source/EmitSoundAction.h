@@ -12,6 +12,8 @@ public:
 	EmitSoundAction(FlyObject* _parentObject);
 	~EmitSoundAction();
 
+	void Play(); 
+
 	void SaveAction(JSON_Object* jsonObject, std::string serializeStr);
 	void DoAction(); 
 

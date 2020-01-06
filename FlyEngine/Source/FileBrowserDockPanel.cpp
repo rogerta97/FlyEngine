@@ -280,6 +280,12 @@ void FileBrowserDockPanel::DrawDirectoryRecursive(string& directory)
 			iconTextureID = (ImTextureID)speakerIcon->GetTextureID();
 			break;
 		}
+		case FILE_WAV:
+		{
+			Texture* speakerIcon = (Texture*)ResourceManager::getInstance()->GetResource("SpeakerIcon");
+			iconTextureID = (ImTextureID)speakerIcon->GetTextureID();
+			break;
+		}
 		}
 		
 		ImGui::Image(iconTextureID, ImVec2(20, 20)); ImGui::SameLine();

@@ -102,6 +102,9 @@ FileExtension MyFileSystem::GetFileExtension(string path)
 
 	if (path == ".mp3" || path == ".MP3")
 		return FILE_MP3;
+
+	if (path == ".wav" || path == ".WAV")
+		return FILE_WAV;
 }
 
 string MyFileSystem::GetIconsDirectory()

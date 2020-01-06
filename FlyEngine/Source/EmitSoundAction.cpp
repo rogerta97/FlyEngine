@@ -1,4 +1,5 @@
 #include "EmitSoundAction.h"
+#include "AudioClip.h"
 
 EmitSoundAction::EmitSoundAction(FlyObject* _parentObject)
 {
@@ -13,6 +14,11 @@ EmitSoundAction::EmitSoundAction(FlyObject* _parentObject)
 EmitSoundAction::~EmitSoundAction()
 {
 
+}
+
+void EmitSoundAction::Play()
+{
+	audioClip->Play(); 
 }
 
 void EmitSoundAction::SaveAction(JSON_Object* jsonObject, std::string serializeStr)

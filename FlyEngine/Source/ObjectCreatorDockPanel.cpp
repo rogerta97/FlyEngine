@@ -538,8 +538,12 @@ void ObjectCreatorDockPanel::DrawEmitSoundActionSettings()
 
 	static char soundNameBuffer[256] = "";
 
-	Texture* speakerIcon = (Texture*)ResourceManager::getInstance()->GetResource("SpeakerIcon"); 
-	ImGui::Image((ImTextureID)speakerIcon->GetTextureID(), ImVec2(22, 22));
+	Texture* playSound = (Texture*)ResourceManager::getInstance()->GetResource("PlayAudio");
+	if (ImGui::ImageButton((ImTextureID)playSound->GetTextureID(), ImVec2(20, 20)))
+	{
+		emitSoundAction->Play();
+	}
+
 	ImGui::SameLine(); 
 	
 	ImGui::InputTextWithHint("", "Select Sound...", soundNameBuffer, IM_ARRAYSIZE(soundNameBuffer), ImGuiInputTextFlags_ReadOnly);
