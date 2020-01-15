@@ -3,9 +3,11 @@
 #include "MyFileSystem.h"
 #include "Application.h"
 #include "ModuleRoomManager.h"
+#include "ResourceManager.h"
 #include "Room.h"
 #include "FlyObject.h"
 
+#include "EmitSoundAction.h"
 #include "DisplayImageAction.h"
 #include "ChangeRoomAction.h"
 
@@ -134,6 +136,15 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 
 			Room* room = App->moduleRoomManager->GetRoom(destinationRoomName); 
 			changeRoomAction->SetDestination(room); 
+		}
+
+		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("EmitSound")).c_str()))
+		{
+			string audioClipPath = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("EmitSound.Path")).c_str());
+			EmitSoundAction* emitSoundAction = newObject->AddEmitSoundAction();
+
+			AudioClip* soundClipResource = (AudioClip*)ResourceManager::getInstance()->GetResource(audioClipPath.c_str()); 
+			emitSoundAction->audioClip = soundClipResource; 
 		}
 	}
 

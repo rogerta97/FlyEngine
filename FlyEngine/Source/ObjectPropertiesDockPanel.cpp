@@ -605,7 +605,8 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 
 	if (showToolDictionary)
 	{
-		ImGui::BeginChild("AddToolObjectProperties", ImVec2(ImGui::GetContentRegionAvailWidth(), 150)); 
+		ImGui::Spacing();
+		ImGui::BeginChild("AddToolObjectProperties", ImVec2(ImGui::GetContentRegionAvailWidth(), 200)); 
 
 		// Search Bar ---------------
 		ImGui::InputTextWithHint("##SearchTool", "Search...", searchNewToolBuffer, IM_ARRAYSIZE(searchNewToolBuffer));
@@ -621,35 +622,35 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 		// Tools Dictonary ----------
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(2.0f, 2.0f));
-			ImGui::BeginChild("##5ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), 150));
+		ImGui::BeginChild("##5ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), 150));
 
-			ActionSelectableInfo* newActionSelected = App->moduleManager->DrawActionDictionaryUI();
-			if (newActionSelected != nullptr)
+		ActionSelectableInfo* newActionSelected = App->moduleManager->DrawActionDictionaryUI();
+		if (newActionSelected != nullptr)
+		{
+			switch (newActionSelected->actionType)
 			{
-				switch (newActionSelected->actionType)
-				{
-				case AT_DISPLAY_IMAGE:
-					selectedObject->AddDisplayImageAction("None");
-					break;
+			case AT_DISPLAY_IMAGE:
+				selectedObject->AddDisplayImageAction("None");
+				break;
 
-				case AT_CHANGE_ROOM:
-					selectedObject->AddChangeRoomAction();
-					break;
+			case AT_CHANGE_ROOM:
+				selectedObject->AddChangeRoomAction();
+				break;
 
-				case AT_MOD_VARIABLE:
-					selectedObject->AddModifyVariableAction();
-					break;
+			case AT_MOD_VARIABLE:
+				selectedObject->AddModifyVariableAction();
+				break;
 
-				case AT_EMIT_SOUND:
-					selectedObject->AddEmitSoundAction();
-					break;
+			case AT_EMIT_SOUND:
+				selectedObject->AddEmitSoundAction();
+				break;
 
-				case AT_null:
-					break;
-				}
-
-				showToolDictionary = false; 
+			case AT_null:
+				break;
 			}
+
+			showToolDictionary = false;
+		}
 
 		ImGui::EndChild();
 		ImGui::PopStyleColor();

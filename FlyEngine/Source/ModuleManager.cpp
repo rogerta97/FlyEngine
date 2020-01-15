@@ -110,6 +110,7 @@ ActionSelectableInfo* ModuleManager::DrawActionDictionaryUI()
 		{
 			returnInfo = &currentToolDescription; 
 		}
+
 		ImGui::PopFont();
 
 		// Description -----
