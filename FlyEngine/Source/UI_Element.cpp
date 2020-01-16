@@ -2,6 +2,7 @@
 
 UI_Element::UI_Element()
 {
+	uiObject = nullptr; 
 }
 
 UI_Element::~UI_Element()

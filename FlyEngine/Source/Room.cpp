@@ -15,6 +15,7 @@
 #include "ObjectPropertiesDockPanel.h"
 #include "ModuleRoomManager.h"
 #include "Blackboard.h"
+#include "RoomUIHandler.h"
 #include "mmgr.h"
 
 Room::Room(string roomName)
@@ -26,6 +27,8 @@ Room::Room(string roomName)
 
 	static int placer = 50;
 	NodeGraph::getInstance()->CreateNode(roomName, ImVec2(placer, 50), roomID);
+
+	roomUIHandler = new RoomUIHandler(this); 
 	
 	placer += 250; 
 }

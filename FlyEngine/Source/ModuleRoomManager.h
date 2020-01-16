@@ -29,7 +29,7 @@ public:
 	void ReceiveEvent(FlyEngineEvent eventType);
 	bool LoadRoomsData(); 
 
-	// Rooms
+	// Rooms ------------
 	Room* CreateEmptyRoom(string roomName = "New Room"); 
 	const char** GetRoomsAsCombo(bool includeSelected = false); 
 	void DeleteRoom(string roomName); 
@@ -39,7 +39,7 @@ public:
 
 	void SerializeRoomListNames(); 
 
-	// Utility
+	// Utility ----------
 	Room* GetRoom(string roomName) const;
 	Room* GetRoom(UID roomID) const; 
 	Room* GetFirstRoom(); 

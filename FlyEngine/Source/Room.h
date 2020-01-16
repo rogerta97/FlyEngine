@@ -13,6 +13,7 @@ using namespace std;
 
 class MusicTrack; 
 class Room; 
+class RoomUIHandler; 
 struct RoomConnection {
 
 	RoomConnection(Room* _originRoom, Room* _roomConnected, string _connectionName, bool _isBidirectional);
@@ -97,9 +98,11 @@ public:
 	Blackboard* CreateBlackboard();
 
 public: 
+
 	// Link Management -----
 	list<RoomConnection*> outConnections;
 	list<UID> inRoomUIDs;
+	RoomUIHandler* roomUIHandler; 
 
 	// Music ---------------
 	MusicTrack* backgroundMusic; 

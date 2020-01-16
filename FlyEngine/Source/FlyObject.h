@@ -14,6 +14,7 @@ enum FlyObjectType
 {
 	ACTION_OBJECT, 
 	INVENTORY_ITEM,
+	UI_HOLDER, 
 };
 
 class Gizmos; 

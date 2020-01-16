@@ -103,7 +103,10 @@
     <Filter Include="Source\Tools\NodeGraph">
       <UniqueIdentifier>{4b410c40-2d86-44f5-9844-5dabee35f670}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\FlyEngine\FlyObject\UIElements">
+    <Filter Include="Source\Tools\RoomUIHandler">
+      <UniqueIdentifier>{131bdce2-1c7b-427f-8801-1acd31b32765}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\FlyEngine\UIElements">
       <UniqueIdentifier>{66f5bde8-f901-464c-bf5c-da947291deb5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -388,10 +391,13 @@
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClCompile>
     <ClCompile Include="Source\UI_Image.cpp">
-      <Filter>Source\FlyEngine\FlyObject\UIElements</Filter>
+      <Filter>Source\FlyEngine\UIElements</Filter>
     </ClCompile>
     <ClCompile Include="Source\UI_Element.cpp">
-      <Filter>Source\FlyEngine\FlyObject\UIElements</Filter>
+      <Filter>Source\FlyEngine\UIElements</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RoomUIHandler.cpp">
+      <Filter>Source\Tools\RoomUIHandler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -801,10 +807,13 @@
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
     </ClInclude>
     <ClInclude Include="Source\UI_Image.h">
-      <Filter>Source\FlyEngine\FlyObject\UIElements</Filter>
+      <Filter>Source\FlyEngine\UIElements</Filter>
     </ClInclude>
     <ClInclude Include="Source\UI_Element.h">
-      <Filter>Source\FlyEngine\FlyObject\UIElements</Filter>
+      <Filter>Source\FlyEngine\UIElements</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RoomUIHandler.h">
+      <Filter>Source\Tools\RoomUIHandler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
