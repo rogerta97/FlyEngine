@@ -409,6 +409,11 @@ Blackboard* Room::GetBlackboard()
 	return roomBlackboard;
 }
 
+FlyVariable* Room::GetBlackboardVariable(string varName)
+{
+	return roomBlackboard->GetVariable(varName);
+}
+
 RoomConnection::RoomConnection(Room* _originRoom, Room* _roomConnected, string _connectionName, bool _isBidirectional)
 {
 	originRoom = _originRoom;

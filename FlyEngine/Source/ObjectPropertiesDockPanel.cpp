@@ -447,14 +447,16 @@ void ObjectPropertiesDockPanel::DrawEmitSoundSettings()
 			ImGui::PopFont();
 			ImGui::PopStyleColor();
 
-
 			ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 			ImGui::Text("Sound To Play:"); 
 			ImGui::PopFont(); 
 
 			static char soundNameBuffer[256] = "";
 
-			strcpy(soundNameBuffer, emitSoundAction->audioClip->GetName().c_str());
+			if (emitSoundAction->audioClip != nullptr)
+			{
+				strcpy(soundNameBuffer, emitSoundAction->audioClip->GetName().c_str());
+			}
 
 			Texture* playSound = (Texture*)ResourceManager::getInstance()->GetResource("PlayAudio");
 			if (ImGui::ImageButton((ImTextureID)playSound->GetTextureID(), ImVec2(20, 20)))
@@ -679,7 +681,7 @@ void ObjectPropertiesDockPanel::DrawActionSelectable(ActionSelectableInfo& selec
 	ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 52);
 
 	ImGui::PushFont(App->moduleImGui->rudaRegularTiny);
-	ImGui::TextWrapped(selectableInfo.actionDescription.c_str());
+	ImGui::Text(selectableInfo.actionDescription.c_str());
 	ImGui::PopFont();
 }
 

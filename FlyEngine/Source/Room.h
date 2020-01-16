@@ -92,6 +92,7 @@ public:
 	FlyObject* GetSelectedObject() const;
 
 	Blackboard* GetBlackboard(); 
+	FlyVariable* GetBlackboardVariable(string varName); 
 	Blackboard* CreateBlackboard();
 
 public: 

@@ -78,7 +78,10 @@ public:
 
 	// Save & Load --------------------
 	virtual void SaveAction(JSON_Object* jsonObject, string serializeObjectString);
+
+	// Occurrence ---------------------
 	void SaveOccurrence(JSON_Object* jsonObject, string serializeObjectString);
+	void LoadOccurrence(JSON_Object* jsonObject, string serializeObjectString); 
 
 	// Actions ------------------------
 	virtual void DoAction(); 

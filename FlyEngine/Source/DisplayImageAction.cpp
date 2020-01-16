@@ -17,6 +17,7 @@
 
 DisplayImageAction::DisplayImageAction(FlyObject* _parentObject = nullptr)
 {
+	//Action::Action();
 	actionType = AT_DISPLAY_IMAGE; 
 	quadMesh = nullptr; 
 	imageTexture = nullptr; 
@@ -120,6 +121,12 @@ void DisplayImageAction::SaveAction(JSON_Object* jsonObject, string serializeObj
 
 		json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("TextureName")).c_str(), MyFileSystem::getInstance()->GetLastPathItem(imageTexture->GetPath(), true).c_str());
 	}
+	else
+	{
+		json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("ImageWidth")).c_str(), 0);
+		json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("ImageHeigth")).c_str(), 0);
+		json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("TextureName")).c_str(), MyFileSystem::getInstance()->GetLastPathItem("None", true).c_str());
+	}
 }
 
 void DisplayImageAction::DrawActionOccurenceCheckboxes()
@@ -148,8 +155,13 @@ void DisplayImageAction::DrawActionOccurenceCheckboxes()
 
 bool DisplayImageAction::CreateImage(const char* texturePath)
 {
-	imageTexture = ImageImporter::getInstance()->LoadTexture(texturePath, false);
-	ResourceManager::getInstance()->AddResource(imageTexture, "test"); 
+	if (texturePath != "None")
+	{
+		string resourceName = MyFileSystem::getInstance()->GetLastPathItem(texturePath, false);
+		imageTexture = (Texture*)ResourceManager::getInstance()->GetResource(resourceName.c_str());
+	}
+	else
+		imageTexture = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject");
 
 	if (imageTexture != nullptr)
 	{

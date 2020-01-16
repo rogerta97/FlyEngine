@@ -32,7 +32,7 @@ void EmitSoundAction::Play()
 
 void EmitSoundAction::SaveAction(JSON_Object* jsonObject, std::string serializeStr)
 {
-	string toolsSerializeSection = serializeStr + string("Actions.EmitAudio.");
+	string toolsSerializeSection = serializeStr + string("Actions.EmitSound.");
 	Action::SaveOccurrence(jsonObject, toolsSerializeSection);
 
 	if (audioClip != nullptr)	

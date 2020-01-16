@@ -55,18 +55,18 @@ bool ModuleManager::Start()
 	}
 
 	// Create Debug Object 
-	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
-	FlyObject* addingObject = selectedRoom->CreateFlyObject("AddingObject", "TráTrá!");
+	//Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+	//FlyObject* addingObject = selectedRoom->CreateFlyObject("AddingObject", "TráTrá!");
 
-	string keyPath = MyFileSystem::getInstance()->GetSolutionDirectory() + "\\Source\\Game\\Resources\\Images\\Transformer.png";
-	addingObject->AddDisplayImageAction(keyPath.c_str());
+	//string keyPath = MyFileSystem::getInstance()->GetSolutionDirectory() + "\\Source\\Game\\Resources\\Images\\Transformer.png";
+	//addingObject->AddDisplayImageAction(keyPath.c_str());
 
-	addingObject->CreateClickableArea(float2(0, 0), float2(1, 1), false);
-	addingObject->clickableAreaActive = true;
-	
-	EmitSoundAction* emitSoundAction = addingObject->AddEmitSoundAction(); 
-	emitSoundAction->audioClip = (AudioClip*)ResourceManager::getInstance()->GetResource("Fart"); 
-	emitSoundAction->SetOccObjectClicked(true); 
+	//addingObject->CreateClickableArea(float2(0, 0), float2(1, 1), false);
+	//addingObject->clickableAreaActive = true;
+	//
+	//EmitSoundAction* emitSoundAction = addingObject->AddEmitSoundAction(); 
+	//emitSoundAction->audioClip = (AudioClip*)ResourceManager::getInstance()->GetResource("Fart"); 
+	//emitSoundAction->SetOccObjectClicked(true); 
 
 	return true;
 }

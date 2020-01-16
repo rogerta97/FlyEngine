@@ -115,25 +115,22 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 	float2 scale(scaleX, scaleY);
 	newObject->transform->SetScale(scale);
 
-	// Actions -------
+	// Create Actions -------
 	if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("Actions")).c_str()))
 	{
 		string serializeObjectStrActions = serializeObjectStr + "Actions.";
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayImage")).c_str()))
 		{
-			int quadWidth = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("DisplayImage.ImageWidth")).c_str());
-			int quadHeight = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("DisplayImage.ImageHeigth")).c_str());
-
-			string textureName = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("DisplayImage.TextureName")).c_str());
-			string imagePath(MyFileSystem::getInstance()->GetSolutionDirectory() + string("EngineResources\\Images\\" + textureName));
-
-			DisplayImageAction* displayImageAction = newObject->AddDisplayImageAction(imagePath.c_str()); 
+			string texturePath = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("DisplayImage.TextureName")).c_str());
+			DisplayImageAction* displayImageAction = newObject->AddDisplayImageAction(texturePath.c_str());
+			displayImageAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayImage.Occurrence.")); 
 		}
 
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ChangeRoom")).c_str()))
 		{
 			string destinationRoomName = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("ChangeRoom.Destination")).c_str());
 			ChangeRoomAction* changeRoomAction = newObject->AddChangeRoomAction(); 
+			changeRoomAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("ChangeRoom.Occurrence."));
 
 			Room* room = App->moduleRoomManager->GetRoom(destinationRoomName); 
 			changeRoomAction->SetDestination(room); 
@@ -143,13 +140,31 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		{
 			int effectsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.EffectsAmount")).c_str());
 			ModifyVariableAction* modifyVariableAction = newObject->AddModifyVariableAction();
+			modifyVariableAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("ModifyVariable.Occurrence."));
 
+			string effectsGroupStr = serializeObjectStrActions + "ModifyVariable.EffectsGroup.";
 			int count = 0; 
-			while (count++ < effectsAmount)
+			while (count < effectsAmount)
 			{
+				ModifyVariableEffect* newEffect = new ModifyVariableEffect(); 
+				
+				string effectSerializeStr = effectsGroupStr + "Effect_" + to_string(count) + "."; 
 
-				//ModifyVariableEffect* newEffect = new ModifyVariableEffect(); 
+				// Load Target Variable -----------
+				string varName = json_object_dotget_string(root_obj, string(effectSerializeStr + string("TargetVariableName")).c_str());
+	
+				FlyVariable* targetVariable = currentRoom->GetBlackboardVariable(varName); 
+				newEffect->targetVariable = targetVariable;
 
+				// Load Operator Type, IncInt, NextToggle ----------
+				int varOpTmp = (int)json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.OperatorType")).c_str());
+				newEffect->variableOperatorType = (VariableOperatorType)varOpTmp; 
+
+				newEffect->incIntegerValue = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.IncIntegerValue")).c_str());
+				newEffect->nextToggleValue = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.NextToggleValue")).c_str());
+
+				modifyVariableAction->AddEffect(newEffect); 
+				count++;
 			}
 
 		}
@@ -158,9 +173,14 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		{
 			string audioClipPath = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("EmitSound.Path")).c_str());
 			EmitSoundAction* emitSoundAction = newObject->AddEmitSoundAction();
+			emitSoundAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("EmitSound.Occurrence."));
 
-			AudioClip* soundClipResource = (AudioClip*)ResourceManager::getInstance()->GetResource(audioClipPath.c_str()); 
-			emitSoundAction->audioClip = soundClipResource; 
+			if (audioClipPath != "None")
+			{
+				string audioClipResourceName = MyFileSystem::getInstance()->GetLastPathItem(audioClipPath, false);
+				AudioClip* soundClipResource = (AudioClip*)ResourceManager::getInstance()->GetResource(audioClipResourceName.c_str());
+				emitSoundAction->audioClip = soundClipResource; 
+			}
 		}
 	}
 

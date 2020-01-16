@@ -69,6 +69,10 @@ Resource* ResourceManager::GetResource(std::string resourceName, ResourceType ty
 {
 	for (auto& it : instance->resourceList)
 	{
+		if (resourceName == "Fart")
+		{
+			flog("sa");
+		}
 		if ((it)->GetName() == resourceName)
 		{
 			if (type != RESOURCE_null)

@@ -15,6 +15,12 @@ Action::Action()
 {
 	actionType = AT_null; 
 	isSelected = false; 
+
+	occ_SceneEnter = false;
+	occ_SceneLeave = false;
+	occ_blackboardValue = false;
+	occ_ObjectClicked = false;
+
 	return; 
 }
 
@@ -69,6 +75,14 @@ void Action::SaveOccurrence(JSON_Object* jsonObject, string serializeObjectStrin
 			currentCondition->SaveCondition(jsonObject, conditionsSaveStr, count++); 	
 		}
 	}
+}
+
+void Action::LoadOccurrence(JSON_Object* jsonObject, string serializeObjectString)
+{
+	occ_SceneEnter = json_object_dotget_boolean(jsonObject, string(serializeObjectString + "SceneEnter").c_str());
+	occ_SceneLeave = json_object_dotget_boolean(jsonObject, string(serializeObjectString + "SceneLeave").c_str());
+	occ_blackboardValue = json_object_dotget_boolean(jsonObject, string(serializeObjectString + "BlackboardCondition").c_str());
+	occ_ObjectClicked = json_object_dotget_boolean(jsonObject, string(serializeObjectString + "ObjectClicked").c_str());
 }
 
 void Action::DoAction()
