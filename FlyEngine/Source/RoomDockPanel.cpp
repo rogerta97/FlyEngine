@@ -67,6 +67,27 @@ bool RoomDockPanel::Draw()
 				ImGui::EndTabItem();
 			}
 
+			if (ImGui::BeginTabItem("User Interface"))
+			{
+				
+				if (ImGui::Button("Add Debug UI Image"))
+				{
+
+				}
+
+				if (ImGui::Button("Add Debug UI Button"))
+				{
+
+				}
+
+				if (ImGui::Button("Add Debug UI Text"))
+				{
+
+				}
+
+				ImGui::EndTabItem();
+			}
+
 			ImGui::EndTabBar();
 		}
 	}

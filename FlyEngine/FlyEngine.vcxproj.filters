@@ -103,6 +103,9 @@
     <Filter Include="Source\Tools\NodeGraph">
       <UniqueIdentifier>{4b410c40-2d86-44f5-9844-5dabee35f670}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\FlyEngine\FlyObject\UIElements">
+      <UniqueIdentifier>{66f5bde8-f901-464c-bf5c-da947291deb5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -383,6 +386,12 @@
     </ClCompile>
     <ClCompile Include="Source\EmitSoundAction.cpp">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UI_Image.cpp">
+      <Filter>Source\FlyEngine\FlyObject\UIElements</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UI_Element.cpp">
+      <Filter>Source\FlyEngine\FlyObject\UIElements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -790,6 +799,12 @@
     </ClInclude>
     <ClInclude Include="Source\EmitSoundAction.h">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UI_Image.h">
+      <Filter>Source\FlyEngine\FlyObject\UIElements</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UI_Element.h">
+      <Filter>Source\FlyEngine\FlyObject\UIElements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -27,6 +27,7 @@ struct RoomConnection {
 };
 
 class FlyObject; 
+class UI_Element; 
 class Room {
 
 public:
@@ -105,6 +106,9 @@ public:
 
 	// Object List ---------
 	list<FlyObject*> objectsInRoom;
+
+	// User Interface ------
+	list<UI_Element*> uiElements; 
 
 
 private: 

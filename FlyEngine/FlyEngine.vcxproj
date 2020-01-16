@@ -92,6 +92,8 @@
     <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\TinyFileDialog.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
+    <ClCompile Include="Source\UI_Element.cpp" />
+    <ClCompile Include="Source\UI_Image.cpp" />
     <ClCompile Include="Source\ViewportManager.cpp" />
     <ClCompile Include="Source\ModuleRoomManager.cpp" />
     <ClCompile Include="Source\ModuleImGui.cpp" />
@@ -228,6 +230,8 @@
     <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\TinyFileDialog.h" />
     <ClInclude Include="Source\Transform.h" />
+    <ClInclude Include="Source\UI_Element.h" />
+    <ClInclude Include="Source\UI_Image.h" />
     <ClInclude Include="Source\ViewportManager.h" />
     <ClInclude Include="Source\ModuleRoomManager.h" />
     <ClInclude Include="Source\ModuleImGui.h" />
