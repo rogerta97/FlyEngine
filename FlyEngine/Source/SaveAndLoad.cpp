@@ -3,6 +3,7 @@
 #include "MyFileSystem.h"
 #include "Application.h"
 #include "ModuleRoomManager.h"
+#include "ModifyVariableAction.h"
 #include "ResourceManager.h"
 #include "Room.h"
 #include "FlyObject.h"
@@ -136,6 +137,21 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 
 			Room* room = App->moduleRoomManager->GetRoom(destinationRoomName); 
 			changeRoomAction->SetDestination(room); 
+		}
+
+		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ModifyVariable")).c_str()))
+		{
+			int effectsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.EffectsAmount")).c_str());
+			ModifyVariableAction* modifyVariableAction = newObject->AddModifyVariableAction();
+
+			int count = 0; 
+			while (count++ < effectsAmount)
+			{
+
+				//ModifyVariableEffect* newEffect = new ModifyVariableEffect(); 
+
+			}
+
 		}
 
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("EmitSound")).c_str()))

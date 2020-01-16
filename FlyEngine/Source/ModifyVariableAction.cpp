@@ -274,5 +274,8 @@ void ModifyVariableEffect::AttachToVariable(FlyVariable* _targetVariable)
 
 ModifyVariableEffect::ModifyVariableEffect()
 {
+	incIntegerValue = 0;
+	this->nextToggleValue = false; 
+	this->variableOperatorType = VariableOperatorType::VarEffect_None; 
 	targetVariable = nullptr; 
 }
