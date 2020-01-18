@@ -10,6 +10,7 @@
 #include "ModuleImGui.h"
 #include "Texture.h"
 #include "ModifyVariableAction.h"
+#include "RoomUIHandler.h"
 #include "FlyObject.h"
 #include "ViewportManager.h"
 #include "imgui.h"
@@ -164,6 +165,16 @@ FlyObject* ModuleManager::GetSelectedFlyObject()
 void ModuleManager::SetSelectedFlyObject(FlyObject* newSelectedObject)
 {
 	App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(newSelectedObject);
+}
+
+UI_Element* ModuleManager::GetSelectedUIElement()
+{
+	return App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->GetSelectedElement(); 
+}
+
+void ModuleManager::SetSelectedUIElement(UI_Element* newSelectedObject)
+{
+	App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->SetSelectedElement(newSelectedObject); 
 }
 
 std::list<ActionSelectableInfo> ModuleManager::GetToolsNamesDescriptionsList() const

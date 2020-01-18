@@ -15,6 +15,8 @@ public:
 
 	bool Draw();
 
+	void DrawUserInterfaceTab();
+
 	void ShowBlackboardTab();
 
 	void DrawRoomVariablesUI();

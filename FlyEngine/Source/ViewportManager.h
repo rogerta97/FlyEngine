@@ -14,8 +14,15 @@ enum ViewportAspectRatio
 	AR_1_1,
 };
 
+enum EditRoomMode
+{
+	EDIT_ROOM_OBJECTS,
+	EDIT_ROOM_UI,
+};
+
 class TextureMSAA; 
 class FlyObject; 
+class UI_Element; 
 struct ViewportManager 
 {
 private:
@@ -29,7 +36,10 @@ public:
 	// Utility --------------------------------
 	static void Delete();
 	static void ResizeViewport();
-	static list<FlyObject*> RaycastMouseClick(); 
+
+	// Raycast --------------------------------
+	static list<FlyObject*> RaycastMouseClickObjects(); 
+	static list<UI_Element*> RaycastMouseClickUI(); 
 
 	static float GetWidthFromHeight(float viewportHeight);
 	static float GetHeightFromWidth(float viewportWidth);
@@ -45,6 +55,7 @@ public:
 	static void SetAspectRatioType(ViewportAspectRatio newAR);
 
 public:
+	EditRoomMode editRoomMode; 
 	TextureMSAA* viewportTexture;
 	ViewportAspectRatio viewportAspectRatio; 
 

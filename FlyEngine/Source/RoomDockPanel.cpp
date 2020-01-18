@@ -8,7 +8,9 @@
 #include "ObjectCreatorDockPanel.h"
 #include "ModuleImGui.h"
 
+#include "UI_Image.h"
 #include "RoomDockPanel.h"
+#include "RoomUIHandler.h"
 #include "ImageImporter.h"
 #include "TinyFileDialog.h"
 #include "SaveAndLoad.h"
@@ -45,48 +47,50 @@ bool RoomDockPanel::Draw()
 	if (ImGui::Begin(panelName.c_str(), &visible))
 	{
 		DrawTopButtons();
-		
+
 		ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
 		if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
 		{
 			if (ImGui::BeginTabItem("Room Object List"))
 			{
-				DrawRoomHierarchy(); 
+				DrawRoomHierarchy();
+
 				ImGui::EndTabItem();
 			}
 
-			if (ImGui::BeginTabItem("Room Settings")) 
+			if (ImGui::IsItemClicked())
+				ViewportManager::getInstance()->editRoomMode = EDIT_ROOM_OBJECTS;
+
+			if (ImGui::BeginTabItem("Room Settings"))
 			{
 				ShowViewportSettingsTab();
+
 				ImGui::EndTabItem();
 			}
+
+			if (ImGui::IsItemClicked())
+				ViewportManager::getInstance()->editRoomMode = EDIT_ROOM_OBJECTS;
 
 			if (ImGui::BeginTabItem("Blackboard"))
 			{
 				ShowBlackboardTab();
+
+
 				ImGui::EndTabItem();
 			}
+
+			if (ImGui::IsItemClicked())
+				ViewportManager::getInstance()->editRoomMode = EDIT_ROOM_OBJECTS;
 
 			if (ImGui::BeginTabItem("User Interface"))
 			{
-				
-				if (ImGui::Button("Add Debug UI Image"))
-				{
-
-				}
-
-				if (ImGui::Button("Add Debug UI Button"))
-				{
-
-				}
-
-				if (ImGui::Button("Add Debug UI Text"))
-				{
-
-				}
+				DrawUserInterfaceTab();
 
 				ImGui::EndTabItem();
 			}
+
+			if (ImGui::IsItemClicked())
+				ViewportManager::getInstance()->editRoomMode = EDIT_ROOM_UI;
 
 			ImGui::EndTabBar();
 		}
@@ -94,6 +98,29 @@ bool RoomDockPanel::Draw()
 
 	ImGui::End();
 	return true;
+}
+
+void RoomDockPanel::DrawUserInterfaceTab()
+{
+	if (ViewportManager::getInstance()->editRoomMode == EDIT_ROOM_UI)
+	{
+		if (ImGui::Button("Add Debug UI Image"))
+		{
+			Resource* imageResource = ResourceManager::getInstance()->GetResource("TestUIImage");
+			UI_Image* newImage = App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->CreateUIImage(imageResource->GetUID());
+		}
+
+		if (ImGui::Button("Add Debug UI Button"))
+		{
+
+		}
+
+		if (ImGui::Button("Add Debug UI Text"))
+		{
+
+		}
+	}
+
 }
 
 void RoomDockPanel::ShowBlackboardTab()
@@ -106,7 +133,7 @@ void RoomDockPanel::ShowBlackboardTab()
 	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
-		App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->AddDefaultVariable(); 
+		App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->AddDefaultVariable();
 	}
 
 	ImGui::SameLine();
@@ -134,45 +161,45 @@ void RoomDockPanel::ShowBlackboardTab()
 
 void RoomDockPanel::DrawRoomVariablesUI()
 {
-	Blackboard* roomBB = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard(); 
+	Blackboard* roomBB = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard();
 
 	PUSH_CHILD_BG_COLOR;
 	ImGui::BeginChild("BlackboardChild", ImVec2(ImGui::GetContentRegionMax().x - 5, ImGui::GetContentRegionAvail().y));
 
 	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 5, (ImGui::GetCursorPos().y + 5)));
 
-	int counter = 0; 
+	int counter = 0;
 	for (auto& currentVar : roomBB->blackboardVariablesList)
 	{
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.28f, 0.43f, 0.56, 0.2f));
 
 		string varChildID = "VariableUIGroup" + to_string(counter);
 		ImGui::BeginChild(varChildID.c_str(), ImVec2(ImGui::GetContentRegionAvail().x - 5, 95));
-		
+
 		ImGui::Columns(2, 0, false);
 		ImGui::SetColumnWidth(0, 70);
 
-		int iconSize = 47; 
+		int iconSize = 47;
 		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 8, (ImGui::GetContentRegionAvail().y / 2) - iconSize / 2));
 		Texture* variableType = nullptr;
 
-		if(currentVar->varType == Var_Integer)
+		if (currentVar->varType == Var_Integer)
 			variableType = (Texture*)ResourceManager::getInstance()->GetResource("NaturalNumberIcon");
 		else if (currentVar->varType == Var_Toggle)
 			variableType = (Texture*)ResourceManager::getInstance()->GetResource("ToggleIcon");
-		
+
 		ImGui::Image((ImTextureID*)variableType->GetTextureID(), ImVec2(iconSize, iconSize));
 
 		ImGui::NextColumn();
 		ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5);
 
-		char nameBuffer[256]; 
+		char nameBuffer[256];
 		strcpy(nameBuffer, currentVar->name.c_str());
 		string nameStringID = "Name##VarName" + to_string(counter);
 
-		if(ImGui::InputText(nameStringID.c_str(), nameBuffer, IM_ARRAYSIZE(nameBuffer)))
+		if (ImGui::InputText(nameStringID.c_str(), nameBuffer, IM_ARRAYSIZE(nameBuffer)))
 		{
-			currentVar->name = nameBuffer; 
+			currentVar->name = nameBuffer;
 		}
 
 		string comboStringID = "Variable Type##VarType" + to_string(counter);
@@ -183,12 +210,12 @@ void RoomDockPanel::DrawRoomVariablesUI()
 		switch (currentItemType)
 		{
 
-		case 0: 
+		case 0:
 		{
 			ImGui::InputInt(valueStringID.c_str(), &currentVar->varIntegerValue);
 			currentVar->varType = Var_Integer;
-			
-			break; 
+
+			break;
 		}
 
 		case 1:
@@ -199,17 +226,17 @@ void RoomDockPanel::DrawRoomVariablesUI()
 		}
 		}
 
-		
+
 
 		ImGui::EndChild();
-		ImGui::PopStyleColor(); 
+		ImGui::PopStyleColor();
 
 		counter++;
 	}
 
 	ImGui::PopStyleColor();
 
-	ImGui::EndChild(); 
+	ImGui::EndChild();
 }
 
 void RoomDockPanel::DrawTopButtons()
@@ -218,7 +245,7 @@ void RoomDockPanel::DrawTopButtons()
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.29f, 0.35f, 0.39f, 1.00f));
 	static ImVec4 playButtonColor = ImVec4(0.35f, 0.39f, 0.50f, 1.00f);
 	Texture* plusObjectTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
-	if(ImGui::ImageButton((ImTextureID)plusObjectTexture->GetTextureID(), ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, 1)))
+	if (ImGui::ImageButton((ImTextureID)plusObjectTexture->GetTextureID(), ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, 1)))
 	{
 		App->moduleImGui->objectCreatorDockPanel->ResetObjectData();
 		App->moduleImGui->objectCreatorDockPanel->ToggleVisibility();
@@ -229,7 +256,7 @@ void RoomDockPanel::DrawTopButtons()
 	Texture* exportTexture = (Texture*)ResourceManager::getInstance()->GetResource("ExportIcon");
 	if (ImGui::ImageButton((ImTextureID)exportTexture->GetTextureID(), ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, 1)))
 	{
-		SaveAndLoad::getInstance()->SaveCurrentRoomData(); 
+		SaveAndLoad::getInstance()->SaveCurrentRoomData();
 	}
 
 	// Save Button ------------
@@ -238,46 +265,46 @@ void RoomDockPanel::DrawTopButtons()
 	if (ImGui::ImageButton((ImTextureID)importIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, 1)))
 	{
 		char const* lFilterPatterns[1] = { "*.json" };
-		string defaultPath = MyFileSystem::getInstance()->GetSolutionDirectory(); 
-		defaultPath += "Source\\Game\\Resources\\EngineSavedData\\RoomsData\\"; 
+		string defaultPath = MyFileSystem::getInstance()->GetSolutionDirectory();
+		defaultPath += "Source\\Game\\Resources\\EngineSavedData\\RoomsData\\";
 		const char* path = tinyfd_openFileDialog("Load Image...", defaultPath.c_str(), 1, lFilterPatterns, NULL, 0);
 
 		if (path != "")
 		{
 			// Clean Current Room Content
-			Room* currentRoom = App->moduleRoomManager->GetSelectedRoom(); 
-			currentRoom->CleanUp(); 
-		
+			Room* currentRoom = App->moduleRoomManager->GetSelectedRoom();
+			currentRoom->CleanUp();
+
 			// Load New Data
-			SaveAndLoad::getInstance()->LoadDataToCurrentRoom(path); 
+			SaveAndLoad::getInstance()->LoadDataToCurrentRoom(path);
 		}
 	}
 
 	// Play Button ------------
 	ImGui::SameLine();
 	ImGui::PushStyleColor(ImGuiCol_Button, playButtonColor);
-	ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 37); 
+	ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 37);
 	if (ImGui::ImageButton((ImTextureID)playStopButtonTexture->GetTextureID(), ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, 1)))
 	{
-		App->isEngineInPlayMode = !App->isEngineInPlayMode; 
+		App->isEngineInPlayMode = !App->isEngineInPlayMode;
 
-		if (App->isEngineInPlayMode) 
+		if (App->isEngineInPlayMode)
 		{
 			App->BroadCastEvent(FlyEngineEvent::ENGINE_PLAY);
 			playButtonColor = ImVec4(0.50f, 0.50f, 0.80f, 1.0f);
 			playStopButtonTexture = (Texture*)ResourceManager::getInstance()->GetResource("StopIcon");
 			SaveAndLoad::getInstance()->SaveSelectedRoomToOnPlayData();
 		}
-		else 
+		else
 		{
 			App->BroadCastEvent(FlyEngineEvent::ENGINE_STOP);
 			playButtonColor = ImVec4(0.35f, 0.39f, 0.50f, 1.00f);
-			playStopButtonTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlayIcon");	
-			App->moduleRoomManager->GetSelectedRoom()->CleanUp(); 
+			playStopButtonTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlayIcon");
+			App->moduleRoomManager->GetSelectedRoom()->CleanUp();
 			SaveAndLoad::getInstance()->LoadOnPlayToSelectedRoom();
 		}
 	}
-	ImGui::PopStyleColor(2); 
+	ImGui::PopStyleColor(2);
 }
 
 void RoomDockPanel::DrawRoomHierarchy()
@@ -300,7 +327,7 @@ void RoomDockPanel::DrawRoomHierarchy()
 
 	if (App->moduleRoomManager->GetSelectedRoom()->GetObjectsInRoomAmount() == 0)
 	{
-		ImGui::TextColored(ImVec4(0,1,1,1), " There are no objects in this room"); 
+		ImGui::TextColored(ImVec4(0, 1, 1, 1), " There are no objects in this room");
 	}
 	else
 	{
@@ -333,7 +360,7 @@ void RoomDockPanel::DrawRoomHierarchy()
 		}
 	}
 
-	ImGui::PopStyleVar();	
+	ImGui::PopStyleVar();
 	ImGui::EndChild();
 }
 
@@ -361,16 +388,16 @@ void RoomDockPanel::DrawMoveLayerSelectableButtons()
 
 void RoomDockPanel::ShowViewportSettingsTab()
 {
-	ImGui::Spacing(); 
+	ImGui::Spacing();
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Music:");
 	ImGui::PopFont();
 
-	Room* currentRoom = App->moduleRoomManager->GetSelectedRoom(); 
+	Room* currentRoom = App->moduleRoomManager->GetSelectedRoom();
 
-	static char trackNameBuffer[256] = ""; 
+	static char trackNameBuffer[256] = "";
 
-	if(currentRoom->backgroundMusic != nullptr)
+	if (currentRoom->backgroundMusic != nullptr)
 		strcpy(trackNameBuffer, currentRoom->backgroundMusic->GetName().c_str());
 
 	ImGui::InputTextWithHint("", "Select Music...", trackNameBuffer, IM_ARRAYSIZE(trackNameBuffer), ImGuiInputTextFlags_ReadOnly);

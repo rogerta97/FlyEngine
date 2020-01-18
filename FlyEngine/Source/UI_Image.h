@@ -15,6 +15,7 @@ public:
 	~UI_Image();
 
 	void Draw(); 
+	void CleanUp(); 
 
 	void Create(string imagePath); 
 

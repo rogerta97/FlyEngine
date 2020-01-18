@@ -11,6 +11,10 @@ public:
 	~UI_Element();
 
 	virtual void Draw(); 
+	virtual void CleanUp(); 
+
+	FlyObject* GetHolderObject(); 
+	FlyObject* CreateBaseUI(); 
 
 protected: 
 	FlyObject* uiObject; 

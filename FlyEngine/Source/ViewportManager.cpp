@@ -7,7 +7,9 @@
 #include "ModuleImGui.h"
 #include "Room.h"
 #include "FlyObject.h"
+#include "RoomUIHandler.h"
 #include "Texture.h"
+#include "UI_Element.h"
 #include "Gizmos.h"
 #include "TextureMSAA.h"
 #include "mmgr.h"
@@ -20,6 +22,7 @@ ViewportManager::ViewportManager()
 	viewportTexture->Create(App->moduleWindow->screen_surface->w, App->moduleWindow->screen_surface->h, 2);
 	
 	viewportAspectRatio = AR_4_3; 
+	editRoomMode = EDIT_ROOM_OBJECTS; 
 }
 
 ViewportManager* ViewportManager::getInstance()
@@ -46,12 +49,24 @@ void ViewportManager::ResizeViewport()
 {
 }
 
-list<FlyObject*> ViewportManager::RaycastMouseClick()
+list<FlyObject*> ViewportManager::RaycastMouseClickObjects()
 {
 	list<FlyObject*> objectCandidates = list<FlyObject*>();
 	for (auto& currentObject : App->moduleRoomManager->GetSelectedRoom()->objectsInRoom)
 	{
 		if (currentObject->IsMouseOver())
+			objectCandidates.push_back(currentObject);
+	}
+
+	return objectCandidates;
+}
+
+list<UI_Element*> ViewportManager::RaycastMouseClickUI()
+{
+	list<UI_Element*> objectCandidates = list<UI_Element*>();
+	for (auto& currentObject : App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->uiElements)
+	{
+		if (currentObject->GetHolderObject()->IsMouseOver())
 			objectCandidates.push_back(currentObject);
 	}
 

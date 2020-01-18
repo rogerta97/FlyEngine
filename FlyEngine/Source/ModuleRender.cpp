@@ -124,7 +124,9 @@ update_status ModuleRender::PostUpdate(float dt)
 		glClearColor(0.0, 0.0, 0.0, 1);
 
 		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+
 		selectedRoom->DrawRoomObjects();
+		selectedRoom->DrawRoomUserInterface(); 
 
 		ViewportManager::getInstance()->viewportTexture->Render();
 		ViewportManager::getInstance()->viewportTexture->Unbind();

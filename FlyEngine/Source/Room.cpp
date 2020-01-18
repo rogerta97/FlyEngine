@@ -50,12 +50,31 @@ void Room::Update()
 		// Check for new Selected Objects -------
 		if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && App->moduleImGui->gameViewportDockPanel->IsMouseInViewport())
 		{
-			list<FlyObject*> objectCandidates = ViewportManager::getInstance()->RaycastMouseClick();
+			switch (ViewportManager::getInstance()->editRoomMode)
+			{
 
-			if (!objectCandidates.empty())
-				App->moduleManager->SetSelectedFlyObject(objectCandidates.back());
-			else
-				App->moduleManager->SetSelectedFlyObject(nullptr);
+			case EditRoomMode::EDIT_ROOM_OBJECTS:
+			{
+				list<FlyObject*> objectCandidates = ViewportManager::getInstance()->RaycastMouseClickObjects();
+
+				if (!objectCandidates.empty())
+					App->moduleManager->SetSelectedFlyObject(objectCandidates.back());
+				else
+					App->moduleManager->SetSelectedFlyObject(nullptr);
+			}
+				break; 
+
+			case EditRoomMode::EDIT_ROOM_UI:
+			{
+				list<UI_Element*> objectCandidates = ViewportManager::getInstance()->RaycastMouseClickUI();
+
+				if (!objectCandidates.empty())
+					App->moduleManager->SetSelectedUIElement(objectCandidates.back());
+				else
+					App->moduleManager->SetSelectedUIElement(nullptr);
+			}
+				break;
+			}
 		}
 	}
 
@@ -101,6 +120,7 @@ void Room::CleanUp()
 	delete roomBlackboard; 
 	roomBlackboard = nullptr; 
 
+	roomUIHandler->CleanUp(); 
 	delete roomUIHandler; 
 	roomUIHandler = nullptr; 
 }

@@ -14,6 +14,8 @@ public:
 
 	bool Draw();
 
+	void DrawFlyObjectProperties();
+
 	void DrawFixedPartObjectUI(FlyObject* selectedObject);
 
 	void DrawTransformButtons();

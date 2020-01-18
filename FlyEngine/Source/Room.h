@@ -84,6 +84,9 @@ public:
 	void DeleteFlyObjectFromList(FlyObject* objectToDelete);
 	void DeleteSelectedObject(); 
 
+	// Room Viewport Draw Control -----------------------------------------------------
+	void SetEditUIEnabled(bool enable); 
+
 	// Encapsulation ------------------------------------------------------------------
 	string GetName() const; 
 	void SetName(string newName); 
@@ -112,6 +115,7 @@ public:
 	list<FlyObject*> objectsInRoom;
 
 private: 
+
 	Blackboard* roomBlackboard; 
 	FlyObject* selectedObject; 
 	UID roomID; 

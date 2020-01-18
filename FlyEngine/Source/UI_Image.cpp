@@ -17,6 +17,14 @@ UI_Image::~UI_Image()
 
 void UI_Image::Draw()
 {
+	UI_Element::Draw(); 
+	uiObjectDisplayImage->Draw(); 
+}
+
+void UI_Image::CleanUp()
+{
+	uiObject->DeleteAction(uiObjectDisplayImage->GetActionName()); 
+	uiObjectDisplayImage = nullptr; 
 }
 
 void UI_Image::Create(string imagePath)

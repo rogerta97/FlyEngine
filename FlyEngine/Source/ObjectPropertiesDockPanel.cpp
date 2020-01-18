@@ -10,8 +10,10 @@
 #include "ResourceManager.h"
 #include "ChangeRoomAction.h"
 #include "DisplayImageAction.h"
+#include "RoomUIHandler.h"
 #include "AudioClip.h"
 #include "GameViewportDockPanel.h"
+#include "UI_Element.h"
 #include "ImageImporter.h"
 #include "Action.h"
 #include "EmitSoundAction.h"
@@ -44,74 +46,101 @@ bool ObjectPropertiesDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible)) 
 	{
-		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();
-
-		if (selectedObject != nullptr)
+		switch (ViewportManager::getInstance()->editRoomMode)
 		{
-			DrawFixedPartObjectUI(selectedObject);
+		case EditRoomMode::EDIT_ROOM_OBJECTS:
+			DrawFlyObjectProperties();	
+			break; 
 
-			ImGui::Separator();
+		case EditRoomMode::EDIT_ROOM_UI:
 
-			ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
-			ImGui::Text("Item Inventory Attributes:");
-			ImGui::PopFont();
-
-			if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
+			RoomUIHandler* roomUIHandler = App->moduleRoomManager->GetSelectedRoom()->roomUIHandler; 
+			UI_Element* selectedUIElement = roomUIHandler->GetSelectedElement();
+			if (selectedUIElement != nullptr)
 			{
-				if (selectedObject->IsInventoryItem())
-				{
+				ImGui::Text("This should be the info of the UI bro, you did it, as always, smoke that shit");
 
-					if (ImGui::BeginTabItem("Item Settings"))
-					{
-						static char inventoryBrowcseImageBuffer[512];
-						ImGui::InputTextWithHint("", "Search...", inventoryBrowcseImageBuffer, IM_ARRAYSIZE(inventoryBrowcseImageBuffer));
-						ImGui::SameLine(); 
-						if (ImGui::Button("Change Image##Properties"))
-						{
-							ImGui::Columns(2);
-
-							ImGui::Text("Position");
-							ImGui::DragFloat("X", &selectedObject->GetClickableAreaPosOne().x);
-							ImGui::DragFloat("Y", &selectedObject->GetClickableAreaPosOne().y);
-
-							ImGui::NextColumn();
-
-							ImGui::Text("Dimensions");
-							ImGui::DragFloat("Width", &selectedObject->GetClickableAreaSizeOne().x);
-							ImGui::DragFloat("Heigth", &selectedObject->GetClickableAreaSizeOne().y);
-							ImGui::EndChild();
-						}
-
-						ImGui::EndTabItem();
-					}
-				}
-				else
-				{
-					if (ImGui::BeginTabItem("Actions"))
-					{
-						DrawObjectActionsTab();
-						ImGui::EndTabItem();
-					}
-
-				}
-
-				if (ImGui::BeginTabItem("Clickable Area"))
-				{
-					DrawClickableAreaTab();
-					ImGui::EndTabItem();
-				}
-
-				ImGui::EndTabBar();
+				ImGui::Text("Lets See The Name Bro: ");
 			}
-		}
-		else
-		{
-			ImGui::TextColored(ImVec4(0.8f, 0.5f, 0.5f, 1.0f), "No Object Selected");
+			else{
+				ImGui::Text("Select something dude :)");
+			}
+
+			
+			break; 
 		}
 	}
 
 	ImGui::End();
 	return true;
+}
+
+void ObjectPropertiesDockPanel::DrawFlyObjectProperties()
+{
+	FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();
+
+	if (selectedObject != nullptr)
+	{
+		DrawFixedPartObjectUI(selectedObject);
+
+		ImGui::Separator();
+
+		ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
+		ImGui::Text("Item Inventory Attributes:");
+		ImGui::PopFont();
+
+		if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
+		{
+			if (selectedObject->IsInventoryItem())
+			{
+
+				if (ImGui::BeginTabItem("Item Settings"))
+				{
+					static char inventoryBrowcseImageBuffer[512];
+					ImGui::InputTextWithHint("", "Search...", inventoryBrowcseImageBuffer, IM_ARRAYSIZE(inventoryBrowcseImageBuffer));
+					ImGui::SameLine();
+					if (ImGui::Button("Change Image##Properties"))
+					{
+						ImGui::Columns(2);
+
+						ImGui::Text("Position");
+						ImGui::DragFloat("X", &selectedObject->GetClickableAreaPosOne().x);
+						ImGui::DragFloat("Y", &selectedObject->GetClickableAreaPosOne().y);
+
+						ImGui::NextColumn();
+
+						ImGui::Text("Dimensions");
+						ImGui::DragFloat("Width", &selectedObject->GetClickableAreaSizeOne().x);
+						ImGui::DragFloat("Heigth", &selectedObject->GetClickableAreaSizeOne().y);
+						ImGui::EndChild();
+					}
+
+					ImGui::EndTabItem();
+				}
+			}
+			else
+			{
+				if (ImGui::BeginTabItem("Actions"))
+				{
+					DrawObjectActionsTab();
+					ImGui::EndTabItem();
+				}
+
+			}
+
+			if (ImGui::BeginTabItem("Clickable Area"))
+			{
+				DrawClickableAreaTab();
+				ImGui::EndTabItem();
+			}
+
+			ImGui::EndTabBar();
+		}
+	}
+	else
+	{
+		ImGui::TextColored(ImVec4(0.8f, 0.5f, 0.5f, 1.0f), "No Object Selected");
+	}
 }
 
 void ObjectPropertiesDockPanel::DrawFixedPartObjectUI(FlyObject* selectedObject)

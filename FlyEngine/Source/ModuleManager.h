@@ -11,6 +11,7 @@
 class FlyObject; 
 class Texture; 
 class FlyVariable; 
+class UI_Element; 
 class ModuleManager : public Module
 {
 public:
@@ -29,6 +30,9 @@ public:
 	// Easy Acces -------
 	FlyObject* GetSelectedFlyObject(); 
 	void SetSelectedFlyObject(FlyObject* newSelectedObject); 
+
+	UI_Element* GetSelectedUIElement();
+	void SetSelectedUIElement(UI_Element* newSelectedObject);
 
 	// Desctiption Dictionary -----
 	std::list<ActionSelectableInfo> GetToolsNamesDescriptionsList() const; 

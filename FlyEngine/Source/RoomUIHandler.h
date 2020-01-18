@@ -13,13 +13,23 @@ public:
 	RoomUIHandler(Room* roomAttached); 
 	~RoomUIHandler();
 
+	// Virtual ----------------------
+	void CleanUp(); 
 	void DrawUIElements(); 
 
+	// Utility ----------------------
+	void SetSelectedElement(UI_Element* newSelectedElement); 
+	UI_Element* GetSelectedElement();
+
+	// Factory ----------------------
 	UI_Image* CreateUIImage(UID resourceUID); 
+
+public: 
+	std::list<UI_Element*> uiElements;
 
 private: 
 	Room* roomAttached; 
-	std::list<UI_Element*> uiElements;
+	UI_Element* selectedElement; 
 };
 
 #endif // !_ROOM_UI_HANDLER_H_

@@ -7,10 +7,19 @@
 RoomUIHandler::RoomUIHandler(Room* _roomAttached)
 {
 	roomAttached = _roomAttached;
+	selectedElement = nullptr; 
 }
 
 RoomUIHandler::~RoomUIHandler()
 {
+}
+
+void RoomUIHandler::CleanUp()
+{
+	for (auto& currentUIElement : uiElements)
+	{
+		currentUIElement->CleanUp();
+	}
 }
 
 void RoomUIHandler::DrawUIElements()
@@ -19,6 +28,16 @@ void RoomUIHandler::DrawUIElements()
 	{
 		currentUIElement->Draw(); 
 	}
+}
+
+void RoomUIHandler::SetSelectedElement(UI_Element* newSelectedElement)
+{
+	selectedElement = newSelectedElement; 
+}
+
+UI_Element* RoomUIHandler::GetSelectedElement()
+{
+	return selectedElement;
 }
 
 UI_Image* RoomUIHandler::CreateUIImage(UID resourceUID)
