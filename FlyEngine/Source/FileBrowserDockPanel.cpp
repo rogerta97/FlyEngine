@@ -276,14 +276,26 @@ void FileBrowserDockPanel::DrawDirectoryRecursive(string& directory)
 		}
 		case FILE_MP3:
 		{
-			Texture* speakerIcon = (Texture*)ResourceManager::getInstance()->GetResource("SpeakerIcon");
-			iconTextureID = (ImTextureID)speakerIcon->GetTextureID();
+			Texture* iconTexture = nullptr; 
+
+			if(currentResource->GetType() == ResourceType::RESOURCE_MUSIC)
+				iconTexture = (Texture*)ResourceManager::getInstance()->GetResource("MusicIcon");
+			else 
+				iconTexture = (Texture*)ResourceManager::getInstance()->GetResource("SpeakerIcon");
+
+			iconTextureID = (ImTextureID)iconTexture->GetTextureID();
 			break;
 		}
 		case FILE_WAV:
 		{
-			Texture* speakerIcon = (Texture*)ResourceManager::getInstance()->GetResource("SpeakerIcon");
-			iconTextureID = (ImTextureID)speakerIcon->GetTextureID();
+			Texture* iconTexture = nullptr;
+
+			if (currentResource->GetType() == ResourceType::RESOURCE_MUSIC)
+				iconTexture = (Texture*)ResourceManager::getInstance()->GetResource("MusicIcon");
+			else
+				iconTexture = (Texture*)ResourceManager::getInstance()->GetResource("SpeakerIcon");
+
+			iconTextureID = (ImTextureID)iconTexture->GetTextureID();
 			break;
 		}
 		}

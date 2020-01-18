@@ -90,11 +90,23 @@ Resource* ResourceManager::GetResource(std::string resourceName, ResourceType ty
 	throw std::logic_error("A must be equal to B"); 
 }
 
-Resource* ResourceManager::GetResource(UID resourceUID) 
+Resource* ResourceManager::GetResource(UID resourceUID, ResourceType type)
 {
 	for (auto& it : instance->resourceList)
+	{
 		if ((it)->GetUID() == resourceUID)
-			return (it);
+		{
+			if (type == RESOURCE_null)
+				return (it);
+			else
+			{
+				if ((it)->GetType() == type)
+					return (it);
+				else
+					continue;
+			}
+		}
+	}
 
 	FLY_ERROR("No resource with UID %d found", resourceUID);
 	return nullptr;

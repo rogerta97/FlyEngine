@@ -7,14 +7,19 @@
 
 UI_Image::UI_Image() : UI_Element()
 {
-
+	UI_Element::UI_Element(); 
+	uiObjectDisplayImage = nullptr; 
 }
 
 UI_Image::~UI_Image()
 {
 }
 
-void UI_Image::SetImage(string imagePath)
+void UI_Image::Draw()
+{
+}
+
+void UI_Image::Create(string imagePath)
 {
 	string resourceName = MyFileSystem::getInstance()->GetLastPathItem(imagePath.c_str(), false); 
 	Texture* textureResource = (Texture*)ResourceManager::getInstance()->GetResource(resourceName);

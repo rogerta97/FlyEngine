@@ -71,6 +71,7 @@ public:
 
 	// Draw ---------------------------------------------------------------------------
 	void DrawRoomObjects(); 
+	void DrawRoomUserInterface(); 
 
 	// Update -------------------------------------------------------------------------
 	void UpdateRoomObjects(); 
@@ -109,10 +110,6 @@ public:
 
 	// Object List ---------
 	list<FlyObject*> objectsInRoom;
-
-	// User Interface ------
-	list<UI_Element*> uiElements; 
-
 
 private: 
 	Blackboard* roomBlackboard; 

@@ -100,6 +100,9 @@ void Room::CleanUp()
 	roomBlackboard->CleanUp(); 
 	delete roomBlackboard; 
 	roomBlackboard = nullptr; 
+
+	delete roomUIHandler; 
+	roomUIHandler = nullptr; 
 }
 
 int Room::GetObjectsInRoomAmount()
@@ -265,6 +268,11 @@ void Room::DrawRoomObjects()
 
 	// Draw dropping inventory object 
 	GameInventory::getInstance()->DrawDroppingObject();
+}
+
+void Room::DrawRoomUserInterface()
+{
+	roomUIHandler->DrawUIElements(); 
 }
 
 void Room::UpdateRoomObjects()

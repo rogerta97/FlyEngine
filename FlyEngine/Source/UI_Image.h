@@ -12,9 +12,11 @@ class UI_Image : public UI_Element
 {
 public: 
 	UI_Image(); 
-	~UI_Image(); 
+	~UI_Image();
 
-	void SetImage(string imagePath); 
+	void Draw(); 
+
+	void Create(string imagePath); 
 
 private: 
 	DisplayImageAction* uiObjectDisplayImage;

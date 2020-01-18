@@ -26,7 +26,7 @@ public:
 	static ResourceType GetResourceTypeFromExtension(FileExtension ext); 
 
 	static Resource* GetResource(std::string resourceName, ResourceType type = ResourceType::RESOURCE_null);
-	static Resource* GetResource(UID resourceUID);
+	static Resource* GetResource(UID resourceUID, ResourceType type = ResourceType::RESOURCE_null);
 	static vector<Resource*> GetResources(ResourceType type);
 	static list<Resource*>& GetResourceList();
 	static Resource* GetResourceByPath(std::string resourcePath);
