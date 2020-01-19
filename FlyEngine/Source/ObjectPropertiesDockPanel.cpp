@@ -77,10 +77,33 @@ void ObjectPropertiesDockPanel::DrawUIElementProperties()
 		case UI_IMAGE:
 			DrawUIImageProperties(selectedUIElement);
 			break; 
+
+		case UI_BUTTON:
+			DrawUIButtonProperties(selectedUIElement);
+			break;
 		}
 	}
 	else {
 		ImGui::Text("Select something dude :)");
+	}
+}
+
+void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIElement)
+{
+	UI_Button* selectedButton = (UI_Button*)selectedUIElement;
+	static char uiImageNameBuffer[256] = "";
+
+	if (ImGui::CollapsingHeader("UI Button Properties", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGui::Spacing();
+
+		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+		ImGui::Text("Button Image"); 
+		ImGui::PopFont(); 
+
+		static int onobSelected = 0; 
+		ImGui::Combo("ONOB", &onobSelected, "Color Tint\0Texture Swap"); 
+
 	}
 }
 

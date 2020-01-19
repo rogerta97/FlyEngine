@@ -14,14 +14,14 @@ public:
 
 	bool Draw();
 
+	// User Inteface
 	void DrawUIElementProperties();
-
 	void DrawUIImageProperties(UI_Element* selectedUIElement);
+	void DrawUIButtonProperties(UI_Element* selectedUIElement);
 
+	// Action Objects
 	void DrawFlyObjectProperties();
-
 	void DrawFixedPartObjectUI(FlyObject* selectedObject);
-
 	void DrawTransformButtons();
 
 	void SetSelectedObject(FlyObject* newSelectedObject);
