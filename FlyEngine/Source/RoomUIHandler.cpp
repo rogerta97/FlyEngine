@@ -1,11 +1,13 @@
 #include "RoomUIHandler.h"
 #include "Room.h"
-#include "UI_Image.h"
 #include "MyFileSystem.h"
 #include "FlyObject.h"
 #include "Texture.h"
 #include "DisplayImageAction.h"
 #include "ResourceManager.h"
+
+#include "UI_Image.h"
+#include "UI_Button.h"
 
 RoomUIHandler::RoomUIHandler(Room* _roomAttached)
 {
@@ -135,6 +137,18 @@ UI_Image* RoomUIHandler::CreateUIImage(UID resourceUID)
 
 	uiElements.push_back(newImage); 
 	return newImage; 
+}
+
+UI_Button* RoomUIHandler::CreateUIButton()
+{
+	UI_Button* newButton = new UI_Button();
+
+	Texture* textureResource = (Texture*)ResourceManager::getInstance()->GetResource(resourceUID, ResourceType::RESOURCE_TEXTURE);
+
+
+
+	uiElements.push_back(newButton);
+	return newButton;
 }
 
 

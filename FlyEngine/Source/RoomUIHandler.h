@@ -9,6 +9,7 @@
 class Room; 
 class UI_Element; 
 class UI_Image; 
+class UI_Button; 
 class RoomUIHandler
 {
 public: 
@@ -30,6 +31,7 @@ public:
 
 	// Factory ----------------------
 	UI_Image* CreateUIImage(UID resourceUID); 
+	UI_Button* CreateUIButton(); 
 
 public: 
 	std::list<UI_Element*> uiElements;

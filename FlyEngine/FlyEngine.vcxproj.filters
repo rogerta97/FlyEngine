@@ -399,6 +399,9 @@
     <ClCompile Include="Source\RoomUIHandler.cpp">
       <Filter>Source\Tools\RoomUIHandler</Filter>
     </ClCompile>
+    <ClCompile Include="Source\UI_Button.cpp">
+      <Filter>Source\FlyEngine\UIElements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -814,6 +817,9 @@
     </ClInclude>
     <ClInclude Include="Source\RoomUIHandler.h">
       <Filter>Source\Tools\RoomUIHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UI_Button.h">
+      <Filter>Source\FlyEngine\UIElements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
