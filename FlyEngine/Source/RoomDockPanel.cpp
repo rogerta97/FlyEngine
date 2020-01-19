@@ -9,6 +9,7 @@
 #include "ModuleImGui.h"
 
 #include "UI_Image.h"
+#include "UI_Button.h"
 #include "RoomDockPanel.h"
 #include "RoomUIHandler.h"
 #include "ImageImporter.h"
@@ -80,8 +81,6 @@ bool RoomDockPanel::Draw()
 			if (ImGui::BeginTabItem("Blackboard"))
 			{
 				ShowBlackboardTab();
-
-
 				ImGui::EndTabItem();
 			}
 
@@ -94,7 +93,6 @@ bool RoomDockPanel::Draw()
 			if (ImGui::BeginTabItem("User Interface"))
 			{
 				DrawUserInterfaceTab();
-
 				ImGui::EndTabItem();
 			}
 
@@ -124,7 +122,7 @@ void RoomDockPanel::DrawUserInterfaceTab()
 
 		if (ImGui::Button("Add Debug UI Button"))
 		{
-
+			UI_Button* newButton = App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->CreateUIButton();
 		}
 
 		if (ImGui::Button("Add Debug UI Text"))

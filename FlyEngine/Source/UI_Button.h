@@ -8,6 +8,13 @@
 
 using namespace std;
 
+enum ButtonBehaviourMouseInteraction
+{
+	COLOR_TINT,
+	TEXTURE_SWAP,
+	INTERACTION_NONE,
+};
+
 class FlyObject;
 class DisplayImageAction;
 class Action; 
@@ -29,12 +36,21 @@ public:
 	// Utility ---------
 	void SetBackgroundTexture(Texture* buttonTexture);
 
+public:
+	ButtonBehaviourMouseInteraction behaviourInteraction; 
+
 private:
 	// Easy Acces to Holder Action
 	DisplayImageAction* uiObjectDisplayImageBackground;
 	std::list<Action*> onClickActions; 
 
+	// Color Tint Mode
+	Texture* backgroundTexture; 
+
+	// Texture Swap Mode 
 	Texture* idleTexture;
+	Texture* mouseOverTexture;
+	Texture* mouseClickedTexture;
 };
 
 #endif // !_UI_IMAGE_H_

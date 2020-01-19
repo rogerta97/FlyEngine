@@ -46,7 +46,7 @@ void RoomUIHandler::LoadRoomUI(JSON_Object* jsonObject, string baseSerializeStr)
 	while (count < elementsAmount)
 	{
 		string elementStr = baseSerializeStr + ".Element_" + to_string(count) + "."; 
-		int currentElementType = json_object_dotget_number(jsonObject, std::string(elementStr + ".UIElementType").c_str());
+		int currentElementType = json_object_dotget_number(jsonObject, std::string(elementStr + "UIElementType").c_str());
 
 		switch (currentElementType)
 		{
@@ -54,8 +54,15 @@ void RoomUIHandler::LoadRoomUI(JSON_Object* jsonObject, string baseSerializeStr)
 		{
 			UI_Image* newElementImageCast = CreateUIImage();
 			newElementImageCast->Load(jsonObject, elementStr);
-		}
 			break; 
+		}
+		case UIElementType::UI_BUTTON:
+		{
+			UI_Button* newElementButtonCast = CreateUIButton();
+			newElementButtonCast->Load(jsonObject, elementStr);
+			break;
+		}
+
 		}
 
 		count++;
