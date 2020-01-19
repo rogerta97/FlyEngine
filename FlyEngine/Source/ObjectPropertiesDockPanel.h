@@ -14,6 +14,10 @@ public:
 
 	bool Draw();
 
+	void DrawUIElementProperties();
+
+	void DrawUIImageProperties(UI_Element* selectedUIElement);
+
 	void DrawFlyObjectProperties();
 
 	void DrawFixedPartObjectUI(FlyObject* selectedObject);

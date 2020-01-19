@@ -114,14 +114,19 @@ void UI_Button::Load(JSON_Object* jsonObject, string serializeStr)
 		if (uiObject == nullptr)
 			uiObject = new FlyObject("UIButtonHolder", "", UI_HOLDER); 
 
-		string backgroundTextureName = json_object_dotget_string(jsonObject, std::string(serializeStr + string("BackImage.BackgroundTextureName")).c_str());
-		backgroundTexture = (Texture*)ResourceManager::getInstance()->GetResource(backgroundTextureName);
-		string texturePath = json_object_dotget_string(jsonObject, std::string(serializeStr + string("BackImage.ResourcePath")).c_str());
+		// Load Background Image 
+		if (json_object_dothas_value(jsonObject, std::string(serializeStr + string("BackImage.")).c_str()))
+		{
+			string backgroundTextureName = json_object_dotget_string(jsonObject, std::string(serializeStr + string("BackImage.BackgroundTextureName")).c_str());
+			MyFileSystem::getInstance()->DeleteFileExtension(backgroundTextureName); 
+			backgroundTexture = (Texture*)ResourceManager::getInstance()->GetResource(backgroundTextureName);
+			string texturePath = json_object_dotget_string(jsonObject, std::string(serializeStr + string("BackImage.ResourcePath")).c_str());
 
-		backgroundTexture->SetWidth(json_object_dotget_number(jsonObject, string(serializeStr + string("BackImage.ImageWidth")).c_str())); 
-		backgroundTexture->SetHeigth(json_object_dotget_number(jsonObject, string(serializeStr + string("BackImage.ImageHeigth")).c_str())); 
+			backgroundTexture->SetWidth(json_object_dotget_number(jsonObject, string(serializeStr + string("BackImage.ImageWidth")).c_str())); 
+			backgroundTexture->SetHeigth(json_object_dotget_number(jsonObject, string(serializeStr + string("BackImage.ImageHeigth")).c_str())); 
 
-		uiObjectDisplayImageBackground = uiObject->AddDisplayImageAction(texturePath.c_str());
+			uiObjectDisplayImageBackground = uiObject->AddDisplayImageAction(texturePath.c_str());
+		}
 		
 		break;
 	}

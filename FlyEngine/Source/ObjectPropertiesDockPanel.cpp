@@ -13,6 +13,7 @@
 #include "RoomUIHandler.h"
 #include "AudioClip.h"
 #include "GameViewportDockPanel.h"
+#include "UI_Image.h"
 #include "UI_Element.h"
 #include "ImageImporter.h"
 #include "Action.h"
@@ -53,25 +54,87 @@ bool ObjectPropertiesDockPanel::Draw()
 			break; 
 
 		case EditRoomMode::EDIT_ROOM_UI:
-
-			RoomUIHandler* roomUIHandler = App->moduleRoomManager->GetSelectedRoom()->roomUIHandler; 
-			UI_Element* selectedUIElement = roomUIHandler->GetSelectedElement();
-
-			if (selectedUIElement != nullptr)
-			{
-				DrawFixedPartObjectUI(selectedUIElement->GetHolderObject()); 
-			}
-			else{
-				ImGui::Text("Select something dude :)");
-			}
-
-			
+			DrawUIElementProperties();		
 			break; 
 		}
 	}
 
 	ImGui::End();
 	return true;
+}
+
+void ObjectPropertiesDockPanel::DrawUIElementProperties()
+{
+	RoomUIHandler* roomUIHandler = App->moduleRoomManager->GetSelectedRoom()->roomUIHandler;
+	UI_Element* selectedUIElement = roomUIHandler->GetSelectedElement();
+
+	if (selectedUIElement != nullptr)
+	{
+		DrawFixedPartObjectUI(selectedUIElement->GetHolderObject());
+
+		switch (selectedUIElement->uiElementType)
+		{
+		case UI_IMAGE:
+			DrawUIImageProperties(selectedUIElement);
+			break; 
+		}
+	}
+	else {
+		ImGui::Text("Select something dude :)");
+	}
+}
+
+void ObjectPropertiesDockPanel::DrawUIImageProperties(UI_Element* selectedUIElement)
+{
+	UI_Image* selectedImage = (UI_Image*)selectedUIElement;
+	static char uiImageNameBuffer[256] = "";
+
+	if (selectedImage->GetDisplayImage()->GetTexture() != nullptr)
+		strcpy(uiImageNameBuffer, selectedImage->GetDisplayImage()->GetTexture()->GetName().c_str());
+
+	if (ImGui::CollapsingHeader("UI Image Properties", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGui::Spacing();
+
+		ImGui::InputTextWithHint("", "Search...", uiImageNameBuffer, IM_ARRAYSIZE(uiImageNameBuffer));
+
+		ImGui::SameLine();
+		if (ImGui::Button("Search##SearchUIImage"))
+		{
+
+		}
+
+		ImGui::Spacing();
+
+		PUSH_CHILD_BG_COLOR;
+		ImGui::BeginChild("PreviewUIImageLeftCol", ImVec2(ImGui::GetContentRegionAvail().x, 200));
+
+		ImVec2 centerPoint = ImVec2(ImGui::GetContentRegionAvail().x / 2, ImGui::GetContentRegionAvail().y / 2);
+
+		ImGui::EndChild();
+		ImGui::PopStyleColor();
+
+		PUSH_CHILD_BG_COLOR;
+		ImGui::BeginChild("PreviewUIImageRightCol", ImVec2(ImGui::GetContentRegionAvail().x, 100));
+
+		if (selectedImage != nullptr)
+		{
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5); 
+			ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 3); 
+			ImGui::PushFont(App->moduleImGui->rudaBoldBig); 
+			ImGui::Text("Name:"); 
+			ImGui::PopFont();
+
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5); 
+			ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
+			ImGui::Text("%s", selectedImage->GetDisplayImage()->GetTexture()->GetName().c_str());
+			ImGui::PopFont();
+		}
+
+
+		ImGui::EndChild();
+		ImGui::PopStyleColor();
+	}
 }
 
 void ObjectPropertiesDockPanel::DrawFlyObjectProperties()
