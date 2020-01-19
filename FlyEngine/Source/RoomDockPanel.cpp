@@ -59,7 +59,10 @@ bool RoomDockPanel::Draw()
 			}
 
 			if (ImGui::IsItemClicked())
+			{
 				ViewportManager::getInstance()->editRoomMode = EDIT_ROOM_OBJECTS;
+				App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->SetSelectedElement(nullptr);
+			}
 
 			if (ImGui::BeginTabItem("Room Settings"))
 			{
@@ -69,7 +72,10 @@ bool RoomDockPanel::Draw()
 			}
 
 			if (ImGui::IsItemClicked())
+			{
 				ViewportManager::getInstance()->editRoomMode = EDIT_ROOM_OBJECTS;
+				App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->SetSelectedElement(nullptr);
+			}
 
 			if (ImGui::BeginTabItem("Blackboard"))
 			{
@@ -80,7 +86,10 @@ bool RoomDockPanel::Draw()
 			}
 
 			if (ImGui::IsItemClicked())
+			{
 				ViewportManager::getInstance()->editRoomMode = EDIT_ROOM_OBJECTS;
+				App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->SetSelectedElement(nullptr);
+			}
 
 			if (ImGui::BeginTabItem("User Interface"))
 			{
@@ -90,7 +99,10 @@ bool RoomDockPanel::Draw()
 			}
 
 			if (ImGui::IsItemClicked())
+			{
 				ViewportManager::getInstance()->editRoomMode = EDIT_ROOM_UI;
+				App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(nullptr); 
+			}
 
 			ImGui::EndTabBar();
 		}

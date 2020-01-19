@@ -5,6 +5,7 @@
 #include "ModuleRoomManager.h"
 #include "ModifyVariableAction.h"
 #include "ResourceManager.h"
+#include "RoomUIHandler.h"
 #include "Room.h"
 #include "FlyObject.h"
 
@@ -230,6 +231,9 @@ void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 		instance->CreateFlyObjectFromSavedData(root_obj, serializeObjectStr, roomToLoad);
 		counter++;
 	}
+
+	string serialiseStr = roomToLoad->GetName() + ".UserInterface";
+	roomToLoad->roomUIHandler->LoadRoomUI(root_obj, serialiseStr);
 }
 
 SaveAndLoad::SaveAndLoad()

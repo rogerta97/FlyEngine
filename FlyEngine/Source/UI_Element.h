@@ -13,6 +13,7 @@ enum UIElementType
 };
 
 class FlyObject; 
+class Transform;
 class UI_Element
 {
 public:
@@ -25,6 +26,7 @@ public:
 	
 	virtual void Save(JSON_Object* jsonObject, std::string serializeStr);
 	virtual void Load(JSON_Object* jsonObject, std::string serializeStr);
+	void LoadTransform(JSON_Object* jsonObject, std::string serializeStr, Transform* objectTransform);
 
 	FlyObject* GetHolderObject(); 
 	FlyObject* CreateBaseUI(); 

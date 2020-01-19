@@ -17,6 +17,7 @@ public:
 
 	// Save & Load 
 	void SaveRoomUI(JSON_Object* jsonObject, std::string serializeStr); 
+	void LoadRoomUI(JSON_Object* jsonObject, std::string serializeStr); 
 
 	// Virtual ----------------------
 	void Update(); 

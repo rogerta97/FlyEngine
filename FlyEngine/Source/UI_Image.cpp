@@ -44,12 +44,14 @@ void UI_Image::Save(JSON_Object* jsonObject, string serializeStr)
 		json_object_dotset_number(jsonObject, string(serializeStr + string("ImageHeigth")).c_str(), uiObjectDisplayImage->GetHeigth());
 
 		json_object_dotset_string(jsonObject, string(serializeStr + string("TextureName")).c_str(), MyFileSystem::getInstance()->GetLastPathItem(uiObjectDisplayImage->GetTexture()->GetPath(), true).c_str());
+		json_object_dotset_string(jsonObject, string(serializeStr + string("ResourcePath")).c_str(), uiObjectDisplayImage->GetTexture()->GetPath());
 	}
 	else
 	{
 		json_object_dotset_number(jsonObject, string(serializeStr + string("ImageWidth")).c_str(), 0);
 		json_object_dotset_number(jsonObject, string(serializeStr + string("ImageHeigth")).c_str(), 0);
 		json_object_dotset_string(jsonObject, string(serializeStr + string("TextureName")).c_str(), MyFileSystem::getInstance()->GetLastPathItem("None", true).c_str());
+		json_object_dotset_string(jsonObject, string(serializeStr + string("ResourcePath")).c_str(), MyFileSystem::getInstance()->GetLastPathItem("None", true).c_str());
 	}
 }
 
@@ -67,4 +69,9 @@ void UI_Image::Create(string imagePath)
 
 	uiObjectDisplayImage = uiObject->AddDisplayImageAction(imagePath.c_str());
 	uiObjectDisplayImage->SetTexture(textureResource);
+}
+
+DisplayImageAction* UI_Image::GetDisplayImage()
+{
+	return uiObjectDisplayImage;
 }

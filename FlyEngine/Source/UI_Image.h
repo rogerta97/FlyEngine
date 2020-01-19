@@ -23,6 +23,7 @@ public:
 	void Load(JSON_Object* jsonObject, string serializeStr);
 
 	void Create(string imagePath); 
+	DisplayImageAction* GetDisplayImage(); 
 
 private: 
 	DisplayImageAction* uiObjectDisplayImage;

@@ -39,6 +39,24 @@ void UI_Element::Load(JSON_Object* jsonObject, string serializeStr)
 {
 }
 
+void UI_Element::LoadTransform(JSON_Object* jsonObject, std::string serializeStr, Transform* objectTransform)
+{
+	float positionX = json_object_dotget_number(jsonObject, string(serializeStr + string("Transform.Position.x")).c_str());
+	float positionY = json_object_dotget_number(jsonObject, string(serializeStr + string("Transform.Position.y")).c_str());
+	float2 position(positionX, positionY);
+	objectTransform->SetPosition(position);
+
+	float rotationX = json_object_dotget_number(jsonObject, string(serializeStr + string("Transform.Rotation.x")).c_str());
+	float rotationY = json_object_dotget_number(jsonObject, string(serializeStr + string("Transform.Rotation.y")).c_str());
+	float2 rotation(rotationX, rotationY);
+	objectTransform->SetRotationEuler(rotation);
+
+	float scaleX = json_object_dotget_number(jsonObject, string(serializeStr + string("Transform.Scale.x")).c_str());
+	float scaleY = json_object_dotget_number(jsonObject, string(serializeStr + string("Transform.Scale.y")).c_str());
+	float2 scale(scaleX, scaleY);
+	objectTransform->SetScale(scale);
+}
+
 FlyObject* UI_Element::GetHolderObject()
 {
 	return uiObject;
