@@ -345,7 +345,7 @@ void Room::AddFlyObject(FlyObject* newFlyObject)
 
 void Room::DeleteFlyObject(FlyObject* objectToDelete)
 {
-	for (auto it = objectsInRoom.begin(); it != objectsInRoom.end(); it++) 
+	for (auto it = objectsInRoom.begin(); it != objectsInRoom.end();) 
 	{
 		if ((*it)->GetName() == objectToDelete->GetName())
 		{
@@ -353,11 +353,13 @@ void Room::DeleteFlyObject(FlyObject* objectToDelete)
 			delete (*it);
 			(*it) = nullptr;
 
-			it = objectsInRoom.erase(it); 
+			it = objectsInRoom.erase(it);
 
 			if (objectsInRoom.empty())
-				break; 
+				break;
 		}
+		else
+			it++;
 	}
 }
 

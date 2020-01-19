@@ -5,6 +5,8 @@
 #include "ModuleRoomManager.h"
 #include "ModifyVariableAction.h"
 #include "ResourceManager.h"
+#include "GameViewportDockPanel.h"
+#include "ModuleImGui.h"
 #include "RoomUIHandler.h"
 #include "Room.h"
 #include "FlyObject.h"
@@ -209,6 +211,7 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 
 	newObject->CreateClickableArea(float2(posPercX, posPercY), float2(sizePercX, sizePercY), directPosition); 
  
+	App->moduleImGui->gameViewportDockPanel->FitViewportToRegion();
 	newObject->FitObjectUtils();
 }
 

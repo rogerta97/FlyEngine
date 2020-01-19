@@ -20,6 +20,7 @@ public:
 	UI_Element();
 	~UI_Element();
 
+	virtual void Init(); 
 	virtual void Update(); 
 	virtual void Draw(); 
 	virtual void CleanUp(); 
@@ -30,6 +31,7 @@ public:
 
 	FlyObject* GetHolderObject(); 
 	FlyObject* CreateBaseUI(); 
+	UID GetUID(); 
 
 public: 
 	bool isSelected; 

@@ -5,6 +5,9 @@
 #include "Texture.h"
 #include "DisplayImageAction.h"
 #include "ResourceManager.h"
+#include "ViewportManager.h"
+#include "Application.h"
+#include "ModuleInput.h"
 
 #include "UI_Image.h"
 #include "UI_Button.h"
@@ -44,32 +47,13 @@ void RoomUIHandler::LoadRoomUI(JSON_Object* jsonObject, string baseSerializeStr)
 	{
 		string elementStr = baseSerializeStr + ".Element_" + to_string(count) + "."; 
 		int currentElementType = json_object_dotget_number(jsonObject, std::string(elementStr + ".UIElementType").c_str());
-		UI_Element* newElement = nullptr; 
 
 		switch (currentElementType)
 		{
 		case UIElementType::UI_IMAGE:
 		{
-			newElement = new UI_Image();
-			
-			// Get Resource Attached
-			string texturePath = json_object_dotget_string(jsonObject, std::string(elementStr + "TextureName").c_str());
-			MyFileSystem::getInstance()->DeleteFileExtension(texturePath);
-			Texture* resourceTexture = (Texture*)ResourceManager::getInstance()->GetResource(texturePath);
-
-			// Cast To UI Image 
-			UI_Image* newElementImageCast = CreateUIImage(resourceTexture->GetUID());
-
-			// Set Width and Heigth
-			int imageWidth = json_object_dotget_number(jsonObject, std::string(elementStr + "ImageWidth").c_str());
-			int imageHeigth = json_object_dotget_number(jsonObject, std::string(elementStr + "ImageHeigth").c_str());
-
-			newElementImageCast->GetDisplayImage()->SetWidth(imageWidth);
-			newElementImageCast->GetDisplayImage()->SetHeigth(imageHeigth);
-
-			// Load Transform
-			Transform* uiElementTransform = newElementImageCast->GetHolderObject()->transform; 
-			newElementImageCast->LoadTransform(jsonObject, elementStr.c_str(), uiElementTransform);
+			UI_Image* newElementImageCast = CreateUIImage();
+			newElementImageCast->Load(jsonObject, elementStr);
 		}
 			break; 
 		}
@@ -84,6 +68,16 @@ void RoomUIHandler::Update()
 	{
 		if(selectedElement == currentUIElement)
 			currentUIElement->Update();
+	}
+
+	// Input Handling
+	if (App->moduleInput->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN && ViewportManager::getInstance()->editRoomMode == EDIT_ROOM_UI)
+	{
+		if (selectedElement != nullptr)
+		{
+			DeleteElement(selectedElement->GetUID());
+			selectedElement = nullptr; 
+		}
 	}
 }
 
@@ -139,16 +133,42 @@ UI_Image* RoomUIHandler::CreateUIImage(UID resourceUID)
 	return newImage; 
 }
 
+UI_Image* RoomUIHandler::CreateUIImage()
+{
+	UI_Image* newImage = new UI_Image();
+
+	uiElements.push_back(newImage);
+	return newImage;
+}
+
 UI_Button* RoomUIHandler::CreateUIButton()
 {
 	UI_Button* newButton = new UI_Button();
 
-	Texture* textureResource = (Texture*)ResourceManager::getInstance()->GetResource(resourceUID, ResourceType::RESOURCE_TEXTURE);
-
-
+	newButton->Init(); 
 
 	uiElements.push_back(newButton);
 	return newButton;
+}
+
+void RoomUIHandler::DeleteElement(UID elementUID)
+{
+	for (auto currentElement = uiElements.begin(); currentElement != uiElements.end();)
+	{
+		if ((*currentElement)->GetUID() == elementUID)
+		{
+			(*currentElement)->CleanUp();
+			delete (*currentElement);
+			(*currentElement) = nullptr;
+
+			currentElement = uiElements.erase(currentElement);
+
+			if (uiElements.empty())
+				break;
+		}
+		else
+			currentElement++;
+	}
 }
 
 

@@ -3,6 +3,10 @@
 #include "DisplayImageAction.h"
 #include "Texture.h"
 #include "MyFileSystem.h"
+#include "Gizmos.h"
+#include "GameViewportDockPanel.h"
+#include "Application.h"
+#include "ModuleImGui.h"
 #include "ResourceManager.h"
 
 UI_Image::UI_Image() : UI_Element()
@@ -31,12 +35,15 @@ void UI_Image::CleanUp()
 {
 	uiObject->DeleteAction(uiObjectDisplayImage->GetActionName()); 
 	uiObjectDisplayImage = nullptr; 
+	UI_Element::CleanUp(); 
 }
 
 void UI_Image::Save(JSON_Object* jsonObject, string serializeStr)
 {
 	UI_Element::Save(jsonObject, serializeStr);
 	uiObject->SaveTransform(serializeStr, jsonObject); 
+
+	json_object_dotset_number(jsonObject, string(serializeStr + string("UID")).c_str(), uid);
 
 	if (uiObjectDisplayImage->GetTexture() != nullptr)
 	{
@@ -57,6 +64,27 @@ void UI_Image::Save(JSON_Object* jsonObject, string serializeStr)
 
 void UI_Image::Load(JSON_Object* jsonObject, string serializeStr)
 {
+	// Get Resource Attached
+	string texturePath = json_object_dotget_string(jsonObject, std::string(serializeStr + "TextureName").c_str());
+	MyFileSystem::getInstance()->DeleteFileExtension(texturePath);
+	Texture* resourceTexture = (Texture*)ResourceManager::getInstance()->GetResource(texturePath);
+
+	// Set Width and Heigth
+	int imageWidth = json_object_dotget_number(jsonObject, std::string(serializeStr + "ImageWidth").c_str());
+	int imageHeigth = json_object_dotget_number(jsonObject, std::string(serializeStr + "ImageHeigth").c_str());
+		
+	Create(resourceTexture->GetPath());
+
+	uiObjectDisplayImage->SetWidth(imageWidth);
+	uiObjectDisplayImage->SetHeigth(imageHeigth);
+
+	// Load Transform
+	Transform* uiElementTransform = GetHolderObject()->transform;
+	LoadTransform(jsonObject, serializeStr.c_str(), uiElementTransform);
+	
+	// Addapt Gizmos 
+	App->moduleImGui->gameViewportDockPanel->FitViewportToRegion();
+	uiObject->FitObjectUtils(); 
 }
 
 void UI_Image::Create(string imagePath)
@@ -75,3 +103,4 @@ DisplayImageAction* UI_Image::GetDisplayImage()
 {
 	return uiObjectDisplayImage;
 }
+

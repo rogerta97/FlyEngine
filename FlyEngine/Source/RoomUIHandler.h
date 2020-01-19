@@ -31,7 +31,10 @@ public:
 
 	// Factory ----------------------
 	UI_Image* CreateUIImage(UID resourceUID); 
+	UI_Image* CreateUIImage(); 
 	UI_Button* CreateUIButton(); 
+
+	void DeleteElement(UID elementUID); 
 
 public: 
 	std::list<UI_Element*> uiElements;

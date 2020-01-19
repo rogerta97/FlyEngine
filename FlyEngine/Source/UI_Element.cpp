@@ -15,6 +15,10 @@ UI_Element::~UI_Element()
 {
 }
 
+void UI_Element::Init()
+{
+}
+
 void UI_Element::Update()
 {
 	uiObject->gizmos->Update();
@@ -28,6 +32,7 @@ void UI_Element::Draw()
 
 void UI_Element::CleanUp()
 {
+	uiObject->CleanUp();
 }
 
 void UI_Element::Save(JSON_Object* jsonObject, string serializeStr)
@@ -67,4 +72,9 @@ FlyObject* UI_Element::CreateBaseUI()
 	// Will Create Transparent Plane For UI Element Selection 
 
 	return nullptr;
+}
+
+UID UI_Element::GetUID()
+{
+	return uid;
 }
