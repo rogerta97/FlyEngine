@@ -202,3 +202,23 @@ Texture* DisplayImageAction::GetTexture() const
 {
 	return imageTexture; 
 }
+
+void DisplayImageAction::SetWidth(float newHeight)
+{
+	imageWidth = newHeight; 
+}
+
+float DisplayImageAction::GetWidth() const
+{
+	return imageWidth;
+}
+
+void DisplayImageAction::SetHeigth(float newHeight)
+{
+	imageHeight = newHeight; 
+}
+
+float DisplayImageAction::GetHeigth() const
+{
+	return imageHeight;
+}

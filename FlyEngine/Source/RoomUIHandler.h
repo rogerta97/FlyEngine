@@ -2,7 +2,9 @@
 #define _ROOM_UI_HANDLER_H_
 
 #include "Globals.h"
+#include "SaveAndLoad.h"
 #include <list>
+#include <string>
 
 class Room; 
 class UI_Element; 
@@ -13,7 +15,11 @@ public:
 	RoomUIHandler(Room* roomAttached); 
 	~RoomUIHandler();
 
+	// Save & Load 
+	void SaveRoomUI(JSON_Object* jsonObject, std::string serializeStr); 
+
 	// Virtual ----------------------
+	void Update(); 
 	void CleanUp(); 
 	void DrawUIElements(); 
 

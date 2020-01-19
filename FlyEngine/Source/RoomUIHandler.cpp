@@ -14,6 +14,31 @@ RoomUIHandler::~RoomUIHandler()
 {
 }
 
+void RoomUIHandler::SaveRoomUI(JSON_Object* jsonObject, string baseSerializeStr)
+{
+	json_object_dotset_number(jsonObject, string(baseSerializeStr + ".ElementsAmount").c_str(), uiElements.size());
+
+	if (!uiElements.empty())
+	{
+		int count = 0; 
+		for (auto& currentUIElement : uiElements)
+		{
+			string serializeStr = baseSerializeStr + ".Element_" + to_string(count) + "."; 
+			currentUIElement->Save(jsonObject, serializeStr);
+			count++; 
+		}
+	}
+}
+
+void RoomUIHandler::Update()
+{
+	for (auto& currentUIElement : uiElements)
+	{
+		if(selectedElement == currentUIElement)
+			currentUIElement->Update();
+	}
+}
+
 void RoomUIHandler::CleanUp()
 {
 	for (auto& currentUIElement : uiElements)
@@ -32,7 +57,22 @@ void RoomUIHandler::DrawUIElements()
 
 void RoomUIHandler::SetSelectedElement(UI_Element* newSelectedElement)
 {
-	selectedElement = newSelectedElement; 
+	if (selectedElement == newSelectedElement)
+		return;
+
+	for (auto& it : uiElements)
+	{
+		if ((it) == newSelectedElement)
+		{
+			(it)->isSelected = true;
+		}
+		else
+		{
+			it->isSelected = false;
+		}
+	}
+
+	selectedElement = newSelectedElement;
 }
 
 UI_Element* RoomUIHandler::GetSelectedElement()

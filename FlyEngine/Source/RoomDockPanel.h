@@ -14,14 +14,11 @@ public:
 	~RoomDockPanel();
 
 	bool Draw();
+	void DrawTopButtons();
 
 	void DrawUserInterfaceTab();
-
 	void ShowBlackboardTab();
-
 	void DrawRoomVariablesUI();
-
-	void DrawTopButtons();
 
 	// Hierarchy ---
 	void DrawRoomHierarchy();

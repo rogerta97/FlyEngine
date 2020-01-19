@@ -22,16 +22,21 @@ public:
 	void CleanUp(); 
 
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString);
-
 	void DrawActionOccurenceCheckboxes(); 
-
 	bool CreateImage(const char* texturePath); 
 
+	// Set & Get --------
 	Quad* GetQuad() const;
 	void SetQuad(Quad* newQuad);
 	
 	void SetTexture(Texture* newTexture);
 	Texture* GetTexture() const; 
+
+	void SetWidth(float newWidth);
+	float GetWidth() const;
+
+	void SetHeigth(float newWidth);
+	float GetHeigth() const;
 
 private:
 	Quad*		quadMesh;

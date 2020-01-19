@@ -33,7 +33,7 @@ public:
 	void DrawActionsList();
 	void DrawAddAndDeleteButtons();
 	void DrawActionSelectable(ActionSelectableInfo& selectableInfo, Action*& currentTool, int posInList, int selectableHeigth);
-	void DrawObjectPlacementCH();
+	void DrawObjectPlacementCH(FlyObject* selectedObject);
 	
 	void DrawChangeRoomSettings();
 	void DrawToolImageSettings();

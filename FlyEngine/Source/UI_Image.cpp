@@ -9,22 +9,52 @@ UI_Image::UI_Image() : UI_Element()
 {
 	UI_Element::UI_Element(); 
 	uiObjectDisplayImage = nullptr; 
+	uiElementType = UI_IMAGE; 
 }
 
 UI_Image::~UI_Image()
 {
 }
 
+void UI_Image::Update()
+{
+	UI_Element::Update(); 
+}
+
 void UI_Image::Draw()
 {
-	UI_Element::Draw(); 
 	uiObjectDisplayImage->Draw(); 
+	UI_Element::Draw(); 
 }
 
 void UI_Image::CleanUp()
 {
 	uiObject->DeleteAction(uiObjectDisplayImage->GetActionName()); 
 	uiObjectDisplayImage = nullptr; 
+}
+
+void UI_Image::Save(JSON_Object* jsonObject, string serializeStr)
+{
+	UI_Element::Save(jsonObject, serializeStr);
+	uiObject->SaveTransform(serializeStr, jsonObject); 
+
+	if (uiObjectDisplayImage->GetTexture() != nullptr)
+	{
+		json_object_dotset_number(jsonObject, string(serializeStr + string("ImageWidth")).c_str(), uiObjectDisplayImage->GetWidth());
+		json_object_dotset_number(jsonObject, string(serializeStr + string("ImageHeigth")).c_str(), uiObjectDisplayImage->GetHeigth());
+
+		json_object_dotset_string(jsonObject, string(serializeStr + string("TextureName")).c_str(), MyFileSystem::getInstance()->GetLastPathItem(uiObjectDisplayImage->GetTexture()->GetPath(), true).c_str());
+	}
+	else
+	{
+		json_object_dotset_number(jsonObject, string(serializeStr + string("ImageWidth")).c_str(), 0);
+		json_object_dotset_number(jsonObject, string(serializeStr + string("ImageHeigth")).c_str(), 0);
+		json_object_dotset_string(jsonObject, string(serializeStr + string("TextureName")).c_str(), MyFileSystem::getInstance()->GetLastPathItem("None", true).c_str());
+	}
+}
+
+void UI_Image::Load(JSON_Object* jsonObject, string serializeStr)
+{
 }
 
 void UI_Image::Create(string imagePath)

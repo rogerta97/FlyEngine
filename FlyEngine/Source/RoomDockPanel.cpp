@@ -106,7 +106,7 @@ void RoomDockPanel::DrawUserInterfaceTab()
 	{
 		if (ImGui::Button("Add Debug UI Image"))
 		{
-			Resource* imageResource = ResourceManager::getInstance()->GetResource("TestUIImage");
+			Resource* imageResource = ResourceManager::getInstance()->GetResource("BackButton");
 			UI_Image* newImage = App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->CreateUIImage(imageResource->GetUID());
 		}
 

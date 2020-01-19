@@ -56,11 +56,10 @@ bool ObjectPropertiesDockPanel::Draw()
 
 			RoomUIHandler* roomUIHandler = App->moduleRoomManager->GetSelectedRoom()->roomUIHandler; 
 			UI_Element* selectedUIElement = roomUIHandler->GetSelectedElement();
+
 			if (selectedUIElement != nullptr)
 			{
-				ImGui::Text("This should be the info of the UI bro, you did it, as always, smoke that shit");
-
-				ImGui::Text("Lets See The Name Bro: ");
+				DrawFixedPartObjectUI(selectedUIElement->GetHolderObject()); 
 			}
 			else{
 				ImGui::Text("Select something dude :)");
@@ -156,6 +155,8 @@ void ObjectPropertiesDockPanel::DrawFixedPartObjectUI(FlyObject* selectedObject)
 		objectIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("ObjectIcon");
 	else if (selectedObject->flyObjectType == INVENTORY_ITEM)
 		objectIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("InventoryItemIcon");
+	else if (selectedObject->flyObjectType == UI_HOLDER)
+		objectIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("UserInterfaceIcon");
 
 	if(objectIconTexture != nullptr)
 		ImGui::Image((ImTextureID)objectIconTexture->GetTextureID(), ImVec2(35, 35));
@@ -175,7 +176,7 @@ void ObjectPropertiesDockPanel::DrawFixedPartObjectUI(FlyObject* selectedObject)
 	}
 
 	ImGui::Spacing();
-	DrawObjectPlacementCH();
+	DrawObjectPlacementCH(selectedObject);
 	ImGui::Spacing();
 }
 
@@ -714,7 +715,7 @@ void ObjectPropertiesDockPanel::DrawActionSelectable(ActionSelectableInfo& selec
 	ImGui::PopFont();
 }
 
-void ObjectPropertiesDockPanel::DrawObjectPlacementCH()
+void ObjectPropertiesDockPanel::DrawObjectPlacementCH(FlyObject* selectedObject)
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 	if (ImGui::CollapsingHeader("Object Placement", ImGuiTreeNodeFlags_DefaultOpen))

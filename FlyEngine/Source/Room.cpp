@@ -43,6 +43,7 @@ void Room::Update()
 	if (App->moduleRoomManager->GetSelectedRoom() == this && !objectsInRoom.empty())
 	{
 		UpdateRoomObjects();
+		roomUIHandler->Update(); 
 
 		if (App->moduleRoomManager->GetSelectedRoom()->objectsInRoom.empty() && App->isEngineInPlayMode)
 			return;
@@ -155,11 +156,15 @@ bool Room::IsObjectInRoom(FlyObject* newObject_Inv)
 
 void Room::SaveRoomData(JSON_Object* jsonObject)
 {
+	// Save Objects Data
 	json_object_dotset_number(jsonObject, string(GetName() + ".ObjectsAmount").c_str(), GetObjectsInRoomAmount());
 
 	int count = 0; 
 	for (auto& it : objectsInRoom)
 		it->SaveObjectData(jsonObject, count++);
+
+	// Save UI 
+	roomUIHandler->SaveRoomUI(jsonObject, string(GetName() + ".UserInterface"));
 }
 
 RoomConnection* Room::ConnectToRoom(Room* destinationRoom)
