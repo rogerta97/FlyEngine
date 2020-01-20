@@ -16,6 +16,7 @@
 #include "UI_Image.h"
 #include "UI_Element.h"
 #include "ImageImporter.h"
+#include "UI_Button.h"
 #include "Action.h"
 #include "EmitSoundAction.h"
 #include "ViewportManager.h"
@@ -101,9 +102,22 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 		ImGui::Text("Button Image"); 
 		ImGui::PopFont(); 
 
-		static int onobSelected = 0; 
-		ImGui::Combo("ONOB", &onobSelected, "Color Tint\0Texture Swap"); 
+		int imageHeigth = 150;
+		ImVec2 imageCenterPoint = ImVec2(ImGui::GetContentRegionAvailWidth(), imageHeigth);
+		float aspectRatio = App->moduleImGui->gameViewportDockPanel->GetAspectRatio(); 
 
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+		ImGui::BeginChild("ButtonImagePremium", ImVec2(ImGui::GetContentRegionAvailWidth(), 250));
+
+		//ImGui::SetCursorPos(imageCenterPoint); 
+		//ImGui::Image(0, ImVec2(imageHeigth * aspectRatio, imageHeigth));
+
+		static char searchButtonImageBuffer[256]; 
+
+		ImGui::InputTextWithHint("", "Search Image...", searchButtonImageBuffer, IM_ARRAYSIZE(searchButtonImageBuffer));
+
+		ImGui::EndChild(); 
+		ImGui::PopStyleColor(); 
 	}
 }
 

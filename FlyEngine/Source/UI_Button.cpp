@@ -146,3 +146,28 @@ void UI_Button::SetBackgroundTexture(Texture* buttonBgnTexture)
 	backgroundTexture = buttonBgnTexture; 
 	uiObjectDisplayImageBackground = uiObject->AddDisplayImageAction(buttonBgnTexture->GetPath());
 }
+
+DisplayImageAction* UI_Button::GetDisplayImageAction()
+{
+	return uiObjectDisplayImageBackground;
+}
+
+Texture* UI_Button::GetBackgroundTexture()
+{
+	return backgroundTexture;
+}
+
+Texture* UI_Button::GetIdleTexture()
+{
+	return idleTexture;
+}
+
+Texture* UI_Button::GetMouseOverTexture()
+{
+	return mouseOverTexture;
+}
+
+Texture* UI_Button::GetMouseClickedTexture()
+{
+	return mouseClickedTexture;
+}

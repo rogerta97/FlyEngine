@@ -35,6 +35,13 @@ public:
 
 	// Utility ---------
 	void SetBackgroundTexture(Texture* buttonTexture);
+	DisplayImageAction* GetDisplayImageAction();
+
+	// Get Textures 
+	Texture* GetBackgroundTexture(); 
+	Texture* GetIdleTexture(); 
+	Texture* GetMouseOverTexture(); 
+	Texture* GetMouseClickedTexture(); 
 
 public:
 	ButtonBehaviourMouseInteraction behaviourInteraction; 
