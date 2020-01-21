@@ -34,11 +34,11 @@ public:
 	void Load(JSON_Object* jsonObject, string serializeStr);
 
 	// Utility ---------
-	void SetBackgroundTexture(Texture* buttonTexture);
+	void SetMainTexture(Texture* buttonTexture);
 	DisplayImageAction* GetDisplayImageAction();
 
 	// Get Textures 
-	Texture* GetBackgroundTexture(); 
+	Texture* GetMainTexture(); 
 	Texture* GetIdleTexture(); 
 	Texture* GetMouseOverTexture(); 
 	Texture* GetMouseClickedTexture(); 

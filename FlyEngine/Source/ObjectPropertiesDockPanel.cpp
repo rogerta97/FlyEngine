@@ -102,19 +102,71 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 		ImGui::Text("Button Image"); 
 		ImGui::PopFont(); 
 
-		int imageHeigth = 150;
-		ImVec2 imageCenterPoint = ImVec2(ImGui::GetContentRegionAvailWidth(), imageHeigth);
-		float aspectRatio = App->moduleImGui->gameViewportDockPanel->GetAspectRatio(); 
-
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-		ImGui::BeginChild("ButtonImagePremium", ImVec2(ImGui::GetContentRegionAvailWidth(), 250));
+		ImGui::BeginChild("ButtonImagePremium", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
 
-		//ImGui::SetCursorPos(imageCenterPoint); 
-		//ImGui::Image(0, ImVec2(imageHeigth * aspectRatio, imageHeigth));
+		ImVec2 imageMaxSize = ImVec2(ImGui::GetContentRegionAvailWidth(), 150);
+		ImVec2 uiImageDimensions = ImVec2(150, 150); 
+		Texture* mainButtonTexture = selectedButton->GetMainTexture();
+		ImTextureID mainTextureID = 0; 
+
+		if (mainButtonTexture != nullptr)
+		{
+			float aspectRatio = mainButtonTexture->GetAspectRatio();
+
+			if (mainButtonTexture->IsVertical())
+			{
+				uiImageDimensions.y = imageMaxSize.y; 
+				uiImageDimensions.x = uiImageDimensions.x * aspectRatio; 
+			}
+			else
+			{
+				uiImageDimensions.y = imageMaxSize.y;
+				uiImageDimensions.x = uiImageDimensions.x * aspectRatio;
+
+				if (uiImageDimensions.x > imageMaxSize.x)
+				{
+					float diff = uiImageDimensions.x - imageMaxSize.x;
+					uiImageDimensions.x -= diff;
+					uiImageDimensions.y = uiImageDimensions.x * aspectRatio;
+				}
+			}
+
+			mainTextureID = (ImTextureID)mainButtonTexture->GetTextureID();
+		}
+
+		ImGui::Spacing(); 
+
+		ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (uiImageDimensions.x / 2), imageMaxSize.y / 2 - (uiImageDimensions.y / 2) + 10));
+		ImGui::Image(mainTextureID, uiImageDimensions);
+
+		ImGui::Spacing(); 
 
 		static char searchButtonImageBuffer[256]; 
-
 		ImGui::InputTextWithHint("", "Search Image...", searchButtonImageBuffer, IM_ARRAYSIZE(searchButtonImageBuffer));
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+			{
+				int* selectedResourceUID = (int*)payload->Data;
+				Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+				if (resourceDropped->GetType() == RESOURCE_TEXTURE)
+				{
+					Texture* textureDropped = (Texture*)resourceDropped;
+					selectedButton->SetMainTexture(textureDropped);
+				}
+			}
+
+			ImGui::EndDragDropTarget();
+		}
+
+		ImGui::SameLine(); 
+		if (ImGui::Button("Search"))
+		{
+
+		}
 
 		ImGui::EndChild(); 
 		ImGui::PopStyleColor(); 

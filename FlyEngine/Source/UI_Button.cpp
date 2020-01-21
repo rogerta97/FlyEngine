@@ -33,7 +33,7 @@ void UI_Button::Init()
 	
 	// Background Image
 	Texture* testTexture = (Texture*)ResourceManager::getInstance()->GetResource("BackButton"); 
-	SetBackgroundTexture(testTexture);
+	SetMainTexture(testTexture);
 
 	// Button Click 
 	uiObject->CreateClickableArea(float2(1.0f, 1.0f), float2(1.0f, 1.0f), false); 
@@ -141,10 +141,14 @@ void UI_Button::Load(JSON_Object* jsonObject, string serializeStr)
 	uiObject->FitObjectUtils();
 }
 
-void UI_Button::SetBackgroundTexture(Texture* buttonBgnTexture)
+void UI_Button::SetMainTexture(Texture* buttonBgnTexture)
 {
 	backgroundTexture = buttonBgnTexture; 
-	uiObjectDisplayImageBackground = uiObject->AddDisplayImageAction(buttonBgnTexture->GetPath());
+
+	if (uiObjectDisplayImageBackground == nullptr)
+		uiObjectDisplayImageBackground = uiObject->AddDisplayImageAction(buttonBgnTexture->GetPath());
+	else
+		uiObjectDisplayImageBackground->SetTexture(buttonBgnTexture); 
 }
 
 DisplayImageAction* UI_Button::GetDisplayImageAction()
@@ -152,7 +156,7 @@ DisplayImageAction* UI_Button::GetDisplayImageAction()
 	return uiObjectDisplayImageBackground;
 }
 
-Texture* UI_Button::GetBackgroundTexture()
+Texture* UI_Button::GetMainTexture()
 {
 	return backgroundTexture;
 }
