@@ -99,13 +99,13 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 		ImGui::Spacing();
 
 		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-		ImGui::Text("Button Image"); 
+		ImGui::Text("Button Image:"); 
 		ImGui::PopFont(); 
 
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-		ImGui::BeginChild("ButtonImagePremium", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
+		ImGui::BeginChild("ButtonImagePreview", ImVec2(ImGui::GetContentRegionAvailWidth(), 210));
 
-		ImVec2 imageMaxSize = ImVec2(ImGui::GetContentRegionAvailWidth(), 150);
+		ImVec2 imageMaxSize = ImVec2(ImGui::GetContentRegionAvailWidth(), 135);
 		ImVec2 uiImageDimensions = ImVec2(150, 150); 
 		Texture* mainButtonTexture = selectedButton->GetMainTexture();
 		ImTextureID mainTextureID = 0; 
@@ -122,7 +122,7 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 			else
 			{
 				uiImageDimensions.y = imageMaxSize.y;
-				uiImageDimensions.x = uiImageDimensions.x * aspectRatio;
+				uiImageDimensions.x = uiImageDimensions.y * aspectRatio;
 
 				if (uiImageDimensions.x > imageMaxSize.x)
 				{
@@ -143,6 +143,10 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 		ImGui::Spacing(); 
 
 		static char searchButtonImageBuffer[256]; 
+
+		ImGui::Spacing();
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+		ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() - 70);
 		ImGui::InputTextWithHint("", "Search Image...", searchButtonImageBuffer, IM_ARRAYSIZE(searchButtonImageBuffer));
 
 		if (ImGui::BeginDragDropTarget())
@@ -170,7 +174,55 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 
 		ImGui::EndChild(); 
 		ImGui::PopStyleColor(); 
+
+		// Button Reaction ---------------------------------
+		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+		ImGui::Text("Button Reaction:");
+		ImGui::PopFont();
+
+		int childHeight = 115;
+		static int reactionTypeSelected = 0; 
+
+		if (reactionTypeSelected == 1)
+			childHeight = 150; 
+		
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+		ImGui::BeginChild("ButtonReaction", ImVec2(ImGui::GetContentRegionAvailWidth(), childHeight));
+
+		INC_CURSOR_10
+		if (ImGui::Combo("Behaviour", &reactionTypeSelected, "Color Tint\0Swap Image"))
+		{
+
+		}
+
+		if (reactionTypeSelected == 0)
+		{
+			IMGUI_SPACED_SEPARATOR; 
+			
+			static float mouseOverColor[4] = {0,0,0,0};
+			INC_CURSOR_X_10
+			ImGui::ColorEdit4("Mouse Over Tint", mouseOverColor);
+
+			static float mouseClickTint[4] = { 0,0,0,0 };
+			INC_CURSOR_X_10
+			ImGui::ColorEdit4("Mouse Click Tint", mouseClickTint);
+		}
+
+		ImGui::EndChild();
+		ImGui::PopStyleColor();
+
+		// Actions Callback
+		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+		ImGui::Text("Actions when button is clicked:");
+		ImGui::PopFont();
+
+
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+		ImGui::BeginChild("ButtonActions", ImVec2(ImGui::GetContentRegionAvailWidth(), 150)); 
+		ImGui::EndChild();
+		ImGui::PopStyleColor(); 
 	}
+
 }
 
 void ObjectPropertiesDockPanel::DrawUIImageProperties(UI_Element* selectedUIElement)

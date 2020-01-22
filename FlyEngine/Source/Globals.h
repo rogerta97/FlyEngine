@@ -64,6 +64,9 @@ enum update_status
 #define PUSH_CHILD_BG_COLOR ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 #define SPACING ImGui::Spacing(); 
 #define SEPARATOR ImGui::Separator(); 
+#define INC_CURSOR_X_10 ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 7);
+#define INC_CURSOR_Y_10 ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 7);
+#define INC_CURSOR_10 ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 7,ImGui::GetCursorPosY() + 7));
 
 // Configuration -----------
 #define SCREEN_WIDTH 1500
