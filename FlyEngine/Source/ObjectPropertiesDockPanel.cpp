@@ -133,12 +133,58 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.082f,  0.105f,  0.13f, 1.0f));
 			ImGui::BeginChild("OnMouseOverTexture", ImVec2(ImGui::GetContentRegionAvailWidth()- 10, 100));
 
+			ImGui::Columns(2); 
+			ImGui::SetColumnWidth(0, 100); 
+			ImGui::Image(0, ImVec2(90, 90));
+
+			ImGui::NextColumn();
+
+			INC_CURSOR_10;
+			ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+			ImGui::Text("On Mouse Over Image:");
+			ImGui::PopFont();
+
+			static char searchImageOver[256];
+
+			ImGui::Spacing();
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+			ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() - 70);
+			ImGui::InputTextWithHint("", "Search Image...", searchImageOver, IM_ARRAYSIZE(searchImageOver));
+			
+			ImGui::SameLine();
+			if (ImGui::Button("Search##SearchOverImage"))
+			{
+
+			}
 
 			ImGui::EndChild();
 
 			INC_CURSOR_10;
 			ImGui::BeginChild("OnMouseClickedTexture", ImVec2(ImGui::GetContentRegionAvailWidth() - 10, 100));
 
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 100);
+			ImGui::Image(0, ImVec2(90, 90));
+
+			ImGui::NextColumn();
+
+			INC_CURSOR_10;
+			ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+			ImGui::Text("On Mouse Clicked Image:");
+			ImGui::PopFont();
+
+			static char searchImageClickBuffer[256];
+
+			ImGui::Spacing();
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+			ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() - 70);
+			ImGui::InputTextWithHint("", "Search Image...", searchImageClickBuffer, IM_ARRAYSIZE(searchImageClickBuffer));
+
+			ImGui::SameLine();
+			if (ImGui::Button("Search##SearchClickImage"))
+			{
+
+			}
 
 			ImGui::EndChild();
 			ImGui::PopStyleColor();
