@@ -102,78 +102,7 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 		ImGui::Text("Button Image:"); 
 		ImGui::PopFont(); 
 
-		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-		ImGui::BeginChild("ButtonImagePreview", ImVec2(ImGui::GetContentRegionAvailWidth(), 210));
-
-		ImVec2 imageMaxSize = ImVec2(ImGui::GetContentRegionAvailWidth(), 135);
-		ImVec2 uiImageDimensions = ImVec2(150, 150); 
-		Texture* mainButtonTexture = selectedButton->GetMainTexture();
-		ImTextureID mainTextureID = 0; 
-
-		if (mainButtonTexture != nullptr)
-		{
-			float aspectRatio = mainButtonTexture->GetAspectRatio();
-
-			if (mainButtonTexture->IsVertical())
-			{
-				uiImageDimensions.y = imageMaxSize.y; 
-				uiImageDimensions.x = uiImageDimensions.x * aspectRatio; 
-			}
-			else
-			{
-				uiImageDimensions.y = imageMaxSize.y;
-				uiImageDimensions.x = uiImageDimensions.y * aspectRatio;
-
-				if (uiImageDimensions.x > imageMaxSize.x)
-				{
-					float diff = uiImageDimensions.x - imageMaxSize.x;
-					uiImageDimensions.x -= diff;
-					uiImageDimensions.y = uiImageDimensions.x * aspectRatio;
-				}
-			}
-
-			mainTextureID = (ImTextureID)mainButtonTexture->GetTextureID();
-		}
-
-		ImGui::Spacing(); 
-
-		ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (uiImageDimensions.x / 2), imageMaxSize.y / 2 - (uiImageDimensions.y / 2) + 10));
-		ImGui::Image(mainTextureID, uiImageDimensions);
-
-		ImGui::Spacing(); 
-
-		static char searchButtonImageBuffer[256]; 
-
-		ImGui::Spacing();
-		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-		ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() - 70);
-		ImGui::InputTextWithHint("", "Search Image...", searchButtonImageBuffer, IM_ARRAYSIZE(searchButtonImageBuffer));
-
-		if (ImGui::BeginDragDropTarget())
-		{
-			if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
-			{
-				int* selectedResourceUID = (int*)payload->Data;
-				Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
-
-				if (resourceDropped->GetType() == RESOURCE_TEXTURE)
-				{
-					Texture* textureDropped = (Texture*)resourceDropped;
-					selectedButton->SetMainTexture(textureDropped);
-				}
-			}
-
-			ImGui::EndDragDropTarget();
-		}
-
-		ImGui::SameLine(); 
-		if (ImGui::Button("Search"))
-		{
-
-		}
-
-		ImGui::EndChild(); 
-		ImGui::PopStyleColor(); 
+		DrawButtonMainImagePreview(selectedButton);
 
 		// Button Reaction ---------------------------------
 		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
@@ -184,7 +113,7 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 		static int reactionTypeSelected = 0; 
 
 		if (reactionTypeSelected == 1)
-			childHeight = 150; 
+			childHeight = 270; 
 		
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 		ImGui::BeginChild("ButtonReaction", ImVec2(ImGui::GetContentRegionAvailWidth(), childHeight));
@@ -196,16 +125,23 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 		}
 
 		if (reactionTypeSelected == 0)
+			DrawColorTintSection();
+		
+		if (reactionTypeSelected == 1)
 		{
-			IMGUI_SPACED_SEPARATOR; 
-			
-			static float mouseOverColor[4] = {0,0,0,0};
-			INC_CURSOR_X_10
-			ImGui::ColorEdit4("Mouse Over Tint", mouseOverColor);
+			INC_CURSOR_10;
+			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.082f,  0.105f,  0.13f, 1.0f));
+			ImGui::BeginChild("OnMouseOverTexture", ImVec2(ImGui::GetContentRegionAvailWidth()- 10, 100));
 
-			static float mouseClickTint[4] = { 0,0,0,0 };
-			INC_CURSOR_X_10
-			ImGui::ColorEdit4("Mouse Click Tint", mouseClickTint);
+
+			ImGui::EndChild();
+
+			INC_CURSOR_10;
+			ImGui::BeginChild("OnMouseClickedTexture", ImVec2(ImGui::GetContentRegionAvailWidth() - 10, 100));
+
+
+			ImGui::EndChild();
+			ImGui::PopStyleColor();
 		}
 
 		ImGui::EndChild();
@@ -216,13 +152,100 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 		ImGui::Text("Actions when button is clicked:");
 		ImGui::PopFont();
 
-
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 		ImGui::BeginChild("ButtonActions", ImVec2(ImGui::GetContentRegionAvailWidth(), 150)); 
 		ImGui::EndChild();
 		ImGui::PopStyleColor(); 
 	}
 
+}
+
+void ObjectPropertiesDockPanel::DrawColorTintSection()
+{
+	IMGUI_SPACED_SEPARATOR;
+
+	static float mouseOverColor[4] = { 0,0,0,0 };
+	INC_CURSOR_X_10
+		ImGui::ColorEdit4("Mouse Over Tint", mouseOverColor);
+
+	static float mouseClickTint[4] = { 0,0,0,0 };
+	INC_CURSOR_X_10
+		ImGui::ColorEdit4("Mouse Click Tint", mouseClickTint);
+}
+
+void ObjectPropertiesDockPanel::DrawButtonMainImagePreview(UI_Button* selectedButton)
+{
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	ImGui::BeginChild("ButtonImagePreview", ImVec2(ImGui::GetContentRegionAvailWidth(), 195));
+
+	ImVec2 imageMaxSize = ImVec2(ImGui::GetContentRegionAvailWidth(), 135);
+	ImVec2 uiImageDimensions = ImVec2(150, 150);
+	Texture* mainButtonTexture = selectedButton->GetMainTexture();
+	ImTextureID mainTextureID = 0;
+
+	if (mainButtonTexture != nullptr)
+	{
+		float aspectRatio = mainButtonTexture->GetAspectRatio();
+
+		if (mainButtonTexture->IsVertical())
+		{
+			uiImageDimensions.y = imageMaxSize.y;
+			uiImageDimensions.x = uiImageDimensions.x * aspectRatio;
+		}
+		else
+		{
+			uiImageDimensions.y = imageMaxSize.y;
+			uiImageDimensions.x = uiImageDimensions.y * aspectRatio;
+
+			if (uiImageDimensions.x > imageMaxSize.x)
+			{
+				float diff = uiImageDimensions.x - imageMaxSize.x;
+				uiImageDimensions.x -= diff;
+				uiImageDimensions.y = uiImageDimensions.x * aspectRatio;
+			}
+		}
+		mainTextureID = (ImTextureID)mainButtonTexture->GetTextureID();
+	}
+
+	ImGui::Spacing();
+
+	ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (uiImageDimensions.x / 2), imageMaxSize.y / 2 - (uiImageDimensions.y / 2) + 10));
+	ImGui::Image(mainTextureID, uiImageDimensions);
+
+	ImGui::Spacing();
+
+	static char searchButtonImageBuffer[256];
+
+	ImGui::Spacing();
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() - 70);
+	ImGui::InputTextWithHint("", "Search Image...", searchButtonImageBuffer, IM_ARRAYSIZE(searchButtonImageBuffer));
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+		{
+			int* selectedResourceUID = (int*)payload->Data;
+			Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+			if (resourceDropped->GetType() == RESOURCE_TEXTURE)
+			{
+				Texture* textureDropped = (Texture*)resourceDropped;
+				selectedButton->SetMainTexture(textureDropped);
+			}
+		}
+
+		ImGui::EndDragDropTarget();
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Search"))
+	{
+
+	}
+
+	ImGui::EndChild();
+	ImGui::PopStyleColor();
 }
 
 void ObjectPropertiesDockPanel::DrawUIImageProperties(UI_Element* selectedUIElement)

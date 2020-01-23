@@ -6,6 +6,7 @@
 #include "MathGeoLib/Math/float2.h"
 
 class FlyObject;
+class UI_Button; 
 class ObjectPropertiesDockPanel : public DockPanel {
 
 public:
@@ -18,6 +19,10 @@ public:
 	void DrawUIElementProperties();
 	void DrawUIImageProperties(UI_Element* selectedUIElement);
 	void DrawUIButtonProperties(UI_Element* selectedUIElement);
+
+	void DrawColorTintSection();
+
+	void DrawButtonMainImagePreview(UI_Button* selectedButton);
 
 	// Action Objects
 	void DrawFlyObjectProperties();
