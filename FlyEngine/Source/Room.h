@@ -38,7 +38,9 @@ public:
 
 	void Update(); 
 
-	void CleanUp(); 
+	void CleanUp();
+	void CleanRoomObjects(); 
+	void CleanRoomUI(); 
 
 	// Utility -------------------
 	int GetObjectsInRoomAmount(); 

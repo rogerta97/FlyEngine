@@ -126,6 +126,14 @@ void Room::CleanUp()
 	roomUIHandler = nullptr; 
 }
 
+void Room::CleanRoomObjects()
+{
+}
+
+void Room::CleanRoomUI()
+{
+}
+
 int Room::GetObjectsInRoomAmount()
 {
 	return objectsInRoom.size();

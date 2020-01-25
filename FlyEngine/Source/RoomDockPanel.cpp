@@ -311,6 +311,7 @@ void RoomDockPanel::DrawTopButtons()
 			playButtonColor = ImVec4(0.35f, 0.39f, 0.50f, 1.00f);
 			playStopButtonTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlayIcon");
 			App->moduleRoomManager->GetSelectedRoom()->CleanUp();
+			
 			SaveAndLoad::getInstance()->LoadOnPlayToSelectedRoom();
 		}
 	}

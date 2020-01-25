@@ -236,6 +236,8 @@ void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 	}
 
 	string serialiseStr = roomToLoad->GetName() + ".UserInterface";
+
+	if(roomToLoad)
 	roomToLoad->roomUIHandler->LoadRoomUI(root_obj, serialiseStr);
 }
 
