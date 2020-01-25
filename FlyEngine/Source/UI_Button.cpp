@@ -52,6 +52,7 @@ void UI_Button::Draw()
 
 void UI_Button::CleanUp()
 {
+	// TODO: BUTTON NEED CLEANUP :D
 }
 
 void UI_Button::Save(JSON_Object* jsonObject, string serializeStr)

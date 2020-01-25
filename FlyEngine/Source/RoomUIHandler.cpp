@@ -91,10 +91,14 @@ void RoomUIHandler::Update()
 
 void RoomUIHandler::CleanUp()
 {
-	for (auto& currentUIElement : uiElements)
+	for (auto currentElement = uiElements.begin(); currentElement != uiElements.end();)
 	{
-		currentUIElement->CleanUp();
+		(*currentElement)->CleanUp();
+		delete (*currentElement);
+		currentElement = uiElements.erase(currentElement);
 	}
+
+	uiElements.clear(); 
 }
 
 void RoomUIHandler::DrawUIElements()

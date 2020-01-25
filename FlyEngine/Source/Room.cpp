@@ -128,10 +128,18 @@ void Room::CleanUp()
 
 void Room::CleanRoomObjects()
 {
+	for (auto& it : objectsInRoom)
+	{
+		it->CleanUp(); 
+	}
+
+	objectsInRoom.clear(); 
 }
 
 void Room::CleanRoomUI()
 {
+	if(roomUIHandler != nullptr)
+		roomUIHandler->CleanUp();
 }
 
 int Room::GetObjectsInRoomAmount()
