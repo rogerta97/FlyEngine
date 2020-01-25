@@ -10,6 +10,7 @@ class Room;
 class UI_Element; 
 class UI_Image; 
 class UI_Button; 
+class Action; 
 class RoomUIHandler
 {
 public: 
@@ -28,6 +29,7 @@ public:
 	// Utility ----------------------
 	void SetSelectedElement(UI_Element* newSelectedElement); 
 	UI_Element* GetSelectedElement();
+	void DrawSelectedOnClickActionSettings(); 
 
 	// Factory ----------------------
 	UI_Image* CreateUIImage(UID resourceUID); 
@@ -38,6 +40,9 @@ public:
 
 public: 
 	std::list<UI_Element*> uiElements;
+
+	// ImGui variables Button -------
+	Action* selectedButtonUIAction;
 
 private: 
 	Room* roomAttached; 

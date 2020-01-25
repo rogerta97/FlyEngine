@@ -1,6 +1,8 @@
 #include "EmitSoundAction.h"
 #include "AudioClip.h"
 #include "imgui.h"
+#include "Texture.h"
+#include "ResourceManager.h"
 
 #include "Application.h"
 #include "ModuleImGui.h"
@@ -18,6 +20,64 @@ EmitSoundAction::EmitSoundAction(FlyObject* _parentObject)
 EmitSoundAction::~EmitSoundAction()
 {
 
+}
+
+void EmitSoundAction::DrawUISettings()
+{
+	
+}
+
+void EmitSoundAction::DrawUISettingsInButton()
+{
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text("Emit Sound Settings: ");
+	ImGui::PopFont();
+
+	static char soundNameBuffer[256] = "";
+
+	Texture* playSound = (Texture*)ResourceManager::getInstance()->GetResource("PlayAudio");
+	if (ImGui::ImageButton((ImTextureID)playSound->GetTextureID(), ImVec2(20, 20)))
+		Play();
+	
+	ImGui::SameLine();
+
+	ImGui::InputTextWithHint("", "Select Sound...", soundNameBuffer, IM_ARRAYSIZE(soundNameBuffer), ImGuiInputTextFlags_ReadOnly);
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+		{
+			int* selectedResourceUID = (int*)payload->Data;
+			Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+			if (resourceDropped->GetType() == RESOURCE_SFX)
+			{
+				audioClip = (AudioClip*)resourceDropped;
+				strcpy(soundNameBuffer, resourceDropped->GetName().c_str());
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Search##SearchSound"))
+	{
+		ImGui::OpenPopup("print_sound_selection_popup");
+		showSoundSelectionPopup = true;
+	}
+
+	if (showSoundSelectionPopup)
+	{
+		Resource* selectedSound = ResourceManager::getInstance()->PrintSoundsSelectionPopup();
+
+		if (selectedSound != nullptr)
+		{
+			audioClip = (AudioClip*)selectedSound;
+			showSoundSelectionPopup = false;
+			strcpy(soundNameBuffer, selectedSound->GetName().c_str());
+		}
+	}
 }
 
 void EmitSoundAction::DrawActionOccurenceCheckboxes()

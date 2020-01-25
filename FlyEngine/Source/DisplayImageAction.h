@@ -19,7 +19,9 @@ public:
 	void Init(); 
 	void Update(); 
 	void Draw(); 
-	void CleanUp(); 
+	void CleanUp();
+
+	void DrawUISettings();
 
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString);
 	void DrawActionOccurenceCheckboxes(); 

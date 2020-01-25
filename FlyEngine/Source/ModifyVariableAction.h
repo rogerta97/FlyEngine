@@ -54,6 +54,8 @@ public:
 	void DoAction(); 
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString);
 
+	void DrawUISettingsInButton();
+
 	// Draw -----------
 	void DrawEffectVariablesUI();
 	void DrawEffectItem(ModifyVariableEffect*& currentVariable, int pos);

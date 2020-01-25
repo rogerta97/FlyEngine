@@ -24,7 +24,7 @@ public:
 
 	// Utils -----------------------
 	int GetToolsAmount() const; 
-	ActionSelectableInfo* DrawActionDictionaryUI(); 
+	ActionSelectableInfo* DrawActionDictionaryUI(bool isButtonAction = false);
 	Texture* GetIconFromActionType(ActionType toolType); 
 
 	// Easy Acces -------

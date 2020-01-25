@@ -3,7 +3,9 @@
 #include "ModuleRoomManager.h"
 #include "Blackboard.h"
 #include "Room.h"
+#include "Globals.h"
 #include "Texture.h"
+#include "ModuleImGui.h"
 #include "FlyVariable.h"
 #include "ResourceManager.h"
 #include "ModuleManager.h"
@@ -63,6 +65,29 @@ void ModifyVariableAction::SaveAction(JSON_Object* jsonObject, string serializeO
 	for (auto& currentEffect : variablesEffectList)
 	{
 		currentEffect->SaveEffect(jsonObject, toolsSerializeSection, count++);
+	}
+}
+
+void ModifyVariableAction::DrawUISettingsInButton()
+{	
+	// Object Settings ----------
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text("Variables To Modify:");
+	ImGui::PopFont();
+
+	DrawEffectVariablesUI();
+
+	Texture* plusIcon = (Texture*)ResourceManager::getInstance()->GetResource("PlusIcon");
+	if (ImGui::ImageButton((ImTextureID)plusIcon->GetTextureID(), ImVec2(30, 30)))
+	{
+		AddEmptyEffect();
+	}
+
+	ImGui::SameLine();
+	Texture* minusIcon = (Texture*)ResourceManager::getInstance()->GetResource("MinusIcon");
+	if (ImGui::ImageButton((ImTextureID)minusIcon->GetTextureID(), ImVec2(30, 30)))
+	{
+
 	}
 }
 

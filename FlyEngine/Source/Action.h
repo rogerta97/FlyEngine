@@ -76,6 +76,9 @@ public:
 	virtual void Draw();
 	virtual void CleanUp();
 
+	virtual void DrawUISettings(); 
+	virtual void DrawUISettingsInButton(); 
+
 	// Save & Load --------------------
 	virtual void SaveAction(JSON_Object* jsonObject, string serializeObjectString);
 
@@ -131,8 +134,10 @@ protected:
 	bool occ_ObjectClicked = false;
 	bool occ_blackboardValue = false;
 	bool occ_continuous = false;
-
+	
 	// Conditions -----------------
+	string showValueConditionButtonText; 
+	bool showValueConditions = false; 
 	list<ActionCondition*> actionVariableConditions;
 	EvaluationCriteria evaluationCriteria; 
 

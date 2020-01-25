@@ -17,6 +17,9 @@ public:
 	void Update();
 	void CleanUp();
 
+	void DrawUISettings(); 
+	void DrawUISettingsInButton(); 
+
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString);
 
 	void DoAction(); 

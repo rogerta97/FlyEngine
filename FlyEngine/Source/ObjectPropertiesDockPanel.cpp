@@ -46,17 +46,17 @@ bool ObjectPropertiesDockPanel::Draw()
 		return false;
 #pragma endregion
 
-	if (ImGui::Begin(panelName.c_str(), &visible)) 
+	if (ImGui::Begin(panelName.c_str(), &visible))
 	{
 		switch (ViewportManager::getInstance()->editRoomMode)
 		{
 		case EditRoomMode::EDIT_ROOM_OBJECTS:
-			DrawFlyObjectProperties();	
-			break; 
+			DrawFlyObjectProperties();
+			break;
 
 		case EditRoomMode::EDIT_ROOM_UI:
-			DrawUIElementProperties();		
-			break; 
+			DrawUIElementProperties();
+			break;
 		}
 	}
 
@@ -77,7 +77,7 @@ void ObjectPropertiesDockPanel::DrawUIElementProperties()
 		{
 		case UI_IMAGE:
 			DrawUIImageProperties(selectedUIElement);
-			break; 
+			break;
 
 		case UI_BUTTON:
 			DrawUIButtonProperties(selectedUIElement);
@@ -99,199 +99,258 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 		ImGui::Spacing();
 
 		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-		ImGui::Text("Button Image:"); 
-		ImGui::PopFont(); 
+		ImGui::Text("Button Image:");
+		ImGui::PopFont();
 
 		DrawButtonMainImagePreview(selectedButton);
 
-		// Button Reaction ---------------------------------
+		IMGUI_SPACED_SEPARATOR;
+
+		// Button Reaction --------------------------------------------------------------
 		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 		ImGui::Text("Button Reaction:");
 		ImGui::PopFont();
 
 		int childHeight = 115;
-		static int reactionTypeSelected = 0; 
-
+		static int reactionTypeSelected = 0;
 		if (reactionTypeSelected == 1)
-			childHeight = 270; 
-		
+			childHeight = 270;
+
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 		ImGui::BeginChild("ButtonReaction", ImVec2(ImGui::GetContentRegionAvailWidth(), childHeight));
 
 		INC_CURSOR_10
-		if (ImGui::Combo("Behaviour", &reactionTypeSelected, "Color Tint\0Swap Image"))
-		{
-
-		}
+			ImGui::Combo("Behaviour", &reactionTypeSelected, "Color Tint\0Swap Image");
 
 		if (reactionTypeSelected == 0)
 			DrawColorTintSection();
-		
+
 		if (reactionTypeSelected == 1)
-		{
-			INC_CURSOR_10;
-			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.082f,  0.105f,  0.13f, 1.0f));
-			ImGui::BeginChild("OnMouseOverTexture", ImVec2(ImGui::GetContentRegionAvailWidth()- 10, 100));
-
-			int maxImageSize = 80; 
-			ImVec2 imageDimensions = ImVec2(maxImageSize, maxImageSize);
-			ImTextureID mouseOverID = 0; 
-			ImGui::Columns(2); 
-			ImGui::SetColumnWidth(0, 100); 
-
-			if (selectedButton->GetMouseOverTexture() != nullptr)
-			{
-				imageDimensions = selectedButton->GetMouseOverTexture()->GetImageSizeInSquare(ImVec2(maxImageSize, maxImageSize));
-				mouseOverID = (ImTextureID)selectedButton->GetMouseOverTexture()->GetTextureID();
-			}
-			
-			ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (imageDimensions.x / 2) + 8, ImGui::GetContentRegionAvail().y / 2 - (imageDimensions.y / 2)));
-			ImGui::Image(mouseOverID, imageDimensions);
-
-			ImGui::NextColumn();
-
-			INC_CURSOR_10;
-			ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-			ImGui::Text("On Mouse Over Image:");
-			ImGui::PopFont();
-
-			static char searchImageOver[256];
-
-			if (selectedButton->GetMouseOverTexture() != nullptr)
-				strcpy(searchImageOver, selectedButton->GetMouseOverTexture()->GetName().c_str());
-			
-			ImGui::Spacing();
-			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-			ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() - 70);
-			ImGui::InputTextWithHint("", "Search Image...", searchImageOver, IM_ARRAYSIZE(searchImageOver));
-
-			if (ImGui::BeginDragDropTarget())
-			{
-				if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
-				{
-					int* selectedResourceUID = (int*)payload->Data;
-					Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
-
-					if (resourceDropped->GetType() == RESOURCE_TEXTURE)
-					{
-						Texture* textureDropped = (Texture*)resourceDropped;
-						selectedButton->SetMouseOverTexture(textureDropped);
-					}
-				}
-
-				ImGui::EndDragDropTarget();
-			}
-			
-			ImGui::SameLine();
-			if (ImGui::Button("Search##SearchOverImage"))
-			{
-
-			}
-
-			ImGui::EndChild();
-
-			INC_CURSOR_10;
-			ImGui::BeginChild("OnMouseClickedTexture", ImVec2(ImGui::GetContentRegionAvailWidth() - 10, 100));
-
-			ImGui::Columns(2);
-			ImGui::SetColumnWidth(0, 100);
-
-			maxImageSize = 80;
-			imageDimensions = ImVec2(maxImageSize, maxImageSize);
-			ImTextureID mouseClickedID = 0;
-			ImGui::Columns(2);
-			ImGui::SetColumnWidth(0, 100);
-
-			if (selectedButton->GetMouseClickedTexture() != nullptr)
-			{
-				imageDimensions = selectedButton->GetMouseClickedTexture()->GetImageSizeInSquare(ImVec2(maxImageSize, maxImageSize));
-				mouseClickedID = (ImTextureID)selectedButton->GetMouseClickedTexture()->GetTextureID();
-			}
-
-			ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (imageDimensions.x / 2) + 8, ImGui::GetContentRegionAvail().y / 2 - (imageDimensions.y / 2)));
-			ImGui::Image(mouseClickedID, imageDimensions);
-
-			ImGui::NextColumn();
-
-			INC_CURSOR_10;
-			ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-			ImGui::Text("On Mouse Clicked Image:");
-			ImGui::PopFont();
-
-			static char searchImageClickBuffer[256];
-
-			if (selectedButton->GetMouseClickedTexture() != nullptr)
-				strcpy(searchImageClickBuffer, selectedButton->GetMouseClickedTexture()->GetName().c_str());
-
-			ImGui::Spacing();
-			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-			ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() - 70);
-			ImGui::InputTextWithHint("", "Search Image...", searchImageClickBuffer, IM_ARRAYSIZE(searchImageClickBuffer));
-
-			if (ImGui::BeginDragDropTarget())
-			{
-				if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
-				{
-					int* selectedResourceUID = (int*)payload->Data;
-					Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
-
-					if (resourceDropped->GetType() == RESOURCE_TEXTURE)
-					{
-						Texture* textureDropped = (Texture*)resourceDropped;
-						selectedButton->SetMouseClickedTexture(textureDropped);
-					}
-				}
-
-				ImGui::EndDragDropTarget();
-			}
-
-			ImGui::SameLine();
-			if (ImGui::Button("Search##SearchClickImage"))
-			{
-
-			}
-
-			ImGui::EndChild();
-			ImGui::PopStyleColor();
-		}
+			DrawSwapImageSection(selectedButton);
 
 		ImGui::EndChild();
 		ImGui::PopStyleColor();
 
-		// Actions Callback
+		IMGUI_SPACED_SEPARATOR;
+
+		// Actions Callback --------------------------------------------------------------
 		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 		ImGui::Text("Actions when button is clicked:");
 		ImGui::PopFont();
 
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-		ImGui::BeginChild("ButtonActions", ImVec2(ImGui::GetContentRegionAvailWidth(), 350)); 
+		ImGui::BeginChild("ButtonActions", ImVec2(ImGui::GetContentRegionAvailWidth(), 350));
 
-		INC_CURSOR_10;
-		if (ImGui::Button("Add On Click Action"))
-		{
-			ImGui::OpenPopup("AddOnClickAction");
-		}
-
-			ImGui::SetNextItemWidth(100);
-		if(ImGui::BeginPopup("AddOnClickAction"))
-		{
-			App->moduleManager->DrawActionDictionaryUI();
-			ImGui::EndPopup();
-		}
-
-		INC_CURSOR_10;
-		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.082f, 0.105f, 0.13f, 1.0f));
-		ImGui::BeginChild("ButtonActions", ImVec2(ImGui::GetContentRegionAvailWidth() - 10, 300));
-
-
+		DrawSearchBarButtonActions(selectedButton);
+		DrawOnClickActionButtonList(selectedButton);
 
 		ImGui::EndChild();
 		ImGui::PopStyleColor();
 
-		ImGui::EndChild();
-		ImGui::PopStyleColor(); 
+		App->moduleRoomManager->GetSelectedRoomUI()->DrawSelectedOnClickActionSettings();
 	}
 
+}
+
+void ObjectPropertiesDockPanel::DrawOnClickActionButtonList(UI_Button* selectedButton)
+{
+	INC_CURSOR_10;
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.082f, 0.105f, 0.13f, 1.0f));
+	ImGui::BeginChild("ButtonActionsList", ImVec2(ImGui::GetContentRegionAvailWidth() - 10, 300));
+
+	INC_CURSOR_10;
+	ImGui::BeginChild("ButtonActionsList", ImVec2(ImGui::GetContentRegionAvailWidth() - 10, 290));
+
+	int count = 0;
+	for (auto& currentAction : selectedButton->GetOnClickActionList())
+	{
+		ActionSelectableInfo selectableInfo = currentAction->GetActionSelectableInfo();
+
+		if (DrawActionSelectable(selectableInfo, currentAction, count, 40))
+		{
+			selectedButton->GetHolderObject()->SetSelectedAction(currentAction->GetActionType()); 
+			RoomUIHandler* selectedRoomUI = App->moduleRoomManager->GetSelectedRoomUI();
+			selectedRoomUI->selectedButtonUIAction = currentAction;
+		}
+			
+		count++;
+	}
+	ImGui::EndChild();
+
+	ImGui::EndChild();
+	ImGui::PopStyleColor();
+}
+
+void ObjectPropertiesDockPanel::DrawSwapImageSection(UI_Button* selectedButton)
+{
+	INC_CURSOR_10;
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.082f, 0.105f, 0.13f, 1.0f));
+	ImGui::BeginChild("OnMouseOverTexture", ImVec2(ImGui::GetContentRegionAvailWidth() - 10, 100));
+
+	int maxImageSize = 80;
+	ImVec2 imageDimensions = ImVec2(maxImageSize, maxImageSize);
+	ImTextureID mouseOverID = 0;
+	ImGui::Columns(2);
+	ImGui::SetColumnWidth(0, 100);
+
+	if (selectedButton->GetMouseOverTexture() != nullptr)
+	{
+		imageDimensions = selectedButton->GetMouseOverTexture()->GetImageSizeInSquare(ImVec2(maxImageSize, maxImageSize));
+		mouseOverID = (ImTextureID)selectedButton->GetMouseOverTexture()->GetTextureID();
+	}
+
+	ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (imageDimensions.x / 2) + 8, ImGui::GetContentRegionAvail().y / 2 - (imageDimensions.y / 2)));
+	ImGui::Image(mouseOverID, imageDimensions);
+
+	ImGui::NextColumn();
+
+	INC_CURSOR_10;
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("On Mouse Over Image:");
+	ImGui::PopFont();
+
+	static char searchImageOver[256];
+
+	if (selectedButton->GetMouseOverTexture() != nullptr)
+		strcpy(searchImageOver, selectedButton->GetMouseOverTexture()->GetName().c_str());
+
+	ImGui::Spacing();
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() - 70);
+	ImGui::InputTextWithHint("", "Search Image...", searchImageOver, IM_ARRAYSIZE(searchImageOver));
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+		{
+			int* selectedResourceUID = (int*)payload->Data;
+			Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+			if (resourceDropped->GetType() == RESOURCE_TEXTURE)
+			{
+				Texture* textureDropped = (Texture*)resourceDropped;
+				selectedButton->SetMouseOverTexture(textureDropped);
+			}
+		}
+
+		ImGui::EndDragDropTarget();
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Search##SearchOverImage"))
+	{
+
+	}
+
+	ImGui::EndChild();
+
+	INC_CURSOR_10;
+	ImGui::BeginChild("OnMouseClickedTexture", ImVec2(ImGui::GetContentRegionAvailWidth() - 10, 100));
+
+	ImGui::Columns(2);
+	ImGui::SetColumnWidth(0, 100);
+
+	maxImageSize = 80;
+	imageDimensions = ImVec2(maxImageSize, maxImageSize);
+	ImTextureID mouseClickedID = 0;
+	ImGui::Columns(2);
+	ImGui::SetColumnWidth(0, 100);
+
+	if (selectedButton->GetMouseClickedTexture() != nullptr)
+	{
+		imageDimensions = selectedButton->GetMouseClickedTexture()->GetImageSizeInSquare(ImVec2(maxImageSize, maxImageSize));
+		mouseClickedID = (ImTextureID)selectedButton->GetMouseClickedTexture()->GetTextureID();
+	}
+
+	ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (imageDimensions.x / 2) + 8, ImGui::GetContentRegionAvail().y / 2 - (imageDimensions.y / 2)));
+	ImGui::Image(mouseClickedID, imageDimensions);
+
+	ImGui::NextColumn();
+
+	INC_CURSOR_10;
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("On Mouse Clicked Image:");
+	ImGui::PopFont();
+
+	static char searchImageClickBuffer[256];
+
+	if (selectedButton->GetMouseClickedTexture() != nullptr)
+		strcpy(searchImageClickBuffer, selectedButton->GetMouseClickedTexture()->GetName().c_str());
+
+	ImGui::Spacing();
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() - 70);
+	ImGui::InputTextWithHint("", "Search Image...", searchImageClickBuffer, IM_ARRAYSIZE(searchImageClickBuffer));
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+		{
+			int* selectedResourceUID = (int*)payload->Data;
+			Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+			if (resourceDropped->GetType() == RESOURCE_TEXTURE)
+			{
+				Texture* textureDropped = (Texture*)resourceDropped;
+				selectedButton->SetMouseClickedTexture(textureDropped);
+			}
+		}
+
+		ImGui::EndDragDropTarget();
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Search##SearchClickImage"))
+	{
+
+	}
+
+	ImGui::EndChild();
+	ImGui::PopStyleColor();
+}
+
+void ObjectPropertiesDockPanel::DrawSearchBarButtonActions(UI_Button* selectedButton)
+{
+	INC_CURSOR_10;
+	if (ImGui::Button("Add On Click Action"))
+	{
+		ImGui::OpenPopup("AddOnClickAction");
+	}
+
+	ImGui::SetNextItemWidth(100);
+	if (ImGui::BeginPopup("AddOnClickAction"))
+	{
+		ActionSelectableInfo* selectableInfo = App->moduleManager->DrawActionDictionaryUI(true);
+		if (selectableInfo != nullptr)
+		{
+			switch (selectableInfo->actionType)
+			{
+			case ActionType::AT_CHANGE_ROOM:
+			{
+				ChangeRoomAction* changeRoomAction = selectedButton->GetHolderObject()->AddChangeRoomAction();
+				selectedButton->AddOnClickAction(changeRoomAction);
+				break;
+			}
+
+			case ActionType::AT_EMIT_SOUND:
+			{
+				EmitSoundAction* emitSoundAction = selectedButton->GetHolderObject()->AddEmitSoundAction();
+				selectedButton->AddOnClickAction(emitSoundAction);
+				break;
+			}
+
+			case ActionType::AT_MOD_VARIABLE:
+			{
+				ModifyVariableAction* modifyVariable = selectedButton->GetHolderObject()->AddModifyVariableAction();
+				selectedButton->AddOnClickAction(modifyVariable);
+				break;
+			}
+
+			}
+		}
+
+		ImGui::EndPopup();
+	}
 }
 
 void ObjectPropertiesDockPanel::DrawColorTintSection()
@@ -417,13 +476,13 @@ void ObjectPropertiesDockPanel::DrawUIImageProperties(UI_Element* selectedUIElem
 
 		if (selectedImage != nullptr)
 		{
-			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5); 
-			ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 3); 
-			ImGui::PushFont(App->moduleImGui->rudaBoldBig); 
-			ImGui::Text("Name:"); 
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+			ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 3);
+			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+			ImGui::Text("Name:");
 			ImGui::PopFont();
 
-			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5); 
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 			ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
 			ImGui::Text("%s", selectedImage->GetDisplayImage()->GetTexture()->GetName().c_str());
 			ImGui::PopFont();
@@ -512,14 +571,14 @@ void ObjectPropertiesDockPanel::DrawFixedPartObjectUI(FlyObject* selectedObject)
 	ImGui::Separator();
 
 	Texture* objectIconTexture = nullptr;
-	if(selectedObject->flyObjectType == ACTION_OBJECT)
+	if (selectedObject->flyObjectType == ACTION_OBJECT)
 		objectIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("ObjectIcon");
 	else if (selectedObject->flyObjectType == INVENTORY_ITEM)
 		objectIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("InventoryItemIcon");
 	else if (selectedObject->flyObjectType == UI_HOLDER)
 		objectIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("UserInterfaceIcon");
 
-	if(objectIconTexture != nullptr)
+	if (objectIconTexture != nullptr)
 		ImGui::Image((ImTextureID)objectIconTexture->GetTextureID(), ImVec2(35, 35));
 
 	ImGui::Separator();
@@ -530,9 +589,9 @@ void ObjectPropertiesDockPanel::DrawFixedPartObjectUI(FlyObject* selectedObject)
 	ImGui::Text("%s", selectedObject->GetName().c_str());
 	ImGui::PopFont();
 
-	if (!selectedObject->GetDescription().empty()) 
+	if (!selectedObject->GetDescription().empty())
 	{
-		ImGui::Spacing();	
+		ImGui::Spacing();
 		ImGui::TextColored(ImVec4(0.8f, 0.8f, 1.0f, 1.0f), "%s", selectedObject->GetDescription().c_str());
 	}
 
@@ -554,7 +613,7 @@ void ObjectPropertiesDockPanel::DrawTransformButtons()
 	Texture* arrowSelect = (Texture*)ResourceManager::getInstance()->GetResource("SelectArrow");
 	if (ImGui::ImageButton((ImTextureID)arrowSelect->GetTextureID(), ImVec2(22, 22)))
 	{
-		App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GIZMO_SELECT); 
+		App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GIZMO_SELECT);
 
 		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();
 		if (selectedObject != nullptr)
@@ -634,12 +693,12 @@ void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 	ImGui::Spacing();
 
 	ImGui::Checkbox("Draw##DrawCA", &selectedObject->drawClickableArea); ImGui::SameLine();
-	ImGui::Checkbox("Active##ActiveCA", &selectedObject->clickableAreaActive); 
+	ImGui::Checkbox("Active##ActiveCA", &selectedObject->clickableAreaActive);
 
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Color");
 	ImGui::PopFont();
- 
+
 	float color[4] =
 	{
 		selectedObject->GetClickableAreaColor().x,
@@ -650,15 +709,15 @@ void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 
 	if (ImGui::ColorEdit4("", color))
 		selectedObject->SetClickableAreaColor(float4(color[0], color[1], color[2], color[3]));
-	
-	ImGui::Spacing(); 
+
+	ImGui::Spacing();
 	if (selectedObject->HasVisuals())
 	{
 		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 		ImGui::Text("Position");
 		ImGui::PopFont();
 
-		float2 posPerc = selectedObject->GetClickableAreaPosOne(); 
+		float2 posPerc = selectedObject->GetClickableAreaPosOne();
 		if (ImGui::DragFloat("Horizontal", &selectedObject->GetClickableAreaPosOne().x, 0.01f, 0.05f, (1.0f - selectedObject->GetClickableAreaSizeOne().x)))
 			selectedObject->FitObjectUtils();
 
@@ -671,22 +730,22 @@ void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 	ImGui::PopFont();
 
 	float widthLimit = 500.0f;
-	float heigthLimit = 500.0f; 
+	float heigthLimit = 500.0f;
 	float dragInc = 1.0f;
 
 	if (selectedObject->HasVisuals())
 	{
 		widthLimit = (1.0f - selectedObject->GetClickableAreaPosOne().x);
 		heigthLimit = (1.0f - selectedObject->GetClickableAreaPosOne().y);
-		dragInc = 0.01f; 
+		dragInc = 0.01f;
 	}
 
-	if(ImGui::DragFloat("Width", &selectedObject->GetClickableAreaSizeOne().x, dragInc, 0.05f, widthLimit))
+	if (ImGui::DragFloat("Width", &selectedObject->GetClickableAreaSizeOne().x, dragInc, 0.05f, widthLimit))
 		selectedObject->FitObjectUtils();
 
-	if(ImGui::DragFloat("Heigth", &selectedObject->GetClickableAreaSizeOne().y, dragInc, 0.05f, heigthLimit))
-		selectedObject->FitObjectUtils(); 
-	
+	if (ImGui::DragFloat("Heigth", &selectedObject->GetClickableAreaSizeOne().y, dragInc, 0.05f, heigthLimit))
+		selectedObject->FitObjectUtils();
+
 	IMGUI_SPACE_SEPARATOR;
 
 	if (ImGui::Button("Edit From Viewport"))
@@ -744,7 +803,7 @@ void ObjectPropertiesDockPanel::DrawModifyVariableSettings()
 			ImGui::Checkbox("Blackboard Value Condition", &modifyVariableAction->IsOccBlackboardValue());
 
 			ImGui::SameLine();
-			static std::string showValueConditionButtonText = "Show Conditions"; 
+			static std::string showValueConditionButtonText = "Show Conditions";
 			if (ImGui::Button(showValueConditionButtonText.c_str()))
 			{
 				if (showVariableConditions)
@@ -839,8 +898,8 @@ void ObjectPropertiesDockPanel::DrawEmitSoundSettings()
 			ImGui::PopStyleColor();
 
 			ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-			ImGui::Text("Sound To Play:"); 
-			ImGui::PopFont(); 
+			ImGui::Text("Sound To Play:");
+			ImGui::PopFont();
 
 			static char soundNameBuffer[256] = "";
 
@@ -852,7 +911,7 @@ void ObjectPropertiesDockPanel::DrawEmitSoundSettings()
 			Texture* playSound = (Texture*)ResourceManager::getInstance()->GetResource("PlayAudio");
 			if (ImGui::ImageButton((ImTextureID)playSound->GetTextureID(), ImVec2(20, 20)))
 			{
-				emitSoundAction->Play(); 
+				emitSoundAction->Play();
 			}
 
 			ImGui::SameLine();
@@ -869,7 +928,7 @@ void ObjectPropertiesDockPanel::DrawEmitSoundSettings()
 					if (resourceDropped->GetType() == RESOURCE_SFX)
 					{
 						AudioClip* audioClipDropped = (AudioClip*)resourceDropped;
-						emitSoundAction->audioClip = audioClipDropped;				
+						emitSoundAction->audioClip = audioClipDropped;
 					}
 				}
 
@@ -920,7 +979,7 @@ void ObjectPropertiesDockPanel::DrawChangeRoomSettings()
 			ImGui::SameLine();
 			if (ImGui::SmallButton("Adjust Clickable Area"))
 			{
-				
+
 			}
 
 			ImGui::Spacing();
@@ -936,7 +995,7 @@ void ObjectPropertiesDockPanel::DrawChangeRoomSettings()
 			ImGui::PopFont();
 
 			const char** rooms = App->moduleRoomManager->GetRoomsAsCombo();
-			const char* roomsToCombo[] = { "None", *rooms, *rooms + 1, *rooms + 2};
+			const char* roomsToCombo[] = { "None", *rooms, *rooms + 1, *rooms + 2 };
 			static int ci = 0;
 			ImGui::ComboArray("Destination", &ci, roomsToCombo, IM_ARRAYSIZE(roomsToCombo));
 		}
@@ -955,11 +1014,13 @@ void ObjectPropertiesDockPanel::DrawActionsList()
 	ImGui::BeginChild("##ToolsListObjectProperties", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
 
 	int count = 0;
-	for (auto& currentTool : selectedObject->GetActionsList()) 
+	for (auto& currentAction : selectedObject->GetActionsList())
 	{
-		ActionSelectableInfo selectableInfo = currentTool->GetActionSelectableInfo(); 
-		DrawActionSelectable(selectableInfo, currentTool, count, 40);
-		count++; 
+		ActionSelectableInfo selectableInfo = currentAction->GetActionSelectableInfo();
+		if (DrawActionSelectable(selectableInfo, currentAction, count, 40))
+			selectedObject->SetSelectedAction(selectableInfo.actionType);
+		
+		count++;
 	}
 
 	ImGui::EndChild();
@@ -977,14 +1038,14 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(25, 25)))
 	{
-		showToolDictionary = true; 
+		showToolDictionary = true;
 	}
 
 	ImGui::SameLine();
 	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
 	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(25, 25)))
-	{	
-		Action* selectedAction = selectedObject->selectedAction; 
+	{
+		Action* selectedAction = selectedObject->selectedAction;
 
 		if (selectedAction != nullptr)
 		{
@@ -999,7 +1060,7 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 	if (showToolDictionary)
 	{
 		ImGui::Spacing();
-		ImGui::BeginChild("AddToolObjectProperties", ImVec2(ImGui::GetContentRegionAvailWidth(), 200)); 
+		ImGui::BeginChild("AddToolObjectProperties", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
 
 		// Search Bar ---------------
 		ImGui::InputTextWithHint("##SearchTool", "Search...", searchNewToolBuffer, IM_ARRAYSIZE(searchNewToolBuffer));
@@ -1053,18 +1114,19 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 	}
 }
 
-void ObjectPropertiesDockPanel::DrawActionSelectable(ActionSelectableInfo& selectableInfo, Action*& currentAction, int posInList, int selectableHeigth)
+bool ObjectPropertiesDockPanel::DrawActionSelectable(ActionSelectableInfo& selectableInfo, Action*& currentAction, int posInList, int selectableHeigth)
 {
+	bool ret = false; 
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 
-	Texture* imageIcon = App->moduleManager->GetIconFromActionType(selectableInfo.actionType); 
+	Texture* imageIcon = App->moduleManager->GetIconFromActionType(selectableInfo.actionType);
 	ImGui::SetCursorPos(ImVec2(10, 7 + (selectableHeigth * posInList)));
 	ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
 
 	ImGui::SetCursorPos(ImVec2(50, ((selectableHeigth + 5) * posInList)));
-	if (ImGui::Selectable(selectableInfo.actionName.c_str(), currentAction->IsSelected(), ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), selectableHeigth))) {
-		selectedObject->SetSelectedAction(selectableInfo.actionType);
-	}
+	if (ImGui::Selectable(selectableInfo.actionName.c_str(), currentAction->IsSelected(), ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), selectableHeigth)))
+		ret = true; 
+	
 	ImGui::PopFont();
 
 	// Description -----
@@ -1074,6 +1136,8 @@ void ObjectPropertiesDockPanel::DrawActionSelectable(ActionSelectableInfo& selec
 	ImGui::PushFont(App->moduleImGui->rudaRegularTiny);
 	ImGui::Text(selectableInfo.actionDescription.c_str());
 	ImGui::PopFont();
+
+	return ret; 
 }
 
 void ObjectPropertiesDockPanel::DrawObjectPlacementCH(FlyObject* selectedObject)
@@ -1081,14 +1145,14 @@ void ObjectPropertiesDockPanel::DrawObjectPlacementCH(FlyObject* selectedObject)
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 	if (ImGui::CollapsingHeader("Object Placement", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		ImGui::Spacing(); 
-		float2 showPosition = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos(); 
+		ImGui::Spacing();
+		float2 showPosition = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos();
 
 		float showPositionArr[2] = { selectedObject->transform->GetPosition().x, selectedObject->transform->GetPosition().y };
 		float showRotationArr[2] = { selectedObject->transform->GetRotation().x, selectedObject->transform->GetRotation().y };
 		float showScaleArr[2] = { selectedObject->transform->GetScale().x, selectedObject->transform->GetScale().y };
 
-		selectedObject->transform->scalePrevTick = selectedObject->transform->GetScale(); 
+		selectedObject->transform->scalePrevTick = selectedObject->transform->GetScale();
 
 		PUSH_FONT(App->moduleImGui->rudaRegularMid);
 		if (ImGui::DragFloat2("Position", showPositionArr, 0.5f))
@@ -1122,7 +1186,7 @@ void ObjectPropertiesDockPanel::DrawToolImageSettings()
 		{
 			static char buf[256] = "";
 
-			Texture* imageToolTexture = imageTool->GetTexture(); 
+			Texture* imageToolTexture = imageTool->GetTexture();
 
 			if (imageToolTexture == nullptr)
 				imageToolTexture = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject");
@@ -1175,7 +1239,7 @@ void ObjectPropertiesDockPanel::DrawToolImageSettings()
 						imageToolTexture = (Texture*)ResourceManager::getInstance()->GetResourceByPath(path);
 					}
 
-					imageTool->SetTexture(imageToolTexture); 
+					imageTool->SetTexture(imageToolTexture);
 
 					strcpy(buf, path);
 					flog("Player Opened %s", path);
@@ -1192,7 +1256,7 @@ void ObjectPropertiesDockPanel::DrawToolImageSettings()
 
 void ObjectPropertiesDockPanel::SetSelectedObject(FlyObject* newSelectedObject)
 {
-	selectedObject = newSelectedObject; 
+	selectedObject = newSelectedObject;
 }
 
 FlyObject* ObjectPropertiesDockPanel::GetSelectedObject() const

@@ -20,8 +20,11 @@ public:
 	void DrawUIImageProperties(UI_Element* selectedUIElement);
 	void DrawUIButtonProperties(UI_Element* selectedUIElement);
 
+	// UI_Button UI
+	void DrawOnClickActionButtonList(UI_Button* selectedButton);
+	void DrawSwapImageSection(UI_Button* selectedButton);
+	void DrawSearchBarButtonActions(UI_Button* selectedButton);
 	void DrawColorTintSection();
-
 	void DrawButtonMainImagePreview(UI_Button* selectedButton);
 
 	// Action Objects
@@ -41,7 +44,7 @@ public:
 
 	void DrawActionsList();
 	void DrawAddAndDeleteButtons();
-	void DrawActionSelectable(ActionSelectableInfo& selectableInfo, Action*& currentTool, int posInList, int selectableHeigth);
+	bool DrawActionSelectable(ActionSelectableInfo& selectableInfo, Action*& currentTool, int posInList, int selectableHeigth);
 	void DrawObjectPlacementCH(FlyObject* selectedObject);
 	
 	void DrawChangeRoomSettings();

@@ -16,6 +16,7 @@ RoomUIHandler::RoomUIHandler(Room* _roomAttached)
 {
 	roomAttached = _roomAttached;
 	selectedElement = nullptr; 
+	selectedButtonUIAction = nullptr; 
 }
 
 RoomUIHandler::~RoomUIHandler()
@@ -127,6 +128,26 @@ void RoomUIHandler::SetSelectedElement(UI_Element* newSelectedElement)
 UI_Element* RoomUIHandler::GetSelectedElement()
 {
 	return selectedElement;
+}
+
+void RoomUIHandler::DrawSelectedOnClickActionSettings()
+{
+	if (selectedButtonUIAction == nullptr)
+		return; 
+
+	selectedButtonUIAction->DrawUISettingsInButton();
+
+	//switch (selectedButtonUIAction->GetActionType())
+	//{
+	//case ActionType::AT_CHANGE_ROOM:
+	//	selectedButtonUIAction->DrawUISettingsInButton();
+	//	break;
+
+	//case ActionType::AT_EMIT_SOUND:
+	//	selectedButtonUIAction->DrawUISettingsInButton();
+	//	break;
+
+	//}
 }
 
 UI_Image* RoomUIHandler::CreateUIImage(UID resourceUID)

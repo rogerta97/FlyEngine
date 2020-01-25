@@ -266,3 +266,11 @@ Room* ModuleRoomManager::GetSelectedRoom() const
 {
 	return selectedRoom;
 }
+
+RoomUIHandler* ModuleRoomManager::GetSelectedRoomUI() const
+{
+	if(selectedRoom != nullptr)
+		return selectedRoom->roomUIHandler;
+
+	return nullptr;
+}

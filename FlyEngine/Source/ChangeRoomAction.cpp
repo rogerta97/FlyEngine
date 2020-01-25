@@ -54,6 +54,77 @@ void ChangeRoomAction::CleanUp()
 	Action::CleanUp();
 }
 
+void ChangeRoomAction::DrawUISettings()
+{
+	ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
+	ImGui::Text("Change Room Attributes:");
+	ImGui::PopFont();
+
+	ImGui::Separator();
+
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text("Action Happens On:");
+	ImGui::PopFont();
+
+	ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+
+	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
+
+	ImGui::SetCursorPos(ImVec2(5, 8));
+	ImGui::Checkbox("Object Clicked", &occ_ObjectClicked);
+
+	ImGui::SetCursorPos(ImVec2(5, 38));
+	ImGui::Checkbox("Blackboard Value Condition", &occ_blackboardValue);
+
+	ImGui::SameLine();
+	if (ImGui::Button(showValueConditionButtonText.c_str()))
+	{
+		if (showValueConditions)
+		{
+			showValueConditions = false;
+			showValueConditionButtonText = "Show Conditions";
+		}
+		else
+		{
+			showValueConditions = true;
+			showValueConditionButtonText = "Hide Conditions";
+		}
+	}
+
+	ImGui::Spacing();
+	ImGui::EndChild();
+
+	if (showValueConditions)
+		DrawValueConditionsList();
+
+	ImGui::PopFont();
+	ImGui::PopStyleColor();
+
+	IMGUI_SPACED_SEPARATOR;
+
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text("Change Room Settings: ");
+	ImGui::PopFont();
+
+	const char** rooms = App->moduleRoomManager->GetRoomsAsCombo();
+	const char* roomsToCombo[] = { "None", *rooms, *rooms + 1, *rooms + 2 };
+	static int ci = 0;
+	ImGui::ComboArray("Destination", &ci, roomsToCombo, IM_ARRAYSIZE(roomsToCombo));
+}
+
+void ChangeRoomAction::DrawUISettingsInButton()
+{
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text("Change Room Settings: ");
+	ImGui::PopFont();
+
+	const char** rooms = App->moduleRoomManager->GetRoomsAsCombo();
+	const char* roomsToCombo[] = { "None", *rooms, *rooms + 1, *rooms + 2 };
+	static int ci = 0;
+	ImGui::ComboArray("Destination", &ci, roomsToCombo, IM_ARRAYSIZE(roomsToCombo));
+}
+
 void ChangeRoomAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString)
 {
 	string toolsSerializeSection = serializeObjectString + string("Actions.ChangeRoom.");

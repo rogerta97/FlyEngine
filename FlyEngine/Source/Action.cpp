@@ -50,6 +50,14 @@ void Action::CleanUp()
 	}
 }
 
+void Action::DrawUISettings()
+{
+}
+
+void Action::DrawUISettingsInButton()
+{
+}
+
 void Action::SaveAction(JSON_Object* jsonObject, std::string serializeObjectString)
 {
 }

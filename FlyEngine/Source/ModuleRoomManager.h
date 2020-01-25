@@ -11,6 +11,7 @@ using namespace std;
 
 class Room; 
 class RoomConnection; 
+class RoomUIHandler; 
 class ModuleRoomManager : public Module
 {
 public:
@@ -50,6 +51,7 @@ public:
 	void SetSelectedRoom(UID roomName); 
 
 	Room* GetSelectedRoom() const;
+	RoomUIHandler* GetSelectedRoomUI() const; 
 
 	int connectionsInWorldAmount;
 	int roomsInWoldAmount;

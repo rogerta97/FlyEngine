@@ -156,6 +156,11 @@ void UI_Button::SetIdleTexture(Texture* buttonTexture)
 	idleTexture = buttonTexture;
 }
 
+std::list<Action*>& UI_Button::GetOnClickActionList()
+{
+	return onClickActions; 
+}
+
 void UI_Button::SetMouseOverTexture(Texture* buttonTexture)
 {
 	mouseOverTexture = buttonTexture;

@@ -35,7 +35,8 @@ public:
 
 	// Utility ---------
 	DisplayImageAction* GetDisplayImageAction();
-	void AddOnClickAction(Action* newAction); 
+	void AddOnClickAction(Action* newAction);
+	std::list<Action*>& GetOnClickActionList(); 
 
 	// Set Textures
 	void SetMainTexture(Texture* buttonTexture);

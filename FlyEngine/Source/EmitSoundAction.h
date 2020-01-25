@@ -12,6 +12,9 @@ public:
 	EmitSoundAction(FlyObject* _parentObject);
 	~EmitSoundAction();
 
+	void DrawUISettings(); 
+	void DrawUISettingsInButton(); 
+
 	void Play(); 
 
 	void DrawActionOccurenceCheckboxes(); 
@@ -20,6 +23,9 @@ public:
 
 public:
 	AudioClip* audioClip; 
+
+private: 
+	bool showSoundSelectionPopup = false; 
 };
 
 #endif 

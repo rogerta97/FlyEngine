@@ -85,7 +85,7 @@ int ModuleManager::GetToolsAmount() const
 	return toolNamesDescriptions.size();
 }
 
-ActionSelectableInfo* ModuleManager::DrawActionDictionaryUI()
+ActionSelectableInfo* ModuleManager::DrawActionDictionaryUI(bool isButtonAction)
 {
 	ActionSelectableInfo* returnInfo = nullptr; 
 
@@ -94,6 +94,9 @@ ActionSelectableInfo* ModuleManager::DrawActionDictionaryUI()
 
 	for (auto& currentToolDescription : toolNamesDescriptions)
 	{
+		if (isButtonAction && (currentToolDescription.actionType == ActionType::AT_DISPLAY_IMAGE))
+			continue; 
+
 		ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 
 		Texture* iconTexture = GetIconFromActionType(currentToolDescription.actionType); 
