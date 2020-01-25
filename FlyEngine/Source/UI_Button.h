@@ -34,8 +34,13 @@ public:
 	void Load(JSON_Object* jsonObject, string serializeStr);
 
 	// Utility ---------
-	void SetMainTexture(Texture* buttonTexture);
 	DisplayImageAction* GetDisplayImageAction();
+
+	// Set Textures
+	void SetMainTexture(Texture* buttonTexture);
+	void SetIdleTexture(Texture* buttonTexture);
+	void SetMouseOverTexture(Texture* buttonTexture);
+	void SetMouseClickedTexture(Texture* buttonTexture);
 
 	// Get Textures 
 	Texture* GetMainTexture(); 

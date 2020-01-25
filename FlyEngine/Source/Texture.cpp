@@ -53,6 +53,33 @@ bool Texture::IsVertical()
 	return false; 
 }
 
+ImVec2 Texture::GetImageSizeInSquare(ImVec2 squareSize)
+{
+	ImVec2 uiImageDimensions = squareSize;
+	float aspectRatio = GetAspectRatio();
+
+	if (IsVertical())
+	{
+		uiImageDimensions.y = squareSize.y;
+		uiImageDimensions.x = uiImageDimensions.x * aspectRatio;
+	}
+	else
+	{
+		uiImageDimensions.y = squareSize.y;
+		uiImageDimensions.x = uiImageDimensions.y * aspectRatio;
+
+		if (uiImageDimensions.x > squareSize.x)
+		{
+			float diff = uiImageDimensions.x - squareSize.x;
+			uiImageDimensions.x -= diff;
+			uiImageDimensions.y = uiImageDimensions.x / aspectRatio;
+		}
+	}
+
+	return uiImageDimensions;
+
+}
+
 void Texture::Bind()
 {
 	glBindTexture(GL_TEXTURE_2D, texture_id);

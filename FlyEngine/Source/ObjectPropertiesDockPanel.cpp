@@ -133,9 +133,20 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.082f,  0.105f,  0.13f, 1.0f));
 			ImGui::BeginChild("OnMouseOverTexture", ImVec2(ImGui::GetContentRegionAvailWidth()- 10, 100));
 
+			int maxImageSize = 80; 
+			ImVec2 imageDimensions = ImVec2(maxImageSize, maxImageSize);
+			ImTextureID mouseOverID = 0; 
 			ImGui::Columns(2); 
 			ImGui::SetColumnWidth(0, 100); 
-			ImGui::Image(0, ImVec2(90, 90));
+
+			if (selectedButton->GetMouseOverTexture() != nullptr)
+			{
+				imageDimensions = selectedButton->GetMouseOverTexture()->GetImageSizeInSquare(ImVec2(maxImageSize, maxImageSize));
+				mouseOverID = (ImTextureID)selectedButton->GetMouseOverTexture()->GetTextureID();
+			}
+			
+			ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (imageDimensions.x / 2) + 8, ImGui::GetContentRegionAvail().y / 2 - (imageDimensions.y / 2)));
+			ImGui::Image(mouseOverID, imageDimensions);
 
 			ImGui::NextColumn();
 
@@ -146,10 +157,30 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 
 			static char searchImageOver[256];
 
+			if (selectedButton->GetMouseOverTexture() != nullptr)
+				strcpy(searchImageOver, selectedButton->GetMouseOverTexture()->GetName().c_str());
+			
 			ImGui::Spacing();
 			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 			ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() - 70);
 			ImGui::InputTextWithHint("", "Search Image...", searchImageOver, IM_ARRAYSIZE(searchImageOver));
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+				{
+					int* selectedResourceUID = (int*)payload->Data;
+					Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+					if (resourceDropped->GetType() == RESOURCE_TEXTURE)
+					{
+						Texture* textureDropped = (Texture*)resourceDropped;
+						selectedButton->SetMouseOverTexture(textureDropped);
+					}
+				}
+
+				ImGui::EndDragDropTarget();
+			}
 			
 			ImGui::SameLine();
 			if (ImGui::Button("Search##SearchOverImage"))
@@ -164,7 +195,21 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 
 			ImGui::Columns(2);
 			ImGui::SetColumnWidth(0, 100);
-			ImGui::Image(0, ImVec2(90, 90));
+
+			maxImageSize = 80;
+			imageDimensions = ImVec2(maxImageSize, maxImageSize);
+			ImTextureID mouseClickedID = 0;
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 100);
+
+			if (selectedButton->GetMouseClickedTexture() != nullptr)
+			{
+				imageDimensions = selectedButton->GetMouseClickedTexture()->GetImageSizeInSquare(ImVec2(maxImageSize, maxImageSize));
+				mouseClickedID = (ImTextureID)selectedButton->GetMouseClickedTexture()->GetTextureID();
+			}
+
+			ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (imageDimensions.x / 2) + 8, ImGui::GetContentRegionAvail().y / 2 - (imageDimensions.y / 2)));
+			ImGui::Image(mouseClickedID, imageDimensions);
 
 			ImGui::NextColumn();
 
@@ -175,10 +220,30 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 
 			static char searchImageClickBuffer[256];
 
+			if (selectedButton->GetMouseClickedTexture() != nullptr)
+				strcpy(searchImageClickBuffer, selectedButton->GetMouseClickedTexture()->GetName().c_str());
+
 			ImGui::Spacing();
 			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 			ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() - 70);
 			ImGui::InputTextWithHint("", "Search Image...", searchImageClickBuffer, IM_ARRAYSIZE(searchImageClickBuffer));
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+				{
+					int* selectedResourceUID = (int*)payload->Data;
+					Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+					if (resourceDropped->GetType() == RESOURCE_TEXTURE)
+					{
+						Texture* textureDropped = (Texture*)resourceDropped;
+						selectedButton->SetMouseClickedTexture(textureDropped);
+					}
+				}
+
+				ImGui::EndDragDropTarget();
+			}
 
 			ImGui::SameLine();
 			if (ImGui::Button("Search##SearchClickImage"))
@@ -199,7 +264,23 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 		ImGui::PopFont();
 
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-		ImGui::BeginChild("ButtonActions", ImVec2(ImGui::GetContentRegionAvailWidth(), 150)); 
+		ImGui::BeginChild("ButtonActions", ImVec2(ImGui::GetContentRegionAvailWidth(), 350)); 
+
+		INC_CURSOR_10;
+		if (ImGui::Button("Add On Click Action"))
+		{
+
+		}
+
+		INC_CURSOR_10;
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.082f, 0.105f, 0.13f, 1.0f));
+		ImGui::BeginChild("ButtonActions", ImVec2(ImGui::GetContentRegionAvailWidth() - 10, 300));
+
+
+
+		ImGui::EndChild();
+		ImGui::PopStyleColor();
+
 		ImGui::EndChild();
 		ImGui::PopStyleColor(); 
 	}

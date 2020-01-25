@@ -151,6 +151,21 @@ void UI_Button::SetMainTexture(Texture* buttonBgnTexture)
 		uiObjectDisplayImageBackground->SetTexture(buttonBgnTexture); 
 }
 
+void UI_Button::SetIdleTexture(Texture* buttonTexture)
+{
+	idleTexture = buttonTexture;
+}
+
+void UI_Button::SetMouseOverTexture(Texture* buttonTexture)
+{
+	mouseOverTexture = buttonTexture;
+}
+
+void UI_Button::SetMouseClickedTexture(Texture* buttonTexture)
+{
+	mouseClickedTexture = buttonTexture; 
+}
+
 DisplayImageAction* UI_Button::GetDisplayImageAction()
 {
 	return uiObjectDisplayImageBackground;

@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include "OpenGL.h"
 #include "Resource.h"
+#include "imgui.h"
 #include <string>
 
 class Texture : public Resource
@@ -16,6 +17,7 @@ public:
 	void SetTextureSettings();
 	float GetAspectRatio(); 
 	bool IsVertical(); 
+	ImVec2 GetImageSizeInSquare(ImVec2 squareSize);
 
 	//Memory management
 	void Bind();
