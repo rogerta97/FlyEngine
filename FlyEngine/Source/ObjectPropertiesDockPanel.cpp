@@ -113,13 +113,15 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 
 		int childHeight = 115;
 		static int reactionTypeSelected = 0;
-		if (reactionTypeSelected == 1)
+
+		if (selectedButton->mouseInteraction == TEXTURE_SWAP)
 			childHeight = 270;
 
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 		ImGui::BeginChild("ButtonReaction", ImVec2(ImGui::GetContentRegionAvailWidth(), childHeight));
 
 		INC_CURSOR_10;
+		reactionTypeSelected = selectedButton->mouseInteraction;
 		if (ImGui::Combo("Behaviour", &reactionTypeSelected, "Color Tint\0Swap Image"))
 		{
 			if (reactionTypeSelected == 0)
@@ -372,12 +374,12 @@ void ObjectPropertiesDockPanel::DrawColorTintSection()
 	IMGUI_SPACED_SEPARATOR;
 
 	static float mouseOverColor[4] = { 0,0,0,0 };
-	INC_CURSOR_X_10
-		ImGui::ColorEdit4("Mouse Over Tint", mouseOverColor);
+	INC_CURSOR_X_10;
+	ImGui::ColorEdit4("Mouse Over Tint", mouseOverColor);
 
 	static float mouseClickTint[4] = { 0,0,0,0 };
-	INC_CURSOR_X_10
-		ImGui::ColorEdit4("Mouse Click Tint", mouseClickTint);
+	INC_CURSOR_X_10;
+	ImGui::ColorEdit4("Mouse Click Tint", mouseClickTint);
 }
 
 void ObjectPropertiesDockPanel::DrawButtonMainImagePreview(UI_Button* selectedButton)

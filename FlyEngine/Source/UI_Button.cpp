@@ -4,6 +4,7 @@
 #include "FlyObject.h"
 #include "MyFileSystem.h"
 #include "ResourceManager.h"
+#include "Gizmos.h"
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "GameViewportDockPanel.h"
@@ -13,7 +14,7 @@ UI_Button::UI_Button()
 	UI_Element::UI_Element();
 	uiObjectDisplayImageBackground = nullptr;
 	uiElementType = UI_BUTTON;
-	mouseInteraction = INTERACTION_NONE;
+	mouseInteraction = COLOR_TINT;
 
 	backgroundTexture = nullptr; 
 
@@ -42,6 +43,14 @@ void UI_Button::Init()
 void UI_Button::Update()
 {
 	UI_Element::Update();
+
+	if (!App->isEngineInPlayMode)
+		return; 
+
+	if (GetHolderObject()->gizmos->IsMouseOver())
+	{
+		flog("Mouse Over Button In PlayMode :D"); 
+	}
 }
 
 void UI_Button::Draw()
@@ -62,7 +71,7 @@ void UI_Button::Save(JSON_Object* jsonObject, string serializeStr)
 	json_object_dotset_number(jsonObject, string(serializeStr + string("UID")).c_str(), uid);
 
 	UI_Element::Save(jsonObject, serializeStr);
-	json_object_dotset_number(jsonObject, string(serializeStr + string("MouseInteractionType")).c_str(), mouseInteraction);
+	json_object_dotset_number(jsonObject, string(serializeStr + string("MouseInteractionType")).c_str(), (int)mouseInteraction);
 
 	// Save Image Background Info
 	switch (mouseInteraction)
@@ -87,15 +96,15 @@ void UI_Button::Save(JSON_Object* jsonObject, string serializeStr)
 
 		// Mouse Over Tint -------
 		if(mouseOverTexture != nullptr)
-			json_object_dotset_number(jsonObject, string(serializeStr + string("MouseInteractionData.MouseOverTextureID")).c_str(), mouseOverTexture->GetTextureID());
+			json_object_dotset_string(jsonObject, string(serializeStr + string("MouseInteractionData.MouseOverTextureName")).c_str(), mouseOverTexture->GetName().c_str());
 		else
-			json_object_dotset_number(jsonObject, string(serializeStr + string("MouseInteractionData.MouseOverTextureID")).c_str(), 0);
+			json_object_dotset_string(jsonObject, string(serializeStr + string("MouseInteractionData.MouseOverTextureName")).c_str(), "None");
 
 		// Mouse Clicked Tint -------
 		if(mouseClickedTexture != nullptr)
-			json_object_dotset_number(jsonObject, string(serializeStr + string("MouseInteractionData.MouseClickedTextureID")).c_str(), mouseClickedTexture->GetTextureID());
+			json_object_dotset_string(jsonObject, string(serializeStr + string("MouseInteractionData.MouseClickedTextureName")).c_str(), mouseClickedTexture->GetName().c_str());
 		else
-			json_object_dotset_number(jsonObject, string(serializeStr + string("MouseInteractionData.MouseClickedTextureID")).c_str(), 0);
+			json_object_dotset_string(jsonObject, string(serializeStr + string("MouseInteractionData.MouseClickedTextureName")).c_str(), "None");
 
 		break;
 
@@ -133,15 +142,42 @@ void UI_Button::Save(JSON_Object* jsonObject, string serializeStr)
 void UI_Button::Load(JSON_Object* jsonObject, string serializeStr)
 {
 	uid = json_object_dotget_number(jsonObject, string(serializeStr + string("UID")).c_str());
-	int bi = json_object_dotget_number(jsonObject, string(serializeStr + string("BehaviourInteraction")).c_str());
+	int bi = json_object_dotget_number(jsonObject, string(serializeStr + string("MouseInteractionType")).c_str());
 	mouseInteraction = (ButtonBehaviourMouseInteraction)bi; 
 
 	switch (mouseInteraction)
 	{
 	case COLOR_TINT:
+
+		// Mouse Over Tint -------
+		mouseOverTint.x = json_object_dotget_number(jsonObject, string(serializeStr + string("MouseInteractionData.MouseOverTint.r")).c_str());
+		mouseOverTint.y = json_object_dotget_number(jsonObject, string(serializeStr + string("MouseInteractionData.MouseOverTint.g")).c_str());
+		mouseOverTint.z = json_object_dotget_number(jsonObject, string(serializeStr + string("MouseInteractionData.MouseOverTint.b")).c_str());
+		mouseOverTint.w = json_object_dotget_number(jsonObject, string(serializeStr + string("MouseInteractionData.MouseOverTint.a")).c_str());
+
+		// Mouse Clicked Tint -------
+		mouseClickedTint.x = json_object_dotget_number(jsonObject, string(serializeStr + string("MouseInteractionData.MouseClickedTint.r")).c_str());
+		mouseClickedTint.y = json_object_dotget_number(jsonObject, string(serializeStr + string("MouseInteractionData.MouseClickedTint.g")).c_str());
+		mouseClickedTint.z = json_object_dotget_number(jsonObject, string(serializeStr + string("MouseInteractionData.MouseClickedTint.b")).c_str());
+		mouseClickedTint.w = json_object_dotget_number(jsonObject, string(serializeStr + string("MouseInteractionData.MouseClickedTint.a")).c_str());
+
 		break;
 
 	case TEXTURE_SWAP:
+	{
+		// Mouse Over Tint -------
+		string mouseOverName = json_object_dotget_string(jsonObject, string(serializeStr + string("MouseInteractionData.MouseOverTextureName")).c_str());
+		MyFileSystem::getInstance()->DeleteFileExtension(mouseOverName);
+
+		if(mouseOverName != "None")
+			mouseOverTexture = (Texture*)ResourceManager::getInstance()->GetResource(mouseOverName.c_str());
+
+		string mouseClickedName = json_object_dotget_string(jsonObject, string(serializeStr + string("MouseInteractionData.MouseClickedTextureName")).c_str());
+		MyFileSystem::getInstance()->DeleteFileExtension(mouseClickedName);
+
+		if (mouseClickedName != "None")
+			mouseClickedTexture = (Texture*)ResourceManager::getInstance()->GetResource(mouseClickedName.c_str());
+	}
 		break;
 
 	case INTERACTION_NONE:
