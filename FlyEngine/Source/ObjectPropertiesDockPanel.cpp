@@ -269,7 +269,14 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 		INC_CURSOR_10;
 		if (ImGui::Button("Add On Click Action"))
 		{
+			ImGui::OpenPopup("AddOnClickAction");
+		}
 
+			ImGui::SetNextItemWidth(100);
+		if(ImGui::BeginPopup("AddOnClickAction"))
+		{
+			App->moduleManager->DrawActionDictionaryUI();
+			ImGui::EndPopup();
 		}
 
 		INC_CURSOR_10;

@@ -35,6 +35,7 @@ public:
 
 	// Utility ---------
 	DisplayImageAction* GetDisplayImageAction();
+	void AddOnClickAction(Action* newAction); 
 
 	// Set Textures
 	void SetMainTexture(Texture* buttonTexture);

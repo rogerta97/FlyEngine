@@ -171,6 +171,11 @@ DisplayImageAction* UI_Button::GetDisplayImageAction()
 	return uiObjectDisplayImageBackground;
 }
 
+void UI_Button::AddOnClickAction(Action* newAction)
+{
+	onClickActions.push_back(newAction); 
+}
+
 Texture* UI_Button::GetMainTexture()
 {
 	return backgroundTexture;
