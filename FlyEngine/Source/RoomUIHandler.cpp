@@ -99,6 +99,7 @@ void RoomUIHandler::CleanUp()
 	}
 
 	uiElements.clear(); 
+	selectedElement = nullptr; 
 }
 
 void RoomUIHandler::DrawUIElements()

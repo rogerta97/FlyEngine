@@ -134,6 +134,7 @@ void Room::CleanRoomObjects()
 	}
 
 	objectsInRoom.clear(); 
+	selectedObject = nullptr; 
 }
 
 void Room::CleanRoomUI()
