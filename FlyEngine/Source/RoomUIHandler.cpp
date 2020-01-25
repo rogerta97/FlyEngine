@@ -74,8 +74,7 @@ void RoomUIHandler::Update()
 {
 	for (auto& currentUIElement : uiElements)
 	{
-		if(selectedElement == currentUIElement)
-			currentUIElement->Update();
+		currentUIElement->Update();
 	}
 
 	// Input Handling

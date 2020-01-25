@@ -113,6 +113,7 @@ public:
 
 	// Utils -----------------
 	bool IsMouseOver(); 
+	bool IsMouseOverClicked(); 
 
 	// Draw ------------------
 	void Draw();

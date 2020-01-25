@@ -250,6 +250,11 @@ bool Gizmos::IsMouseOver()
 	return selectGizmo->objectBorderBox->IsMouseOver();
 }
 
+bool Gizmos::IsMouseOverClicked()
+{
+	return selectGizmo->objectBorderBox->IsBoxClicked();
+}
+
 void Gizmos::DrawSelectGizmo()
 {
 	glMatrixMode(GL_MODELVIEW);

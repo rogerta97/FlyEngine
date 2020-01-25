@@ -1,5 +1,6 @@
 #include "UI_Button.h"
 #include "DisplayImageAction.h"
+#include "ModuleInput.h"
 #include "Texture.h"
 #include "FlyObject.h"
 #include "MyFileSystem.h"
@@ -15,6 +16,7 @@ UI_Button::UI_Button()
 	uiObjectDisplayImageBackground = nullptr;
 	uiElementType = UI_BUTTON;
 	mouseInteraction = COLOR_TINT;
+	textureTypeShowing = MAIN_TEXTURE;
 
 	backgroundTexture = nullptr; 
 
@@ -47,9 +49,37 @@ void UI_Button::Update()
 	if (!App->isEngineInPlayMode)
 		return; 
 
-	if (GetHolderObject()->gizmos->IsMouseOver())
+	if (textureTypeShowing == MAIN_TEXTURE)
 	{
-		flog("Mouse Over Button In PlayMode :D"); 
+		if (GetHolderObject()->gizmos->IsMouseOver())
+		{
+			flog("Swap Texture To Mouse Over");
+			textureTypeShowing = MOUSE_OVER_TEXTURE;
+		}
+	}
+
+	if (textureTypeShowing == MOUSE_OVER_TEXTURE)
+	{
+		if (!GetHolderObject()->gizmos->IsMouseOver())
+		{
+			flog("Swap Texture To Main Texture");
+			textureTypeShowing = MAIN_TEXTURE;
+		}
+
+		if (GetHolderObject()->gizmos->IsMouseOverClicked())
+		{
+			flog("Swap Texture To Clicked");
+			textureTypeShowing = MOUSE_CLICKED_TEXTURE;
+		}
+	}
+
+	if (textureTypeShowing == MOUSE_CLICKED_TEXTURE)
+	{
+		if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_UP))
+		{
+			flog("Swap Texture To Main Texture");
+			textureTypeShowing = MAIN_TEXTURE;
+		}
 	}
 }
 

@@ -21,7 +21,8 @@ void UI_Element::Init()
 
 void UI_Element::Update()
 {
-	uiObject->gizmos->Update();
+	if(App->moduleManager->GetSelectedUIElement() == this && !App->isEngineInPlayMode)
+		uiObject->gizmos->Update();
 }
 
 void UI_Element::Draw()

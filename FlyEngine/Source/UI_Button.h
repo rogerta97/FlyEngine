@@ -16,6 +16,13 @@ enum ButtonBehaviourMouseInteraction
 	INTERACTION_NONE,
 };
 
+enum ButtonTextureType
+{
+	MAIN_TEXTURE,
+	MOUSE_OVER_TEXTURE,
+	MOUSE_CLICKED_TEXTURE, 
+};
+
 class FlyObject;
 class DisplayImageAction;
 class Action; 
@@ -55,6 +62,7 @@ public:
 
 public:
 	ButtonBehaviourMouseInteraction mouseInteraction; 
+	ButtonTextureType textureTypeShowing; 
 
 private:
 	// Easy Acces to Holder Action
