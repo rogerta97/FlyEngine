@@ -80,7 +80,7 @@ public:
 	virtual void DrawUISettingsInButton(); 
 
 	// Save & Load --------------------
-	virtual void SaveAction(JSON_Object* jsonObject, string serializeObjectString);
+	virtual void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
 
 	// Occurrence ---------------------
 	void SaveOccurrence(JSON_Object* jsonObject, string serializeObjectString);

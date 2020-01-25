@@ -185,9 +185,16 @@ void DisplayImageAction::DrawUISettings()
 	POP_FONT;
 }
 
-void DisplayImageAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString)
+void DisplayImageAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr)
 {
-	string toolsSerializeSection = serializeObjectString + string("Actions.DisplayImage.");
+	string toolsSerializeSection;
+
+	if (!literalStr)
+		toolsSerializeSection = serializeObjectString + string("Actions.DisplayImage.");
+	else
+		toolsSerializeSection = serializeObjectString;
+
+	Action::SaveAction(jsonObject, toolsSerializeSection);
 
 	if (imageTexture != nullptr)
 	{

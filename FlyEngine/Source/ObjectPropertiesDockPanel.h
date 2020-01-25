@@ -53,6 +53,7 @@ public:
 	void DrawEmitSoundSettings();
 
 private: 
+	bool scrollToEnd = false; 
 	char searchNewToolBuffer[256]; 
 	FlyObject* selectedObject = nullptr; 
 	bool showToolDictionary; 

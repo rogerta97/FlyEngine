@@ -87,12 +87,21 @@ void EmitSoundAction::DrawActionOccurenceCheckboxes()
 
 void EmitSoundAction::Play()
 {
-	audioClip->Play(); 
+	if(audioClip)
+		audioClip->Play(); 
 }
 
-void EmitSoundAction::SaveAction(JSON_Object* jsonObject, std::string serializeStr)
+void EmitSoundAction::SaveAction(JSON_Object* jsonObject, std::string serializeStr, bool literalStr)
 {
-	string toolsSerializeSection = serializeStr + string("Actions.EmitSound.");
+	string toolsSerializeSection; 
+	
+	if (!literalStr)
+		toolsSerializeSection = serializeStr + string("Actions.EmitSound.");
+	else
+		toolsSerializeSection = serializeStr; 
+
+
+	Action::SaveAction(jsonObject, toolsSerializeSection); 
 	Action::SaveOccurrence(jsonObject, toolsSerializeSection);
 
 	if (audioClip != nullptr)	

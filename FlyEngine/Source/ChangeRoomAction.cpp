@@ -125,10 +125,16 @@ void ChangeRoomAction::DrawUISettingsInButton()
 	ImGui::ComboArray("Destination", &ci, roomsToCombo, IM_ARRAYSIZE(roomsToCombo));
 }
 
-void ChangeRoomAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString)
+void ChangeRoomAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr)
 {
-	string toolsSerializeSection = serializeObjectString + string("Actions.ChangeRoom.");
+	string toolsSerializeSection;
+	
+	if (!literalStr)
+		toolsSerializeSection = serializeObjectString + string("Actions.ChangeRoom.");
+	else
+		toolsSerializeSection = serializeObjectString; 
 
+	Action::SaveAction(jsonObject, toolsSerializeSection);
 	Action::SaveOccurrence(jsonObject, toolsSerializeSection);
 
 	if (destinationRoom != nullptr)

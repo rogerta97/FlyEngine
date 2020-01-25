@@ -3,6 +3,7 @@
 
 #include "UI_Element.h"
 #include "SaveAndLoad.h"
+#include "Math/float4.h"
 #include <string>
 #include <list>
 
@@ -38,20 +39,22 @@ public:
 	void AddOnClickAction(Action* newAction);
 	std::list<Action*>& GetOnClickActionList(); 
 
+	// Set Color Tints 
+	void SetMouseOverTintColor(float4 newColor);
+	void SetMouseClickedTintColor(float4 newColor);
+
 	// Set Textures
 	void SetMainTexture(Texture* buttonTexture);
-	void SetIdleTexture(Texture* buttonTexture);
 	void SetMouseOverTexture(Texture* buttonTexture);
 	void SetMouseClickedTexture(Texture* buttonTexture);
 
 	// Get Textures 
 	Texture* GetMainTexture(); 
-	Texture* GetIdleTexture(); 
 	Texture* GetMouseOverTexture(); 
 	Texture* GetMouseClickedTexture(); 
 
 public:
-	ButtonBehaviourMouseInteraction behaviourInteraction; 
+	ButtonBehaviourMouseInteraction mouseInteraction; 
 
 private:
 	// Easy Acces to Holder Action
@@ -60,9 +63,11 @@ private:
 
 	// Color Tint Mode
 	Texture* backgroundTexture; 
+	float4 mouseOverTint; 
+	float4 mouseClickedTint; 
 
 	// Texture Swap Mode 
-	Texture* idleTexture;
+	Texture* mainTexture;
 	Texture* mouseOverTexture;
 	Texture* mouseClickedTexture;
 };

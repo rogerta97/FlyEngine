@@ -52,7 +52,7 @@ public:
 	// Virtuals -------
 	void CleanUp(); 
 	void DoAction(); 
-	void SaveAction(JSON_Object* jsonObject, string serializeObjectString);
+	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
 
 	void DrawUISettingsInButton();
 

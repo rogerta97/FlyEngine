@@ -119,13 +119,20 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 		ImGui::BeginChild("ButtonReaction", ImVec2(ImGui::GetContentRegionAvailWidth(), childHeight));
 
-		INC_CURSOR_10
-			ImGui::Combo("Behaviour", &reactionTypeSelected, "Color Tint\0Swap Image");
-
-		if (reactionTypeSelected == 0)
+		INC_CURSOR_10;
+		if (ImGui::Combo("Behaviour", &reactionTypeSelected, "Color Tint\0Swap Image"))
+		{
+			if (reactionTypeSelected == 0)
+				selectedButton->mouseInteraction = ButtonBehaviourMouseInteraction::COLOR_TINT;
+		
+			if (reactionTypeSelected == 1)
+				selectedButton->mouseInteraction = ButtonBehaviourMouseInteraction::TEXTURE_SWAP;
+		}
+			
+		if (selectedButton->mouseInteraction == COLOR_TINT)
 			DrawColorTintSection();
 
-		if (reactionTypeSelected == 1)
+		if (selectedButton->mouseInteraction == TEXTURE_SWAP)
 			DrawSwapImageSection(selectedButton);
 
 		ImGui::EndChild();
@@ -148,6 +155,12 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 		ImGui::PopStyleColor();
 
 		App->moduleRoomManager->GetSelectedRoomUI()->DrawSelectedOnClickActionSettings();
+
+		if (scrollToEnd)
+		{
+			ImGui::SetScrollHere(0.999f); 
+			scrollToEnd = false; 
+		}
 	}
 
 }
@@ -171,6 +184,7 @@ void ObjectPropertiesDockPanel::DrawOnClickActionButtonList(UI_Button* selectedB
 			selectedButton->GetHolderObject()->SetSelectedAction(currentAction->GetActionType()); 
 			RoomUIHandler* selectedRoomUI = App->moduleRoomManager->GetSelectedRoomUI();
 			selectedRoomUI->selectedButtonUIAction = currentAction;
+			scrollToEnd = true; 
 		}
 			
 		count++;

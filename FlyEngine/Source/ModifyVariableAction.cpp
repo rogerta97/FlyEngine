@@ -53,10 +53,16 @@ void ModifyVariableAction::DoAction()
 	}
 }
 
-void ModifyVariableAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString)
+void ModifyVariableAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr)
 {
-	string toolsSerializeSection = serializeObjectString + string("Actions.ModifyVariable.");
+	string toolsSerializeSection;
 
+	if (!literalStr)
+		toolsSerializeSection = serializeObjectString + string("Actions.ModifyVariable.");
+	else
+		toolsSerializeSection = serializeObjectString;
+
+	Action::SaveAction(jsonObject, toolsSerializeSection); 
 	Action::SaveOccurrence(jsonObject, toolsSerializeSection);
 
 	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "EffectsAmount").c_str(), variablesEffectList.size());

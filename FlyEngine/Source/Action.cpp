@@ -58,8 +58,9 @@ void Action::DrawUISettingsInButton()
 {
 }
 
-void Action::SaveAction(JSON_Object* jsonObject, std::string serializeObjectString)
+void Action::SaveAction(JSON_Object* jsonObject, std::string serializeObjectString, bool literalString)
 {
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "ActionType").c_str(), actionType);
 }
 
 void Action::SaveOccurrence(JSON_Object* jsonObject, string serializeObjectString)
