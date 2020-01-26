@@ -166,11 +166,9 @@ UI_Image* RoomUIHandler::CreateUIImage()
 UI_Button* RoomUIHandler::CreateUIButton()
 {
 	UI_Button* newButton = new UI_Button();
-
 	newButton->Init(); 
-
 	uiElements.push_back(newButton);
-	return nullptr;
+	return newButton;
 }
 
 void RoomUIHandler::DeleteElement(UID elementUID)

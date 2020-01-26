@@ -20,9 +20,11 @@ UI_Button::UI_Button()
 	mouseInteraction = COLOR_TINT;
 	mouseState = MOUSE_OUT;
 
+	onClickActions = new std::list<Action*>(); 
+
 	mainTexture = nullptr; 
-	//mouseOverTexture = nullptr;
-	//mouseClickedTexture = nullptr;
+	mouseOverTexture = nullptr;
+	mouseClickedTexture = nullptr;
 }
 
 UI_Button::~UI_Button()
@@ -78,6 +80,12 @@ void UI_Button::Update()
 
 			break;
 		}
+	}
+
+	if (mouseStateChange == MOUSE_CLICKED)
+	{
+		flog("OnClickActions");
+		DoOnClickActions();
 	}
 }
 
@@ -144,10 +152,16 @@ void UI_Button::CleanUp()
 
 	mouseOverTexture = nullptr;
 	mouseClickedTexture = nullptr;
+
+	delete onClickActions; 
 }
 
 void UI_Button::DoOnClickActions()
 {
+	for (auto& currentAction : *onClickActions)
+	{
+		currentAction->DoAction(); 
+	}
 }
 
 void UI_Button::Save(JSON_Object* jsonObject, string serializeStr)
@@ -321,7 +335,7 @@ DisplayImageAction* UI_Button::GetDisplayImageAction()
 
 void UI_Button::AddOnClickAction(Action* newAction)
 {
-//	//onClickActions.push_back(newAction); 
+	onClickActions->push_back(newAction); 
 }
 
 Texture* UI_Button::GetMainTexture()
