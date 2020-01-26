@@ -11,7 +11,6 @@
 
 #include "UI_Image.h"
 #include "UI_Button.h"
-
 #include "mmgr.h"
 
 RoomUIHandler::RoomUIHandler(Room* _roomAttached)

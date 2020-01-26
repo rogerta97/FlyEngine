@@ -32,7 +32,7 @@ UI_Button::~UI_Button()
 void UI_Button::Init()
 {
 	// For Now Set Object Default data on init
-	uiObject = new FlyObject("TestButton", "", UI_HOLDER);
+	uiObject = new FlyObject("Button", "", UI_HOLDER);
 	
 	// Background Image
 	Texture* testTexture = (Texture*)ResourceManager::getInstance()->GetResource("BackButton"); 
@@ -62,15 +62,18 @@ void UI_Button::Update()
 
 			if (mouseStateChange == MOUSE_OUT)
 			{
-				GetDisplayImageAction()->SetTexture(mainTexture);
+				if (mainTexture != nullptr)
+					GetDisplayImageAction()->SetTexture(mainTexture);
 			}
 			else if (mouseStateChange == MOUSE_OVER)
 			{
-				GetDisplayImageAction()->SetTexture(mouseOverTexture);
+				if(mouseOverTexture != nullptr)
+					GetDisplayImageAction()->SetTexture(mouseOverTexture);
 			}
 			else if (mouseStateChange == MOUSE_CLICKED)
 			{
-				GetDisplayImageAction()->SetTexture(mouseClickedTexture);
+				if (mouseClickedTexture != nullptr)
+					GetDisplayImageAction()->SetTexture(mouseClickedTexture);
 			}
 
 			break;
