@@ -40,6 +40,8 @@ public:
 	void Draw();
 	void CleanUp();
 
+	void DoOnClickActions(); 
+
 	ButtonMouseState HandleMouseState();
 	void Save(JSON_Object* jsonObject, string serializeStr);
 	void Load(JSON_Object* jsonObject, string serializeStr);

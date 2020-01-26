@@ -65,16 +65,16 @@ void UI_Button::Update()
 				if (mainTexture != nullptr)
 					GetDisplayImageAction()->SetTexture(mainTexture);
 			}
-			//else if (mouseStateChange == MOUSE_OVER)
-			//{
-			//	if(mouseOverTexture != nullptr)
-			//		GetDisplayImageAction()->SetTexture(mouseOverTexture);
-			//}
-			//else if (mouseStateChange == MOUSE_CLICKED)
-			//{
-			//	if (mouseClickedTexture != nullptr)
-			//		GetDisplayImageAction()->SetTexture(mouseClickedTexture);
-			//}
+			else if (mouseStateChange == MOUSE_OVER)
+			{
+				if(mouseOverTexture != nullptr)
+					GetDisplayImageAction()->SetTexture(mouseOverTexture);
+			}
+			else if (mouseStateChange == MOUSE_CLICKED)
+			{
+				if (mouseClickedTexture != nullptr)
+					GetDisplayImageAction()->SetTexture(mouseClickedTexture);
+			}
 
 			break;
 		}
@@ -144,6 +144,10 @@ void UI_Button::CleanUp()
 
 	mouseOverTexture = nullptr;
 	mouseClickedTexture = nullptr;
+}
+
+void UI_Button::DoOnClickActions()
+{
 }
 
 void UI_Button::Save(JSON_Object* jsonObject, string serializeStr)
@@ -270,6 +274,9 @@ void UI_Button::Load(JSON_Object* jsonObject, string serializeStr)
 	// Addapt Gizmos 
 	App->moduleImGui->gameViewportDockPanel->FitViewportToRegion();
 	uiObject->FitObjectUtils();
+
+	// Load Actions 
+
 }
 
 void UI_Button::SetMainTexture(Texture* buttonBgnTexture)
