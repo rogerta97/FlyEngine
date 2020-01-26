@@ -311,8 +311,7 @@ void RoomDockPanel::DrawTopButtons()
 			playButtonColor = ImVec4(0.35f, 0.39f, 0.50f, 1.00f);
 			playStopButtonTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlayIcon");
 
-			App->moduleRoomManager->GetSelectedRoom()->CleanRoomObjects();
-			App->moduleRoomManager->GetSelectedRoom()->CleanRoomUI();
+			App->moduleRoomManager->GetSelectedRoom()->CleanUp(); 
 			
 			SaveAndLoad::getInstance()->LoadOnPlayToSelectedRoom();
 		}
@@ -356,7 +355,7 @@ void RoomDockPanel::DrawRoomHierarchy()
 			if (selectedObject != nullptr)
 				objectSelected = (selectedObject->GetName() == (*it)->GetName());
 
-			if (ImGui::Selectable(string("  " + (*it)->GetName()).c_str(), objectSelected, ImGuiSelectableFlags_AllowDoubleClick))
+			if (ImGui::Selectable((*it)->GetName().c_str(), objectSelected, ImGuiSelectableFlags_AllowDoubleClick))
 			{
 				(*it)->isSelected = true;
 				App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(*it);

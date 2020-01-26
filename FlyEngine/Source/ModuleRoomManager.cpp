@@ -212,7 +212,7 @@ Room* ModuleRoomManager::GetRoom(std::string roomName) const
 {
 	for (auto const& it : roomsInWorldList) {
 
-		if (roomName == it->GetName()) {
+		if (roomName == it->GetName().c_str()) {
 			return it;
 		}
 	}

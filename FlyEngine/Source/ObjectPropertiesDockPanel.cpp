@@ -85,7 +85,7 @@ void ObjectPropertiesDockPanel::DrawUIElementProperties()
 		}
 	}
 	else {
-		ImGui::Text("Select something dude :)");
+		ImGui::Text("No UI Element Selected");
 	}
 }
 
@@ -177,7 +177,7 @@ void ObjectPropertiesDockPanel::DrawOnClickActionButtonList(UI_Button* selectedB
 	ImGui::BeginChild("ButtonActionsList", ImVec2(ImGui::GetContentRegionAvailWidth() - 10, 290));
 
 	int count = 0;
-	for (auto& currentAction : selectedButton->GetOnClickActionList())
+	/*for (auto& currentAction : selectedButton->GetOnClickActionList())
 	{
 		ActionSelectableInfo selectableInfo = currentAction->GetActionSelectableInfo();
 
@@ -190,7 +190,7 @@ void ObjectPropertiesDockPanel::DrawOnClickActionButtonList(UI_Button* selectedB
 		}
 			
 		count++;
-	}
+	}*/
 	ImGui::EndChild();
 
 	ImGui::EndChild();
@@ -209,11 +209,11 @@ void ObjectPropertiesDockPanel::DrawSwapImageSection(UI_Button* selectedButton)
 	ImGui::Columns(2);
 	ImGui::SetColumnWidth(0, 100);
 
-	if (selectedButton->GetMouseOverTexture() != nullptr)
+	/*if (selectedButton->GetMouseOverTexture() != nullptr)
 	{
 		imageDimensions = selectedButton->GetMouseOverTexture()->GetImageSizeInSquare(ImVec2(maxImageSize, maxImageSize));
 		mouseOverID = (ImTextureID)selectedButton->GetMouseOverTexture()->GetTextureID();
-	}
+	}*/
 
 	ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (imageDimensions.x / 2) + 8, ImGui::GetContentRegionAvail().y / 2 - (imageDimensions.y / 2)));
 	ImGui::Image(mouseOverID, imageDimensions);
@@ -227,8 +227,8 @@ void ObjectPropertiesDockPanel::DrawSwapImageSection(UI_Button* selectedButton)
 
 	static char searchImageOver[256];
 
-	if (selectedButton->GetMouseOverTexture() != nullptr)
-		strcpy(searchImageOver, selectedButton->GetMouseOverTexture()->GetName().c_str());
+	//if (selectedButton->GetMouseOverTexture() != nullptr)
+	//	strcpy(searchImageOver, selectedButton->GetMouseOverTexture()->GetName().c_str());
 
 	ImGui::Spacing();
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
@@ -272,11 +272,11 @@ void ObjectPropertiesDockPanel::DrawSwapImageSection(UI_Button* selectedButton)
 	ImGui::Columns(2);
 	ImGui::SetColumnWidth(0, 100);
 
-	if (selectedButton->GetMouseClickedTexture() != nullptr)
-	{
-		imageDimensions = selectedButton->GetMouseClickedTexture()->GetImageSizeInSquare(ImVec2(maxImageSize, maxImageSize));
-		mouseClickedID = (ImTextureID)selectedButton->GetMouseClickedTexture()->GetTextureID();
-	}
+	//if (selectedButton->GetMouseClickedTexture() != nullptr)
+	//{
+	//	imageDimensions = selectedButton->GetMouseClickedTexture()->GetImageSizeInSquare(ImVec2(maxImageSize, maxImageSize));
+	//	mouseClickedID = (ImTextureID)selectedButton->GetMouseClickedTexture()->GetTextureID();
+	//}
 
 	ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (imageDimensions.x / 2) + 8, ImGui::GetContentRegionAvail().y / 2 - (imageDimensions.y / 2)));
 	ImGui::Image(mouseClickedID, imageDimensions);
@@ -290,8 +290,8 @@ void ObjectPropertiesDockPanel::DrawSwapImageSection(UI_Button* selectedButton)
 
 	static char searchImageClickBuffer[256];
 
-	if (selectedButton->GetMouseClickedTexture() != nullptr)
-		strcpy(searchImageClickBuffer, selectedButton->GetMouseClickedTexture()->GetName().c_str());
+	//if (selectedButton->GetMouseClickedTexture() != nullptr)
+	//	strcpy(searchImageClickBuffer, selectedButton->GetMouseClickedTexture()->GetName().c_str());
 
 	ImGui::Spacing();
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
@@ -339,7 +339,7 @@ void ObjectPropertiesDockPanel::DrawSearchBarButtonActions(UI_Button* selectedBu
 		ActionSelectableInfo* selectableInfo = App->moduleManager->DrawActionDictionaryUI(true);
 		if (selectableInfo != nullptr)
 		{
-			switch (selectableInfo->actionType)
+		/*	switch (selectableInfo->actionType)
 			{
 			case ActionType::AT_CHANGE_ROOM:
 			{
@@ -362,7 +362,7 @@ void ObjectPropertiesDockPanel::DrawSearchBarButtonActions(UI_Button* selectedBu
 				break;
 			}
 
-			}
+			}*/
 		}
 
 		ImGui::EndPopup();

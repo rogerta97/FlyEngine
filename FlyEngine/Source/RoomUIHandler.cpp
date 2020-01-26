@@ -170,7 +170,7 @@ UI_Button* RoomUIHandler::CreateUIButton()
 	newButton->Init(); 
 
 	uiElements.push_back(newButton);
-	return newButton;
+	return nullptr;
 }
 
 void RoomUIHandler::DeleteElement(UID elementUID)

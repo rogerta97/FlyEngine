@@ -4,7 +4,9 @@
 #include "UI_Element.h"
 #include "SaveAndLoad.h"
 #include "Math/float4.h"
+#include "Action.h"
 #include <string>
+#include <vector>
 #include <list>
 
 using namespace std;
@@ -26,7 +28,6 @@ enum ButtonMouseState
 
 class FlyObject;
 class DisplayImageAction;
-class Action; 
 class Texture; 
 class UI_Button : public UI_Element
 {
@@ -46,7 +47,7 @@ public:
 	// Utility ---------
 	DisplayImageAction* GetDisplayImageAction();
 	void AddOnClickAction(Action* newAction);
-	std::list<Action*>& GetOnClickActionList(); 
+	std::list<Action*>* GetOnClickActionList(); 
 
 	// Set Color Tints 
 	void SetMouseOverTintColor(float4 newColor);
@@ -69,7 +70,7 @@ public:
 private:
 	// Easy Acces to Holder Action
 	DisplayImageAction* uiObjectDisplayImage;
-	std::list<Action*> onClickActions; 
+	std::list<Action*>* onClickActions; 
 
 	Texture* mainTexture;
 
@@ -77,7 +78,7 @@ private:
 	float4 mouseOverTint; 
 	float4 mouseClickedTint; 
 
-	// Texture Swap Mode 
+	//// Texture Swap Mode 
 	Texture* mouseOverTexture;
 	Texture* mouseClickedTexture;
 };

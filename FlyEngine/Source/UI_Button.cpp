@@ -21,8 +21,8 @@ UI_Button::UI_Button()
 	mouseState = MOUSE_OUT;
 
 	mainTexture = nullptr; 
-	mouseOverTexture = nullptr;
-	mouseClickedTexture = nullptr;
+	//mouseOverTexture = nullptr;
+	//mouseClickedTexture = nullptr;
 }
 
 UI_Button::~UI_Button()
@@ -65,16 +65,16 @@ void UI_Button::Update()
 				if (mainTexture != nullptr)
 					GetDisplayImageAction()->SetTexture(mainTexture);
 			}
-			else if (mouseStateChange == MOUSE_OVER)
-			{
-				if(mouseOverTexture != nullptr)
-					GetDisplayImageAction()->SetTexture(mouseOverTexture);
-			}
-			else if (mouseStateChange == MOUSE_CLICKED)
-			{
-				if (mouseClickedTexture != nullptr)
-					GetDisplayImageAction()->SetTexture(mouseClickedTexture);
-			}
+			//else if (mouseStateChange == MOUSE_OVER)
+			//{
+			//	if(mouseOverTexture != nullptr)
+			//		GetDisplayImageAction()->SetTexture(mouseOverTexture);
+			//}
+			//else if (mouseStateChange == MOUSE_CLICKED)
+			//{
+			//	if (mouseClickedTexture != nullptr)
+			//		GetDisplayImageAction()->SetTexture(mouseClickedTexture);
+			//}
 
 			break;
 		}
@@ -140,8 +140,8 @@ void UI_Button::CleanUp()
 
 	UI_Element::CleanUp(); 
 
-	uiObjectDisplayImage = nullptr;
 	mainTexture = nullptr;
+
 	mouseOverTexture = nullptr;
 	mouseClickedTexture = nullptr;
 }
@@ -210,10 +210,10 @@ void UI_Button::Save(JSON_Object* jsonObject, string serializeStr)
 	}
 
 	// Save Actions 
-	json_object_dotset_number(jsonObject, string(serializeStr + string("OnClickActions.ActionsAmount")).c_str(), onClickActions.size());
+	json_object_dotset_number(jsonObject, string(serializeStr + string("OnClickActions.ActionsAmount")).c_str(), onClickActions->size());
 
 	int count = 0; 
-	for (auto& currentAction : onClickActions)
+	for (auto& currentAction : *onClickActions)
 	{
 		string actionStr = serializeStr + string("OnClickActions.Action_") + to_string(count) + "."; 
 		currentAction->SaveAction(jsonObject, actionStr.c_str(), true);
@@ -282,7 +282,7 @@ void UI_Button::SetMainTexture(Texture* buttonBgnTexture)
 		uiObjectDisplayImage->SetTexture(buttonBgnTexture); 
 }
 
-std::list<Action*>& UI_Button::GetOnClickActionList()
+std::list<Action*>* UI_Button::GetOnClickActionList()
 {
 	return onClickActions; 
 }
@@ -314,7 +314,7 @@ DisplayImageAction* UI_Button::GetDisplayImageAction()
 
 void UI_Button::AddOnClickAction(Action* newAction)
 {
-	onClickActions.push_back(newAction); 
+//	//onClickActions.push_back(newAction); 
 }
 
 Texture* UI_Button::GetMainTexture()

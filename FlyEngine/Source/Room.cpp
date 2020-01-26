@@ -22,12 +22,12 @@ Room::Room(string roomName)
 {
 	this->roomName = roomName;
 	roomID = RandomNumberGenerator::GenerateUID(); 
-	roomBlackboard = new Blackboard(); 
 	backgroundMusic = nullptr; 
 
 	static int placer = 50;
 	NodeGraph::getInstance()->CreateNode(roomName, ImVec2(placer, 50), roomID);
 
+	roomBlackboard = new Blackboard(); 
 	roomUIHandler = new RoomUIHandler(this); 
 	
 	placer += 250; 
@@ -35,8 +35,10 @@ Room::Room(string roomName)
 
 Room::~Room()
 {
+	roomUIHandler->CleanUp();
+	delete roomUIHandler;
+	roomUIHandler = nullptr;
 }
-
 
 void Room::Update()
 {
@@ -98,6 +100,7 @@ void Room::Update()
 
 void Room::CleanUp()
 {
+
 	if (GetOutputConnectionsAmount() > 0) {
 		for (auto it : outConnections) {
 			delete it; 
@@ -119,9 +122,7 @@ void Room::CleanUp()
 	delete roomBlackboard; 
 	roomBlackboard = nullptr; 
 
-	roomUIHandler->CleanUp(); 
-	delete roomUIHandler; 
-	roomUIHandler = nullptr; 
+	CleanRoomUI(); 
 }
 
 void Room::CleanRoomObjects()
@@ -338,6 +339,7 @@ FlyObject* Room::CreateFlyObject(std::string objectName, std::string description
 {
 	FlyObject* newObject = new FlyObject(objectName, description); 
 	objectsInRoom.push_back(newObject); 
+	flog("New Object");
 	return newObject; 
 }
 
