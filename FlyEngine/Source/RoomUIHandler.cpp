@@ -12,6 +12,8 @@
 #include "UI_Image.h"
 #include "UI_Button.h"
 
+#include "mmgr.h"
+
 RoomUIHandler::RoomUIHandler(Room* _roomAttached)
 {
 	roomAttached = _roomAttached;
@@ -99,6 +101,7 @@ void RoomUIHandler::CleanUp()
 
 	uiElements.clear(); 
 	selectedElement = nullptr; 
+	selectedButtonUIAction = nullptr;
 }
 
 void RoomUIHandler::DrawUIElements()
@@ -140,18 +143,6 @@ void RoomUIHandler::DrawSelectedOnClickActionSettings()
 		return; 
 
 	selectedButtonUIAction->DrawUISettingsInButton();
-
-	//switch (selectedButtonUIAction->GetActionType())
-	//{
-	//case ActionType::AT_CHANGE_ROOM:
-	//	selectedButtonUIAction->DrawUISettingsInButton();
-	//	break;
-
-	//case ActionType::AT_EMIT_SOUND:
-	//	selectedButtonUIAction->DrawUISettingsInButton();
-	//	break;
-
-	//}
 }
 
 UI_Image* RoomUIHandler::CreateUIImage(UID resourceUID)

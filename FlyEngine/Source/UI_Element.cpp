@@ -5,6 +5,8 @@
 #include "Application.h"
 #include "ModuleManager.h"
 
+#include "mmgr.h"
+
 UI_Element::UI_Element()
 {
 	uiObject = nullptr;
@@ -34,6 +36,8 @@ void UI_Element::Draw()
 void UI_Element::CleanUp()
 {
 	uiObject->CleanUp();
+	delete uiObject;
+	uiObject = nullptr; 
 }
 
 void UI_Element::Save(JSON_Object* jsonObject, string serializeStr)

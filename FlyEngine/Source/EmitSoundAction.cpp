@@ -4,6 +4,8 @@
 #include "Texture.h"
 #include "ResourceManager.h"
 
+#include "mmgr.h"
+
 #include "Application.h"
 #include "ModuleImGui.h"
 

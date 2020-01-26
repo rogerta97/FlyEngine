@@ -1,6 +1,8 @@
 #include "AudioClip.h"
 #include "SDL_mixer.h"
 
+#include "mmgr.h"
+
 AudioClip::AudioClip() : Resource(RESOURCE_SFX)
 {
 	mixChunk = nullptr; 

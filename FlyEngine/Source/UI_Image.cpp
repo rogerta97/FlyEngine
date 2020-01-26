@@ -9,6 +9,8 @@
 #include "ModuleImGui.h"
 #include "ResourceManager.h"
 
+#include "mmgr.h"
+
 UI_Image::UI_Image() : UI_Element()
 {
 	UI_Element::UI_Element(); 

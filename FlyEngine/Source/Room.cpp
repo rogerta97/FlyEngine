@@ -86,11 +86,9 @@ void Room::Update()
 	}
 
 	// Check if SUPR is pressed to delete
-	if (App->moduleInput->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
-	{
+	if (App->moduleInput->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)	
 		DeleteSelectedObject(); 
-	}
-
+	
 	// Check if 1 is pressed to pick from inventory
 	if (App->moduleInput->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{

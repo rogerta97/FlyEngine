@@ -4,6 +4,8 @@
 #include "AudioClip.h"
 #include "MusicTrack.h"
 
+#include "mmgr.h"
+
 AudioImporter* AudioImporter::instance = 0;
 
 AudioImporter::AudioImporter()

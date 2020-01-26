@@ -17,6 +17,8 @@
 
 #include <fstream>
 
+#include "mmgr.h"
+
 SaveAndLoad* SaveAndLoad::instance = 0;
 
 SaveAndLoad* SaveAndLoad::getInstance()

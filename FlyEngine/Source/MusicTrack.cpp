@@ -1,6 +1,8 @@
 #include "MusicTrack.h"
 #include "SDL_mixer.h"
 
+#include "mmgr.h"
+
 MusicTrack::MusicTrack() : Resource(RESOURCE_MUSIC)
 {
 	mixMusic = nullptr;

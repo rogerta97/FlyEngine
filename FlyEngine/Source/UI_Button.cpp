@@ -10,15 +10,15 @@
 #include "ModuleImGui.h"
 #include "GameViewportDockPanel.h"
 
+#include "mmgr.h"
+
 UI_Button::UI_Button()
 {
 	UI_Element::UI_Element();
-	uiObjectDisplayImageBackground = nullptr;
+	uiObjectDisplayImage = nullptr;
 	uiElementType = UI_BUTTON;
 	mouseInteraction = COLOR_TINT;
-	textureTypeShowing = MAIN_TEXTURE;
-
-	backgroundTexture = nullptr; 
+	mouseState = MOUSE_OUT;
 
 	mainTexture = nullptr; 
 	mouseOverTexture = nullptr;
@@ -49,49 +49,98 @@ void UI_Button::Update()
 	if (!App->isEngineInPlayMode)
 		return; 
 
-	if (textureTypeShowing == MAIN_TEXTURE)
+	ButtonMouseState mouseStateChange = HandleMouseState(); 
+	if (mouseStateChange != MOUSE_NULL)
 	{
-		if (GetHolderObject()->gizmos->IsMouseOver())
+		switch (mouseInteraction)
 		{
-			flog("Swap Texture To Mouse Over");
-			textureTypeShowing = MOUSE_OVER_TEXTURE;
-		}
-	}
+		case COLOR_TINT:
 
-	if (textureTypeShowing == MOUSE_OVER_TEXTURE)
-	{
-		if (!GetHolderObject()->gizmos->IsMouseOver())
-		{
-			flog("Swap Texture To Main Texture");
-			textureTypeShowing = MAIN_TEXTURE;
-		}
+			break;
 
-		if (GetHolderObject()->gizmos->IsMouseOverClicked())
-		{
-			flog("Swap Texture To Clicked");
-			textureTypeShowing = MOUSE_CLICKED_TEXTURE;
-		}
-	}
+		case TEXTURE_SWAP:
 
-	if (textureTypeShowing == MOUSE_CLICKED_TEXTURE)
-	{
-		if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_UP))
-		{
-			flog("Swap Texture To Main Texture");
-			textureTypeShowing = MAIN_TEXTURE;
+			if (mouseStateChange == MOUSE_OUT)
+			{
+				GetDisplayImageAction()->SetTexture(mainTexture);
+			}
+			else if (mouseStateChange == MOUSE_OVER)
+			{
+				GetDisplayImageAction()->SetTexture(mouseOverTexture);
+			}
+			else if (mouseStateChange == MOUSE_CLICKED)
+			{
+				GetDisplayImageAction()->SetTexture(mouseClickedTexture);
+			}
+
+			break;
 		}
 	}
 }
 
+ButtonMouseState UI_Button::HandleMouseState()
+{
+	if (mouseState == MOUSE_OUT)
+	{
+		if (GetHolderObject()->gizmos->IsMouseOver())
+		{
+			mouseState = MOUSE_OVER;		
+			return MOUSE_OVER;
+		}
+	}
+
+	if (mouseState == MOUSE_OVER)
+	{
+		if (!GetHolderObject()->gizmos->IsMouseOver())
+		{
+			mouseState = MOUSE_OUT;
+			return MOUSE_OUT;
+		}
+		
+		if (GetHolderObject()->gizmos->IsMouseOverClicked())
+		{
+			mouseState = MOUSE_CLICKED;			
+			return MOUSE_CLICKED; 
+		}
+	}
+
+	if (mouseState == MOUSE_CLICKED)
+	{
+		if (App->moduleInput->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+		{
+			if (GetHolderObject()->gizmos->IsMouseOver())
+			{
+				mouseState = MOUSE_OVER;
+				return MOUSE_OVER;
+			}
+			else
+			{
+				mouseState = MOUSE_OUT;		
+				return MOUSE_OUT; 
+			}
+		}
+	}
+
+	return MOUSE_NULL;
+}
+
 void UI_Button::Draw()
 {
-	uiObjectDisplayImageBackground->Draw();
+	uiObjectDisplayImage->Draw();
 	UI_Element::Draw();
 }
 
 void UI_Button::CleanUp()
 {
-	// TODO: BUTTON NEED CLEANUP :D
+	uiObject->DeleteAction(uiObjectDisplayImage->GetActionName());
+	uiObjectDisplayImage = nullptr;
+
+	UI_Element::CleanUp(); 
+
+	uiObjectDisplayImage = nullptr;
+	mainTexture = nullptr;
+	mouseOverTexture = nullptr;
+	mouseClickedTexture = nullptr;
 }
 
 void UI_Button::Save(JSON_Object* jsonObject, string serializeStr)
@@ -140,12 +189,12 @@ void UI_Button::Save(JSON_Object* jsonObject, string serializeStr)
 
 	case INTERACTION_NONE:
 
-		if (backgroundTexture != nullptr)
+		if (mainTexture != nullptr)
 		{
-			json_object_dotset_number(jsonObject, string(serializeStr + string("MainImage.ImageWidth")).c_str(), backgroundTexture->GetWidth());
-			json_object_dotset_number(jsonObject, string(serializeStr + string("MainImage.ImageHeigth")).c_str(), backgroundTexture->GetHeigth());
-			json_object_dotset_string(jsonObject, string(serializeStr + string("MainImage.BackgroundTextureName")).c_str(), MyFileSystem::getInstance()->GetLastPathItem(backgroundTexture->GetPath(), true).c_str());
-			json_object_dotset_string(jsonObject, string(serializeStr + string("MainImage.ResourcePath")).c_str(), backgroundTexture->GetPath());
+			json_object_dotset_number(jsonObject, string(serializeStr + string("MainImage.ImageWidth")).c_str(), mainTexture->GetWidth());
+			json_object_dotset_number(jsonObject, string(serializeStr + string("MainImage.ImageHeigth")).c_str(), mainTexture->GetHeigth());
+			json_object_dotset_string(jsonObject, string(serializeStr + string("MainImage.BackgroundTextureName")).c_str(), MyFileSystem::getInstance()->GetLastPathItem(mainTexture->GetPath(), true).c_str());
+			json_object_dotset_string(jsonObject, string(serializeStr + string("MainImage.ResourcePath")).c_str(), mainTexture->GetPath());
 		}
 		else
 		{
@@ -209,28 +258,6 @@ void UI_Button::Load(JSON_Object* jsonObject, string serializeStr)
 			mouseClickedTexture = (Texture*)ResourceManager::getInstance()->GetResource(mouseClickedName.c_str());
 	}
 		break;
-
-	case INTERACTION_NONE:
-	{
-		if (uiObject == nullptr)
-			uiObject = new FlyObject("UIButtonHolder", "", UI_HOLDER); 
-
-		// Load Background Image 
-		if (json_object_dothas_value(jsonObject, std::string(serializeStr + string("BackImage.")).c_str()))
-		{
-			string backgroundTextureName = json_object_dotget_string(jsonObject, std::string(serializeStr + string("BackImage.BackgroundTextureName")).c_str());
-			MyFileSystem::getInstance()->DeleteFileExtension(backgroundTextureName); 
-			backgroundTexture = (Texture*)ResourceManager::getInstance()->GetResource(backgroundTextureName);
-			string texturePath = json_object_dotget_string(jsonObject, std::string(serializeStr + string("BackImage.ResourcePath")).c_str());
-
-			backgroundTexture->SetWidth(json_object_dotget_number(jsonObject, string(serializeStr + string("BackImage.ImageWidth")).c_str())); 
-			backgroundTexture->SetHeigth(json_object_dotget_number(jsonObject, string(serializeStr + string("BackImage.ImageHeigth")).c_str())); 
-
-			uiObjectDisplayImageBackground = uiObject->AddDisplayImageAction(texturePath.c_str());
-		}
-		
-		break;
-	}
 	}
 
 	// Load Transform
@@ -244,12 +271,12 @@ void UI_Button::Load(JSON_Object* jsonObject, string serializeStr)
 
 void UI_Button::SetMainTexture(Texture* buttonBgnTexture)
 {
-	backgroundTexture = buttonBgnTexture; 
+	mainTexture = buttonBgnTexture;
 
-	if (uiObjectDisplayImageBackground == nullptr)
-		uiObjectDisplayImageBackground = uiObject->AddDisplayImageAction(buttonBgnTexture->GetPath());
+	if (uiObjectDisplayImage == nullptr)
+		uiObjectDisplayImage = uiObject->AddDisplayImageAction(buttonBgnTexture->GetPath());
 	else
-		uiObjectDisplayImageBackground->SetTexture(buttonBgnTexture); 
+		uiObjectDisplayImage->SetTexture(buttonBgnTexture); 
 }
 
 std::list<Action*>& UI_Button::GetOnClickActionList()
@@ -279,7 +306,7 @@ void UI_Button::SetMouseClickedTexture(Texture* buttonTexture)
 
 DisplayImageAction* UI_Button::GetDisplayImageAction()
 {
-	return uiObjectDisplayImageBackground;
+	return uiObjectDisplayImage;
 }
 
 void UI_Button::AddOnClickAction(Action* newAction)
@@ -289,7 +316,7 @@ void UI_Button::AddOnClickAction(Action* newAction)
 
 Texture* UI_Button::GetMainTexture()
 {
-	return backgroundTexture;
+	return mainTexture;
 }
 
 Texture* UI_Button::GetMouseOverTexture()

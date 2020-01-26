@@ -274,7 +274,11 @@ void DisplayImageAction::SetTexture(Texture* newTexture)
 	delete quadMesh; 
 
 	quadMesh = new Quad(); 
-	quadMesh->Create(newTexture->GetWidth(), newTexture->GetHeigth());
+
+	if(newTexture != nullptr)
+		quadMesh->Create(newTexture->GetWidth(), newTexture->GetHeigth());
+	else
+		quadMesh->Create(100, 100);
 
 	// Set Texture 
 	imageTexture = newTexture;

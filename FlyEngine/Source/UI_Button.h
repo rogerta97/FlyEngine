@@ -16,11 +16,12 @@ enum ButtonBehaviourMouseInteraction
 	INTERACTION_NONE,
 };
 
-enum ButtonTextureType
+enum ButtonMouseState
 {
-	MAIN_TEXTURE,
-	MOUSE_OVER_TEXTURE,
-	MOUSE_CLICKED_TEXTURE, 
+	MOUSE_OUT,
+	MOUSE_OVER,
+	MOUSE_CLICKED, 
+	MOUSE_NULL,
 };
 
 class FlyObject;
@@ -38,6 +39,7 @@ public:
 	void Draw();
 	void CleanUp();
 
+	ButtonMouseState HandleMouseState();
 	void Save(JSON_Object* jsonObject, string serializeStr);
 	void Load(JSON_Object* jsonObject, string serializeStr);
 
@@ -62,20 +64,20 @@ public:
 
 public:
 	ButtonBehaviourMouseInteraction mouseInteraction; 
-	ButtonTextureType textureTypeShowing; 
+	ButtonMouseState mouseState; 
 
 private:
 	// Easy Acces to Holder Action
-	DisplayImageAction* uiObjectDisplayImageBackground;
+	DisplayImageAction* uiObjectDisplayImage;
 	std::list<Action*> onClickActions; 
 
+	Texture* mainTexture;
+
 	// Color Tint Mode
-	Texture* backgroundTexture; 
 	float4 mouseOverTint; 
 	float4 mouseClickedTint; 
 
 	// Texture Swap Mode 
-	Texture* mainTexture;
 	Texture* mouseOverTexture;
 	Texture* mouseClickedTexture;
 };
