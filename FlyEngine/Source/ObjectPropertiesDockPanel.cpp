@@ -459,52 +459,82 @@ void ObjectPropertiesDockPanel::DrawButtonMainImagePreview(UI_Button* selectedBu
 
 void ObjectPropertiesDockPanel::DrawUIImageProperties(UI_Element* selectedUIElement)
 {
-	UI_Image* selectedImage = (UI_Image*)selectedUIElement;
-	static char uiImageNameBuffer[256] = "";
-
-	if (selectedImage->GetDisplayImage()->GetTexture() != nullptr)
-		strcpy(uiImageNameBuffer, selectedImage->GetDisplayImage()->GetTexture()->GetName().c_str());
-
 	if (ImGui::CollapsingHeader("UI Image Properties", ImGuiTreeNodeFlags_DefaultOpen))
 	{
+		UI_Image* selectedUIImage = (UI_Image*)selectedUIElement;
+
+		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+		ImGui::Text("Display Image:");
+		ImGui::PopFont();
+
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+		ImGui::BeginChild("UI_ImagePreview", ImVec2(ImGui::GetContentRegionAvailWidth(), 195));
+
+		ImVec2 imageMaxSize = ImVec2(ImGui::GetContentRegionAvailWidth(), 135);
+		ImVec2 uiImageDimensions = ImVec2(150, 150);
+		Texture* imageTexture = selectedUIImage->GetDisplayImage()->GetTexture();
+		ImTextureID selectedTextureID = 0;
+
+		if (imageTexture != nullptr)
+		{
+			float aspectRatio = imageTexture->GetAspectRatio();
+
+			if (imageTexture->IsVertical())
+			{
+				uiImageDimensions.y = imageMaxSize.y;
+				uiImageDimensions.x = uiImageDimensions.x * aspectRatio;
+			}
+			else
+			{
+				uiImageDimensions.y = imageMaxSize.y;
+				uiImageDimensions.x = uiImageDimensions.y * aspectRatio;
+
+				if (uiImageDimensions.x > imageMaxSize.x)
+				{
+					float diff = uiImageDimensions.x - imageMaxSize.x;
+					uiImageDimensions.x -= diff;
+					uiImageDimensions.y = uiImageDimensions.x * aspectRatio;
+				}
+			}
+			selectedTextureID = (ImTextureID)imageTexture->GetTextureID();
+		}
+
 		ImGui::Spacing();
 
-		ImGui::InputTextWithHint("", "Search...", uiImageNameBuffer, IM_ARRAYSIZE(uiImageNameBuffer));
+		ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (uiImageDimensions.x / 2), imageMaxSize.y / 2 - (uiImageDimensions.y / 2) + 10));
+		ImGui::Image(selectedTextureID, uiImageDimensions);
+
+		ImGui::Spacing();
+
+		static char searchButtonImageBuffer[256];
+
+		ImGui::Spacing();
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+		ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() - 70);
+		ImGui::InputTextWithHint("", "Search Image...", searchButtonImageBuffer, IM_ARRAYSIZE(searchButtonImageBuffer));
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+			{
+				int* selectedResourceUID = (int*)payload->Data;
+				Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+				if (resourceDropped->GetType() == RESOURCE_TEXTURE)
+				{
+					Texture* textureDropped = (Texture*)resourceDropped;
+					selectedUIImage->GetDisplayImage()->SetTexture(textureDropped);
+				}
+			}
+
+			ImGui::EndDragDropTarget();
+		}
 
 		ImGui::SameLine();
-		if (ImGui::Button("Search##SearchUIImage"))
+		if (ImGui::Button("Search##SearchUIIMage"))
 		{
 
 		}
-
-		ImGui::Spacing();
-
-		PUSH_CHILD_BG_COLOR;
-		ImGui::BeginChild("PreviewUIImageLeftCol", ImVec2(ImGui::GetContentRegionAvail().x, 200));
-
-		ImVec2 centerPoint = ImVec2(ImGui::GetContentRegionAvail().x / 2, ImGui::GetContentRegionAvail().y / 2);
-
-		ImGui::EndChild();
-		ImGui::PopStyleColor();
-
-		PUSH_CHILD_BG_COLOR;
-		ImGui::BeginChild("PreviewUIImageRightCol", ImVec2(ImGui::GetContentRegionAvail().x, 100));
-
-		if (selectedImage != nullptr)
-		{
-			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-			ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 3);
-			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-			ImGui::Text("Name:");
-			ImGui::PopFont();
-
-			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-			ImGui::PushFont(App->moduleImGui->rudaRegularSmall);
-			ImGui::Text("%s", selectedImage->GetDisplayImage()->GetTexture()->GetName().c_str());
-			ImGui::PopFont();
-		}
-
-
 		ImGui::EndChild();
 		ImGui::PopStyleColor();
 	}
