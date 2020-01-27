@@ -76,6 +76,7 @@ bool FlyObject::Update()
 				break;
 
 			case INVENTORY_ITEM:
+				DoOnClickActions(); 
 				App->moduleRoomManager->GetSelectedRoom()->AddItemToInventory(this); 
 				ret = true; 
 				break;
@@ -241,9 +242,11 @@ void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 	// Save Object Properties
 	string serializeObjectName(App->moduleRoomManager->GetSelectedRoom()->GetName().c_str() + string(".")); 
 	serializeObjectName += "FlyObject_" + to_string(objectIndex) + string(".");
+
 	json_object_dotset_string(jsonObject, string(serializeObjectName + "Name").c_str(), GetName().c_str());
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "UID").c_str(), uid);
 	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "Interactable").c_str(), isInteractable);
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "ObjectType").c_str(), this->flyObjectType);
 
 	if(!GetDescription().empty())
 		json_object_dotset_string(jsonObject, string(serializeObjectName + "Description").c_str(), GetDescription().c_str());
@@ -257,7 +260,7 @@ void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 	}
 
 	// Save Object Clickable Area
-	SerializeClickableArea(serializeObjectName, jsonObject);
+	SaveClickableArea(serializeObjectName, jsonObject);
 }
 
 void FlyObject::SaveTransform(std::string serializeObjectName, JSON_Object* jsonObject)
@@ -273,7 +276,7 @@ void FlyObject::SaveTransform(std::string serializeObjectName, JSON_Object* json
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "Scale.y").c_str(), transform->GetScale().y);
 }
 
-void FlyObject::SerializeClickableArea(std::string serializeObjectName, JSON_Object* jsonObject)
+void FlyObject::SaveClickableArea(std::string serializeObjectName, JSON_Object* jsonObject)
 {
 	serializeObjectName += "ClickableArea.";
 

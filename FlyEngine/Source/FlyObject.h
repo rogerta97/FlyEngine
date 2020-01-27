@@ -44,7 +44,7 @@ public:
 	// Save & Load 
 	void SaveObjectData(JSON_Object* jsonObject, int objectIndex);
 	void SaveTransform(std::string serializeObjectName, JSON_Object* jsonObject);
-	void SerializeClickableArea(std::string serializeObjectName, JSON_Object* jsonObject);
+	void SaveClickableArea(std::string serializeObjectName, JSON_Object* jsonObject);
 
 	// Actions ---------
 	void DoOnClickActions(); 

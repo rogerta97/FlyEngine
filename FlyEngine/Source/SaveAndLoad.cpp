@@ -99,6 +99,9 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 	FlyObject* newObject = currentRoom->CreateFlyObject(newObjectName.c_str());
 	newObject->SetUID(json_object_dotget_number(root_obj, string(serializeObjectStr + string("UID")).c_str())); 
 
+	int _flyObjectType = json_object_dotget_number(root_obj, string(serializeObjectStr + string("ObjectType")).c_str());
+	newObject->flyObjectType = (FlyObjectType)_flyObjectType;
+
 	if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("Description")).c_str())) 
 	{
 		newObject->SetDescription(json_object_dotget_string(root_obj, string(serializeObjectStr + string("Description")).c_str()));

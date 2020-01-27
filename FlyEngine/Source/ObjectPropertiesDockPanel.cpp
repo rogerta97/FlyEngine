@@ -550,15 +550,14 @@ void ObjectPropertiesDockPanel::DrawFlyObjectProperties()
 
 		ImGui::Separator();
 
-		ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
-		ImGui::Text("Item Inventory Attributes:");
-		ImGui::PopFont();
-
-		if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
+		if (selectedObject->IsInventoryItem())
 		{
-			if (selectedObject->IsInventoryItem())
-			{
+			ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
+			ImGui::Text("Item Inventory Attributes:");
+			ImGui::PopFont();
 
+			if (ImGui::BeginTabBar("InventoryTabBar", ImGuiTabBarFlags_None))
+			{
 				if (ImGui::BeginTabItem("Item Settings"))
 				{
 					static char inventoryBrowcseImageBuffer[512];
@@ -579,11 +578,25 @@ void ObjectPropertiesDockPanel::DrawFlyObjectProperties()
 						ImGui::DragFloat("Heigth", &selectedObject->GetClickableAreaSizeOne().y);
 						ImGui::EndChild();
 					}
-
 					ImGui::EndTabItem();
 				}
+
+				if (ImGui::BeginTabItem("Clickable Area"))
+				{
+					DrawClickableAreaTab();
+					ImGui::EndTabItem();
+				}
+
+				ImGui::EndTabBar();
 			}
-			else
+		}
+		else
+		{
+			ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
+			ImGui::Text("Object Attributes:");
+			ImGui::PopFont();
+
+			if (ImGui::BeginTabBar("ObjectTabBar", ImGuiTabBarFlags_None))
 			{
 				if (ImGui::BeginTabItem("Actions"))
 				{
@@ -591,15 +604,14 @@ void ObjectPropertiesDockPanel::DrawFlyObjectProperties()
 					ImGui::EndTabItem();
 				}
 
-			}
+				if (ImGui::BeginTabItem("Clickable Area"))
+				{
+					DrawClickableAreaTab();
+					ImGui::EndTabItem();
+				}
 
-			if (ImGui::BeginTabItem("Clickable Area"))
-			{
-				DrawClickableAreaTab();
-				ImGui::EndTabItem();
+				ImGui::EndTabBar();
 			}
-
-			ImGui::EndTabBar();
 		}
 	}
 	else
