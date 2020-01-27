@@ -29,6 +29,8 @@ public:
 
 	// Action Objects
 	void DrawFlyObjectProperties();
+	void DrawObjectTabs();
+	void DrawInventoryItemTabs(FlyObject* selectedObject);
 	void DrawFixedPartObjectUI(FlyObject* selectedObject);
 	void DrawTransformButtons();
 

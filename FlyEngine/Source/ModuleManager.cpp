@@ -12,6 +12,7 @@
 #include "ModifyVariableAction.h"
 #include "RoomUIHandler.h"
 #include "FlyObject.h"
+#include "ObjectPropertiesDockPanel.h"
 #include "ViewportManager.h"
 #include "imgui.h"
 #include "RoomDockPanel.h"
@@ -163,6 +164,50 @@ Texture* ModuleManager::GetIconFromActionType(ActionType toolType)
 	}
 
 	return toolIconTexture;
+}
+
+void ModuleManager::DrawActionListWithSettings(FlyObject* ownerObejct)
+{
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Object Actions: ");
+	ImGui::PopFont();
+
+	ImGui::SameLine(); 
+	string buttonName = "Add Action##Add" + to_string(ownerObejct->GetUID());
+	if (ImGui::Button(buttonName.c_str()))
+	{
+
+	}
+
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5, 5));
+
+	ImGui::BeginChild("##ToolsListObjectProperties", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
+
+	int count = 0;
+	ObjectPropertiesDockPanel* objectProperties = (ObjectPropertiesDockPanel *)App->moduleImGui->GetDockPanel(DOCK_OBJECT_PROPERTIES);
+	Action* selectedAction = nullptr; 
+	for (auto& currentAction : ownerObejct->GetActionsList())
+	{
+		ActionSelectableInfo selectableInfo = currentAction->GetActionSelectableInfo();
+
+		if (objectProperties->DrawActionSelectable(selectableInfo, currentAction, count, 40))
+		{
+			ownerObejct->SetSelectedAction(selectableInfo.actionType);
+			selectedAction = currentAction;
+		}
+
+		count++;
+	}
+
+	ImGui::EndChild();
+
+
+	ImGui::PopStyleVar();
+	ImGui::PopStyleColor();
+
+	if (selectedAction)
+		selectedAction->DrawUISettings();
 }
 
 FlyObject* ModuleManager::GetSelectedFlyObject()

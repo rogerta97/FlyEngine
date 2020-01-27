@@ -34,6 +34,9 @@ public:
 	ActionSelectableInfo* DrawActionDictionaryUI(DictionaryPopupFilter popupFilter = FILTER_ACTIONS_NONE);
 	Texture* GetIconFromActionType(ActionType toolType); 
 
+	// Widgets 
+	void DrawActionListWithSettings(FlyObject* ownerObejct); 
+
 	// Easy Acces -------
 	FlyObject* GetSelectedFlyObject(); 
 	void SetSelectedFlyObject(FlyObject* newSelectedObject); 

@@ -551,72 +551,107 @@ void ObjectPropertiesDockPanel::DrawFlyObjectProperties()
 		ImGui::Separator();
 
 		if (selectedObject->IsInventoryItem())
-		{
-			ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
-			ImGui::Text("Item Inventory Attributes:");
-			ImGui::PopFont();
-
-			if (ImGui::BeginTabBar("InventoryTabBar", ImGuiTabBarFlags_None))
-			{
-				if (ImGui::BeginTabItem("Item Settings"))
-				{
-					static char inventoryBrowcseImageBuffer[512];
-					ImGui::InputTextWithHint("", "Search...", inventoryBrowcseImageBuffer, IM_ARRAYSIZE(inventoryBrowcseImageBuffer));
-					ImGui::SameLine();
-					if (ImGui::Button("Change Image##Properties"))
-					{
-						ImGui::Columns(2);
-
-						ImGui::Text("Position");
-						ImGui::DragFloat("X", &selectedObject->GetClickableAreaPosOne().x);
-						ImGui::DragFloat("Y", &selectedObject->GetClickableAreaPosOne().y);
-
-						ImGui::NextColumn();
-
-						ImGui::Text("Dimensions");
-						ImGui::DragFloat("Width", &selectedObject->GetClickableAreaSizeOne().x);
-						ImGui::DragFloat("Heigth", &selectedObject->GetClickableAreaSizeOne().y);
-						ImGui::EndChild();
-					}
-					ImGui::EndTabItem();
-				}
-
-				if (ImGui::BeginTabItem("Clickable Area"))
-				{
-					DrawClickableAreaTab();
-					ImGui::EndTabItem();
-				}
-
-				ImGui::EndTabBar();
-			}
-		}
-		else
-		{
-			ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
-			ImGui::Text("Object Attributes:");
-			ImGui::PopFont();
-
-			if (ImGui::BeginTabBar("ObjectTabBar", ImGuiTabBarFlags_None))
-			{
-				if (ImGui::BeginTabItem("Actions"))
-				{
-					DrawObjectActionsTab();
-					ImGui::EndTabItem();
-				}
-
-				if (ImGui::BeginTabItem("Clickable Area"))
-				{
-					DrawClickableAreaTab();
-					ImGui::EndTabItem();
-				}
-
-				ImGui::EndTabBar();
-			}
-		}
+			DrawInventoryItemTabs(selectedObject);	
+		else	
+			DrawObjectTabs();		
 	}
 	else
 	{
 		ImGui::TextColored(ImVec4(0.8f, 0.5f, 0.5f, 1.0f), "No Object Selected");
+	}
+}
+
+void ObjectPropertiesDockPanel::DrawObjectTabs()
+{
+	ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
+	ImGui::Text("Object Attributes:");
+	ImGui::PopFont();
+
+	if (ImGui::BeginTabBar("ObjectTabBar", ImGuiTabBarFlags_None))
+	{
+		if (ImGui::BeginTabItem("Actions"))
+		{
+			DrawObjectActionsTab();
+			ImGui::EndTabItem();
+		}
+
+		if (ImGui::BeginTabItem("Clickable Area"))
+		{
+			DrawClickableAreaTab();
+			ImGui::EndTabItem();
+		}
+
+		ImGui::EndTabBar();
+	}
+}
+
+void ObjectPropertiesDockPanel::DrawInventoryItemTabs(FlyObject* selectedObject)
+{
+	ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
+	ImGui::Text("Item Inventory Attributes:");
+	ImGui::PopFont();
+
+	if (ImGui::BeginTabBar("InventoryTabBar", ImGuiTabBarFlags_None))
+	{
+		if (ImGui::BeginTabItem("Item Settings"))
+		{
+			ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+			ImGui::Text("Object Image:");
+			ImGui::PopFont();
+
+			static char inventoryBrowcseImageBuffer[512];
+			ImGui::InputTextWithHint("", "Search...", inventoryBrowcseImageBuffer, IM_ARRAYSIZE(inventoryBrowcseImageBuffer));
+			ImGui::SameLine();
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+				{
+					int* selectedResourceUID = (int*)payload->Data;
+					Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+					if (resourceDropped->GetType() == RESOURCE_TEXTURE)
+					{
+						Texture* audioClipDropped = (Texture*)resourceDropped;
+						DisplayImageAction* disImgAction = (DisplayImageAction *)selectedObject->GetAction(ACTION_DISPLAY_IMAGE);
+						disImgAction->SetTexture(audioClipDropped); 
+					}
+				}
+
+				ImGui::EndDragDropTarget();
+			}
+
+			if (ImGui::Button("Change Image##Properties"))
+			{
+
+				/*ImGui::Columns(2);
+
+				ImGui::Text("Position");
+				ImGui::DragFloat("X", &selectedObject->GetClickableAreaPosOne().x);
+				ImGui::DragFloat("Y", &selectedObject->GetClickableAreaPosOne().y);
+
+				ImGui::NextColumn();
+
+				ImGui::Text("Dimensions");
+				ImGui::DragFloat("Width", &selectedObject->GetClickableAreaSizeOne().x);
+				ImGui::DragFloat("Heigth", &selectedObject->GetClickableAreaSizeOne().y);
+				ImGui::EndChild();*/
+			}
+
+			IMGUI_SPACED_SEPARATOR;
+
+			App->moduleManager->DrawActionListWithSettings(selectedObject); 
+
+			ImGui::EndTabItem();
+		}
+
+		if (ImGui::BeginTabItem("Clickable Area"))
+		{
+			DrawClickableAreaTab();
+			ImGui::EndTabItem();
+		}
+
+		ImGui::EndTabBar();
 	}
 }
 
