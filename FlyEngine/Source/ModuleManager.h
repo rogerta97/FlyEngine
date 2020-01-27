@@ -8,6 +8,13 @@
 #include <list>
 #include <string>
 
+enum DictionaryPopupFilter
+{
+	FILTER_ACTIONS_INVENTORY_CLICK, 
+	FILTER_ACTIONS_UI_BUTTON,
+	FILTER_ACTIONS_NONE, 
+};
+
 class FlyObject; 
 class Texture; 
 class FlyVariable; 
@@ -24,7 +31,7 @@ public:
 
 	// Utils -----------------------
 	int GetToolsAmount() const; 
-	ActionSelectableInfo* DrawActionDictionaryUI(bool isButtonAction = false);
+	ActionSelectableInfo* DrawActionDictionaryUI(DictionaryPopupFilter popupFilter = FILTER_ACTIONS_NONE);
 	Texture* GetIconFromActionType(ActionType toolType); 
 
 	// Easy Acces -------

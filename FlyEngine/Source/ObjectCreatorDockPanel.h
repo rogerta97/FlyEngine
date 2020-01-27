@@ -52,6 +52,7 @@ public:
 	void AddCreatingObject();
 
 private:
+
 	// Object Creator -------------
 	char searchNewActionBuffer[256]; 
 	char newObjectName[256]; 
@@ -81,6 +82,7 @@ private:
 
 	// Inventory
 	DisplayImageAction* displayImageAction_Inv;
+	bool drawOnPickActionDictionary = false; 
 	bool drawClickableAreaOver = true; 
 };
 

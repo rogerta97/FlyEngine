@@ -285,7 +285,7 @@ void Gizmos::FitSelectBoxSize()
 {
 	if (objectAttached != nullptr) 
 	{
-		if (objectAttached->GetAction(AT_DISPLAY_IMAGE) != nullptr)
+		if (objectAttached->GetAction(ACTION_DISPLAY_IMAGE) != nullptr)
 		{
 			float2 objectDimensions = objectAttached->GetObjectVisualDimensions(); 
 			selectGizmo->objectBorderBox->SetSize(objectDimensions.x, objectDimensions.y); 
@@ -297,7 +297,7 @@ void Gizmos::FitScaleBoxSize()
 {
 	if (objectAttached != nullptr)
 	{
-		if (objectAttached->GetAction(AT_DISPLAY_IMAGE) != nullptr)
+		if (objectAttached->GetAction(ACTION_DISPLAY_IMAGE) != nullptr)
 		{
 			float2 objectDimensions = objectAttached->GetObjectVisualDimensions();
 			scaleGizmo->borderBoundingBox->SetSize(objectDimensions.x, objectDimensions.y);

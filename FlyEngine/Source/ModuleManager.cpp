@@ -38,10 +38,10 @@ bool ModuleManager::Init()
 	ResourceManager::getInstance()->LoadAllGameResources(); 
 
 	// Tools Descriptions 
-	AddToolsNameDescription("Display Image", "This should be the description of the image tool", AT_DISPLAY_IMAGE);
-	AddToolsNameDescription("Change Scene", "This should be the description of the change scene tool", AT_CHANGE_ROOM);
-	AddToolsNameDescription("Modify Variable", "This should be the description of the mofdify variable tool", AT_MOD_VARIABLE);
-	AddToolsNameDescription("Emit Sound", "This should be the description of the emit sound tool", AT_EMIT_SOUND);
+	AddToolsNameDescription("Display Image", "This should be the description of the image tool", ACTION_DISPLAY_IMAGE);
+	AddToolsNameDescription("Change Scene", "This should be the description of the change scene tool", ACTION_CHANGE_ROOM);
+	AddToolsNameDescription("Modify Variable", "This should be the description of the mofdify variable tool", ACTION_MOD_VARIABLE);
+	AddToolsNameDescription("Emit Sound", "This should be the description of the emit sound tool", ACTION_EMIT_SOUND);
 
 	return true;
 }
@@ -85,7 +85,7 @@ int ModuleManager::GetToolsAmount() const
 	return toolNamesDescriptions.size();
 }
 
-ActionSelectableInfo* ModuleManager::DrawActionDictionaryUI(bool isButtonAction)
+ActionSelectableInfo* ModuleManager::DrawActionDictionaryUI(DictionaryPopupFilter popupFilter)
 {
 	ActionSelectableInfo* returnInfo = nullptr; 
 
@@ -94,9 +94,14 @@ ActionSelectableInfo* ModuleManager::DrawActionDictionaryUI(bool isButtonAction)
 
 	for (auto& currentToolDescription : toolNamesDescriptions)
 	{
-		if (isButtonAction && (currentToolDescription.actionType == ActionType::AT_DISPLAY_IMAGE))
+		// Filter Actions from popup type 
+		if (popupFilter == FILTER_ACTIONS_UI_BUTTON &&
+			currentToolDescription.actionType == ACTION_DISPLAY_IMAGE)
 			continue; 
-
+		if (popupFilter == FILTER_ACTIONS_INVENTORY_CLICK &&
+			currentToolDescription.actionType == ACTION_DISPLAY_IMAGE)
+			continue;
+	
 		ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 
 		Texture* iconTexture = GetIconFromActionType(currentToolDescription.actionType); 
@@ -137,19 +142,19 @@ Texture* ModuleManager::GetIconFromActionType(ActionType toolType)
 	switch (toolType)
 	{
 
-	case AT_DISPLAY_IMAGE:
+	case ACTION_DISPLAY_IMAGE:
 		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageIcon");
 		break;
 
-	case AT_CHANGE_ROOM:
+	case ACTION_CHANGE_ROOM:
 		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("ChangeScene");
 		break;
 
-	case AT_MOD_VARIABLE:
+	case ACTION_MOD_VARIABLE:
 		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("WrenchIcon");
 		break;
 
-	case AT_EMIT_SOUND:
+	case ACTION_EMIT_SOUND:
 		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("SpeakerIcon");
 		break;
 

@@ -11,7 +11,7 @@
 
 ChangeRoomAction::ChangeRoomAction(FlyObject* _parentObject)
 {
-	actionType = AT_CHANGE_ROOM;
+	actionType = ACTION_CHANGE_ROOM;
 	isVisual = false;
 
 	SetActionName("Change Room");

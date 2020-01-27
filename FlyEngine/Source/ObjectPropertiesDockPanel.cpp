@@ -336,26 +336,26 @@ void ObjectPropertiesDockPanel::DrawSearchBarButtonActions(UI_Button* selectedBu
 	ImGui::SetNextItemWidth(100);
 	if (ImGui::BeginPopup("AddOnClickAction"))
 	{
-		ActionSelectableInfo* selectableInfo = App->moduleManager->DrawActionDictionaryUI(true);
+		ActionSelectableInfo* selectableInfo = App->moduleManager->DrawActionDictionaryUI(FILTER_ACTIONS_UI_BUTTON);
 		if (selectableInfo != nullptr)
 		{
 			switch (selectableInfo->actionType)
 			{
-			case ActionType::AT_CHANGE_ROOM:
+			case ActionType::ACTION_CHANGE_ROOM:
 			{
 				ChangeRoomAction* changeRoomAction = selectedButton->GetHolderObject()->AddChangeRoomAction();
 				selectedButton->AddOnClickAction(changeRoomAction);
 				break;
 			}
 
-			case ActionType::AT_EMIT_SOUND:
+			case ActionType::ACTION_EMIT_SOUND:
 			{
 				EmitSoundAction* emitSoundAction = selectedButton->GetHolderObject()->AddEmitSoundAction();
 				selectedButton->AddOnClickAction(emitSoundAction);
 				break;
 			}
 
-			case ActionType::AT_MOD_VARIABLE:
+			case ActionType::ACTION_MOD_VARIABLE:
 			{
 				ModifyVariableAction* modifyVariable = selectedButton->GetHolderObject()->AddModifyVariableAction();
 				selectedButton->AddOnClickAction(modifyVariable);
@@ -806,19 +806,19 @@ void ObjectPropertiesDockPanel::DrawActionSettings()
 	{
 		switch (selectedObject->GetSelectedActionType())
 		{
-		case AT_DISPLAY_IMAGE:
+		case ACTION_DISPLAY_IMAGE:
 			DrawToolImageSettings();
 			break;
 
-		case AT_CHANGE_ROOM:
+		case ACTION_CHANGE_ROOM:
 			DrawChangeRoomSettings();
 			break;
 
-		case AT_MOD_VARIABLE:
+		case ACTION_MOD_VARIABLE:
 			DrawModifyVariableSettings();
 			break;
 
-		case AT_EMIT_SOUND:
+		case ACTION_EMIT_SOUND:
 			DrawEmitSoundSettings();
 			break;
 		}
@@ -1129,19 +1129,19 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 		{
 			switch (newActionSelected->actionType)
 			{
-			case AT_DISPLAY_IMAGE:
+			case ACTION_DISPLAY_IMAGE:
 				selectedObject->AddDisplayImageAction("None");
 				break;
 
-			case AT_CHANGE_ROOM:
+			case ACTION_CHANGE_ROOM:
 				selectedObject->AddChangeRoomAction();
 				break;
 
-			case AT_MOD_VARIABLE:
+			case ACTION_MOD_VARIABLE:
 				selectedObject->AddModifyVariableAction();
 				break;
 
-			case AT_EMIT_SOUND:
+			case ACTION_EMIT_SOUND:
 				selectedObject->AddEmitSoundAction();
 				break;
 

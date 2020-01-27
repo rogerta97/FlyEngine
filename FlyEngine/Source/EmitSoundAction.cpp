@@ -11,7 +11,7 @@
 
 EmitSoundAction::EmitSoundAction(FlyObject* _parentObject)
 {
-	actionType = AT_EMIT_SOUND;
+	actionType = ACTION_EMIT_SOUND;
 	parentObject = _parentObject;
 	isVisual = false;
 

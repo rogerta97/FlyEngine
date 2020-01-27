@@ -186,7 +186,7 @@ float2 FlyObject::GetObjectVisualDimensions()
 	float2 objectVisualSize; 
 
 	// For now we will just take into account ImageTool, if you are deleting this you advanced really. 
-	DisplayImageAction* imageTool = (DisplayImageAction*)GetAction(AT_DISPLAY_IMAGE); 
+	DisplayImageAction* imageTool = (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE); 
 	if (imageTool != nullptr)
 	{
 		objectVisualSize = float2(imageTool->GetQuad()->quadWidth, imageTool->GetQuad()->quadHeight); 
@@ -328,7 +328,7 @@ void FlyObject::CalculateCurrentGizmo()
 
 DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePath)
 {
-	if (GetAction(AT_DISPLAY_IMAGE) == nullptr)
+	if (GetAction(ACTION_DISPLAY_IMAGE) == nullptr)
 	{
 		DisplayImageAction* newAtrImage = new DisplayImageAction(this);
 		newAtrImage->CreateImage(imageTexturePath);
@@ -342,12 +342,12 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 		return newAtrImage;
 	}
 
-	return (DisplayImageAction*)GetAction(AT_DISPLAY_IMAGE); 	
+	return (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE); 	
 }
 
 ChangeRoomAction* FlyObject::AddChangeRoomAction()
 {
-	if (GetAction(AT_CHANGE_ROOM) == nullptr)
+	if (GetAction(ACTION_CHANGE_ROOM) == nullptr)
 	{
 		ChangeRoomAction* changeSceneTool = new ChangeRoomAction(this);
 
@@ -359,12 +359,12 @@ ChangeRoomAction* FlyObject::AddChangeRoomAction()
 		return changeSceneTool;
 	}
 
-	return (ChangeRoomAction*)GetAction(AT_CHANGE_ROOM);
+	return (ChangeRoomAction*)GetAction(ACTION_CHANGE_ROOM);
 }
 
 ModifyVariableAction* FlyObject::AddModifyVariableAction()
 {
-	if (GetAction(AT_MOD_VARIABLE) == nullptr)
+	if (GetAction(ACTION_MOD_VARIABLE) == nullptr)
 	{
 		ModifyVariableAction* mofidyVarAction = new ModifyVariableAction(this);
 		//ModifyVariableAction* mofidyVarAction = nullptr; 
@@ -372,19 +372,19 @@ ModifyVariableAction* FlyObject::AddModifyVariableAction()
 		return mofidyVarAction;
 	}
 
-	return (ModifyVariableAction*)GetAction(AT_MOD_VARIABLE);
+	return (ModifyVariableAction*)GetAction(ACTION_MOD_VARIABLE);
 }
 
 EmitSoundAction* FlyObject::AddEmitSoundAction()
 {
-	if (GetAction(AT_EMIT_SOUND) == nullptr)
+	if (GetAction(ACTION_EMIT_SOUND) == nullptr)
 	{
 		EmitSoundAction* emitSoundAction = new EmitSoundAction(this);
 		actionsList.push_back(emitSoundAction);
 		return emitSoundAction;
 	}
 
-	return (EmitSoundAction*)GetAction(AT_EMIT_SOUND);
+	return (EmitSoundAction*)GetAction(ACTION_EMIT_SOUND);
 }
 
 void FlyObject::SetSelectedAction(ActionType toolTypeSelected)

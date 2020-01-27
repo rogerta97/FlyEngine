@@ -149,7 +149,9 @@ bool ObjectCreatorDockPanel::Draw()
 
 void ObjectCreatorDockPanel::DrawInventorySettings()
 {
-	// Preview of the object -----------------
+	// ----------------------------------------------------------------------------------------
+	// Draw the preview of the object in order to adjust the clickable area 
+	// ----------------------------------------------------------------------------------------
 	SPACING;
 	PrintClickableAreaObjectVisuals(drawClickableAreaOver);
 	SPACING; 
@@ -183,7 +185,9 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 		}
 	}
 
-	// Clickable Zone Settings ---------------
+	// ----------------------------------------------------------------------------------------
+	// Draw Clickable Zone Settings  
+	// ----------------------------------------------------------------------------------------
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Clickable Zone:");
 	ImGui::PopFont();
@@ -219,21 +223,66 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 		ImGui::PopFont();
 	}
 
-	// On Picked Actions ------------------
+	// ----------------------------------------------------------------------------------------
+	// Select The Action that the player wants to trigger when the object is picked up 
+	// ----------------------------------------------------------------------------------------
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Perform Action When Picked:");
 	ImGui::PopFont();
 
-	ImGui::Separator();
-	ImGui::Spacing();
+	if (ImGui::Button("Add On Pick Action"))
+	{
+		ImGui::OpenPopup("selectOnClickAction"); 
+	}
+	
+	if (ImGui::BeginPopup("selectOnClickAction"))
+	{
+		ActionSelectableInfo* selectableInfo = App->moduleManager->DrawActionDictionaryUI(FILTER_ACTIONS_INVENTORY_CLICK);
+		Action* addedAction = nullptr; 
 
-	static int onPickAction = 0; 
-	ImGui::Combo("On Pick Action", &onPickAction, "None\0Do Sound\0Change Variable\0"); 
+		if (selectableInfo != nullptr)
+		{
+			switch (selectableInfo->actionType)
+			{
+			case ACTION_DISPLAY_IMAGE:
+				addedAction = creatingObject->AddDisplayImageAction("None");
+				break;
 
+			case ACTION_CHANGE_ROOM:
+				addedAction = creatingObject->AddChangeRoomAction();
+				break;
+
+			case ACTION_MOD_VARIABLE:
+				addedAction = creatingObject->AddModifyVariableAction();
+				break;
+
+			case ACTION_EMIT_SOUND:
+				addedAction = creatingObject->AddEmitSoundAction();
+				break;
+			}
+		}
+
+		if (addedAction != nullptr)
+			addedAction->SetOccObjectClicked(true); 
+		
+		ImGui::EndPopup(); 
+	}
+
+	// ----------------------------------------------------------------------------------------
+	// Draw the list of the action that will trigger when the item is clicked or picked up
+	// ----------------------------------------------------------------------------------------
 	PUSH_CHILD_BG_COLOR; 
 	ImGui::BeginChild("OnPickActions", ImVec2(ImGui::GetContentRegionMax().x, 150)); 
 
-	// Add On Pick Action
+	int count = 0; 
+	for (auto& currentAction : creatingObject->GetActionsList())
+	{
+		bool hello = false; 
+		DrawSelectable(currentAction->GetActionSelectableInfo(), hello, count, 42, currentAction);
+		count++; 
+	}
+
+
 
 	ImGui::EndChild(); 
 	ImGui::PopStyleColor(); 
@@ -322,19 +371,19 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 
 		switch (selectedAction->GetActionType())
 		{
-		case AT_DISPLAY_IMAGE:
+		case ACTION_DISPLAY_IMAGE:
 			DrawDisplayImageSettings();
 			break;
 
-		case AT_CHANGE_ROOM:
+		case ACTION_CHANGE_ROOM:
 			DrawChangeRoomActionSettings();
 			break;
 
-		case AT_MOD_VARIABLE:
+		case ACTION_MOD_VARIABLE:
 			DrawModifyVariableActionSettings();
 			break;
 
-		case AT_EMIT_SOUND:
+		case ACTION_EMIT_SOUND:
 			DrawEmitSoundActionSettings();
 			break;
 		}
@@ -617,19 +666,19 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 		{
 			switch (newActionSelected->actionType)
 			{
-			case AT_DISPLAY_IMAGE:
+			case ACTION_DISPLAY_IMAGE:
 				selectedAction = creatingObject->AddDisplayImageAction(std::string(MyFileSystem::getInstance()->GetIconsDirectory() + "EmptyObject.png").c_str());
 				break;
 
-			case AT_CHANGE_ROOM:
+			case ACTION_CHANGE_ROOM:
 				creatingObject->AddChangeRoomAction();
 				break;
 
-			case AT_MOD_VARIABLE:
+			case ACTION_MOD_VARIABLE:
 				creatingObject->AddModifyVariableAction();
 				break;
 
-			case AT_EMIT_SOUND:
+			case ACTION_EMIT_SOUND:
 				creatingObject->AddEmitSoundAction();
 				break;
 
@@ -784,7 +833,7 @@ void ObjectCreatorDockPanel::PrintClickableAreaObjectVisuals(bool drawClickableA
 void ObjectCreatorDockPanel::DrawPrevTextureCA(bool drawClickableArea)
 {
 	// Prev Texture
-	DisplayImageAction* displayImageAction = (DisplayImageAction*)creatingObject->GetAction(AT_DISPLAY_IMAGE);
+	DisplayImageAction* displayImageAction = (DisplayImageAction*)creatingObject->GetAction(ACTION_DISPLAY_IMAGE);
 	if (displayImageAction != nullptr)
 	{
 		previewClickableAreaTexture = displayImageAction->GetTexture();

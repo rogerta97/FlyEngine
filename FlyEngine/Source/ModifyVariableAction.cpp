@@ -15,7 +15,7 @@
 
 ModifyVariableAction::ModifyVariableAction(FlyObject* _parentObject)
 {
-	actionType = AT_MOD_VARIABLE;
+	actionType = ACTION_MOD_VARIABLE;
 	isVisual = false;
 
 	SetActionName("Modify Variable");

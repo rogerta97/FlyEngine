@@ -5,6 +5,7 @@
 #include "RandomNumberGenerator.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "ObjectCreatorDockPanel.h"
 #include "FlyObject.h"
 #include "GameViewportDockPanel.h"
 #include "GameInventory.h"
@@ -51,7 +52,7 @@ void Room::Update()
 			return;
 
 		// Check for new Selected Objects -------
-		if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && App->moduleImGui->gameViewportDockPanel->IsMouseInViewport())
+		if (CheckRaycastConditions())
 		{
 			switch (ViewportManager::getInstance()->editRoomMode)
 			{
@@ -168,6 +169,13 @@ bool Room::IsObjectInRoom(FlyObject* newObject_Inv)
 		if (newObject_Inv->GetUID() == currentObject->GetUID())
 			return true; 
 	}
+}
+
+bool Room::CheckRaycastConditions()
+{
+	return App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && 
+		App->moduleImGui->gameViewportDockPanel->IsMouseInViewport() &&
+		!App->moduleImGui->objectCreatorDockPanel->IsVisible();
 }
 
 void Room::SaveRoomData(JSON_Object* jsonObject)

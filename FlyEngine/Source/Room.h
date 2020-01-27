@@ -46,6 +46,7 @@ public:
 	int GetObjectsInRoomAmount(); 
 	void AddItemToInventory(FlyObject* newObject_Inv); 
 	bool IsObjectInRoom(FlyObject* newObject_Inv);
+	bool CheckRaycastConditions(); 
 
 	// Save & Load ---------------
 	void SaveRoomData(JSON_Object* jsonObject);
