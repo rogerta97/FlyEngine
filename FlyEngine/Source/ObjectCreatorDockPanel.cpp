@@ -226,9 +226,13 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 	// ----------------------------------------------------------------------------------------
 	// Select The Action that the player wants to trigger when the object is picked up 
 	// ----------------------------------------------------------------------------------------
+	ImGui::Separator();
+
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Perform Action When Picked:");
 	ImGui::PopFont();
+
+	ImGui::SameLine(); 
 
 	if (ImGui::Button("Add On Pick Action"))
 	{
@@ -244,10 +248,6 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 		{
 			switch (selectableInfo->actionType)
 			{
-			case ACTION_DISPLAY_IMAGE:
-				addedAction = creatingObject->AddDisplayImageAction("None");
-				break;
-
 			case ACTION_CHANGE_ROOM:
 				addedAction = creatingObject->AddChangeRoomAction();
 				break;
@@ -275,17 +275,29 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 	ImGui::BeginChild("OnPickActions", ImVec2(ImGui::GetContentRegionMax().x, 150)); 
 
 	int count = 0; 
+	bool setScroll = false; 
 	for (auto& currentAction : creatingObject->GetActionsList())
 	{
-		bool hello = false; 
-		DrawSelectable(currentAction->GetActionSelectableInfo(), hello, count, 42, currentAction);
+		// In Inventory Items, the image is fixed and we dont want to treat it as an action 
+		if (currentAction->GetActionName() == "Display Image")
+			continue; 
+
+		if (DrawSelectable(currentAction->GetActionSelectableInfo(), currentAction->IsSelected(), count, 42, currentAction))		
+			setScroll = true; 
+		
 		count++; 
 	}
 
-
-
 	ImGui::EndChild(); 
 	ImGui::PopStyleColor(); 
+
+	ImGui::Separator(); 
+
+	if (selectedAction != nullptr)
+		selectedAction->DrawUISettings();
+
+	if(setScroll)
+		ImGui::SetScrollHere(0.999f);
 }
 
 
@@ -339,8 +351,9 @@ void ObjectCreatorDockPanel::DrawObjectActionsList()
 	ImGui::PopStyleColor();
 }
 
-void ObjectCreatorDockPanel::DrawSelectable(ActionSelectableInfo selectableInfo, bool& isSelected, int posInList, int selectableHeight = 42, Action * currentAction = nullptr)
+bool ObjectCreatorDockPanel::DrawSelectable(ActionSelectableInfo selectableInfo, bool& isSelected, int posInList, int selectableHeight = 42, Action * currentAction = nullptr)
 {
+	bool ret = false; 
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 
 	Texture* imageIcon = App->moduleManager->GetIconFromActionType(selectableInfo.actionType);
@@ -351,6 +364,7 @@ void ObjectCreatorDockPanel::DrawSelectable(ActionSelectableInfo selectableInfo,
 	if (ImGui::Selectable(selectableInfo.actionName.c_str(), &isSelected, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, selectableHeight - 3))) {
 		creatingObject->SetSelectedAction(selectableInfo.actionType);
 		selectedAction = currentAction;
+		ret = true; 
 	}
 	ImGui::PopFont();
 
@@ -361,6 +375,8 @@ void ObjectCreatorDockPanel::DrawSelectable(ActionSelectableInfo selectableInfo,
 	ImGui::PushFont(App->moduleImGui->rudaRegularTiny);
 	ImGui::TextWrapped(selectableInfo.actionDescription.c_str());
 	ImGui::PopFont();
+
+	return ret; 
 }
 
 void ObjectCreatorDockPanel::DrawSelectedActionSettings()

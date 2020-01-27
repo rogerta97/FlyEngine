@@ -37,7 +37,7 @@ public:
 	// Object Creator -------------
 	void DrawObjectCreator(); 
 	void DrawObjectActionsList(); 
-	void DrawSelectable(ActionSelectableInfo selectableInfo, bool& isSelected, int posInList, int selectableHeight, Action* currentTool);
+	bool DrawSelectable(ActionSelectableInfo selectableInfo, bool& isSelected, int posInList, int selectableHeight, Action* currentTool);
 	void DrawAddAndDeleteActionButtons(); 
 	
 	// Draw Prev Object Settings --
