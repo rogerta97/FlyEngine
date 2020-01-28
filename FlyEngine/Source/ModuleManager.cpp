@@ -185,9 +185,32 @@ void ModuleManager::DrawActionListWithSettings(FlyObject* ownerObejct)
 	string buttonName = "Add Action##Add" + to_string(ownerObejct->GetUID());
 	if (ImGui::Button(buttonName.c_str()))
 	{
-
+		ImGui::OpenPopup("SelectAction");
 	}
 
+	if (ImGui::BeginPopup("SelectAction"))
+	{
+		ActionSelectableInfo* selectableInfo = DrawActionDictionaryUI(FILTER_ACTIONS_INVENTORY_CLICK); 
+		
+		if (selectableInfo != nullptr)
+		{
+			switch (selectableInfo->actionType)
+			{
+			case ACTION_MOD_VARIABLE:
+				ownerObejct->AddModifyVariableAction();
+				break;
+
+			case ACTION_EMIT_SOUND:
+				ownerObejct->AddEmitSoundAction();
+				break;
+
+			case ACTION_CHANGE_ROOM:
+				ownerObejct->AddChangeRoomAction();
+				break;
+			}
+		}
+		ImGui::EndPopup();
+	}
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5, 5));
 
@@ -195,7 +218,7 @@ void ModuleManager::DrawActionListWithSettings(FlyObject* ownerObejct)
 
 	int count = 0;
 	ObjectPropertiesDockPanel* objectProperties = (ObjectPropertiesDockPanel *)App->moduleImGui->GetDockPanel(DOCK_OBJECT_PROPERTIES);
-	Action* selectedAction = nullptr; 
+	static Action* selectedAction = nullptr; 
 	for (auto& currentAction : ownerObejct->GetActionsList())
 	{
 		if (ownerObejct->IsInventoryItem() && currentAction->GetActionType() == ACTION_DISPLAY_IMAGE)
@@ -214,12 +237,11 @@ void ModuleManager::DrawActionListWithSettings(FlyObject* ownerObejct)
 
 	ImGui::EndChild();
 
-
 	ImGui::PopStyleVar();
 	ImGui::PopStyleColor();
 
 	if (selectedAction)
-		selectedAction->DrawUISettings();
+		selectedAction->DrawUISettingsInButton();
 }
 
 void ModuleManager::DrawImageFitInCenter(Texture* textureToShow)

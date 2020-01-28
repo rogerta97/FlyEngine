@@ -74,6 +74,76 @@ void ModifyVariableAction::SaveAction(JSON_Object* jsonObject, string serializeO
 	}
 }
 
+void ModifyVariableAction::DrawUISettings()
+{
+	//if (modifyVariableAction != nullptr)
+	//{
+	//	if (ImGui::CollapsingHeader("Modify Variable Attributes", ImGuiTreeNodeFlags_DefaultOpen))
+	//	{
+	//		// Object Occurrence ---------
+	//		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	//		ImGui::Text("Action Happens On:");
+	//		ImGui::PopFont();
+
+	//		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+	//		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+
+	//		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
+
+	//		ImGui::SetCursorPos(ImVec2(5, 8));
+	//		ImGui::Checkbox("Object Clicked", &IsOccObjectClicked());
+	//		ImGui::SetCursorPos(ImVec2(5, 38));
+	//		ImGui::Checkbox("Blackboard Value Condition", IsOccBlackboardValue());
+
+	//		ImGui::SameLine();
+	//		static std::string showValueConditionButtonText = "Show Conditions";
+	//		if (ImGui::Button(showValueConditionButtonText.c_str()))
+	//		{
+	//			if (showVariableConditions)
+	//			{
+	//				showVariableConditions = false;
+	//				showValueConditionButtonText = "Show Conditions";
+	//			}
+	//			else
+	//			{
+	//				showVariableConditions = true;
+	//				showValueConditionButtonText = "Hide Conditions";
+	//			}
+	//		}
+
+	//		ImGui::EndChild();
+
+	//		if (showVariableConditions)
+	//			modifyVariableAction->DrawValueConditionsList();
+
+	//		POP_FONT;
+	//		ImGui::PopStyleColor();
+
+	//		IMGUI_SPACED_SEPARATOR;
+
+	//		// Object Settings ----------
+	//		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	//		ImGui::Text("Variables To Modify:");
+	//		ImGui::PopFont();
+
+	//		modifyVariableAction->DrawEffectVariablesUI();
+
+	//		Texture* plusIcon = (Texture*)ResourceManager::getInstance()->GetResource("PlusIcon");
+	//		if (ImGui::ImageButton((ImTextureID)plusIcon->GetTextureID(), ImVec2(30, 30)))
+	//		{
+	//			modifyVariableAction->AddEmptyEffect();
+	//		}
+
+	//		ImGui::SameLine();
+	//		Texture* minusIcon = (Texture*)ResourceManager::getInstance()->GetResource("MinusIcon");
+	//		if (ImGui::ImageButton((ImTextureID)minusIcon->GetTextureID(), ImVec2(30, 30)))
+	//		{
+
+	//		}
+	//	}
+	//}
+}
+
 void ModifyVariableAction::DrawUISettingsInButton()
 {	
 	// Object Settings ----------
