@@ -83,7 +83,7 @@ private:
 	// Inventory
 	DisplayImageAction* displayImageAction_Inv;
 	bool drawOnPickActionDictionary = false; 
-	bool drawClickableAreaOver = true; 
+	bool drawClickableAreaOver = false; 
 };
 
 #endif 

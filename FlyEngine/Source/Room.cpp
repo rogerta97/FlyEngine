@@ -354,6 +354,7 @@ FlyObject* Room::CreateFlyObject(std::string objectName, std::string description
 FlyObject* Room::CreateInventoryItem(std::string objectName, std::string description)
 {
 	FlyObject* newObject = new FlyObject(objectName, description, INVENTORY_ITEM);
+	newObject->AddDisplayImageAction("None"); 
 	objectsInRoom.push_back(newObject);
 	return newObject;
 }

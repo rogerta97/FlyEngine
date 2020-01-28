@@ -19,6 +19,7 @@ class FlyObject;
 class Texture; 
 class FlyVariable; 
 class UI_Element; 
+class Texture; 
 class ModuleManager : public Module
 {
 public:
@@ -36,6 +37,7 @@ public:
 
 	// Widgets 
 	void DrawActionListWithSettings(FlyObject* ownerObejct); 
+	void DrawImageFitInCenter(Texture* textureToShow);
 
 	// Easy Acces -------
 	FlyObject* GetSelectedFlyObject(); 

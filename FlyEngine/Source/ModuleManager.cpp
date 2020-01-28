@@ -168,9 +168,18 @@ Texture* ModuleManager::GetIconFromActionType(ActionType toolType)
 
 void ModuleManager::DrawActionListWithSettings(FlyObject* ownerObejct)
 {
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	ImGui::Text("Object Actions: ");
-	ImGui::PopFont();
+	if (ownerObejct->IsInventoryItem())
+	{
+		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+		ImGui::Text("Actions When Picked Up: ");
+		ImGui::PopFont();
+	}
+	else
+	{
+		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+		ImGui::Text("Object Actions: ");
+		ImGui::PopFont();
+	}
 
 	ImGui::SameLine(); 
 	string buttonName = "Add Action##Add" + to_string(ownerObejct->GetUID());
@@ -189,6 +198,9 @@ void ModuleManager::DrawActionListWithSettings(FlyObject* ownerObejct)
 	Action* selectedAction = nullptr; 
 	for (auto& currentAction : ownerObejct->GetActionsList())
 	{
+		if (ownerObejct->IsInventoryItem() && currentAction->GetActionType() == ACTION_DISPLAY_IMAGE)
+			continue; 
+
 		ActionSelectableInfo selectableInfo = currentAction->GetActionSelectableInfo();
 
 		if (objectProperties->DrawActionSelectable(selectableInfo, currentAction, count, 40))
@@ -208,6 +220,41 @@ void ModuleManager::DrawActionListWithSettings(FlyObject* ownerObejct)
 
 	if (selectedAction)
 		selectedAction->DrawUISettings();
+}
+
+void ModuleManager::DrawImageFitInCenter(Texture* textureToShow)
+{
+	ImVec2 imageMaxSize = ImVec2(ImGui::GetContentRegionAvailWidth(), 135);
+	ImVec2 uiImageDimensions = ImVec2(150, 150);
+	Texture* mainButtonTexture = textureToShow;
+	ImTextureID mainTextureID = 0;
+
+	if (mainButtonTexture != nullptr)
+	{
+		float aspectRatio = mainButtonTexture->GetAspectRatio();
+
+		if (mainButtonTexture->IsVertical())
+		{
+			uiImageDimensions.y = imageMaxSize.y;
+			uiImageDimensions.x = uiImageDimensions.x * aspectRatio;
+		}
+		else
+		{
+			uiImageDimensions.y = imageMaxSize.y;
+			uiImageDimensions.x = uiImageDimensions.y * aspectRatio;
+
+			if (uiImageDimensions.x > imageMaxSize.x)
+			{
+				float diff = uiImageDimensions.x - imageMaxSize.x;
+				uiImageDimensions.x -= diff;
+				uiImageDimensions.y = uiImageDimensions.x * aspectRatio;
+			}
+		}
+		mainTextureID = (ImTextureID)mainButtonTexture->GetTextureID();
+	}
+
+	ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (uiImageDimensions.x / 2), imageMaxSize.y / 2 - (uiImageDimensions.y / 2) + 10));
+	ImGui::Image(mainTextureID, uiImageDimensions);
 }
 
 FlyObject* ModuleManager::GetSelectedFlyObject()

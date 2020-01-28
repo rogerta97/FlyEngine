@@ -596,10 +596,18 @@ void ObjectPropertiesDockPanel::DrawInventoryItemTabs(FlyObject* selectedObject)
 		if (ImGui::BeginTabItem("Item Settings"))
 		{
 			ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-			ImGui::Text("Object Image:");
+			ImGui::Text("Item Image:");
 			ImGui::PopFont();
 
+			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+			ImGui::BeginChild("ButtonImagePreview", ImVec2(ImGui::GetContentRegionAvailWidth(), 185));
+
+			DisplayImageAction* displayImageAction = selectedObject->GetDisplayImageAction(); 
+			App->moduleManager->DrawImageFitInCenter(displayImageAction->GetTexture());
+		
 			static char inventoryBrowcseImageBuffer[512];
+			INC_CURSOR_X_10;
+			ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() - 120); 
 			ImGui::InputTextWithHint("", "Search...", inventoryBrowcseImageBuffer, IM_ARRAYSIZE(inventoryBrowcseImageBuffer));
 			ImGui::SameLine();
 
@@ -615,7 +623,10 @@ void ObjectPropertiesDockPanel::DrawInventoryItemTabs(FlyObject* selectedObject)
 						Texture* audioClipDropped = (Texture*)resourceDropped;
 						DisplayImageAction* disImgAction = (DisplayImageAction *)selectedObject->GetAction(ACTION_DISPLAY_IMAGE);
 						disImgAction->SetTexture(audioClipDropped); 
+						selectedObject->FitObjectUtils();
 					}
+
+					strcpy(inventoryBrowcseImageBuffer, resourceDropped->GetName().c_str()); 
 				}
 
 				ImGui::EndDragDropTarget();
@@ -637,6 +648,9 @@ void ObjectPropertiesDockPanel::DrawInventoryItemTabs(FlyObject* selectedObject)
 				ImGui::DragFloat("Heigth", &selectedObject->GetClickableAreaSizeOne().y);
 				ImGui::EndChild();*/
 			}
+
+			ImGui::EndChild();
+			ImGui::PopStyleColor(); 
 
 			IMGUI_SPACED_SEPARATOR;
 

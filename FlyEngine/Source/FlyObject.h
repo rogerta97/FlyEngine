@@ -90,6 +90,8 @@ public:
 	bool& IsInteractable();
 	void SetInteractable(bool _isInteractable);
 
+	DisplayImageAction* GetDisplayImageAction(); 
+
 private: 
 	// Draw UI ---------
 	void DrawDisplayImageSettings(); 

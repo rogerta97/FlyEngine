@@ -11,6 +11,7 @@
 #include "EmitSoundAction.h"
 #include "Room.h"
 #include "ModifyVariableAction.h"
+#include "DisplayImageAction.h"
 #include "Texture.h"
 #include "ImageImporter.h"
 #include "DisplayImageAction.h"
@@ -160,6 +161,29 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 	static char inventoryBrowcseImageBuffer[512];
 	ImGui::InputTextWithHint("", "Search...", inventoryBrowcseImageBuffer, IM_ARRAYSIZE(inventoryBrowcseImageBuffer));
 	ImGui::SameLine();
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+		{
+			int* selectedResourceUID = (int*)payload->Data;
+			Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+			if (resourceDropped->GetType() == RESOURCE_TEXTURE)
+			{
+				Texture* textureDropped = (Texture*)resourceDropped;
+	
+				if (displayImageAction_Inv == nullptr)				
+					displayImageAction_Inv = creatingObject->AddDisplayImageAction(textureDropped->GetPath());				
+				else				
+					displayImageAction_Inv->SetTexture(textureDropped);
+				
+				strcpy(inventoryBrowcseImageBuffer, resourceDropped->GetName().c_str());
+			}
+		}
+
+		ImGui::EndDragDropTarget();
+	}
 
 	if (ImGui::Button("Change Image##Creator"))
 	{

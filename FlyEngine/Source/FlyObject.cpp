@@ -182,6 +182,11 @@ void FlyObject::SetInteractable(bool _isInteractable)
 	isInteractable = _isInteractable; 
 }
 
+DisplayImageAction* FlyObject::GetDisplayImageAction()
+{
+	return (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE);
+}
+
 float2 FlyObject::GetObjectVisualDimensions()
 {
 	float2 objectVisualSize; 
