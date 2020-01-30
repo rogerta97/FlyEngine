@@ -6,6 +6,7 @@
 #include "TinyFileDialog.h"
 #include "Quad.h"
 #include "ImageImporter.h"
+#include "ModuleManager.h"
 #include "GameViewportDockPanel.h"
 #include "ChangeRoomAction.h"
 #include "ModuleInput.h"
@@ -77,7 +78,8 @@ bool FlyObject::Update()
 
 			case INVENTORY_ITEM:
 				DoOnClickActions(); 
-				App->moduleRoomManager->GetSelectedRoom()->AddItemToInventory(this); 
+				App->moduleRoomManager->GetSelectedRoom()->AddItemToInventory(this);
+				App->moduleManager->AddDeleteFromListObject(this); 
 				ret = true; 
 				break;
 			}

@@ -20,6 +20,7 @@ class Texture;
 class FlyVariable; 
 class UI_Element; 
 class Texture; 
+class FlyObject; 
 class ModuleManager : public Module
 {
 public:
@@ -35,11 +36,15 @@ public:
 	ActionSelectableInfo* DrawActionDictionaryUI(DictionaryPopupFilter popupFilter = FILTER_ACTIONS_NONE);
 	Texture* GetIconFromActionType(ActionType toolType); 
 
-	// Widgets 
+	// Delete Obejcts --------------
+	void AddDeleteFromListObject(FlyObject* newObjectToDelete);
+	void DeleteObjectsFromListNow();
+
+	// Widgets ---------------------
 	void DrawActionListWithSettings(FlyObject* ownerObejct); 
 	void DrawImageFitInCenter(Texture* textureToShow);
 
-	// Easy Acces -------
+	// Easy Acces ------------------
 	FlyObject* GetSelectedFlyObject(); 
 	void SetSelectedFlyObject(FlyObject* newSelectedObject); 
 
@@ -56,6 +61,7 @@ public:
 
 private: 
 	std::list<ActionSelectableInfo> toolNamesDescriptions; 
+	std::list<FlyObject*> deleteObjectsFromListTick; 
 };
 
 #endif

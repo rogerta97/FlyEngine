@@ -99,6 +99,11 @@ void Room::Update()
 	}
 }
 
+void Room::PostUpdate()
+{
+	App->moduleManager->DeleteObjectsFromListNow();
+}
+
 void Room::CleanUp()
 {
 
@@ -159,7 +164,8 @@ void Room::AddItemToInventory(FlyObject* newObject_Inv)
 #pragma endregion
 
 	// Delete the object from the room (now it will lay in the inventory) 
-	GameInventory::getInstance()->AddObjectToInventoryList(newObject_Inv); 
+	GameInventory::getInstance()->AddObjectToInventoryList(newObject_Inv);
+	this->DeleteFlyObjectFromList(newObject_Inv);
 }
 
 bool Room::IsObjectInRoom(FlyObject* newObject_Inv)
@@ -328,13 +334,7 @@ void Room::UpdateRoomObjects()
 {
 	for (auto currentObject = objectsInRoom.begin(); currentObject != objectsInRoom.end(); currentObject++)
 	{
-		if ((*currentObject)->Update())
-		{
-			currentObject = objectsInRoom.erase(currentObject); 
-
-			if (objectsInRoom.empty())
-				return; 
-		}
+		(*currentObject)->Update();
 	}
 }
 
@@ -396,9 +396,7 @@ void Room::DeleteFlyObjectFromList(FlyObject* objectToDelete)
 		if ((*it)->GetName() == objectToDelete->GetName())
 		{
 			it = objectsInRoom.erase(it);
-
-			if (objectsInRoom.empty())
-				break;
+			return; 
 		}
 	}
 }

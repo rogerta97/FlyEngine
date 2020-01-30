@@ -166,6 +166,24 @@ Texture* ModuleManager::GetIconFromActionType(ActionType toolType)
 	return toolIconTexture;
 }
 
+void ModuleManager::AddDeleteFromListObject(FlyObject* newObjectToDelete)
+{
+	if (newObjectToDelete != nullptr)
+		deleteObjectsFromListTick.push_back(newObjectToDelete); 	
+}
+
+void ModuleManager::DeleteObjectsFromListNow()
+{
+	if (deleteObjectsFromListTick.empty())
+		return; 
+
+	Room* currentRoom = App->moduleRoomManager->GetSelectedRoom();
+	for (auto it = deleteObjectsFromListTick.begin(); it != deleteObjectsFromListTick.end(); it++)
+	{
+		currentRoom->DeleteFlyObjectFromList((*it)); 
+	}
+}
+
 void ModuleManager::DrawActionListWithSettings(FlyObject* ownerObejct)
 {
 	if (ownerObejct->IsInventoryItem())

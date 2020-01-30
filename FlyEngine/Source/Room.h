@@ -37,6 +37,7 @@ public:
 	~Room(); 
 
 	void Update(); 
+	void PostUpdate(); 
 
 	void CleanUp();
 	void CleanRoomObjects(); 
