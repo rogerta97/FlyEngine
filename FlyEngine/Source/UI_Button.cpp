@@ -178,6 +178,10 @@ void UI_Button::Save(JSON_Object* jsonObject, string serializeStr)
 	{
 	case COLOR_TINT:
 
+		// Idle Texture Tint -------
+		if(mainTexture != nullptr)
+			json_object_dotset_string(jsonObject, string(serializeStr + string("MouseInteractionData.MainTextureName")).c_str(), mainTexture->GetName().c_str());
+
 		// Mouse Over Tint -------
 		json_object_dotset_number(jsonObject, string(serializeStr + string("MouseInteractionData.MouseOverTint.r")).c_str(), mouseOverTint.x);
 		json_object_dotset_number(jsonObject, string(serializeStr + string("MouseInteractionData.MouseOverTint.g")).c_str(), mouseOverTint.y);
@@ -194,13 +198,19 @@ void UI_Button::Save(JSON_Object* jsonObject, string serializeStr)
 
 	case TEXTURE_SWAP:
 
-		// Mouse Over Tint -------
+		// Mouse Idle Texture -------
+		if (mouseOverTexture != nullptr)
+			json_object_dotset_string(jsonObject, string(serializeStr + string("MouseInteractionData.MouseIdleTextureName")).c_str(), mainTexture->GetName().c_str());
+		else
+			json_object_dotset_string(jsonObject, string(serializeStr + string("MouseInteractionData.MouseIdleTextureName")).c_str(), "None");
+
+		// Mouse Over Texture -------
 		if(mouseOverTexture != nullptr)
 			json_object_dotset_string(jsonObject, string(serializeStr + string("MouseInteractionData.MouseOverTextureName")).c_str(), mouseOverTexture->GetName().c_str());
 		else
 			json_object_dotset_string(jsonObject, string(serializeStr + string("MouseInteractionData.MouseOverTextureName")).c_str(), "None");
 
-		// Mouse Clicked Tint -------
+		// Mouse Clicked Texture -------
 		if(mouseClickedTexture != nullptr)
 			json_object_dotset_string(jsonObject, string(serializeStr + string("MouseInteractionData.MouseClickedTextureName")).c_str(), mouseClickedTexture->GetName().c_str());
 		else
@@ -248,6 +258,12 @@ void UI_Button::Load(JSON_Object* jsonObject, string serializeStr)
 	switch (mouseInteraction)
 	{
 	case COLOR_TINT:
+	{
+		string mainTextureName = json_object_dotget_string(jsonObject, string(serializeStr + string("MouseInteractionData.MainTextureName")).c_str());
+		MyFileSystem::getInstance()->DeleteFileExtension(mainTextureName);
+
+		if (mainTextureName != "None")
+			mainTexture = (Texture*)ResourceManager::getInstance()->GetResource(mainTextureName.c_str());
 
 		// Mouse Over Tint -------
 		mouseOverTint.x = json_object_dotget_number(jsonObject, string(serializeStr + string("MouseInteractionData.MouseOverTint.r")).c_str());
@@ -260,18 +276,26 @@ void UI_Button::Load(JSON_Object* jsonObject, string serializeStr)
 		mouseClickedTint.y = json_object_dotget_number(jsonObject, string(serializeStr + string("MouseInteractionData.MouseClickedTint.g")).c_str());
 		mouseClickedTint.z = json_object_dotget_number(jsonObject, string(serializeStr + string("MouseInteractionData.MouseClickedTint.b")).c_str());
 		mouseClickedTint.w = json_object_dotget_number(jsonObject, string(serializeStr + string("MouseInteractionData.MouseClickedTint.a")).c_str());
-
+	}
 		break;
 
 	case TEXTURE_SWAP:
 	{
-		// Mouse Over Tint -------
+		// Mouse Idle Texture -------
+		string mouseIdleName = json_object_dotget_string(jsonObject, string(serializeStr + string("MouseInteractionData.MouseIdleTextureName")).c_str());
+		MyFileSystem::getInstance()->DeleteFileExtension(mouseIdleName);
+
+		if (mouseIdleName != "None")
+			mainTexture = (Texture*)ResourceManager::getInstance()->GetResource(mouseIdleName.c_str());
+
+		// Mouse Over Texture -------
 		string mouseOverName = json_object_dotget_string(jsonObject, string(serializeStr + string("MouseInteractionData.MouseOverTextureName")).c_str());
 		MyFileSystem::getInstance()->DeleteFileExtension(mouseOverName);
 
 		if(mouseOverName != "None")
 			mouseOverTexture = (Texture*)ResourceManager::getInstance()->GetResource(mouseOverName.c_str());
 
+		// Mouse Clicked Texture -------
 		string mouseClickedName = json_object_dotget_string(jsonObject, string(serializeStr + string("MouseInteractionData.MouseClickedTextureName")).c_str());
 		MyFileSystem::getInstance()->DeleteFileExtension(mouseClickedName);
 
@@ -280,6 +304,9 @@ void UI_Button::Load(JSON_Object* jsonObject, string serializeStr)
 	}
 		break;
 	}
+
+	// Set Main Texture to display image action 
+	uiObjectDisplayImage->SetTexture(mainTexture); 
 
 	// Load Transform
 	Transform* uiElementTransform = GetHolderObject()->transform;

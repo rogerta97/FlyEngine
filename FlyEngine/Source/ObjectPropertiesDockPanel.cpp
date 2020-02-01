@@ -441,6 +441,7 @@ void ObjectPropertiesDockPanel::DrawButtonMainImagePreview(UI_Button* selectedBu
 			{
 				Texture* textureDropped = (Texture*)resourceDropped;
 				selectedButton->SetMainTexture(textureDropped);
+				selectedButton->GetHolderObject()->FitObjectUtils(); 
 			}
 		}
 
