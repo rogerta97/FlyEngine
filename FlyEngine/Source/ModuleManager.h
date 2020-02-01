@@ -27,6 +27,8 @@ public:
 	ModuleManager(bool start_enabled = true);
 	~ModuleManager();
 
+	update_status PostUpdate(float dt); 
+
 	bool Init();
 	bool Start(); 
 	bool CleanUp(); 
@@ -39,6 +41,9 @@ public:
 	// Delete Obejcts --------------
 	void AddDeleteFromListObject(FlyObject* newObjectToDelete);
 	void DeleteObjectsFromListNow();
+
+	void AddDeleteObject(FlyObject* newObjectToDelete);
+	void DeleteObjectsNow();
 
 	// Widgets ---------------------
 	void DrawActionListWithSettings(FlyObject* ownerObejct); 
@@ -61,7 +66,9 @@ public:
 
 private: 
 	std::list<ActionSelectableInfo> toolNamesDescriptions; 
+
 	std::list<FlyObject*> deleteObjectsFromListTick; 
+	std::list<FlyObject*> deleteObjectsTick; 
 };
 
 #endif

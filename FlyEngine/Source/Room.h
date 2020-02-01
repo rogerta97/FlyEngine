@@ -46,7 +46,7 @@ public:
 	// Utility -------------------
 	int GetObjectsInRoomAmount(); 
 	void AddItemToInventory(FlyObject* newObject_Inv); 
-	bool IsObjectInRoom(FlyObject* newObject_Inv);
+	bool HasObject(FlyObject* newObject_Inv);
 	bool CheckRaycastConditions(); 
 
 	// Save & Load ---------------

@@ -30,6 +30,7 @@ public:
 	void SetSelectedElement(UI_Element* newSelectedElement); 
 	UI_Element* GetSelectedElement();
 	void DrawSelectedOnClickActionSettings(); 
+	bool HasElement(UI_Element* checkElement); 
 
 	// Factory ----------------------
 	UI_Image* CreateUIImage(UID resourceUID); 

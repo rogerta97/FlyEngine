@@ -410,7 +410,7 @@ void ObjectPropertiesDockPanel::DrawButtonMainImagePreview(UI_Button* selectedBu
 			{
 				float diff = uiImageDimensions.x - imageMaxSize.x;
 				uiImageDimensions.x -= diff;
-				uiImageDimensions.y = uiImageDimensions.x * aspectRatio;
+				uiImageDimensions.y = uiImageDimensions.x / aspectRatio;
 			}
 		}
 		mainTextureID = (ImTextureID)mainButtonTexture->GetTextureID();

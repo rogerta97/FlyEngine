@@ -24,7 +24,7 @@
 
 #include "mmgr.h"
 
-FlyObject::FlyObject(std::string _name, std::string _description, FlyObjectType _flyObjectType)
+FlyObject::FlyObject(std::string _name, std::string _description, FlyObjectType _flyObjectType, Room* _parentRoom)
 {
 	name = _name; 
 	description = _description;
@@ -34,6 +34,7 @@ FlyObject::FlyObject(std::string _name, std::string _description, FlyObjectType 
 	clickableAreaActive = false;
 	drawClickableArea = false;
 	flyObjectType = _flyObjectType; 
+	parentRoom = _parentRoom; 
 
 	clickableArea = new BoundingBox(); 
 	clickableAreaPosPerc = float2(0, 0); 
@@ -172,6 +173,11 @@ float4 FlyObject::GetClickableAreaColor() const
 void FlyObject::SetClickableAreaColor(float4 newColor)
 {
 	clickableAreaColor = newColor; 
+}
+
+Room* FlyObject::GetParentRoom() const
+{
+	return parentRoom; 
 }
 
 bool& FlyObject::IsInteractable()

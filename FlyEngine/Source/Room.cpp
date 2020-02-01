@@ -43,13 +43,10 @@ Room::~Room()
 
 void Room::Update()
 {
-	if (App->moduleRoomManager->GetSelectedRoom() == this && !objectsInRoom.empty())
+	if (App->moduleRoomManager->GetSelectedRoom() == this)
 	{
 		UpdateRoomObjects();
 		roomUIHandler->Update(); 
-
-		if (App->moduleRoomManager->GetSelectedRoom()->objectsInRoom.empty() && App->isEngineInPlayMode)
-			return;
 
 		// Check for new Selected Objects -------
 		if (CheckRaycastConditions())
@@ -59,6 +56,9 @@ void Room::Update()
 
 			case EditRoomMode::EDIT_ROOM_OBJECTS:
 			{
+				if (objectsInRoom.empty())
+					return; 
+
 				list<FlyObject*> objectCandidates = ViewportManager::getInstance()->RaycastMouseClickObjects();
 
 				if (!objectCandidates.empty())
@@ -70,6 +70,9 @@ void Room::Update()
 
 			case EditRoomMode::EDIT_ROOM_UI:
 			{
+				if (roomUIHandler->uiElements.empty())
+					return;
+
 				list<UI_Element*> objectCandidates = ViewportManager::getInstance()->RaycastMouseClickUI();
 
 				if (!objectCandidates.empty())
@@ -156,7 +159,7 @@ int Room::GetObjectsInRoomAmount()
 void Room::AddItemToInventory(FlyObject* newObject_Inv)
 {
 #pragma region sanityChecks
-	if (newObject_Inv == nullptr && IsObjectInRoom(newObject_Inv))
+	if (newObject_Inv == nullptr && HasObject(newObject_Inv))
 	{
 		FLY_ERROR("Item Could Not Be Added To Inventory");
 		return; 
@@ -168,7 +171,7 @@ void Room::AddItemToInventory(FlyObject* newObject_Inv)
 	this->DeleteFlyObjectFromList(newObject_Inv);
 }
 
-bool Room::IsObjectInRoom(FlyObject* newObject_Inv)
+bool Room::HasObject(FlyObject* newObject_Inv)
 {
 	for (auto& currentObject : objectsInRoom)
 	{
@@ -345,7 +348,7 @@ int Room::GetEnterConnectionsAmount() const
 
 FlyObject* Room::CreateFlyObject(std::string objectName, std::string description)
 {
-	FlyObject* newObject = new FlyObject(objectName, description); 
+	FlyObject* newObject = new FlyObject(objectName, description, ACTION_OBJECT, this); 
 	objectsInRoom.push_back(newObject); 
 	flog("New Object");
 	return newObject; 
@@ -353,7 +356,7 @@ FlyObject* Room::CreateFlyObject(std::string objectName, std::string description
 
 FlyObject* Room::CreateInventoryItem(std::string objectName, std::string description)
 {
-	FlyObject* newObject = new FlyObject(objectName, description, INVENTORY_ITEM);
+	FlyObject* newObject = new FlyObject(objectName, description, INVENTORY_ITEM, this);
 	newObject->AddDisplayImageAction("None"); 
 	objectsInRoom.push_back(newObject);
 	return newObject;
@@ -371,21 +374,16 @@ void Room::AddFlyObject(FlyObject* newFlyObject)
 
 void Room::DeleteFlyObject(FlyObject* objectToDelete)
 {
-	for (auto it = objectsInRoom.begin(); it != objectsInRoom.end();) 
+	if (objectToDelete == nullptr)
+		return; 
+
+	for (auto& currentObject : objectsInRoom) 
 	{
-		if ((*it)->GetName() == objectToDelete->GetName())
+		if (objectToDelete->GetUID() == currentObject->GetUID())
 		{
-			(*it)->CleanUp();
-			delete (*it);
-			(*it) = nullptr;
-
-			it = objectsInRoom.erase(it);
-
-			if (objectsInRoom.empty())
-				break;
+			App->moduleManager->AddDeleteObject(currentObject);
+			return; 
 		}
-		else
-			it++;
 	}
 }
 

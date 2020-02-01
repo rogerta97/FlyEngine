@@ -21,10 +21,11 @@ class Gizmos;
 class DisplayImageAction; 
 class ModifyVariableAction; 
 class ChangeRoomAction; 
+class Room; 
 class EmitSoundAction; 
 class FlyObject {
 public: 
-	FlyObject(std::string objectName, std::string description = "", FlyObjectType _flyObjectType = ACTION_OBJECT); 
+	FlyObject(std::string objectName, std::string description = "", FlyObjectType _flyObjectType = ACTION_OBJECT, Room* parentRoom = nullptr); 
 	~FlyObject(); 
 
 	bool Update(); 
@@ -87,6 +88,8 @@ public:
 	float4 GetClickableAreaColor() const;
 	void SetClickableAreaColor(float4 newColor);
 
+	Room* GetParentRoom() const;
+
 	bool& IsInteractable();
 	void SetInteractable(bool _isInteractable);
 
@@ -109,6 +112,10 @@ public:
 	bool drawClickableArea; 
 
 private: 
+
+	// Parent Room --------
+	Room* parentRoom; 
+
 	// Clickable Area -----
 	BoundingBox* clickableArea; 
 	float2 clickableAreaPosPerc; 
