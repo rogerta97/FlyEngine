@@ -485,21 +485,8 @@ void ObjectCreatorDockPanel::DrawChangeRoomActionSettings()
 	ImGui::Text("Change Room Settings: ");
 	ImGui::PopFont();
 
-	const char* roomsArrayCombo[MAX_ROOMS];
+	changeRoomAction->DrawSelectDestinationCombo(); 
 
-	std::list<Room*> roomsInWorld = App->moduleRoomManager->GetRoomsInWorldList();
-
-	int count = 0;
-	for (auto& currentRoom : roomsInWorld)
-	{
-		roomsArrayCombo[count] = currentRoom->GetName().c_str();
-	}
-
-	static int ci = 0;
-	const char* currentItem = roomsArrayCombo[0]; 
-
-	ImGui::BeginCombo("Destination", currentItem);
-	ImGui::EndCombo(); 
 }
 
 void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()

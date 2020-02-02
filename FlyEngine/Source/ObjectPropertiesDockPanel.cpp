@@ -1102,10 +1102,7 @@ void ObjectPropertiesDockPanel::DrawChangeRoomSettings()
 			ImGui::Text("Change Room Settings: ");
 			ImGui::PopFont();
 
-			const char** rooms = App->moduleRoomManager->GetRoomsAsCombo();
-			const char* roomsToCombo[] = { "None", *rooms, *rooms + 1, *rooms + 2 };
-			static int ci = 0;
-			ImGui::ComboArray("Destination", &ci, roomsToCombo, IM_ARRAYSIZE(roomsToCombo));
+			changeRoomAction->DrawSelectDestinationCombo(); 
 		}
 	}
 }

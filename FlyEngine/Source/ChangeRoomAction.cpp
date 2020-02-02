@@ -56,15 +56,24 @@ void ChangeRoomAction::CleanUp()
 
 void ChangeRoomAction::DrawSelectDestinationCombo()
 {
-	/*const char* roomsArrayCombo[MAX_ROOMS]; 
-	
 	std::list<Room*> roomsInWorld = App->moduleRoomManager->GetRoomsInWorldList();
 
-	int count = 0; 
-	for (auto& currentRoom : roomsInWorld)
+	char selectedRoom[256] = "Select Destination...";
+	if (GetDesination() != nullptr)
 	{
-		roomsArrayCombo[count] = currentRoom->GetName().c_str(); 
-	}*/
+		strcpy(selectedRoom, GetDesination()->GetName().c_str());
+	}
+
+	if (ImGui::BeginCombo("Destination", selectedRoom))
+	{
+		int count = 0;
+		for (auto& currentRoom : roomsInWorld)
+		{
+			if (ImGui::Selectable(currentRoom->GetName().c_str()))
+				SetDestination(currentRoom);
+		}
+		ImGui::EndCombo();
+	}
 }
 
 void ChangeRoomAction::DrawUISettings()
@@ -73,16 +82,7 @@ void ChangeRoomAction::DrawUISettings()
 	ImGui::Text("Change Room Settings: ");
 	ImGui::PopFont();
 
-	const char** rooms = App->moduleRoomManager->GetRoomsAsCombo();
-	const char* roomsArr[] = {"Hello", "Bye"};
-
-	//roomsArr[0] = "This"; 
-	//roomsArr[1] = "Is"; 
-	//roomsArr[2] = "A"; 
-	//roomsArr[3] = "Test"; 
-
-	static int ci = 0;
-	ImGui::ComboArray("Destination", &ci, roomsArr, IM_ARRAYSIZE(roomsArr));
+	DrawSelectDestinationCombo();
 }
 
 void ChangeRoomAction::DrawUISettingsInButton()
@@ -91,10 +91,7 @@ void ChangeRoomAction::DrawUISettingsInButton()
 	ImGui::Text("Change Room Settings: ");
 	ImGui::PopFont();
 
-	const char** rooms = App->moduleRoomManager->GetRoomsAsCombo();
-	const char* roomsToCombo[] = { "None", *rooms, *rooms + 1, *rooms + 2 };
-	static int ci = 0;
-	ImGui::ComboArray("Destination", &ci, roomsToCombo, IM_ARRAYSIZE(roomsToCombo));
+	DrawSelectDestinationCombo(); 
 }
 
 void ChangeRoomAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr)
