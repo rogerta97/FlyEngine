@@ -65,6 +65,18 @@ bool RoomDockPanel::Draw()
 				App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->SetSelectedElement(nullptr);
 			}
 
+			if (ImGui::BeginTabItem("User Interface"))
+			{
+				DrawUserInterfaceTab();
+				ImGui::EndTabItem();
+			}
+
+			if (ImGui::IsItemClicked())
+			{
+				ViewportManager::getInstance()->editRoomMode = EDIT_ROOM_UI;
+				App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(nullptr); 
+			}
+
 			if (ImGui::BeginTabItem("Room Settings"))
 			{
 				ShowViewportSettingsTab();
@@ -90,17 +102,6 @@ bool RoomDockPanel::Draw()
 				App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->SetSelectedElement(nullptr);
 			}
 
-			if (ImGui::BeginTabItem("User Interface"))
-			{
-				DrawUserInterfaceTab();
-				ImGui::EndTabItem();
-			}
-
-			if (ImGui::IsItemClicked())
-			{
-				ViewportManager::getInstance()->editRoomMode = EDIT_ROOM_UI;
-				App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(nullptr); 
-			}
 
 			ImGui::EndTabBar();
 		}

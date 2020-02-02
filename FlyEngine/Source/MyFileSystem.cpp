@@ -49,7 +49,7 @@ string MyFileSystem::GetLastPathItem(string path, bool keepTermination = true)
 	resultString = resultString.substr(pos + 1, to_copy);
 
 	if (keepTermination == false)
-		DeleteFileExtension(resultString);
+		resultString = DeleteFileExtension(resultString);
 
 	return resultString;
 }
@@ -81,11 +81,12 @@ void MyFileSystem::DeleteFrontItem(string& path)
 	path = path.substr(firstBarPos + 1, pathSize); 
 }
 
-void MyFileSystem::DeleteFileExtension(string& path)
+std::string MyFileSystem::DeleteFileExtension(string path)
 {
 	int pos = path.find_first_of(".");
 	int to_del = path.size() - pos;
 	path = path.substr(0, path.size() - to_del);
+	return path; 
 }
 
 FileExtension MyFileSystem::GetFileExtension(string path)

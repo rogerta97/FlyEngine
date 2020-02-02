@@ -25,7 +25,7 @@ public:
 
 	// Utility -----------
 	static string GetLastPathItem(string path, bool keepTermination);
-	static void DeleteFileExtension(string& path);
+	static string DeleteFileExtension(std::string path);
 	static FileExtension GetFileExtension(string path);
 	static void DeleteLastPathItem(string& path);
 	static void DeleteFrontItem(string& path); 

@@ -114,11 +114,21 @@ bool ModuleRoomManager::LoadRoomsData()
 
 	for (auto& currentRoomFile : roomsSavedFiles)
 	{
-		MyFileSystem::getInstance()->DeleteFileExtension(currentRoomFile);
-		Room* newRoom = App->moduleRoomManager->CreateEmptyRoom(currentRoomFile);
-		SaveAndLoad::getInstance()->LoadDataToRoom(roomsDirectory + "\\" + currentRoomFile + ".json", newRoom);
+		string currentRoomName = MyFileSystem::getInstance()->DeleteFileExtension(currentRoomFile);	
+		Room* newRoom = App->moduleRoomManager->CreateEmptyRoom(currentRoomName);
+
+		JSON_Value* root = json_parse_file(string(roomsDirectory + "\\" + currentRoomFile).c_str());
+		JSON_Object* root_obj = json_value_get_object(root);
+
+		string uidStr = string(newRoom->GetName().c_str() + string(".UID"));
+		newRoom->SetUID(json_object_dotget_number(root_obj, uidStr.c_str()));
 	}
 
+	for (auto& currentRoom : roomsInWorldList)
+	{
+		SaveAndLoad::getInstance()->LoadDataToRoom(roomsDirectory + "\\" + currentRoom->GetName() + ".json", currentRoom);
+	}
+	
 	if (roomsSavedFiles.size() > 0)
 		return true; 
 
@@ -228,11 +238,10 @@ Room* ModuleRoomManager::GetRoom(std::string roomName) const
 
 Room* ModuleRoomManager::GetRoom(UID roomID) const
 {
-	for (auto const& it : roomsInWorldList) {
-
-		if (roomID == it->GetUID()) {
-			return it;
-		}
+	for (auto const& it : roomsInWorldList) 
+	{
+		if (roomID == it->GetUID()) 	
+			return it;		
 	}
 
 	FLY_ERROR("Room with ID %f in ModuleRoomManager::GetRoom() could not be found", roomID);

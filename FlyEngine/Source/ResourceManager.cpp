@@ -65,11 +65,12 @@ ResourceType ResourceManager::GetResourceTypeFromExtension(FileExtension ext)
 	return ResourceType::RESOURCE_null; 
 }
 
-Resource* ResourceManager::GetResource(std::string resourceName, ResourceType type) 
+Resource* ResourceManager::GetResource(std::string _resourceName, ResourceType type) 
 {
 	for (auto& it : instance->resourceList)
 	{
-		if ((it)->GetName() == resourceName)
+		string resourceName = MyFileSystem::getInstance()->DeleteFileExtension((it)->GetName()); 
+		if (resourceName == _resourceName)
 		{
 			if (type != RESOURCE_null)
 			{
@@ -83,7 +84,7 @@ Resource* ResourceManager::GetResource(std::string resourceName, ResourceType ty
 		}
 	}
 
-	throw std::logic_error("A must be equal to B"); 
+	throw std::logic_error("Could not found resource"); 
 }
 
 Resource* ResourceManager::GetResource(UID resourceUID, ResourceType type)

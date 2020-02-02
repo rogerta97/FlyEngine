@@ -68,7 +68,7 @@ void UI_Image::Load(JSON_Object* jsonObject, string serializeStr)
 {
 	// Get Resource Attached
 	string texturePath = json_object_dotget_string(jsonObject, std::string(serializeStr + "TextureName").c_str());
-	MyFileSystem::getInstance()->DeleteFileExtension(texturePath);
+	texturePath = MyFileSystem::getInstance()->DeleteFileExtension(texturePath);
 	Texture* resourceTexture = (Texture*)ResourceManager::getInstance()->GetResource(texturePath);
 
 	// Set Width and Heigth

@@ -22,12 +22,10 @@ public:
 	void DrawSelectDestinationCombo(); 
 	void DrawUISettings(); 
 	void DrawUISettingsInButton(); 
+	void DrawActionOccurenceCheckboxes(); 
 
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
-
 	void DoAction(); 
-
-	void DrawActionOccurenceCheckboxes(); 
 
 	void SetDestination(Room* dstRoom); 
 	Room* GetDesination(); 

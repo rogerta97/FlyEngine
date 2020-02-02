@@ -254,7 +254,7 @@ void FileBrowserDockPanel::DrawDirectoryRecursive(string& directory)
 	else
 	{
 		string resourceName = fileName; 
-		MyFileSystem::getInstance()->DeleteFileExtension(resourceName);
+		resourceName = MyFileSystem::getInstance()->DeleteFileExtension(resourceName);
 		Resource* currentResource = ResourceManager::getInstance()->GetResource(resourceName.c_str());
 
 		ImTextureID iconTextureID = 0;
@@ -311,7 +311,7 @@ void FileBrowserDockPanel::DrawDirectoryRecursive(string& directory)
 
 		if (ImGui::Selectable(fileName.c_str(), &selected))
 		{
-			MyFileSystem::getInstance()->DeleteFileExtension(fileName);
+			fileName = MyFileSystem::getInstance()->DeleteFileExtension(fileName);
 
 			if(currentResource != nullptr)
 				selectedResourceUID = currentResource->GetUID();

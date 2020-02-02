@@ -262,7 +262,7 @@ void UI_Button::Load(JSON_Object* jsonObject, string serializeStr)
 	case COLOR_TINT:
 	{
 		string mainTextureName = json_object_dotget_string(jsonObject, string(serializeStr + string("MouseInteractionData.MainTextureName")).c_str());
-		MyFileSystem::getInstance()->DeleteFileExtension(mainTextureName);
+		mainTextureName = MyFileSystem::getInstance()->DeleteFileExtension(mainTextureName);
 
 		if (mainTextureName != "None")
 			mainTexture = (Texture*)ResourceManager::getInstance()->GetResource(mainTextureName.c_str());
@@ -285,21 +285,21 @@ void UI_Button::Load(JSON_Object* jsonObject, string serializeStr)
 	{
 		// Mouse Idle Texture -------
 		string mouseIdleName = json_object_dotget_string(jsonObject, string(serializeStr + string("MouseInteractionData.MouseIdleTextureName")).c_str());
-		MyFileSystem::getInstance()->DeleteFileExtension(mouseIdleName);
+		mouseIdleName = MyFileSystem::getInstance()->DeleteFileExtension(mouseIdleName);
 
 		if (mouseIdleName != "None")
 			mainTexture = (Texture*)ResourceManager::getInstance()->GetResource(mouseIdleName.c_str());
 
 		// Mouse Over Texture -------
 		string mouseOverName = json_object_dotget_string(jsonObject, string(serializeStr + string("MouseInteractionData.MouseOverTextureName")).c_str());
-		MyFileSystem::getInstance()->DeleteFileExtension(mouseOverName);
+		mouseOverName = MyFileSystem::getInstance()->DeleteFileExtension(mouseOverName);
 
 		if(mouseOverName != "None")
 			mouseOverTexture = (Texture*)ResourceManager::getInstance()->GetResource(mouseOverName.c_str());
 
 		// Mouse Clicked Texture -------
 		string mouseClickedName = json_object_dotget_string(jsonObject, string(serializeStr + string("MouseInteractionData.MouseClickedTextureName")).c_str());
-		MyFileSystem::getInstance()->DeleteFileExtension(mouseClickedName);
+		mouseClickedName = MyFileSystem::getInstance()->DeleteFileExtension(mouseClickedName);
 
 		if (mouseClickedName != "None")
 			mouseClickedTexture = (Texture*)ResourceManager::getInstance()->GetResource(mouseClickedName.c_str());
