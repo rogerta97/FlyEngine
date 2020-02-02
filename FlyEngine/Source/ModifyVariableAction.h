@@ -69,6 +69,7 @@ public:
 
 private: 
 	list<ModifyVariableEffect*> variablesEffectList;
+	bool showVariableConditions = false; 
 };
 
 #endif 

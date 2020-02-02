@@ -675,14 +675,12 @@ void ObjectCreatorDockPanel::DrawEmitSoundActionSettings()
 			strcpy(soundNameBuffer, selectedSound->GetName().c_str()); 
 		}
 	}
-
 }
 
 void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 {
-	if (showActionDictionary)
-	{
-		ImGui::Separator();
+	if (ImGui::BeginPopup("AddActionToObject"))
+	{	
 		ImGui::Spacing();
 
 		// Search Bar ---------------
@@ -724,14 +722,19 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 				break;
 			}
 
-			showActionDictionary = false;
-			newActionSelected = nullptr; 
+			ImGui::EndChild();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleVar();	
+			ImGui::CloseCurrentPopup();
+			ImGui::EndPopup();
+			return; 
 		}
 
 		ImGui::EndChild();
 		ImGui::PopStyleColor();
 		ImGui::PopStyleVar();
-		ImGui::Separator();
+
+		ImGui::EndPopup();
 	}
 }
 
@@ -1094,7 +1097,7 @@ void ObjectCreatorDockPanel::DrawAddAndDeleteActionButtons()
 
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
-		showActionDictionary = true;
+		ImGui::OpenPopup("AddActionToObject");
 	}
 
 	ImGui::SameLine();

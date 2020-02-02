@@ -99,53 +99,53 @@ int ModuleManager::GetToolsAmount() const
 
 ActionSelectableInfo* ModuleManager::DrawActionDictionaryUI(DictionaryPopupFilter popupFilter)
 {
-ActionSelectableInfo* returnInfo = nullptr;
+	ActionSelectableInfo* returnInfo = nullptr;
 
-int count = 0;
-int selectableHeight = 42;
+	int count = 0;
+	int selectableHeight = 42;
 
-for (auto& currentToolDescription : toolNamesDescriptions)
-{
-	// Filter Actions from popup type 
-	if (popupFilter == FILTER_ACTIONS_UI_BUTTON &&
-		currentToolDescription.actionType == ACTION_DISPLAY_IMAGE)
-		continue;
-	if (popupFilter == FILTER_ACTIONS_INVENTORY_CLICK &&
-		currentToolDescription.actionType == ACTION_DISPLAY_IMAGE)
-		continue;
-
-	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
-
-	Texture* iconTexture = GetIconFromActionType(currentToolDescription.actionType);
-	ImGui::SetCursorPos(ImVec2(10, 5 + (selectableHeight * count)));
-	if (iconTexture) {
-		ImGui::Image((ImTextureID)iconTexture->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
-	}
-	else
+	for (auto& currentToolDescription : toolNamesDescriptions)
 	{
-		ImGui::Image(0, ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
+		// Filter Actions from popup type 
+		if (popupFilter == FILTER_ACTIONS_UI_BUTTON &&
+			currentToolDescription.actionType == ACTION_DISPLAY_IMAGE)
+			continue;
+		if (popupFilter == FILTER_ACTIONS_INVENTORY_CLICK &&
+			currentToolDescription.actionType == ACTION_DISPLAY_IMAGE)
+			continue;
+
+		ImGui::PushFont(App->moduleImGui->rudaBoldMid);
+
+		Texture* iconTexture = GetIconFromActionType(currentToolDescription.actionType);
+		ImGui::SetCursorPos(ImVec2(10, 5 + (selectableHeight * count)));
+		if (iconTexture) {
+			ImGui::Image((ImTextureID)iconTexture->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
+		}
+		else
+		{
+			ImGui::Image(0, ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
+		}
+
+		ImGui::SetCursorPos(ImVec2(50, (selectableHeight * count)));
+		if (ImGui::Selectable(currentToolDescription.actionName.c_str(), false, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), selectableHeight - 3)))
+		{
+			returnInfo = &currentToolDescription;
+		}
+
+		ImGui::PopFont();
+
+		// Description -----
+		ImGui::SetCursorPosY((selectableHeight * count) + 20);
+		ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 52);
+
+		ImGui::PushFont(App->moduleImGui->rudaRegularTiny);
+		ImGui::Text(currentToolDescription.actionDescription.c_str());
+		ImGui::PopFont();
+
+		count++;
 	}
 
-	ImGui::SetCursorPos(ImVec2(50, (selectableHeight * count)));
-	if (ImGui::Selectable(currentToolDescription.actionName.c_str(), false, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), selectableHeight - 3)))
-	{
-		returnInfo = &currentToolDescription;
-	}
-
-	ImGui::PopFont();
-
-	// Description -----
-	ImGui::SetCursorPosY((selectableHeight * count) + 20);
-	ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 52);
-
-	ImGui::PushFont(App->moduleImGui->rudaRegularTiny);
-	ImGui::Text(currentToolDescription.actionDescription.c_str());
-	ImGui::PopFont();
-
-	count++;
-}
-
-return returnInfo;
+	return returnInfo;
 }
 
 Texture* ModuleManager::GetIconFromActionType(ActionType toolType)

@@ -382,7 +382,6 @@ ModifyVariableAction* FlyObject::AddModifyVariableAction()
 	if (GetAction(ACTION_MOD_VARIABLE) == nullptr)
 	{
 		ModifyVariableAction* mofidyVarAction = new ModifyVariableAction(this);
-		//ModifyVariableAction* mofidyVarAction = nullptr; 
 		actionsList.push_back(mofidyVarAction);
 		return mofidyVarAction;
 	}
