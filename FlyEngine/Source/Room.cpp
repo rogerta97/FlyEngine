@@ -191,6 +191,7 @@ void Room::SaveRoomData(JSON_Object* jsonObject)
 {
 	// Save Objects Data
 	json_object_dotset_number(jsonObject, string(GetName() + ".ObjectsAmount").c_str(), GetObjectsInRoomAmount());
+	json_object_dotset_number(jsonObject, string(GetName() + ".UID").c_str(), GetUID());
 
 	int count = 0; 
 	for (auto& it : objectsInRoom)
@@ -205,7 +206,7 @@ RoomConnection* Room::ConnectToRoom(Room* destinationRoom)
 	// Logic
 	RoomConnection* newConnection = new RoomConnection(this, destinationRoom, "TestLink", false);
 	outConnections.push_back(newConnection);
-	destinationRoom->inRoomUIDs.push_back(GetRoomID());
+	destinationRoom->inRoomUIDs.push_back(GetUID());
 
 	// Update Graph 
 	NodeGraph::getInstance()->ConnectNodes(GetName(), "Out", destinationRoom->GetName(), "In", newConnection->connectionID);
@@ -282,7 +283,7 @@ void Room::BreakOutputConnection(UID connectionToDelUID)
 }
 void Room::BreakOutputConnection(Room* targetRoomConnected) 
 {
-	RoomConnection* roomConnection = GetConnectionToRoom(targetRoomConnected->GetRoomID()); 
+	RoomConnection* roomConnection = GetConnectionToRoom(targetRoomConnected->GetUID()); 
 	BreakOutputConnection(roomConnection->connectionID); 
 }
 // Input connections
@@ -418,12 +419,12 @@ void Room::SetName(string newName)
 	roomName = newName; 
 }
 
-UID Room::GetRoomID() const
+UID Room::GetUID() const
 {
 	return roomID; 
 }
 
-void Room::SetRoomID(UID roomID)
+void Room::SetUID(UID roomID)
 {
 	roomID = roomID;
 }

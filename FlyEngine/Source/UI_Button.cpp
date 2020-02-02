@@ -5,6 +5,8 @@
 #include "FlyObject.h"
 #include "MyFileSystem.h"
 #include "ResourceManager.h"
+#include "ChangeRoomAction.h"
+#include "ModuleRoomManager.h"
 #include "Gizmos.h"
 #include "Application.h"
 #include "ModuleImGui.h"
@@ -317,6 +319,37 @@ void UI_Button::Load(JSON_Object* jsonObject, string serializeStr)
 	uiObject->FitObjectUtils();
 
 	// Load Actions 
+	string onClickActionStr = serializeStr + "OnClickActions."; 
+	int actionsAmount = json_object_dotget_number(jsonObject, string(onClickActionStr + "ActionsAmount").c_str());
+
+	int count = 0;
+	while (count < actionsAmount)
+	{
+		string actionStr = onClickActionStr + "Action_" + to_string(count) + "."; 
+
+		int actionTypeTmp = json_object_dotget_number(jsonObject, string(actionStr + "ActionType").c_str());
+		ActionType actionType = (ActionType)actionTypeTmp;
+		
+		switch (actionType)
+		{
+		case ACTION_CHANGE_ROOM:
+		{
+			ChangeRoomAction* newChangeRoomAction = uiObject->AddChangeRoomAction(); 
+			
+			UID dstRoomUID = json_object_dotget_number(jsonObject, string(actionStr + "Destination").c_str());
+			newChangeRoomAction->SetDestination(App->moduleRoomManager->GetRoom(dstRoomUID)); 
+
+			AddOnClickAction(newChangeRoomAction);
+		}
+			break;
+		case ACTION_MOD_VARIABLE:
+			break;
+		case ACTION_EMIT_SOUND:
+			break;
+		}
+
+		count++; 
+	}
 
 }
 

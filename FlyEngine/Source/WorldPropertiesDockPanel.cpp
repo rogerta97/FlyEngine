@@ -146,7 +146,7 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
 		if (selectedRoom != nullptr)
 		{
-			App->moduleRoomManager->DeleteRoom(selectedRoom->GetRoomID());
+			App->moduleRoomManager->DeleteRoom(selectedRoom->GetUID());
 			selectedRoom = nullptr;
 		}
 	}

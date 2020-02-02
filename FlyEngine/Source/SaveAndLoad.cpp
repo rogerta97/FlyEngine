@@ -236,6 +236,7 @@ void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 	JSON_Object* root_obj = json_value_get_object(root);
 
 	int obj_ammount = json_object_dotget_number(root_obj, string(roomToLoad->GetName().c_str() + string(".ObjectsAmount")).c_str());
+	roomToLoad->SetUID(json_object_dotget_number(root_obj, string(roomToLoad->GetName().c_str() + string(".UID")).c_str()));
 
 	int counter = 0;
 	while (counter < obj_ammount)
@@ -248,7 +249,7 @@ void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 	string serialiseStr = roomToLoad->GetName() + ".UserInterface";
 
 	if(roomToLoad)
-	roomToLoad->roomUIHandler->LoadRoomUI(root_obj, serialiseStr);
+		roomToLoad->roomUIHandler->LoadRoomUI(root_obj, serialiseStr);
 }
 
 SaveAndLoad::SaveAndLoad()

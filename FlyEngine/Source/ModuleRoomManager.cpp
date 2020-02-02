@@ -135,9 +135,9 @@ Room* ModuleRoomManager::CreateEmptyRoom(string roomName)
 
 void ModuleRoomManager::DeleteRoom(string roomName)
 {
-	UID roomUID = GetRoom(roomName)->GetRoomID();
+	UID roomUID = GetRoom(roomName)->GetUID();
 
-	if (selectedRoom->GetRoomID() == roomUID) {
+	if (selectedRoom->GetUID() == roomUID) {
 		selectedRoom = nullptr; 
 	}
 
@@ -148,7 +148,7 @@ void ModuleRoomManager::DeleteRoom(UID roomID)
 {
 	for (auto it = roomsInWorldList.begin(); it != roomsInWorldList.end(); it++) {
 
-		if ((*it)->GetRoomID() == roomID) {
+		if ((*it)->GetUID() == roomID) {
 
 			(*it)->DeleteAllConnections();
 
@@ -166,7 +166,7 @@ void ModuleRoomManager::DeleteRoom(UID roomID)
 
 void ModuleRoomManager::DeleteRoom(Room* roomToDelete)
 {
-	DeleteRoom(roomToDelete->GetRoomID()); 
+	DeleteRoom(roomToDelete->GetUID()); 
 }
 
 void ModuleRoomManager::CleanUpRooms()
@@ -230,7 +230,7 @@ Room* ModuleRoomManager::GetRoom(UID roomID) const
 {
 	for (auto const& it : roomsInWorldList) {
 
-		if (roomID == it->GetRoomID()) {
+		if (roomID == it->GetUID()) {
 			return it;
 		}
 	}

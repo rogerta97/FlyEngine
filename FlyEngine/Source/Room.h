@@ -95,8 +95,8 @@ public:
 	string GetName() const; 
 	void SetName(string newName); 
 
-	UID GetRoomID() const;
-	void SetRoomID(UID newName);
+	UID GetUID() const;
+	void SetUID(UID newName);
 
 	void SetSelectedObject(FlyObject* newObject); 
 	FlyObject* GetSelectedObject() const;
