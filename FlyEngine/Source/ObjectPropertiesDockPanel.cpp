@@ -31,7 +31,6 @@ ObjectPropertiesDockPanel::ObjectPropertiesDockPanel(bool isVisible) : DockPanel
 {
 	flyEngineSection = FLY_SECTION_ROOM_EDIT;
 	dockPanelType = DOCK_OBJECT_PROPERTIES;
-
 }
 
 ObjectPropertiesDockPanel::~ObjectPropertiesDockPanel()
@@ -107,61 +106,58 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 		IMGUI_SPACED_SEPARATOR;
 
 		// Button Reaction --------------------------------------------------------------
-		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-		ImGui::Text("Button Reaction:");
-		ImGui::PopFont();
-
-		int childHeight = 115;
-		static int reactionTypeSelected = 0;
-
-		if (selectedButton->mouseInteraction == TEXTURE_SWAP)
-			childHeight = 270;
-
-		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-		ImGui::BeginChild("ButtonReaction", ImVec2(ImGui::GetContentRegionAvailWidth(), childHeight));
-
-		INC_CURSOR_10;
-		reactionTypeSelected = selectedButton->mouseInteraction;
-		if (ImGui::Combo("Behaviour", &reactionTypeSelected, "Color Tint\0Swap Image"))
+		if (ImGui::CollapsingHeader("Button Reaction:", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			if (reactionTypeSelected == 0)
-				selectedButton->mouseInteraction = ButtonBehaviourMouseInteraction::COLOR_TINT;
+			int childHeight = 115;
+			static int reactionTypeSelected = 0;
+
+			if (selectedButton->mouseInteraction == TEXTURE_SWAP)
+				childHeight = 270;
+
+			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+			ImGui::BeginChild("ButtonReaction", ImVec2(ImGui::GetContentRegionAvailWidth(), childHeight));
+
+			INC_CURSOR_10;
+			reactionTypeSelected = selectedButton->mouseInteraction;
+			if (ImGui::Combo("Behaviour", &reactionTypeSelected, "Color Tint\0Swap Image"))
+			{
+				if (reactionTypeSelected == 0)
+					selectedButton->mouseInteraction = ButtonBehaviourMouseInteraction::COLOR_TINT;
 		
-			if (reactionTypeSelected == 1)
-				selectedButton->mouseInteraction = ButtonBehaviourMouseInteraction::TEXTURE_SWAP;
-		}
+				if (reactionTypeSelected == 1)
+					selectedButton->mouseInteraction = ButtonBehaviourMouseInteraction::TEXTURE_SWAP;
+			}
 			
-		if (selectedButton->mouseInteraction == COLOR_TINT)
-			DrawColorTintSection();
+			if (selectedButton->mouseInteraction == COLOR_TINT)
+				DrawColorTintSection();
 
-		if (selectedButton->mouseInteraction == TEXTURE_SWAP)
-			DrawSwapImageSection(selectedButton);
+			if (selectedButton->mouseInteraction == TEXTURE_SWAP)
+				DrawSwapImageSection(selectedButton);
 
-		ImGui::EndChild();
-		ImGui::PopStyleColor();
-
-		IMGUI_SPACED_SEPARATOR;
+			ImGui::EndChild();
+			ImGui::PopStyleColor();			
+		}
 
 		// Actions Callback --------------------------------------------------------------
-		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-		ImGui::Text("Actions when button is clicked:");
-		ImGui::PopFont();
-
-		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-		ImGui::BeginChild("ButtonActions", ImVec2(ImGui::GetContentRegionAvailWidth(), 350));
-
-		DrawSearchBarButtonActions(selectedButton);
-		DrawOnClickActionButtonList(selectedButton);
-
-		ImGui::EndChild();
-		ImGui::PopStyleColor();
-
-		App->moduleRoomManager->GetSelectedRoomUI()->DrawSelectedOnClickActionSettings();
-
-		if (scrollToEnd)
+		IMGUI_SPACED_SEPARATOR;
+		if (ImGui::CollapsingHeader("Actions when button is clicked:", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			ImGui::SetScrollHere(0.999f); 
-			scrollToEnd = false; 
+			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+			ImGui::BeginChild("ButtonActions", ImVec2(ImGui::GetContentRegionAvailWidth(), 350));
+
+			DrawSearchBarButtonActions(selectedButton);
+			DrawOnClickActionButtonList(selectedButton);
+
+			ImGui::EndChild();
+			ImGui::PopStyleColor();
+
+			App->moduleRoomManager->GetSelectedRoomUI()->DrawSelectedOnClickActionSettings();
+
+			if (scrollToEnd)
+			{
+				ImGui::SetScrollHere(0.999f); 
+				scrollToEnd = false; 
+			}
 		}
 	}
 

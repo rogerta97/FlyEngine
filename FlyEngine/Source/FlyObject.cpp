@@ -253,8 +253,7 @@ bool FlyObject::IsInventoryItem()
 void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 {
 	// Save Object Properties
-	string serializeObjectName(App->moduleRoomManager->GetSelectedRoom()->GetName().c_str() + string(".")); 
-	serializeObjectName += "FlyObject_" + to_string(objectIndex) + string(".");
+	string serializeObjectName = "RoomData.Objects.FlyObject_" + to_string(objectIndex) + string(".");
 
 	json_object_dotset_string(jsonObject, string(serializeObjectName + "Name").c_str(), GetName().c_str());
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "UID").c_str(), uid);

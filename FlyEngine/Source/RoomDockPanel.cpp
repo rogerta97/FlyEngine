@@ -287,7 +287,7 @@ void RoomDockPanel::DrawTopButtons()
 			currentRoom->CleanUp();
 
 			// Load New Data
-			SaveAndLoad::getInstance()->LoadDataToCurrentRoom(path);
+			SaveAndLoad::getInstance()->LoadDataToSelectedRoom(path);
 		}
 	}
 
@@ -310,11 +310,8 @@ void RoomDockPanel::DrawTopButtons()
 		{
 			App->BroadCastEvent(FlyEngineEvent::ENGINE_STOP);
 			playButtonColor = ImVec4(0.35f, 0.39f, 0.50f, 1.00f);
-			playStopButtonTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlayIcon");
-
-			App->moduleRoomManager->GetSelectedRoom()->CleanUp(); 
-			
-			SaveAndLoad::getInstance()->LoadOnPlayToSelectedRoom();
+			playStopButtonTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlayIcon");		
+			SaveAndLoad::getInstance()->LoadOnPlayData();
 		}
 	}
 	ImGui::PopStyleColor(2);

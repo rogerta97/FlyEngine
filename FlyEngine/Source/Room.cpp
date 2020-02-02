@@ -190,15 +190,16 @@ bool Room::CheckRaycastConditions()
 void Room::SaveRoomData(JSON_Object* jsonObject)
 {
 	// Save Objects Data
-	json_object_dotset_number(jsonObject, string(GetName() + ".ObjectsAmount").c_str(), GetObjectsInRoomAmount());
-	json_object_dotset_number(jsonObject, string(GetName() + ".UID").c_str(), GetUID());
+	json_object_dotset_number(jsonObject, string("RoomData.ObjectsAmount").c_str(), GetObjectsInRoomAmount());
+	json_object_dotset_string(jsonObject, string("RoomData.Name").c_str(), GetName().c_str());
+	json_object_dotset_number(jsonObject, string("RoomData.UID").c_str(), GetUID());
 
 	int count = 0; 
 	for (auto& it : objectsInRoom)
 		it->SaveObjectData(jsonObject, count++);
 
 	// Save UI 
-	roomUIHandler->SaveRoomUI(jsonObject, string(GetName() + ".UserInterface"));
+	roomUIHandler->SaveRoomUI(jsonObject, string("RoomData.UserInterface"));
 }
 
 RoomConnection* Room::ConnectToRoom(Room* destinationRoom)

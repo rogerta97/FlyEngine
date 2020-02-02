@@ -114,13 +114,13 @@ bool ModuleRoomManager::LoadRoomsData()
 
 	for (auto& currentRoomFile : roomsSavedFiles)
 	{
-		string currentRoomName = MyFileSystem::getInstance()->DeleteFileExtension(currentRoomFile);	
-		Room* newRoom = App->moduleRoomManager->CreateEmptyRoom(currentRoomName);
-
 		JSON_Value* root = json_parse_file(string(roomsDirectory + "\\" + currentRoomFile).c_str());
 		JSON_Object* root_obj = json_value_get_object(root);
 
-		string uidStr = string(newRoom->GetName().c_str() + string(".UID"));
+		string currentRoomName = json_object_dotget_string(root_obj, "RoomData.Name");
+		Room* newRoom = App->moduleRoomManager->CreateEmptyRoom(currentRoomName);
+
+		string uidStr = string("RoomData.UID");
 		newRoom->SetUID(json_object_dotget_number(root_obj, uidStr.c_str()));
 	}
 

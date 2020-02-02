@@ -80,13 +80,23 @@ void SaveAndLoad::SaveSelectedRoomToOnPlayData()
 	json_serialize_to_file(scene_v, provisionalPath.c_str());
 }
 
-void SaveAndLoad::LoadOnPlayToSelectedRoom()
+void SaveAndLoad::LoadOnPlayData()
 {
 	string provisionalPath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "OnPlaySaveData.json";
-	instance->LoadDataToCurrentRoom(provisionalPath);
+
+	JSON_Value* root = json_parse_file(provisionalPath.c_str());
+	JSON_Object* root_obj = json_value_get_object(root);
+
+	UID selectedWhenPlayRoomUID = json_object_dotget_number(root_obj, "RoomData.UID"); 
+	Room* nextSelectedRoom = App->moduleRoomManager->GetRoom(selectedWhenPlayRoomUID); 
+	App->moduleRoomManager->SetSelectedRoom(nextSelectedRoom); 
+
+	App->moduleRoomManager->GetSelectedRoom()->CleanUp(); 
+
+	instance->LoadDataToSelectedRoom(provisionalPath);
 }
 
-void SaveAndLoad::LoadDataToCurrentRoom(std::string roomDataFilePath)
+void SaveAndLoad::LoadDataToSelectedRoom(std::string roomDataFilePath)
 {
 	// Get Current Room 
 	Room* currentRoom = App->moduleRoomManager->GetSelectedRoom();
@@ -235,17 +245,17 @@ void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 	JSON_Value* root = json_parse_file(roomDataFilePath.c_str());
 	JSON_Object* root_obj = json_value_get_object(root);
 
-	int obj_ammount = json_object_dotget_number(root_obj, string(roomToLoad->GetName().c_str() + string(".ObjectsAmount")).c_str());
+	int obj_ammount = json_object_dotget_number(root_obj, "RoomData.ObjectsAmount");
 
 	int counter = 0;
 	while (counter < obj_ammount)
 	{
-		string serializeObjectStr = roomToLoad->GetName().c_str() + string(".FlyObject_") + to_string(counter) + string(".");
+		string serializeObjectStr = "RoomData.Objects" + string(".FlyObject_") + to_string(counter) + string(".");
 		instance->CreateFlyObjectFromSavedData(root_obj, serializeObjectStr, roomToLoad);
 		counter++;
 	}
 
-	string serialiseStr = roomToLoad->GetName() + ".UserInterface";
+	string serialiseStr = "RoomData.UserInterface";
 
 	if(roomToLoad)
 		roomToLoad->roomUIHandler->LoadRoomUI(root_obj, serialiseStr);
