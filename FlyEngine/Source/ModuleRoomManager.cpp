@@ -180,6 +180,11 @@ void ModuleRoomManager::CleanUpRooms()
 	roomsInWoldAmount = 0;
 }
 
+list<Room*>& ModuleRoomManager::GetRoomsInWorldList()
+{
+	return roomsInWorldList; 
+}
+
 void ModuleRoomManager::SerializeRoomListNames()
 {
 	std::string saveFilePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "RoomNames.json";

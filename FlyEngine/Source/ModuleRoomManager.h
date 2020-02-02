@@ -38,6 +38,8 @@ public:
 	void DeleteRoom(Room* roomToDelete); 
 	void CleanUpRooms();
 
+	list<Room*>& GetRoomsInWorldList();
+
 	void SerializeRoomListNames(); 
 
 	// Utility ----------

@@ -1,6 +1,8 @@
 #ifndef _CHANGE_ROOM_TOOL_H_
 #define _CHANGE_ROOM_TOOL_H_
 
+#define MAX_ROOMS 256
+
 #include "Action.h"
 
 using namespace std;
@@ -17,6 +19,7 @@ public:
 	void Update();
 	void CleanUp();
 
+	void DrawSelectDestinationCombo(); 
 	void DrawUISettings(); 
 	void DrawUISettingsInButton(); 
 

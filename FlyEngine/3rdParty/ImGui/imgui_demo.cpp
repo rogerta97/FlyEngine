@@ -543,6 +543,9 @@ static void ShowDemoWindowWidgets()
             // Using the _simplified_ one-liner Combo() api here
             // See "Combo" section for examples of how to use the more complete BeginCombo()/EndCombo() api.
             const char* items[] = { "AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF", "GGGG", "HHHH", "IIII", "JJJJ", "KKKK", "LLLLLLL", "MMMM", "OOOOOOO" };
+
+			items[3] = "dsadfsa"; 
+
             static int item_current = 0;
             ImGui::ComboArray("combo", &item_current, items, IM_ARRAYSIZE(items));
             ImGui::SameLine(); HelpMarker("Refer to the \"Combo\" section below for an explanation of the full BeginCombo/EndCombo API, and demonstration of various flags.\n");

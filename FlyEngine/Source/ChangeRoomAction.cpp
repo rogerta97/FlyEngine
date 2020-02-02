@@ -54,6 +54,19 @@ void ChangeRoomAction::CleanUp()
 	Action::CleanUp();
 }
 
+void ChangeRoomAction::DrawSelectDestinationCombo()
+{
+	/*const char* roomsArrayCombo[MAX_ROOMS]; 
+	
+	std::list<Room*> roomsInWorld = App->moduleRoomManager->GetRoomsInWorldList();
+
+	int count = 0; 
+	for (auto& currentRoom : roomsInWorld)
+	{
+		roomsArrayCombo[count] = currentRoom->GetName().c_str(); 
+	}*/
+}
+
 void ChangeRoomAction::DrawUISettings()
 {
 	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
@@ -61,9 +74,15 @@ void ChangeRoomAction::DrawUISettings()
 	ImGui::PopFont();
 
 	const char** rooms = App->moduleRoomManager->GetRoomsAsCombo();
-	const char* roomsToCombo[] = { "None", *rooms, *rooms + 1, *rooms + 2 };
+	const char* roomsArr[] = {"Hello", "Bye"};
+
+	//roomsArr[0] = "This"; 
+	//roomsArr[1] = "Is"; 
+	//roomsArr[2] = "A"; 
+	//roomsArr[3] = "Test"; 
+
 	static int ci = 0;
-	ImGui::ComboArray("Destination", &ci, roomsToCombo, IM_ARRAYSIZE(roomsToCombo));
+	ImGui::ComboArray("Destination", &ci, roomsArr, IM_ARRAYSIZE(roomsArr));
 }
 
 void ChangeRoomAction::DrawUISettingsInButton()
