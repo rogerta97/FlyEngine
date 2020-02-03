@@ -32,6 +32,9 @@ void EmitSoundAction::DrawUISettings()
 
 	static char soundNameBuffer[256] = "";
 
+	if(audioClip != nullptr)
+		strcpy(soundNameBuffer, audioClip->GetName().c_str());
+
 	Texture* playSound = (Texture*)ResourceManager::getInstance()->GetResource("PlayAudio");
 	if (ImGui::ImageButton((ImTextureID)playSound->GetTextureID(), ImVec2(20, 20)))
 		Play();
@@ -84,6 +87,9 @@ void EmitSoundAction::DrawUISettingsInButton()
 	ImGui::PopFont();
 
 	static char soundNameBuffer[256] = "";
+
+	if (audioClip != nullptr)
+		strcpy(soundNameBuffer, audioClip->GetName().c_str());
 
 	Texture* playSound = (Texture*)ResourceManager::getInstance()->GetResource("PlayAudio");
 	if (ImGui::ImageButton((ImTextureID)playSound->GetTextureID(), ImVec2(20, 20)))

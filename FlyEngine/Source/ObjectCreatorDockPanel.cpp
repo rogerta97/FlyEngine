@@ -57,6 +57,18 @@ bool ObjectCreatorDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_NoTitleBar))
 	{
+		Texture* iconTexture = nullptr; 
+
+		if (creatingObject->flyObjectType == FlyObjectType::ACTION_OBJECT)	
+			iconTexture = (Texture*)ResourceManager::getInstance()->GetResource("ObjectIcon");	
+
+		else if (creatingObject->flyObjectType == FlyObjectType::INVENTORY_ITEM)		
+			iconTexture = (Texture*)ResourceManager::getInstance()->GetResource("InventoryItemIcon");
+		
+		ImGui::Image((ImTextureID)iconTexture->GetTextureID(), ImVec2(35, 35)); 
+		ImGui::SameLine(); 
+
+		INC_CURSOR_10;
 		ImGui::PushFont(App->moduleImGui->rudaBlackHuge);
 		ImGui::Text("Object Creator:");
 		ImGui::PopFont();
