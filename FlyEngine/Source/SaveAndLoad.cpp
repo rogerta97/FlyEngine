@@ -151,11 +151,11 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ChangeRoom")).c_str()))
 		{
-			string destinationRoomName = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("ChangeRoom.Destination")).c_str());
+			UID destinationRoomUID = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ChangeRoom.Destination")).c_str());
 			ChangeRoomAction* changeRoomAction = newObject->AddChangeRoomAction(); 
 			changeRoomAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("ChangeRoom.Occurrence."));
 
-			Room* room = App->moduleRoomManager->GetRoom(destinationRoomName); 
+			Room* room = App->moduleRoomManager->GetRoom(destinationRoomUID);
 			changeRoomAction->SetDestination(room); 
 		}
 
