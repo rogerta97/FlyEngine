@@ -968,6 +968,10 @@ bool ObjectCreatorDockPanel::DrawCloseAndCreateButton()
 
 void ObjectCreatorDockPanel::AddCreatingObject()
 {
+	// If is item inventory and has no image assigned, we create a display image component with a default empty image 
+	if (creatingObject->IsInventoryItem() && creatingObject->GetAction(ACTION_DISPLAY_IMAGE) == nullptr)	
+		creatingObject->AddDisplayImageAction(); 
+	
 	// Clickable Area
 	if (clickableAreaActive)
 	{

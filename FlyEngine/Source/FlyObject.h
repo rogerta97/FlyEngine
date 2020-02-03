@@ -51,7 +51,7 @@ public:
 	void DoOnClickActions(); 
 
 	// Tools -----------
-	DisplayImageAction* AddDisplayImageAction(const char* imageTexturePath);
+	DisplayImageAction* AddDisplayImageAction(const char* imageTexturePath = "None");
 	ChangeRoomAction* AddChangeRoomAction();
 	ModifyVariableAction* AddModifyVariableAction();
 	EmitSoundAction* AddEmitSoundAction();

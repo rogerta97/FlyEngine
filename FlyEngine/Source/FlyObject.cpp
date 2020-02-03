@@ -345,6 +345,9 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTextureNam
 {
 	if (GetAction(ACTION_DISPLAY_IMAGE) == nullptr)
 	{
+		if (imageTextureName == "None")
+			imageTextureName = "EmptyObject"; 
+
 		DisplayImageAction* newAtrImage = new DisplayImageAction(this);
 		newAtrImage->CreateImage(imageTextureName);
 
