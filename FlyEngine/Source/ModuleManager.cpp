@@ -6,6 +6,7 @@
 #include "EmitSoundAction.h"
 #include "Application.h"
 #include "ModuleRoomManager.h"
+#include "ChangeRoomAction.h"
 #include "Room.h"
 #include "ModuleImGui.h"
 #include "Texture.h"
@@ -248,16 +249,26 @@ void ModuleManager::DrawActionListWithSettings(FlyObject* ownerObejct)
 			switch (selectableInfo->actionType)
 			{
 			case ACTION_MOD_VARIABLE:
-				ownerObejct->AddModifyVariableAction();
+			{
+				ModifyVariableAction* modVarAction = ownerObejct->AddModifyVariableAction();
+				modVarAction->SetOccObjectClicked(true); 
+			}
 				break;
 
 			case ACTION_EMIT_SOUND:
-				ownerObejct->AddEmitSoundAction();
+			{
+				EmitSoundAction* emitSoundAction =  ownerObejct->AddEmitSoundAction();
+				emitSoundAction->SetOccObjectClicked(true);
+			}
 				break;
 
 			case ACTION_CHANGE_ROOM:
-				ownerObejct->AddChangeRoomAction();
+			{
+				ChangeRoomAction* changeRoomAction = ownerObejct->AddChangeRoomAction();
+				changeRoomAction->SetOccObjectClicked(true);
+			}
 				break;
+
 			}
 		}
 		ImGui::EndPopup();

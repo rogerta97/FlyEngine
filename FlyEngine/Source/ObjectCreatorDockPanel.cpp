@@ -835,7 +835,6 @@ void ObjectCreatorDockPanel::DrawClickableAreaSettings()
 
 void ObjectCreatorDockPanel::PrintClickableAreaObjectVisuals(bool drawClickableArea)
 {
-
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 	ImGui::Text("Preview:");
 	ImGui::PopFont();
@@ -851,14 +850,9 @@ void ObjectCreatorDockPanel::PrintClickableAreaObjectVisuals(bool drawClickableA
 		// Show No Visual Text
 		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 		
-		if (clickableAreaActive) {
-			ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - 45, 98));
-			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.7f, 0.8f), "NO VISUALS");
-		}
-		else {
-			ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - 40, 98));
-			ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.5f), "INACTIVE");
-		}
+		ImGui::SetCursorPos(ImVec2((ImGui::GetContentRegionAvailWidth() / 2) - 76, (previewTextureMaxSize / 2) - (75)));
+		Texture* emptyObject = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject"); 
+		ImGui::Image((ImTextureID)emptyObject->GetTextureID(), ImVec2(150, 150));
 
 		ImGui::PopFont();
 	}

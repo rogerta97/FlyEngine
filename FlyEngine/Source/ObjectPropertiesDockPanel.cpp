@@ -600,11 +600,14 @@ void ObjectPropertiesDockPanel::DrawInventoryItemTabs(FlyObject* selectedObject)
 			ImGui::BeginChild("ButtonImagePreview", ImVec2(ImGui::GetContentRegionAvailWidth(), 185));
 
 			DisplayImageAction* displayImageAction = selectedObject->GetDisplayImageAction(); 
-			App->moduleManager->DrawImageFitInCenter(displayImageAction->GetTexture());
+
+			if(displayImageAction)
+				App->moduleManager->DrawImageFitInCenter(displayImageAction->GetTexture());
 		
 			static char inventoryBrowcseImageBuffer[512];
 
-			strcpy(inventoryBrowcseImageBuffer, displayImageAction->GetTexture()->GetName().c_str());
+			if (displayImageAction != nullptr && displayImageAction->GetTexture() != nullptr)
+				strcpy(inventoryBrowcseImageBuffer, displayImageAction->GetTexture()->GetName().c_str());
 
 			INC_CURSOR_X_10;
 			ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() - 120); 
