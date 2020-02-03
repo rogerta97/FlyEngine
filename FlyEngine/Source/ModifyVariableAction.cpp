@@ -327,6 +327,8 @@ void ModifyVariableEffect::SaveEffect(JSON_Object* jsonObject, string serializeO
 
 	if (targetVariable != nullptr)
 		json_object_dotset_string(jsonObject, saveString.c_str(), targetVariable->name.c_str());
+	else
+		json_object_dotset_string(jsonObject, saveString.c_str(), "..None..");
 
 	saveString = serializeObjectString + ".OperatorType";
 	json_object_dotset_number(jsonObject, saveString.c_str(), variableOperatorType);

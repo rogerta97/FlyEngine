@@ -144,8 +144,8 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		string serializeObjectStrActions = serializeObjectStr + "Actions.";
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayImage")).c_str()))
 		{
-			string texturePath = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("DisplayImage.TextureName")).c_str());
-			DisplayImageAction* displayImageAction = newObject->AddDisplayImageAction(texturePath.c_str());
+			string textureName = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("DisplayImage.TextureName")).c_str());
+			DisplayImageAction* displayImageAction = newObject->AddDisplayImageAction(textureName.c_str());
 			displayImageAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayImage.Occurrence.")); 
 		}
 

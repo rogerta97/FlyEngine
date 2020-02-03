@@ -603,6 +603,9 @@ void ObjectPropertiesDockPanel::DrawInventoryItemTabs(FlyObject* selectedObject)
 			App->moduleManager->DrawImageFitInCenter(displayImageAction->GetTexture());
 		
 			static char inventoryBrowcseImageBuffer[512];
+
+			strcpy(inventoryBrowcseImageBuffer, displayImageAction->GetTexture()->GetName().c_str());
+
 			INC_CURSOR_X_10;
 			ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() - 120); 
 			ImGui::InputTextWithHint("", "Search...", inventoryBrowcseImageBuffer, IM_ARRAYSIZE(inventoryBrowcseImageBuffer));
@@ -632,18 +635,6 @@ void ObjectPropertiesDockPanel::DrawInventoryItemTabs(FlyObject* selectedObject)
 			if (ImGui::Button("Change Image##Properties"))
 			{
 
-				/*ImGui::Columns(2);
-
-				ImGui::Text("Position");
-				ImGui::DragFloat("X", &selectedObject->GetClickableAreaPosOne().x);
-				ImGui::DragFloat("Y", &selectedObject->GetClickableAreaPosOne().y);
-
-				ImGui::NextColumn();
-
-				ImGui::Text("Dimensions");
-				ImGui::DragFloat("Width", &selectedObject->GetClickableAreaSizeOne().x);
-				ImGui::DragFloat("Heigth", &selectedObject->GetClickableAreaSizeOne().y);
-				ImGui::EndChild();*/
 			}
 
 			ImGui::EndChild();

@@ -341,12 +341,12 @@ void FlyObject::CalculateCurrentGizmo()
 	}
 }
 
-DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePath)
+DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTextureName)
 {
 	if (GetAction(ACTION_DISPLAY_IMAGE) == nullptr)
 	{
 		DisplayImageAction* newAtrImage = new DisplayImageAction(this);
-		newAtrImage->CreateImage(imageTexturePath);
+		newAtrImage->CreateImage(imageTextureName);
 
 		actionsList.push_back(newAtrImage);
 
@@ -355,6 +355,15 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 		hasVisuals = true; 
 
 		return newAtrImage;
+	}
+	else
+	{
+		DisplayImageAction* newAtrImage = (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE);
+
+		string textureName = MyFileSystem::getInstance()->DeleteFileExtension(imageTextureName); 
+		Texture* newTexture = (Texture*)ResourceManager::GetResource(textureName);
+
+		newAtrImage->SetTexture(newTexture);
 	}
 
 	return (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE); 	

@@ -168,7 +168,6 @@ void Room::AddItemToInventory(FlyObject* newObject_Inv)
 
 	// Delete the object from the room (now it will lay in the inventory) 
 	GameInventory::getInstance()->AddObjectToInventoryList(newObject_Inv);
-	this->DeleteFlyObjectFromList(newObject_Inv);
 }
 
 bool Room::HasObject(FlyObject* newObject_Inv)
