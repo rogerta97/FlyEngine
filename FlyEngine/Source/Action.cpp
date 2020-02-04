@@ -61,6 +61,7 @@ void Action::DrawUISettingsInButton()
 void Action::SaveAction(JSON_Object* jsonObject, std::string serializeObjectString, bool literalString)
 {
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "ActionType").c_str(), actionType);
+	SaveActionConditions(serializeObjectString, jsonObject);
 }
 
 void Action::SaveOccurrence(JSON_Object* jsonObject, string serializeObjectString)
@@ -71,17 +72,20 @@ void Action::SaveOccurrence(JSON_Object* jsonObject, string serializeObjectStrin
 	json_object_dotset_boolean(jsonObject, string(serializeObjectOccurrenceStr + "SceneLeave").c_str(), IsOccSceneLeave());
 	json_object_dotset_boolean(jsonObject, string(serializeObjectOccurrenceStr + "ObjectClicked").c_str(), IsOccObjectClicked());
 	json_object_dotset_boolean(jsonObject, string(serializeObjectOccurrenceStr + "BlackboardCondition").c_str(), IsOccBlackboardValue());
+}
+
+void Action::SaveActionConditions(std::string& serializeObjectString, JSON_Object* jsonObject)
+{
+	int conditionsAmount = this->actionVariableConditions.size(); 
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "Conditions.ConditionsAmount").c_str(), conditionsAmount);
 
 	if (!actionVariableConditions.empty())
 	{
-		std::string conditionsSaveStr = serializeObjectOccurrenceStr + "Conditions.";
-
-		json_object_dotset_number(jsonObject, string(conditionsSaveStr + "EvaluationCriteria").c_str(), evaluationCriteria);
-
-		int count = 0; 
+		string conditionsSaveStr = serializeObjectString + "Conditions"; 
+		int count = 0;
 		for (auto& currentCondition : actionVariableConditions)
 		{
-			currentCondition->SaveCondition(jsonObject, conditionsSaveStr, count++); 	
+			currentCondition->SaveCondition(jsonObject, conditionsSaveStr, count++);
 		}
 	}
 }
@@ -258,6 +262,12 @@ std::string Action::GetActionName() const
 void Action::SetActionName(std::string newName)
 {
 	toolName = newName;
+}
+
+void Action::LoadConditions(JSON_Object* jsonObject, string serializeObjectString)
+{
+	string conditionsStr = serializeObjectString + ".Conditions"; 
+	
 }
 
 bool& Action::IsOccSceneEnter()

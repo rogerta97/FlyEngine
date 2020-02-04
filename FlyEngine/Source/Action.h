@@ -84,12 +84,15 @@ public:
 
 	// Occurrence ---------------------
 	void SaveOccurrence(JSON_Object* jsonObject, string serializeObjectString);
+	void SaveActionConditions(std::string& serializeObjectString, JSON_Object* jsonObject);
 	void LoadOccurrence(JSON_Object* jsonObject, string serializeObjectString); 
 
 	// Actions ------------------------
 	virtual void DoAction(); 
 
 	// Occurrence & Conditions --------
+	void LoadConditions(JSON_Object* jsonObject, string serializeObjectString); 
+
 	bool& IsOccSceneEnter();
 	bool& IsOccSceneLeave();
 	bool& IsOccBlackboardValue();

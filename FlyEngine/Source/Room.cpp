@@ -197,6 +197,10 @@ void Room::SaveRoomData(JSON_Object* jsonObject)
 	for (auto& it : objectsInRoom)
 		it->SaveObjectData(jsonObject, count++);
 
+	// Save Blackboard 
+	if(roomBlackboard != nullptr)
+		roomBlackboard->SaveData(GetName()); 
+
 	// Save UI 
 	roomUIHandler->SaveRoomUI(jsonObject, string("RoomData.UserInterface"));
 }
