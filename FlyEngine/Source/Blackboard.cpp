@@ -31,7 +31,7 @@ void Blackboard::CleanUp()
 
 void Blackboard::SaveData(std::string _fileName)
 {
-	std::string path = MyFileSystem::getInstance()->GetSavedDataDirectory() + "BlackboardsData\\" + _fileName.c_str() + ".json";
+	std::string path = MyFileSystem::getInstance()->GetSavedDataDirectory() + "BlackboardsData\\" + _fileName.c_str() + "_Blackboard.json";
 
 	JSON_Value* blackboard_v = json_value_init_object();
 	JSON_Object* blackboard_obj = json_value_get_object(blackboard_v);
