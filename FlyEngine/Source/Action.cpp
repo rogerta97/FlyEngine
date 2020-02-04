@@ -81,7 +81,7 @@ void Action::SaveActionConditions(std::string& serializeObjectString, JSON_Objec
 
 	if (!actionVariableConditions.empty())
 	{
-		string conditionsSaveStr = serializeObjectString + "Conditions"; 
+		string conditionsSaveStr = serializeObjectString + "Conditions."; 
 		int count = 0;
 		for (auto& currentCondition : actionVariableConditions)
 		{
