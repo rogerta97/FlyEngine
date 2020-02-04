@@ -1069,7 +1069,7 @@ void ObjectPropertiesDockPanel::DrawChangeRoomSettings()
 
 			ImGui::PushFont(App->moduleImGui->rudaRegularMid);
 			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 35));
+			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 65));
 
 			ImGui::SetCursorPos(ImVec2(5, 5));
 			ImGui::Checkbox("Object Clicked", &changeRoomAction->IsOccObjectClicked());
@@ -1080,8 +1080,30 @@ void ObjectPropertiesDockPanel::DrawChangeRoomSettings()
 
 			}
 
+			ImGui::SetCursorPos(ImVec2(5, 35));
+			ImGui::Checkbox("Blackboard Value Condition", &changeRoomAction->IsOccBlackboardValue());
+
+			ImGui::SameLine();
+			static std::string showValueConditionButtonText = "Show Conditions";
+			if (ImGui::SmallButton(showValueConditionButtonText.c_str()))
+			{
+				if (showVariableConditions)
+				{
+					showVariableConditions = false;
+					showValueConditionButtonText = "Show Conditions";
+				}
+				else
+				{
+					showVariableConditions = true;
+					showValueConditionButtonText = "Hide Conditions";
+				}
+			}
+
 			ImGui::Spacing();
 			ImGui::EndChild();
+
+			if (showVariableConditions)
+				changeRoomAction->DrawValueConditionsList();
 
 			ImGui::PopFont();
 			ImGui::PopStyleColor();

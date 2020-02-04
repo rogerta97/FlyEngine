@@ -20,6 +20,12 @@ enum EditRoomMode
 	EDIT_ROOM_UI,
 };
 
+enum ViewportDrawClickableAreaCondition
+{
+	DRAW_ON_SELECTED,
+	DRAW_ALWAYS,
+};
+
 class TextureMSAA; 
 class FlyObject; 
 class UI_Element; 
@@ -58,6 +64,7 @@ public:
 	EditRoomMode editRoomMode; 
 	TextureMSAA* viewportTexture;
 	ViewportAspectRatio viewportAspectRatio; 
+	ViewportDrawClickableAreaCondition drawClickableAreaCondition; 
 
 	// Render Viewport Settings 
 	bool drawGizmos;

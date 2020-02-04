@@ -23,6 +23,7 @@ ViewportManager::ViewportManager()
 	
 	viewportAspectRatio = AR_4_3; 
 	editRoomMode = EDIT_ROOM_OBJECTS; 
+	drawClickableAreaCondition = DRAW_ON_SELECTED; 
 }
 
 ViewportManager* ViewportManager::getInstance()

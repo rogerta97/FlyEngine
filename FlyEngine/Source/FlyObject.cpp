@@ -96,11 +96,14 @@ void FlyObject::Draw()
 		(it)->Draw(); 
 	}
 
-	if (isSelected)
+	if (isSelected || ViewportManager::getInstance()->drawClickableAreaCondition == DRAW_ALWAYS)
 	{
 		if (clickableArea != nullptr && drawClickableArea && clickableAreaActive)		
 			DrawClickableArea();
-		
+	}
+
+	if(isSelected)
+	{
 		gizmos->Draw();
 	}
 }
@@ -293,6 +296,7 @@ void FlyObject::SaveClickableArea(std::string serializeObjectName, JSON_Object* 
 	serializeObjectName += "ClickableArea.";
 
 	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "Active").c_str(), clickableAreaActive);
+	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "Draw").c_str(), drawClickableArea);
 	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "DirectPosition").c_str(),!hasVisuals);
 
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "Color.r").c_str(), clickableAreaColor.x);
@@ -311,7 +315,6 @@ void FlyObject::SaveClickableArea(std::string serializeObjectName, JSON_Object* 
 
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "SizePerc.x").c_str(), clickableAreaSizePerc.x);
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "SizePerc.y").c_str(), clickableAreaSizePerc.y);
-
 }
 
 void FlyObject::DoOnClickActions()

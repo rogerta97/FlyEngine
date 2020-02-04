@@ -995,7 +995,7 @@ void ObjectCreatorDockPanel::AddCreatingObject()
 		else
 		{
 			creatingObject->CreateClickableArea(clickableAreaPosPerc, clickableAreaSizePerc);
-			creatingObject->drawClickableArea = false;
+			creatingObject->drawClickableArea = true;
 		}
 		creatingObject->clickableAreaActive = true;
 	}

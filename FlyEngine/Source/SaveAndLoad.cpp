@@ -105,6 +105,7 @@ void SaveAndLoad::LoadDataToSelectedRoom(std::string roomDataFilePath)
 
 void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::string& serializeObjectStr, Room* currentRoom)
 {
+	// Object Data -------
 	string newObjectName = json_object_dotget_string(root_obj, string(serializeObjectStr + string("Name")).c_str());
 
 	int flyObjectType = json_object_dotget_number(root_obj, string(serializeObjectStr + string("ObjectType")).c_str());
@@ -122,7 +123,7 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		newObject->SetDescription(json_object_dotget_string(root_obj, string(serializeObjectStr + string("Description")).c_str()));
 	}
 
-	// Transform ------
+	// Transform ------------
 	float positionX = json_object_dotget_number(root_obj, string(serializeObjectStr + string("Transform.Position.x")).c_str()); 
 	float positionY = json_object_dotget_number(root_obj, string(serializeObjectStr + string("Transform.Position.y")).c_str()); 
 	float2 position(positionX, positionY); 
@@ -209,6 +210,7 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 
 	// Clickable Area
 	newObject->clickableAreaActive = json_object_dotget_boolean(root_obj, string(serializeObjectStr + string("ClickableArea.Active")).c_str());
+	newObject->drawClickableArea = json_object_dotget_boolean(root_obj, string(serializeObjectStr + string("ClickableArea.Draw")).c_str());
 	bool directPosition = json_object_dotget_boolean(root_obj, string(serializeObjectStr + "ClickableArea.DirectPosition").c_str());
 
 	float4 color; 

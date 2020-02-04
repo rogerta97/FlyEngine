@@ -448,6 +448,7 @@ void RoomDockPanel::ShowViewportSettingsTab()
 		}
 	}
 
+	// Draw Resolution UI ------------------------------------------
 	static int resolutionSelected = 0;
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Resolution:");
@@ -470,6 +471,26 @@ void RoomDockPanel::ShowViewportSettingsTab()
 
 		default:
 			break;
+		}
+	}
+
+	// Draw Settings -----------------------------------------------
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Clickable Area Draw Mode:");
+	ImGui::PopFont();
+
+	static int selectedClickableAreaDrawMode = 0; 
+	if (ImGui::Combo("##drawMode", &selectedClickableAreaDrawMode, "Draw On Selected Object\0Draw Always"))
+	{
+		switch (selectedClickableAreaDrawMode)
+		{
+		case 0: 
+			ViewportManager::getInstance()->drawClickableAreaCondition = DRAW_ON_SELECTED; 
+			break; 
+			 
+		case 1: 
+			ViewportManager::getInstance()->drawClickableAreaCondition = DRAW_ALWAYS;
+			break; 
 		}
 	}
 }
