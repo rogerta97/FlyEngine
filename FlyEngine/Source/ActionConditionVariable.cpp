@@ -79,7 +79,7 @@ void ActionConditionVariable::DrawUIItem(int itemPosition)
 	float itemDesiredWidth = ImGui::GetContentRegionMax().x / 3.5f; 
 	float itemDesiredOffset = 0;
 
-	ImGui::PushItemWidth( + itemDesiredOffset);
+	ImGui::PushItemWidth(itemDesiredWidth + itemDesiredOffset);
 	ImGui::InputTextWithHint(inputTextID.c_str(), "Target Variable...", varNameBuffer, IM_ARRAYSIZE(varNameBuffer));
 	ImGui::PopItemWidth();
 

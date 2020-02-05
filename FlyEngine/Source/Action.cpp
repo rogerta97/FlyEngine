@@ -144,27 +144,11 @@ void Action::DrawValueConditionsList()
 	ImGui::PopFont();
 
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-	ImGui::BeginChild("valueConditionsHolder", ImVec2(ImGui::GetContentRegionAvailWidth() - 30, 150));
+	ImGui::BeginChild("valueConditionsHolder", ImVec2(ImGui::GetContentRegionAvailWidth(), 150));
 
-	// Iterate Conditions 
-	//static int showSelectionPopup = -1;
-	//int itemDesiredWidth = ;
-	//int itemDesiredOffset = 0; 
 	int count = 0; 
 	for (auto& currentCondition : actionVariableConditions)
-	{
-		/*switch (currentCondition->actionConditionType)
-		{
-			case ActionConditionType::AC_CHECK_VARIABLE:
-			{
-				
-			}
-				break; 
-
-			case ActionConditionType::AC_CHECK_OBJECT_INVENTORY:
-				break;
-		}*/
-		
+	{		
 		currentCondition->DrawUIItem(count);
 
 		if(count < actionVariableConditions.size() - 1)
@@ -204,11 +188,9 @@ void Action::OnAddConditionButtonPressed()
 {
 	if (ImGui::BeginPopup("SelectConditionType"))
 	{
-		if (ImGui::Selectable("Check Blackboard Variable"))
-		{
+		if (ImGui::Selectable("Check Blackboard Variable"))		
 			AddEmptyCondition(AC_CHECK_VARIABLE); 
-		}
-
+		
 		if (ImGui::Selectable("Check Inventory Object"))
 		{
 
