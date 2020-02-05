@@ -5,9 +5,12 @@
 #include "ModuleImGui.h"
 #include "Texture.h"
 #include "ResourceManager.h"
+#include "ActionCondition.h"
 #include "Room.h"
 #include "ModuleRoomManager.h"
 #include "FlyVariable.h"
+#include "ActionConditionVariable.h"
+#include "ActionCondition.h"
 
 #include "mmgr.h"
 
@@ -144,85 +147,25 @@ void Action::DrawValueConditionsList()
 	ImGui::BeginChild("valueConditionsHolder", ImVec2(ImGui::GetContentRegionAvailWidth() - 30, 150));
 
 	// Iterate Conditions 
+	//static int showSelectionPopup = -1;
+	//int itemDesiredWidth = ;
+	//int itemDesiredOffset = 0; 
 	int count = 0; 
-	static int showSelectionPopup = -1;
-	int itemDesiredWidth = ImGui::GetContentRegionMax().x / 3.5f;
-	int itemDesiredOffset = 0; 
 	for (auto& currentCondition : actionVariableConditions)
 	{
-		// Target Variable 
-		std::string findButtonID = "Find##FindButton" + to_string(count);
-
-		if (count == 0)
-			ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 3, ImGui::GetCursorPosY() + 4));
-		else
-			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 3); 
-
-		Texture* searchIcon = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
-		if (ImGui::Button(findButtonID.c_str()))
+		/*switch (currentCondition->actionConditionType)
 		{
-			ImGui::OpenPopup("search_variable_popup");
-			showSelectionPopup = count; 
-		}
-
-		if (count == showSelectionPopup)
-		{
-			FlyVariable* selectedPopupVar = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup();
-			if (selectedPopupVar != nullptr)
+			case ActionConditionType::AC_CHECK_VARIABLE:
 			{
-				currentCondition->targetVariable = selectedPopupVar; 
-				showSelectionPopup = -1; 
+				
 			}
-		}
+				break; 
 
-		ImGui::SameLine(); 
-		std::string inputTextID = "##InputTextCondition" + to_string(count); 
-		char varNameBuffer[256] = ""; 
-		if (currentCondition->targetVariable != nullptr)
-			strcpy(varNameBuffer, currentCondition->targetVariable->name.c_str()); 
+			case ActionConditionType::AC_CHECK_OBJECT_INVENTORY:
+				break;
+		}*/
 		
-		ImGui::PushItemWidth(itemDesiredWidth + itemDesiredOffset);
-		ImGui::InputTextWithHint(inputTextID.c_str(), "Target Variable...", varNameBuffer, IM_ARRAYSIZE(varNameBuffer));
-		ImGui::PopItemWidth();
-		
-		int conditionOperatorType = currentCondition->actionConditionOperator;
-		
-		// Operators and Target Value 
-		if (currentCondition->targetVariable != nullptr)
-		{
-			if (currentCondition->targetVariable->varType == Var_Integer)
-			{
-				std::string comboID = "##ComboTextCondition" + to_string(count);
-				ImGui::SameLine();
-				ImGui::PushItemWidth(itemDesiredWidth - itemDesiredOffset / 2);
-				if (ImGui::Combo(comboID.c_str(), &conditionOperatorType, "Equals To\0Greater Than\0Less Than\0"))
-				{
-					currentCondition->actionConditionOperator = (ActionConditionOperator)conditionOperatorType;
-				}
-				ImGui::PopItemWidth();
-
-				std::string inputIntID = "##InputIntTarget" + to_string(count);
-				ImGui::SameLine();
-				ImGui::PushItemWidth(itemDesiredWidth - itemDesiredOffset / 2);
-				ImGui::InputInt(inputIntID.c_str(), &currentCondition->targetValueInteger);
-				ImGui::PopItemWidth();
-			
-			}
-			else if (currentCondition->targetVariable->varType == Var_Toggle)
-			{
-				std::string comboID = "##ComboTextBoolCondition" + to_string(count);
-				ImGui::SameLine();
-				ImGui::PushItemWidth(itemDesiredWidth);
-				ImGui::Combo(comboID.c_str(), &conditionOperatorType, "Equals To\0");
-				ImGui::PopItemWidth();
-
-				std::string inputBoolID = "Value##InputBoolTarget" + to_string(count);
-				ImGui::SameLine();
-				ImGui::PushItemWidth(itemDesiredWidth);
-				ImGui::Checkbox(inputBoolID.c_str(), &currentCondition->targetValueBoolean);
-				ImGui::PopItemWidth();
-			}
-		}
+		currentCondition->DrawUIItem(count);
 
 		if(count < actionVariableConditions.size() - 1)
 			ImGui::Separator();
@@ -240,8 +183,11 @@ void Action::DrawValueConditionsList()
 	Texture* plusTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlusIcon"); 
 	if (ImGui::ImageButton((ImTextureID)plusTexture->GetTextureID(), ImVec2(25, 25))) 
 	{
-		AddEmptyCondition(); 
+		ImGui::OpenPopup("SelectConditionType");
 	}
+
+	// Callback for when button Add is pressed
+	OnAddConditionButtonPressed();
 
 	ImGui::SameLine(); 
 	Texture* minusTexture = (Texture*)ResourceManager::getInstance()->GetResource("MinusIcon");
@@ -252,6 +198,24 @@ void Action::DrawValueConditionsList()
 
 	ImGui::EndChild(); 
 	ImGui::PopStyleColor(); 
+}
+
+void Action::OnAddConditionButtonPressed()
+{
+	if (ImGui::BeginPopup("SelectConditionType"))
+	{
+		if (ImGui::Selectable("Check Blackboard Variable"))
+		{
+			AddEmptyCondition(AC_CHECK_VARIABLE); 
+		}
+
+		if (ImGui::Selectable("Check Inventory Object"))
+		{
+
+		}
+
+		ImGui::EndPopup();
+	}
 }
 
 std::string Action::GetActionName() const
@@ -310,11 +274,24 @@ void Action::SetOccObjectClicked(bool newOccObjectClicked)
 	occ_ObjectClicked = newOccObjectClicked;
 }
 
-ActionCondition* Action::AddEmptyCondition()
+ActionCondition* Action::AddEmptyCondition(ActionConditionType conditionType)
 {
-	ActionCondition* newCondition = new ActionCondition(); 
-	actionVariableConditions.push_back(newCondition); 
-	return newCondition;
+	switch (conditionType)
+	{
+	case AC_CHECK_VARIABLE:
+	{
+		ActionConditionVariable* conditionCheckVar = new ActionConditionVariable(); 
+		actionVariableConditions.push_back(conditionCheckVar);
+		return conditionCheckVar; 
+	}
+	case AC_CHECK_OBJECT_INVENTORY:
+		break;
+
+	case AC_NONE:
+		break;
+	}
+
+	return nullptr; 
 }
 
 FlyObject* Action::GetParentObject() const
@@ -373,34 +350,4 @@ ActionSelectableInfo Action::GetActionSelectableInfo()
 	return returnToolInfo;
 }
 
-ActionCondition::ActionCondition()
-{
-	targetVariable = nullptr;
-	actionConditionOperator = AC_EQUALS_TO; 
-	targetValueInteger = 0;
-	targetValueBoolean = false; 
-}
 
-ActionCondition::~ActionCondition()
-{
-}
-
-void ActionCondition::CleanUp()
-{
-	targetVariable = nullptr; 
-}
-
-void ActionCondition::SaveCondition(JSON_Object* jsonObject, string serializeObjectString, int pos)
-{
-	std::string saveStr = serializeObjectString + "Condition_" + to_string(pos); 
-	json_object_dotset_string(jsonObject, string(saveStr + ".TargetVariableName").c_str(), targetVariable->name.c_str()); 
-
-	saveStr = serializeObjectString + "Condition_" + to_string(pos);
-	json_object_dotset_number(jsonObject, string(saveStr + ".ConditionOperator").c_str(), actionConditionOperator);
-
-	saveStr = serializeObjectString + "Condition_" + to_string(pos);
-	json_object_dotset_number(jsonObject, string(saveStr + ".TargetValueInteger").c_str(), targetValueInteger);
-
-	saveStr = serializeObjectString + "Condition_" + to_string(pos);
-	json_object_dotset_boolean(jsonObject, string(saveStr + ".TargetValueBoolean").c_str(), targetValueBoolean);
-}

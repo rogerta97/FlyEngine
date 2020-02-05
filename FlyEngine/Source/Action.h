@@ -4,6 +4,7 @@
 #include <string>
 #include <list>
 #include "JSON/parson.h"
+#include "ActionCondition.h"
 
 using namespace std; 
 
@@ -31,15 +32,6 @@ enum ActionOccurrence
 	ON_None
 };
 
-enum ActionConditionOperator
-{
-	AC_EQUALS_TO, 
-	AC_BIGGER_THAN,
-	AC_LESS_THAN, 
-	AC_DIFFERENT_THAN,
-	AC_None
-};
-
 struct ActionSelectableInfo
 {
 	std::string actionName;
@@ -47,24 +39,8 @@ struct ActionSelectableInfo
 	ActionType actionType;
 };
 
-class FlyVariable; 
-class ActionCondition
-{
-public: 
-	ActionCondition();
-	~ActionCondition(); 
-
-	void CleanUp(); 
-	void SaveCondition(JSON_Object* jsonObject, string serializeObjectString, int pos);
-
-	FlyVariable* targetVariable; 
-	ActionConditionOperator actionConditionOperator;
-
-	int targetValueInteger; 
-	bool targetValueBoolean; 
-};
-
 class FlyObject; 
+class ActionCondition; 
 class Action
 {
 public:
@@ -103,10 +79,12 @@ public:
 	void SetOccBlackboardValue(bool newValue);
 	void SetOccObjectClicked(bool newValue);
 
-	ActionCondition* AddEmptyCondition();
+	ActionCondition* AddEmptyCondition(ActionConditionType conditionType);
 
 	// UI Draw -------------------------
-	void DrawValueConditionsList(); 
+	void DrawValueConditionsList();
+	void OnAddConditionButtonPressed();
+
 
 	// Set and Get ---------------------
 	std::string GetActionName() const; 

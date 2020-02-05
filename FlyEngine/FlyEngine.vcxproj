@@ -58,6 +58,8 @@
     <ClCompile Include="3rdParty\MathGeoLib\Time\Clock.cpp" />
     <ClCompile Include="3rdParty\mmgr\mmgr.cpp" />
     <ClCompile Include="3rdParty\PCGRandom\pcg_basic.c" />
+    <ClCompile Include="Source\ActionCondition.cpp" />
+    <ClCompile Include="Source\ActionConditionVariable.cpp" />
     <ClCompile Include="Source\AudioClip.cpp" />
     <ClCompile Include="Source\AudioImporter.cpp" />
     <ClCompile Include="Source\EmitSoundAction.cpp" />
@@ -197,6 +199,8 @@
     <ClInclude Include="3rdParty\mmgr\nommgr.h" />
     <ClInclude Include="3rdParty\PCGRandom\pcg_basic.h" />
     <ClInclude Include="glmath.h" />
+    <ClInclude Include="Source\ActionCondition.h" />
+    <ClInclude Include="Source\ActionConditionVariable.h" />
     <ClInclude Include="Source\AudioClip.h" />
     <ClInclude Include="Source\AudioImporter.h" />
     <ClInclude Include="Source\EmitSoundAction.h" />
