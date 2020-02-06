@@ -186,6 +186,18 @@ bool Room::CheckRaycastConditions()
 		!App->moduleImGui->objectCreatorDockPanel->IsVisible();
 }
 
+list<FlyObject*> Room::GetInventoryItemsList()
+{
+	list<FlyObject*> returnList = list<FlyObject*>(); 
+	for (auto& currentObject : objectsInRoom)
+	{
+		if (currentObject->flyObjectType == INVENTORY_ITEM)
+			returnList.push_back(currentObject);
+	}
+
+	return returnList;
+}
+
 void Room::SaveRoomData(JSON_Object* jsonObject)
 {
 	// Save Objects Data

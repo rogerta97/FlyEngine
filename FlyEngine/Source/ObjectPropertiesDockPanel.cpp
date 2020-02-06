@@ -1087,23 +1087,24 @@ void ObjectPropertiesDockPanel::DrawChangeRoomSettings()
 			static std::string showValueConditionButtonText = "Show Conditions";
 			if (ImGui::SmallButton(showValueConditionButtonText.c_str()))
 			{
-				if (showVariableConditions)
-				{
-					showVariableConditions = false;
-					showValueConditionButtonText = "Show Conditions";
-				}
-				else
-				{
-					showVariableConditions = true;
-					showValueConditionButtonText = "Hide Conditions";
-				}
+				ImGui::OpenPopup("action_conditions_popup"); 
+			}
+
+			if (ImGui::BeginPopup("action_conditions_popup"))
+			{
+				ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 0.00f));
+				ImGui::BeginChild("ActionPopupChild", ImVec2(500, 390));
+
+				changeRoomAction->DrawValueConditionsList();
+
+				ImGui::EndChild(); 
+				ImGui::PopStyleColor();
+
+				ImGui::EndPopup(); 
 			}
 
 			ImGui::Spacing();
 			ImGui::EndChild();
-
-			if (showVariableConditions)
-				changeRoomAction->DrawValueConditionsList();
 
 			ImGui::PopFont();
 			ImGui::PopStyleColor();

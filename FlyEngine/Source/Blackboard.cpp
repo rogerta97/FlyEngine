@@ -97,9 +97,9 @@ void Blackboard::ModifyIntegerVariable(ModifyVariableEffect* modifyVariableEffec
 	modifyVariableEffect->ApplyEffect(); 
 }
 
-FlyVariable* Blackboard::DrawVariableListPopup()
+FlyVariable* Blackboard::DrawVariableListPopup(std::string popupID)
 {
-	if (ImGui::BeginPopup("search_variable_popup"))
+	if (ImGui::BeginPopup(popupID.c_str()))
 	{
 		static char searchVarBuffer[256];
 		ImGui::InputTextWithHint("", "Search...", searchVarBuffer, IM_ARRAYSIZE(searchVarBuffer)); 

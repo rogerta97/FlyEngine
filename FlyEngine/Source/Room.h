@@ -49,6 +49,8 @@ public:
 	bool HasObject(FlyObject* newObject_Inv);
 	bool CheckRaycastConditions(); 
 
+	list<FlyObject*> GetInventoryItemsList(); 
+
 	// Save & Load ---------------
 	void SaveRoomData(JSON_Object* jsonObject);
 

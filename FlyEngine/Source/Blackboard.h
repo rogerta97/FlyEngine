@@ -22,7 +22,7 @@ public:
 	void ModifyIntegerVariable(ModifyVariableEffect* variableEffect);
 
 	// Utility 
-	FlyVariable* DrawVariableListPopup();
+	FlyVariable* DrawVariableListPopup(std::string popupID);
 	FlyVariable* AddDefaultVariable();
 	FlyVariable* GetVariable(std::string name); 
 

@@ -215,10 +215,10 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 	ImGui::SameLine();
 	if (ImGui::Button("Search"))
 	{
-		ImGui::OpenPopup("search_variable_popup");
+		ImGui::OpenPopup(string("search_variable_popup" + to_string(pos)).c_str());
 	}
 
-	FlyVariable* popupVarSelected = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup();
+	FlyVariable* popupVarSelected = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup(string("search_variable_popup" + to_string(pos)).c_str());
 	if (popupVarSelected != nullptr)
 	{
 		modifyVarEffect->variableOperatorType = (VariableOperatorType)0;

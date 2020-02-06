@@ -411,6 +411,9 @@
     <ClCompile Include="Source\ActionCondition.cpp">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes\ActionCondition</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ActionConditionHasItem.cpp">
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes\ActionCondition</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -834,6 +837,9 @@
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes\ActionCondition</Filter>
     </ClInclude>
     <ClInclude Include="Source\ActionCondition.h">
+      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes\ActionCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ActionConditionHasItem.h">
       <Filter>Source\FlyEngine\FlyObject\ObjectAttributes\ActionCondition</Filter>
     </ClInclude>
   </ItemGroup>

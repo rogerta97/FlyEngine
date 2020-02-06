@@ -10,6 +10,7 @@
 #include "ModuleRoomManager.h"
 #include "FlyVariable.h"
 #include "ActionConditionVariable.h"
+#include "ActionConditionHasItem.h"
 #include "ActionCondition.h"
 
 #include "mmgr.h"
@@ -108,17 +109,12 @@ void Action::DoAction()
 
 void Action::DrawValueConditionsList()
 {
-	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.17f, 0.19f, 0.22f, 1.00f));
-	ImGui::BeginChild("valueConditions", ImVec2(ImGui::GetContentRegionAvailWidth(), 310), true);
-
 	// Evalutation Criteria
-	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 8, ImGui::GetCursorPosY() + 4));
-	ImGui::PushFont(App->moduleImGui->rudaBoldMid); 
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig); 
 	ImGui::Text("Evaluation Criteria:");
 	ImGui::PopFont(); 
 
 	int evaluationCritatiaComboInt = (int)evaluationCriteria; 
-	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
 	if (ImGui::Combo("", &evaluationCritatiaComboInt, "All conditions must succed\0One condition must succed"))
 	{
 		switch (evaluationCritatiaComboInt)
@@ -134,26 +130,19 @@ void Action::DrawValueConditionsList()
 	}
 
 	ImGui::Spacing();
-	ImGui::Separator(); 
-	ImGui::Spacing();
-		
+
 	// Value Conditions List 
-	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 	ImGui::Text("Conditions List:");
 	ImGui::PopFont();
 
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-	ImGui::BeginChild("valueConditionsHolder", ImVec2(ImGui::GetContentRegionAvailWidth(), 150));
+	ImGui::BeginChild("valueConditionsHolder", ImVec2(ImGui::GetContentRegionAvailWidth(), 250));
 
 	int count = 0; 
 	for (auto& currentCondition : actionVariableConditions)
 	{		
 		currentCondition->DrawUIItem(count);
-
-		if(count < actionVariableConditions.size() - 1)
-			ImGui::Separator();
-
 		count++; 
 	}
 
@@ -179,22 +168,25 @@ void Action::DrawValueConditionsList()
 	{
 
 	}
-
-	ImGui::EndChild(); 
-	ImGui::PopStyleColor(); 
 }
 
 void Action::OnAddConditionButtonPressed()
 {
 	if (ImGui::BeginPopup("SelectConditionType"))
 	{
-		if (ImGui::Selectable("Check Blackboard Variable"))		
-			AddEmptyCondition(AC_CHECK_VARIABLE); 
-		
-		if (ImGui::Selectable("Check Inventory Object"))
-		{
+		Texture* checkVariableIcon = (Texture*)ResourceManager::getInstance()->GetResource("CheckVariableIcon");
+		ImGui::Image((ImTextureID)checkVariableIcon->GetTextureID(), ImVec2(18, 18));
+		ImGui::SameLine();
 
-		}
+		if (ImGui::Selectable("Check Blackboard Variable"))		
+			AddEmptyCondition(CONDITION_IS_VARIABLE); 
+		
+		Texture* checkInventoryItemIcon = (Texture*)ResourceManager::getInstance()->GetResource("CheckInventoryItemIcon");
+		ImGui::Image((ImTextureID)checkInventoryItemIcon->GetTextureID(), ImVec2(18, 18));
+		ImGui::SameLine();
+
+		if (ImGui::Selectable("Check Inventory Object"))
+			AddEmptyCondition(CONDITION_HAS_ITEM);
 
 		ImGui::EndPopup();
 	}
@@ -260,15 +252,18 @@ ActionCondition* Action::AddEmptyCondition(ActionConditionType conditionType)
 {
 	switch (conditionType)
 	{
-	case AC_CHECK_VARIABLE:
+	case CONDITION_IS_VARIABLE:
 	{
 		ActionConditionVariable* conditionCheckVar = new ActionConditionVariable(); 
 		actionVariableConditions.push_back(conditionCheckVar);
 		return conditionCheckVar; 
 	}
-	case AC_CHECK_OBJECT_INVENTORY:
-		break;
-
+	case CONDITION_HAS_ITEM:
+	{
+		ActionConditionHasItem* conditionHasItem = new ActionConditionHasItem();
+		actionVariableConditions.push_back(conditionHasItem);
+		return conditionHasItem;
+	}
 	case AC_NONE:
 		break;
 	}

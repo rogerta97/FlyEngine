@@ -9,6 +9,8 @@
 #include "ModuleRoomManager.h"
 #include "Texture.h"
 
+#include "mmgr.h"
+
 ActionConditionVariable::ActionConditionVariable()
 {
 	targetVariable = nullptr;
@@ -16,7 +18,7 @@ ActionConditionVariable::ActionConditionVariable()
 	targetValueInteger = 0;
 	targetValueBoolean = false;
 
-	actionConditionType = AC_CHECK_VARIABLE; 
+	actionConditionType = CONDITION_IS_VARIABLE; 
 }
 
 ActionConditionVariable::~ActionConditionVariable()
@@ -45,38 +47,40 @@ void ActionConditionVariable::SaveCondition(JSON_Object* jsonObject, std::string
 
 void ActionConditionVariable::DrawUIItem(int itemPosition)
 {
+	//*******************************************************************************************
+	// Draw Check Variable Icon
+	//*******************************************************************************************
+	INC_CURSOR_10;
+	Texture* checkVariableIcon = (Texture*)ResourceManager::getInstance()->GetResource("CheckVariableIcon");
+	ImGui::Image((ImTextureID)checkVariableIcon->GetTextureID(), ImVec2(35, 35));
+	ImGui::SameLine();
+
 	// Find button for target variable -----------------------------
-	std::string findButtonID = "Find##FindButton" + to_string(itemPosition);
+	std::string findButtonID = "Find##FindVariableConditionButton" + to_string(itemPosition);
 
-	if (itemPosition == 0)
-		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 3, ImGui::GetCursorPosY() + 4));
-	else
-		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 3);
-
+	INC_CURSOR_Y_10;
 	Texture* searchIcon = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
 	if (ImGui::Button(findButtonID.c_str()))
 	{
-		ImGui::OpenPopup("search_variable_popup");
+		ImGui::OpenPopup(string("search_variable_popup" + to_string(itemPosition)).c_str());
 	}
 
-	//if (count == showSelectionPopup)
-	//{
-		FlyVariable* selectedPopupVar = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup();
-		if (selectedPopupVar != nullptr)
-		{
-			targetVariable = selectedPopupVar;
-			//showSelectionPopup = -1;
-		}
-	//}
+	FlyVariable* selectedPopupVar = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup(string("search_variable_popup" + to_string(itemPosition)).c_str());
+	if (selectedPopupVar != nullptr)
+	{
+		targetVariable = selectedPopupVar;
+	}
 
-	// Condition Variable Name -----------------------------------
+	//*******************************************************************************************
+	// Draw InputText where the name of the object selected is going to be displayed 
+	//*******************************************************************************************
 	ImGui::SameLine();
 	std::string inputTextID = "##InputTextCondition" + to_string(itemPosition);
 	char varNameBuffer[256] = "";
 	if (targetVariable != nullptr)
 		strcpy(varNameBuffer, targetVariable->name.c_str());
 
-	float itemDesiredWidth = ImGui::GetContentRegionMax().x / 3.5f; 
+	float itemDesiredWidth = ImGui::GetContentRegionMax().x / 3.50f;
 	float itemDesiredOffset = 0;
 
 	ImGui::PushItemWidth(itemDesiredWidth + itemDesiredOffset);
@@ -85,7 +89,9 @@ void ActionConditionVariable::DrawUIItem(int itemPosition)
 
 	int conditionOperatorType = actionConditionOperator;
 
-	// Operators and Target Value ---------------------------------
+	//*******************************************************************************************
+	// Operators and Target Value 
+	//*******************************************************************************************
 	if (targetVariable != nullptr)
 	{
 		if (targetVariable->varType == Var_Integer)

@@ -1,5 +1,7 @@
 #include "ActionCondition.h"
 
+#include "mmgr.h"
+
 ActionCondition::ActionCondition()
 {
 	actionConditionType = AC_NONE;
@@ -22,4 +24,5 @@ void ActionCondition::SaveCondition(JSON_Object* jsonObject, std::string seriali
 
 void ActionCondition::DrawUIItem(int itemPosition)
 {
+
 }
