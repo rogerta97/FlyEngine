@@ -465,7 +465,7 @@ void ObjectCreatorDockPanel::DrawChangeRoomActionSettings()
 	ImGui::Checkbox("Object Clicked", &changeRoomAction->IsOccObjectClicked());
 
 	ImGui::SetCursorPos(ImVec2(5, 38));
-	ImGui::Checkbox("Blackboard Value Condition", &changeRoomAction->IsOccBlackboardValue());
+	ImGui::Checkbox("Blackboard Value Condition", &changeRoomAction->IsOccCondition());
 
 	ImGui::SameLine(); 
 	if (ImGui::Button(showValueConditionButtonText.c_str()))
@@ -526,7 +526,7 @@ void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 	ImGui::SetCursorPos(ImVec2(5, 68));
 	ImGui::Checkbox("Object Clicked", &modifyVariableAction->IsOccObjectClicked());
 	ImGui::SetCursorPos(ImVec2(5, 98));
-	ImGui::Checkbox("Blackboard Value Condition", &modifyVariableAction->IsOccBlackboardValue());
+	ImGui::Checkbox("Blackboard Value Condition", &modifyVariableAction->IsOccCondition());
 
 	ImGui::SameLine();
 	if (ImGui::Button(showValueConditionButtonText.c_str()))
@@ -603,7 +603,7 @@ void ObjectCreatorDockPanel::DrawEmitSoundActionSettings()
 	ImGui::Checkbox("Object Clicked", &emitSoundAction->IsOccObjectClicked());
 
 	ImGui::SetCursorPos(ImVec2(5, 98));
-	ImGui::Checkbox("Blackboard Value Condition", &emitSoundAction->IsOccBlackboardValue());
+	ImGui::Checkbox("Blackboard Value Condition", &emitSoundAction->IsOccCondition());
 
 	ImGui::SameLine();
 	if (ImGui::Button(showValueConditionButtonText.c_str()))

@@ -75,7 +75,7 @@ void Action::SaveOccurrence(JSON_Object* jsonObject, string serializeObjectStrin
 	json_object_dotset_boolean(jsonObject, string(serializeObjectOccurrenceStr + "SceneEnter").c_str(), IsOccSceneEnter());
 	json_object_dotset_boolean(jsonObject, string(serializeObjectOccurrenceStr + "SceneLeave").c_str(), IsOccSceneLeave());
 	json_object_dotset_boolean(jsonObject, string(serializeObjectOccurrenceStr + "ObjectClicked").c_str(), IsOccObjectClicked());
-	json_object_dotset_boolean(jsonObject, string(serializeObjectOccurrenceStr + "BlackboardCondition").c_str(), IsOccBlackboardValue());
+	json_object_dotset_boolean(jsonObject, string(serializeObjectOccurrenceStr + "BlackboardCondition").c_str(), IsOccCondition());
 }
 
 void Action::SaveActionConditions(std::string& serializeObjectString, JSON_Object* jsonObject)
@@ -212,9 +212,21 @@ bool Action::PassConditionTest()
 {
 	for (auto& currentCondition : actionConditions)
 	{
-		
+		bool testResult = currentCondition->PassTestCondition();
+
+		if (testResult == true)
+		{
+			if(evaluationCriteria == ONE_SUCCED)
+				return true;	
+		}
+		else
+		{
+			if (evaluationCriteria == ALL_SUCCED)
+				return false; 
+		}
 	}
-		return false;
+
+	return true;
 }
 
 bool& Action::IsOccSceneEnter()
@@ -227,7 +239,7 @@ bool& Action::IsOccSceneLeave()
 	return occ_SceneLeave;
 }
 
-bool& Action::IsOccBlackboardValue()
+bool& Action::IsOccCondition()
 {
 	return occ_blackboardValue;
 }

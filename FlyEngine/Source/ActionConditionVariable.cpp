@@ -117,7 +117,11 @@ void ActionConditionVariable::DrawUIItem(int itemPosition)
 			std::string comboID = "##ComboTextBoolCondition" + to_string(itemPosition);
 			ImGui::SameLine();
 			ImGui::PushItemWidth(itemDesiredWidth);
-			ImGui::Combo(comboID.c_str(), &conditionOperatorType, "Equals To\0");
+			if(ImGui::Combo(comboID.c_str(), &conditionOperatorType, "Equals To\0"))
+			{
+				actionConditionOperator = (ActionConditionOperator)conditionOperatorType;
+			}
+
 			ImGui::PopItemWidth();
 
 			std::string inputBoolID = "Value##InputBoolTarget" + to_string(itemPosition);
@@ -131,18 +135,20 @@ void ActionConditionVariable::DrawUIItem(int itemPosition)
 
 bool ActionConditionVariable::PassTestCondition()
 {
+	bool ret = false; 
 	switch (targetVariable->varType)
 	{
 
 	case Var_Integer:
-		
+		ret = PassTestIntegerVar(); 
 		break; 
 
 	case Var_Toggle:
-		
+		ret = PassTestToggleVar(); 
 		break; 
 	}
-	return false;
+
+	return ret;
 }
 
 bool ActionConditionVariable::PassTestIntegerVar()
@@ -175,6 +181,13 @@ bool ActionConditionVariable::PassTestIntegerVar()
 
 bool ActionConditionVariable::PassTestToggleVar()
 {
+	switch (actionConditionOperator)
+	{
+	case AC_EQUALS_TO:
+		if (targetVariable->varIntegerValue == targetValueInteger)
+			return true;
 
+		break;
+	}
 	return false;
 }

@@ -322,7 +322,12 @@ void FlyObject::DoOnClickActions()
 	for (auto& it : actionsList)
 	{
 		if (it->IsOccObjectClicked())
-			it->DoAction(); 
+		{
+			if (it->IsOccCondition() && !it->PassConditionTest())
+				continue; 
+		}
+
+		it->DoAction(); 
 	}
 }
 

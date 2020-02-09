@@ -898,7 +898,7 @@ void ObjectPropertiesDockPanel::DrawModifyVariableSettings()
 			ImGui::SetCursorPos(ImVec2(5, 8));
 			ImGui::Checkbox("Object Clicked", &modifyVariableAction->IsOccObjectClicked());
 			ImGui::SetCursorPos(ImVec2(5, 38));
-			ImGui::Checkbox("Blackboard Value Condition", &modifyVariableAction->IsOccBlackboardValue());
+			ImGui::Checkbox("Blackboard Value Condition", &modifyVariableAction->IsOccCondition());
 
 			ImGui::SameLine();
 			static std::string showValueConditionButtonText = "Show Conditions";
@@ -968,7 +968,7 @@ void ObjectPropertiesDockPanel::DrawEmitSoundSettings()
 			ImGui::SetCursorPos(ImVec2(5, 8));
 			ImGui::Checkbox("Object Clicked", &emitSoundAction->IsOccObjectClicked());
 			ImGui::SetCursorPos(ImVec2(5, 38));
-			ImGui::Checkbox("Blackboard Value Condition", &emitSoundAction->IsOccBlackboardValue());
+			ImGui::Checkbox("Blackboard Value Condition", &emitSoundAction->IsOccCondition());
 
 			ImGui::SameLine();
 			static std::string showValueConditionButtonText = "Show Conditions";
@@ -1081,7 +1081,7 @@ void ObjectPropertiesDockPanel::DrawChangeRoomSettings()
 			}
 
 			ImGui::SetCursorPos(ImVec2(5, 35));
-			ImGui::Checkbox("Conditions", &changeRoomAction->IsOccBlackboardValue());
+			ImGui::Checkbox("Conditions", &changeRoomAction->IsOccCondition());
 
 			ImGui::SameLine();
 			static std::string showValueConditionButtonText = "Show Conditions";

@@ -28,6 +28,8 @@ void ActionConditionHasItem::CleanUp()
 
 void ActionConditionHasItem::SaveCondition(JSON_Object* jsonObject, std::string serializeObjectString, int pos)
 {
+	string serializeStr = serializeObjectString + "Condition_" + to_string(pos); 
+
 }
 
 void ActionConditionHasItem::DrawUIItem(int itemPosition)

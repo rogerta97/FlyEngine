@@ -91,7 +91,7 @@ void ModifyVariableAction::DrawUISettings()
 		ImGui::SetCursorPos(ImVec2(5, 8));
 		ImGui::Checkbox("Object Clicked", &IsOccObjectClicked());
 		ImGui::SetCursorPos(ImVec2(5, 38));
-		ImGui::Checkbox("Blackboard Value Condition", &IsOccBlackboardValue());
+		ImGui::Checkbox("Blackboard Value Condition", &IsOccCondition());
 
 		ImGui::SameLine();
 		static std::string showValueConditionButtonText = "Show Conditions";

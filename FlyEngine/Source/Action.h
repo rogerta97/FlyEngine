@@ -72,7 +72,7 @@ public:
 
 	bool& IsOccSceneEnter();
 	bool& IsOccSceneLeave();
-	bool& IsOccBlackboardValue();
+	bool& IsOccCondition();
 	bool& IsOccObjectClicked();
 
 	void SetOccSceneEnter(bool newValue);
