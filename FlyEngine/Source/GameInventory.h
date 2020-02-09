@@ -2,6 +2,7 @@
 #define _GAME_INVENTORY_H_
 
 #include <list>
+#include "Globals.h"
 
 class FlyObject;
 struct GameInventory
@@ -17,7 +18,9 @@ public:
 
 	static void AddObjectToInventoryList(FlyObject* newObject);
 
-	// Pick ---
+	static bool IsItemInInventory(UID checkItemUID);
+
+	// Pick and Drop ---
 	static FlyObject* PickObjectFromInventory(int index); 
 	static void DrawDroppingObject(); 
 	static void DropDroppingObjectToRoom(); 

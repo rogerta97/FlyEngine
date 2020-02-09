@@ -47,7 +47,7 @@ void Action::Draw()
 
 void Action::CleanUp()
 {
-	for (auto& currentCondition : actionVariableConditions)
+	for (auto& currentCondition : actionConditions)
 	{
 		currentCondition->CleanUp();
 		delete currentCondition; 
@@ -80,14 +80,14 @@ void Action::SaveOccurrence(JSON_Object* jsonObject, string serializeObjectStrin
 
 void Action::SaveActionConditions(std::string& serializeObjectString, JSON_Object* jsonObject)
 {
-	int conditionsAmount = this->actionVariableConditions.size(); 
+	int conditionsAmount = this->actionConditions.size(); 
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "Conditions.ConditionsAmount").c_str(), conditionsAmount);
 
-	if (!actionVariableConditions.empty())
+	if (!actionConditions.empty())
 	{
 		string conditionsSaveStr = serializeObjectString + "Conditions."; 
 		int count = 0;
-		for (auto& currentCondition : actionVariableConditions)
+		for (auto& currentCondition : actionConditions)
 		{
 			currentCondition->SaveCondition(jsonObject, conditionsSaveStr, count++);
 		}
@@ -140,7 +140,7 @@ void Action::DrawValueConditionsList()
 	ImGui::BeginChild("valueConditionsHolder", ImVec2(ImGui::GetContentRegionAvailWidth(), 250));
 
 	int count = 0; 
-	for (auto& currentCondition : actionVariableConditions)
+	for (auto& currentCondition : actionConditions)
 	{		
 		currentCondition->DrawUIItem(count);
 		count++; 
@@ -208,6 +208,15 @@ void Action::LoadConditions(JSON_Object* jsonObject, string serializeObjectStrin
 	
 }
 
+bool Action::PassConditionTest()
+{
+	for (auto& currentCondition : actionConditions)
+	{
+		
+	}
+		return false;
+}
+
 bool& Action::IsOccSceneEnter()
 {
 	return occ_SceneEnter; 
@@ -255,13 +264,13 @@ ActionCondition* Action::AddEmptyCondition(ActionConditionType conditionType)
 	case CONDITION_IS_VARIABLE:
 	{
 		ActionConditionVariable* conditionCheckVar = new ActionConditionVariable(); 
-		actionVariableConditions.push_back(conditionCheckVar);
+		actionConditions.push_back(conditionCheckVar);
 		return conditionCheckVar; 
 	}
 	case CONDITION_HAS_ITEM:
 	{
 		ActionConditionHasItem* conditionHasItem = new ActionConditionHasItem();
-		actionVariableConditions.push_back(conditionHasItem);
+		actionConditions.push_back(conditionHasItem);
 		return conditionHasItem;
 	}
 	case AC_NONE:

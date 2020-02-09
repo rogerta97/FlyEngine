@@ -26,3 +26,8 @@ void ActionCondition::DrawUIItem(int itemPosition)
 {
 
 }
+
+bool ActionCondition::PassTestCondition()
+{
+	return false;
+}

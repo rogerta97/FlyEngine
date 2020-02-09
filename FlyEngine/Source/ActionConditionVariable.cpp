@@ -128,3 +128,53 @@ void ActionConditionVariable::DrawUIItem(int itemPosition)
 		}
 	}
 }
+
+bool ActionConditionVariable::PassTestCondition()
+{
+	switch (targetVariable->varType)
+	{
+
+	case Var_Integer:
+		
+		break; 
+
+	case Var_Toggle:
+		
+		break; 
+	}
+	return false;
+}
+
+bool ActionConditionVariable::PassTestIntegerVar()
+{
+	switch (actionConditionOperator)
+	{
+	case AC_EQUALS_TO:
+		if (targetVariable->varIntegerValue == targetValueInteger)
+			return true; 
+		break;
+
+	case AC_BIGGER_THAN:
+		if (targetVariable->varIntegerValue > targetValueInteger)
+			return true;
+		break;
+
+	case AC_LESS_THAN:
+		if (targetVariable->varIntegerValue < targetValueInteger)
+			return true;
+		break;
+
+	case AC_DIFFERENT_THAN:
+		if (targetVariable->varIntegerValue != targetValueInteger)
+			return true;
+		break;
+	}
+
+	return false;
+}
+
+bool ActionConditionVariable::PassTestToggleVar()
+{
+
+	return false;
+}

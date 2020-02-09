@@ -6,6 +6,7 @@
 #include "Room.h"
 #include "ModuleRoomManager.h"
 #include "Texture.h"
+#include "GameInventory.h"
 #include "FlyObject.h"
 #include "ModuleImGui.h"
 
@@ -49,24 +50,32 @@ void ActionConditionHasItem::DrawUIItem(int itemPosition)
 	Texture* searchIcon = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
 	if (ImGui::Button(findButtonID.c_str()))
 	{
-		ImGui::OpenPopup("search_item_inv_popup");
+		ImGui::OpenPopup(string("search_item_inv_popup" + to_string(itemPosition)).c_str());
 	}
 
-	if (ImGui::BeginPopup("search_item_inv_popup"))
+	if (ImGui::BeginPopup(string("search_item_inv_popup" + to_string(itemPosition)).c_str()))
 	{
 		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-		ImGui::Text("Inventory Items in %s Room", selectedRoom->GetName().c_str());
+		ImGui::Text("Inventory Items in %s:", selectedRoom->GetName().c_str());
 		ImGui::PopFont();
 
 		ImGui::Separator(); 
 		
-		list<FlyObject*>* inventoryItems = &selectedRoom->GetInventoryItemsList();
-
-		if (!inventoryItems->empty())
+		list<FlyObject*> inventoryItems = selectedRoom->GetInventoryItemsList();
+	
+		if (!inventoryItems.empty())
 		{
-			for (auto& currentItem : *inventoryItems)
+			for (auto& currentItem : inventoryItems)
 			{
-				ImGui::Selectable(currentItem->GetName().c_str());
+				Texture* inventoryItemIcon = (Texture*)ResourceManager::getInstance()->GetResource("InventoryItemIcon");
+				ImGui::Image((ImTextureID)inventoryItemIcon->GetTextureID(), ImVec2(20, 20));
+				ImGui::SameLine();
+
+				if (ImGui::Selectable(currentItem->GetName().c_str()))
+				{
+					itemToCheckName = currentItem->GetName().c_str(); 
+					itemToCheckUID = currentItem->GetUID(); 
+				}
 			}
 		}
 		else
@@ -84,8 +93,8 @@ void ActionConditionHasItem::DrawUIItem(int itemPosition)
 	std::string inputTextID = "##InputTextConditionHasItem" + to_string(itemPosition);
 	char itemNameBuffer[256] = "";
 
-	if (!item_to_check_name.empty())
-		strcpy(itemNameBuffer, item_to_check_name.c_str());
+	if (!itemToCheckName.empty())
+		strcpy(itemNameBuffer, itemToCheckName.c_str());
 
 	float itemDesiredWidth = ImGui::GetContentRegionMax().x / 3.5f;
 	float itemDesiredOffset = 0;
@@ -93,4 +102,12 @@ void ActionConditionHasItem::DrawUIItem(int itemPosition)
 	ImGui::PushItemWidth(itemDesiredWidth + itemDesiredOffset);
 	ImGui::InputTextWithHint(inputTextID.c_str(), "Which item..?", itemNameBuffer, IM_ARRAYSIZE(itemNameBuffer));
 	ImGui::PopItemWidth();
+}
+
+bool ActionConditionHasItem::PassTestCondition()
+{
+	if(GameInventory::getInstance()->IsItemInInventory(itemToCheckUID))
+		return true;
+
+	return false; 
 }

@@ -5,6 +5,7 @@
 #include "GameViewportDockPanel.h"
 #include "ModuleRoomManager.h"
 #include "FlyObject.h"
+#include "ModuleManager.h"
 
 #include "Room.h"
 
@@ -42,6 +43,17 @@ void GameInventory::AddObjectToInventoryList(FlyObject* newObject)
 		return; 
 
 	instance->objectsInInventory.push_back(newObject); 
+}
+
+bool GameInventory::IsItemInInventory(UID checkItemUID)
+{
+	for (auto& currentItem : instance->objectsInInventory)
+	{
+		if (currentItem->GetUID() == checkItemUID)
+			return true; 
+	}
+
+	return false; 
 }
 
 FlyObject* GameInventory::PickObjectFromInventory(int index)

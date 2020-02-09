@@ -17,7 +17,7 @@ enum ActionType
 	AT_null,
 };
 
-enum EvaluationCriteria
+enum ConditionEvaluationCriteria
 {
 	ALL_SUCCED,
 	ONE_SUCCED,
@@ -68,6 +68,7 @@ public:
 
 	// Occurrence & Conditions --------
 	void LoadConditions(JSON_Object* jsonObject, string serializeObjectString); 
+	bool PassConditionTest();
 
 	bool& IsOccSceneEnter();
 	bool& IsOccSceneLeave();
@@ -84,7 +85,6 @@ public:
 	// UI Draw -------------------------
 	void DrawValueConditionsList();
 	void OnAddConditionButtonPressed();
-
 
 	// Set and Get ---------------------
 	std::string GetActionName() const; 
@@ -119,8 +119,8 @@ protected:
 	// Conditions -----------------
 	string showValueConditionButtonText; 
 	bool showValueConditions = false; 
-	list<ActionCondition*> actionVariableConditions;
-	EvaluationCriteria evaluationCriteria; 
+	list<ActionCondition*> actionConditions;
+	ConditionEvaluationCriteria evaluationCriteria; 
 
 	// Vars -----------------------
 	std::string toolName; 

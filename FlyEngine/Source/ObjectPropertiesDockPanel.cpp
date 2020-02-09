@@ -1081,7 +1081,7 @@ void ObjectPropertiesDockPanel::DrawChangeRoomSettings()
 			}
 
 			ImGui::SetCursorPos(ImVec2(5, 35));
-			ImGui::Checkbox("Blackboard Value Condition", &changeRoomAction->IsOccBlackboardValue());
+			ImGui::Checkbox("Conditions", &changeRoomAction->IsOccBlackboardValue());
 
 			ImGui::SameLine();
 			static std::string showValueConditionButtonText = "Show Conditions";
@@ -1090,6 +1090,7 @@ void ObjectPropertiesDockPanel::DrawChangeRoomSettings()
 				ImGui::OpenPopup("action_conditions_popup"); 
 			}
 
+			ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.05f, 0.06f, 0.08f, 1.00f));
 			if (ImGui::BeginPopup("action_conditions_popup"))
 			{
 				ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 0.00f));
@@ -1102,6 +1103,7 @@ void ObjectPropertiesDockPanel::DrawChangeRoomSettings()
 
 				ImGui::EndPopup(); 
 			}
+			ImGui::PopStyleColor();
 
 			ImGui::Spacing();
 			ImGui::EndChild();

@@ -50,6 +50,7 @@ public:
 	// Actions ---------
 	void DoOnClickActions(); 
 
+
 	// Tools -----------
 	DisplayImageAction* AddDisplayImageAction(const char* imageTexturePath = "None");
 	ChangeRoomAction* AddChangeRoomAction();

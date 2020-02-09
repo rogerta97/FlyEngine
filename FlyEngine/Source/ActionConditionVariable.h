@@ -24,6 +24,10 @@ public:
 	void SaveCondition(JSON_Object* jsonObject, std::string serializeObjectString, int pos);
 	void DrawUIItem(int itemPosition);
 
+	bool PassTestCondition(); 
+	bool PassTestIntegerVar();
+	bool PassTestToggleVar();
+
 	FlyVariable* targetVariable;
 	ActionConditionOperator actionConditionOperator;
 
