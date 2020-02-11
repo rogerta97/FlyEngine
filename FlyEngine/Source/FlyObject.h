@@ -90,6 +90,7 @@ public:
 	void SetClickableAreaColor(float4 newColor);
 
 	Room* GetParentRoom() const;
+	void SetParentRoom(Room* newParentRoom);
 
 	bool& IsInteractable();
 	void SetInteractable(bool _isInteractable);

@@ -46,8 +46,10 @@ public:
 	// Utility -------------------
 	int GetObjectsInRoomAmount(); 
 	void AddItemToInventory(FlyObject* newObject_Inv); 
-	bool HasObject(FlyObject* newObject_Inv);
 	bool CheckRaycastConditions(); 
+	
+	bool HasObject(FlyObject* newObject);
+	FlyObject* GetFlyObject(UID _uid); 
 
 	list<FlyObject*> GetInventoryItemsList(); 
 

@@ -29,7 +29,9 @@ void ActionConditionHasItem::CleanUp()
 void ActionConditionHasItem::SaveCondition(JSON_Object* jsonObject, std::string serializeObjectString, int pos)
 {
 	string serializeStr = serializeObjectString + "Condition_" + to_string(pos); 
-
+	json_object_dotset_number(jsonObject, string(serializeStr + ".ConditionType").c_str(), actionConditionType);
+	json_object_dotset_string(jsonObject, string(serializeStr + ".ItemToCheckName").c_str(), itemToCheckName.c_str()); 
+	json_object_dotset_number(jsonObject, string(serializeStr + ".ItemToCheckUID").c_str(), itemToCheckUID); 
 }
 
 void ActionConditionHasItem::DrawUIItem(int itemPosition)

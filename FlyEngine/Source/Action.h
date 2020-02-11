@@ -41,6 +41,9 @@ struct ActionSelectableInfo
 
 class FlyObject; 
 class ActionCondition; 
+class ActionConditionHasItem; 
+class ActionConditionVariable; 
+class Blackboard; 
 class Action
 {
 public:
@@ -68,6 +71,9 @@ public:
 
 	// Occurrence & Conditions --------
 	void LoadConditions(JSON_Object* jsonObject, string serializeObjectString); 
+	ActionConditionHasItem* LoadConditionHasItem(JSON_Object* jsonObject, string serializeObjectString);
+	ActionConditionVariable* LoadConditionVariable(JSON_Object* jsonObject, string serializeObjectString, Blackboard* currentBlackboard);
+
 	bool PassConditionTest();
 
 	bool& IsOccSceneEnter();
@@ -81,6 +87,7 @@ public:
 	void SetOccObjectClicked(bool newValue);
 
 	ActionCondition* AddEmptyCondition(ActionConditionType conditionType);
+	void AddCondition(ActionCondition* newCondition);
 
 	// UI Draw -------------------------
 	void DrawValueConditionsList();

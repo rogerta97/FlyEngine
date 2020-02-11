@@ -203,9 +203,54 @@ void Action::SetActionName(std::string newName)
 }
 
 void Action::LoadConditions(JSON_Object* jsonObject, string serializeObjectString)
+{	
+	int conditionsAmount = json_object_dotget_number(jsonObject, string(serializeObjectString + "ConditionsAmount").c_str()); 
+
+	int count = 0; 
+	while (count < conditionsAmount)
+	{
+		string serializeStr = serializeObjectString + "Condition_" + to_string(count); 
+		
+		int conditionType_tmp = json_object_dotget_number(jsonObject, string(serializeStr + ".ConditionType").c_str()); 
+		ActionConditionType actionConditionType = (ActionConditionType)conditionType_tmp; 
+		ActionCondition* newCondition = nullptr; 
+
+		switch (actionConditionType)
+		{
+		case CONDITION_IS_VARIABLE:
+			newCondition = LoadConditionVariable(jsonObject, serializeStr, parentObject->GetParentRoom()->GetBlackboard());
+			break;
+
+		case CONDITION_HAS_ITEM:
+			newCondition = LoadConditionHasItem(jsonObject, serializeStr);
+			break; 
+		}
+
+		count++; 
+	}	
+}
+
+ActionConditionHasItem* Action::LoadConditionHasItem(JSON_Object* jsonObject, string )
 {
-	string conditionsStr = serializeObjectString + ".Conditions"; 
-	
+	ActionConditionHasItem* newConditionHasItem = new ActionConditionHasItem(); 
+	newConditionHasItem->itemToCheckUID = json_object_dotget_number(jsonObject, string(serializeObjectString + ".ItemToCheckUID").c_str());
+	return newConditionHasItem;
+}
+
+ActionConditionVariable* Action::LoadConditionVariable(JSON_Object* jsonObject, string serializeObjectString, Blackboard* currentBlackboard)
+{
+	ActionConditionVariable* newConditionVariable = new ActionConditionVariable();
+
+	string targetVariableName = json_object_dotget_string(jsonObject, string(serializeObjectString + ".TargetVariableName").c_str());
+	newConditionVariable->targetVariable = currentBlackboard->GetVariable(targetVariableName);
+
+	int conditionOperator_tmp = json_object_dotget_number(jsonObject, string(serializeObjectString + ".ConditionType").c_str());
+	newConditionVariable->actionConditionOperator = (ActionConditionOperator)conditionOperator_tmp;
+
+	newConditionVariable->targetValueInteger = json_object_dotget_number(jsonObject, string(serializeObjectString + ".TargetValueInteger").c_str());
+	newConditionVariable->targetValueBoolean = json_object_dotget_boolean(jsonObject, string(serializeObjectString + ".TargetValueBoolean").c_str());
+
+	return newConditionVariable; 
 }
 
 bool Action::PassConditionTest()
@@ -290,6 +335,11 @@ ActionCondition* Action::AddEmptyCondition(ActionConditionType conditionType)
 	}
 
 	return nullptr; 
+}
+
+void Action::AddCondition(ActionCondition* newCondition)
+{
+	actionConditions.push_back(newCondition); 
 }
 
 FlyObject* Action::GetParentObject() const

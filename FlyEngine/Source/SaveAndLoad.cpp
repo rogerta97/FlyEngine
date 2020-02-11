@@ -107,21 +107,25 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 {
 	// Object Data -------
 	string newObjectName = json_object_dotget_string(root_obj, string(serializeObjectStr + string("Name")).c_str());
-
 	int flyObjectType = json_object_dotget_number(root_obj, string(serializeObjectStr + string("ObjectType")).c_str());
 	
+	// Create Object --
 	FlyObject* newObject = nullptr; 
 	if (flyObjectType == INVENTORY_ITEM)	
 		newObject = currentRoom->CreateInventoryItem(newObjectName.c_str());	
 	else	
 		newObject = currentRoom->CreateFlyObject(newObjectName.c_str());
 	
+	// UID --
 	newObject->SetUID(json_object_dotget_number(root_obj, string(serializeObjectStr + string("UID")).c_str())); 
 
 	if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("Description")).c_str())) 
 	{
 		newObject->SetDescription(json_object_dotget_string(root_obj, string(serializeObjectStr + string("Description")).c_str()));
 	}
+
+	// Parent Room --
+	newObject->SetParentRoom(currentRoom); 
 
 	// Transform ------------
 	float positionX = json_object_dotget_number(root_obj, string(serializeObjectStr + string("Transform.Position.x")).c_str()); 
@@ -147,14 +151,18 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		{
 			string textureName = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("DisplayImage.TextureName")).c_str());
 			DisplayImageAction* displayImageAction = newObject->AddDisplayImageAction(textureName.c_str());
+
 			displayImageAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayImage.Occurrence.")); 
+			//displayImageAction->LoadConditions(root_obj, serializeObjectStrActions + string("DisplayImage.Conditions.")); 
 		}
 
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ChangeRoom")).c_str()))
 		{
 			UID destinationRoomUID = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ChangeRoom.Destination")).c_str());
 			ChangeRoomAction* changeRoomAction = newObject->AddChangeRoomAction(); 
+
 			changeRoomAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("ChangeRoom.Occurrence."));
+			//changeRoomAction->LoadConditions(root_obj, serializeObjectStrActions + string("ChangeRoom.Conditions."));
 
 			Room* room = App->moduleRoomManager->GetRoom(destinationRoomUID);
 			changeRoomAction->SetDestination(room); 
@@ -164,7 +172,9 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		{
 			int effectsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.EffectsAmount")).c_str());
 			ModifyVariableAction* modifyVariableAction = newObject->AddModifyVariableAction();
+
 			modifyVariableAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("ModifyVariable.Occurrence."));
+			//modifyVariableAction->LoadConditions(root_obj, serializeObjectStrActions + string("ModifyVariable.Conditions."));
 
 			string effectsGroupStr = serializeObjectStrActions + "ModifyVariable.EffectsGroup.";
 			int count = 0; 
@@ -197,7 +207,9 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		{
 			string audioClipPath = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("EmitSound.Path")).c_str());
 			EmitSoundAction* emitSoundAction = newObject->AddEmitSoundAction();
+
 			emitSoundAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("EmitSound.Occurrence."));
+			//emitSoundAction->LoadConditions(root_obj, serializeObjectStrActions + string("EmitSound.Conditions."));
 
 			if (audioClipPath != "None")
 			{
@@ -237,6 +249,74 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 	newObject->FitObjectUtils();
 }
 
+void SaveAndLoad::LoadActionConditions(JSON_Object* root_obj, std::string& serializeObjectStr, Room* currentRoom)
+{
+	int objectUID = json_object_dotget_number(root_obj, string(serializeObjectStr + "UID").c_str());
+	FlyObject* parentObject = currentRoom->GetFlyObject(objectUID); 
+
+	if (parentObject == nullptr)
+	{
+		FLY_ERROR("Parent Object could not be found when loading action conditions");
+		assert(false);
+	}
+
+	if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("Actions")).c_str()))
+	{
+		const char* actionNames[] = 
+		{ 
+			"DisplayImage", 
+			"ChangeRoom", 
+			"EmitSound", 
+			"ModifyVariable" 
+		}; 
+
+		for (int i = 0; i < 4; i++)
+		{
+			string serializeObjectStrActions = serializeObjectStr + "Actions." + actionNames[i];
+			if (json_object_dothas_value(root_obj, string(serializeObjectStrActions).c_str()))
+			{
+				Action* holderAction = nullptr;
+				
+				if(actionNames[i] == "DisplayImage")
+					holderAction = parentObject->AddDisplayImageAction("Null");
+
+				else if (actionNames[i] == "ChangeRoom")
+					holderAction = parentObject->AddChangeRoomAction();
+
+				else if (actionNames[i] == "EmitSound")
+					holderAction = parentObject->AddEmitSoundAction();
+
+				else if (actionNames[i] == "ModifyVariable")
+					holderAction = parentObject->AddModifyVariableAction();
+
+				string conditionsSerializeStr = string(serializeObjectStrActions + ".Conditions").c_str();
+				int conditionsAmount = json_object_dotget_number(root_obj, string(conditionsSerializeStr + ".ConditionsAmount").c_str());
+
+				int count = 0;
+				while (count < conditionsAmount)
+				{
+					string serializeStr = conditionsSerializeStr + ".Condition_" + to_string(count);
+
+					int conditionType_tmp = json_object_dotget_number(root_obj, string(serializeStr + ".ConditionType").c_str());
+					ActionConditionType actionConditionType = (ActionConditionType)conditionType_tmp;
+
+					switch (actionConditionType)
+					{
+					case CONDITION_IS_VARIABLE:
+						holderAction->LoadConditionVariable(root_obj, serializeStr, parentObject->GetParentRoom()->GetBlackboard());
+						break;
+
+					case CONDITION_HAS_ITEM:
+						holderAction->LoadConditionHasItem(root_obj, serializeStr);
+						break;
+					}
+					count++;
+				}
+			}
+		}	
+	}
+}
+
 void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 {
 	// Load Room Blackboard
@@ -256,6 +336,16 @@ void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 		instance->CreateFlyObjectFromSavedData(root_obj, serializeObjectStr, roomToLoad);
 		counter++;
 	}
+
+	// We wait until the object is created to ensure any reference in Conditions is already there 
+	counter = 0;
+	while (counter < obj_ammount)
+	{
+		string serializeObjectStr = "RoomData.Objects" + string(".FlyObject_") + to_string(counter) + string(".");
+		instance->LoadActionConditions(root_obj, serializeObjectStr, roomToLoad);
+		counter++;
+	}
+
 
 	string serialiseStr = "RoomData.UserInterface";
 

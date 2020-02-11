@@ -179,6 +179,16 @@ bool Room::HasObject(FlyObject* newObject_Inv)
 	}
 }
 
+FlyObject* Room::GetFlyObject(UID _uid)
+{
+	for (auto& currentObject : objectsInRoom)
+	{
+		if (_uid == currentObject->GetUID())
+			return currentObject;
+	}
+	return nullptr; 
+}
+
 bool Room::CheckRaycastConditions()
 {
 	return App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && 

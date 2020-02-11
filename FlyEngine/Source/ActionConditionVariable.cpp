@@ -33,15 +33,11 @@ void ActionConditionVariable::CleanUp()
 void ActionConditionVariable::SaveCondition(JSON_Object* jsonObject, std::string serializeObjectString, int pos)
 {
 	std::string saveStr = serializeObjectString + "Condition_" + to_string(pos);
+
+	json_object_dotset_number(jsonObject, std::string(saveStr + ".ConditionType").c_str(), actionConditionType);
 	json_object_dotset_string(jsonObject, std::string(saveStr + ".TargetVariableName").c_str(), targetVariable->name.c_str());
-
-	saveStr = serializeObjectString + "Condition_" + to_string(pos);
 	json_object_dotset_number(jsonObject, std::string(saveStr + ".ConditionOperator").c_str(), actionConditionOperator);
-
-	saveStr = serializeObjectString + "Condition_" + to_string(pos);
 	json_object_dotset_number(jsonObject, std::string(saveStr + ".TargetValueInteger").c_str(), targetValueInteger);
-
-	saveStr = serializeObjectString + "Condition_" + to_string(pos);
 	json_object_dotset_boolean(jsonObject, std::string(saveStr + ".TargetValueBoolean").c_str(), targetValueBoolean);
 }
 

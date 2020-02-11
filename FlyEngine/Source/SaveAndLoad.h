@@ -30,6 +30,7 @@ public:
 	// Load ----
 	static void LoadDataToSelectedRoom(std::string roomDataFilePath);
 	static void CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::string& serializeObjectStr, Room* currentRoom);
+	static void LoadActionConditions(JSON_Object* root_obj, std::string& serializeObjectStr, Room* currentRoom);
 
 	static void LoadDataToRoom(std::string roomDataFilePath, Room* roomToSave);
 };
