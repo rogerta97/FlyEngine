@@ -919,7 +919,7 @@ void ObjectPropertiesDockPanel::DrawModifyVariableSettings()
 			ImGui::EndChild();
 
 			if (showVariableConditions)
-				modifyVariableAction->DrawValueConditionsList();
+				modifyVariableAction->DrawActionConditionsList();
 
 			POP_FONT;
 			ImGui::PopStyleColor();
@@ -987,7 +987,7 @@ void ObjectPropertiesDockPanel::DrawEmitSoundSettings()
 			}
 
 			if (showVariableConditions)
-				emitSoundAction->DrawValueConditionsList();
+				emitSoundAction->DrawActionConditionsList();
 
 			ImGui::Spacing();
 			ImGui::EndChild();
@@ -1096,7 +1096,7 @@ void ObjectPropertiesDockPanel::DrawChangeRoomSettings()
 				ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 0.00f));
 				ImGui::BeginChild("ActionPopupChild", ImVec2(500, 390));
 
-				changeRoomAction->DrawValueConditionsList();
+				changeRoomAction->DrawActionConditionsList();
 
 				ImGui::EndChild(); 
 				ImGui::PopStyleColor();

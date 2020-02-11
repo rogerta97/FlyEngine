@@ -112,7 +112,7 @@ void ModifyVariableAction::DrawUISettings()
 		ImGui::EndChild();
 
 		if (showVariableConditions)
-			DrawValueConditionsList();
+			DrawActionConditionsList();
 
 		POP_FONT;
 		ImGui::PopStyleColor();

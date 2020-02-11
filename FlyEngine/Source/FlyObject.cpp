@@ -268,7 +268,7 @@ void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "UID").c_str(), uid);
 	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "Interactable").c_str(), isInteractable);
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "ObjectType").c_str(), this->flyObjectType);
-	json_object_dotset_number(jsonObject, string(serializeObjectName + "ParentRoomUID").c_str(), this->parentRoom->GetUID());
+	//json_object_dotset_number(jsonObject, string(serializeObjectName + "ParentRoomUID").c_str(), this->parentRoom->GetUID());
 
 	if(!GetDescription().empty())
 		json_object_dotset_string(jsonObject, string(serializeObjectName + "Description").c_str(), GetDescription().c_str());

@@ -107,7 +107,7 @@ void Action::DoAction()
 	
 }
 
-void Action::DrawValueConditionsList()
+void Action::DrawActionConditionsList()
 {
 	// Evalutation Criteria
 	ImGui::PushFont(App->moduleImGui->rudaBoldBig); 
@@ -230,10 +230,11 @@ void Action::LoadConditions(JSON_Object* jsonObject, string serializeObjectStrin
 	}	
 }
 
-ActionConditionHasItem* Action::LoadConditionHasItem(JSON_Object* jsonObject, string )
+ActionConditionHasItem* Action::LoadConditionHasItem(JSON_Object* jsonObject, string serializeObjectString)
 {
 	ActionConditionHasItem* newConditionHasItem = new ActionConditionHasItem(); 
 	newConditionHasItem->itemToCheckUID = json_object_dotget_number(jsonObject, string(serializeObjectString + ".ItemToCheckUID").c_str());
+	actionConditions.push_back(newConditionHasItem);
 	return newConditionHasItem;
 }
 
@@ -250,6 +251,7 @@ ActionConditionVariable* Action::LoadConditionVariable(JSON_Object* jsonObject, 
 	newConditionVariable->targetValueInteger = json_object_dotget_number(jsonObject, string(serializeObjectString + ".TargetValueInteger").c_str());
 	newConditionVariable->targetValueBoolean = json_object_dotget_boolean(jsonObject, string(serializeObjectString + ".TargetValueBoolean").c_str());
 
+	actionConditions.push_back(newConditionVariable);
 	return newConditionVariable; 
 }
 

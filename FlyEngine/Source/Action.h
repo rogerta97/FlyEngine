@@ -90,7 +90,7 @@ public:
 	void AddCondition(ActionCondition* newCondition);
 
 	// UI Draw -------------------------
-	void DrawValueConditionsList();
+	void DrawActionConditionsList();
 	void OnAddConditionButtonPressed();
 
 	// Set and Get ---------------------

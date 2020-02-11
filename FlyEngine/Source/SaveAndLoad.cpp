@@ -118,6 +118,7 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 	
 	// UID --
 	newObject->SetUID(json_object_dotget_number(root_obj, string(serializeObjectStr + string("UID")).c_str())); 
+	//newObject->SetUID(RandomNumberGenerator::getInstance()->GenerateUID()); 
 
 	if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("Description")).c_str())) 
 	{
@@ -276,6 +277,11 @@ void SaveAndLoad::LoadActionConditions(JSON_Object* root_obj, std::string& seria
 			if (json_object_dothas_value(root_obj, string(serializeObjectStrActions).c_str()))
 			{
 				Action* holderAction = nullptr;
+				string conditionsSerializeStr = string(serializeObjectStrActions + ".Conditions").c_str();
+				int conditionsAmount = json_object_dotget_number(root_obj, string(conditionsSerializeStr + ".ConditionsAmount").c_str());
+
+				if (conditionsAmount == 0)
+					continue;
 				
 				if(actionNames[i] == "DisplayImage")
 					holderAction = parentObject->AddDisplayImageAction("Null");
@@ -289,8 +295,6 @@ void SaveAndLoad::LoadActionConditions(JSON_Object* root_obj, std::string& seria
 				else if (actionNames[i] == "ModifyVariable")
 					holderAction = parentObject->AddModifyVariableAction();
 
-				string conditionsSerializeStr = string(serializeObjectStrActions + ".Conditions").c_str();
-				int conditionsAmount = json_object_dotget_number(root_obj, string(conditionsSerializeStr + ".ConditionsAmount").c_str());
 
 				int count = 0;
 				while (count < conditionsAmount)

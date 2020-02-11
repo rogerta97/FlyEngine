@@ -486,7 +486,7 @@ void ObjectCreatorDockPanel::DrawChangeRoomActionSettings()
 	ImGui::EndChild();
 
 	if(showValueConditions)
-		changeRoomAction->DrawValueConditionsList();
+		changeRoomAction->DrawActionConditionsList();
 
 	ImGui::PopFont();
 	ImGui::PopStyleColor();
@@ -546,7 +546,7 @@ void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 	ImGui::EndChild();
 
 	if (showValueConditions)
-		modifyVariableAction->DrawValueConditionsList();
+		modifyVariableAction->DrawActionConditionsList();
 
 	POP_FONT;
 	ImGui::PopStyleColor();
@@ -624,7 +624,7 @@ void ObjectCreatorDockPanel::DrawEmitSoundActionSettings()
 	ImGui::EndChild();
 
 	if (showValueConditions)
-		emitSoundAction->DrawValueConditionsList();
+		emitSoundAction->DrawActionConditionsList();
 
 	ImGui::PopFont();
 	ImGui::PopStyleColor();
