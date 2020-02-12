@@ -348,7 +348,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;WINDOWS_IGNORE_PACKING_MISMATCH;SOLUTION_DIR=R"($(SolutionDir))";WAV_MUSIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;$(SolutionDir)3rdParty/glm;$(SolutionDir)3rdParty/MathGeoLib;$(SolutionDir)3rdParty/DevILWindowsSDK/include;$(SolutionDir)3rdParty;$(SolutionDir)3rdParty/SDL_Mixer</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;$(SolutionDir)3rdParty/glm;$(SolutionDir)3rdParty/MathGeoLib;$(SolutionDir)3rdParty/DevILWindowsSDK/include;$(SolutionDir)3rdParty;$(SolutionDir)3rdParty/SDL_Mixer;$(SolutionDir)3rdParty/FreeType</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -384,7 +384,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;WINDOWS_IGNORE_PACKING_MISMATCH;WAV_MUSIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;$(SolutionDir)3rdParty/glm;$(SolutionDir)3rdParty/MathGeoLib;$(SolutionDir)3rdParty/DevILWindowsSDK/include;$(SolutionDir)3rdParty;$(SolutionDir)3rdParty/SDL_Mixer</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty/Glew/include;$(SolutionDir)3rdParty/ImGui;$(SolutionDir)3rdParty/SDL/include;$(SolutionDir)3rdParty/mmgr;$(SolutionDir)3rdParty/glm;$(SolutionDir)3rdParty/MathGeoLib;$(SolutionDir)3rdParty/DevILWindowsSDK/include;$(SolutionDir)3rdParty;$(SolutionDir)3rdParty/SDL_Mixer;$(SolutionDir)3rdParty/FreeType</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

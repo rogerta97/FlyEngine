@@ -32,6 +32,7 @@ FlyObject::FlyObject(std::string _name, std::string _description, FlyObjectType 
 	isSelected = false; 
 	hasVisuals = false; 
 	clickableAreaActive = false;
+	isPicked = false; 
 	drawClickableArea = false;
 	flyObjectType = _flyObjectType; 
 	parentRoom = _parentRoom; 
@@ -80,7 +81,7 @@ bool FlyObject::Update()
 			case INVENTORY_ITEM:
 				DoOnClickActions(); 
 				App->moduleRoomManager->GetSelectedRoom()->AddItemToInventory(this);
-				App->moduleManager->AddDeleteFromListObject(this); 
+				isPicked = true; 
 				ret = true; 
 				break;
 			}
@@ -92,6 +93,9 @@ bool FlyObject::Update()
 
 void FlyObject::Draw()
 {
+	if (isPicked)
+		return; 
+
 	for (auto& it : actionsList) {
 		(it)->Draw(); 
 	}

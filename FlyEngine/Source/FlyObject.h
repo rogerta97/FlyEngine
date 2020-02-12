@@ -109,8 +109,9 @@ public:
 	FlyObjectType flyObjectType; 
 
 	// Clickable Area Public ------
-	bool clickableAreaActive; 
-	bool drawClickableArea; 
+	bool clickableAreaActive = false;
+	bool drawClickableArea = false;
+	bool isPicked = false; 
 
 private: 
 

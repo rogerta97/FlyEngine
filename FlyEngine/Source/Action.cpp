@@ -173,7 +173,7 @@ void Action::DrawActionConditionsList()
 void Action::OnAddConditionButtonPressed()
 {
 	if (ImGui::BeginPopup("SelectConditionType"))
-	{
+	{		
 		Texture* checkVariableIcon = (Texture*)ResourceManager::getInstance()->GetResource("CheckVariableIcon");
 		ImGui::Image((ImTextureID)checkVariableIcon->GetTextureID(), ImVec2(18, 18));
 		ImGui::SameLine();
@@ -187,7 +187,6 @@ void Action::OnAddConditionButtonPressed()
 
 		if (ImGui::Selectable("Check Inventory Object"))
 			AddEmptyCondition(CONDITION_HAS_ITEM);
-
 		ImGui::EndPopup();
 	}
 }
@@ -234,7 +233,7 @@ ActionConditionHasItem* Action::LoadConditionHasItem(JSON_Object* jsonObject, st
 {
 	ActionConditionHasItem* newConditionHasItem = new ActionConditionHasItem(); 
 	newConditionHasItem->itemToCheckUID = json_object_dotget_number(jsonObject, string(serializeObjectString + ".ItemToCheckUID").c_str());
-	newConditionHasItem->itemToCheckName = json_object_dotget_number(jsonObject, string(serializeObjectString + ".ItemToCheckName").c_str());;
+	newConditionHasItem->itemToCheckName = json_object_dotget_string(jsonObject, string(serializeObjectString + ".ItemToCheckName").c_str());
 	actionConditions.push_back(newConditionHasItem);
 	return newConditionHasItem;
 }
