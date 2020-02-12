@@ -109,7 +109,7 @@
     <Filter Include="Source\FlyEngine\UIElements">
       <UniqueIdentifier>{66f5bde8-f901-464c-bf5c-da947291deb5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\FlyEngine\FlyObject\ObjectAttributes\ActionCondition">
+    <Filter Include="Source\FlyEngine\FlyObject\ActionCondition">
       <UniqueIdentifier>{cb139422-11d1-421b-9b2d-22ec4332c7f6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -406,13 +406,13 @@
       <Filter>Source\FlyEngine\UIElements</Filter>
     </ClCompile>
     <ClCompile Include="Source\ActionConditionVariable.cpp">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes\ActionCondition</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ActionCondition</Filter>
     </ClCompile>
     <ClCompile Include="Source\ActionCondition.cpp">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes\ActionCondition</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ActionCondition</Filter>
     </ClCompile>
     <ClCompile Include="Source\ActionConditionHasItem.cpp">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes\ActionCondition</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ActionCondition</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -834,13 +834,13 @@
       <Filter>Source\FlyEngine\UIElements</Filter>
     </ClInclude>
     <ClInclude Include="Source\ActionConditionVariable.h">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes\ActionCondition</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ActionCondition</Filter>
     </ClInclude>
     <ClInclude Include="Source\ActionCondition.h">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes\ActionCondition</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ActionCondition</Filter>
     </ClInclude>
     <ClInclude Include="Source\ActionConditionHasItem.h">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes\ActionCondition</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ActionCondition</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

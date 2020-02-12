@@ -234,6 +234,7 @@ ActionConditionHasItem* Action::LoadConditionHasItem(JSON_Object* jsonObject, st
 {
 	ActionConditionHasItem* newConditionHasItem = new ActionConditionHasItem(); 
 	newConditionHasItem->itemToCheckUID = json_object_dotget_number(jsonObject, string(serializeObjectString + ".ItemToCheckUID").c_str());
+	newConditionHasItem->itemToCheckName = json_object_dotget_number(jsonObject, string(serializeObjectString + ".ItemToCheckName").c_str());;
 	actionConditions.push_back(newConditionHasItem);
 	return newConditionHasItem;
 }

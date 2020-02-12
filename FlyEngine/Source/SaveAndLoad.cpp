@@ -284,16 +284,16 @@ void SaveAndLoad::LoadActionConditions(JSON_Object* root_obj, std::string& seria
 					continue;
 				
 				if(actionNames[i] == "DisplayImage")
-					holderAction = parentObject->AddDisplayImageAction("Null");
+					holderAction = parentObject->GetAction(ACTION_DISPLAY_IMAGE);
 
 				else if (actionNames[i] == "ChangeRoom")
-					holderAction = parentObject->AddChangeRoomAction();
+					holderAction = parentObject->GetAction(ACTION_CHANGE_ROOM);
 
 				else if (actionNames[i] == "EmitSound")
-					holderAction = parentObject->AddEmitSoundAction();
+					holderAction = parentObject->GetAction(ACTION_EMIT_SOUND);
 
 				else if (actionNames[i] == "ModifyVariable")
-					holderAction = parentObject->AddModifyVariableAction();
+					holderAction = parentObject->GetAction(ACTION_MOD_VARIABLE);
 
 
 				int count = 0;
