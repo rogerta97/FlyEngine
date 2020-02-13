@@ -414,6 +414,12 @@
     <ClCompile Include="Source\ActionConditionHasItem.cpp">
       <Filter>Source\FlyEngine\FlyObject\ActionCondition</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FontImporter.cpp">
+      <Filter>Source\Tools\Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Font.cpp">
+      <Filter>Source\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -841,6 +847,12 @@
     </ClInclude>
     <ClInclude Include="Source\ActionConditionHasItem.h">
       <Filter>Source\FlyEngine\FlyObject\ActionCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FontImporter.h">
+      <Filter>Source\Tools\Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Font.h">
+      <Filter>Source\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
