@@ -36,7 +36,8 @@ private:
 private: 
 	Font* textFont = nullptr; 
 	std::string text; 
-
+	
+	int quadsAllocated = 0; 
 	std::map<int, Quad*> textQuads;
 };
 

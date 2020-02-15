@@ -124,6 +124,7 @@ void DisplayTextAction::RenderText()
 
 void DisplayTextAction::SetText(std::string newText)
 {
+	AllocateTextQuads(newText.size()); 
 	text = newText;
 }
 
@@ -160,6 +161,7 @@ void DisplayTextAction::AllocateTextQuads(int amount, int position)
 		newQuad->Create(1, 1);
 
 		textQuads.insert(std::pair<int, Quad*>(position + counter, newQuad));
+		quadsAllocated++;
 		counter++;
 	}
 }
