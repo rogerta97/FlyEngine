@@ -16,3 +16,13 @@ DisplayTextAction::~DisplayTextAction()
 {
 
 }
+
+void DisplayTextAction::SetText(std::string newText)
+{
+	text = newText;
+}
+
+std::string& DisplayTextAction::GetText()
+{
+	return text; 
+}

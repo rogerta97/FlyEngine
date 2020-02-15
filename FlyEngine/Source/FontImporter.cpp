@@ -24,7 +24,7 @@ FontImporter* FontImporter::getInstance()
 
 FontImporter::~FontImporter()
 {
-
+	FT_Done_FreeType(freeType);
 }
 
 void FontImporter::Delete()

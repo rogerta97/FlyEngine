@@ -9,7 +9,7 @@ Font::Font() : Resource(RESOURCE_FONT)
 
 Font::~Font()
 {
-
+	FT_Done_Face(fontFace);
 }
 
 void Font::CreateCharactersFromFace()
@@ -57,6 +57,8 @@ void Font::CreateCharactersFromFace()
 
 		fontCharacters.insert(std::pair<GLchar, Character>(c, character));
 	}
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 }
 
 void Font::SetFace(FT_Face newFace, int fontSize)
