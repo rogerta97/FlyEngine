@@ -6,7 +6,9 @@
 #include "AudioClip.h"
 #include "MusicTrack.h"
 #include "AudioImporter.h"
+#include "FontImporter.h"
 #include "imgui.h"
+#include "Font.h"
 
 #include <string>
 #include "mmgr.h"
@@ -51,6 +53,12 @@ ResourceType ResourceManager::GetResourceTypeFromExtension(FileExtension ext)
 	{
 	case FILE_WAV:
 		return ResourceType::RESOURCE_SFX;
+
+	case FILE_OTF:
+		return ResourceType::RESOURCE_FONT;
+
+	case FILE_TTF:
+		return ResourceType::RESOURCE_FONT;
 
 	case FILE_MP3:
 		return ResourceType::RESOURCE_MUSIC;
@@ -262,6 +270,7 @@ void ResourceManager::LoadResource(string newResourcePath, ResourceType forceTyp
 		AddResource(newResource, resourceName.c_str());
 		flog("Added Resource %s", resourceName.c_str());
 	}
+		break; 
 
 	case RESOURCE_MUSIC:
 	{
@@ -270,7 +279,16 @@ void ResourceManager::LoadResource(string newResourcePath, ResourceType forceTyp
 		AddResource(newResource, resourceName.c_str());
 		flog("Added Resource %s", resourceName.c_str());
 	}
-	break;
+		break;
+
+	case RESOURCE_FONT:
+	{
+		Font* newResource = FontImporter::getInstance()->LoadFont(newResourcePath);
+		string resourceName = MyFileSystem::getInstance()->GetLastPathItem(newResourcePath, false);
+		AddResource(newResource, resourceName.c_str());
+		flog("Added Resource %s", resourceName.c_str());
+	}
+		break;
 	}
 	
 }
@@ -285,6 +303,9 @@ void ResourceManager::LoadAllGameResources()
 
 	std::string resourcesMusicPath = MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Audio\\Music";
 	LoadAllFilesFromFolder(resourcesMusicPath, RESOURCE_MUSIC);
+
+	std::string resourcesFontsPath = MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Fonts";
+	LoadAllFilesFromFolder(resourcesFontsPath, RESOURCE_FONT);
 }
 
 void ResourceManager::LoadAllFilesFromFolder(string path, ResourceType forceType)

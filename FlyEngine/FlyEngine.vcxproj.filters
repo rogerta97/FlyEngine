@@ -55,9 +55,6 @@
     <Filter Include="Source\FlyEngine\FlyObject">
       <UniqueIdentifier>{da051c03-cb85-4c57-b1cb-1ef31e851259}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\FlyEngine\FlyObject\ObjectAttributes">
-      <UniqueIdentifier>{e73d5c5c-e2db-4166-a6ab-65a38df89321}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\FlyEngine\Managers">
       <UniqueIdentifier>{70bed84a-47fc-4a41-883e-4799d2991502}</UniqueIdentifier>
     </Filter>
@@ -111,6 +108,9 @@
     </Filter>
     <Filter Include="Source\FlyEngine\FlyObject\ActionCondition">
       <UniqueIdentifier>{cb139422-11d1-421b-9b2d-22ec4332c7f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\FlyEngine\FlyObject\ObjectActions">
+      <UniqueIdentifier>{e73d5c5c-e2db-4166-a6ab-65a38df89321}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -220,7 +220,7 @@
       <Filter>Source\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Source\Transform.cpp">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClCompile>
     <ClCompile Include="3rdParty\MathGeoLib\Math\BitOps.cpp">
       <Filter>Source\3rdParty\MathGeoLib\src</Filter>
@@ -349,13 +349,13 @@
       <Filter>Source\Modules\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\Action.cpp">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClCompile>
     <ClCompile Include="Source\DisplayImageAction.cpp">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClCompile>
     <ClCompile Include="Source\ChangeRoomAction.cpp">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClCompile>
     <ClCompile Include="3rdParty\JSON\parson.c">
       <Filter>Source\3rdParty\JSON</Filter>
@@ -370,7 +370,7 @@
       <Filter>Source\FlyEngine\FlyObject\Blackboard</Filter>
     </ClCompile>
     <ClCompile Include="Source\ModifyVariableAction.cpp">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClCompile>
     <ClCompile Include="Source\FlyVariable.cpp">
       <Filter>Source\FlyEngine\FlyObject\Blackboard</Filter>
@@ -391,7 +391,7 @@
       <Filter>Source\Resources</Filter>
     </ClCompile>
     <ClCompile Include="Source\EmitSoundAction.cpp">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClCompile>
     <ClCompile Include="Source\UI_Image.cpp">
       <Filter>Source\FlyEngine\UIElements</Filter>
@@ -419,6 +419,12 @@
     </ClCompile>
     <ClCompile Include="Source\Font.cpp">
       <Filter>Source\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UI_Text.cpp">
+      <Filter>Source\FlyEngine\UIElements</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DisplayTextAction.cpp">
+      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -546,7 +552,7 @@
       <Filter>Source\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\Transform.h">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClInclude>
     <ClInclude Include="3rdParty\MathGeoLib\MathBuildConfig.h">
       <Filter>Source\3rdParty\MathGeoLib</Filter>
@@ -783,13 +789,13 @@
       <Filter>Source\Modules\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\Action.h">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClInclude>
     <ClInclude Include="Source\DisplayImageAction.h">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClInclude>
     <ClInclude Include="Source\ChangeRoomAction.h">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClInclude>
     <ClInclude Include="3rdParty\JSON\parson.h">
       <Filter>Source\3rdParty\JSON</Filter>
@@ -807,7 +813,7 @@
       <Filter>Source\FlyEngine\FlyObject\Blackboard</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModifyVariableAction.h">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClInclude>
     <ClInclude Include="Source\FileBrowserDockPanel.h">
       <Filter>Source\Modules\DockingPanels</Filter>
@@ -825,7 +831,7 @@
       <Filter>Source\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Source\EmitSoundAction.h">
-      <Filter>Source\FlyEngine\FlyObject\ObjectAttributes</Filter>
+      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClInclude>
     <ClInclude Include="Source\UI_Image.h">
       <Filter>Source\FlyEngine\UIElements</Filter>
@@ -853,6 +859,12 @@
     </ClInclude>
     <ClInclude Include="Source\Font.h">
       <Filter>Source\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UI_Text.h">
+      <Filter>Source\FlyEngine\UIElements</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DisplayTextAction.h">
+      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

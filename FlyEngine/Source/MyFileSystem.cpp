@@ -106,6 +106,12 @@ FileExtension MyFileSystem::GetFileExtension(string path)
 
 	if (path == ".wav" || path == ".WAV")
 		return FILE_WAV;
+
+	if (path == ".ttf" || path == ".TTF")
+		return FILE_TTF;
+
+	if (path == ".otf" || path == ".OTF")
+		return FILE_OTF;
 }
 
 string MyFileSystem::GetIconsDirectory()

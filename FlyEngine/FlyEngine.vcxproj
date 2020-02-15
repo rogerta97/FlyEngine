@@ -63,6 +63,7 @@
     <ClCompile Include="Source\ActionConditionVariable.cpp" />
     <ClCompile Include="Source\AudioClip.cpp" />
     <ClCompile Include="Source\AudioImporter.cpp" />
+    <ClCompile Include="Source\DisplayTextAction.cpp" />
     <ClCompile Include="Source\EmitSoundAction.cpp" />
     <ClCompile Include="Source\Font.cpp" />
     <ClCompile Include="Source\FontImporter.cpp" />
@@ -101,6 +102,7 @@
     <ClCompile Include="Source\UI_Button.cpp" />
     <ClCompile Include="Source\UI_Element.cpp" />
     <ClCompile Include="Source\UI_Image.cpp" />
+    <ClCompile Include="Source\UI_Text.cpp" />
     <ClCompile Include="Source\ViewportManager.cpp" />
     <ClCompile Include="Source\ModuleRoomManager.cpp" />
     <ClCompile Include="Source\ModuleImGui.cpp" />
@@ -207,6 +209,7 @@
     <ClInclude Include="Source\ActionConditionVariable.h" />
     <ClInclude Include="Source\AudioClip.h" />
     <ClInclude Include="Source\AudioImporter.h" />
+    <ClInclude Include="Source\DisplayTextAction.h" />
     <ClInclude Include="Source\EmitSoundAction.h" />
     <ClInclude Include="Source\Font.h" />
     <ClInclude Include="Source\FontImporter.h" />
@@ -246,6 +249,7 @@
     <ClInclude Include="Source\UI_Button.h" />
     <ClInclude Include="Source\UI_Element.h" />
     <ClInclude Include="Source\UI_Image.h" />
+    <ClInclude Include="Source\UI_Text.h" />
     <ClInclude Include="Source\ViewportManager.h" />
     <ClInclude Include="Source\ModuleRoomManager.h" />
     <ClInclude Include="Source\ModuleImGui.h" />

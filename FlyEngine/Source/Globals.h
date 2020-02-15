@@ -32,6 +32,10 @@ enum FileExtension
 	// Audio
 	FILE_WAV,
 	FILE_MP3,
+
+	// Font
+	FILE_TTF,
+	FILE_OTF,
 };
 
 #define LOG(format, ...) log(__FILE__, __LINE__, CM_DEBUG, format, __VA_ARGS__)

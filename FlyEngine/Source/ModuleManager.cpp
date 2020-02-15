@@ -47,7 +47,7 @@ bool ModuleManager::Init()
 	// Init File System 
 	MyFileSystem::getInstance()->Init(); 
 
-	// Load Engine Icons -----
+	// Load Game Resources -----
 	ResourceManager::getInstance()->LoadAllGameResources(); 
 
 	// Tools Descriptions 
@@ -55,6 +55,7 @@ bool ModuleManager::Init()
 	AddToolsNameDescription("Change Scene", "This should be the description of the change scene tool", ACTION_CHANGE_ROOM);
 	AddToolsNameDescription("Modify Variable", "This should be the description of the mofdify variable tool", ACTION_MOD_VARIABLE);
 	AddToolsNameDescription("Emit Sound", "This should be the description of the emit sound tool", ACTION_EMIT_SOUND);
+	AddToolsNameDescription("Display Text", "This should be the description of the display text tool", ACTION_DISPLAY_TEXT);
 
 	return true;
 }

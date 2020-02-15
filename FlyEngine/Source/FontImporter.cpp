@@ -3,7 +3,8 @@
 #include "Application.h"
 #include "MyFileSystem.h"
 #include "mmgr.h"
-#include FT_FREETYPE_H
+
+#pragma comment(lib, "3rdParty/FreeType/win32/freetype.lib")
 
 FontImporter* FontImporter::instance = 0;
 
@@ -33,15 +34,15 @@ void FontImporter::Delete()
 
 Font* FontImporter::LoadFont(std::string path)
 {
-	//// Create Font Face 
-	//FT_Face face;
-	//if (FT_New_Face(instance->freeType, path.c_str(), 0, &face))
-	//{
-	//	FLY_ERROR("ERROR::FREETYPE: Failed to load font");
+	// Create Font Face 
+	FT_Face face;
+	if (FT_New_Face(instance->freeType, path.c_str(), 0, &face))
+	{
+		FLY_ERROR("ERROR::FREETYPE: Failed to load font");
 		return nullptr; 
-	//}
+	}
 
-	//Font* newFont = new Font(); 
-	//newFont->SetFace(face); 
-	//return newFont;
+	Font* newFont = new Font(); 
+	newFont->SetFace(face, 20); 
+	return newFont;
 }
