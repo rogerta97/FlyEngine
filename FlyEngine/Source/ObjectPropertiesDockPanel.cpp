@@ -1219,6 +1219,10 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 				selectedObject->AddEmitSoundAction();
 				break;
 
+			case ACTION_DISPLAY_TEXT:
+				selectedObject->AddDisplayTextAction();
+				break;
+
 			case AT_null:
 				break;
 			}

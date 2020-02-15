@@ -3,7 +3,9 @@
 
 #include "Action.h"
 #include <string>
+#include <map>
 
+class Quad; 
 using namespace std;
 
 class Font; 
@@ -13,13 +15,29 @@ public:
 	DisplayTextAction(FlyObject* _parentObject);
 	~DisplayTextAction();
 
+	// Virtual -----------------------------
+	void Draw();
+	void CleanUp();
+	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
+
+	// Render ------------------------------
+	void RenderText(); 
+
+	// Set & Get ---------------------------
 	void SetText(std::string newText);
 	std::string& GetText();
 
+	void SetFont(Font* newFont);
+	Font* GetFont();
+
+private:	
+	void AllocateTextQuads(int amount, int position = -1);
+
 private: 
-	Font* currentFont = nullptr; 
+	Font* textFont = nullptr; 
 	std::string text; 
 
+	std::map<int, Quad*> textQuads;
 };
 
 #endif 

@@ -20,6 +20,7 @@ enum FlyObjectType
 class Gizmos; 
 class DisplayImageAction; 
 class ModifyVariableAction; 
+class DisplayTextAction; 
 class ChangeRoomAction; 
 class Room; 
 class EmitSoundAction; 
@@ -55,6 +56,7 @@ public:
 	ChangeRoomAction* AddChangeRoomAction();
 	ModifyVariableAction* AddModifyVariableAction();
 	EmitSoundAction* AddEmitSoundAction();
+	DisplayTextAction* AddDisplayTextAction();
 
 	void SetSelectedAction(ActionType toolTypeSelected); 
 	ActionType GetSelectedActionType(); 

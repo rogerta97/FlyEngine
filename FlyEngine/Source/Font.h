@@ -11,9 +11,9 @@
 
 struct Character 
 {
-	GLint     TextureID;  // ID handle of the glyph texture
-	float2	  Size;       // Size of glyph
-	float2    Bearing;    // Offset from baseline to left/top of glyph
+	GLint     textureID;  // ID handle of the glyph texture
+	float2	  size;       // Size of glyph
+	float2    bearing;    // Offset from baseline to left/top of glyph
 	GLint     Advance;    // Offset to advance to next glyph
 };
 
@@ -23,6 +23,7 @@ public:
 	Font();
 	~Font();
 
+	Character GetCharacter(char getChar);
 	void SetFace(FT_Face newFace, int fontSize = 15);
 
 private: 

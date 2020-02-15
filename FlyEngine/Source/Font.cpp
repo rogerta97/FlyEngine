@@ -61,6 +61,11 @@ void Font::CreateCharactersFromFace()
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 }
 
+Character Font::GetCharacter(char getChar)
+{
+	return fontCharacters[getChar]; 
+}
+
 void Font::SetFace(FT_Face newFace, int fontSize)
 {
 	fontFace = newFace; 

@@ -10,6 +10,7 @@
 #include "GameViewportDockPanel.h"
 #include "ChangeRoomAction.h"
 #include "ModuleInput.h"
+#include "DisplayTextAction.h"
 #include "EmitSoundAction.h"
 #include "ModuleRoomManager.h"
 #include "GameInventory.h"
@@ -430,6 +431,23 @@ EmitSoundAction* FlyObject::AddEmitSoundAction()
 	}
 
 	return (EmitSoundAction*)GetAction(ACTION_EMIT_SOUND);
+}
+
+DisplayTextAction* FlyObject::AddDisplayTextAction()
+{
+	if (GetAction(ACTION_DISPLAY_TEXT) == nullptr)
+	{
+		DisplayTextAction* displayTextAction = new DisplayTextAction(this);
+
+		actionsList.push_back(displayTextAction);
+
+		// Addapt Gizmo Rect to new Text
+		//gizmos->FitSelectBoxSize();
+
+		return displayTextAction;
+	}
+
+	return (DisplayTextAction*)GetAction(ACTION_DISPLAY_TEXT);
 }
 
 void FlyObject::SetSelectedAction(ActionType toolTypeSelected)

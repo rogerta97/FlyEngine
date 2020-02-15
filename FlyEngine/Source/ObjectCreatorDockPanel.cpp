@@ -730,6 +730,10 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 				creatingObject->AddEmitSoundAction();
 				break;
 
+			case ACTION_DISPLAY_TEXT:
+				creatingObject->AddDisplayTextAction();
+				break;
+
 			case AT_null:
 				break;
 			}

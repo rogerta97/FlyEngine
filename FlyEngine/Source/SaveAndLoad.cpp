@@ -13,6 +13,7 @@
 
 #include "EmitSoundAction.h"
 #include "DisplayImageAction.h"
+#include "DisplayTextAction.h"
 #include "ChangeRoomAction.h"
 
 #include <fstream>
@@ -217,6 +218,30 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 				string audioClipResourceName = MyFileSystem::getInstance()->GetLastPathItem(audioClipPath, false);
 				AudioClip* soundClipResource = (AudioClip*)ResourceManager::getInstance()->GetResource(audioClipResourceName.c_str());
 				emitSoundAction->audioClip = soundClipResource; 
+			}
+		}
+
+
+		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayText")).c_str()))
+		{
+			DisplayTextAction* displayTextAction = newObject->AddDisplayTextAction();
+			displayTextAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayText.Occurrence."));
+
+			string serializeDisplayTextStr = serializeObjectStrActions + "DisplayText."; 
+
+			string fontTmp = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("TextFont")).c_str());
+			if (fontTmp != "None")
+			{
+				Font* textFont = (Font*)ResourceManager::GetResource(fontTmp.c_str(), RESOURCE_FONT);
+
+				if(textFont)
+					displayTextAction->SetFont(textFont);
+			}
+
+			string textTmp = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("Text")).c_str());
+			if (textTmp != "None")
+			{
+				displayTextAction->SetText(textTmp); 
 			}
 		}
 	}

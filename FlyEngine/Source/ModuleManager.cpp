@@ -172,6 +172,10 @@ Texture* ModuleManager::GetIconFromActionType(ActionType toolType)
 		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("SpeakerIcon");
 		break;
 
+	case ACTION_DISPLAY_TEXT:
+		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("DisplayTextIcon");
+		break;
+
 	default:
 		break;
 	}
