@@ -5,11 +5,16 @@
 
 using namespace std;
 
+class Font; 
 class DisplayTextAction : public Action
 {
 public:
 	DisplayTextAction(FlyObject* _parentObject);
 	~DisplayTextAction();
+
+private: 
+	Font* currentFont = nullptr; 
+	std::string text; 
 
 };
 

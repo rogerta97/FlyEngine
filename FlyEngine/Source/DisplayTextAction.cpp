@@ -6,8 +6,10 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 	parentObject = _parentObject;
 	isVisual = false;
 
-	SetActionName("Emit Sound");
-	SetToolDescription("This should be the description of the emit sound");
+	currentFont = nullptr;
+
+	SetActionName("Display Text");
+	SetToolDescription("This should be the description of display text");
 }
 
 DisplayTextAction::~DisplayTextAction()
