@@ -359,6 +359,13 @@ void ObjectPropertiesDockPanel::DrawSearchBarButtonActions(UI_Button* selectedBu
 				break;
 			}
 
+			case ActionType::ACTION_DISPLAY_TEXT:
+			{
+				DisplayTextAction* displayTextAction = selectedButton->GetHolderObject()->AddDisplayTextAction();
+				selectedButton->AddOnClickAction(displayTextAction);
+				break;
+			}
+
 			}
 		}
 
@@ -943,6 +950,11 @@ void ObjectPropertiesDockPanel::DrawDisplayTextSettings()
 			
 			ImGui::ColorEdit4("Color", (float*)&displayTextAction->GetTextColor());
 
+			if (ImGui::InputInt("Size", &displayTextAction->GetFont()->GetSize(), 1, 5))
+			{
+				displayTextAction->GetFont()->SetSize(displayTextAction->GetFont()->GetSize());
+			}
+
 			//ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 			//ImGui::Text("Text Box Settings:");
 			//ImGui::PopFont();
@@ -1268,7 +1280,10 @@ void ObjectPropertiesDockPanel::DrawActionsList()
 	{
 		ActionSelectableInfo selectableInfo = currentAction->GetActionSelectableInfo();
 		if (DrawActionSelectable(selectableInfo, currentAction, count, 40))
+		{
 			selectedObject->SetSelectedAction(selectableInfo.actionType);
+			App->moduleManager->selectedAction = selectedObject->GetAction(selectableInfo.actionType); 
+		}
 		
 		count++;
 	}

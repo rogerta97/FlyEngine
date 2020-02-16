@@ -2,6 +2,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H  
 
+
 Font::Font() : Resource(RESOURCE_FONT)
 {
 
@@ -14,6 +15,9 @@ Font::~Font()
 
 void Font::CreateCharactersFromFace()
 {
+	if (!fontCharacters.empty())
+		fontCharacters.clear(); 
+
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
 
 	for (GLubyte c = 0; c < 128; c++)
@@ -68,8 +72,24 @@ Character Font::GetCharacter(char getChar)
 
 void Font::SetFace(FT_Face newFace, int _fontSize)
 {
-	fontFace = newFace; 
+	fontFace = newFace;
 	fontSize = _fontSize;
 	FT_Set_Pixel_Sizes(fontFace, 0, fontSize);
 	CreateCharactersFromFace();
+}
+
+int& Font::GetSize()
+{
+	return fontSize;
+}
+
+void Font::SetSize(int _fontSize)
+{
+	if (fontFace == nullptr)
+	{
+		FLY_ERROR("Can not set font size without font face"); 
+		return; 
+	}
+
+	SetFace(fontFace, _fontSize);
 }

@@ -32,7 +32,7 @@ void FontImporter::Delete()
 	delete instance;
 }
 
-Font* FontImporter::LoadFont(std::string path)
+Font* FontImporter::LoadFont(std::string path, int fontSize)
 {
 	// Create Font Face 
 	FT_Face face;
@@ -43,6 +43,6 @@ Font* FontImporter::LoadFont(std::string path)
 	}
 
 	Font* newFont = new Font(); 
-	newFont->SetFace(face, 50); 
+	newFont->SetFace(face, fontSize);
 	return newFont;
 }

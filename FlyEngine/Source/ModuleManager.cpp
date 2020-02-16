@@ -10,6 +10,7 @@
 #include "ObjectPropertiesDockPanel.h"
 #include "Room.h"
 #include "ModuleImGui.h"
+#include "DisplayTextAction.h"
 #include "Texture.h"
 #include "ModifyVariableAction.h"
 #include "RoomUIHandler.h"
@@ -273,6 +274,12 @@ void ModuleManager::DrawActionListWithSettings(FlyObject* ownerObejct)
 				ChangeRoomAction* changeRoomAction = ownerObejct->AddChangeRoomAction();
 				changeRoomAction->SetOccObjectClicked(true);
 			}
+
+			case ACTION_DISPLAY_TEXT:
+			{
+				DisplayTextAction* displayTextAction = ownerObejct->AddDisplayTextAction();
+				displayTextAction->SetOccObjectClicked(true);
+			}
 				break;
 
 			}
@@ -354,6 +361,7 @@ FlyObject* ModuleManager::GetSelectedFlyObject()
 void ModuleManager::SetSelectedFlyObject(FlyObject* newSelectedObject)
 {
 	App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(newSelectedObject);
+	selectedAction = nullptr; 
 }
 
 UI_Element* ModuleManager::GetSelectedUIElement()

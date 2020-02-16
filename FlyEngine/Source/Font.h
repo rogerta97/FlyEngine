@@ -25,15 +25,18 @@ public:
 	Character GetCharacter(char getChar);
 	void SetFace(FT_Face newFace, int fontSize = 15);
 
+	int& GetSize();
+	void SetSize(int _fontSize);
+
 private: 
 	void CreateCharactersFromFace(); 
 
 public: 
 	FT_Face fontFace; 
-	int fontSize = 0; 
 
 private: 
 	std::map<GLchar, Character> fontCharacters;
+	int fontSize = 0; 
 
 };
 

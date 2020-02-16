@@ -14,7 +14,7 @@ public:
 	~FontImporter();
 
 	static void Delete();
-	static Font* LoadFont(std::string path);
+	static Font* LoadFont(std::string path, int fontSize = 50);
 
 private: 
 	FT_Library freeType;
