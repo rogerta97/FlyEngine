@@ -3,7 +3,6 @@
 #include "mmgr.h"
 #include "Globals.h"
 
-#include "Math/float2.h"
 
 Quad::Quad()
 {
@@ -28,6 +27,15 @@ void Quad::Create(const float desiredWidth, const float desiredHeight)
 	LoadToMemory(); 
 }
 
+void Quad::CreateLiteralSize(const float desiredWidth, const float desiredHeight)
+{
+	float imageWidth = desiredWidth;
+	float imageHeight = desiredHeight;
+
+	SetQuadData(imageWidth, imageHeight);
+	LoadToMemory();
+}
+
 void Quad::SetQuadData(const float desiredWidth, const float desiredHeight)
 {
 	flog("SetData"); 
@@ -35,7 +43,7 @@ void Quad::SetQuadData(const float desiredWidth, const float desiredHeight)
 	numVertices = 4;
 	vertices = new vec3[numVertices];
 
-	fvec2 half_size(desiredWidth / 2, desiredHeight / 2);
+	vec2 half_size(desiredWidth / 2, desiredHeight / 2);
 
 	vertices[0] = { -half_size.x, half_size.y, 0 };
 	vertices[1] = { half_size.x, half_size.y, 0 };
@@ -137,13 +145,28 @@ void Quad::CleanUp()
 void Quad::SetWidth(float newWidth)
 {
 	// Update Vertices with the new width
-	//quadWidth = newWidth;
-	//SetQuadData(quadWidth, quadHeigth);
+	CleanUp();
+	quadWidth = newWidth;
+	SetQuadData(quadWidth, quadHeigth);
 }
 
 void Quad::SetHeight(float newHeigth)
 {
 	// Update Vertices with the new width
-	//quadHeigth = newHeigth;
-	//SetQuadData(quadWidth, quadHeigth);
+	CleanUp();
+	quadHeigth = newHeigth;
+	SetQuadData(quadWidth, quadHeigth);
+}
+
+void Quad::SetSize(float newWidth, float newHeigth)
+{
+	CleanUp();
+
+	quadHeigth = newHeigth;
+	quadWidth= newWidth;
+	
+	SetQuadData(quadWidth, quadHeigth);
+
+	// Addapt Quad 
+
 }

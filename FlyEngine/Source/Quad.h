@@ -12,6 +12,7 @@ public:
 	~Quad(); 
 
 	void Create(const float desiredWidth, const float desiredHeight); 
+	void CreateLiteralSize(const float desiredWidth, const float desiredHeight); 
 
 	void LoadToMemory(); 
 	void UnloadFromMemory(); 
@@ -19,6 +20,7 @@ public:
 
 	void SetWidth(float newWidth);
 	void SetHeight(float newHeight);
+	void SetSize(float newWidth, float newHeight);
 
 private:
 	void SetQuadData(const float desiredWidth, const float desiredHeight);

@@ -33,6 +33,7 @@ public:
 
 private:	
 	void AllocateTextQuads(int amount, int position = -1);
+	void UpdateTextQuadsSize(); 
 
 private: 
 	Font* textFont = nullptr; 

@@ -8,9 +8,7 @@
 #include "ModuleImGui.h"
 #include "GameViewportDockPanel.h"
 #include "ResourceManager.h"
-#include "imgui.h"
 
-#include "mmgr.h"
 
 DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 {
@@ -19,7 +17,7 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 	isVisual = false;
 
 	textFont = (Font*)ResourceManager::GetResource("arial", RESOURCE_FONT);
-	SetText("AAA");
+	SetText("AB");
 
 	SetActionName("Display Text");
 	SetToolDescription("This should be the description of display text");
@@ -193,6 +191,7 @@ void DisplayTextAction::SetText(std::string newText)
 {
 	AllocateTextQuads(newText.size()); 
 	text = newText;
+	UpdateTextQuadsSize();
 }
 
 std::string& DisplayTextAction::GetText()
@@ -220,6 +219,9 @@ void DisplayTextAction::AllocateTextQuads(int amount, int position)
 {
 	if (position < 0) // Last Letter
 		position = text.size();
+
+	if (amount > quadsAllocated)
+		amount -= quadsAllocated; 
 	
 	int counter = 0;
 	while (counter < amount)
@@ -227,9 +229,32 @@ void DisplayTextAction::AllocateTextQuads(int amount, int position)
 		Quad* newQuad = new Quad();
 		newQuad->Create(1, 1);
 
-		textQuads.insert(std::pair<int, Quad*>(position + counter, newQuad));
+		textQuads.insert(std::pair<int, Quad*>(counter, newQuad));
 		quadsAllocated++;
 		counter++;
+	}
+}
+
+void DisplayTextAction::UpdateTextQuadsSize()
+{
+	std::string::const_iterator currentLetter;
+
+	int letterCount = 0;
+	for (currentLetter = text.begin(); currentLetter != text.end(); currentLetter++)
+	{
+		Character currentCharacter = textFont->GetCharacter(*currentLetter);
+
+		textQuads[letterCount]->CleanUp();
+		delete textQuads[letterCount];
+
+		textQuads[letterCount] = new Quad();
+
+		if (textQuads[letterCount] != nullptr)
+			textQuads[letterCount]->CreateLiteralSize(currentCharacter.size.x, currentCharacter.size.y);
+		else
+			textQuads[letterCount]->Create(1, 1);
+
+		letterCount++;
 	}
 }
 
