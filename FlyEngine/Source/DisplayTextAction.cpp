@@ -80,7 +80,7 @@ void DisplayTextAction::DrawUISettings()
 
 void DisplayTextAction::RenderText()
 {
-	// Push Parent View Matrix 
+	// Push Parent View Matrix ----------------
 	if (parentObject->transform != nullptr)
 	{
 		float2 appliedArPos = parentObject->transform->GetPosition(true);
@@ -96,10 +96,12 @@ void DisplayTextAction::RenderText()
 		parentObject->transform->SetPosition(unAppliedArPos);
 	}
 
-	// Iterate through all characters
+	// Iterate through all characters ---------
 	std::string::const_iterator currentLetter;
 	int x = textBox->GetMinPoint().x; 
 	int y = textBox->GetMaxPoint().y; 
+
+	float2 cursorPos = originTextPosition;
 
 	int letterCount = 0;
 	for (currentLetter = text.begin(); currentLetter != text.end(); currentLetter++)
@@ -130,9 +132,11 @@ void DisplayTextAction::RenderText()
 
 		// Push Matrix to place the Corresponding quad in the correct position
 		float4x4 characterTransformMatrix = float4x4::identity; 
-		characterTransformMatrix.SetTranslatePart(float3(originTextPosition.x, originTextPosition.y, 0));
+		characterTransformMatrix.SetTranslatePart(float3(cursorPos.x, cursorPos.y, 0));
 		glMatrixMode(GL_MODELVIEW);
 		glLoadMatrixf((GLfloat*)(characterTransformMatrix.Transposed()).v);
+
+		cursorPos.x += currentCharacter.Advance;
 
 		// Draw the quad with the correct texture 
 		glEnableClientState(GL_VERTEX_ARRAY);
@@ -172,7 +176,7 @@ void DisplayTextAction::RenderText()
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glDisableClientState(GL_VERTEX_ARRAY);
 		
-		x += (currentCharacter.Advance >> 6); // Bitshift by 6 to get value in pixels (2^6 = 64)
+		//x += (currentCharacter.Advance >> 6); // Bitshift by 6 to get value in pixels (2^6 = 64)
 		letterCount++; 
 
 		//// Update VBO for each character
@@ -214,12 +218,12 @@ void DisplayTextAction::CalculateOriginTextPosition()
 
 	originTextPosition = float2(textBox->GetMinPoint().x, textBox->GetMaxPoint().y);
 	
-	if (!text.empty())
-	{
-		Character firstCharacter = textFont->GetCharacter(text[0]); 
-		originTextPosition.x += firstCharacter.size.x / 2; 
-		originTextPosition.y += firstCharacter.size.y / 2;
-	}
+	//if (!text.empty())
+	//{
+	//	Character firstCharacter = textFont->GetCharacter(text[0]); 
+	//	originTextPosition.x += firstCharacter.size.x / 2; 
+	//	originTextPosition.y += firstCharacter.size.y / 2;
+	//}
 }
 
 void DisplayTextAction::SetText(std::string newText)
@@ -273,7 +277,7 @@ void DisplayTextAction::AllocateTextQuads(int amount, int position)
 	while (counter < amount)
 	{
 		Quad* newQuad = new Quad();
-		newQuad->Create(1, 1);
+		newQuad->Create(1, 1, true);
 
 		textQuads.insert(std::pair<int, Quad*>(counter, newQuad));
 		quadsAllocated++;
@@ -299,7 +303,7 @@ void DisplayTextAction::UpdateTextQuadsSize()
 		textQuads[letterCount] = new Quad();
 
 		if (textQuads[letterCount] != nullptr)
-			textQuads[letterCount]->CreateLiteralSize(currentCharacter.size.x, currentCharacter.size.y);
+			textQuads[letterCount]->CreateLiteralSize(currentCharacter.size.x, currentCharacter.size.y, true);
 
 		letterCount++;
 	}

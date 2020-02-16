@@ -11,8 +11,8 @@ public:
 	Quad(); 
 	~Quad(); 
 
-	void Create(const float desiredWidth, const float desiredHeight); 
-	void CreateLiteralSize(const float desiredWidth, const float desiredHeight); 
+	void Create(const float desiredWidth, const float desiredHeight, bool topLeftCenter = false);
+	void CreateLiteralSize(const float desiredWidth, const float desiredHeight, bool topLeftCenter = false); 
 
 	void LoadToMemory(); 
 	void UnloadFromMemory(); 
@@ -23,7 +23,7 @@ public:
 	void SetSize(float newWidth, float newHeight);
 
 private:
-	void SetQuadData(const float desiredWidth, const float desiredHeight);
+	void SetQuadData(const float desiredWidth, const float desiredHeight, bool topLeftCenter = false);
 
 public: 
 	vec3* vertices; 

@@ -52,7 +52,7 @@ void Font::CreateCharactersFromFace()
 			textureID,
 			float2(fontFace->glyph->bitmap.width, fontFace->glyph->bitmap.rows),
 			float2(fontFace->glyph->bitmap_left, fontFace->glyph->bitmap_top),
-			fontFace->glyph->advance.x
+			fontFace->glyph->advance.x / 64
 		};
 
 		fontCharacters.insert(std::pair<GLchar, Character>(c, character));

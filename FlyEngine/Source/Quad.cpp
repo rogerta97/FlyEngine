@@ -16,27 +16,27 @@ Quad::~Quad()
 {
 }
 
-void Quad::Create(const float desiredWidth, const float desiredHeight)
+void Quad::Create(const float desiredWidth, const float desiredHeight, bool topLeftCenter)
 {
 	float imageAspectRatio = desiredWidth / desiredHeight; 
 
 	float imageWidth = 200.0f; 
 	float imageHeight = imageWidth / imageAspectRatio; 
 
-	SetQuadData(imageWidth, imageHeight);
+	SetQuadData(imageWidth, imageHeight, topLeftCenter);
 	LoadToMemory(); 
 }
 
-void Quad::CreateLiteralSize(const float desiredWidth, const float desiredHeight)
+void Quad::CreateLiteralSize(const float desiredWidth, const float desiredHeight, bool topLeftCenter)
 {
 	float imageWidth = desiredWidth;
 	float imageHeight = desiredHeight;
 
-	SetQuadData(imageWidth, imageHeight);
+	SetQuadData(imageWidth, imageHeight, topLeftCenter);
 	LoadToMemory();
 }
 
-void Quad::SetQuadData(const float desiredWidth, const float desiredHeight)
+void Quad::SetQuadData(const float desiredWidth, const float desiredHeight, bool topLeftCenter)
 {
 	flog("SetData"); 
 
@@ -45,10 +45,20 @@ void Quad::SetQuadData(const float desiredWidth, const float desiredHeight)
 
 	vec2 half_size(desiredWidth / 2, desiredHeight / 2);
 
-	vertices[0] = { -half_size.x, half_size.y, 0 };
-	vertices[1] = { half_size.x, half_size.y, 0 };
-	vertices[2] = { -half_size.x, -half_size.y, 0 };
-	vertices[3] = { half_size.x, -half_size.y, 0 };
+	if (topLeftCenter)
+	{
+		vertices[0] = { 0, desiredHeight, 0 };
+		vertices[1] = { desiredWidth, desiredHeight, 0 };
+		vertices[2] = { 0, 0, 0 };
+		vertices[3] = { desiredWidth, 0, 0 };
+	}
+	else
+	{
+		vertices[0] = { -half_size.x, half_size.y, 0 };
+		vertices[1] = { half_size.x, half_size.y, 0 };
+		vertices[2] = { -half_size.x, -half_size.y, 0 };
+		vertices[3] = { half_size.x, -half_size.y, 0 };
+	}
 
 	numIndices = 6;
 	indices = new int[numIndices];
