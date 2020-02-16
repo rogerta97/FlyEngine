@@ -43,6 +43,6 @@ Font* FontImporter::LoadFont(std::string path)
 	}
 
 	Font* newFont = new Font(); 
-	newFont->SetFace(face, 500); 
+	newFont->SetFace(face, 50); 
 	return newFont;
 }

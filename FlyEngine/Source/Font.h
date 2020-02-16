@@ -2,9 +2,8 @@
 #define _FONT_H_
 
 #include "Resource.h"
-#include "Math/float2.h"
 #include "OpenGL.h"
-
+#include "Math/float2.h"
 #include <map>
 #include <ft2build.h>
 #include FT_FREETYPE_H  

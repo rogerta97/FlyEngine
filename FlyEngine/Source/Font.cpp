@@ -32,11 +32,11 @@ void Font::CreateCharactersFromFace()
 		glTexImage2D(
 			GL_TEXTURE_2D,
 			0,
-			GL_RED,
+			GL_ALPHA,
 			fontFace->glyph->bitmap.width,
 			fontFace->glyph->bitmap.rows,
 			0,
-			GL_RED,
+			GL_ALPHA,
 			GL_UNSIGNED_BYTE,
 			fontFace->glyph->bitmap.buffer
 		);

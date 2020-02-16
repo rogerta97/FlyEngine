@@ -44,6 +44,7 @@ public:
 	void DrawObjectActionsTab();
 	void DrawActionSettings();
 
+
 	void DrawActionsList();
 	void DrawAddAndDeleteButtons();
 	bool DrawActionSelectable(ActionSelectableInfo& selectableInfo, Action*& currentTool, int posInList, int selectableHeigth);
@@ -52,6 +53,7 @@ public:
 	void DrawChangeRoomSettings();
 	void DrawToolImageSettings();
 	void DrawModifyVariableSettings();
+	void DrawDisplayTextSettings();
 	void DrawEmitSoundSettings();
 
 private: 

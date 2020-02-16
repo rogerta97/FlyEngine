@@ -16,6 +16,13 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 	parentObject = _parentObject;
 	isVisual = false;
 
+	textBox = new BoundingBox();
+
+	textBox->SetSize(300, 120); 
+	CalculateOriginTextPosition(); 
+
+	originTextPosition = float2(0, 0);
+
 	textFont = (Font*)ResourceManager::GetResource("arial", RESOURCE_FONT);
 	SetText("AB");
 
@@ -32,6 +39,9 @@ void DisplayTextAction::Draw()
 {
 	if (!text.empty())
 		RenderText(); 
+
+	if(isSelected)
+		textBox->Draw(false, float4(0, 1.0f, 0, 1.0f));
 }
 
 void DisplayTextAction::CleanUp()
@@ -70,13 +80,26 @@ void DisplayTextAction::DrawUISettings()
 
 void DisplayTextAction::RenderText()
 {
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindVertexArray(VAO);
+	// Push Parent View Matrix 
+	if (parentObject->transform != nullptr)
+	{
+		float2 appliedArPos = parentObject->transform->GetPosition(true);
+		parentObject->transform->SetPosition(appliedArPos);
+
+		// Parent Object View Matrix 
+		float4x4 objectViewMatrix = parentObject->transform->CalculateViewMatrix();
+
+		glMatrixMode(GL_MODELVIEW);
+		glLoadMatrixf((GLfloat*)(objectViewMatrix.Transposed()).v);
+
+		float2 unAppliedArPos = parentObject->transform->GetPosition() / App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
+		parentObject->transform->SetPosition(unAppliedArPos);
+	}
 
 	// Iterate through all characters
 	std::string::const_iterator currentLetter;
-	int x, y; 
-	x = y = 0; 
+	int x = textBox->GetMinPoint().x; 
+	int y = textBox->GetMaxPoint().y; 
 
 	int letterCount = 0;
 	for (currentLetter = text.begin(); currentLetter != text.end(); currentLetter++)
@@ -87,40 +110,34 @@ void DisplayTextAction::RenderText()
 			assert(false);
 		}
 
+		// Get The Current Character 
 		Character currentCharacter = textFont->GetCharacter(*currentLetter);
 
-		//GLfloat xpos = x + ch.Bearing.x * scale;
-		//GLfloat ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+		/*GLfloat xpos = x + ch.Bearing.x * scale;
+		GLfloat ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
 
 		GLfloat xpos = x + currentCharacter.bearing.x;
 		GLfloat ypos = y - (currentCharacter.size.y - currentCharacter.bearing.y);
 
-		//GLfloat w = currentCharacter.size.x * scale;
-		//GLfloat h = currentCharacter.size.y * scale;
+		GLfloat w = currentCharacter.size.x * scale;
+		GLfloat h = currentCharacter.size.y * scale;
 
 		GLfloat w = currentCharacter.size.x;
-		GLfloat h = currentCharacter.size.y;
+		GLfloat h = currentCharacter.size.y;*/
 
+		// Get The Corresponding Quad 
 		Quad* renderQuad = textQuads[letterCount];
 
-	/*	renderQuad->SetWidth(w); 
-		renderQuad->SetHeight(h); */
+		// Push Matrix to place the Corresponding quad in the correct position
+		float4x4 characterTransformMatrix = float4x4::identity; 
+		characterTransformMatrix.SetTranslatePart(float3(originTextPosition.x, originTextPosition.y, 0));
+		glMatrixMode(GL_MODELVIEW);
+		glLoadMatrixf((GLfloat*)(characterTransformMatrix.Transposed()).v);
 
+		// Draw the quad with the correct texture 
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, renderQuad->verticesID);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-		if (parentObject->transform != nullptr)
-		{
-			float2 appliedArPos = parentObject->transform->GetPosition(true);
-			parentObject->transform->SetPosition(appliedArPos);
-
-			glMatrixMode(GL_MODELVIEW);
-			glLoadMatrixf((GLfloat*)((parentObject->transform->CalculateViewMatrix()).Transposed()).v);
-
-			float2 unAppliedArPos = parentObject->transform->GetPosition() / App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
-			parentObject->transform->SetPosition(unAppliedArPos);
-		}
 
 		if (currentCharacter.textureID != 0) {
 
@@ -154,6 +171,9 @@ void DisplayTextAction::RenderText()
 
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glDisableClientState(GL_VERTEX_ARRAY);
+		
+		x += (currentCharacter.Advance >> 6); // Bitshift by 6 to get value in pixels (2^6 = 64)
+		letterCount++; 
 
 		//// Update VBO for each character
 		//GLfloat vertices[6][4] = {
@@ -179,19 +199,36 @@ void DisplayTextAction::RenderText()
 
 		//// Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
 		//// x += (currentCharacter.Advance >> 6) * scale; Bitshift by 6 to get value in pixels (2^6 = 64)
-		
-		x += (currentCharacter.Advance >> 6); // Bitshift by 6 to get value in pixels (2^6 = 64)
-		letterCount++; 
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void DisplayTextAction::CalculateOriginTextPosition()
+{
+	if (textBox == nullptr)
+	{
+		FLY_ERROR("Text Position can no be calculated without a Text Box"); 
+		assert(false); 
+	}
+
+	originTextPosition = float2(textBox->GetMinPoint().x, textBox->GetMaxPoint().y);
+	
+	if (!text.empty())
+	{
+		Character firstCharacter = textFont->GetCharacter(text[0]); 
+		originTextPosition.x += firstCharacter.size.x / 2; 
+		originTextPosition.y += firstCharacter.size.y / 2;
+	}
+}
+
 void DisplayTextAction::SetText(std::string newText)
 {
-	AllocateTextQuads(newText.size()); 
 	text = newText;
+	
+	AllocateTextQuads(newText.size()); 
 	UpdateTextQuadsSize();
+	CalculateOriginTextPosition(); 
 }
 
 std::string& DisplayTextAction::GetText()
@@ -213,6 +250,15 @@ void DisplayTextAction::SetFont(Font* newFont)
 Font* DisplayTextAction::GetFont()
 {
 	return textFont;
+}
+
+void DisplayTextAction::SetTextBoxSize(BoundingBox* newFont)
+{
+}
+
+BoundingBox* DisplayTextAction::GetTextBox()
+{
+	return textBox;
 }
 
 void DisplayTextAction::AllocateTextQuads(int amount, int position)
@@ -244,15 +290,16 @@ void DisplayTextAction::UpdateTextQuadsSize()
 	{
 		Character currentCharacter = textFont->GetCharacter(*currentLetter);
 
-		textQuads[letterCount]->CleanUp();
-		delete textQuads[letterCount];
+		if (textQuads[letterCount] != nullptr)
+		{
+			textQuads[letterCount]->CleanUp();
+			delete textQuads[letterCount];
+		}
 
 		textQuads[letterCount] = new Quad();
 
 		if (textQuads[letterCount] != nullptr)
 			textQuads[letterCount]->CreateLiteralSize(currentCharacter.size.x, currentCharacter.size.y);
-		else
-			textQuads[letterCount]->Create(1, 1);
 
 		letterCount++;
 	}

@@ -400,7 +400,6 @@ void Gizmos::DrawScaleGizmo()
 	glColor3f(0, 255, 0); glVertex3f(scaleGizmo->endAxisBoxYPos.x - scaleGizmo->lineSquareSize / 2, scaleGizmo->endAxisBoxYPos.y + scaleGizmo->lineSquareSize / 2, 0.0f);
 	glEnd();
 
-
 	// X Axis
 	glBegin(GL_LINES);
 	glColor3f(0, 0, 255); glVertex3f(0, 0, 0.f);
