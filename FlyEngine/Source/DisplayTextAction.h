@@ -3,6 +3,7 @@
 
 #include "Action.h"
 #include "Font.h"
+#include "MathGeoLib/Math/float4.h"
 #include <string>
 #include <map>
 
@@ -38,6 +39,9 @@ public:
 	void SetTextBoxSize(BoundingBox* newFont);
 	BoundingBox* GetTextBox();
 
+	void SetTextColor(float4 newColor);
+	float4& GetTextColor();
+
 private:	
 	void AllocateTextQuads(int amount, int position = -1);
 	void UpdateTextQuadsSize(); 
@@ -45,6 +49,7 @@ private:
 private: 
 	Font* textFont = nullptr; 
 	std::string text; 
+	float4 textColor; 
 
 	// Text Box ----------
 	BoundingBox* textBox; 

@@ -108,6 +108,8 @@ public:
 	void SetToolType(ActionType newToolType);
 
 	bool& IsSelected(); 
+	void SetIsSelected(bool _isSelected);
+
 	void SetSelected(bool newSelected); 
 	bool& HasVisual(); 
 

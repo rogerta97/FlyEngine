@@ -25,6 +25,7 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 
 	textFont = (Font*)ResourceManager::GetResource("arial", RESOURCE_FONT);
 	SetText("AB");
+	textColor = float4(1.0f, 1.0f, 1.0f, 1.0f); 
 
 	SetActionName("Display Text");
 	SetToolDescription("This should be the description of display text");
@@ -103,35 +104,25 @@ void DisplayTextAction::RenderText()
 
 	float2 cursorPos = originTextPosition;
 
+	int currentLine = 0; 
 	int letterCount = 0;
 	for (currentLetter = text.begin(); currentLetter != text.end(); currentLetter++)
 	{
 		if (textFont == nullptr)
 		{
-			FLY_ERROR("A text with no font can not be rendered"); 
+			FLY_ERROR("A text with no font can not be rendered");
 			assert(false);
 		}
 
 		// Get The Current Character 
 		Character currentCharacter = textFont->GetCharacter(*currentLetter);
 
-		/*GLfloat xpos = x + ch.Bearing.x * scale;
-		GLfloat ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
-
-		GLfloat xpos = x + currentCharacter.bearing.x;
-		GLfloat ypos = y - (currentCharacter.size.y - currentCharacter.bearing.y);
-
-		GLfloat w = currentCharacter.size.x * scale;
-		GLfloat h = currentCharacter.size.y * scale;
-
-		GLfloat w = currentCharacter.size.x;
-		GLfloat h = currentCharacter.size.y;*/
-
 		// Get The Corresponding Quad 
 		Quad* renderQuad = textQuads[letterCount];
 
 		// Push Matrix to place the Corresponding quad in the correct position
-		float4x4 characterTransformMatrix = float4x4::identity; 
+		float4x4 characterTransformMatrix = float4x4::identity;
+		cursorPos.y = -currentCharacter.bearing.y;
 		characterTransformMatrix.SetTranslatePart(float3(cursorPos.x, cursorPos.y, 0));
 		glMatrixMode(GL_MODELVIEW);
 		glLoadMatrixf((GLfloat*)(characterTransformMatrix.Transposed()).v);
@@ -158,6 +149,7 @@ void DisplayTextAction::RenderText()
 		}
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderQuad->indicesID);
+		glColor4f(textColor.x, textColor.y, textColor.z, textColor.w);
 		glDrawElements(GL_TRIANGLES, renderQuad->numIndices, GL_UNSIGNED_INT, NULL);
 
 		if (currentCharacter.textureID != 0)
@@ -175,35 +167,11 @@ void DisplayTextAction::RenderText()
 
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glDisableClientState(GL_VERTEX_ARRAY);
-		
-		//x += (currentCharacter.Advance >> 6); // Bitshift by 6 to get value in pixels (2^6 = 64)
-		letterCount++; 
 
-		//// Update VBO for each character
-		//GLfloat vertices[6][4] = {
-		//	{ xpos,     ypos + h,   0.0, 0.0 },
-		//	{ xpos,     ypos,       0.0, 1.0 },
-		//	{ xpos + w, ypos,       1.0, 1.0 },
+		letterCount++;
 
-		//	{ xpos,     ypos + h,   0.0, 0.0 },
-		//	{ xpos + w, ypos,       1.0, 1.0 },
-		//	{ xpos + w, ypos + h,   1.0, 0.0 }
-		//};
-
-		//// Render glyph texture over quad
-		//glBindTexture(GL_TEXTURE_2D, currentCharacter.textureID);
-
-		//// Update content of VBO memory
-		//glBindBuffer(GL_ARRAY_BUFFER, textQuads[letterCount]->verticesID);
-		//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-		//glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-		//// Render quad
-		//glDrawArrays(GL_TRIANGLES, 0, 6);
-
-		//// Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-		//// x += (currentCharacter.Advance >> 6) * scale; Bitshift by 6 to get value in pixels (2^6 = 64)
 	}
+
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
@@ -217,13 +185,6 @@ void DisplayTextAction::CalculateOriginTextPosition()
 	}
 
 	originTextPosition = float2(textBox->GetMinPoint().x, textBox->GetMaxPoint().y);
-	
-	//if (!text.empty())
-	//{
-	//	Character firstCharacter = textFont->GetCharacter(text[0]); 
-	//	originTextPosition.x += firstCharacter.size.x / 2; 
-	//	originTextPosition.y += firstCharacter.size.y / 2;
-	//}
 }
 
 void DisplayTextAction::SetText(std::string newText)
@@ -263,6 +224,16 @@ void DisplayTextAction::SetTextBoxSize(BoundingBox* newFont)
 BoundingBox* DisplayTextAction::GetTextBox()
 {
 	return textBox;
+}
+
+void DisplayTextAction::SetTextColor(float4 newColor)
+{
+	textColor = newColor;
+}
+
+float4& DisplayTextAction::GetTextColor()
+{
+	return textColor; 
 }
 
 void DisplayTextAction::AllocateTextQuads(int amount, int position)

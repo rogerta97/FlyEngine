@@ -7,6 +7,7 @@
 #include "Application.h"
 #include "ModuleRoomManager.h"
 #include "ChangeRoomAction.h"
+#include "ObjectPropertiesDockPanel.h"
 #include "Room.h"
 #include "ModuleImGui.h"
 #include "Texture.h"
@@ -285,7 +286,6 @@ void ModuleManager::DrawActionListWithSettings(FlyObject* ownerObejct)
 
 	int count = 0;
 	ObjectPropertiesDockPanel* objectProperties = (ObjectPropertiesDockPanel *)App->moduleImGui->GetDockPanel(DOCK_OBJECT_PROPERTIES);
-	static Action* selectedAction = nullptr; 
 	for (auto& currentAction : ownerObejct->GetActionsList())
 	{
 		if (ownerObejct->IsInventoryItem() && currentAction->GetActionType() == ACTION_DISPLAY_IMAGE)

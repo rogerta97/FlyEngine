@@ -932,14 +932,18 @@ void ObjectPropertiesDockPanel::DrawDisplayTextSettings()
 			if (!displayTextAction->GetText().empty())
 				strcpy(textBuffer, displayTextAction->GetText().c_str());
 
+			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+			ImGui::Text("Text Settings:");
+			ImGui::PopFont();
+
 			if (ImGui::InputText("Text##DisplayActionText", textBuffer, IM_ARRAYSIZE(textBuffer)))
 			{
 				displayTextAction->SetText(textBuffer);
 			}
 
-			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-			ImGui::Text("Text Settings:");
-			ImGui::PopFont();
+			
+			ImGui::ColorEdit4("Color", (float*)&displayTextAction->GetTextColor());
+
 
 			/*ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 			ImGui::Text("Sound To Play:");

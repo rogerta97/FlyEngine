@@ -379,6 +379,11 @@ bool& Action::IsSelected()
 	return isSelected;
 }
 
+void Action::SetIsSelected(bool _isSelected)
+{
+	isSelected = _isSelected; 
+}
+
 void Action::SetSelected(bool newSelected)
 {
 	isSelected = newSelected; 

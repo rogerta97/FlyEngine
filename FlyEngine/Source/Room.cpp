@@ -8,6 +8,7 @@
 #include "ObjectCreatorDockPanel.h"
 #include "FlyObject.h"
 #include "GameViewportDockPanel.h"
+#include "ObjectPropertiesDockPanel.h"
 #include "GameInventory.h"
 #include "ModuleImGui.h"
 #include "MusicTrack.h"
@@ -64,7 +65,9 @@ void Room::Update()
 				if (!objectCandidates.empty())
 					App->moduleManager->SetSelectedFlyObject(objectCandidates.back());
 				else
+				{
 					App->moduleManager->SetSelectedFlyObject(nullptr);
+				}
 			}
 				break; 
 
@@ -470,6 +473,10 @@ void Room::SetSelectedObject(FlyObject* newObject)
 		{		
 			it->isSelected = false; 
 		}
+
+		for (auto& currentAction : it->GetActionsList())		
+			currentAction->SetIsSelected(false); 
+		
 	}
 
 	selectedObject = newObject;
