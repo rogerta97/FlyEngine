@@ -940,10 +940,12 @@ void ObjectPropertiesDockPanel::DrawDisplayTextSettings()
 			{
 				displayTextAction->SetText(textBuffer);
 			}
-
 			
 			ImGui::ColorEdit4("Color", (float*)&displayTextAction->GetTextColor());
 
+			//ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+			//ImGui::Text("Text Box Settings:");
+			//ImGui::PopFont();
 
 			/*ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 			ImGui::Text("Sound To Play:");

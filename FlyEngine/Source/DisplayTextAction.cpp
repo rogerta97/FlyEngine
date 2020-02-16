@@ -122,7 +122,7 @@ void DisplayTextAction::RenderText()
 
 		// Push Matrix to place the Corresponding quad in the correct position
 		float4x4 characterTransformMatrix = float4x4::identity;
-		cursorPos.y = -currentCharacter.bearing.y;
+		cursorPos.y = y - currentCharacter.bearing.y + textFont->fontSize;
 		characterTransformMatrix.SetTranslatePart(float3(cursorPos.x, cursorPos.y, 0));
 		glMatrixMode(GL_MODELVIEW);
 		glLoadMatrixf((GLfloat*)(characterTransformMatrix.Transposed()).v);

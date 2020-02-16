@@ -66,9 +66,10 @@ Character Font::GetCharacter(char getChar)
 	return fontCharacters[getChar]; 
 }
 
-void Font::SetFace(FT_Face newFace, int fontSize)
+void Font::SetFace(FT_Face newFace, int _fontSize)
 {
 	fontFace = newFace; 
+	fontSize = _fontSize;
 	FT_Set_Pixel_Sizes(fontFace, 0, fontSize);
 	CreateCharactersFromFace();
 }

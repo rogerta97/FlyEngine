@@ -30,6 +30,7 @@ private:
 
 public: 
 	FT_Face fontFace; 
+	int fontSize = 0; 
 
 private: 
 	std::map<GLchar, Character> fontCharacters;
