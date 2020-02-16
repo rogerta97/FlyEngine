@@ -17,6 +17,9 @@ public:
 	void UnloadFromMemory(); 
 	void CleanUp(); 
 
+	void SetWidth(float newWidth);
+	void SetHeight(float newHeight);
+
 private:
 	void SetQuadData(const float desiredWidth, const float desiredHeight);
 
@@ -34,7 +37,7 @@ public:
 	uint uvsID = -1;
 
 	float quadWidth; 
-	float quadHeight;
+	float quadHeigth;
 };
 
 #endif

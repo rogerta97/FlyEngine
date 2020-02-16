@@ -217,7 +217,7 @@ float2 FlyObject::GetObjectVisualDimensions()
 	DisplayImageAction* imageTool = (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE); 
 	if (imageTool != nullptr)
 	{
-		objectVisualSize = float2(imageTool->GetQuad()->quadWidth, imageTool->GetQuad()->quadHeight); 
+		objectVisualSize = float2(imageTool->GetQuad()->quadWidth, imageTool->GetQuad()->quadHeigth); 
 	}
 
 	return objectVisualSize; 

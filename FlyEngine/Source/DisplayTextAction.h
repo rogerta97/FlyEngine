@@ -19,6 +19,7 @@ public:
 	void Draw();
 	void CleanUp();
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
+	void DrawUISettings();
 
 	// Render ------------------------------
 	void RenderText(); 

@@ -229,7 +229,7 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 
 			string serializeDisplayTextStr = serializeObjectStrActions + "DisplayText."; 
 
-			string fontTmp = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("TextFont")).c_str());
+			string fontTmp = json_object_dotget_string(root_obj, string(serializeDisplayTextStr + string("FontName")).c_str());
 			if (fontTmp != "None")
 			{
 				Font* textFont = (Font*)ResourceManager::GetResource(fontTmp.c_str(), RESOURCE_FONT);
@@ -238,7 +238,7 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 					displayTextAction->SetFont(textFont);
 			}
 
-			string textTmp = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("Text")).c_str());
+			string textTmp = json_object_dotget_string(root_obj, string(serializeDisplayTextStr + string("Text")).c_str());
 			if (textTmp != "None")
 			{
 				displayTextAction->SetText(textTmp); 

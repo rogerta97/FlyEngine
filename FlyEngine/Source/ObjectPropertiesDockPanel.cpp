@@ -10,6 +10,7 @@
 #include "ResourceManager.h"
 #include "ChangeRoomAction.h"
 #include "DisplayImageAction.h"
+#include "DisplayTextAction.h"
 #include "RoomUIHandler.h"
 #include "AudioClip.h"
 #include "GameViewportDockPanel.h"
@@ -856,6 +857,7 @@ void ObjectPropertiesDockPanel::DrawActionSettings()
 {
 	if (selectedObject->GetSelectedActionType() != AT_null)
 	{
+		
 		switch (selectedObject->GetSelectedActionType())
 		{
 		case ACTION_DISPLAY_IMAGE:
@@ -872,6 +874,120 @@ void ObjectPropertiesDockPanel::DrawActionSettings()
 
 		case ACTION_EMIT_SOUND:
 			DrawEmitSoundSettings();
+			break;
+
+		case ACTION_DISPLAY_TEXT:
+			DisplayTextAction* displayTextAction = (DisplayTextAction*)selectedObject->GetAction("Display Text");
+
+			if (displayTextAction != nullptr)
+			{
+				if (ImGui::CollapsingHeader("Display Text Attributes", ImGuiTreeNodeFlags_DefaultOpen))
+				{
+					ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+					ImGui::Text("Action Happens On:");
+					ImGui::PopFont();
+
+					ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+					ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+					ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 40));
+
+					ImGui::SetCursorPos(ImVec2(5, 8));
+					ImGui::Checkbox("Blackboard Value Condition", &displayTextAction->IsOccCondition());
+
+					ImGui::SameLine();
+					static std::string showValueConditionButtonText = "Show Conditions";
+					if (ImGui::Button(showValueConditionButtonText.c_str()))
+					{
+						if (showVariableConditions)
+						{
+							showVariableConditions = false;
+							showValueConditionButtonText = "Show Conditions";
+						}
+						else
+						{
+							showVariableConditions = true;
+							showValueConditionButtonText = "Hide Conditions";
+						}
+					}
+
+					if (showVariableConditions)
+						displayTextAction->DrawActionConditionsList();
+
+					ImGui::Spacing();
+					ImGui::EndChild();
+
+					ImGui::PopFont();
+					ImGui::PopStyleColor();
+
+					static char textBuffer[256]; 
+
+					if (!displayTextAction->GetText().empty())					
+						strcpy(textBuffer, displayTextAction->GetText().c_str());
+					
+					if (ImGui::InputText("Text##DisplayActionText", textBuffer, IM_ARRAYSIZE(textBuffer)))
+					{
+						displayTextAction->SetText(textBuffer); 
+					}
+
+
+					/*ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+					ImGui::Text("Sound To Play:");
+					ImGui::PopFont();
+
+					static char soundNameBuffer[256] = "";
+
+					if (displayTextAction->audioClip != nullptr)
+					{
+						strcpy(soundNameBuffer, displayTextAction->audioClip->GetName().c_str());
+					}*/
+
+					/*Texture* playSound = (Texture*)ResourceManager::getInstance()->GetResource("PlayAudio");
+					if (ImGui::ImageButton((ImTextureID)playSound->GetTextureID(), ImVec2(20, 20)))
+					{
+						displayTextAction->Play();
+					}
+
+					ImGui::SameLine();
+
+					ImGui::InputTextWithHint("", "Select Sound...", soundNameBuffer, IM_ARRAYSIZE(soundNameBuffer), ImGuiInputTextFlags_ReadOnly);
+
+					if (ImGui::BeginDragDropTarget())
+					{
+						if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+						{
+							int* selectedResourceUID = (int*)payload->Data;
+							Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+							if (resourceDropped->GetType() == RESOURCE_SFX)
+							{
+								AudioClip* audioClipDropped = (AudioClip*)resourceDropped;
+								displayTextAction->audioClip = audioClipDropped;
+							}
+						}
+
+						ImGui::EndDragDropTarget();
+					}
+
+					ImGui::SameLine();
+					if (ImGui::Button("Search##SearchSound"))
+					{
+						ImGui::OpenPopup("print_sound_selection_popup");
+						showSoundSelectionPopup = true;
+					}
+
+					if (showSoundSelectionPopup)
+					{
+						Resource* selectedSound = ResourceManager::getInstance()->PrintSoundsSelectionPopup();
+
+						if (selectedSound != nullptr)
+						{
+							AudioClip* audioClipDropped = (AudioClip*)selectedSound;
+							displayTextAction->audioClip = audioClipDropped;
+							showSoundSelectionPopup = false;
+						}
+					}*/
+				}
+			}
 			break;
 		}
 	}

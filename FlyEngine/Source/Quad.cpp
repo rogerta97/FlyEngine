@@ -3,6 +3,8 @@
 #include "mmgr.h"
 #include "Globals.h"
 
+#include "Math/float2.h"
+
 Quad::Quad()
 {
 	vertices = nullptr;
@@ -53,7 +55,7 @@ void Quad::SetQuadData(const float desiredWidth, const float desiredHeight)
 	indices[5] = 3;
 
 	quadWidth = desiredWidth;
-	quadHeight = desiredHeight;
+	quadHeigth = desiredHeight;
 
 	numUvs = numVertices;
 	uvs = new float[numUvs * 3];
@@ -130,4 +132,18 @@ void Quad::CleanUp()
 	delete[] vertices;
 	delete[] indices; 
 	delete[] uvs; 
+}
+
+void Quad::SetWidth(float newWidth)
+{
+	// Update Vertices with the new width
+	//quadWidth = newWidth;
+	//SetQuadData(quadWidth, quadHeigth);
+}
+
+void Quad::SetHeight(float newHeigth)
+{
+	// Update Vertices with the new width
+	//quadHeigth = newHeigth;
+	//SetQuadData(quadWidth, quadHeigth);
 }

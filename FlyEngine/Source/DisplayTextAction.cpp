@@ -2,9 +2,15 @@
 #include "Quad.h"
 #include "OpenGL.h"
 #include "Font.h"
+#include "FlyObject.h"
 
-// Delete Just For TESTING to have a default font 
+#include "Application.h"
+#include "ModuleImGui.h"
+#include "GameViewportDockPanel.h"
 #include "ResourceManager.h"
+#include "imgui.h"
+
+#include "mmgr.h"
 
 DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 {
@@ -13,7 +19,7 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 	isVisual = false;
 
 	textFont = (Font*)ResourceManager::GetResource("arial", RESOURCE_FONT);
-	SetText("Text Here");
+	SetText("AAA");
 
 	SetActionName("Display Text");
 	SetToolDescription("This should be the description of display text");
@@ -57,6 +63,13 @@ void DisplayTextAction::SaveAction(JSON_Object* jsonObject, string serializeObje
 
 }
 
+void DisplayTextAction::DrawUISettings()
+{
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text("Display Text Settings: ");
+	ImGui::PopFont();
+}
+
 void DisplayTextAction::RenderText()
 {
 	//glActiveTexture(GL_TEXTURE0);
@@ -90,30 +103,84 @@ void DisplayTextAction::RenderText()
 		GLfloat w = currentCharacter.size.x;
 		GLfloat h = currentCharacter.size.y;
 
-		// Update VBO for each character
-		GLfloat vertices[6][4] = {
-			{ xpos,     ypos + h,   0.0, 0.0 },
-			{ xpos,     ypos,       0.0, 1.0 },
-			{ xpos + w, ypos,       1.0, 1.0 },
+		Quad* renderQuad = textQuads[letterCount];
 
-			{ xpos,     ypos + h,   0.0, 0.0 },
-			{ xpos + w, ypos,       1.0, 1.0 },
-			{ xpos + w, ypos + h,   1.0, 0.0 }
-		};
+	/*	renderQuad->SetWidth(w); 
+		renderQuad->SetHeight(h); */
 
-		// Render glyph texture over quad
-		glBindTexture(GL_TEXTURE_2D, currentCharacter.textureID);
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, renderQuad->verticesID);
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-		// Update content of VBO memory
-		glBindBuffer(GL_ARRAY_BUFFER, textQuads[letterCount]->verticesID);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+		if (parentObject->transform != nullptr)
+		{
+			float2 appliedArPos = parentObject->transform->GetPosition(true);
+			parentObject->transform->SetPosition(appliedArPos);
+
+			glMatrixMode(GL_MODELVIEW);
+			glLoadMatrixf((GLfloat*)((parentObject->transform->CalculateViewMatrix()).Transposed()).v);
+
+			float2 unAppliedArPos = parentObject->transform->GetPosition() / App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
+			parentObject->transform->SetPosition(unAppliedArPos);
+		}
+
+		if (currentCharacter.textureID != 0) {
+
+			glEnable(GL_TEXTURE_2D);
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+			glBindBuffer(GL_ARRAY_BUFFER, renderQuad->uvsID);
+
+			glBindTexture(GL_TEXTURE_2D, currentCharacter.textureID);
+
+			glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		}
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderQuad->indicesID);
+		glDrawElements(GL_TRIANGLES, renderQuad->numIndices, GL_UNSIGNED_INT, NULL);
+
+		if (currentCharacter.textureID != 0)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glDisable(GL_TEXTURE_2D);
+		}
+
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-		// Render quad
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		if (currentCharacter.textureID != 0)
+			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
-		// Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-		// x += (currentCharacter.Advance >> 6) * scale; Bitshift by 6 to get value in pixels (2^6 = 64)
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
+
+		//// Update VBO for each character
+		//GLfloat vertices[6][4] = {
+		//	{ xpos,     ypos + h,   0.0, 0.0 },
+		//	{ xpos,     ypos,       0.0, 1.0 },
+		//	{ xpos + w, ypos,       1.0, 1.0 },
+
+		//	{ xpos,     ypos + h,   0.0, 0.0 },
+		//	{ xpos + w, ypos,       1.0, 1.0 },
+		//	{ xpos + w, ypos + h,   1.0, 0.0 }
+		//};
+
+		//// Render glyph texture over quad
+		//glBindTexture(GL_TEXTURE_2D, currentCharacter.textureID);
+
+		//// Update content of VBO memory
+		//glBindBuffer(GL_ARRAY_BUFFER, textQuads[letterCount]->verticesID);
+		//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+		//glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		//// Render quad
+		//glDrawArrays(GL_TRIANGLES, 0, 6);
+
+		//// Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+		//// x += (currentCharacter.Advance >> 6) * scale; Bitshift by 6 to get value in pixels (2^6 = 64)
 		
 		x += (currentCharacter.Advance >> 6); // Bitshift by 6 to get value in pixels (2^6 = 64)
 		letterCount++; 
