@@ -15,6 +15,7 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 	actionType = ACTION_DISPLAY_TEXT;
 	parentObject = _parentObject;
 	isVisual = false;
+	drawTextBox = true;
 
 	textBox = new BoundingBox();
 
@@ -41,7 +42,7 @@ void DisplayTextAction::Draw()
 	if (!text.empty())
 		RenderText(); 
 
-	if(isSelected)
+	if(isSelected && drawTextBox)
 		textBox->Draw(false, float4(0, 1.0f, 0, 1.0f));
 }
 
@@ -235,6 +236,16 @@ void DisplayTextAction::SetTextColor(float4 newColor)
 float4& DisplayTextAction::GetTextColor()
 {
 	return textColor; 
+}
+
+void DisplayTextAction::SetDrawTextBox(bool _draw)
+{
+	drawTextBox = _draw;
+}
+
+bool& DisplayTextAction::GetDrawTextBox()
+{
+	return drawTextBox;
 }
 
 void DisplayTextAction::AllocateTextQuads(int amount, int position)

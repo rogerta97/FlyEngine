@@ -312,7 +312,8 @@ void Room::BreakOutputConnection(UID connectionToDelUID)
 }
 void Room::BreakOutputConnection(Room* targetRoomConnected) 
 {
-	RoomConnection* roomConnection = GetConnectionToRoom(targetRoomConnected->GetUID()); 
+	RoomConnection* roomConnection = nullptr; 
+	roomConnection = GetConnectionToRoom(targetRoomConnected->GetUID());
 	BreakOutputConnection(roomConnection->connectionID); 
 }
 // Input connections
@@ -481,7 +482,8 @@ void Room::SetSelectedObject(FlyObject* newObject)
 
 	selectedObject = newObject;
 
-	ObjectPropertiesDockPanel* propertiesDockPanel = (ObjectPropertiesDockPanel*)App->moduleImGui->GetDockPanel(DOCK_OBJECT_PROPERTIES); 
+	ObjectPropertiesDockPanel* propertiesDockPanel = nullptr;
+	propertiesDockPanel = (ObjectPropertiesDockPanel*)App->moduleImGui->GetDockPanel(DOCK_OBJECT_PROPERTIES);
 	propertiesDockPanel->SetSelectedObject(selectedObject); 	
 }
 

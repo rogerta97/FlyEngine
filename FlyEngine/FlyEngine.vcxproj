@@ -400,6 +400,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)3rdParty/DevILWindowsSDK\libx86\DevIL.lib;$(SolutionDir)3rdParty/DevILWindowsSDK\libx86\ILU.lib;$(SolutionDir)3rdParty/DevILWindowsSDK\libx86\ILUT.lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <AdditionalDependencies>$(SolutionDir)3rdParty/DevILWindowsSDK/libx86/DevIL.lib;$(SolutionDir)3rdParty/DevILWindowsSDK/libx86/ILU.lib;$(SolutionDir)3rdParty/DevILWindowsSDK/libx86/ILUT.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

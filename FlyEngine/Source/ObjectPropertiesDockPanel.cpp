@@ -864,7 +864,6 @@ void ObjectPropertiesDockPanel::DrawActionSettings()
 {
 	if (selectedObject->GetSelectedActionType() != AT_null)
 	{
-		
 		switch (selectedObject->GetSelectedActionType())
 		{
 		case ACTION_DISPLAY_IMAGE:
@@ -976,7 +975,13 @@ void ObjectPropertiesDockPanel::DrawDisplayTextSettings()
 			string buttonString = "Find##FindFont" + to_string(actionFont->GetUID());
 			if (ImGui::Button(buttonString.c_str()))
 			{
-
+				ImGui::OpenPopup("print_font_selection_popup");
+			}
+			
+			Font* fontSelected = (Font*)ResourceManager::getInstance()->PrintFontSelectionPopup(); 
+			if (fontSelected != nullptr)
+			{
+				displayTextAction->SetFont(fontSelected); 
 			}
 
 			ImGui::SameLine();
@@ -1003,8 +1008,14 @@ void ObjectPropertiesDockPanel::DrawDisplayTextSettings()
 				ImGui::EndDragDropTarget();
 			}
 
-	
+			// Text Box Settings ------------------
+			IMGUI_SPACED_SEPARATOR;
 
+			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+			ImGui::Text("Text Box Settings:");
+			ImGui::PopFont();
+
+			ImGui::Checkbox("Draw Box", &displayTextAction->GetDrawTextBox()); 
 		}
 	}
 }

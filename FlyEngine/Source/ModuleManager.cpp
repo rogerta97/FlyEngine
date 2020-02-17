@@ -292,7 +292,8 @@ void ModuleManager::DrawActionListWithSettings(FlyObject* ownerObejct)
 	ImGui::BeginChild("##ToolsListObjectProperties", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
 
 	int count = 0;
-	ObjectPropertiesDockPanel* objectProperties = (ObjectPropertiesDockPanel *)App->moduleImGui->GetDockPanel(DOCK_OBJECT_PROPERTIES);
+	ObjectPropertiesDockPanel* objectProperties = nullptr;
+	objectProperties = (ObjectPropertiesDockPanel*)App->moduleImGui->GetDockPanel(DOCK_OBJECT_PROPERTIES);
 	for (auto& currentAction : ownerObejct->GetActionsList())
 	{
 		if (ownerObejct->IsInventoryItem() && currentAction->GetActionType() == ACTION_DISPLAY_IMAGE)

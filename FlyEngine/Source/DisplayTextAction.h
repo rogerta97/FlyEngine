@@ -42,6 +42,9 @@ public:
 	void SetTextColor(float4 newColor);
 	float4& GetTextColor();
 
+	void SetDrawTextBox(bool _draw);
+	bool& GetDrawTextBox();
+
 	void UpdateTextQuadsSize(); 
 
 private:	
@@ -55,6 +58,7 @@ private:
 	// Text Box ----------
 	BoundingBox* textBox; 
 	float2 originTextPosition; 
+	bool drawTextBox; 
 	
 	int quadsAllocated = 0; 
 	std::map<int, Quad*> textQuads;

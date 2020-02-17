@@ -237,6 +237,37 @@ Resource* ResourceManager::PrintMusicSelectionPopup()
 	return nullptr;
 }
 
+Resource* ResourceManager::PrintFontSelectionPopup()
+{
+	if (ImGui::BeginPopup("print_font_selection_popup"))
+	{
+		static char searchFontBuffer[256];
+		ImGui::InputTextWithHint("##SearchFont", "Search...", searchFontBuffer, IM_ARRAYSIZE(searchFontBuffer));
+		ImGui::Separator();
+
+		for (auto& currentResource : instance->resourceList)
+		{
+			if (currentResource->GetType() != ResourceType::RESOURCE_FONT)
+				continue;
+
+			Texture* speakerIcon = (Texture*)ResourceManager::getInstance()->GetResource("DisplayTextIcon");
+
+			ImGui::Image((ImTextureID)speakerIcon->GetTextureID(), ImVec2(20, 20));
+			ImGui::SameLine();
+
+			if (ImGui::Selectable(currentResource->GetName().c_str()))
+			{
+				ImGui::EndPopup();
+				return currentResource;
+			}
+		}
+
+		ImGui::EndPopup();
+	}
+
+	return nullptr;
+}
+
 void ResourceManager::LoadResource(string newResourcePath, ResourceType forceType)
 {
 	FileExtension fileExtension = MyFileSystem::getInstance()->GetFileExtension(newResourcePath); 
