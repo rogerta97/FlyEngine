@@ -210,6 +210,7 @@ void DisplayTextAction::SetFont(Font* newFont)
 	}
 
 	textFont = newFont; 
+	SetText(text);
 }
 
 Font* DisplayTextAction::GetFont()
@@ -259,6 +260,7 @@ void DisplayTextAction::AllocateTextQuads(int amount, int position)
 void DisplayTextAction::UpdateTextQuadsSize()
 {
 	std::string::const_iterator currentLetter;
+	textQuads.clear();
 
 	int letterCount = 0;
 	for (currentLetter = text.begin(); currentLetter != text.end(); currentLetter++)

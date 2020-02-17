@@ -943,78 +943,68 @@ void ObjectPropertiesDockPanel::DrawDisplayTextSettings()
 			ImGui::Text("Text Settings:");
 			ImGui::PopFont();
 
+			// Text Field -----------------------
 			if (ImGui::InputText("Text##DisplayActionText", textBuffer, IM_ARRAYSIZE(textBuffer)))
 			{
 				displayTextAction->SetText(textBuffer);
 			}
 			
+			// Color Field -----------------------
 			ImGui::ColorEdit4("Color", (float*)&displayTextAction->GetTextColor());
 
+			// Size Field -----------------------
 			if (ImGui::InputInt("Size", &displayTextAction->GetFont()->GetSize(), 1, 5))
 			{
 				displayTextAction->GetFont()->SetSize(displayTextAction->GetFont()->GetSize());
+				displayTextAction->UpdateTextQuadsSize();
 			}
 
-			//ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-			//ImGui::Text("Text Box Settings:");
-			//ImGui::PopFont();
+			Font* actionFont = displayTextAction->GetFont(); 
 
-			/*ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-			ImGui::Text("Sound To Play:");
-			ImGui::PopFont();
-
-			static char soundNameBuffer[256] = "";
-
-			if (displayTextAction->audioClip != nullptr)
+			char actionFontNameBuffer[256]; 
+			if (actionFont != nullptr)
 			{
-			strcpy(soundNameBuffer, displayTextAction->audioClip->GetName().c_str());
-			}*/
-
-			/*Texture* playSound = (Texture*)ResourceManager::getInstance()->GetResource("PlayAudio");
-			if (ImGui::ImageButton((ImTextureID)playSound->GetTextureID(), ImVec2(20, 20)))
+				strcpy(actionFontNameBuffer, actionFont->GetName().c_str()); 
+			}
+			else
 			{
-			displayTextAction->Play();
+				FLY_ERROR("The action has no font assigned"); 
+				assert(false);
+			}
+
+			// Font Field -----------------------
+			string buttonString = "Find##FindFont" + to_string(actionFont->GetUID());
+			if (ImGui::Button(buttonString.c_str()))
+			{
+
 			}
 
 			ImGui::SameLine();
-
-			ImGui::InputTextWithHint("", "Select Sound...", soundNameBuffer, IM_ARRAYSIZE(soundNameBuffer), ImGuiInputTextFlags_ReadOnly);
+			if (ImGui::InputText("Font", actionFontNameBuffer, IM_ARRAYSIZE(actionFontNameBuffer), ImGuiInputTextFlags_ReadOnly))
+			{
+				displayTextAction->GetFont()->SetSize(displayTextAction->GetFont()->GetSize());
+				displayTextAction->UpdateTextQuadsSize();
+			}
 
 			if (ImGui::BeginDragDropTarget())
 			{
-			if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
-			{
-			int* selectedResourceUID = (int*)payload->Data;
-			Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+				if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+				{
+					int* selectedResourceUID = (int*)payload->Data;
+					Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
 
-			if (resourceDropped->GetType() == RESOURCE_SFX)
-			{
-			AudioClip* audioClipDropped = (AudioClip*)resourceDropped;
-			displayTextAction->audioClip = audioClipDropped;
-			}
-			}
+					if (resourceDropped->GetType() == RESOURCE_FONT)
+					{
+						Font* fontDropped = (Font*)resourceDropped;
+						displayTextAction->SetFont(fontDropped);
+					}
+				}
 
-			ImGui::EndDragDropTarget();
-			}
-
-			ImGui::SameLine();
-			if (ImGui::Button("Search##SearchSound"))
-			{
-			ImGui::OpenPopup("print_sound_selection_popup");
-			showSoundSelectionPopup = true;
+				ImGui::EndDragDropTarget();
 			}
 
-			if (showSoundSelectionPopup)
-			{
-			Resource* selectedSound = ResourceManager::getInstance()->PrintSoundsSelectionPopup();
+	
 
-			if (selectedSound != nullptr)
-			{
-			AudioClip* audioClipDropped = (AudioClip*)selectedSound;
-			displayTextAction->audioClip = audioClipDropped;
-			showSoundSelectionPopup = false;
-			}
-			}*/
 		}
 	}
 }
