@@ -69,6 +69,11 @@ bool FlyObject::Update()
 
 	if (App->isEngineInPlayMode && App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && GameInventory::getInstance()->droppingObject == nullptr)
 	{
+		if (clickableArea->IsMouseOver())
+		{
+			DoOnMouseOverActions();
+		}
+
 		if (clickableArea->IsBoxClicked())
 		{
 			flog("Object Clicked"); 
@@ -90,6 +95,20 @@ bool FlyObject::Update()
 	}
 
 	return ret; 
+}
+
+void FlyObject::DoOnMouseOverActions()
+{
+	for (auto& it : actionsList)
+	{
+		if (it->IsOccMouseOver())
+		{
+			if (it->IsOccCondition() && !it->PassConditionTest())
+				continue;
+		}
+
+		it->DoAction();
+	}
 }
 
 void FlyObject::Draw()

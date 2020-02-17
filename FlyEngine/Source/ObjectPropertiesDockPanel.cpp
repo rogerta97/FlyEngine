@@ -903,9 +903,12 @@ void ObjectPropertiesDockPanel::DrawDisplayTextSettings()
 
 			ImGui::PushFont(App->moduleImGui->rudaRegularMid);
 			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 40));
+			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
 
 			ImGui::SetCursorPos(ImVec2(5, 8));
+			ImGui::Checkbox("On Mouse Over", &displayTextAction->IsOccMouseOver());
+
+			ImGui::SetCursorPos(ImVec2(5, 38));
 			ImGui::Checkbox("Blackboard Value Condition", &displayTextAction->IsOccCondition());
 
 			ImGui::SameLine();
@@ -937,6 +940,8 @@ void ObjectPropertiesDockPanel::DrawDisplayTextSettings()
 
 			if (!displayTextAction->GetText().empty())
 				strcpy(textBuffer, displayTextAction->GetText().c_str());
+
+			IMGUI_SPACED_SEPARATOR;
 
 			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 			ImGui::Text("Text Settings:");
@@ -1014,6 +1019,12 @@ void ObjectPropertiesDockPanel::DrawDisplayTextSettings()
 			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 			ImGui::Text("Text Box Settings:");
 			ImGui::PopFont();
+
+			float2 boxSize = displayTextAction->GetTextBox()->GetSize();
+			if (ImGui::DragFloat2("Width & Heigth", (float*)& boxSize, 2))
+			{
+				displayTextAction->GetTextBox()->SetSize(boxSize.x, boxSize.y); 
+			}
 
 			ImGui::Checkbox("Draw Box", &displayTextAction->GetDrawTextBox()); 
 		}

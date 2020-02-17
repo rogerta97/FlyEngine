@@ -80,6 +80,7 @@ public:
 	bool& IsOccSceneEnter();
 	bool& IsOccSceneLeave();
 	bool& IsOccCondition();
+	bool& IsOccMouseOver();
 	bool& IsOccObjectClicked();
 
 	void SetOccSceneEnter(bool newValue);
@@ -125,6 +126,7 @@ protected:
 	bool occ_ObjectClicked = false;
 	bool occ_blackboardValue = false;
 	bool occ_continuous = false;
+	bool occ_mouseOver = false; 
 	
 	// Conditions -----------------
 	string showValueConditionButtonText; 

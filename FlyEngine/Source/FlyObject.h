@@ -29,7 +29,8 @@ public:
 	FlyObject(std::string objectName, std::string description = "", FlyObjectType _flyObjectType = ACTION_OBJECT, Room* parentRoom = nullptr); 
 	~FlyObject(); 
 
-	bool Update(); 
+	bool Update();
+
 	void Draw();
 	void CleanUp(); 
 
@@ -50,6 +51,7 @@ public:
 
 	// Actions ---------
 	void DoOnClickActions(); 
+	void DoOnMouseOverActions();
 
 	// Tools -----------
 	DisplayImageAction* AddDisplayImageAction(const char* imageTexturePath = "None");

@@ -291,6 +291,11 @@ bool& Action::IsOccCondition()
 	return occ_blackboardValue;
 }
 
+bool& Action::IsOccMouseOver()
+{
+	return occ_mouseOver;
+}
+
 bool& Action::IsOccObjectClicked()
 {
 	return occ_ObjectClicked;
