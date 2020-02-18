@@ -255,7 +255,7 @@ void DisplayTextAction::AllocateTextQuads(int amount, int position)
 
 	if (amount > quadsAllocated)
 		amount -= quadsAllocated; 
-	
+
 	int counter = 0;
 	while (counter < amount)
 	{

@@ -10,6 +10,7 @@ class Room;
 class UI_Element; 
 class UI_Image; 
 class UI_Button; 
+class UI_Text; 
 class Action; 
 class RoomUIHandler
 {
@@ -36,6 +37,7 @@ public:
 	UI_Image* CreateUIImage(UID resourceUID); 
 	UI_Image* CreateUIImage(); 
 	UI_Button* CreateUIButton(); 
+	UI_Text* CreateUIText();
 
 	void DeleteElement(UID elementUID); 
 

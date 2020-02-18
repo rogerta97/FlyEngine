@@ -310,12 +310,14 @@ void Room::BreakOutputConnection(UID connectionToDelUID)
 			it++; 
 	}
 }
+
 void Room::BreakOutputConnection(Room* targetRoomConnected) 
 {
 	RoomConnection* roomConnection = nullptr; 
 	roomConnection = GetConnectionToRoom(targetRoomConnected->GetUID());
 	BreakOutputConnection(roomConnection->connectionID); 
 }
+
 // Input connections
 void Room::BreakEnterConnections()
 {

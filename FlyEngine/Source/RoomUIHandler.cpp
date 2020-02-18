@@ -11,6 +11,7 @@
 
 #include "UI_Image.h"
 #include "UI_Button.h"
+#include "UI_Text.h"
 #include "mmgr.h"
 
 RoomUIHandler::RoomUIHandler(Room* _roomAttached)
@@ -169,6 +170,14 @@ UI_Button* RoomUIHandler::CreateUIButton()
 	newButton->Init(); 
 	uiElements.push_back(newButton);
 	return newButton;
+}
+
+UI_Text* RoomUIHandler::CreateUIText()
+{
+	UI_Text* newText = new UI_Text();
+	newText->Init();
+	uiElements.push_back(newText);
+	return newText;
 }
 
 void RoomUIHandler::DeleteElement(UID elementUID)

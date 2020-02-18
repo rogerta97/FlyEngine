@@ -19,6 +19,7 @@
 #include "MusicTrack.h"
 
 #include "Room.h"
+#include "UI_Text.h"
 #include "Texture.h"
 #include "FlyVariable.h"
 #include "ViewportManager.h"
@@ -128,10 +129,9 @@ void RoomDockPanel::DrawUserInterfaceTab()
 
 		if (ImGui::Button("Add Debug UI Text"))
 		{
-
+			UI_Text* newText = App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->CreateUIText();
 		}
 	}
-
 }
 
 void RoomDockPanel::ShowBlackboardTab()

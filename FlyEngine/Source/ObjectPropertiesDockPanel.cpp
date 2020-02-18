@@ -1020,10 +1020,21 @@ void ObjectPropertiesDockPanel::DrawDisplayTextSettings()
 			ImGui::Text("Text Box Settings:");
 			ImGui::PopFont();
 
+			// Box Position 
+			float2 boxPos = displayTextAction->GetTextBox()->GetPosition();
+			if (ImGui::DragFloat2("Position", (float*)&boxPos, 2))
+			{
+				displayTextAction->GetTextBox()->SetPosition(float2(boxPos.x, boxPos.y));
+				displayTextAction->CalculateOriginTextPosition();
+			}
+
+			// Box Width & Heigth
 			float2 boxSize = displayTextAction->GetTextBox()->GetSize();
 			if (ImGui::DragFloat2("Width & Heigth", (float*)& boxSize, 2))
 			{
 				displayTextAction->GetTextBox()->SetSize(boxSize.x, boxSize.y); 
+				displayTextAction->GetTextBox()->SetPosition(float2(boxPos.x, boxPos.y));
+				displayTextAction->CalculateOriginTextPosition();
 			}
 
 			ImGui::Checkbox("Draw Box", &displayTextAction->GetDrawTextBox()); 
