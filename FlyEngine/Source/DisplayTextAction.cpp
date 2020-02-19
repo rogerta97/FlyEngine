@@ -26,6 +26,7 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 
 	textFont = (Font*)ResourceManager::GetResource("arial", RESOURCE_FONT);
 	SetText("AB");
+	SetLineSpacing(textFont->GetSize()); 
 	textColor = float4(1.0f, 1.0f, 1.0f, 1.0f); 
 
 	SetActionName("Display Text");
@@ -355,6 +356,8 @@ void DisplayTextAction::RenderText()
 
 	int currentLine = 0; 
 	int letterCount = 0;
+	int cursorXInc = 0; 
+	int cursorYInc = 0; 
 	for (currentLetter = text.begin(); currentLetter != text.end(); currentLetter++)
 	{
 		if (textFont == nullptr)
@@ -371,12 +374,27 @@ void DisplayTextAction::RenderText()
 
 		// Push Matrix to place the Corresponding quad in the correct position
 		float4x4 characterTransformMatrix = float4x4::identity;
-		cursorPos.y = y - currentCharacter.bearing.y + textFont->GetSize();
+		cursorPos.y = y - currentCharacter.bearing.y + textFont->GetSize() + (currentLine * lineSpacing);
 		characterTransformMatrix.SetTranslatePart(float3(cursorPos.x, cursorPos.y, 0));
 		glMatrixMode(GL_MODELVIEW);
 		glLoadMatrixf((GLfloat*)(characterTransformMatrix.Transposed()).v);
 
 		cursorPos.x += currentCharacter.Advance;
+
+		// Supose Wrapping = true; 
+		cursorXInc += currentCharacter.Advance;
+		if (cursorXInc > textBox->GetSize().x - 30)
+		{
+			currentLine++;
+			cursorPos.x = textBox->GetMinPoint().x;
+			cursorXInc = 0; 
+			cursorYInc += lineSpacing; 
+		}
+
+		if (cursorYInc > textBox->GetSize().y - 30)
+		{
+			continue; 
+		}
 
 		// Draw the quad with the correct texture 
 		glEnableClientState(GL_VERTEX_ARRAY);
@@ -506,6 +524,16 @@ void DisplayTextAction::SetDrawTextBox(bool _draw)
 bool& DisplayTextAction::GetDrawTextBox()
 {
 	return drawTextBox;
+}
+
+void DisplayTextAction::SetLineSpacing(float _lineSpacing)
+{
+	lineSpacing = _lineSpacing;
+}
+
+float& DisplayTextAction::GetLineSpacing()
+{
+	return lineSpacing; 
 }
 
 void DisplayTextAction::AllocateTextQuads(int amount, int position)

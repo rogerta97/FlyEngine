@@ -1097,8 +1097,7 @@ void ObjectPropertiesDockPanel::DrawDisplayTextSettings()
 			ImGui::PopFont();
 			ImGui::PopStyleColor();
 
-			static char textBuffer[256];
-
+			static char textBuffer[1024];
 			if (!displayTextAction->GetText().empty())
 				strcpy(textBuffer, displayTextAction->GetText().c_str());
 

@@ -47,6 +47,9 @@ public:
 	void SetDrawTextBox(bool _draw);
 	bool& GetDrawTextBox();
 
+	void SetLineSpacing(float _lineSpacing);
+	float& GetLineSpacing();
+
 	void UpdateTextQuadsSize(); 
 
 private:	
@@ -56,6 +59,7 @@ private:
 	Font* textFont = nullptr; 
 	std::string text; 
 	float4 textColor; 
+	float lineSpacing = 0.0f; 
 
 	// Text Box ----------
 	BoundingBox* textBox; 
