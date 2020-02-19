@@ -4,7 +4,9 @@
 #include "GameViewportDockPanel.h"
 #include "ModuleWindow.h"
 #include "OpenGL.h"
+#include "UI_Text.h"
 #include "ModuleImGui.h"
+#include "DisplayTextAction.h"
 #include "Room.h"
 #include "FlyObject.h"
 #include "RoomUIHandler.h"
@@ -65,10 +67,19 @@ list<FlyObject*> ViewportManager::RaycastMouseClickObjects()
 list<UI_Element*> ViewportManager::RaycastMouseClickUI()
 {
 	list<UI_Element*> objectCandidates = list<UI_Element*>();
-	for (auto& currentObject : App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->uiElements)
+	for (auto& currentElement : App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->uiElements)
 	{
-		if (currentObject->GetHolderObject()->IsMouseOver())
-			objectCandidates.push_back(currentObject);
+		if (currentElement->uiElementType == UI_TEXT)
+		{
+			UI_Text* textCandidate = (UI_Text*)currentElement; 
+
+			if (textCandidate->GetDisplayTextAction()->GetTextBox()->IsMouseOver())
+				objectCandidates.push_back(currentElement); 
+		}
+		else if (currentElement->GetHolderObject()->IsMouseOver())
+		{
+			objectCandidates.push_back(currentElement);
+		}
 	}
 
 	return objectCandidates;

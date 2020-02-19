@@ -42,8 +42,8 @@ void DisplayTextAction::Draw()
 	if (!text.empty())
 		RenderText(); 
 
-	if(isSelected && drawTextBox)
-		textBox->Draw(false, float4(0, 1.0f, 0, 1.0f));
+	if (isSelected && drawTextBox)
+		DrawTextBox(); 
 }
 
 void DisplayTextAction::CleanUp()
@@ -75,9 +75,257 @@ void DisplayTextAction::SaveAction(JSON_Object* jsonObject, string serializeObje
 
 void DisplayTextAction::DrawUISettings()
 {
-	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-	ImGui::Text("Display Text Settings: ");
-	ImGui::PopFont();
+	if (ImGui::CollapsingHeader("Display Text Attributes", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+		ImGui::Text("Action Happens On:");
+		ImGui::PopFont();
+
+		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
+
+		ImGui::SetCursorPos(ImVec2(5, 8));
+		ImGui::Checkbox("On Mouse Over", &IsOccMouseOver());
+
+		ImGui::SetCursorPos(ImVec2(5, 38));
+		ImGui::Checkbox("Blackboard Value Condition", &IsOccCondition());
+
+		ImGui::SameLine();
+		static std::string showValueConditionButtonText = "Show Conditions";
+		if (ImGui::Button(showValueConditionButtonText.c_str()))
+		{
+			if (showConditionsUI)
+			{
+				showConditionsUI = false;
+				showValueConditionButtonText = "Show Conditions";
+			}
+			else
+			{
+				showConditionsUI = true;
+				showValueConditionButtonText = "Hide Conditions";
+			}
+		}
+
+		if (showConditionsUI)
+			DrawActionConditionsList();
+
+		ImGui::Spacing();
+		ImGui::EndChild();
+
+		ImGui::PopFont();
+		ImGui::PopStyleColor();
+
+		static char textBuffer[256];
+
+		if (!GetText().empty())
+			strcpy(textBuffer, GetText().c_str());
+
+		IMGUI_SPACED_SEPARATOR;
+
+		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+		ImGui::Text("Text Settings:");
+		ImGui::PopFont();
+
+		// Text Field -----------------------
+		if (ImGui::InputText("Text##DisplayActionText", textBuffer, IM_ARRAYSIZE(textBuffer)))
+		{
+			SetText(textBuffer);
+		}
+
+		// Color Field -----------------------
+		ImGui::ColorEdit4("Color", (float*)& GetTextColor());
+
+		// Size Field -----------------------
+		if (ImGui::InputInt("Size", &GetFont()->GetSize(), 1, 5))
+		{
+			GetFont()->SetSize(GetFont()->GetSize());
+			UpdateTextQuadsSize();
+		}
+
+		Font* actionFont = GetFont();
+
+		char actionFontNameBuffer[256];
+		if (actionFont != nullptr)
+		{
+			strcpy(actionFontNameBuffer, actionFont->GetName().c_str());
+		}
+		else
+		{
+			FLY_ERROR("The action has no font assigned");
+			assert(false);
+		}
+
+		// Font Field -----------------------
+		string buttonString = "Find##FindFont" + to_string(actionFont->GetUID());
+		if (ImGui::Button(buttonString.c_str()))
+		{
+			ImGui::OpenPopup("print_font_selection_popup");
+		}
+
+		Font* fontSelected = (Font*)ResourceManager::getInstance()->PrintFontSelectionPopup();
+		if (fontSelected != nullptr)
+		{
+			SetFont(fontSelected);
+		}
+
+		ImGui::SameLine();
+		if (ImGui::InputText("Font", actionFontNameBuffer, IM_ARRAYSIZE(actionFontNameBuffer), ImGuiInputTextFlags_ReadOnly))
+		{
+			GetFont()->SetSize(GetFont()->GetSize());
+			UpdateTextQuadsSize();
+		}
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+			{
+				int* selectedResourceUID = (int*)payload->Data;
+				Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+				if (resourceDropped->GetType() == RESOURCE_FONT)
+				{
+					Font* fontDropped = (Font*)resourceDropped;
+					SetFont(fontDropped);
+				}
+			}
+
+			ImGui::EndDragDropTarget();
+		}
+
+		// Text Box Settings ------------------
+		IMGUI_SPACED_SEPARATOR;
+
+		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+		ImGui::Text("Text Box Settings:");
+		ImGui::PopFont();
+
+		// Box Position 
+		float2 boxPos = GetTextBox()->GetPosition();
+		if (ImGui::DragFloat2("Position", (float*)& boxPos, 2))
+		{
+			GetTextBox()->SetPosition(float2(boxPos.x, boxPos.y));
+			CalculateOriginTextPosition();
+		}
+
+		// Box Width & Heigth
+		float2 boxSize = GetTextBox()->GetSize();
+		if (ImGui::DragFloat2("Width & Heigth", (float*)& boxSize, 2))
+		{
+			GetTextBox()->SetSize(boxSize.x, boxSize.y);
+			GetTextBox()->SetPosition(float2(boxPos.x, boxPos.y));
+			CalculateOriginTextPosition();
+		}
+
+		ImGui::Checkbox("Draw Box", &GetDrawTextBox());
+	}
+}
+
+void DisplayTextAction::DrawUISettingsInButton()
+{	
+	if (ImGui::CollapsingHeader("Display Text Attributes", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		static char textBuffer[256];
+
+		if (!GetText().empty())
+			strcpy(textBuffer, GetText().c_str());
+
+		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+		ImGui::Text("Text Settings:");
+		ImGui::PopFont();
+
+		// Text Field -----------------------
+		if (ImGui::InputText("Text##DisplayActionText", textBuffer, IM_ARRAYSIZE(textBuffer)))
+		{
+			SetText(textBuffer);
+		}
+
+		// Color Field -----------------------
+		ImGui::ColorEdit4("Color", (float*)& GetTextColor());
+
+		// Size Field -----------------------
+		if (ImGui::InputInt("Size", &GetFont()->GetSize(), 1, 5))
+		{
+			GetFont()->SetSize(GetFont()->GetSize());
+			UpdateTextQuadsSize();
+		}
+
+		Font* actionFont = GetFont();
+
+		char actionFontNameBuffer[256];
+		if (actionFont != nullptr)
+		{
+			strcpy(actionFontNameBuffer, actionFont->GetName().c_str());
+		}
+		else
+		{
+			FLY_ERROR("The action has no font assigned");
+			assert(false);
+		}
+
+		// Font Field -----------------------
+		string buttonString = "Find##FindFont" + to_string(actionFont->GetUID());
+		if (ImGui::Button(buttonString.c_str()))
+		{
+			ImGui::OpenPopup("print_font_selection_popup");
+		}
+
+		Font* fontSelected = (Font*)ResourceManager::getInstance()->PrintFontSelectionPopup();
+		if (fontSelected != nullptr)
+		{
+			SetFont(fontSelected);
+		}
+
+		ImGui::SameLine();
+		if (ImGui::InputText("Font", actionFontNameBuffer, IM_ARRAYSIZE(actionFontNameBuffer), ImGuiInputTextFlags_ReadOnly))
+		{
+			GetFont()->SetSize(GetFont()->GetSize());
+			UpdateTextQuadsSize();
+		}
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+			{
+				int* selectedResourceUID = (int*)payload->Data;
+				Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+				if (resourceDropped->GetType() == RESOURCE_FONT)
+				{
+					Font* fontDropped = (Font*)resourceDropped;
+					SetFont(fontDropped);
+				}
+			}
+
+			ImGui::EndDragDropTarget();
+		}
+
+		// Text Box Settings ------------------
+		IMGUI_SPACED_SEPARATOR;
+
+		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+		ImGui::Text("Text Box Settings:");
+		ImGui::PopFont();
+
+		// Box Position 
+		float2 boxPos = GetTextBox()->GetPosition();
+		if (ImGui::DragFloat2("Position", (float*)& boxPos, 2))
+		{
+			GetTextBox()->SetPosition(float2(boxPos.x, boxPos.y));
+			CalculateOriginTextPosition();
+		}
+
+		// Box Width & Heigth
+		float2 boxSize = GetTextBox()->GetSize();
+		if (ImGui::DragFloat2("Width & Heigth", (float*)& boxSize, 2))
+		{
+			GetTextBox()->SetSize(boxSize.x, boxSize.y);
+			GetTextBox()->SetPosition(float2(boxPos.x, boxPos.y));
+			CalculateOriginTextPosition();
+		}
+
+		ImGui::Checkbox("Draw Box", &GetDrawTextBox());
+	}
 }
 
 void DisplayTextAction::RenderText()
@@ -175,6 +423,18 @@ void DisplayTextAction::RenderText()
 
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void DisplayTextAction::DrawTextBox()
+{
+	if (textBox == nullptr)
+	{
+		FLY_ERROR("Cant draw text box"); 
+		assert(false);
+		return; 
+	}
+
+	textBox->Draw(false, float4(0, 1.0f, 0, 1.0f)); 
 }
 
 void DisplayTextAction::CalculateOriginTextPosition()

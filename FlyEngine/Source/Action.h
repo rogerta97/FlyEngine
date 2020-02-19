@@ -130,7 +130,7 @@ protected:
 	
 	// Conditions -----------------
 	string showValueConditionButtonText; 
-	bool showValueConditions = false; 
+	bool showConditionsUI = false; 
 	list<ActionCondition*> actionConditions;
 	ConditionEvaluationCriteria evaluationCriteria; 
 

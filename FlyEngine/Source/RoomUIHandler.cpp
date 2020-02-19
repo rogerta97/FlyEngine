@@ -150,7 +150,7 @@ UI_Image* RoomUIHandler::CreateUIImage(UID resourceUID)
 	UI_Image* newImage = new UI_Image(); 
 	
 	Texture* textureResource = (Texture*)ResourceManager::getInstance()->GetResource(resourceUID, ResourceType::RESOURCE_TEXTURE);
-	newImage->Create(textureResource->GetPath()); 
+	newImage->Init(textureResource->GetPath()); 
 
 	uiElements.push_back(newImage); 
 	return newImage; 
@@ -159,7 +159,6 @@ UI_Image* RoomUIHandler::CreateUIImage(UID resourceUID)
 UI_Image* RoomUIHandler::CreateUIImage()
 {
 	UI_Image* newImage = new UI_Image();
-
 	uiElements.push_back(newImage);
 	return newImage;
 }

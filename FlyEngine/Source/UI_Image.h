@@ -15,6 +15,7 @@ public:
 	UI_Image(); 
 	~UI_Image();
 
+	void Init(string imagePath); 
 	void Update(); 
 	void Draw(); 
 	void CleanUp(); 
@@ -22,7 +23,6 @@ public:
 	void Save(JSON_Object* jsonObject, string serializeStr);
 	void Load(JSON_Object* jsonObject, string serializeStr);
 
-	void Create(string imagePath); 
 	DisplayImageAction* GetDisplayImage(); 
 
 private: 

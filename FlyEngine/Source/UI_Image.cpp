@@ -75,7 +75,7 @@ void UI_Image::Load(JSON_Object* jsonObject, string serializeStr)
 	int imageWidth = json_object_dotget_number(jsonObject, std::string(serializeStr + "ImageWidth").c_str());
 	int imageHeigth = json_object_dotget_number(jsonObject, std::string(serializeStr + "ImageHeigth").c_str());
 		
-	Create(resourceTexture->GetPath());
+	Init(resourceTexture->GetPath());
 
 	uiObjectDisplayImage->SetWidth(imageWidth);
 	uiObjectDisplayImage->SetHeigth(imageHeigth);
@@ -89,7 +89,7 @@ void UI_Image::Load(JSON_Object* jsonObject, string serializeStr)
 	uiObject->FitObjectUtils(); 
 }
 
-void UI_Image::Create(string imagePath)
+void UI_Image::Init(string imagePath)
 {
 	string resourceName = MyFileSystem::getInstance()->GetLastPathItem(imagePath.c_str(), false); 
 	Texture* textureResource = (Texture*)ResourceManager::getInstance()->GetResource(resourceName);

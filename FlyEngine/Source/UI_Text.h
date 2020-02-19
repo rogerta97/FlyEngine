@@ -16,14 +16,17 @@ public:
 	UI_Text();
 	~UI_Text();
 
+	void Init();
 	void Update();
 	void Draw();
 	void CleanUp();
 
+	DisplayTextAction* GetDisplayTextAction();
+
 private:
 
 	// Easy Acces to Holder Action
-	DisplayTextAction* uiObjectDisplayImage;
+	DisplayTextAction* displayTextAction;
 };
 
 #endif // !_UI_IMAGE_H_

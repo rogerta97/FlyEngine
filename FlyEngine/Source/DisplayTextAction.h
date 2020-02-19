@@ -22,9 +22,11 @@ public:
 	void CleanUp();
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
 	void DrawUISettings();
+	void DrawUISettingsInButton();
 
 	// Render ------------------------------
 	void RenderText(); 
+	void DrawTextBox(); 
 
 	// Positioning -------------------------
 	void CalculateOriginTextPosition(); 

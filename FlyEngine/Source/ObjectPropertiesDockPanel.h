@@ -17,6 +17,7 @@ public:
 
 	// User Inteface
 	void DrawUIElementProperties();
+	void DrawUITextProperties(UI_Element* selectedUIElement);
 	void DrawUIImageProperties(UI_Element* selectedUIElement);
 	void DrawUIButtonProperties(UI_Element* selectedUIElement);
 
@@ -43,7 +44,6 @@ public:
 	// Object Tools Tab
 	void DrawObjectActionsTab();
 	void DrawActionSettings();
-
 
 	void DrawActionsList();
 	void DrawAddAndDeleteButtons();

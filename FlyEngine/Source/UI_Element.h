@@ -36,6 +36,7 @@ public:
 public: 
 	bool isSelected; 
 	UIElementType uiElementType; 
+	bool showValueConditions; 
 
 protected: 
 	FlyObject* uiObject; 
