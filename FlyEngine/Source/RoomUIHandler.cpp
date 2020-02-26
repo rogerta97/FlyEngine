@@ -114,15 +114,38 @@ void RoomUIHandler::DrawUIElements()
 
 UID RoomUIHandler::DrawUIElementsHierarchy()
 {
+	int count = 0;
 	for (auto& currentElement : uiElements)
 	{
-		if (ImGui::Selectable(currentElement->GetHolderObject()->GetName().c_str(), currentElement->isSelected))
+		string tabname = currentElement->GetHolderObject()->GetName() + "##UIHierarchySelectable" + to_string(count);
+
+		if (ImGui::Selectable(tabname.c_str(), currentElement->isSelected))
 		{
 			return currentElement->GetUID();
 		}
+
+		count++; 
 	}
 
 	return 0;
+}
+
+void RoomUIHandler::AddEmptyElement(UIElementType elementType)
+{
+	switch (elementType)
+	{
+	case UI_IMAGE:
+		CreateUIImage();
+		break;
+
+	case UI_BUTTON:
+		CreateUIButton();
+		break;
+
+	case UI_TEXT:
+		CreateUIText(); 
+		break;
+	}
 }
 
 void RoomUIHandler::SetSelectedElement(UI_Element* newSelectedElement)
@@ -148,6 +171,7 @@ void RoomUIHandler::SetSelectedElement(UI_Element* newSelectedElement)
 void RoomUIHandler::SetSelectedElement(UID newSelectedElementUID)
 {
 	UI_Element* newSelectedElement = GetUIElement(newSelectedElementUID);
+	SetSelectedElement(newSelectedElement); 
 }
 
 UI_Element* RoomUIHandler::GetUIElement(UID elementUID)
@@ -174,6 +198,44 @@ void RoomUIHandler::DrawSelectedOnClickActionSettings()
 	selectedButtonUIAction->DrawUISettingsInButton();
 }
 
+UIElementType RoomUIHandler::DrawUIElementSelectorPopup()
+{	
+	UIElementType uiElementTypeClicked = UIElementType::UI_null; 
+	if (ImGui::BeginPopup("SelectUIElement"))
+	{
+		Texture* checkVariableIcon = (Texture*)ResourceManager::getInstance()->GetResource("CheckVariableIcon");
+		ImGui::Image((ImTextureID)checkVariableIcon->GetTextureID(), ImVec2(18, 18));
+		ImGui::SameLine();
+
+		if (ImGui::Selectable("Add UI Image"))
+		{
+			uiElementTypeClicked = UI_IMAGE;
+		}
+			
+		checkVariableIcon = (Texture*)ResourceManager::getInstance()->GetResource("CheckVariableIcon");
+		ImGui::Image((ImTextureID)checkVariableIcon->GetTextureID(), ImVec2(18, 18));
+		ImGui::SameLine();
+
+		if (ImGui::Selectable("Add UI Button"))
+		{
+			uiElementTypeClicked = UI_BUTTON;
+		}
+
+		checkVariableIcon = (Texture*)ResourceManager::getInstance()->GetResource("CheckVariableIcon");
+		ImGui::Image((ImTextureID)checkVariableIcon->GetTextureID(), ImVec2(18, 18));
+		ImGui::SameLine();
+
+		if (ImGui::Selectable("Add UI Text"))
+		{
+			uiElementTypeClicked = UI_TEXT;
+		}
+
+		ImGui::EndPopup();
+	}
+
+	return uiElementTypeClicked; 	
+}
+
 UI_Image* RoomUIHandler::CreateUIImage(UID resourceUID)
 {
 	UI_Image* newImage = new UI_Image(); 
@@ -187,9 +249,8 @@ UI_Image* RoomUIHandler::CreateUIImage(UID resourceUID)
 
 UI_Image* RoomUIHandler::CreateUIImage()
 {
-	UI_Image* newImage = new UI_Image();
-	uiElements.push_back(newImage);
-	return newImage;
+	Resource* phResource = ResourceManager::getInstance()->GetResource("EmptyObject"); 
+	return CreateUIImage(phResource->GetUID());
 }
 
 UI_Button* RoomUIHandler::CreateUIButton()

@@ -1,5 +1,4 @@
 #include "ModuleManager.h"
-
 #include "ImageImporter.h"
 #include "ResourceManager.h"
 #include "MyFileSystem.h"
@@ -27,6 +26,8 @@ ModuleManager::ModuleManager(bool start_enabled)
 {
 	fakeVarInitAttach = new FlyVariable();
 	fakeVarInitAttach->SetDefault(); 
+
+	uiBackgroundTint = float4(1, 1, 1, 1);
 }
 
 ModuleManager::~ModuleManager()
@@ -183,6 +184,16 @@ Texture* ModuleManager::GetIconFromActionType(ActionType toolType)
 	}
 
 	return toolIconTexture;
+}
+
+float4 ModuleManager::GetSceneUITint()
+{
+	return uiBackgroundTint; 
+}
+
+void ModuleManager::SetSceneUITint(float4 _colorTint)
+{
+	uiBackgroundTint = _colorTint;
 }
 
 void ModuleManager::AddDeleteFromListObject(FlyObject* newObjectToDelete)

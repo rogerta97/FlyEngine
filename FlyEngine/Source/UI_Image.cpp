@@ -95,7 +95,7 @@ void UI_Image::Init(string imagePath)
 	Texture* textureResource = (Texture*)ResourceManager::getInstance()->GetResource(resourceName);
 
 	if (uiObject == nullptr)
-		uiObject = new FlyObject("ImageUIHolder", "", UI_HOLDER);
+		uiObject = new FlyObject("UI Image", "", UI_HOLDER);
 
 	uiObjectDisplayImage = uiObject->AddDisplayImageAction(imagePath.c_str());
 	uiObjectDisplayImage->SetTexture(textureResource);

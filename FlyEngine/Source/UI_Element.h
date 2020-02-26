@@ -7,9 +7,10 @@
 
 enum UIElementType
 {
-	UI_IMAGE, 
-	UI_BUTTON, 
+	UI_IMAGE,
+	UI_BUTTON,
 	UI_TEXT,
+	UI_null,
 };
 
 class FlyObject; 

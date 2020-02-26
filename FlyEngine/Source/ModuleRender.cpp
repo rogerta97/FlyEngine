@@ -12,6 +12,7 @@
 
 #include "ModuleWindow.h"
 #include "ModuleRoomManager.h"
+#include "ModuleManager.h"
 #include "ModuleImGui.h"
 #include "GameViewportDockPanel.h"
 #include "ViewportManager.h"
@@ -125,7 +126,16 @@ update_status ModuleRender::PostUpdate(float dt)
 
 		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
 
+		glColor4f(
+			App->moduleManager->GetSceneUITint().x,
+			App->moduleManager->GetSceneUITint().y,
+			App->moduleManager->GetSceneUITint().z,
+			App->moduleManager->GetSceneUITint().w
+		);
+
 		selectedRoom->DrawRoomObjects();
+
+		glColor4f(1, 1, 1, 1);
 		selectedRoom->DrawRoomUserInterface(); 
 
 		ViewportManager::getInstance()->viewportTexture->Render();

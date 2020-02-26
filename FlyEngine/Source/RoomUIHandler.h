@@ -3,11 +3,11 @@
 
 #include "Globals.h"
 #include "SaveAndLoad.h"
+#include "UI_Element.h"
 #include <list>
 #include <string>
 
 class Room; 
-class UI_Element; 
 class UI_Image; 
 class UI_Button; 
 class UI_Text; 
@@ -26,16 +26,18 @@ public:
 	void Update(); 
 	void CleanUp(); 
 	void DrawUIElements(); 
-	UID DrawUIElementsHierarchy(); 
 
 	// Utility ----------------------
+	void AddEmptyElement(UIElementType elementType);
 	void SetSelectedElement(UI_Element* newSelectedElement); 
 	void SetSelectedElement(UID newSelectedElementUID); 
 	UI_Element* GetUIElement(UID elementUID);
 	UI_Element* GetSelectedElement();
-	bool HasElement(UI_Element* checkElement); 
 
+	// Draw --------------------------
+	UID DrawUIElementsHierarchy(); 
 	void DrawSelectedOnClickActionSettings(); 
+	UIElementType DrawUIElementSelectorPopup();
 
 	// Factory ----------------------
 	UI_Image* CreateUIImage(UID resourceUID); 

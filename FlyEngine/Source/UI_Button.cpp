@@ -36,7 +36,7 @@ UI_Button::~UI_Button()
 void UI_Button::Init()
 {
 	// For Now Set Object Default data on init
-	uiObject = new FlyObject("Button", "", UI_HOLDER);
+	uiObject = new FlyObject("UI Button", "", UI_HOLDER);
 	
 	// Background Image
 	Texture* testTexture = (Texture*)ResourceManager::getInstance()->GetResource("BackButton"); 

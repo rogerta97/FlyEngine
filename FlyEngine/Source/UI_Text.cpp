@@ -38,7 +38,7 @@ DisplayTextAction* UI_Text::GetDisplayTextAction()
 void UI_Text::Init()
 {
 	if (uiObject == nullptr)
-		uiObject = new FlyObject("ImageUIHolder", "", UI_HOLDER);
+		uiObject = new FlyObject("UI Text", "", UI_HOLDER);
 
 	displayTextAction = uiObject->AddDisplayTextAction();
 	displayTextAction->SetDrawTextBox(true);

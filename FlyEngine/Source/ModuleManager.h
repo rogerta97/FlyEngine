@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Action.h"
+#include "Math/float4.h"
 
 #include <list>
 #include <string>
@@ -36,7 +37,7 @@ public:
 	// Utils -----------------------
 	int GetToolsAmount() const; 
 	ActionSelectableInfo* DrawActionDictionaryUI(DictionaryPopupFilter popupFilter = FILTER_ACTIONS_NONE);
-	Texture* GetIconFromActionType(ActionType toolType); 
+	Texture* GetIconFromActionType(ActionType toolType);
 
 	// Delete Obejcts --------------
 	void AddDeleteFromListObject(FlyObject* newObjectToDelete);
@@ -55,6 +56,9 @@ public:
 
 	UI_Element* GetSelectedUIElement();
 	void SetSelectedUIElement(UI_Element* newSelectedObject);
+	
+	float4 GetSceneUITint(); 
+	void SetSceneUITint(float4 _colorTint);
 
 	// Desctiption Dictionary -----
 	std::list<ActionSelectableInfo> GetToolsNamesDescriptionsList() const; 
@@ -63,13 +67,15 @@ public:
 	ActionSelectableInfo GetToolNameDescription(int pos) const;
 
 	FlyVariable* fakeVarInitAttach = nullptr;
-	Action* selectedAction = nullptr; 
+	Action* selectedAction = nullptr;
 
 private: 
 	std::list<ActionSelectableInfo> toolNamesDescriptions; 
 
 	std::list<FlyObject*> deleteObjectsFromListTick; 
 	std::list<FlyObject*> deleteObjectsTick; 
+	
+	float4 uiBackgroundTint = float4::zero; 
 };
 
 #endif
