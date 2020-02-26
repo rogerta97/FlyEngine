@@ -122,9 +122,15 @@ void RoomDockPanel::DrawUserInterfaceTab()
 	{
 		if(ImGui::CollapsingHeader("Settings##UISettings", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			static float test[3];
-			ImGui::ColorEdit3("TestColorEdit", test); 
-
+			static float color[4];
+			color[0] = App->moduleManager->GetSceneUITint().x;
+			color[1] = App->moduleManager->GetSceneUITint().y;
+			color[2] = App->moduleManager->GetSceneUITint().z;
+			color[3] = App->moduleManager->GetSceneUITint().w;
+			
+			if (ImGui::ColorEdit4("Background Tint", color))
+				App->moduleManager->SetSceneUITint(float4(color[0], color[1], color[2], color[3]));
+			
 			IMGUI_SPACED_SEPARATOR;
 		}
 

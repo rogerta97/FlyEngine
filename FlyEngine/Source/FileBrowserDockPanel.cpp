@@ -35,6 +35,7 @@ bool FileBrowserDockPanel::Draw()
 
 		DrawRightColumn();
 	}
+
 	ImGui::End(); 
 
 	return true;
@@ -72,6 +73,11 @@ void FileBrowserDockPanel::DrawLeftColumn()
 	}
 
 	case ResourceType::RESOURCE_MUSIC:
+	{
+		DrawMusicTrackResourcePreview(selectedResource);
+		break;
+	}
+	case ResourceType::RESOURCE_FONT:
 	{
 		DrawMusicTrackResourcePreview(selectedResource);
 		break;
@@ -296,6 +302,18 @@ void FileBrowserDockPanel::DrawDirectoryRecursive(string& directory)
 				iconTexture = (Texture*)ResourceManager::getInstance()->GetResource("SpeakerIcon");
 
 			iconTextureID = (ImTextureID)iconTexture->GetTextureID();
+			break;
+		}
+		case FILE_TTF:
+		{
+			Texture* jpgTexture = (Texture*)ResourceManager::getInstance()->GetResource("FontIcon");
+			iconTextureID = (ImTextureID)jpgTexture->GetTextureID();
+			break;
+		}
+		case FILE_OTF:
+		{
+			Texture* jpgTexture = (Texture*)ResourceManager::getInstance()->GetResource("FontIcon");
+			iconTextureID = (ImTextureID)jpgTexture->GetTextureID();
 			break;
 		}
 		}
