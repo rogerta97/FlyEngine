@@ -438,6 +438,10 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 		case ACTION_EMIT_SOUND:
 			DrawEmitSoundActionSettings();
 			break;
+
+		case ACTION_DISPLAY_ANIMATION:
+			
+			break;
 		}
 	}
 }
@@ -732,6 +736,10 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 
 			case ACTION_DISPLAY_TEXT:
 				creatingObject->AddDisplayTextAction();
+				break;
+
+			case ACTION_DISPLAY_ANIMATION:
+				creatingObject->AddDisplayAnimationAction();
 				break;
 
 			case AT_null:

@@ -1551,6 +1551,10 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 				selectedObject->AddDisplayTextAction();
 				break;
 
+			case ACTION_DISPLAY_ANIMATION:
+				selectedObject->AddDisplayAnimationAction();
+				break;
+
 			case AT_null:
 				break;
 			}

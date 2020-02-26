@@ -24,6 +24,7 @@ class DisplayTextAction;
 class ChangeRoomAction; 
 class Room; 
 class EmitSoundAction; 
+class DisplayAnimationAction;
 class FlyObject {
 public: 
 	FlyObject(std::string objectName, std::string description = "", FlyObjectType _flyObjectType = ACTION_OBJECT, Room* parentRoom = nullptr); 
@@ -59,6 +60,7 @@ public:
 	ModifyVariableAction* AddModifyVariableAction();
 	EmitSoundAction* AddEmitSoundAction();
 	DisplayTextAction* AddDisplayTextAction();
+	DisplayAnimationAction* AddDisplayAnimationAction();
 
 	void SetSelectedAction(ActionType toolTypeSelected); 
 	ActionType GetSelectedActionType(); 

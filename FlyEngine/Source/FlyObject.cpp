@@ -6,6 +6,7 @@
 #include "TinyFileDialog.h"
 #include "Quad.h"
 #include "ImageImporter.h"
+#include "DisplayAnimationAction.h"
 #include "ModuleManager.h"
 #include "GameViewportDockPanel.h"
 #include "ChangeRoomAction.h"
@@ -453,6 +454,18 @@ EmitSoundAction* FlyObject::AddEmitSoundAction()
 	}
 
 	return (EmitSoundAction*)GetAction(ACTION_EMIT_SOUND);
+}
+
+DisplayAnimationAction* FlyObject::AddDisplayAnimationAction()
+{
+	if (GetAction(ACTION_DISPLAY_ANIMATION) == nullptr)
+	{
+		DisplayAnimationAction* displayAnimationAction = new DisplayAnimationAction(this);
+		actionsList.push_back(displayAnimationAction);
+		return displayAnimationAction;
+	}
+
+	return (DisplayAnimationAction*)GetAction(ACTION_DISPLAY_ANIMATION);
 }
 
 DisplayTextAction* FlyObject::AddDisplayTextAction()

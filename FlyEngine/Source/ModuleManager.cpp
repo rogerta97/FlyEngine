@@ -59,6 +59,7 @@ bool ModuleManager::Init()
 	AddToolsNameDescription("Modify Variable", "This should be the description of the mofdify variable tool", ACTION_MOD_VARIABLE);
 	AddToolsNameDescription("Emit Sound", "This should be the description of the emit sound tool", ACTION_EMIT_SOUND);
 	AddToolsNameDescription("Display Text", "This should be the description of the display text tool", ACTION_DISPLAY_TEXT);
+	AddToolsNameDescription("Display Animation", "This should be the description of the display animation tool", ACTION_DISPLAY_ANIMATION);
 
 	return true;
 }
@@ -177,6 +178,10 @@ Texture* ModuleManager::GetIconFromActionType(ActionType toolType)
 
 	case ACTION_DISPLAY_TEXT:
 		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("DisplayTextIcon");
+		break;
+
+	case ACTION_DISPLAY_ANIMATION:
+		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("AnimationIcon");
 		break;
 
 	default:
