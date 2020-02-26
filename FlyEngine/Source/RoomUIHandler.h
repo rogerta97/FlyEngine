@@ -26,12 +26,16 @@ public:
 	void Update(); 
 	void CleanUp(); 
 	void DrawUIElements(); 
+	UID DrawUIElementsHierarchy(); 
 
 	// Utility ----------------------
 	void SetSelectedElement(UI_Element* newSelectedElement); 
+	void SetSelectedElement(UID newSelectedElementUID); 
+	UI_Element* GetUIElement(UID elementUID);
 	UI_Element* GetSelectedElement();
-	void DrawSelectedOnClickActionSettings(); 
 	bool HasElement(UI_Element* checkElement); 
+
+	void DrawSelectedOnClickActionSettings(); 
 
 	// Factory ----------------------
 	UI_Image* CreateUIImage(UID resourceUID); 

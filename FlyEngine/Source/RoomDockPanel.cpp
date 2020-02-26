@@ -116,21 +116,38 @@ void RoomDockPanel::DrawUserInterfaceTab()
 {
 	if (ViewportManager::getInstance()->editRoomMode == EDIT_ROOM_UI)
 	{
+		RoomUIHandler* roomUIHandler = App->moduleRoomManager->GetSelectedRoom()->roomUIHandler;
 		if (ImGui::Button("Add Debug UI Image"))
 		{
 			Resource* imageResource = ResourceManager::getInstance()->GetResource("BackButton");
-			UI_Image* newImage = App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->CreateUIImage(imageResource->GetUID());
+			UI_Image* newImage = roomUIHandler->CreateUIImage(imageResource->GetUID());
 		}
 
 		if (ImGui::Button("Add Debug UI Button"))
 		{
-			UI_Button* newButton = App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->CreateUIButton();
+			UI_Button* newButton = roomUIHandler->CreateUIButton();
 		}
 
 		if (ImGui::Button("Add Debug UI Text"))
 		{
-			UI_Text* newText = App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->CreateUIText();
+			UI_Text* newText = roomUIHandler->CreateUIText();
 		}
+
+		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+		ImGui::Text("User Interface Obejcts:");
+		ImGui::PopFont();
+
+		PUSH_CHILD_BG_COLOR;
+		ImGui::BeginChild("UIHierarchy", ImVec2(ImGui::GetContentRegionAvail()));
+
+		UID selectedObjectUID = roomUIHandler->DrawUIElementsHierarchy();
+		if (selectedObjectUID != 0)
+		{
+			roomUIHandler->SetSelectedElement(selectedObjectUID);
+		}
+
+		ImGui::EndChild(); 
+		ImGui::PopStyleColor(); 
 	}
 }
 

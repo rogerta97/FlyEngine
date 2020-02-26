@@ -112,6 +112,19 @@ void RoomUIHandler::DrawUIElements()
 	}
 }
 
+UID RoomUIHandler::DrawUIElementsHierarchy()
+{
+	for (auto& currentElement : uiElements)
+	{
+		if (ImGui::Selectable(currentElement->GetHolderObject()->GetName().c_str(), currentElement->isSelected))
+		{
+			return currentElement->GetUID();
+		}
+	}
+
+	return 0;
+}
+
 void RoomUIHandler::SetSelectedElement(UI_Element* newSelectedElement)
 {
 	if (selectedElement == newSelectedElement)
@@ -130,6 +143,22 @@ void RoomUIHandler::SetSelectedElement(UI_Element* newSelectedElement)
 	}
 
 	selectedElement = newSelectedElement;
+}
+
+void RoomUIHandler::SetSelectedElement(UID newSelectedElementUID)
+{
+	UI_Element* newSelectedElement = GetUIElement(newSelectedElementUID);
+}
+
+UI_Element* RoomUIHandler::GetUIElement(UID elementUID)
+{
+	for (auto& currentElement : uiElements)
+	{
+		if (currentElement->GetUID() == elementUID)
+			return currentElement; 
+	}
+
+	return nullptr; 
 }
 
 UI_Element* RoomUIHandler::GetSelectedElement()
