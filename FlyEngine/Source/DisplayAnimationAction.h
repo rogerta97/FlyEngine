@@ -24,6 +24,9 @@ public:
 
 	void DrawUISettings(); 
 
+	// Set & Get ---
+	Animation* GetAnimation(); 
+
 private:
 
 	Animation* animation; 

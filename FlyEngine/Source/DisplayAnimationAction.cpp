@@ -16,7 +16,7 @@ DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject)
 	SetToolDescription("This should be the description of the animation action");
 
 	animation = new Animation(); 
-	animation->BuildAnimation(string(MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Animations\\TestAnim_001").c_str());
+	//animation->BuildAnimation(string(MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Animations\\TestAnim_001").c_str());
 
 }
 
@@ -26,6 +26,7 @@ DisplayAnimationAction::~DisplayAnimationAction()
 
 void DisplayAnimationAction::Init()
 {
+	
 }
 
 void DisplayAnimationAction::Update()
@@ -75,4 +76,9 @@ void DisplayAnimationAction::DrawUISettings()
 	ImGui::Text("Image Info:");
 	ImGui::PopFont();
 
+}
+
+Animation* DisplayAnimationAction::GetAnimation()
+{
+	return animation;
 }
