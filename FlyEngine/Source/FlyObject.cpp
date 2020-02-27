@@ -384,15 +384,15 @@ void FlyObject::CalculateCurrentGizmo()
 	}
 }
 
-DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTextureName)
+DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePath)
 {
 	if (GetAction(ACTION_DISPLAY_IMAGE) == nullptr)
 	{
-		if (imageTextureName == "None")
-			imageTextureName = "EmptyObject"; 
+		if (imageTexturePath == "None")
+			imageTexturePath = "EmptyObject"; 
 
 		DisplayImageAction* newAtrImage = new DisplayImageAction(this);
-		newAtrImage->CreateImage(imageTextureName);
+		newAtrImage->CreateImage(imageTexturePath);
 
 		actionsList.push_back(newAtrImage);
 
@@ -402,11 +402,13 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTextureNam
 
 		return newAtrImage;
 	}
-	else if(imageTextureName != "Null")
+
+	else if(imageTexturePath != "Null")
 	{
 		DisplayImageAction* newAtrImage = (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE);
 
-		string textureName = MyFileSystem::getInstance()->DeleteFileExtension(imageTextureName); 
+		string textureName = imageTexturePath;
+		textureName = MyFileSystem::getInstance()->GetLastPathItem(imageTexturePath, false);
 		Texture* newTexture = (Texture*)ResourceManager::GetResource(textureName);
 
 		newAtrImage->SetTexture(newTexture);
