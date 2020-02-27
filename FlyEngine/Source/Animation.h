@@ -23,9 +23,13 @@ public:
 	float GetAnimationSpeed();
 	void SetAnimationSpeed(float newSpeed); 
 
+	string GetName();
+	void SetName(string newName);
+
 private:
 	list<Texture*> frameTexturesList;
 	float animationSpeed = 0.0f;
+	string name; 
 };
 
 #endif

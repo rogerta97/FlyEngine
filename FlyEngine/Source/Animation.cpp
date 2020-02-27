@@ -1,9 +1,11 @@
 #include "Animation.h"
+#include "Animation.h"
 #include "MyFileSystem.h"
 #include "ResourceManager.h"
 
 Animation::Animation()
 {
+	name = "";
 }
 
 Animation::~Animation()
@@ -60,4 +62,14 @@ float Animation::GetAnimationSpeed()
 void Animation::SetAnimationSpeed(float newSpeed)
 {
 	animationSpeed = newSpeed;
+}
+
+string Animation::GetName()
+{
+	return name;
+}
+
+void Animation::SetName(string newName)
+{
+	name = newName; 
 }

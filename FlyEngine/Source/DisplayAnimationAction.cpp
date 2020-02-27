@@ -72,10 +72,24 @@ void DisplayAnimationAction::DrawUISettings()
 
 	ImGui::NextColumn(); 
 
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	ImGui::Text("Image Info:");
-	ImGui::PopFont();
+	static char animationNameBuffer[256]; 
 
+	if (animation != nullptr)
+	{
+		strcpy(animationNameBuffer, animation->GetName().c_str());
+	}
+
+	if (ImGui::InputTextWithHint("Name", "Name...", animationNameBuffer, IM_ARRAYSIZE(animationNameBuffer)))
+	{
+		animation->SetName(animationNameBuffer); 
+	}
+
+	int a = 0; 
+
+	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
+	ImGui::Text("Frames Amount:"); ImGui::SameLine();
+	ImGui::TextColored(ImVec4(255, 255, 0, 255), "0");
+	ImGui::PopFont();
 }
 
 Animation* DisplayAnimationAction::GetAnimation()
