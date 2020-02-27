@@ -112,6 +112,9 @@
     <Filter Include="Source\FlyEngine\FlyObject\ObjectActions">
       <UniqueIdentifier>{e73d5c5c-e2db-4166-a6ab-65a38df89321}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Utilities\Animation">
+      <UniqueIdentifier>{51c63937-05e9-42c8-a343-ec2f8830e6a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -430,7 +433,7 @@
       <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClCompile>
     <ClCompile Include="Source\Animation.cpp">
-      <Filter>Source\Resources</Filter>
+      <Filter>Source\Utilities\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -876,7 +879,7 @@
       <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClInclude>
     <ClInclude Include="Source\Animation.h">
-      <Filter>Source\Resources</Filter>
+      <Filter>Source\Utilities\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

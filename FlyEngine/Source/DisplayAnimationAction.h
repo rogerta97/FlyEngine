@@ -9,6 +9,7 @@
 using namespace std;
 
 class Texture;
+class Animation; 
 class DisplayAnimationAction : public Action
 {
 public:
@@ -24,8 +25,9 @@ public:
 	void DrawUISettings(); 
 
 private:
-	list<Texture*> frameTexturesList; 
-	float animationSpeed = 0.0f; 
+
+	Animation* animation; 
+
 };
 
 #endif 

@@ -3,6 +3,8 @@
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "Texture.h"
+#include "MyFileSystem.h"
+#include "Animation.h"
 
 DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject)
 {
@@ -12,6 +14,10 @@ DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject)
 
 	SetActionName("Display Animation");
 	SetToolDescription("This should be the description of the animation action");
+
+	animation = new Animation(); 
+	animation->BuildAnimation(string(MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Animations\\TestAnim_001").c_str());
+
 }
 
 DisplayAnimationAction::~DisplayAnimationAction()
@@ -28,6 +34,8 @@ void DisplayAnimationAction::Update()
 
 void DisplayAnimationAction::CleanUp()
 {
+	delete animation; 
+	animation = nullptr; 
 }
 
 void DisplayAnimationAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr)
