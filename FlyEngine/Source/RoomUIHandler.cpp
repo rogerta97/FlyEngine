@@ -66,6 +66,13 @@ void RoomUIHandler::LoadRoomUI(JSON_Object* jsonObject, string baseSerializeStr)
 			break;
 		}
 
+		case UIElementType::UI_TEXT:
+		{
+			UI_Text* newElementTextCast = CreateUIText();
+			newElementTextCast->Load(jsonObject, elementStr);
+			break;
+		}
+
 		}
 
 		count++;

@@ -30,6 +30,20 @@ void UI_Text::CleanUp()
 {
 }
 
+void UI_Text::Save(JSON_Object* jsonObject, string serializeStr)
+{
+	UI_Element::Save(jsonObject, serializeStr);
+	uiObject->SaveTransform(serializeStr, jsonObject);
+
+	json_object_dotset_number(jsonObject, string(serializeStr + string("UID")).c_str(), uid);
+
+	displayTextAction->SaveAction(jsonObject, serializeStr); 
+}
+
+void UI_Text::Load(JSON_Object* jsonObject, string serializeStr)
+{
+}
+
 DisplayTextAction* UI_Text::GetDisplayTextAction()
 {
 	return displayTextAction;

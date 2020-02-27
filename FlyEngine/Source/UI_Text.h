@@ -21,6 +21,9 @@ public:
 	void Draw();
 	void CleanUp();
 
+	void Save(JSON_Object* jsonObject, string serializeStr);
+	void Load(JSON_Object* jsonObject, string serializeStr);
+
 	DisplayTextAction* GetDisplayTextAction();
 
 private:
