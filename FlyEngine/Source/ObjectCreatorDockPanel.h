@@ -46,6 +46,7 @@ public:
 	void DrawChangeRoomActionSettings();
 	void DrawModifyVariableActionSettings();
 	void DrawEmitSoundActionSettings();
+	void DrawDisplayAnimationSettings();
 
 	void OnAddActionButtonClicked(); 
 	bool DrawCloseAndCreateButton();

@@ -12,6 +12,7 @@
 #include "ChangeRoomAction.h"
 #include "DisplayImageAction.h"
 #include "DisplayTextAction.h"
+#include "DisplayAnimationAction.h"
 #include "RoomUIHandler.h"
 #include "AudioClip.h"
 #include "GameViewportDockPanel.h"
@@ -878,7 +879,7 @@ void ObjectPropertiesDockPanel::DrawTransformButtons()
 	}
 
 	Texture* arrowSelect = (Texture*)ResourceManager::getInstance()->GetResource("SelectArrow");
-	if (ImGui::ImageButton((ImTextureID)arrowSelect->GetTextureID(), ImVec2(22, 22)))
+	if (ImGui::ImageButton((ImTextureID)arrowSelect->GetTextureID(), ImVec2(30, 30)))
 	{
 		App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GIZMO_SELECT);
 
@@ -903,7 +904,7 @@ void ObjectPropertiesDockPanel::DrawTransformButtons()
 
 	ImGui::SameLine();
 	Texture* moveArrows = (Texture*)ResourceManager::getInstance()->GetResource("MoveOption");
-	if (ImGui::ImageButton((ImTextureID)moveArrows->GetTextureID(), ImVec2(22, 22)))
+	if (ImGui::ImageButton((ImTextureID)moveArrows->GetTextureID(), ImVec2(30, 30)))
 	{
 		App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GIZMO_MOVE);
 		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();
@@ -927,7 +928,7 @@ void ObjectPropertiesDockPanel::DrawTransformButtons()
 
 	ImGui::SameLine();
 	Texture* scaleIcon = (Texture*)ResourceManager::getInstance()->GetResource("ScaleIcon");
-	if (ImGui::ImageButton((ImTextureID)scaleIcon->GetTextureID(), ImVec2(22, 22)))
+	if (ImGui::ImageButton((ImTextureID)scaleIcon->GetTextureID(), ImVec2(30, 30)))
 	{
 		App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GIZMO_SCALE);
 		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();
@@ -1045,6 +1046,10 @@ void ObjectPropertiesDockPanel::DrawActionSettings()
 
 		case ACTION_DISPLAY_TEXT:
 			DrawDisplayTextSettings();
+			break;
+
+		case ACTION_DISPLAY_ANIMATION:
+			DrawDisplayAnimationSettings(); 
 			break;
 		}
 	}
@@ -1377,6 +1382,17 @@ void ObjectPropertiesDockPanel::DrawEmitSoundSettings()
 				}
 			}
 		}
+	}
+}
+
+void ObjectPropertiesDockPanel::DrawDisplayAnimationSettings()
+{
+	DisplayAnimationAction* displayAnimation = (DisplayAnimationAction*)selectedObject->GetAction("Display Animation");
+
+	if (displayAnimation != nullptr)
+	{
+		if (ImGui::CollapsingHeader("Display Animation Settings", ImGuiTreeNodeFlags_DefaultOpen))
+			displayAnimation->DrawUISettings(); 
 	}
 }
 

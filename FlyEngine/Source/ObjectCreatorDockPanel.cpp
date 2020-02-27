@@ -1,5 +1,5 @@
 #include "ObjectCreatorDockPanel.h"
-
+#include "DisplayAnimationAction.h"
 #include "Application.h"
 #include "TinyFileDialog.h"
 #include "ModuleImGui.h"
@@ -440,7 +440,7 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 			break;
 
 		case ACTION_DISPLAY_ANIMATION:
-			
+			DrawDisplayAnimationSettings();
 			break;
 		}
 	}
@@ -690,6 +690,17 @@ void ObjectCreatorDockPanel::DrawEmitSoundActionSettings()
 			showSoundSelectionPopup = false;
 			strcpy(soundNameBuffer, selectedSound->GetName().c_str()); 
 		}
+	}
+}
+
+void ObjectCreatorDockPanel::DrawDisplayAnimationSettings()
+{
+	DisplayAnimationAction* displayAnimation = (DisplayAnimationAction*)this->selectedAction;
+	
+	if (displayAnimation != nullptr)
+	{
+		if(ImGui::CollapsingHeader("Animation Settings", ImGuiTreeNodeFlags_DefaultOpen))
+			displayAnimation->DrawUISettings(); 
 	}
 }
 

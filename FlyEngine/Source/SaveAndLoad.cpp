@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleRoomManager.h"
 #include "ModifyVariableAction.h"
+#include "DisplayAnimationAction.h"
 #include "ResourceManager.h"
 #include "GameViewportDockPanel.h"
 #include "ModuleImGui.h"
@@ -243,6 +244,16 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 			{
 				displayTextAction->SetText(textTmp); 
 			}
+		}
+
+
+		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayAnimation")).c_str()))
+		{
+			DisplayAnimationAction* displayAnimationAction = newObject->AddDisplayAnimationAction();
+			displayAnimationAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayAnimation.Occurrence."));
+
+			string serializeDisplayTextStr = serializeObjectStrActions + "DisplayAnimation.";
+
 		}
 	}
 

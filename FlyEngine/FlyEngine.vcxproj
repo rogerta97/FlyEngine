@@ -61,6 +61,7 @@
     <ClCompile Include="Source\ActionCondition.cpp" />
     <ClCompile Include="Source\ActionConditionHasItem.cpp" />
     <ClCompile Include="Source\ActionConditionVariable.cpp" />
+    <ClCompile Include="Source\Animation.cpp" />
     <ClCompile Include="Source\AudioClip.cpp" />
     <ClCompile Include="Source\AudioImporter.cpp" />
     <ClCompile Include="Source\DisplayAnimationAction.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="Source\ActionCondition.h" />
     <ClInclude Include="Source\ActionConditionHasItem.h" />
     <ClInclude Include="Source\ActionConditionVariable.h" />
+    <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\AudioClip.h" />
     <ClInclude Include="Source\AudioImporter.h" />
     <ClInclude Include="Source\DisplayAnimationAction.h" />

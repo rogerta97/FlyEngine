@@ -429,6 +429,9 @@
     <ClCompile Include="Source\DisplayAnimationAction.cpp">
       <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Animation.cpp">
+      <Filter>Source\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -871,6 +874,9 @@
     </ClInclude>
     <ClInclude Include="Source\DisplayAnimationAction.h">
       <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation.h">
+      <Filter>Source\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

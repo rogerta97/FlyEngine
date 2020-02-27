@@ -55,6 +55,7 @@ public:
 	void DrawModifyVariableSettings();
 	void DrawDisplayTextSettings();
 	void DrawEmitSoundSettings();
+	void DrawDisplayAnimationSettings();
 
 private: 
 	bool scrollToEnd = false; 

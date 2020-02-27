@@ -41,7 +41,7 @@ void UI_Text::Save(JSON_Object* jsonObject, string serializeStr)
 }
 
 void UI_Text::Load(JSON_Object* jsonObject, string serializeStr)
-{
+{	
 }
 
 DisplayTextAction* UI_Text::GetDisplayTextAction()

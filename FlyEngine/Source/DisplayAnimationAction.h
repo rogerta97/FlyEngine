@@ -4,11 +4,11 @@
 #define MAX_ROOMS 256
 
 #include "Action.h"
+#include <list>
 
 using namespace std;
 
-class Room;
-class FlyObject;
+class Texture;
 class DisplayAnimationAction : public Action
 {
 public:
@@ -19,8 +19,13 @@ public:
 	void Update();
 	void CleanUp();
 
+	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
+
+	void DrawUISettings(); 
+
 private:
-	
+	list<Texture*> frameTexturesList; 
+	float animationSpeed = 0.0f; 
 };
 
 #endif 
