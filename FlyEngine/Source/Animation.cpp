@@ -2,6 +2,7 @@
 #include "Animation.h"
 #include "MyFileSystem.h"
 #include "ResourceManager.h"
+#include "imgui.h"
 
 Animation::Animation()
 {
@@ -14,7 +15,7 @@ Animation::~Animation()
 
 void Animation::BuildAnimation(string loadingPath)
 {
-	frameTexturesList.clear();
+	Clear();
 
 	if (MyFileSystem::getInstance()->IsFolder(loadingPath))
 	{
@@ -28,6 +29,7 @@ void Animation::BuildAnimation(string loadingPath)
 
 			if (frameTexture != nullptr)
 			{
+				framesAmount++;
 				frameTexturesList.push_back(frameTexture);
 				flog("Load Animation File: %s", currentFrameFile.c_str());
 			}			
@@ -52,6 +54,22 @@ Texture* Animation::GetFrame(int pos)
 	}
 
 	return nullptr; 
+}
+
+void Animation::Clear()
+{
+	frameTexturesList.clear();
+	framesAmount = 0;
+}
+
+void Animation::DrawAddFramePopup()
+{
+	
+}
+
+int Animation::GetFramesAmount()
+{
+	return framesAmount; 
 }
 
 float Animation::GetAnimationSpeed()

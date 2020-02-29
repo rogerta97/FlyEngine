@@ -71,6 +71,10 @@ public:
 	ImFont* rudaBoldHuge;
 	ImFont* rudaBlackHuge;
 
+	ImFont* rudaRegularGiant;
+	ImFont* rudaBoldGiant;
+	ImFont* rudaBlackGiant;
+
 private: 
 
 	// Fonts & Style 

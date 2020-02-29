@@ -18,6 +18,13 @@ public:
 	// Frame Control ----
 	void AddFrame(int framePos = -1);
 	Texture* GetFrame(int pos);
+	void Clear(); 
+
+	// Popups ----------
+	void DrawAddFramePopup(); 
+
+	// Uitlity ----------
+	int GetFramesAmount();
 
 	// Set & Get --------
 	float GetAnimationSpeed();
@@ -27,6 +34,7 @@ public:
 	void SetName(string newName);
 
 private:
+	int framesAmount = 0; 
 	list<Texture*> frameTexturesList;
 	float animationSpeed = 0.0f;
 	string name; 

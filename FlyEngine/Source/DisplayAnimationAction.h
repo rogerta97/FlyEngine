@@ -22,7 +22,10 @@ public:
 
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
 
-	void DrawUISettings(); 
+	void DrawUISettings();
+	void DrawSettingsRightColumn();
+	void DrawUISettingsLeftColumn(float squareSize);
+	void DrawAddFramePopup(); 
 
 	// Set & Get ---
 	Animation* GetAnimation(); 

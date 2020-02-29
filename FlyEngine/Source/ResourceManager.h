@@ -36,7 +36,7 @@ public:
 	static bool ExistResourcePath(std::string resourcePath);
 
 	// Selection Popups 
-	static void PrintImagesSelectionPopup(); 
+	static Resource* PrintImagesSelectionPopup(); 
 	static Resource* PrintSoundsSelectionPopup(); 
 	static Resource* PrintMusicSelectionPopup(); 
 	static Resource* PrintFontSelectionPopup(); 

@@ -92,6 +92,10 @@ bool ModuleImGui::Start()
 	rudaBoldHuge = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Bold.ttf").c_str(), 30);
 	rudaBlackHuge = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Black.ttf").c_str(), 30);
 
+	rudaRegularGiant = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Regular.ttf").c_str(), 60);
+	rudaBoldGiant = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Bold.ttf").c_str(), 60);
+	rudaBlackGiant = io.Fonts->AddFontFromFileTTF(string(fontsDirectory + "Ruda-Black.ttf").c_str(), 60);
+
 	CreatePanels();
 	SetStyle();
 
