@@ -30,10 +30,12 @@ public:
 	// Set & Get ---
 	Animation* GetAnimation(); 
 
+	Texture* GetCurrentFrame();
+	void SetCurrentFrame(Texture* currentFrame); 
+
 private:
-
 	Animation* animation; 
-
+	Texture* currentFrame; 
 };
 
 #endif 

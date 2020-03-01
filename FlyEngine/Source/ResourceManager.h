@@ -40,6 +40,7 @@ public:
 	static Resource* PrintSoundsSelectionPopup(); 
 	static Resource* PrintMusicSelectionPopup(); 
 	static Resource* PrintFontSelectionPopup(); 
+	static string PrintFolderSelectionPopup(string parentFolder);
 
 	// User Resources Loads 
 	static void LoadResource(string newResourcePath, ResourceType forceType = ResourceType::RESOURCE_null);

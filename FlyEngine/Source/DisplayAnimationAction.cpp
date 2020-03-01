@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include "Application.h"
 #include "ModuleImGui.h"
+#include "ModuleManager.h"
 #include "Texture.h"
 #include "MyFileSystem.h"
 #include "Animation.h"
@@ -17,6 +18,7 @@ DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject)
 	SetToolDescription("This should be the description of the animation action");
 
 	animation = new Animation(); 
+	currentFrame = nullptr; 
 	//animation->BuildAnimation(string(MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Animations\\TestAnim_001").c_str());
 
 }
@@ -88,7 +90,6 @@ void DisplayAnimationAction::DrawAddFramePopup()
 {
 	if (ImGui::BeginPopup("add_frame_popup"))
 	{
-
 		static int currentSelection = 0;
 
 		Texture* iconTexture = 0; 
@@ -113,19 +114,33 @@ void DisplayAnimationAction::DrawAddFramePopup()
 			else if (currentSelection == 0)
 			{
 				hint = "Folder...";
+				ImGui::OpenPopup("print_folder_selection_popup");
 			}
 			
 		}
 
-		Resource* selectedResource = ResourceManager::getInstance()->PrintImagesSelectionPopup();
-
 		char searchFileBuffer[256] = "";
+
+		if (currentSelection == 0)
+		{
+			Resource* selectedResource = ResourceManager::getInstance()->PrintImagesSelectionPopup();
+
+			if (selectedResource != nullptr)			
+				strcpy(searchFileBuffer, selectedResource->GetName().c_str());			
+		}
+		else if (currentSelection == 1)
+		{
+			string folderPath = ResourceManager::getInstance()->PrintFolderSelectionPopup(std::string(MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Animations"));
+		
+			if (folderPath != "")			
+				strcpy(searchFileBuffer, folderPath.c_str());			
+		}
 
 		ImGui::SameLine();
 		ImGui::InputTextWithHint("", hint.c_str(), searchFileBuffer, IM_ARRAYSIZE(searchFileBuffer));
 
 		ImGui::Separator(); 
-		if (ImGui::SmallButton("Add Frame"))
+		if (ImGui::SmallButton("Load Frame/s"))
 		{
 
 		}
@@ -196,12 +211,17 @@ void DisplayAnimationAction::DrawSettingsRightColumn()
 
 void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
 {
+	// Current Frame Preview
 	PUSH_CHILD_BG_COLOR;
 	ImGui::BeginChild("AnimationPreview", ImVec2(squareSize, squareSize));
 
+	if (currentFrame != nullptr)
+		App->moduleManager->DrawImageFitInCenter(currentFrame);
+	
 	ImGui::EndChild();
 	ImGui::PopStyleColor();
 
+	// Frame Controls
 	PUSH_CHILD_BG_COLOR;
 	ImGui::BeginChild("AnimationControls", ImVec2(squareSize, 35));
 
@@ -213,4 +233,14 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
 Animation* DisplayAnimationAction::GetAnimation()
 {
 	return animation;
+}
+
+Texture* DisplayAnimationAction::GetCurrentFrame()
+{
+	return currentFrame; 
+}
+
+void DisplayAnimationAction::SetCurrentFrame(Texture* _currentFrame)
+{
+	currentFrame = _currentFrame; 
 }

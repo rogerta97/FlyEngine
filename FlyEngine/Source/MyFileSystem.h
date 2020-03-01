@@ -30,6 +30,7 @@ public:
 	static void DeleteLastPathItem(string& path);
 	static void DeleteFrontItem(string& path); 
 	static bool IsFolder(string& directory);
+	static string PrintFolderSelectorPopup(string& parentFolder);
 
 	// Get Directories ---
 	static string GetIconsDirectory();
@@ -41,6 +42,7 @@ public:
 
 	// File --------------
 	static void GetFilesInDirectory(const char* directory, std::vector<string>& list, bool include_path = false);
+	static std::vector<string> GetFoldersInDirectory(const char* directory);
 
 private: 
 	static int GetBarsCount(string countStr); 

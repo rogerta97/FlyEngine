@@ -2,6 +2,7 @@
 
 #include "MyFileSystem.h"
 #include "SDL/include/SDL_filesystem.h"
+#include "imgui.h"
 #include "mmgr.h"
 
 MyFileSystem* MyFileSystem::instance = 0; 
@@ -39,6 +40,7 @@ bool MyFileSystem::IsFolder(string& directory)
 
 	return false;
 }
+
 
 string MyFileSystem::GetLastPathItem(string path, bool keepTermination = true)
 {
@@ -203,6 +205,36 @@ void MyFileSystem::GetFilesInDirectory(const char* directory, std::vector<string
 	}
 
 	return;
+}
+
+std::vector<string> MyFileSystem::GetFoldersInDirectory(const char* directory)
+{
+	vector<string> retList; 
+	std::string path(directory);
+	path.append("\\*");
+
+	WIN32_FIND_DATA data;
+	HANDLE hFind;
+
+	if ((hFind = FindFirstFile(path.c_str(), &data)) != INVALID_HANDLE_VALUE)
+	{
+		do
+		{
+			if (std::string(data.cFileName) != std::string(".") && std::string(data.cFileName) != std::string(".."))
+			{	
+				string new_str = directory + string("\\") + string(data.cFileName);
+				
+				if (instance->IsFolder(new_str))
+				{
+					retList.push_back(new_str);
+				}
+			}
+
+		} while (FindNextFile(hFind, &data) != 0);
+		FindClose(hFind);
+	}
+
+	return retList;
 }
 
 void MyFileSystem::Init()

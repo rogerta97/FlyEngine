@@ -175,7 +175,6 @@ Resource* ResourceManager::PrintImagesSelectionPopup()
 {
 	if (ImGui::BeginPopup("print_image_selection_popup"))
 	{
-		flog("inside popup");
 		ImGui::Spacing();
 
 		// Search Bar ---------------
@@ -218,6 +217,8 @@ Resource* ResourceManager::PrintImagesSelectionPopup()
 		ImGui::PopStyleVar();
 		ImGui::EndPopup();
 	}
+
+	return nullptr; 
 }
 
 Resource* ResourceManager::PrintSoundsSelectionPopup()
@@ -312,6 +313,57 @@ Resource* ResourceManager::PrintFontSelectionPopup()
 
 	return nullptr;
 }
+
+string ResourceManager::PrintFolderSelectionPopup(string parentFolder)
+{
+	if (ImGui::BeginPopup("print_folder_selection_popup"))
+	{
+		ImGui::Spacing();
+
+		// Search Bar ---------------
+		static char searchImageBuffer[256];
+		ImGui::InputTextWithHint("##SearchTool", "Search...", searchImageBuffer, IM_ARRAYSIZE(searchImageBuffer));
+		ImGui::SameLine();
+
+		Texture* filterIcon = (Texture*)ResourceManager::getInstance()->GetResource("FilterIcon");
+		ImGui::Image((ImTextureID)filterIcon->GetTextureID(), ImVec2(22, 22));
+
+		ImGui::Spacing();
+
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(2.0f, 2.0f));
+		ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), 150));
+
+		vector<string> foldersInDirectory = MyFileSystem::getInstance()->GetFoldersInDirectory(parentFolder.c_str());
+		
+		for (auto& currentFolder : foldersInDirectory)
+		{
+			Texture* imageIcon = (Texture*)ResourceManager::getInstance()->GetResource("FolderIcon");
+
+			ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::SameLine();
+
+			string folderName = MyFileSystem::getInstance()->GetLastPathItem(currentFolder, false).c_str();
+			if (ImGui::Selectable(folderName.c_str(), false, 0, ImVec2(ImGui::GetContentRegionAvail().x, 25)))
+			{
+				ImGui::EndChild();
+				ImGui::PopStyleColor();
+				ImGui::PopStyleVar();
+				ImGui::CloseCurrentPopup();
+				ImGui::EndPopup();
+				return currentFolder;
+			}
+		}
+
+		ImGui::EndChild();
+		ImGui::PopStyleColor();
+		ImGui::PopStyleVar();
+		ImGui::EndPopup();
+	}
+
+	return ""; 
+}
+
 
 void ResourceManager::LoadResource(string newResourcePath, ResourceType forceType)
 {
