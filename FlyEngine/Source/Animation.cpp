@@ -37,9 +37,13 @@ void Animation::BuildAnimation(string loadingPath)
 	}
 }
 
-void Animation::AddFrame(int framePos)
+void Animation::AddFrame(Texture* newFrame)
 {
-	
+	if (newFrame != nullptr)
+	{
+		frameTexturesList.push_back(newFrame); 
+		framesAmount++;
+	}
 }
 
 Texture* Animation::GetFrame(int pos)
@@ -72,7 +76,7 @@ int Animation::GetFramesAmount()
 	return framesAmount; 
 }
 
-float Animation::GetAnimationSpeed()
+float& Animation::GetAnimationSpeed()
 {
 	return animationSpeed;
 }

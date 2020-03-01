@@ -18,7 +18,7 @@ DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject)
 	SetToolDescription("This should be the description of the animation action");
 
 	animation = new Animation(); 
-	currentFrame = nullptr; 
+	previewFrame = nullptr; 
 	//animation->BuildAnimation(string(MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Animations\\TestAnim_001").c_str());
 
 }
@@ -57,7 +57,6 @@ void DisplayAnimationAction::SaveAction(JSON_Object* jsonObject, string serializ
 
 void DisplayAnimationAction::DrawUISettings()
 {
-
 	int framesAmount = 0;
 
 	if (animation)
@@ -119,7 +118,7 @@ void DisplayAnimationAction::DrawAddFramePopup()
 			
 		}
 
-		char searchFileBuffer[256] = "";
+		static char searchFileBuffer[256];
 
 		if (currentSelection == 0)
 		{
@@ -142,7 +141,14 @@ void DisplayAnimationAction::DrawAddFramePopup()
 		ImGui::Separator(); 
 		if (ImGui::SmallButton("Load Frame/s"))
 		{
-
+			if (currentSelection == 0)
+			{
+				Texture* newFrameTexture = (Texture*)ResourceManager::getInstance()->GetResource(searchFileBuffer);
+				animation->AddFrame(newFrameTexture);
+				ImGui::CloseCurrentPopup();
+				ImGui::EndPopup(); 
+				return;
+			}
 		}
 
 		ImGui::EndPopup();
@@ -193,9 +199,28 @@ void DisplayAnimationAction::DrawSettingsRightColumn()
 	PUSH_CHILD_BG_COLOR;
 	ImGui::BeginChild("AnimationFrames", ImVec2(ImGui::GetContentRegionAvail().x, 200));
 
+
 	if (animation && animation->GetFramesAmount() > 0)
 	{
+		int count = 0; 
+		while (count < animation->GetFramesAmount())
+		{
+			string frameName = animation->GetFrame(count)->GetName(); 
 
+			if (count == 0)
+			{
+				INC_CURSOR_10;
+			}
+			else
+				INC_CURSOR_X_10;
+
+			if (ImGui::Selectable(frameName.c_str()))
+			{
+				previewFrame = animation->GetFrame(count); 
+			}
+
+			count++;
+		}
 	}
 	else
 	{
@@ -215,15 +240,20 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
 	PUSH_CHILD_BG_COLOR;
 	ImGui::BeginChild("AnimationPreview", ImVec2(squareSize, squareSize));
 
-	if (currentFrame != nullptr)
-		App->moduleManager->DrawImageFitInCenter(currentFrame);
+	if (previewFrame != nullptr)
+		App->moduleManager->DrawImageFitInCenter(previewFrame);
 	
 	ImGui::EndChild();
 	ImGui::PopStyleColor();
 
+
 	// Frame Controls
 	PUSH_CHILD_BG_COLOR;
-	ImGui::BeginChild("AnimationControls", ImVec2(squareSize, 35));
+	ImGui::BeginChild("AnimationControls", ImVec2(squareSize, 70));
+
+	float speed = animation->GetAnimationSpeed();
+	ImGui::SetCursorPosY(ImGui::GetContentRegionAvail().y - 35);
+	ImGui::SliderFloat("Speed", &speed, 0.01f, 100.0f);
 
 	ImGui::EndChild();
 	ImGui::PopStyleColor();
@@ -237,10 +267,10 @@ Animation* DisplayAnimationAction::GetAnimation()
 
 Texture* DisplayAnimationAction::GetCurrentFrame()
 {
-	return currentFrame; 
+	return previewFrame; 
 }
 
 void DisplayAnimationAction::SetCurrentFrame(Texture* _currentFrame)
 {
-	currentFrame = _currentFrame; 
+	previewFrame = _currentFrame; 
 }

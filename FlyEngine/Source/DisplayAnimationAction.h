@@ -35,7 +35,7 @@ public:
 
 private:
 	Animation* animation; 
-	Texture* currentFrame; 
+	Texture* previewFrame; 
 };
 
 #endif 

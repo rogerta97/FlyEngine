@@ -16,7 +16,7 @@ public:
 	void BuildAnimation(string loadingPath);
 
 	// Frame Control ----
-	void AddFrame(int framePos = -1);
+	void AddFrame(Texture* newFrame);
 	Texture* GetFrame(int pos);
 	void Clear(); 
 
@@ -27,7 +27,7 @@ public:
 	int GetFramesAmount();
 
 	// Set & Get --------
-	float GetAnimationSpeed();
+	float& GetAnimationSpeed();
 	void SetAnimationSpeed(float newSpeed); 
 
 	string GetName();
