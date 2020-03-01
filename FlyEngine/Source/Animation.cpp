@@ -7,6 +7,7 @@
 Animation::Animation()
 {
 	name = "";
+	animationSpeed = 1.0f;
 }
 
 Animation::~Animation()

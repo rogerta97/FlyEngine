@@ -57,6 +57,12 @@ void DisplayAnimationAction::Play()
 	animationState = ANIMATION_PLAY; 
 }
 
+void DisplayAnimationAction::Stop()
+{
+	animationState = ANIMATION_STOP;
+	currentFrame = 0; 
+}
+
 void DisplayAnimationAction::NextFrame()
 {
 	if (currentFrame == -1)	
@@ -267,7 +273,7 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
 {
 	// Current Frame Preview
 	PUSH_CHILD_BG_COLOR;
-	ImGui::BeginChild("AnimationPreview", ImVec2(squareSize, 150));
+	ImGui::BeginChild("AnimationPreview", ImVec2(squareSize, 175));
 
 	if (currentFrame != -1)
 	{
@@ -284,18 +290,32 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
 	PUSH_CHILD_BG_COLOR;
 	ImGui::BeginChild("AnimationControls", ImVec2(squareSize, 70));
 
-	Texture* placeholder = (Texture*)ResourceManager::getInstance()->GetResource("PlayIcon"); 
-	
-	INC_CURSOR_4;
-	if (ImGui::ImageButton((ImTextureID)placeholder->GetTextureID(), ImVec2(25, 25)))
+	ImTextureID playPauseIconID = 0; 
+
+	if (animationState == ANIMATION_PLAY)
 	{
-		Play(); 
+		Texture* placeholder = (Texture*)ResourceManager::getInstance()->GetResource("StopIcon"); 
+		playPauseIconID = (ImTextureID)placeholder->GetTextureID(); 
+	}
+	else if (animationState == ANIMATION_STOP)
+	{
+		Texture* placeholder = (Texture*)ResourceManager::getInstance()->GetResource("PlayIcon");
+		playPauseIconID = (ImTextureID)placeholder->GetTextureID();
+	}
+
+	INC_CURSOR_4;
+	if (ImGui::ImageButton(playPauseIconID, ImVec2(25, 25)))
+	{
+		if (animationState == ANIMATION_STOP)
+			Play();
+		else if (animationState == ANIMATION_PLAY)
+			Stop(); 
 	}
 
 	ImGui::SameLine();
 	if (ImGui::ImageButton(0, ImVec2(25, 25)))
 	{
-
+		
 	}
 
 	ImGui::SameLine();

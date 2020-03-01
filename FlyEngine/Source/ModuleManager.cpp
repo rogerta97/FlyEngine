@@ -340,7 +340,7 @@ void ModuleManager::DrawImageFitInCenter(Texture* textureToShow)
 	if (textureToShow == nullptr)
 		return; 
 
-	ImVec2 imageMaxSize = ImVec2(ImGui::GetContentRegionAvail().x - 5, ImGui::GetContentRegionAvail().y - 5);
+	ImVec2 imageMaxSize = ImVec2(ImGui::GetContentRegionAvail().x - 20, ImGui::GetContentRegionAvail().y - 20);
 	ImVec2 uiImageDimensions = ImVec2(0,0);
 
 	if (textureToShow->IsVertical())
@@ -364,7 +364,7 @@ void ModuleManager::DrawImageFitInCenter(Texture* textureToShow)
 		{
 			float diff = uiImageDimensions.y - imageMaxSize.y;
 			uiImageDimensions.y -= diff;
-			uiImageDimensions.x = uiImageDimensions.x * textureToShow->GetAspectRatio();
+			uiImageDimensions.x = uiImageDimensions.y * textureToShow->GetAspectRatio();
 		}
 	}
 

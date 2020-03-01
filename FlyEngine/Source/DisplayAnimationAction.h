@@ -11,7 +11,7 @@ using namespace std;
 enum AnimationState
 {
 	ANIMATION_PLAY,
-	ANIMATION_PAUSE, 
+	ANIMATION_STOP, 
 };
 
 class Texture;
@@ -27,6 +27,7 @@ public:
 	void CleanUp();
 
 	void Play(); 
+	void Stop(); 
 	void NextFrame(); 
 
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
@@ -42,7 +43,7 @@ public:
 	int GetCurrentFrame();
 	void SetCurrentFrame(int currentFrame); 
 
-	AnimationState animationState = ANIMATION_PAUSE;
+	AnimationState animationState = ANIMATION_STOP;
 
 private:
 
