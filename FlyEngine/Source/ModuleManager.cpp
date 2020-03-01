@@ -337,7 +337,41 @@ void ModuleManager::DrawActionListWithSettings(FlyObject* ownerObejct)
 
 void ModuleManager::DrawImageFitInCenter(Texture* textureToShow)
 {
-	ImVec2 imageMaxSize = ImVec2(ImGui::GetContentRegionAvailWidth(), 135);
+	if (textureToShow == nullptr)
+		return; 
+
+	ImVec2 imageMaxSize = ImVec2(ImGui::GetContentRegionAvail().x - 5, ImGui::GetContentRegionAvail().y - 5);
+	ImVec2 uiImageDimensions = ImVec2(0,0);
+
+	if (textureToShow->IsVertical())
+	{
+		uiImageDimensions.y = imageMaxSize.y; 
+		uiImageDimensions.x = uiImageDimensions.y * textureToShow->GetAspectRatio();
+
+		if (uiImageDimensions.x >= imageMaxSize.x)
+		{
+			float diff = uiImageDimensions.x - imageMaxSize.x;
+			uiImageDimensions.x -= diff;
+			uiImageDimensions.y = uiImageDimensions.x * textureToShow->GetAspectRatio();
+		}
+	}
+	else
+	{
+		uiImageDimensions.x = imageMaxSize.x;
+		uiImageDimensions.y = uiImageDimensions.x / textureToShow->GetAspectRatio();
+
+		if (uiImageDimensions.y >= imageMaxSize.y)
+		{
+			float diff = uiImageDimensions.y - imageMaxSize.y;
+			uiImageDimensions.y -= diff;
+			uiImageDimensions.x = uiImageDimensions.x * textureToShow->GetAspectRatio();
+		}
+	}
+
+	ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (uiImageDimensions.x / 2), ImGui::GetContentRegionAvail().y / 2 - (uiImageDimensions.y / 2)));
+	ImGui::Image((ImTextureID)textureToShow->GetTextureID(), uiImageDimensions);
+
+	/*ImVec2 imageMaxSize = ImVec2(ImGui::GetContentRegionAvailWidth(), 135);
 	ImVec2 uiImageDimensions = ImVec2(150, 150);
 	Texture* mainButtonTexture = textureToShow;
 	ImTextureID mainTextureID = 0;
@@ -367,7 +401,7 @@ void ModuleManager::DrawImageFitInCenter(Texture* textureToShow)
 	}
 
 	ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (uiImageDimensions.x / 2), imageMaxSize.y / 2 - (uiImageDimensions.y / 2) + 10));
-	ImGui::Image(mainTextureID, uiImageDimensions);
+	ImGui::Image(mainTextureID, uiImageDimensions);*/
 }
 
 FlyObject* ModuleManager::GetSelectedFlyObject()
