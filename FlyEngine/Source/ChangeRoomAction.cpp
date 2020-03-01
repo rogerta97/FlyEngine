@@ -45,7 +45,7 @@ void ChangeRoomAction::Init()
 {
 }
 
-void ChangeRoomAction::Update()
+void ChangeRoomAction::Update(float dt)
 {
 }
 

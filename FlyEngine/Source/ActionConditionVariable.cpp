@@ -46,7 +46,7 @@ void ActionConditionVariable::DrawUIItem(int itemPosition)
 	//*******************************************************************************************
 	// Draw Check Variable Icon
 	//*******************************************************************************************
-	INC_CURSOR_10;
+	INC_CURSOR_7;
 	Texture* checkVariableIcon = (Texture*)ResourceManager::getInstance()->GetResource("CheckVariableIcon");
 	ImGui::Image((ImTextureID)checkVariableIcon->GetTextureID(), ImVec2(35, 35));
 	ImGui::SameLine();
@@ -54,7 +54,7 @@ void ActionConditionVariable::DrawUIItem(int itemPosition)
 	// Find button for target variable -----------------------------
 	std::string findButtonID = "Find##FindVariableConditionButton" + to_string(itemPosition);
 
-	INC_CURSOR_Y_10;
+	INC_CURSOR_Y_7;
 	Texture* searchIcon = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
 	if (ImGui::Button(findButtonID.c_str()))
 	{

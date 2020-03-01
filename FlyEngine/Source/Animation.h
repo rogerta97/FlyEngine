@@ -17,18 +17,21 @@ public:
 
 	// Frame Control ----
 	void AddFrame(Texture* newFrame);
-	Texture* GetFrame(int pos);
 	void Clear(); 
+
+	Texture* GetFrameByPos(int pos);
+	int GetFramePos(Texture* frame); 
 
 	// Popups ----------
 	void DrawAddFramePopup(); 
 
 	// Uitlity ----------
 	int GetFramesAmount();
+	float GetFramesInterval(); 
 
 	// Set & Get --------
-	float& GetAnimationSpeed();
-	void SetAnimationSpeed(float newSpeed); 
+	float& GetSpeed();
+	void SetSpeed(float newSpeed); 
 
 	string GetName();
 	void SetName(string newName);

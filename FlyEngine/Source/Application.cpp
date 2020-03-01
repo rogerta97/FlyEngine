@@ -42,6 +42,11 @@ Application::~Application()
 	}
 }
 
+float Application::GetDeltaTime()
+{
+	return dt;
+}
+
 bool Application::Init()
 {
 	bool ret = true;

@@ -68,7 +68,7 @@ bool ObjectCreatorDockPanel::Draw()
 		ImGui::Image((ImTextureID)iconTexture->GetTextureID(), ImVec2(35, 35)); 
 		ImGui::SameLine(); 
 
-		INC_CURSOR_10;
+		INC_CURSOR_7;
 		ImGui::PushFont(App->moduleImGui->rudaBlackHuge);
 		ImGui::Text("Object Creator:");
 		ImGui::PopFont();

@@ -47,6 +47,8 @@ public:
 	Application();
 	~Application();
 
+	float GetDeltaTime(); 
+
 	bool Init();
 	update_status Update();
 	bool CleanUp();

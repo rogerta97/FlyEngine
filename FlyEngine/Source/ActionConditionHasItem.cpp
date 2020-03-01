@@ -39,7 +39,7 @@ void ActionConditionHasItem::DrawUIItem(int itemPosition)
 	//*******************************************************************************************
 	//* Draw Check Inventory Item Icom
 	//*******************************************************************************************
-	INC_CURSOR_10;
+	INC_CURSOR_7;
 	Texture* checkInventoryItemIcon = (Texture*)ResourceManager::getInstance()->GetResource("CheckInventoryItemIcon");
 	ImGui::Image((ImTextureID)checkInventoryItemIcon->GetTextureID(), ImVec2(35, 35));
 	ImGui::SameLine();
@@ -50,7 +50,7 @@ void ActionConditionHasItem::DrawUIItem(int itemPosition)
 	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
 	std::string findButtonID = "Find##FindItemConditionButton" + to_string(itemPosition);
 
-	INC_CURSOR_Y_10;
+	INC_CURSOR_Y_7;
 	Texture* searchIcon = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
 	if (ImGui::Button(findButtonID.c_str()))
 	{

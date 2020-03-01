@@ -46,7 +46,7 @@ void Animation::AddFrame(Texture* newFrame)
 	}
 }
 
-Texture* Animation::GetFrame(int pos)
+Texture* Animation::GetFrameByPos(int pos)
 {
 	int count = 0;
 	for (auto& currentFrame : frameTexturesList)
@@ -58,6 +58,20 @@ Texture* Animation::GetFrame(int pos)
 	}
 
 	return nullptr; 
+}
+
+int Animation::GetFramePos(Texture* frame)
+{
+	int count = 0; 
+	for (auto& currentTexture : frameTexturesList)
+	{
+		if (currentTexture == frame)
+			return count; 
+
+		count++;
+	}
+
+	return -1; 
 }
 
 void Animation::Clear()
@@ -76,12 +90,17 @@ int Animation::GetFramesAmount()
 	return framesAmount; 
 }
 
-float& Animation::GetAnimationSpeed()
+float Animation::GetFramesInterval()
+{
+	return 1 / animationSpeed; 
+}
+
+float& Animation::GetSpeed()
 {
 	return animationSpeed;
 }
 
-void Animation::SetAnimationSpeed(float newSpeed)
+void Animation::SetSpeed(float newSpeed)
 {
 	animationSpeed = newSpeed;
 }

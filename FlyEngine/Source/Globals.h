@@ -64,13 +64,19 @@ enum update_status
 	UPDATE_ERROR
 };
 
+// ImGui -------------------
 #define IMGUI_SPACE_SEPARATOR ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
 #define PUSH_CHILD_BG_COLOR ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 #define SPACING ImGui::Spacing(); 
 #define SEPARATOR ImGui::Separator(); 
-#define INC_CURSOR_X_10 ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 7);
-#define INC_CURSOR_Y_10 ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 7);
-#define INC_CURSOR_10 ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 7,ImGui::GetCursorPosY() + 7));
+
+#define INC_CURSOR_X_7 ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 7);
+#define INC_CURSOR_Y_7 ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 7);
+#define INC_CURSOR_7 ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 7,ImGui::GetCursorPosY() + 7));
+
+#define INC_CURSOR_X_4 ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 4);
+#define INC_CURSOR_Y_4 ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 4);
+#define INC_CURSOR_4 ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 4,ImGui::GetCursorPosY() + 4));
 
 // Configuration -----------
 #define SCREEN_WIDTH 1500

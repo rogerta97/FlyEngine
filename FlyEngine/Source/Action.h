@@ -53,7 +53,7 @@ public:
 	~Action();
 
 	virtual void Init();
-	virtual void Update();
+	virtual void Update(float dt);
 	virtual void Draw();
 	virtual void CleanUp();
 

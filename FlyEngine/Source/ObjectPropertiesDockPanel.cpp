@@ -280,7 +280,7 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 			ImGui::BeginChild("ButtonReaction", ImVec2(ImGui::GetContentRegionAvailWidth(), childHeight));
 
-			INC_CURSOR_10;
+			INC_CURSOR_7;
 			reactionTypeSelected = selectedButton->mouseInteraction;
 			if (ImGui::Combo("Behaviour", &reactionTypeSelected, "Color Tint\0Swap Image"))
 			{
@@ -328,11 +328,11 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 
 void ObjectPropertiesDockPanel::DrawOnClickActionButtonList(UI_Button* selectedButton)
 {
-	INC_CURSOR_10;
+	INC_CURSOR_7;
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.082f, 0.105f, 0.13f, 1.0f));
 	ImGui::BeginChild("ButtonActionsList", ImVec2(ImGui::GetContentRegionAvailWidth() - 10, 300));
 
-	INC_CURSOR_10;
+	INC_CURSOR_7;
 	ImGui::BeginChild("ButtonActionsList", ImVec2(ImGui::GetContentRegionAvailWidth() - 10, 290));
 
 	int count = 0;
@@ -358,7 +358,7 @@ void ObjectPropertiesDockPanel::DrawOnClickActionButtonList(UI_Button* selectedB
 
 void ObjectPropertiesDockPanel::DrawSwapImageSection(UI_Button* selectedButton)
 {
-	INC_CURSOR_10;
+	INC_CURSOR_7;
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.082f, 0.105f, 0.13f, 1.0f));
 	ImGui::BeginChild("OnMouseOverTexture", ImVec2(ImGui::GetContentRegionAvailWidth() - 10, 100));
 
@@ -379,7 +379,7 @@ void ObjectPropertiesDockPanel::DrawSwapImageSection(UI_Button* selectedButton)
 
 	ImGui::NextColumn();
 
-	INC_CURSOR_10;
+	INC_CURSOR_7;
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("On Mouse Over Image:");
 	ImGui::PopFont();
@@ -419,7 +419,7 @@ void ObjectPropertiesDockPanel::DrawSwapImageSection(UI_Button* selectedButton)
 
 	ImGui::EndChild();
 
-	INC_CURSOR_10;
+	INC_CURSOR_7;
 	ImGui::BeginChild("OnMouseClickedTexture", ImVec2(ImGui::GetContentRegionAvailWidth() - 10, 100));
 
 	ImGui::Columns(2);
@@ -442,7 +442,7 @@ void ObjectPropertiesDockPanel::DrawSwapImageSection(UI_Button* selectedButton)
 
 	ImGui::NextColumn();
 
-	INC_CURSOR_10;
+	INC_CURSOR_7;
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("On Mouse Clicked Image:");
 	ImGui::PopFont();
@@ -486,7 +486,7 @@ void ObjectPropertiesDockPanel::DrawSwapImageSection(UI_Button* selectedButton)
 
 void ObjectPropertiesDockPanel::DrawSearchBarButtonActions(UI_Button* selectedButton)
 {
-	INC_CURSOR_10;
+	INC_CURSOR_7;
 	if (ImGui::Button("Add On Click Action"))
 	{
 		ImGui::OpenPopup("AddOnClickAction");
@@ -540,11 +540,11 @@ void ObjectPropertiesDockPanel::DrawColorTintSection()
 	IMGUI_SPACED_SEPARATOR;
 
 	static float mouseOverColor[4] = { 0,0,0,0 };
-	INC_CURSOR_X_10;
+	INC_CURSOR_X_7;
 	ImGui::ColorEdit4("Mouse Over Tint", mouseOverColor);
 
 	static float mouseClickTint[4] = { 0,0,0,0 };
-	INC_CURSOR_X_10;
+	INC_CURSOR_X_7;
 	ImGui::ColorEdit4("Mouse Click Tint", mouseClickTint);
 }
 
@@ -779,7 +779,7 @@ void ObjectPropertiesDockPanel::DrawInventoryItemTabs(FlyObject* selectedObject)
 			if (displayImageAction != nullptr && displayImageAction->GetTexture() != nullptr)
 				strcpy(inventoryBrowcseImageBuffer, displayImageAction->GetTexture()->GetName().c_str());
 
-			INC_CURSOR_X_10;
+			INC_CURSOR_X_7;
 			ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() - 120); 
 			ImGui::InputTextWithHint("", "Search...", inventoryBrowcseImageBuffer, IM_ARRAYSIZE(inventoryBrowcseImageBuffer));
 			ImGui::SameLine();

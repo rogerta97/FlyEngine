@@ -30,7 +30,7 @@ public:
 	FlyObject(std::string objectName, std::string description = "", FlyObjectType _flyObjectType = ACTION_OBJECT, Room* parentRoom = nullptr); 
 	~FlyObject(); 
 
-	bool Update();
+	bool Update(float dt);
 
 	void Draw();
 	void CleanUp(); 

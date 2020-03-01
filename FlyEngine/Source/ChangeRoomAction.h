@@ -16,7 +16,7 @@ public:
 	~ChangeRoomAction();
 
 	void Init();
-	void Update();
+	void Update(float dt);
 	void CleanUp();
 
 	void DrawSelectDestinationCombo(); 

@@ -54,7 +54,7 @@ FlyObject::~FlyObject()
 }
 
 //Returns true if this objects is deleted in the middle of the update
-bool FlyObject::Update()
+bool FlyObject::Update(float dt)
 {
 	bool ret = false; 
 
@@ -66,6 +66,11 @@ bool FlyObject::Update()
 		{
 			//clickableArea->Update();	
 		}		
+	}
+
+	for (auto& currentAction : actionsList)
+	{
+		currentAction->Update(dt);
 	}
 
 	if (App->isEngineInPlayMode && App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && GameInventory::getInstance()->droppingObject == nullptr)

@@ -17,7 +17,6 @@ public:
 
 	// Virtuals ----------
 	void Init(); 
-	void Update(); 
 	void Draw(); 
 	void CleanUp();
 

@@ -38,11 +38,6 @@ void DisplayImageAction::Init()
 
 }
 
-void DisplayImageAction::Update()
-{
-
-}
-
 void DisplayImageAction::Draw()
 {
 	glEnableClientState(GL_VERTEX_ARRAY); 

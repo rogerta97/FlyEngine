@@ -8,6 +8,12 @@
 
 using namespace std;
 
+enum AnimationState
+{
+	ANIMATION_PLAY,
+	ANIMATION_PAUSE, 
+};
+
 class Texture;
 class Animation; 
 class DisplayAnimationAction : public Action
@@ -17,8 +23,11 @@ public:
 	~DisplayAnimationAction();
 
 	void Init();
-	void Update();
+	void Update(float dt);
 	void CleanUp();
+
+	void Play(); 
+	void NextFrame(); 
 
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
 
@@ -30,12 +39,18 @@ public:
 	// Set & Get ---
 	Animation* GetAnimation(); 
 
-	Texture* GetCurrentFrame();
-	void SetCurrentFrame(Texture* currentFrame); 
+	int GetCurrentFrame();
+	void SetCurrentFrame(int currentFrame); 
+
+	AnimationState animationState = ANIMATION_PAUSE;
 
 private:
+
 	Animation* animation; 
-	Texture* previewFrame; 
+	int currentFrame; 
+
+	// Play Animation
+	float animationTime; 
 };
 
 #endif 

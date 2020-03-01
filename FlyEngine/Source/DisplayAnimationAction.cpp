@@ -18,8 +18,8 @@ DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject)
 	SetToolDescription("This should be the description of the animation action");
 
 	animation = new Animation(); 
-	previewFrame = nullptr; 
-	//animation->BuildAnimation(string(MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Animations\\TestAnim_001").c_str());
+	currentFrame = -1; 
+	animation->BuildAnimation(string(MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Animations\\TestAnim_001").c_str());
 
 }
 
@@ -32,14 +32,47 @@ void DisplayAnimationAction::Init()
 	
 }
 
-void DisplayAnimationAction::Update()
+void DisplayAnimationAction::Update(float dt)
 {
+	static bool kidding = false; 
+	if (animationState == ANIMATION_PLAY) 
+	{
+		animationTime += App->GetDeltaTime(); 
+		if (animationTime > animation->GetFramesInterval())
+		{
+			animationTime = 0;
+			NextFrame(); 
+		}
+
+		//flog("%f", animationTime);
+		//flog("%f", animation->GetFramesInterval());
+	}
 }
 
 void DisplayAnimationAction::CleanUp()
 {
 	delete animation; 
 	animation = nullptr; 
+}
+
+void DisplayAnimationAction::Play()
+{
+	animationState = ANIMATION_PLAY; 
+}
+
+void DisplayAnimationAction::NextFrame()
+{
+	if (currentFrame == -1)	
+		return;
+
+	if (currentFrame < animation->GetFramesAmount())
+	{
+		currentFrame++;
+	}
+	else
+		currentFrame = 0; 
+
+	flog("Next Frame: %d", currentFrame);
 }
 
 void DisplayAnimationAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr)
@@ -199,24 +232,23 @@ void DisplayAnimationAction::DrawSettingsRightColumn()
 	PUSH_CHILD_BG_COLOR;
 	ImGui::BeginChild("AnimationFrames", ImVec2(ImGui::GetContentRegionAvail().x, 200));
 
-
 	if (animation && animation->GetFramesAmount() > 0)
 	{
 		int count = 0; 
 		while (count < animation->GetFramesAmount())
 		{
-			string frameName = animation->GetFrame(count)->GetName(); 
+			string frameName = animation->GetFrameByPos(count)->GetName(); 
 
 			if (count == 0)
 			{
-				INC_CURSOR_10;
+				INC_CURSOR_7;
 			}
 			else
-				INC_CURSOR_X_10;
+				INC_CURSOR_X_7;
 
 			if (ImGui::Selectable(frameName.c_str()))
 			{
-				previewFrame = animation->GetFrame(count); 
+				currentFrame = count;
 			}
 
 			count++;
@@ -224,7 +256,7 @@ void DisplayAnimationAction::DrawSettingsRightColumn()
 	}
 	else
 	{
-		INC_CURSOR_X_10;
+		INC_CURSOR_X_7;
 		ImGui::PushFont(App->moduleImGui->rudaBlackGiant);
 		ImGui::TextColored(ImVec4(1,1,1,0.04f), "Empty");
 		ImGui::PopFont();
@@ -240,20 +272,45 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
 	PUSH_CHILD_BG_COLOR;
 	ImGui::BeginChild("AnimationPreview", ImVec2(squareSize, squareSize));
 
-	if (previewFrame != nullptr)
-		App->moduleManager->DrawImageFitInCenter(previewFrame);
+	if (currentFrame != -1)
+	{
+		Texture* frameTexture = animation->GetFrameByPos(currentFrame); 
+		App->moduleManager->DrawImageFitInCenter(frameTexture);
+	}
 	
 	ImGui::EndChild();
 	ImGui::PopStyleColor();
 
+	//flog("%f", App->GetDeltaTime());
 
 	// Frame Controls
 	PUSH_CHILD_BG_COLOR;
 	ImGui::BeginChild("AnimationControls", ImVec2(squareSize, 70));
 
-	float speed = animation->GetAnimationSpeed();
-	ImGui::SetCursorPosY(ImGui::GetContentRegionAvail().y - 35);
-	ImGui::SliderFloat("Speed", &speed, 0.01f, 100.0f);
+	Texture* placeholder = (Texture*)ResourceManager::getInstance()->GetResource("PlayIcon"); 
+	
+	INC_CURSOR_4;
+	if (ImGui::ImageButton((ImTextureID)placeholder->GetTextureID(), ImVec2(25, 25)))
+	{
+		Play(); 
+	}
+
+	ImGui::SameLine();
+	if (ImGui::ImageButton(0, ImVec2(25, 25)))
+	{
+
+	}
+
+	ImGui::SameLine();
+	if (ImGui::ImageButton(0, ImVec2(25, 25)))
+	{
+
+	}
+
+	int speed = animation->GetSpeed();
+
+	if (ImGui::InputInt("Speed", &speed, 1, 3))	
+		animation->SetSpeed(speed); 	
 
 	ImGui::EndChild();
 	ImGui::PopStyleColor();
@@ -265,12 +322,12 @@ Animation* DisplayAnimationAction::GetAnimation()
 	return animation;
 }
 
-Texture* DisplayAnimationAction::GetCurrentFrame()
+int DisplayAnimationAction::GetCurrentFrame()
 {
-	return previewFrame; 
+	return currentFrame;
 }
 
-void DisplayAnimationAction::SetCurrentFrame(Texture* _currentFrame)
+void DisplayAnimationAction::SetCurrentFrame(int _currentFrame)
 {
-	previewFrame = _currentFrame; 
+	currentFrame = _currentFrame;
 }

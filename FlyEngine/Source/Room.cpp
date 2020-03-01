@@ -370,7 +370,7 @@ void Room::UpdateRoomObjects()
 {
 	for (auto currentObject = objectsInRoom.begin(); currentObject != objectsInRoom.end(); currentObject++)
 	{
-		(*currentObject)->Update();
+		(*currentObject)->Update(App->GetDeltaTime());
 	}
 }
 

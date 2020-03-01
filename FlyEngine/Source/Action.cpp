@@ -37,7 +37,7 @@ void Action::Init()
 {
 }
 
-void Action::Update()
+void Action::Update(float dt)
 {
 }
 
