@@ -43,9 +43,6 @@ void DisplayAnimationAction::Update(float dt)
 			animationTime = 0;
 			NextFrame(); 
 		}
-
-		//flog("%f", animationTime);
-		//flog("%f", animation->GetFramesInterval());
 	}
 }
 
@@ -102,7 +99,7 @@ void DisplayAnimationAction::DrawUISettings()
 
 	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
 	ImGui::Text("Current Frame:"); ImGui::SameLine();
-	ImGui::TextColored(ImVec4(0.43137f, 0.56863f, 0.80392f, 1.0f), "0", framesAmount);
+	ImGui::TextColored(ImVec4(0.43137f, 0.56863f, 0.80392f, 1.0f), "%d", currentFrame);
 	ImGui::PopFont();
 
 	IMGUI_SPACED_SEPARATOR;
@@ -237,7 +234,7 @@ void DisplayAnimationAction::DrawSettingsRightColumn()
 		int count = 0; 
 		while (count < animation->GetFramesAmount())
 		{
-			string frameName = animation->GetFrameByPos(count)->GetName(); 
+			string frameName = to_string(count + 1) + ". " +animation->GetFrameByPos(count)->GetName(); 
 
 			if (count == 0)
 			{
@@ -270,7 +267,7 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
 {
 	// Current Frame Preview
 	PUSH_CHILD_BG_COLOR;
-	ImGui::BeginChild("AnimationPreview", ImVec2(squareSize, squareSize));
+	ImGui::BeginChild("AnimationPreview", ImVec2(squareSize, 150));
 
 	if (currentFrame != -1)
 	{
