@@ -1477,6 +1477,14 @@ void ObjectPropertiesDockPanel::DrawActionsList()
 	int count = 0;
 	for (auto& currentAction : selectedObject->GetActionsList())
 	{
+		if (currentAction->GetActionType() == ACTION_DISPLAY_IMAGE)
+		{
+			DisplayImageAction* displayImage = (DisplayImageAction*)currentAction;
+
+			if (displayImage->fromAnimation)
+				continue;
+		}
+
 		ActionSelectableInfo selectableInfo = currentAction->GetActionSelectableInfo();
 		if (DrawActionSelectable(selectableInfo, currentAction, count, 40))
 		{

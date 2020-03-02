@@ -39,6 +39,9 @@ public:
 	void SetHeigth(float newWidth);
 	float GetHeigth() const;
 
+public:
+	bool fromAnimation = false; 
+
 private:
 	Quad*		quadMesh;
 	Texture*	imageTexture;

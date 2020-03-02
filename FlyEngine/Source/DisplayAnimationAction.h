@@ -16,6 +16,7 @@ enum AnimationState
 
 class Texture;
 class Animation; 
+class DisplayImageAction; 
 class DisplayAnimationAction : public Action
 {
 public:
@@ -36,6 +37,7 @@ public:
 	void DrawSettingsRightColumn();
 	void DrawUISettingsLeftColumn(float squareSize);
 	void DrawAddFramePopup(); 
+	void DrawActionOccurenceCheckboxes(); 
 
 	// Set & Get ---
 	Animation* GetAnimation(); 
@@ -46,12 +48,14 @@ public:
 	AnimationState animationState = ANIMATION_STOP;
 
 private:
+	DisplayImageAction* screenImageAction; 
 
 	Animation* animation; 
 	int currentFrame; 
 
 	// Play Animation
 	float animationTime; 
+	bool showVariableConditions = false;
 };
 
 #endif 

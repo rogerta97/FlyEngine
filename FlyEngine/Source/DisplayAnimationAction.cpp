@@ -3,9 +3,11 @@
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "ModuleManager.h"
+#include "DisplayImageAction.h"
 #include "Texture.h"
 #include "MyFileSystem.h"
 #include "Animation.h"
+#include "FlyObject.h"
 #include "ResourceManager.h"
 
 DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject)
@@ -19,8 +21,13 @@ DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject)
 
 	animation = new Animation(); 
 	currentFrame = -1; 
-	animation->BuildAnimation(string(MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Animations\\TestAnim_001").c_str());
 
+	screenImageAction = parentObject->AddDisplayImageAction(); 
+	screenImageAction->fromAnimation = true; 
+
+	animation->BuildAnimation(string(MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Animations\\TestAnim_001").c_str());
+	currentFrame = animation->GetFramesAmount() - 1;
+	screenImageAction->SetTexture(animation->GetFrameByPos(0));
 }
 
 DisplayAnimationAction::~DisplayAnimationAction()
@@ -30,6 +37,51 @@ DisplayAnimationAction::~DisplayAnimationAction()
 void DisplayAnimationAction::Init()
 {
 	
+}
+
+void DisplayAnimationAction::DrawActionOccurenceCheckboxes()
+{
+ 	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text("Action Happens On:");
+	ImGui::PopFont();
+
+	ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
+
+	ImGui::SetCursorPos(ImVec2(5, 8)); 
+	ImGui::Checkbox("Scene Enter", &occ_SceneEnter);
+	ImGui::SetCursorPos(ImVec2(5, 38)); 
+	ImGui::Checkbox("Object Clicked", &occ_ObjectClicked);
+	ImGui::SetCursorPos(ImVec2(5, 38));
+	ImGui::Checkbox("Object Condition", &occ_ObjectClicked);
+
+	ImGui::SameLine();
+	static std::string showValueConditionButtonText = "Show Conditions";
+	if (ImGui::Button(showValueConditionButtonText.c_str()))
+	{
+		if (showVariableConditions)
+		{
+			showVariableConditions = false;
+			showValueConditionButtonText = "Show Conditions";
+		}
+		else
+		{
+			showVariableConditions = true;
+			showValueConditionButtonText = "Hide Conditions";
+		}
+	}
+
+	ImGui::EndChild(); 
+
+	if (showVariableConditions)
+		DrawActionConditionsList();
+
+	ImGui::PopStyleColor();
+
+	ImGui::Spacing(); 
+
+	ImGui::PopStyleColor();
 }
 
 void DisplayAnimationAction::Update(float dt)
@@ -97,6 +149,8 @@ void DisplayAnimationAction::DrawUISettings()
 
 	if (animation)
 		framesAmount = animation->GetFramesAmount();
+
+	DrawActionOccurenceCheckboxes();
 
 	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
 	ImGui::Text("Frames Amount:"); ImGui::SameLine();
@@ -182,6 +236,7 @@ void DisplayAnimationAction::DrawAddFramePopup()
 			{
 				Texture* newFrameTexture = (Texture*)ResourceManager::getInstance()->GetResource(searchFileBuffer);
 				animation->AddFrame(newFrameTexture);
+				currentFrame = animation->GetFramesAmount() - 1;
 				ImGui::CloseCurrentPopup();
 				ImGui::EndPopup(); 
 				return;
@@ -320,7 +375,15 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
 		playPauseIconID = (ImTextureID)placeholder->GetTextureID();
 	}
 
+
+	Texture* previewFrame = (Texture*)ResourceManager::getInstance()->GetResource("PreviewFrameIcon");
+	if (ImGui::ImageButton((ImTextureID)previewFrame->GetTextureID(), ImVec2(25, 25)))
+	{
+		
+	}
+
 	INC_CURSOR_4;
+	ImGui::SameLine();
 	if (ImGui::ImageButton(playPauseIconID, ImVec2(25, 25)))
 	{
 		if (animationState == ANIMATION_STOP)
@@ -330,13 +393,8 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
 	}
 
 	ImGui::SameLine();
-	if (ImGui::ImageButton(0, ImVec2(25, 25)))
-	{
-		
-	}
-
-	ImGui::SameLine();
-	if (ImGui::ImageButton(0, ImVec2(25, 25)))
+	Texture* nextFrame = (Texture*)ResourceManager::getInstance()->GetResource("NextFrameIcon");
+	if (ImGui::ImageButton((ImTextureID)nextFrame->GetTextureID(), ImVec2(25, 25)))
 	{
 
 	}
