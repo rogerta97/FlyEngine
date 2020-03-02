@@ -45,7 +45,6 @@ void DisplayAnimationAction::DrawActionOccurenceCheckboxes()
 	ImGui::Text("Action Happens On:");
 	ImGui::PopFont();
 
-	ImGui::PushFont(App->moduleImGui->rudaRegularMid);
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
 
@@ -53,7 +52,7 @@ void DisplayAnimationAction::DrawActionOccurenceCheckboxes()
 	ImGui::Checkbox("Scene Enter", &occ_SceneEnter);
 	ImGui::SetCursorPos(ImVec2(5, 38)); 
 	ImGui::Checkbox("Object Clicked", &occ_ObjectClicked);
-	ImGui::SetCursorPos(ImVec2(5, 38));
+	ImGui::SetCursorPos(ImVec2(5, 68));
 	ImGui::Checkbox("Object Condition", &occ_ObjectClicked);
 
 	ImGui::SameLine();
@@ -73,15 +72,13 @@ void DisplayAnimationAction::DrawActionOccurenceCheckboxes()
 	}
 
 	ImGui::EndChild(); 
+	ImGui::Spacing(); 
 
 	if (showVariableConditions)
 		DrawActionConditionsList();
 
 	ImGui::PopStyleColor();
 
-	ImGui::Spacing(); 
-
-	ImGui::PopStyleColor();
 }
 
 void DisplayAnimationAction::Update(float dt)
@@ -93,7 +90,11 @@ void DisplayAnimationAction::Update(float dt)
 		if (animationTime > animation->GetFramesInterval())
 		{
 			animationTime = 0;
-			NextFrame(); 
+
+			if (NextFrame() && playMode == ANIMATION_ONE_TIME)
+				Stop();
+
+			screenImageAction->SetTexture(animation->GetFrameByPos(currentFrame));		
 		}
 	}
 }
@@ -104,8 +105,14 @@ void DisplayAnimationAction::CleanUp()
 	animation = nullptr; 
 }
 
+void DisplayAnimationAction::DoAction()
+{
+	Play(); 
+}
+
 void DisplayAnimationAction::Play()
 {
+	currentFrame = 0; 
 	animationState = ANIMATION_PLAY; 
 }
 
@@ -115,19 +122,24 @@ void DisplayAnimationAction::Stop()
 	currentFrame = 0; 
 }
 
-void DisplayAnimationAction::NextFrame()
+// Will send true when it's the last frame 
+bool DisplayAnimationAction::NextFrame()
 {
 	if (currentFrame == -1)	
-		return;
+		return false;
 
 	if (currentFrame < animation->GetFramesAmount())
 	{
 		currentFrame++;
 	}
 	else
+	{
 		currentFrame = 0; 
+		return true; 
+	}
 
 	flog("Next Frame: %d", currentFrame);
+	return false; 
 }
 
 void DisplayAnimationAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr)
@@ -289,7 +301,7 @@ void DisplayAnimationAction::DrawSettingsRightColumn()
 
 	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 7);
 	PUSH_CHILD_BG_COLOR;
-	ImGui::BeginChild("AnimationFrames", ImVec2(ImGui::GetContentRegionAvail().x, 200));
+	ImGui::BeginChild("AnimationFrames", ImVec2(ImGui::GetContentRegionAvail().x, 283));
 
 	if (animation && animation->GetFramesAmount() > 0)
 	{
@@ -304,9 +316,6 @@ void DisplayAnimationAction::DrawSettingsRightColumn()
 			}
 			else
 				INC_CURSOR_X_7;
-
-
-
 
 			if (ImGui::Selectable(frameName.c_str()))
 			{
@@ -349,7 +358,13 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
 
 	if (currentFrame != -1)
 	{
-		Texture* frameTexture = animation->GetFrameByPos(currentFrame); 
+		Texture* frameTexture; 
+
+		if(App->isEngineInPlayMode)
+			frameTexture = animation->GetFrameByPos(0); 
+		else
+			frameTexture = animation->GetFrameByPos(currentFrame); 
+
 		App->moduleManager->DrawImageFitInCenter(frameTexture);
 	}
 	
@@ -359,8 +374,9 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
 	//flog("%f", App->GetDeltaTime());
 
 	// Frame Controls
+	ImVec2 centerControlls = ImVec2(ImGui::GetContentRegionAvail().x / 2, 30);
 	PUSH_CHILD_BG_COLOR;
-	ImGui::BeginChild("AnimationControls", ImVec2(squareSize, 70));
+	ImGui::BeginChild("AnimationControls", ImVec2(squareSize, 115));
 
 	ImTextureID playPauseIconID = 0; 
 
@@ -377,6 +393,7 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
 
 
 	Texture* previewFrame = (Texture*)ResourceManager::getInstance()->GetResource("PreviewFrameIcon");
+	ImGui::SetCursorPos(ImVec2(centerControlls.x - 25 - 20 - 25, centerControlls.y - 25));
 	if (ImGui::ImageButton((ImTextureID)previewFrame->GetTextureID(), ImVec2(25, 25)))
 	{
 		
@@ -384,25 +401,38 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
 
 	INC_CURSOR_4;
 	ImGui::SameLine();
+	ImGui::SetCursorPos(ImVec2(centerControlls.x - 25, centerControlls.y - 25));
 	if (ImGui::ImageButton(playPauseIconID, ImVec2(25, 25)))
 	{
 		if (animationState == ANIMATION_STOP)
 			Play();
 		else if (animationState == ANIMATION_PLAY)
+		{
 			Stop(); 
+			screenImageAction->SetTexture(animation->GetFrameByPos(0));	
+		}
 	}
 
 	ImGui::SameLine();
 	Texture* nextFrame = (Texture*)ResourceManager::getInstance()->GetResource("NextFrameIcon");
+	ImGui::SetCursorPos(ImVec2(centerControlls.x + 20, centerControlls.y - 25));
 	if (ImGui::ImageButton((ImTextureID)nextFrame->GetTextureID(), ImVec2(25, 25)))
 	{
 
 	}
 
-	int speed = animation->GetSpeed();
+	ImGui::Separator();
 
+	int speed = animation->GetSpeed();
+	
+	INC_CURSOR_4;
 	if (ImGui::InputInt("Speed", &speed, 1, 3))	
 		animation->SetSpeed(speed); 	
+
+	INC_CURSOR_4;
+	int playModeSelected = playMode;
+	if (ImGui::Combo("Play Mode", &playModeSelected, "Loop\0One Time\0"))
+		playMode = (AnimationPlayMode)playModeSelected; 
 
 	ImGui::EndChild();
 	ImGui::PopStyleColor();

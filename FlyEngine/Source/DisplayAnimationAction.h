@@ -14,6 +14,12 @@ enum AnimationState
 	ANIMATION_STOP, 
 };
 
+enum AnimationPlayMode
+{
+	ANIMATION_LOOP,
+	ANIMATION_ONE_TIME,
+};
+
 class Texture;
 class Animation; 
 class DisplayImageAction; 
@@ -26,10 +32,11 @@ public:
 	void Init();
 	void Update(float dt);
 	void CleanUp();
+	void DoAction(); 
 
 	void Play(); 
 	void Stop(); 
-	void NextFrame(); 
+	bool NextFrame(); 
 
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
 
@@ -46,6 +53,7 @@ public:
 	void SetCurrentFrame(int currentFrame); 
 
 	AnimationState animationState = ANIMATION_STOP;
+	AnimationPlayMode playMode = ANIMATION_LOOP; 
 
 private:
 	DisplayImageAction* screenImageAction; 
