@@ -108,7 +108,8 @@ void DisplayAnimationAction::DrawUISettings()
 	ImGui::TextColored(ImVec4(0.43137f, 0.56863f, 0.80392f, 1.0f), "%d", currentFrame);
 	ImGui::PopFont();
 
-	IMGUI_SPACED_SEPARATOR;
+	ImGui::Spacing();
+	ImGui::Separator();
 
 	float squareSize = 200;
 	ImGui::Columns(2); 
@@ -249,10 +250,22 @@ void DisplayAnimationAction::DrawSettingsRightColumn()
 			else
 				INC_CURSOR_X_7;
 
+
+
+
 			if (ImGui::Selectable(frameName.c_str()))
 			{
 				currentFrame = count;
 			}
+
+			Texture* arrowUp = (Texture*)ResourceManager::getInstance()->GetResource("ArrowUpWhite");
+			ImGui::SameLine();
+			ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 60);
+			ImGui::ImageButton((ImTextureID)arrowUp->GetTextureID(), ImVec2(15, 15));
+
+			Texture* arrowDown = (Texture*)ResourceManager::getInstance()->GetResource("ArrowDownWhite");
+			ImGui::SameLine();
+			ImGui::ImageButton((ImTextureID)arrowDown->GetTextureID(), ImVec2(15, 15));
 
 			count++;
 		}
@@ -271,6 +284,10 @@ void DisplayAnimationAction::DrawSettingsRightColumn()
 
 void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
 {
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Preview:");
+	ImGui::PopFont();
+
 	// Current Frame Preview
 	PUSH_CHILD_BG_COLOR;
 	ImGui::BeginChild("AnimationPreview", ImVec2(squareSize, 175));
