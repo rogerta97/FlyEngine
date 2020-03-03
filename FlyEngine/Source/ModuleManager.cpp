@@ -191,6 +191,12 @@ Texture* ModuleManager::GetIconFromActionType(ActionType toolType)
 	return toolIconTexture;
 }
 
+void ModuleManager::NotifyVariableChange(FlyVariable* variableCurrentValue)
+{
+	int roomsAmount = App->moduleRoomManager->GetRoomsAmount(); 
+	int count = 0; 
+}
+
 float4 ModuleManager::GetSceneUITint()
 {
 	return uiBackgroundTint; 

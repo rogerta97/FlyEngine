@@ -53,7 +53,7 @@ void DisplayAnimationAction::DrawActionOccurenceCheckboxes()
 	ImGui::SetCursorPos(ImVec2(5, 38)); 
 	ImGui::Checkbox("Object Clicked", &occ_ObjectClicked);
 	ImGui::SetCursorPos(ImVec2(5, 68));
-	ImGui::Checkbox("Object Condition", &occ_ObjectClicked);
+	ImGui::Checkbox("Object Condition", &occ_blackboardValue);
 
 	ImGui::SameLine();
 	static std::string showValueConditionButtonText = "Show Conditions";

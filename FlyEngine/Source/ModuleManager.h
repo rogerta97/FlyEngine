@@ -38,6 +38,7 @@ public:
 	int GetToolsAmount() const; 
 	ActionSelectableInfo* DrawActionDictionaryUI(DictionaryPopupFilter popupFilter = FILTER_ACTIONS_NONE);
 	Texture* GetIconFromActionType(ActionType toolType);
+	void NotifyVariableChange(FlyVariable* variableCurrentValue); 
 
 	// Delete Obejcts --------------
 	void AddDeleteFromListObject(FlyObject* newObjectToDelete);
