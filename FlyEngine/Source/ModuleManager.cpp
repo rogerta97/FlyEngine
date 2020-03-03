@@ -193,8 +193,10 @@ Texture* ModuleManager::GetIconFromActionType(ActionType toolType)
 
 void ModuleManager::NotifyVariableChange(FlyVariable* variableCurrentValue)
 {
-	int roomsAmount = App->moduleRoomManager->GetRoomsAmount(); 
-	int count = 0; 
+	for (auto& currentRoom : App->moduleRoomManager->GetRoomsInWorldList())
+	{
+		currentRoom->NotifyVariableChange(variableCurrentValue);
+	}
 }
 
 float4 ModuleManager::GetSceneUITint()

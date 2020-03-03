@@ -47,6 +47,7 @@ public:
 	int GetObjectsInRoomAmount(); 
 	void AddItemToInventory(FlyObject* newObject_Inv); 
 	bool CheckRaycastConditions(); 
+	void NotifyVariableChange(FlyVariable* currentVariableValue); 
 	
 	bool HasObject(FlyObject* newObject);
 	FlyObject* GetFlyObject(UID _uid); 

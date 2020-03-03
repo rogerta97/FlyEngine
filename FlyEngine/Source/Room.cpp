@@ -199,6 +199,14 @@ bool Room::CheckRaycastConditions()
 		!App->moduleImGui->objectCreatorDockPanel->IsVisible();
 }
 
+void Room::NotifyVariableChange(FlyVariable* currentVariableValue)
+{
+	for (auto& currentObject : objectsInRoom)
+	{
+		currentObject->DoVariableConditionActions(currentVariableValue);
+	}
+}
+
 list<FlyObject*> Room::GetInventoryItemsList()
 {
 	list<FlyObject*> returnList = list<FlyObject*>(); 

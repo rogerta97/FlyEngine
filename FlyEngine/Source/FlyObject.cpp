@@ -117,6 +117,17 @@ void FlyObject::DoOnMouseOverActions()
 	}
 }
 
+void FlyObject::DoVariableConditionActions(FlyVariable* currentVariableValue)
+{
+	for (auto& currentAction : actionsList)
+	{
+		if (currentAction->IsOccCondition() && currentAction->PassConditionTest())
+		{
+			currentAction->DoAction(); 
+		}
+	}
+}
+
 void FlyObject::Draw()
 {
 	if (isPicked)

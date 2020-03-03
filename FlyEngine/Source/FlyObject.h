@@ -53,6 +53,7 @@ public:
 	// Actions ---------
 	void DoOnClickActions(); 
 	void DoOnMouseOverActions();
+	void DoVariableConditionActions(FlyVariable* currentVariableValue);
 
 	// Tools -----------
 	DisplayImageAction* AddDisplayImageAction(const char* imageTexturePath = "None");

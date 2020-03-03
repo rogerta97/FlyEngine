@@ -49,7 +49,9 @@ void ModifyVariableAction::DoAction()
 		Blackboard* roomBlackboard = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard(); 
 
 		if (currentEffect->targetVariable->varType == Var_Integer)
+		{
 			roomBlackboard->ModifyIntegerVariable(currentEffect); 
+		}
 	}
 }
 
@@ -365,6 +367,8 @@ void ModifyVariableEffect::ApplyEffect()
 		targetVariable->varToogleValue = nextToggleValue;
 		break;
 	}
+
+	App->moduleManager->NotifyVariableChange(targetVariable); 
 }
 
 void ModifyVariableEffect::AttachToVariable(FlyVariable* _targetVariable)
