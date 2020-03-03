@@ -37,6 +37,7 @@ public:
 	void Play(); 
 	void Stop(); 
 	bool NextFrame(); 
+	void AddFrame(Texture* newFrame); 
 
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
 
@@ -48,6 +49,7 @@ public:
 
 	// Set & Get ---
 	Animation* GetAnimation(); 
+	void SetAnimation(Animation* newAnimation); 
 
 	int GetCurrentFrame();
 	void SetCurrentFrame(int currentFrame); 

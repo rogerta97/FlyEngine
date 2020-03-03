@@ -9,6 +9,7 @@
 #include "GameViewportDockPanel.h"
 #include "ModuleImGui.h"
 #include "RoomUIHandler.h"
+#include "Animation.h"
 #include "Room.h"
 #include "FlyObject.h"
 
@@ -254,6 +255,32 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 
 			string serializeDisplayTextStr = serializeObjectStrActions + "DisplayAnimation.";
 
+			int framesAmount = json_object_dotget_number(root_obj, string(serializeDisplayTextStr + "FramesAmount").c_str());
+
+			Animation* newAnimation = new Animation(); 
+			displayAnimationAction->SetAnimation(newAnimation); 
+
+			if (framesAmount > 0)
+			{
+				int playModeTmp = json_object_dotget_number(root_obj, string(serializeDisplayTextStr + "PlayMode").c_str());
+				displayAnimationAction->playMode = (AnimationPlayMode)playModeTmp;
+
+				displayAnimationAction->GetAnimation()->SetSpeed(json_object_dotget_number(root_obj, string(serializeDisplayTextStr + "Speed").c_str()));
+
+				int count = 0; 
+				while (count < framesAmount)
+				{
+					string frameStr = serializeDisplayTextStr + "Frames.Frame_" + to_string(count);
+
+					string textureName = json_object_dotget_string(root_obj, string(frameStr + ".TextureName").c_str());
+					Texture* frameTexture = (Texture*)ResourceManager::getInstance()->GetResource(textureName); 
+
+					if (frameTexture)					
+						displayAnimationAction->AddFrame(frameTexture);
+					
+					count++;
+				}
+			}
 		}
 	}
 

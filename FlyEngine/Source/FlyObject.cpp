@@ -414,8 +414,12 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 
 		string textureName = imageTexturePath;
 		textureName = MyFileSystem::getInstance()->GetLastPathItem(imageTexturePath, false);
+
 		Texture* newTexture = (Texture*)ResourceManager::GetResource(textureName);
 
+		if(newTexture == nullptr)
+			newTexture = (Texture*)ResourceManager::GetResource("EmptyObject");
+	
 		newAtrImage->SetTexture(newTexture);
 	}
 

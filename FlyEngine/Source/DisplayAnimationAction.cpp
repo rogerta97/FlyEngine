@@ -25,9 +25,9 @@ DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject)
 	screenImageAction = parentObject->AddDisplayImageAction(); 
 	screenImageAction->fromAnimation = true; 
 
-	animation->BuildAnimation(string(MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Animations\\TestAnim_001").c_str());
-	currentFrame = animation->GetFramesAmount() - 1;
-	screenImageAction->SetTexture(animation->GetFrameByPos(0));
+//nimation->BuildAnimation(string(MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Animations\\TestAnim_001").c_str());
+	//currentFrame = 0; animation->GetFramesAmount() - 1;
+	//screenImageAction->SetTexture(animation->GetFrameByPos(0));
 }
 
 DisplayAnimationAction::~DisplayAnimationAction()
@@ -142,6 +142,13 @@ bool DisplayAnimationAction::NextFrame()
 	return false; 
 }
 
+void DisplayAnimationAction::AddFrame(Texture* newFrame)
+{
+	animation->AddFrame(newFrame);
+	currentFrame = animation->GetFramesAmount() - 1;
+	screenImageAction->SetTexture(newFrame);
+}
+
 void DisplayAnimationAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr)
 {
 	string actionSerializeSection;
@@ -153,6 +160,26 @@ void DisplayAnimationAction::SaveAction(JSON_Object* jsonObject, string serializ
 
 	Action::SaveAction(jsonObject, actionSerializeSection);
 	Action::SaveOccurrence(jsonObject, actionSerializeSection);
+
+	if(animation == nullptr)
+		json_object_dotset_number(jsonObject, string(actionSerializeSection + "FramesAmount").c_str(), 0);
+	else
+	{
+		json_object_dotset_number(jsonObject, string(actionSerializeSection + "FramesAmount").c_str(), animation->GetFramesAmount());
+		json_object_dotset_number(jsonObject, string(actionSerializeSection + "PlayMode").c_str(), playMode);
+		json_object_dotset_number(jsonObject, string(actionSerializeSection + "Speed").c_str(), animation->GetSpeed());
+
+		int count = 0; 
+		string saveFrameStr = actionSerializeSection + "Frames."; 
+		while (count < animation->GetFramesAmount())
+		{
+			Texture* currentFrame = animation->GetFrameByPos(count); 
+			string saveStr = saveFrameStr + "Frame_" + to_string(count) + "."; 
+			json_object_dotset_string(jsonObject, string(saveStr + "TextureName").c_str(), currentFrame->GetName().c_str());
+			count++; 
+		}	
+	}
+
 }
 
 void DisplayAnimationAction::DrawUISettings()
@@ -247,8 +274,11 @@ void DisplayAnimationAction::DrawAddFramePopup()
 			if (currentSelection == 0)
 			{
 				Texture* newFrameTexture = (Texture*)ResourceManager::getInstance()->GetResource(searchFileBuffer);
+
 				animation->AddFrame(newFrameTexture);
 				currentFrame = animation->GetFramesAmount() - 1;
+				screenImageAction->SetTexture(newFrameTexture);
+
 				ImGui::CloseCurrentPopup();
 				ImGui::EndPopup(); 
 				return;
@@ -442,6 +472,14 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
 Animation* DisplayAnimationAction::GetAnimation()
 {
 	return animation;
+}
+
+void DisplayAnimationAction::SetAnimation(Animation* newAnimation)
+{
+	if (newAnimation != nullptr)
+	{
+		animation = newAnimation; 
+	}
 }
 
 int DisplayAnimationAction::GetCurrentFrame()

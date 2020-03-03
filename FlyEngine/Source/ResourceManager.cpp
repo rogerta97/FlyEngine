@@ -92,7 +92,7 @@ Resource* ResourceManager::GetResource(std::string _resourceName, ResourceType t
 		}
 	}
 
-	throw std::logic_error("Could not found resource"); 
+	return nullptr;
 }
 
 Resource* ResourceManager::GetResource(UID resourceUID, ResourceType type)
