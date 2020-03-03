@@ -177,7 +177,7 @@ void DisplayAnimationAction::DrawUISettings()
 	ImGui::Spacing();
 	ImGui::Separator();
 
-	float squareSize = 200;
+	float squareSize = 250;
 	ImGui::Columns(2); 
 	ImGui::SetColumnWidth(0, squareSize + 5);
 
