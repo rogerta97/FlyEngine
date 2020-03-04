@@ -2,6 +2,8 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H  
 
+#include "mmgr.h"
+
 
 Font::Font() : Resource(RESOURCE_FONT)
 {
@@ -11,6 +13,11 @@ Font::Font() : Resource(RESOURCE_FONT)
 Font::~Font()
 {
 	FT_Done_Face(fontFace);
+}
+
+void Font::CleanUp()
+{
+
 }
 
 void Font::CreateCharactersFromFace()

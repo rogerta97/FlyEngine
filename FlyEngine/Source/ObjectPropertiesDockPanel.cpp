@@ -1662,7 +1662,7 @@ void ObjectPropertiesDockPanel::DrawToolImageSettings()
 
 	if (imageTool != nullptr)
 	{
-		if (ImGui::CollapsingHeader("Image Tool Settings"))
+		if (ImGui::CollapsingHeader("Image Tool Settings", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			static char buf[256] = "";
 

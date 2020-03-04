@@ -377,6 +377,15 @@ void ObjectCreatorDockPanel::DrawObjectActionsList()
 	for (auto& currentAction : creatingObject->GetActionsList())
 	{
 		ActionSelectableInfo selectableInfo = currentAction->GetActionSelectableInfo();
+
+		if (currentAction->GetActionType() == ACTION_DISPLAY_IMAGE)
+		{
+			DisplayImageAction* displayImageAction = (DisplayImageAction*)currentAction;
+
+			if (displayImageAction->fromAnimation == true)
+				continue; 
+		}
+
 		DrawSelectable(selectableInfo, currentAction->IsSelected(), pos, 42, currentAction);
 		pos++;
 	}

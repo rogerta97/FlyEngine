@@ -22,6 +22,8 @@ public:
 	Font();
 	~Font();
 
+	void CleanUp(); 
+
 	Character GetCharacter(char getChar);
 	void SetFace(FT_Face newFace, int fontSize = 15);
 
