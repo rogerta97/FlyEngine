@@ -28,6 +28,7 @@ void UI_Text::Draw()
 
 void UI_Text::CleanUp()
 {
+	displayTextAction->CleanUp(); 
 }
 
 void UI_Text::Save(JSON_Object* jsonObject, string serializeStr)

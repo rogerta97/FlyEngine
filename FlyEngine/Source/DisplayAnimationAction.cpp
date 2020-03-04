@@ -26,10 +26,6 @@ DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject)
 
 	screenImageAction = parentObject->AddDisplayImageAction(); 
 	screenImageAction->fromAnimation = true; 
-
-//nimation->BuildAnimation(string(MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Animations\\TestAnim_001").c_str());
-	//currentFrame = 0; animation->GetFramesAmount() - 1;
-	//screenImageAction->SetTexture(animation->GetFrameByPos(0));
 }
 
 DisplayAnimationAction::~DisplayAnimationAction()
@@ -103,6 +99,9 @@ void DisplayAnimationAction::Update(float dt)
 
 void DisplayAnimationAction::CleanUp()
 {
+	Action::CleanUp();
+
+	animation->CleanUp(); 
 	delete animation; 
 	animation = nullptr; 
 }

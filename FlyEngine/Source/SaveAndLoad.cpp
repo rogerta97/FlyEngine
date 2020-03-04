@@ -257,8 +257,6 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 
 			int framesAmount = json_object_dotget_number(root_obj, string(serializeDisplayTextStr + "FramesAmount").c_str());
 
-			Animation* newAnimation = new Animation(); 
-			displayAnimationAction->SetAnimation(newAnimation); 
 
 			if (framesAmount > 0)
 			{

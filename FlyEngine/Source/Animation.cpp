@@ -4,10 +4,13 @@
 #include "ResourceManager.h"
 #include "imgui.h"
 
+#include "mmgr.h"
+
 Animation::Animation()
 {
 	name = "";
 	animationSpeed = 1.0f;
+	frameTexturesList = new list<Texture*>(); 
 }
 
 Animation::~Animation()
@@ -31,7 +34,7 @@ void Animation::BuildAnimation(string loadingPath)
 			if (frameTexture != nullptr)
 			{
 				framesAmount++;
-				frameTexturesList.push_back(frameTexture);
+				frameTexturesList->push_back(frameTexture);
 				flog("Load Animation File: %s", currentFrameFile.c_str());
 			}			
 		}
@@ -42,7 +45,7 @@ void Animation::AddFrame(Texture* newFrame)
 {
 	if (newFrame != nullptr)
 	{
-		frameTexturesList.push_back(newFrame); 
+		frameTexturesList->push_back(newFrame); 
 		framesAmount++;
 	}
 }
@@ -50,7 +53,7 @@ void Animation::AddFrame(Texture* newFrame)
 Texture* Animation::GetFrameByPos(int pos)
 {
 	int count = 0;
-	for (auto& currentFrame : frameTexturesList)
+	for (auto& currentFrame : *frameTexturesList)
 	{
 		if (count == pos)
 			return currentFrame; 
@@ -64,7 +67,7 @@ Texture* Animation::GetFrameByPos(int pos)
 int Animation::GetFramePos(Texture* frame)
 {
 	int count = 0; 
-	for (auto& currentTexture : frameTexturesList)
+	for (auto& currentTexture : *frameTexturesList)
 	{
 		if (currentTexture == frame)
 			return count; 
@@ -76,9 +79,15 @@ int Animation::GetFramePos(Texture* frame)
 }
 
 void Animation::Clear()
-{
-	frameTexturesList.clear();
+{	
+	frameTexturesList->clear();
 	framesAmount = 0;
+}
+
+void Animation::CleanUp()
+{
+	Clear(); 
+	delete frameTexturesList;
 }
 
 void Animation::DrawAddFramePopup()

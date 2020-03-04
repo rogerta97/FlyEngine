@@ -18,6 +18,7 @@ public:
 	// Frame Control ----
 	void AddFrame(Texture* newFrame);
 	void Clear(); 
+	void CleanUp(); 
 
 	Texture* GetFrameByPos(int pos);
 	int GetFramePos(Texture* frame); 
@@ -38,7 +39,7 @@ public:
 
 private:
 	int framesAmount = 0; 
-	list<Texture*> frameTexturesList;
+	list<Texture*>* frameTexturesList;
 	float animationSpeed = 0.0f;
 	string name; 
 };

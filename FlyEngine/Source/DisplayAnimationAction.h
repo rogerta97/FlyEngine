@@ -60,7 +60,7 @@ public:
 private:
 	DisplayImageAction* screenImageAction; 
 
-	Animation* animation; 
+	Animation* animation = nullptr; 
 	int currentFrame; 
 
 	// Play Animation

@@ -50,6 +50,7 @@ void DisplayTextAction::Draw()
 
 void DisplayTextAction::CleanUp()
 {
+
 }
 
 void DisplayTextAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr)
