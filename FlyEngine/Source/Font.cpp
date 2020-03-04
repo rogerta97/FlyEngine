@@ -12,12 +12,19 @@ Font::Font() : Resource(RESOURCE_FONT)
 
 Font::~Font()
 {
-	FT_Done_Face(fontFace);
 }
 
 void Font::CleanUp()
 {
+	for (auto& currentChar : fontCharacters)
+	{
+		glDeleteTextures(1, &currentChar.second.textureID);
+		currentChar.second.textureID = 0;
+		glBindTexture(GL_TEXTURE_2D, 0); 
+	}
 
+	FT_Done_Face(fontFace);
+	fontCharacters.clear();
 }
 
 void Font::CreateCharactersFromFace()

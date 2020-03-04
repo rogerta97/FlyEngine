@@ -35,6 +35,7 @@ void FontImporter::Delete()
 Font* FontImporter::LoadFont(std::string path, int fontSize)
 {
 	// Create Font Face 
+	flog("font loaded");
 	FT_Face face;
 	if (FT_New_Face(instance->freeType, path.c_str(), 0, &face))
 	{
@@ -44,5 +45,6 @@ Font* FontImporter::LoadFont(std::string path, int fontSize)
 
 	Font* newFont = new Font(); 
 	newFont->SetFace(face, fontSize);
+	newFont->SetPath(path.c_str()); 
 	return newFont;
 }

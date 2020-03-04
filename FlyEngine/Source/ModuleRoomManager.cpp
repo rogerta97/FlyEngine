@@ -9,6 +9,7 @@
 #include "AudioImporter.h"
 #include "Room.h"
 #include "NodeGraph.h"
+#include "FontImporter.h"
 #include "ImageImporter.h"
 #include "ResourceManager.h"
 #include "MyFileSystem.h"
@@ -79,6 +80,7 @@ void ModuleRoomManager::DeleteSingletones()
 	SaveAndLoad::getInstance()->Delete();
 	ResourceManager::getInstance()->CleanUp();
 	ViewportManager::getInstance()->Delete();
+	FontImporter::getInstance()->Delete(); 
 }
 
 void ModuleRoomManager::ReceiveEvent(FlyEngineEvent eventType)

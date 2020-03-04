@@ -10,7 +10,7 @@
 
 struct Character 
 {
-	GLint     textureID;  // ID handle of the glyph texture
+	uint	  textureID;  // ID handle of the glyph texture
 	float2	  size;       // Size of glyph
 	float2    bearing;    // Offset from baseline to left/top of glyph
 	GLint     Advance;    // Offset to advance to next glyph

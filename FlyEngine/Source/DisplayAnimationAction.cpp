@@ -10,6 +10,8 @@
 #include "FlyObject.h"
 #include "ResourceManager.h"
 
+#include "mmgr.h"
+
 DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject)
 {
 	actionType = ACTION_DISPLAY_ANIMATION;

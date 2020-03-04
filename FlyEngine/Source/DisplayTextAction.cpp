@@ -9,6 +9,7 @@
 #include "GameViewportDockPanel.h"
 #include "ResourceManager.h"
 
+#include "mmgr.h"
 
 DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 {

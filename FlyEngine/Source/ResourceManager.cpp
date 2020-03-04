@@ -486,6 +486,9 @@ void ResourceManager::CleanUp()
 	{
 		if (currentResource != nullptr && currentResource->GetType() != RESOURCE_null)
 		{
+			if (currentResource->GetType() == RESOURCE_FONT)
+				int a = 0; 
+
 			currentResource->CleanUp();
 			delete currentResource;
 			currentResource = nullptr; 
