@@ -35,7 +35,7 @@ void UI_Image::Draw()
 
 void UI_Image::CleanUp()
 {
-	uiObject->DeleteAction(uiObjectDisplayImage->GetActionName()); 
+	uiObject->DeleteAction(uiObjectDisplayImage->GetActionType()); 
 	uiObjectDisplayImage = nullptr; 
 	UI_Element::CleanUp(); 
 }

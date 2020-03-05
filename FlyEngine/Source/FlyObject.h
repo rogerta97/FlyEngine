@@ -68,7 +68,7 @@ public:
 	Action* GetAction(std::string toolName); 
 	Action* GetAction(ActionType toolType); 
 	std::list<Action*> GetActionsList() const; 
-	void DeleteAction(std::string toolNameToDelete);
+	void DeleteAction(ActionType toolNameToDelete);
 
 	// Clickable Area ---
 	void CreateClickableArea(float2 percentagePos, float2 percentageSize, bool directPosition = false);

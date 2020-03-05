@@ -556,11 +556,11 @@ std::list<Action*> FlyObject::GetActionsList() const
 	return actionsList;
 }
 
-void FlyObject::DeleteAction(std::string toolNameToDelete)
+void FlyObject::DeleteAction(ActionType actionType)
 {
 	for (auto currentTool = actionsList.begin(); currentTool != actionsList.end(); currentTool++)
 	{
-		if ((*currentTool)->GetActionName() == toolNameToDelete)
+		if ((*currentTool)->GetActionType() == actionType)
 		{
 			(*currentTool)->CleanUp();
 			delete (*currentTool);

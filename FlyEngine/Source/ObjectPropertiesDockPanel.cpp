@@ -1522,7 +1522,7 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 		if (selectedAction != nullptr)
 		{
 			selectedAction->CleanUp();
-			selectedObject->DeleteAction(selectedAction->GetActionName());
+			selectedObject->DeleteAction(selectedAction->GetActionType());
 			selectedAction = nullptr;
 		}
 	}

@@ -101,8 +101,7 @@ void RoomUIHandler::CleanUp()
 {
 	for (auto currentElement = uiElements.begin(); currentElement != uiElements.end();)
 	{
-		(*currentElement)->GetHolderObject()->CleanUp(); 
-		(*currentElement)->CleanUp();
+		(*currentElement)->CleanUp(); 
 		delete (*currentElement);
 		currentElement = uiElements.erase(currentElement);
 	}

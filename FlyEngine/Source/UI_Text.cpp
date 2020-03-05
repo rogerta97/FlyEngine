@@ -28,7 +28,9 @@ void UI_Text::Draw()
 
 void UI_Text::CleanUp()
 {
-	displayTextAction->CleanUp(); 
+	uiObject->DeleteAction(displayTextAction->GetActionType());
+	displayTextAction = nullptr;
+	UI_Element::CleanUp();
 }
 
 void UI_Text::Save(JSON_Object* jsonObject, string serializeStr)
@@ -57,6 +59,6 @@ void UI_Text::Init()
 
 	displayTextAction = uiObject->AddDisplayTextAction();
 	displayTextAction->SetDrawTextBox(true);
-	displayTextAction->SetText("UI Text"); 
+	displayTextAction->SetText("A"); 
 	
 }

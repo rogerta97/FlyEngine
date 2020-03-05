@@ -145,7 +145,7 @@ void UI_Button::Draw()
 
 void UI_Button::CleanUp()
 {
-	uiObject->DeleteAction(uiObjectDisplayImage->GetActionName());
+	uiObject->DeleteAction(uiObjectDisplayImage->GetActionType());
 	uiObjectDisplayImage = nullptr;
 
 	UI_Element::CleanUp(); 

@@ -1148,7 +1148,7 @@ void ObjectCreatorDockPanel::DrawAddAndDeleteActionButtons()
 	{
 		if (selectedAction != nullptr) 
 		{
-			creatingObject->DeleteAction(selectedAction->GetActionName());
+			creatingObject->DeleteAction(selectedAction->GetActionType());
 			selectedAction = nullptr; 
 		}
 	}

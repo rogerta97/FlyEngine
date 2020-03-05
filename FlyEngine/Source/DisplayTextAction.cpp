@@ -27,7 +27,7 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 	originTextPosition = float2(0, 0);
 
 	textFont = (Font*)ResourceManager::GetResource("arial", RESOURCE_FONT);
-	SetText("AB");
+	SetText("");
 	SetLineSpacing(textFont->GetSize()); 
 	textColor = float4(1.0f, 1.0f, 1.0f, 1.0f); 
 
@@ -575,15 +575,19 @@ void DisplayTextAction::UpdateTextQuadsSize()
 	{
 		Character currentCharacter = textFont->GetCharacter(*currentLetter);
 
-		if (textQuads[letterCount] != nullptr)
+	/*	if (textQuads[letterCount] != nullptr)
 		{
-			textQuads[letterCount]->CreateLiteralSize(currentCharacter.size.x, currentCharacter.size.y, true);
+			textQuads[letterCount]->SetWidth(currentCharacter.size.x / 64);
+			textQuads[letterCount]->SetHeight(currentCharacter.size.y / 64);
 		}
 
-		//textQuads[letterCount] = new Quad();
+		delete textQuads[letterCount];
+		textQuads[letterCount] = new Quad();*/
 
 		//if (textQuads[letterCount] != nullptr)
+		//{
 		//	textQuads[letterCount]->CreateLiteralSize(currentCharacter.size.x, currentCharacter.size.y, true);
+		//}
 
 		letterCount++;
 	}
