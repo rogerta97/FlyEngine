@@ -6,6 +6,7 @@
 
 #include "Application.h"
 #include "ModuleImGui.h"
+#include "Quad.h"
 #include "GameViewportDockPanel.h"
 #include "ResourceManager.h"
 
@@ -50,7 +51,13 @@ void DisplayTextAction::Draw()
 
 void DisplayTextAction::CleanUp()
 {
+	for (auto& currentQuad : textQuads)
+	{
+		currentQuad.second->CleanUp(); 
+		delete currentQuad.second;
+	}
 
+	textBox->CleanUp(); 
 }
 
 void DisplayTextAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr)
@@ -472,7 +479,12 @@ void DisplayTextAction::SetText(std::string newText)
 {
 	text = newText;
 	
-	AllocateTextQuads(newText.size()); 
+	int quadsToAllocate = 0; 
+	
+	if (quadsAllocated <= newText.size())
+		quadsToAllocate = newText.size() - quadsAllocated;
+
+	AllocateTextQuads(quadsToAllocate);
 	UpdateTextQuadsSize();
 	CalculateOriginTextPosition(); 
 }
@@ -540,18 +552,13 @@ float& DisplayTextAction::GetLineSpacing()
 
 void DisplayTextAction::AllocateTextQuads(int amount, int position)
 {
-	if (position < 0) // Last Letter
-		position = text.size();
-
-	if (amount > quadsAllocated)
-		amount -= quadsAllocated; 
+	flog("%d new quads allocated", amount); 
 
 	int counter = 0;
 	while (counter < amount)
 	{
 		Quad* newQuad = new Quad();
 		newQuad->Create(1, 1, true);
-
 		textQuads.insert(std::pair<int, Quad*>(counter, newQuad));
 		quadsAllocated++;
 		counter++;
@@ -570,14 +577,13 @@ void DisplayTextAction::UpdateTextQuadsSize()
 
 		if (textQuads[letterCount] != nullptr)
 		{
-			textQuads[letterCount]->CleanUp();
-			delete textQuads[letterCount];
+			textQuads[letterCount]->CreateLiteralSize(currentCharacter.size.x, currentCharacter.size.y, true);
 		}
 
-		textQuads[letterCount] = new Quad();
+		//textQuads[letterCount] = new Quad();
 
-		if (textQuads[letterCount] != nullptr)
-			textQuads[letterCount]->CreateLiteralSize(currentCharacter.size.x, currentCharacter.size.y, true);
+		//if (textQuads[letterCount] != nullptr)
+		//	textQuads[letterCount]->CreateLiteralSize(currentCharacter.size.x, currentCharacter.size.y, true);
 
 		letterCount++;
 	}
