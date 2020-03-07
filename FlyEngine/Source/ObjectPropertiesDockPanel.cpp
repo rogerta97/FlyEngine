@@ -1125,7 +1125,7 @@ void ObjectPropertiesDockPanel::DrawDisplayTextSettings()
 			if (ImGui::InputInt("Size", &displayTextAction->GetFont()->GetSize(), 1, 5))
 			{
 				displayTextAction->GetFont()->SetSize(displayTextAction->GetFont()->GetSize());
-				displayTextAction->UpdateTextQuadsSize();
+				displayTextAction->UpdateTextQuads();
 			}
 
 			Font* actionFont = displayTextAction->GetFont(); 
@@ -1158,7 +1158,7 @@ void ObjectPropertiesDockPanel::DrawDisplayTextSettings()
 			if (ImGui::InputText("Font", actionFontNameBuffer, IM_ARRAYSIZE(actionFontNameBuffer), ImGuiInputTextFlags_ReadOnly))
 			{
 				displayTextAction->GetFont()->SetSize(displayTextAction->GetFont()->GetSize());
-				displayTextAction->UpdateTextQuadsSize();
+				displayTextAction->UpdateTextQuads();
 			}
 
 			if (ImGui::BeginDragDropTarget())

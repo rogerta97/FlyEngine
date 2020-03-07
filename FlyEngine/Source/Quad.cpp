@@ -155,17 +155,38 @@ void Quad::CleanUp()
 void Quad::SetWidth(float newWidth)
 {
 	// Update Vertices with the new width
-	CleanUp();
 	quadWidth = newWidth;
-	SetQuadData(quadWidth, quadHeigth);
+
+	glBindBuffer(GL_ARRAY_BUFFER, verticesID);
+
+	vec2 half_size(quadWidth / 2, quadHeigth / 2);
+
+	vertices[0] = { -half_size.x, half_size.y, 0 };
+	vertices[1] = { half_size.x, half_size.y, 0 };
+	vertices[2] = { -half_size.x, -half_size.y, 0 };
+	vertices[3] = { half_size.x, -half_size.y, 0 };
+	
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * numVertices * 3, vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 }
 
 void Quad::SetHeight(float newHeigth)
 {
 	// Update Vertices with the new width
-	CleanUp();
 	quadHeigth = newHeigth;
-	SetQuadData(quadWidth, quadHeigth);
+
+	glBindBuffer(GL_ARRAY_BUFFER, verticesID);
+
+	vec2 half_size(quadWidth / 2, quadHeigth / 2);
+
+	vertices[0] = { -half_size.x, half_size.y, 0 };
+	vertices[1] = { half_size.x, half_size.y, 0 };
+	vertices[2] = { -half_size.x, -half_size.y, 0 };
+	vertices[3] = { half_size.x, -half_size.y, 0 };
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * numVertices * 3, vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void Quad::SetSize(float newWidth, float newHeigth)

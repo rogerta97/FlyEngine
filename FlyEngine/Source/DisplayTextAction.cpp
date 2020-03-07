@@ -19,6 +19,7 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 	isVisual = false;
 	drawTextBox = true;
 
+	textQuads = new std::vector<Quad*>();
 	textBox = new BoundingBox();
 
 	textBox->SetSize(300, 120); 
@@ -51,13 +52,17 @@ void DisplayTextAction::Draw()
 
 void DisplayTextAction::CleanUp()
 {
-	for (auto& currentQuad : textQuads)
+	for (auto& currentQuad : *textQuads)
 	{
-		currentQuad.second->CleanUp(); 
-		delete currentQuad.second;
+		currentQuad->CleanUp(); 
+		delete currentQuad;
 	}
 
 	textBox->CleanUp(); 
+	delete textBox;
+
+	textQuads->clear();
+	delete textQuads;
 }
 
 void DisplayTextAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr)
@@ -150,7 +155,7 @@ void DisplayTextAction::DrawUISettings()
 		if (ImGui::InputInt("Size", &GetFont()->GetSize(), 1, 5))
 		{
 			GetFont()->SetSize(GetFont()->GetSize());
-			UpdateTextQuadsSize();
+			UpdateTextQuads();
 		}
 
 		Font* actionFont = GetFont();
@@ -183,7 +188,7 @@ void DisplayTextAction::DrawUISettings()
 		if (ImGui::InputText("Font", actionFontNameBuffer, IM_ARRAYSIZE(actionFontNameBuffer), ImGuiInputTextFlags_ReadOnly))
 		{
 			GetFont()->SetSize(GetFont()->GetSize());
-			UpdateTextQuadsSize();
+			UpdateTextQuads();
 		}
 
 		if (ImGui::BeginDragDropTarget())
@@ -257,7 +262,7 @@ void DisplayTextAction::DrawUISettingsInButton()
 		if (ImGui::InputInt("Size", &GetFont()->GetSize(), 1, 5))
 		{
 			GetFont()->SetSize(GetFont()->GetSize());
-			UpdateTextQuadsSize();
+			UpdateTextQuads();
 		}
 
 		Font* actionFont = GetFont();
@@ -290,7 +295,7 @@ void DisplayTextAction::DrawUISettingsInButton()
 		if (ImGui::InputText("Font", actionFontNameBuffer, IM_ARRAYSIZE(actionFontNameBuffer), ImGuiInputTextFlags_ReadOnly))
 		{
 			GetFont()->SetSize(GetFont()->GetSize());
-			UpdateTextQuadsSize();
+			UpdateTextQuads();
 		}
 
 		if (ImGui::BeginDragDropTarget())
@@ -379,7 +384,7 @@ void DisplayTextAction::RenderText()
 		Character currentCharacter = textFont->GetCharacter(*currentLetter);
 
 		// Get The Corresponding Quad 
-		Quad* renderQuad = textQuads[letterCount];
+		Quad* renderQuad = textQuads->at(letterCount);
 
 		// Push Matrix to place the Corresponding quad in the correct position
 		float4x4 characterTransformMatrix = float4x4::identity;
@@ -464,6 +469,17 @@ void DisplayTextAction::DrawTextBox()
 	textBox->Draw(false, float4(0, 1.0f, 0, 1.0f)); 
 }
 
+void DisplayTextAction::CleanQuads()
+{
+	for (auto& it : *textQuads)
+	{
+		it->CleanUp(); 
+		delete it; 
+	}
+
+	textQuads->clear(); 
+}
+
 void DisplayTextAction::CalculateOriginTextPosition()
 {
 	if (textBox == nullptr)
@@ -484,8 +500,7 @@ void DisplayTextAction::SetText(std::string newText)
 	if (quadsAllocated <= newText.size())
 		quadsToAllocate = newText.size() - quadsAllocated;
 
-	AllocateTextQuads(quadsToAllocate);
-	UpdateTextQuadsSize();
+	UpdateTextQuads();
 	CalculateOriginTextPosition(); 
 }
 
@@ -550,44 +565,19 @@ float& DisplayTextAction::GetLineSpacing()
 	return lineSpacing; 
 }
 
-void DisplayTextAction::AllocateTextQuads(int amount, int position)
-{
-	flog("%d new quads allocated", amount); 
-
-	int counter = 0;
-	while (counter < amount)
-	{
-		Quad* newQuad = new Quad();
-		newQuad->Create(1, 1, true);
-		textQuads.insert(std::pair<int, Quad*>(counter, newQuad));
-		quadsAllocated++;
-		counter++;
-	}
-}
-
-void DisplayTextAction::UpdateTextQuadsSize()
+void DisplayTextAction::UpdateTextQuads()
 {
 	std::string::const_iterator currentLetter;
-	textQuads.clear();
+	CleanQuads(); 
 
 	int letterCount = 0;
 	for (currentLetter = text.begin(); currentLetter != text.end(); currentLetter++)
 	{
 		Character currentCharacter = textFont->GetCharacter(*currentLetter);
 
-	/*	if (textQuads[letterCount] != nullptr)
-		{
-			textQuads[letterCount]->SetWidth(currentCharacter.size.x / 64);
-			textQuads[letterCount]->SetHeight(currentCharacter.size.y / 64);
-		}
-
-		delete textQuads[letterCount];
-		textQuads[letterCount] = new Quad();*/
-
-		//if (textQuads[letterCount] != nullptr)
-		//{
-		//	textQuads[letterCount]->CreateLiteralSize(currentCharacter.size.x, currentCharacter.size.y, true);
-		//}
+		Quad* newQuad = new Quad();
+		newQuad->CreateLiteralSize(currentCharacter.size.x, currentCharacter.size.y, true);	
+		textQuads->push_back(newQuad); 
 
 		letterCount++;
 	}

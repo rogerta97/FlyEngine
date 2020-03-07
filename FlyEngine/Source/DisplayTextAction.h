@@ -6,6 +6,7 @@
 #include "MathGeoLib/Math/float4.h"
 #include <string>
 #include <map>
+#include <vector>
 
 class Quad; 
 using namespace std;
@@ -27,6 +28,9 @@ public:
 	// Render ------------------------------
 	void RenderText(); 
 	void DrawTextBox(); 
+
+	// Utility -----------------------------
+	void CleanQuads();
 
 	// Positioning -------------------------
 	void CalculateOriginTextPosition(); 
@@ -50,10 +54,7 @@ public:
 	void SetLineSpacing(float _lineSpacing);
 	float& GetLineSpacing();
 
-	void UpdateTextQuadsSize(); 
-
-private:	
-	void AllocateTextQuads(int amount, int position = -1);
+	void UpdateTextQuads(); 
 
 private: 
 	Font* textFont = nullptr; 
@@ -67,7 +68,7 @@ private:
 	bool drawTextBox; 
 	
 	int quadsAllocated = 0; 
-	std::map<int, Quad*> textQuads;
+	std::vector<Quad*>* textQuads;
 };
 
 #endif 
