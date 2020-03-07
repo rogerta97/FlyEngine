@@ -1,6 +1,7 @@
 #include "UI_Text.h"
 #include "DisplayTextAction.h"
 #include "FlyObject.h"
+#include "ResourceManager.h"
 
 UI_Text::UI_Text()
 {
@@ -45,6 +46,15 @@ void UI_Text::Save(JSON_Object* jsonObject, string serializeStr)
 
 void UI_Text::Load(JSON_Object* jsonObject, string serializeStr)
 {	
+	// Get Resource Attached
+	Init();
+
+	serializeStr += "Actions.DisplayText."; 
+	string fontName = json_object_dotget_string(jsonObject, std::string(serializeStr + "FontName").c_str());
+	Font* currentFont = ResourceManager::getInstance()->GetFont(fontName);
+
+	std::string text = json_object_dotget_string(jsonObject, std::string(serializeStr + "Text").c_str());
+	displayTextAction->SetText(text);
 }
 
 DisplayTextAction* UI_Text::GetDisplayTextAction()

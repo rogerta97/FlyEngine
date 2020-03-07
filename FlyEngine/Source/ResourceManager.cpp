@@ -144,6 +144,26 @@ Resource* ResourceManager::GetResourceByPath(std::string resourcePath)
 	return nullptr;
 }
 
+Texture* ResourceManager::GetTexture(string resourceName)
+{
+	return (Texture*)GetResource(resourceName, RESOURCE_TEXTURE);
+}
+
+Font* ResourceManager::GetFont(string resourceName)
+{
+	return (Font*)GetResource(resourceName, RESOURCE_FONT);
+}
+
+AudioClip* ResourceManager::GetAudioClip(string resourceName)
+{
+	return (AudioClip*)GetResource(resourceName, RESOURCE_SFX);
+}
+
+MusicTrack* ResourceManager::GetMusicTrack(string resourceName)
+{
+	return (MusicTrack*)GetResource(resourceName, RESOURCE_MUSIC);
+}
+
 bool ResourceManager::ExistResource(Resource* checkResource)
 {
 	return ExistResourceUID(checkResource->GetUID());

@@ -9,6 +9,11 @@
 
 using namespace std; 
 
+
+class Font;
+class AudioClip;
+class MusicTrack;
+class Texture; 
 struct ResourceManager
 {
 private:
@@ -30,6 +35,12 @@ public:
 	static vector<Resource*> GetResources(ResourceType type);
 	static list<Resource*>& GetResourceList();
 	static Resource* GetResourceByPath(std::string resourcePath);
+
+	// Get Specific Resource 
+	static Texture* GetTexture(string resourceName); 
+	static Font* GetFont(string resourceName);
+	static AudioClip* GetAudioClip(string resourceName);
+	static MusicTrack* GetMusicTrack(string resourceName);
 
 	static bool ExistResource(Resource* checkResource);
 	static bool ExistResourceUID(UID resourceUID);
