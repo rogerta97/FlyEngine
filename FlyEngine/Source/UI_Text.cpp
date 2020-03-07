@@ -59,6 +59,6 @@ void UI_Text::Init()
 
 	displayTextAction = uiObject->AddDisplayTextAction();
 	displayTextAction->SetDrawTextBox(true);
-	displayTextAction->SetText("A"); 
+	displayTextAction->SetText("This is a test string"); 
 	
 }
