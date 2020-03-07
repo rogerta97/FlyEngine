@@ -185,6 +185,10 @@ Texture* ModuleManager::GetIconFromActionType(ActionType toolType)
 		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("AnimationIcon");
 		break;
 
+	case ACTION_FOLLOW_PATH:
+		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("PathIcon");
+		break;
+
 	default:
 		break;
 	}

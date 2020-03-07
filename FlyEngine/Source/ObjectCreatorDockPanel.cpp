@@ -451,6 +451,10 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 		case ACTION_DISPLAY_ANIMATION:
 			DrawDisplayAnimationSettings();
 			break;
+
+		case ACTION_FOLLOW_PATH:
+			
+			break;
 		}
 	}
 }
@@ -760,6 +764,10 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 
 			case ACTION_DISPLAY_ANIMATION:
 				creatingObject->AddDisplayAnimationAction();
+				break;
+
+			case ACTION_FOLLOW_PATH:
+				creatingObject->AddFollowPathAction();
 				break;
 
 			case AT_null:

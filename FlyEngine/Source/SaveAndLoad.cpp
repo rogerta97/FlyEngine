@@ -5,6 +5,7 @@
 #include "ModuleRoomManager.h"
 #include "ModifyVariableAction.h"
 #include "DisplayAnimationAction.h"
+#include "FollowPathAction.h"
 #include "ResourceManager.h"
 #include "GameViewportDockPanel.h"
 #include "ModuleImGui.h"
@@ -151,34 +152,35 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 	if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("Actions")).c_str()))
 	{
 		string serializeObjectStrActions = serializeObjectStr + "Actions.";
+
+		// Load Display Image Action ----------------------
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayImage")).c_str()))
 		{
 			string textureName = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("DisplayImage.TextureName")).c_str());
 			DisplayImageAction* displayImageAction = newObject->AddDisplayImageAction(textureName.c_str());
 
 			displayImageAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayImage.Occurrence.")); 
-			//displayImageAction->LoadConditions(root_obj, serializeObjectStrActions + string("DisplayImage.Conditions.")); 
 		}
 
+		// Load Change Room Action ----------------------
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ChangeRoom")).c_str()))
 		{
 			UID destinationRoomUID = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ChangeRoom.Destination")).c_str());
 			ChangeRoomAction* changeRoomAction = newObject->AddChangeRoomAction(); 
 
 			changeRoomAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("ChangeRoom.Occurrence."));
-			//changeRoomAction->LoadConditions(root_obj, serializeObjectStrActions + string("ChangeRoom.Conditions."));
 
 			Room* room = App->moduleRoomManager->GetRoom(destinationRoomUID);
 			changeRoomAction->SetDestination(room); 
 		}
 
+		// Load Modify Variable Action ----------------------
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ModifyVariable")).c_str()))
 		{
 			int effectsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.EffectsAmount")).c_str());
 			ModifyVariableAction* modifyVariableAction = newObject->AddModifyVariableAction();
 
 			modifyVariableAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("ModifyVariable.Occurrence."));
-			//modifyVariableAction->LoadConditions(root_obj, serializeObjectStrActions + string("ModifyVariable.Conditions."));
 
 			string effectsGroupStr = serializeObjectStrActions + "ModifyVariable.EffectsGroup.";
 			int count = 0; 
@@ -206,14 +208,14 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 			}
 
 		}
-
+		
+		// Load Emit Sound Action ----------------------
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("EmitSound")).c_str()))
 		{
 			string audioClipPath = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("EmitSound.Path")).c_str());
 			EmitSoundAction* emitSoundAction = newObject->AddEmitSoundAction();
 
 			emitSoundAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("EmitSound.Occurrence."));
-			//emitSoundAction->LoadConditions(root_obj, serializeObjectStrActions + string("EmitSound.Conditions."));
 
 			if (audioClipPath != "None")
 			{
@@ -223,7 +225,7 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 			}
 		}
 
-
+		// Load Display Text Action ----------------------
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayText")).c_str()))
 		{
 			DisplayTextAction* displayTextAction = newObject->AddDisplayTextAction();
@@ -247,7 +249,7 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 			}
 		}
 
-
+		// Load Display Animation Action ----------------------
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayAnimation")).c_str()))
 		{
 			DisplayAnimationAction* displayAnimationAction = newObject->AddDisplayAnimationAction();
@@ -279,6 +281,15 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 					count++;
 				}
 			}
+		}
+
+		// Load Follow Path Action
+		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("FollowPath")).c_str()))
+		{
+			FollowPathAction* followPathAction = newObject->AddFollowPathAction();
+			followPathAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("FollowPath.Occurrence."));
+
+			string serializeDisplayTextStr = serializeObjectStrActions + "FollowPath.";
 		}
 	}
 

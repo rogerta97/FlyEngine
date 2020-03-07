@@ -43,9 +43,6 @@ public:
 	void CleanRoomObjects(); 
 	void CleanRoomUI(); 
 
-	// No es carrega be un text de ui que es guardi, mira primer si es guardan be les altres coses de ui, si no s'ha de programar
-	// el sistema de save & load per els objectes de UI
-
 	// Utility -------------------
 	int GetObjectsInRoomAmount(); 
 	void AddItemToInventory(FlyObject* newObject_Inv); 
