@@ -435,6 +435,9 @@
     <ClCompile Include="Source\Animation.cpp">
       <Filter>Source\Utilities\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FollowPathAction.cpp">
+      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -880,6 +883,9 @@
     </ClInclude>
     <ClInclude Include="Source\Animation.h">
       <Filter>Source\Utilities\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FollowPathAction.h">
+      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

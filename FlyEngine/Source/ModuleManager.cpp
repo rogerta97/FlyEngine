@@ -60,6 +60,7 @@ bool ModuleManager::Init()
 	AddToolsNameDescription("Emit Sound", "This should be the description of the emit sound tool", ACTION_EMIT_SOUND);
 	AddToolsNameDescription("Display Text", "This should be the description of the display text tool", ACTION_DISPLAY_TEXT);
 	AddToolsNameDescription("Display Animation", "This should be the description of the display animation tool", ACTION_DISPLAY_ANIMATION);
+	AddToolsNameDescription("Follow Path", "This should be the description of the follow path tool", ACTION_FOLLOW_PATH);
 
 	return true;
 }

@@ -9,6 +9,7 @@
 #include "DisplayAnimationAction.h"
 #include "ModuleManager.h"
 #include "GameViewportDockPanel.h"
+#include "FollowPathAction.h"
 #include "ChangeRoomAction.h"
 #include "ModuleInput.h"
 #include "DisplayTextAction.h"
@@ -488,6 +489,18 @@ DisplayAnimationAction* FlyObject::AddDisplayAnimationAction()
 	}
 
 	return (DisplayAnimationAction*)GetAction(ACTION_DISPLAY_ANIMATION);
+}
+
+FollowPathAction* FlyObject::AddFollowPathAction()
+{
+	if (GetAction(ACTION_FOLLOW_PATH) == nullptr)
+	{
+		FollowPathAction* followPathAction = new FollowPathAction(this);
+		actionsList.push_back(followPathAction);
+		return followPathAction;
+	}
+
+	return (FollowPathAction*)GetAction(ACTION_FOLLOW_PATH);
 }
 
 DisplayTextAction* FlyObject::AddDisplayTextAction()
