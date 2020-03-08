@@ -122,7 +122,6 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 	
 	// UID --
 	newObject->SetUID(json_object_dotget_number(root_obj, string(serializeObjectStr + string("UID")).c_str())); 
-	//newObject->SetUID(RandomNumberGenerator::getInstance()->GenerateUID()); 
 
 	if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("Description")).c_str())) 
 	{
@@ -290,6 +289,9 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 			followPathAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("FollowPath.Occurrence."));
 
 			string serializeDisplayTextStr = serializeObjectStrActions + "FollowPath.";
+
+			// Load Path Steps 
+
 		}
 	}
 

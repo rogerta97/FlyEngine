@@ -10,6 +10,7 @@ struct PathStep
 	float2 targetPosition; 
 	float targetTime; 
 
+	void Save(JSON_Object* jsonObject, string serializeObjectString);
 	void DrawStepGUI(int stepPos, float selectableHeigth = 65);
 };
 

@@ -95,6 +95,18 @@ void FollowPathAction::SaveAction(JSON_Object* jsonObject, string serializeObjec
 
 	Action::SaveAction(jsonObject, toolsSerializeSection);
 	Action::SaveOccurrence(jsonObject, toolsSerializeSection);
+
+	// Save Steps 
+	string stepSerializeGroupStr = toolsSerializeSection + "PathSteps."; 
+	json_object_dotset_number(jsonObject, string(stepSerializeGroupStr + "StepsAmount").c_str(), pathSteps->size());
+
+	int count = 0; 
+	for(auto& currentStep : *pathSteps)
+	{
+		string serializeStepStr = stepSerializeGroupStr + "Step_" + to_string(count) + ".";		
+		currentStep->Save(jsonObject, serializeStepStr);
+		count++; 
+	}
 }
 
 PathMode FollowPathAction::GetPathMode()
@@ -105,6 +117,13 @@ PathMode FollowPathAction::GetPathMode()
 void FollowPathAction::SetPathMode(PathMode newPathMode)
 {
 	pathMode = newPathMode; 
+}
+
+void PathStep::Save(JSON_Object* jsonObject, string serializeObjectString)
+{
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "TargetPosition.x").c_str(), targetPosition.x);
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "TargetPosition.y").c_str(), targetPosition.y);
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "TargetTime").c_str(), targetTime);
 }
 
 void PathStep::DrawStepGUI(int stepPos, float selectableHeigth)
