@@ -115,6 +115,9 @@
     <Filter Include="Source\Utilities\Animation">
       <UniqueIdentifier>{51c63937-05e9-42c8-a343-ec2f8830e6a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Tools\Interpolator">
+      <UniqueIdentifier>{70649fce-2b87-4470-8447-913d7f81591a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -437,6 +440,9 @@
     </ClCompile>
     <ClCompile Include="Source\FollowPathAction.cpp">
       <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FlyObjectInterpolator.cpp">
+      <Filter>Source\Tools\Interpolator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -886,6 +892,9 @@
     </ClInclude>
     <ClInclude Include="Source\FollowPathAction.h">
       <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FlyObjectInterpolator.h">
+      <Filter>Source\Tools\Interpolator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

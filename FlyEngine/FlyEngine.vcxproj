@@ -67,6 +67,7 @@
     <ClCompile Include="Source\DisplayAnimationAction.cpp" />
     <ClCompile Include="Source\DisplayTextAction.cpp" />
     <ClCompile Include="Source\EmitSoundAction.cpp" />
+    <ClCompile Include="Source\FlyObjectInterpolator.cpp" />
     <ClCompile Include="Source\FollowPathAction.cpp" />
     <ClCompile Include="Source\Font.cpp" />
     <ClCompile Include="Source\FontImporter.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="Source\DisplayAnimationAction.h" />
     <ClInclude Include="Source\DisplayTextAction.h" />
     <ClInclude Include="Source\EmitSoundAction.h" />
+    <ClInclude Include="Source\FlyObjectInterpolator.h" />
     <ClInclude Include="Source\FollowPathAction.h" />
     <ClInclude Include="Source\Font.h" />
     <ClInclude Include="Source\FontImporter.h" />

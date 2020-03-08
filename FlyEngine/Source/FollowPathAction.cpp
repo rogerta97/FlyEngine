@@ -104,6 +104,8 @@ void FollowPathAction::DrawUISettings()
 	ImGui::TextColored(ImVec4(1, 1, 1, 1.0f), "Steps List:");
 	ImGui::PopFont();
 
+	ImGui::Separator();
+
 	DrawBehaviorSettings();
 
 	ImGui::BeginChild("##PathsListHierarchy", ImVec2(ImGui::GetContentRegionAvailWidth(), 250));
