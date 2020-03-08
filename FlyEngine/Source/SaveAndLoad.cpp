@@ -288,10 +288,22 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 			FollowPathAction* followPathAction = newObject->AddFollowPathAction();
 			followPathAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("FollowPath.Occurrence."));
 
-			string serializeDisplayTextStr = serializeObjectStrActions + "FollowPath.";
+			string serializeFollowPathStr = serializeObjectStrActions + "FollowPath.";
 
 			// Load Path Steps 
+			int stepsAmount = json_object_dotget_number(root_obj, string(serializeFollowPathStr + "PathSteps.StepsAmount").c_str());
 
+			int count = 0; 
+			while (count < stepsAmount)
+			{
+				string stepStr = serializeFollowPathStr + "PathSteps.Step_" + to_string(count);
+
+				PathStep* newStep = new PathStep(); 
+				newStep->targetPosition.x = json_object_dotget_number(root_obj, string(stepStr + "TargetPosition.x").c_str());
+				newStep->targetPosition.x = json_object_dotget_number(root_obj, string(stepStr + "TargetPosition.x").c_str());
+				
+				count++;
+			}
 		}
 	}
 
