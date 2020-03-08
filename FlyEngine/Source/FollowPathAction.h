@@ -2,13 +2,23 @@
 #define _FOLLOW_PATH_ACTION_H_
 
 #include "Action.h"
-#include "Math/float3.h"
+#include "Math/float2.h"
 #include <list>
 
 struct PathStep
 {
-	float3 targetPosition; 
+	float2 targetPosition; 
 	float targetTime; 
+
+	void DrawStepGUI(int stepPos, float selectableHeigth = 65);
+};
+
+enum PathMode
+{
+	PATH_ONE_TIME, 
+	PATH_AMOUNT_TIMES,
+	PATH_LOOP_TELEPORT,
+	PATH_LOOP_CYCLE,
 };
 
 class FollowPathAction : public Action
@@ -22,8 +32,12 @@ public:
 
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
 
+	PathMode GetPathMode();
+	void SetPathMode(PathMode newPathMode); 
+
 private: 
 	std::list<PathStep*>* pathSteps; 
+	PathMode pathMode; 
 };
 
 #endif 

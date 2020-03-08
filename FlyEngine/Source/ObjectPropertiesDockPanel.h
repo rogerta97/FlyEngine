@@ -50,12 +50,14 @@ public:
 	bool DrawActionSelectable(ActionSelectableInfo& selectableInfo, Action*& currentTool, int posInList, int selectableHeigth);
 	void DrawObjectPlacementCH(FlyObject* selectedObject);
 	
+	// Draw Action Settings ------------
 	void DrawChangeRoomSettings();
 	void DrawToolImageSettings();
 	void DrawModifyVariableSettings();
 	void DrawDisplayTextSettings();
 	void DrawEmitSoundSettings();
 	void DrawDisplayAnimationSettings();
+	void DrawFollowPathSettings();
 
 private: 
 	bool scrollToEnd = false; 

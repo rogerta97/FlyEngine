@@ -8,6 +8,7 @@
 #include "ModifyVariableAction.h"
 #include "Gizmos.h"
 #include "UI_Text.h"
+#include "FollowPathAction.h"
 #include "ResourceManager.h"
 #include "ChangeRoomAction.h"
 #include "DisplayImageAction.h"
@@ -1051,6 +1052,10 @@ void ObjectPropertiesDockPanel::DrawActionSettings()
 		case ACTION_DISPLAY_ANIMATION:
 			DrawDisplayAnimationSettings(); 
 			break;
+
+		case ACTION_FOLLOW_PATH:
+			DrawFollowPathSettings();
+			break;
 		}
 	}
 }
@@ -1387,12 +1392,23 @@ void ObjectPropertiesDockPanel::DrawEmitSoundSettings()
 
 void ObjectPropertiesDockPanel::DrawDisplayAnimationSettings()
 {
-	DisplayAnimationAction* displayAnimation = (DisplayAnimationAction*)selectedObject->GetAction("Display Animation");
+	DisplayAnimationAction* displayAnimation = (DisplayAnimationAction*)selectedObject->GetAction(ACTION_DISPLAY_ANIMATION);
 
 	if (displayAnimation != nullptr)
 	{
 		if (ImGui::CollapsingHeader("Display Animation Settings", ImGuiTreeNodeFlags_DefaultOpen))
 			displayAnimation->DrawUISettings(); 
+	}
+}
+
+void ObjectPropertiesDockPanel::DrawFollowPathSettings()
+{
+	FollowPathAction* followPathAction = (FollowPathAction*)selectedObject->GetAction(ACTION_FOLLOW_PATH);
+
+	if (followPathAction != nullptr)
+	{
+		if (ImGui::CollapsingHeader("Follow Path Settings", ImGuiTreeNodeFlags_DefaultOpen))
+			followPathAction->DrawUISettings();
 	}
 }
 
@@ -1577,6 +1593,10 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 
 			case ACTION_DISPLAY_ANIMATION:
 				selectedObject->AddDisplayAnimationAction();
+				break;
+
+			case ACTION_FOLLOW_PATH:
+				selectedObject->AddFollowPathAction();
 				break;
 
 			case AT_null:

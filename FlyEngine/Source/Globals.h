@@ -67,6 +67,7 @@ enum update_status
 // ImGui -------------------
 #define IMGUI_SPACE_SEPARATOR ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
 #define PUSH_CHILD_BG_COLOR ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+#define PUSH_CHILD_BG_COLOR_DARK ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.082f, 0.105f, 0.13f, 1.0f));
 #define SPACING ImGui::Spacing(); 
 #define SEPARATOR ImGui::Separator(); 
 
