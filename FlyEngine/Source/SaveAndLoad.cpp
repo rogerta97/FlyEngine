@@ -290,6 +290,10 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 
 			string serializeFollowPathStr = serializeObjectStrActions + "FollowPath.";
 
+			// Load Reproduce type 
+			int playModeTmp = json_object_dotget_number(root_obj, string(serializeFollowPathStr + "PlayMode").c_str());
+			followPathAction->SetPathMode((PathPlayMode)playModeTmp);
+
 			// Load Path Steps 
 			int stepsAmount = json_object_dotget_number(root_obj, string(serializeFollowPathStr + "PathSteps.StepsAmount").c_str());
 
