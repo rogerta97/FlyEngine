@@ -1,6 +1,7 @@
 #include "FlyObjectInterpolator.h"
 #include "Globals.h"
 #include "Transform.h"
+#include "FlyObject.h"
 
 FlyObjectInterpolator::FlyObjectInterpolator(FlyObject* _targetObject)
 {
@@ -19,6 +20,10 @@ void FlyObjectInterpolator::UpdateObjectPositionFromTime(float timeInterpolating
 	{
 		FLY_ERROR("Interpolating Fly Object With No Fly Object Existing"); 
 	}
+
+	float timePercentageDone = timeInterpolating / targetTime; 
+	float3 currentDesiredPos = interpolationSegment->GetPoint(timePercentageDone); 
+	targetObject->transform->SetPosition(currentDesiredPos); 
 }
 
 void FlyObjectInterpolator::SetInterpolationSegment(float2 _startPosition, float2 _finishPosition)
