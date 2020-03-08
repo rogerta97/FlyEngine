@@ -28,11 +28,17 @@ public:
 	FollowPathAction(FlyObject* _parentObject);
 	~FollowPathAction();
 
+	// Draw ---------
 	void DrawPath(); 
 	void DrawUISettings();
 
+	// Save ---------
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
 
+	// Utility ---
+	void AddStep(PathStep* newStep);
+
+	// Encapsulation ---
 	PathMode GetPathMode();
 	void SetPathMode(PathMode newPathMode); 
 

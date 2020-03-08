@@ -109,6 +109,12 @@ void FollowPathAction::SaveAction(JSON_Object* jsonObject, string serializeObjec
 	}
 }
 
+void FollowPathAction::AddStep(PathStep* newStep)
+{
+	if (newStep != nullptr)
+		pathSteps->push_back(newStep); 
+}
+
 PathMode FollowPathAction::GetPathMode()
 {
 	return pathMode;
