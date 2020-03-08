@@ -7,7 +7,7 @@ FlyObjectInterpolator::FlyObjectInterpolator(FlyObject* _targetObject)
 {
 	targetObject = _targetObject; 
 	interpolationSegment = new LineSegment();
-	targetTime = 1000.0f;
+	targetTime = 1.0f;
 }
 
 FlyObjectInterpolator::~FlyObjectInterpolator()
@@ -28,6 +28,10 @@ void FlyObjectInterpolator::UpdateObjectPositionFromTime(float timeInterpolating
 	}
 
 	float timePercentageDone = timeInterpolating / targetTime; 
+
+	if(timeInterpolating > targetTime)
+		timePercentageDone = 1;
+
 	float3 currentDesiredPos = interpolationSegment->GetPoint(timePercentageDone); 
 	targetObject->transform->SetPosition(currentDesiredPos); 
 }

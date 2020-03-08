@@ -34,6 +34,15 @@ FollowPathAction::~FollowPathAction()
 	
 }
 
+void FollowPathAction::Update(float dt)
+{
+	if (movementState == MOVEMENT_ONGOING)
+	{
+		stepTime += dt; 
+		UpdateObjectPosition();
+	}
+}
+
 void FollowPathAction::Draw()
 {
 	DrawPath(); 
@@ -67,8 +76,12 @@ void FollowPathAction::DrawPath()
 			prevTargetPos = finishStepPos; 
 		}
 
+
 		glLineWidth(lineWidth); 
 		glColor4f(lineColor.x, lineColor.y, lineColor.z, lineColor.w);
+
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
 
 		glBegin(GL_LINES);
 		glVertex2f(startStepPos.x, startStepPos.y);
@@ -151,7 +164,7 @@ void FollowPathAction::DrawBehaviorSettings()
 	Texture* playTexture = ResourceManager::getInstance()->GetTexture("PlayIcon");
 	if (ImGui::ImageButton((ImTextureID)playTexture->GetTextureID(), ImVec2(30, 30)))
 	{
-
+		DoAction(); 
 	}
 
 	ImGui::SameLine();
@@ -159,12 +172,11 @@ void FollowPathAction::DrawBehaviorSettings()
 	ImGui::TextColored(ImVec4(1, 1, 1, 1.0f), "Play Movement Preview");
 	ImGui::PopFont();
 
-
 	if (ImGui::Button("Add Step To Center"))
 	{
 		PathStep* newStep = new PathStep();
 		newStep->targetPosition = float2(0, 0);
-		newStep->targetTime = 2000;
+		newStep->targetTime = 5.0f;
 		pathSteps->push_back(newStep);
 	}
 
@@ -240,14 +252,18 @@ void FollowPathAction::AddStep(PathStep* newStep)
 
 void FollowPathAction::BeginMovement()
 {
+	if (movementState == MOVEMENT_ONGOING)
+		return; 
+
 	movementState = MOVEMENT_ONGOING;
-	currentStep = 0; 
+	currentStep = 0;
+	stepTime = 0.0f;
 	
 	if (flyObjectInterpolation)
 	{
-		float2 startPosition = parentObject->transform->GetPosition(); 
+		float2 startPosition = this->startPosition;
 		float2 finishPosition = pathSteps->front()->targetPosition; 
-		float targetTime = pathSteps->front()->targetTime;
+		float targetTime = 5;
 
 		flyObjectInterpolation->SetInterpolationSegment(startPosition, finishPosition); 
 	}
@@ -255,7 +271,7 @@ void FollowPathAction::BeginMovement()
 
 void FollowPathAction::UpdateObjectPosition()
 {
-
+	flyObjectInterpolation->UpdateObjectPositionFromTime(stepTime);
 }
 
 void FollowPathAction::BeginNextStep()
@@ -275,7 +291,7 @@ void FollowPathAction::SetPathMode(PathPlayMode newPathMode)
 PathStep::PathStep()
 {
 	targetPosition = float2(0, 0); 
-	targetTime = 1000.0f;
+	targetTime = 5.0f;
 	graphBox = new BoundingBox();
 	graphBox->SetSize(25.0f, 25.0f);
 }

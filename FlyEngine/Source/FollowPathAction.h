@@ -43,6 +43,7 @@ public:
 	FollowPathAction(FlyObject* _parentObject);
 	~FollowPathAction();
 
+	void Update(float dt);
 	void Draw(); 
 	void DoAction(); 
 
@@ -75,6 +76,7 @@ private:
 
 	// Runtime Movement
 	int currentStep; 
+	float stepTime; 
 
 	// Draw Path Variables
 	float2 startPosition; 
