@@ -10,6 +10,8 @@ public:
 	FlyObjectInterpolator(FlyObject* _targetObject);
 	~FlyObjectInterpolator(); 
 
+	void CleanUp(); 
+
 	void UpdateObjectPositionFromTime(float timeInterpolating);
 
 	// Set & Get

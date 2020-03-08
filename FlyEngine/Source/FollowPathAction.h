@@ -6,6 +6,7 @@
 #include "Math/float4.h"
 #include <list>
 
+class FlyObjectInterpolator; 
 class BoundingBox; 
 class PathStep
 {
@@ -30,6 +31,12 @@ enum PathPlayMode
 	PATH_LOOP_CYCLE,
 };
 
+enum MovementState
+{
+	MOVEMENT_ONGOING,
+	MOVEMENT_IDLE,
+};
+
 class FollowPathAction : public Action
 {
 public:
@@ -37,6 +44,7 @@ public:
 	~FollowPathAction();
 
 	void Draw(); 
+	void DoAction(); 
 
 	// Draw ---------
 	void DrawPath(); 
@@ -51,6 +59,9 @@ public:
 
 	// Utility ---
 	void AddStep(PathStep* newStep);
+	void BeginMovement(); 
+	void UpdateObjectPosition(); 
+	void BeginNextStep(); 
 
 	// Encapsulation ---
 	PathPlayMode GetPathMode();
@@ -59,6 +70,11 @@ public:
 private: 
 	std::list<PathStep*>* pathSteps; 
 	PathPlayMode pathPlayMode; 
+	FlyObjectInterpolator* flyObjectInterpolation; 
+	MovementState movementState; 
+
+	// Runtime Movement
+	int currentStep; 
 
 	// Draw Path Variables
 	float2 startPosition; 

@@ -6,6 +6,7 @@
 #include "BoundingBox.h"
 #include "ModuleImGui.h"
 #include "FlyObject.h"
+#include "FlyObjectInterpolator.h"
 #include "OpenGL.h"
 
 using namespace ImGui; 
@@ -16,6 +17,8 @@ FollowPathAction::FollowPathAction(FlyObject* _parentObject)
 	parentObject = _parentObject;
 	isVisual = false;
 	pathSteps = new std::list<PathStep*>(); 
+	flyObjectInterpolation = new FlyObjectInterpolator(parentObject);
+	movementState = MOVEMENT_IDLE; 
 
 	startPosition = parentObject->transform->GetPosition();
 	graphBoxColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -34,6 +37,11 @@ FollowPathAction::~FollowPathAction()
 void FollowPathAction::Draw()
 {
 	DrawPath(); 
+}
+
+void FollowPathAction::DoAction()
+{
+	BeginMovement(); 
 }
 
 void FollowPathAction::DrawPath()
@@ -230,6 +238,29 @@ void FollowPathAction::AddStep(PathStep* newStep)
 		pathSteps->push_back(newStep); 
 }
 
+void FollowPathAction::BeginMovement()
+{
+	movementState = MOVEMENT_ONGOING;
+	currentStep = 0; 
+	
+	if (flyObjectInterpolation)
+	{
+		float2 startPosition = parentObject->transform->GetPosition(); 
+		float2 finishPosition = pathSteps->front()->targetPosition; 
+		float targetTime = pathSteps->front()->targetTime;
+
+		flyObjectInterpolation->SetInterpolationSegment(startPosition, finishPosition); 
+	}
+}
+
+void FollowPathAction::UpdateObjectPosition()
+{
+
+}
+
+void FollowPathAction::BeginNextStep()
+{
+}
 
 PathPlayMode FollowPathAction::GetPathMode()
 {

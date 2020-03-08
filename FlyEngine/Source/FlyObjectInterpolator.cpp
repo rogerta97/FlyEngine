@@ -14,6 +14,12 @@ FlyObjectInterpolator::~FlyObjectInterpolator()
 {
 }
 
+void FlyObjectInterpolator::CleanUp()
+{
+	delete interpolationSegment; 
+	targetObject = nullptr; 
+}
+
 void FlyObjectInterpolator::UpdateObjectPositionFromTime(float timeInterpolating)
 {
 	if (targetObject == nullptr)
