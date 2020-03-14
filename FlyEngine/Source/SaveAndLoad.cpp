@@ -305,7 +305,7 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 				PathStep* newStep = new PathStep(); 
 				newStep->targetPosition.x = json_object_dotget_number(root_obj, string(stepStr + "TargetPosition.x").c_str());
 				newStep->targetPosition.y = json_object_dotget_number(root_obj, string(stepStr + "TargetPosition.y").c_str());
-				newStep->targetTime = json_object_dotget_number(root_obj, string(stepStr + "TargetTime").c_str());
+				newStep->SetMovementSpeed(json_object_dotget_number(root_obj, string(stepStr + "MovementSpeed").c_str()));
 
 				followPathAction->AddStep(newStep); 
 				

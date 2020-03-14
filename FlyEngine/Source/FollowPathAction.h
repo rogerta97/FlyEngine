@@ -11,16 +11,22 @@ class BoundingBox;
 class PathStep
 {
 public: 
-
 	PathStep();
 	~PathStep(); 
 
-	float2 targetPosition; 
-	float targetTime; 
+	float2 targetPosition;
+	float2 startPosition; 
 	BoundingBox* graphBox; 
 
 	void Save(JSON_Object* jsonObject, string serializeObjectString);
 	void DrawStepGUI(int stepPos, float selectableHeigth = 65);
+
+	float GetLenght(); 
+	void SetMovementSpeed(float _newSpeed); 
+	
+private:
+	float speed; 
+	float targetTime;
 };
 
 enum PathPlayMode

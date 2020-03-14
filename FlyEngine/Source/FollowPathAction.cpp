@@ -187,7 +187,7 @@ void FollowPathAction::DrawBehaviorSettings()
 	{
 		PathStep* newStep = new PathStep();
 		newStep->targetPosition = float2(0, 0);
-		newStep->targetTime = 5.0f;
+		newStep->SetMovementSpeed(5.0f);
 		pathSteps->push_back(newStep);
 	}
 
@@ -258,7 +258,18 @@ void FollowPathAction::SaveAction(JSON_Object* jsonObject, string serializeObjec
 void FollowPathAction::AddStep(PathStep* newStep)
 {
 	if (newStep != nullptr)
+	{
+		if (pathSteps->empty())
+			newStep->startPosition = parentObject->transform->GetPosition(true); 
+		else
+		{
+			std::list<PathStep*>::iterator prevStep = pathSteps->begin();
+			std::advance(prevStep, currentStepIndex - 1);
+			newStep->startPosition = (*prevStep)->targetPosition; 
+		}
+
 		pathSteps->push_back(newStep); 
+	}
 }
 
 void FollowPathAction::BeginMovement()
@@ -315,6 +326,7 @@ void FollowPathAction::SetPathMode(PathPlayMode newPathMode)
 
 PathStep::PathStep()
 {
+	startPosition = float2(0, 0); 
 	targetPosition = float2(0, 0); 
 	targetTime = 5.0f;
 	graphBox = new BoundingBox();
@@ -329,7 +341,7 @@ void PathStep::Save(JSON_Object* jsonObject, string serializeObjectString)
 {
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "TargetPosition.x").c_str(), targetPosition.x);
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "TargetPosition.y").c_str(), targetPosition.y);
-	json_object_dotset_number(jsonObject, string(serializeObjectString + "TargetTime").c_str(), targetTime);
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "MovementSpeed").c_str(), speed);
 }
 
 void PathStep::DrawStepGUI(int stepPos, float selectableHeigth)
@@ -358,11 +370,24 @@ void PathStep::DrawStepGUI(int stepPos, float selectableHeigth)
 		targetPosition = float2(showPositionArr[0], showPositionArr[1]);
 	}
 
-	if (ImGui::DragFloat("Time To Move", &targetTime, 0.1f, 0.5f, 2))
+	if (ImGui::DragFloat("Speed", &targetTime, 0.1f, 0.5f, 2))
 	{
 
 	}
 
 	ImGui::EndChild(); 
 	ImGui::PopStyleColor(); 
+}
+
+float PathStep::GetLenght()
+{
+	float2 diff = (targetPosition - startPosition);
+	return diff.Length();
+}
+
+void PathStep::SetMovementSpeed(float _newSpeed)
+{
+	speed = _newSpeed; 
+	float length = GetLenght(); 
+	targetTime = speed / length; 
 }
