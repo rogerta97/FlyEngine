@@ -11,8 +11,8 @@ public:
 	~FlyObjectInterpolator(); 
 
 	void CleanUp(); 
-
-	void UpdateObjectPositionFromTime(float timeInterpolating);
+	bool UpdateObjectPositionFromTime(float timeInterpolating);
+	void SetData(float2 _startPosition, float2 _finishPosition, float _targetTime); 
 
 	// Set & Get
 	void SetInterpolationSegment(float2 _startPosition, float2 _finishPosition); 

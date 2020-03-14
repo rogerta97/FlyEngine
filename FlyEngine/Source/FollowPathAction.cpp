@@ -7,6 +7,7 @@
 #include "ModuleImGui.h"
 #include "FlyObject.h"
 #include "FlyObjectInterpolator.h"
+#include "ViewportManager.h"
 #include "OpenGL.h"
 
 using namespace ImGui; 
@@ -39,7 +40,17 @@ void FollowPathAction::Update(float dt)
 	if (movementState == MOVEMENT_ONGOING)
 	{
 		stepTime += dt; 
-		UpdateObjectPosition();
+
+		if (UpdateObjectPosition())
+		{
+			if (currentStepIndex >= pathSteps->size() - 1)
+			{
+				flog("The Path Has Finished :D"); 
+				return; 
+			}
+
+			BeginNextStep(); 
+		}
 	}
 }
 
@@ -66,13 +77,13 @@ void FollowPathAction::DrawPath()
 		if (count == 0)
 		{
 			startStepPos = startPosition; 
-			finishStepPos = currentStep->targetPosition; 
+			finishStepPos = currentStep->targetPosition * ViewportManager::getInstance()->GetAspectRatio(); 
 			prevTargetPos = finishStepPos; 
 		}
 		else
 		{
 			startStepPos = prevTargetPos;
-			finishStepPos = currentStep->targetPosition; 
+			finishStepPos = currentStep->targetPosition * ViewportManager::getInstance()->GetAspectRatio(); 
 			prevTargetPos = finishStepPos; 
 		}
 
@@ -84,8 +95,8 @@ void FollowPathAction::DrawPath()
 		glLoadIdentity();
 
 		glBegin(GL_LINES);
-		glVertex2f(startStepPos.x, startStepPos.y);
-		glVertex2f(finishStepPos.x, finishStepPos.y);
+		glVertex2f(startStepPos.x , startStepPos.y);
+		glVertex2f(finishStepPos.x , finishStepPos.y);
 		glEnd();
 
 		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -98,7 +109,7 @@ void FollowPathAction::DrawPath()
 	{
 		// Draw the box
 		glColor4f(graphBoxColor.x, graphBoxColor.y, graphBoxColor.z, graphBoxColor.w);
-		currentStep->graphBox->SetPosition(currentStep->targetPosition);
+		currentStep->graphBox->SetPosition(currentStep->targetPosition * ViewportManager::getInstance()->GetAspectRatio());
 		currentStep->graphBox->Draw(true, float4(0.0f, 1.0f, 0.0f, 1.0f)); 
 		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	}
@@ -256,7 +267,7 @@ void FollowPathAction::BeginMovement()
 		return; 
 
 	movementState = MOVEMENT_ONGOING;
-	currentStep = 0;
+	currentStepIndex = 0;
 	stepTime = 0.0f;
 	
 	if (flyObjectInterpolation)
@@ -269,13 +280,27 @@ void FollowPathAction::BeginMovement()
 	}
 }
 
-void FollowPathAction::UpdateObjectPosition()
+// Will Return true if the object has reached the target point
+bool FollowPathAction::UpdateObjectPosition()
 {
-	flyObjectInterpolation->UpdateObjectPositionFromTime(stepTime);
+	return flyObjectInterpolation->UpdateObjectPositionFromTime(stepTime);
 }
 
 void FollowPathAction::BeginNextStep()
 {
+	if (currentStepIndex >= pathSteps->size() - 1)
+		return; 
+
+	currentStepIndex++; 
+	std::list<PathStep*>::iterator currentStep = pathSteps->begin();
+	std::advance(currentStep, currentStepIndex);
+
+	float2 startPosition = parentObject->transform->GetPosition(); 
+	float2 finishPosition = (*currentStep)->targetPosition;
+	float targetTime = 5;
+
+	flyObjectInterpolation->SetInterpolationSegment(startPosition, finishPosition);
+	stepTime = 0;
 }
 
 PathPlayMode FollowPathAction::GetPathMode()
@@ -333,7 +358,7 @@ void PathStep::DrawStepGUI(int stepPos, float selectableHeigth)
 		targetPosition = float2(showPositionArr[0], showPositionArr[1]);
 	}
 
-	if (ImGui::DragFloat2("Time To Move", &targetTime, 0.1f, 0.5f, 2))
+	if (ImGui::DragFloat("Time To Move", &targetTime, 0.1f, 0.5f, 2))
 	{
 
 	}

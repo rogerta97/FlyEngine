@@ -61,7 +61,7 @@ public:
 	// Utility ---
 	void AddStep(PathStep* newStep);
 	void BeginMovement(); 
-	void UpdateObjectPosition(); 
+	bool UpdateObjectPosition(); 
 	void BeginNextStep(); 
 
 	// Encapsulation ---
@@ -75,7 +75,7 @@ private:
 	MovementState movementState; 
 
 	// Runtime Movement
-	int currentStep; 
+	int currentStepIndex; 
 	float stepTime; 
 
 	// Draw Path Variables

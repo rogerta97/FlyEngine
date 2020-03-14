@@ -20,7 +20,7 @@ void FlyObjectInterpolator::CleanUp()
 	targetObject = nullptr; 
 }
 
-void FlyObjectInterpolator::UpdateObjectPositionFromTime(float timeInterpolating)
+bool FlyObjectInterpolator::UpdateObjectPositionFromTime(float timeInterpolating)
 {
 	if (targetObject == nullptr)
 	{
@@ -34,6 +34,18 @@ void FlyObjectInterpolator::UpdateObjectPositionFromTime(float timeInterpolating
 
 	float3 currentDesiredPos = interpolationSegment->GetPoint(timePercentageDone); 
 	targetObject->transform->SetPosition(currentDesiredPos); 
+	targetObject->FitObjectUtils(); 
+
+	if (timePercentageDone >= 1)
+		return true;
+	else
+		return false; 
+}
+
+void FlyObjectInterpolator::SetData(float2 _startPosition, float2 _finishPosition, float _targetTime)
+{
+	SetInterpolationSegment(_startPosition, _finishPosition); 
+	SetTargetTime(_targetTime); 
 }
 
 void FlyObjectInterpolator::SetInterpolationSegment(float2 _startPosition, float2 _finishPosition)
