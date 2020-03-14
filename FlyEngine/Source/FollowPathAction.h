@@ -65,10 +65,11 @@ public:
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
 
 	// Utility ---
-	void AddStep(PathStep* newStep);
+	void AddStep(PathStep* newStep, int stepIndex);
 	void BeginMovement(); 
 	bool UpdateObjectPosition(); 
 	void BeginNextStep(); 
+	void ResetPath(); 
 
 	// Encapsulation ---
 	PathPlayMode GetPathMode();

@@ -45,7 +45,13 @@ void FollowPathAction::Update(float dt)
 		{
 			if (currentStepIndex >= pathSteps->size() - 1)
 			{
-				flog("The Path Has Finished :D"); 
+				// Path Finished
+				if (pathPlayMode == PATH_ONE_TIME)
+				{
+					ResetPath();
+					movementState = MOVEMENT_IDLE;
+				}
+
 				return; 
 			}
 
@@ -255,7 +261,7 @@ void FollowPathAction::SaveAction(JSON_Object* jsonObject, string serializeObjec
 	}
 }
 
-void FollowPathAction::AddStep(PathStep* newStep)
+void FollowPathAction::AddStep(PathStep* newStep, int stepIndex)
 {
 	if (newStep != nullptr)
 	{
@@ -264,7 +270,7 @@ void FollowPathAction::AddStep(PathStep* newStep)
 		else
 		{
 			std::list<PathStep*>::iterator prevStep = pathSteps->begin();
-			std::advance(prevStep, currentStepIndex - 1);
+			std::advance(prevStep, stepIndex - 1);
 			newStep->startPosition = (*prevStep)->targetPosition; 
 		}
 
@@ -312,6 +318,14 @@ void FollowPathAction::BeginNextStep()
 
 	flyObjectInterpolation->SetInterpolationSegment(startPosition, finishPosition);
 	stepTime = 0;
+}
+
+void FollowPathAction::ResetPath()
+{
+	currentStepIndex = 0; 
+	stepTime = 0; 
+	parentObject->transform->SetPosition(startPosition); 
+	parentObject->FitObjectUtils(); 
 }
 
 PathPlayMode FollowPathAction::GetPathMode()
