@@ -45,11 +45,30 @@ void FollowPathAction::Update(float dt)
 		{
 			if (currentStepIndex >= pathSteps->size() - 1)
 			{
+				if (pathPlayMode == PATH_LOOP_CYCLE && currentStepIndex == 0)
+				{
+					ResetPathMovement();
+				}
+
 				// Path Finished
 				if (pathPlayMode == PATH_ONE_TIME)
 				{
-					ResetPath();
-					movementState = MOVEMENT_IDLE;
+					Stop(true);
+				}
+				else if (pathPlayMode == PATH_LOOP_TELEPORT)
+				{
+					Stop(true);
+					BeginMovement();
+				}
+				else if (pathPlayMode == PATH_LOOP_CYCLE)
+				{
+					float2 startPosition = pathSteps->back()->targetPosition;
+					float2 finishPosition = this->startPosition;
+					float targetTime = 5;
+
+					flyObjectInterpolation->SetInterpolationSegment(startPosition, finishPosition);
+					stepTime = 0;
+					currentStepIndex = 0; 
 				}
 
 				return; 
@@ -58,6 +77,14 @@ void FollowPathAction::Update(float dt)
 			BeginNextStep(); 
 		}
 	}
+}
+
+void FollowPathAction::Stop(bool goToStart)
+{
+	if(goToStart)
+		ResetPathMovement();
+
+	movementState = MOVEMENT_IDLE;
 }
 
 void FollowPathAction::Draw()
@@ -320,7 +347,7 @@ void FollowPathAction::BeginNextStep()
 	stepTime = 0;
 }
 
-void FollowPathAction::ResetPath()
+void FollowPathAction::ResetPathMovement()
 {
 	currentStepIndex = 0; 
 	stepTime = 0; 

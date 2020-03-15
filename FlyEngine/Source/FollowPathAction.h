@@ -69,7 +69,8 @@ public:
 	void BeginMovement(); 
 	bool UpdateObjectPosition(); 
 	void BeginNextStep(); 
-	void ResetPath(); 
+	void ResetPathMovement(); 
+	void Stop(bool goToStart);
 
 	// Encapsulation ---
 	PathPlayMode GetPathMode();
