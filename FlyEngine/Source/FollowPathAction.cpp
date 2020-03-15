@@ -181,15 +181,61 @@ void FollowPathAction::DrawPath()
 	}
 }
 
+void FollowPathAction::DrawActionOccurenceCheckboxes()
+{
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text("Action Happens On:");
+	ImGui::PopFont();
+
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
+
+	ImGui::SetCursorPos(ImVec2(5, 8));
+	ImGui::Checkbox("Scene Enter", &occ_SceneEnter);
+	ImGui::SetCursorPos(ImVec2(5, 38));
+	ImGui::Checkbox("Object Clicked", &occ_ObjectClicked);
+	ImGui::SetCursorPos(ImVec2(5, 68));
+	ImGui::Checkbox("Object Condition", &occ_blackboardValue);
+
+	ImGui::SameLine();
+	static std::string showValueConditionButtonText = "Show Conditions";
+	if (ImGui::Button(showValueConditionButtonText.c_str()))
+	{
+		if (showVariableConditions)
+		{
+			showVariableConditions = false;
+			showValueConditionButtonText = "Show Conditions";
+		}
+		else
+		{
+			showVariableConditions = true;
+			showValueConditionButtonText = "Hide Conditions";
+		}
+	}
+
+	ImGui::EndChild();
+	ImGui::Spacing();
+
+	if (showVariableConditions)
+		DrawActionConditionsList();
+
+	ImGui::PopStyleColor();
+
+}
+
+
 void FollowPathAction::DrawUISettings()
 {
-	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-	ImGui::BeginChild("##PathSettings", ImVec2(ImGui::GetContentRegionAvailWidth(), 130));
+	DrawActionOccurenceCheckboxes(); 
 
-	INC_CURSOR_7;
+	ImGui::Separator(); 
+
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::TextColored(ImVec4(1, 1, 1, 1.0f), "Visuals:");
 	ImGui::PopFont();
+
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	ImGui::BeginChild("##PathSettings", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
 
 	DrawVisualSettings();
 
@@ -198,13 +244,13 @@ void FollowPathAction::DrawUISettings()
 
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 
-	ImGui::PushFont(App->moduleImGui->rudaBlackHuge);
-	ImGui::TextColored(ImVec4(1, 1, 1, 1.0f), "Steps List:");
-	ImGui::PopFont();
-
 	ImGui::Separator();
 
 	DrawBehaviorSettings();
+
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::TextColored(ImVec4(1, 1, 1, 1.0f), "Steps List:");
+	ImGui::PopFont();
 
 	ImGui::BeginChild("##PathsListHierarchy", ImVec2(ImGui::GetContentRegionAvailWidth(), 250));
 
@@ -261,6 +307,10 @@ void FollowPathAction::DrawBehaviorSettings()
 
 	if (isSpeedConstant)
 		childSize += 30; 
+
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::TextColored(ImVec4(1, 1, 1, 1.0f), "Settings:");
+	ImGui::PopFont();
 
 	ImGui::BeginChild("##PathsSettingsHierarchy", ImVec2(ImGui::GetContentRegionAvailWidth(), childSize));
 
@@ -331,7 +381,7 @@ void FollowPathAction::SetConstantSpeed()
 
 void FollowPathAction::DrawVisualSettings()
 {
-	INC_CURSOR_X_7;
+	INC_CURSOR_7;
 	float lineColorArr[3] = { lineColor.x, lineColor.y, lineColor.z };
 	if (ImGui::ColorEdit3("Line Color", lineColorArr, 0))
 	{
@@ -411,8 +461,11 @@ void FollowPathAction::BeginMovement()
 		float2 startPosition = this->startPosition;
 		float2 finishPosition = pathSteps->front()->targetPosition; 
 		float targetTime = pathSteps->front()->GetSpeed();
+		pathSteps->front()->SetMovementSpeed(pathSteps->front()->GetSpeed());
 
-		flyObjectInterpolation->SetInterpolationSegment(startPosition, finishPosition); 
+		flyObjectInterpolation->SetInterpolationSegment(startPosition, finishPosition);
+		flyObjectInterpolation->SetTargetTime(pathSteps->front()->GetTargetTime());
+		
 	}
 }
 
@@ -433,9 +486,10 @@ void FollowPathAction::BeginNextStep()
 
 	float2 startPosition = parentObject->transform->GetPosition(); 
 	float2 finishPosition = (*currentStep)->targetPosition;
+	(*currentStep)->SetMovementSpeed((*currentStep)->GetSpeed()); 
 
 	flyObjectInterpolation->SetInterpolationSegment(startPosition, finishPosition);
-
+	flyObjectInterpolation->SetTargetTime((*currentStep)->GetTargetTime()); 
 	stepTime = 0;
 }
 
@@ -503,7 +557,7 @@ void PathStep::DrawStepGUI(int stepPos, float selectableHeigth)
 		targetPosition = float2(showPositionArr[0], showPositionArr[1]);
 	}
 
-	if (ImGui::DragFloat("Speed", &speed, 0.1f, 0.5f, 2))
+	if (ImGui::DragFloat("Speed", &speed, 0.05f, 0.5f, 10.0f))
 	{
 		SetMovementSpeed(speed);
 	}
@@ -522,10 +576,15 @@ void PathStep::SetMovementSpeed(float _newSpeed)
 {
 	speed = _newSpeed; 
 	float length = GetLenght(); 
-	targetTime = speed / length; 
+	targetTime = length / (speed * 500);
 }
 
 float PathStep::GetSpeed()
 {
 	return speed;
+}
+
+float PathStep::GetTargetTime()
+{
+	return targetTime;
 }

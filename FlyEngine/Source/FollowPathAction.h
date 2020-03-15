@@ -23,8 +23,11 @@ public:
 
 	float GetLenght(); 
 	void SetMovementSpeed(float _newSpeed); 
-	float GetSpeed(); 
 	
+	// Get 
+	float GetSpeed(); 
+	float GetTargetTime(); 
+
 private:
 	float speed; 
 	float targetTime;
@@ -63,6 +66,7 @@ public:
 	void DrawBehaviorSettings();
 	void SetConstantSpeed();
 	void DrawVisualSettings();
+	void DrawActionOccurenceCheckboxes(); 
 
 	// Save ---------
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
@@ -84,6 +88,8 @@ private:
 	PathPlayMode pathPlayMode; 
 	FlyObjectInterpolator* flyObjectInterpolation; 
 	MovementState movementState; 
+
+	bool showVariableConditions; 
 
 	// Runtime Movement
 	int currentStepIndex; 
