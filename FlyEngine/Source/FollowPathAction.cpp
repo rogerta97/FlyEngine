@@ -20,6 +20,8 @@ FollowPathAction::FollowPathAction(FlyObject* _parentObject)
 	pathSteps = new std::list<PathStep*>(); 
 	flyObjectInterpolation = new FlyObjectInterpolator(parentObject);
 	movementState = MOVEMENT_IDLE; 
+	loopsCompleted = 0; 
+	targetLoopsAmount = 2;
 
 	startPosition = parentObject->transform->GetPosition();
 	graphBoxColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -37,30 +39,53 @@ FollowPathAction::~FollowPathAction()
 
 void FollowPathAction::Update(float dt)
 {
-	if (movementState == MOVEMENT_ONGOING)
+	if (movementState == MOVEMENT_ONGOING || movementState == MOVEMENT_CYCLE)
 	{
 		stepTime += dt; 
 
 		if (UpdateObjectPosition())
 		{
+			if (movementState == MOVEMENT_CYCLE)
+			{
+				ResetPathMovement();
+				BeginMovement();
+				return;
+			}
+
 			if (currentStepIndex >= pathSteps->size() - 1)
 			{
-				if (pathPlayMode == PATH_LOOP_CYCLE && currentStepIndex == 0)
-				{
-					ResetPathMovement();
-				}
 
-				// Path Finished
-				if (pathPlayMode == PATH_ONE_TIME)
+				switch (pathPlayMode)
+				{
+				case PATH_PLAY_ONCE: 
 				{
 					Stop(true);
 				}
-				else if (pathPlayMode == PATH_LOOP_TELEPORT)
+					break; 
+
+				case PATH_LOOP_TIMES:
+				{
+					if (loopsCompleted < targetLoopsAmount - 1)
+					{
+						loopsCompleted++;
+						Stop(true);
+						BeginMovement();
+					}
+					else
+					{
+						Stop(true); 
+					}
+				}
+					break;
+
+				case PATH_LOOP_TELEPORT:
 				{
 					Stop(true);
 					BeginMovement();
 				}
-				else if (pathPlayMode == PATH_LOOP_CYCLE)
+					break;
+
+				case PATH_LOOP_CYCLE:
 				{
 					float2 startPosition = pathSteps->back()->targetPosition;
 					float2 finishPosition = this->startPosition;
@@ -68,13 +93,18 @@ void FollowPathAction::Update(float dt)
 
 					flyObjectInterpolation->SetInterpolationSegment(startPosition, finishPosition);
 					stepTime = 0;
-					currentStepIndex = 0; 
+					movementState = MOVEMENT_CYCLE;
+				}
+					break;
 				}
 
 				return; 
 			}
 
-			BeginNextStep(); 
+			if(currentStepIndex == -1)
+				BeginMovement();
+			else
+				BeginNextStep(); 
 		}
 	}
 }
@@ -94,6 +124,7 @@ void FollowPathAction::Draw()
 
 void FollowPathAction::DoAction()
 {
+	loopsCompleted = 0;
 	BeginMovement(); 
 }
 
@@ -201,21 +232,6 @@ void FollowPathAction::DrawUISettings()
 	ImGui::PopStyleVar();
 	ImGui::EndChild();
 
-}
-
-void FollowPathAction::DrawBehaviorSettings()
-{
-	Texture* playTexture = ResourceManager::getInstance()->GetTexture("PlayIcon");
-	if (ImGui::ImageButton((ImTextureID)playTexture->GetTextureID(), ImVec2(30, 30)))
-	{
-		DoAction(); 
-	}
-
-	ImGui::SameLine();
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	ImGui::TextColored(ImVec4(1, 1, 1, 1.0f), "Play Movement Preview");
-	ImGui::PopFont();
-
 	if (ImGui::Button("Add Step To Center"))
 	{
 		PathStep* newStep = new PathStep();
@@ -230,11 +246,61 @@ void FollowPathAction::DrawBehaviorSettings()
 
 	}
 
+}
+
+void FollowPathAction::DrawBehaviorSettings()
+{
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	int childSize = 80; 
+	if (pathPlayMode == PATH_LOOP_TIMES)
+	{
+		childSize = 110;
+	}
+	ImGui::BeginChild("##PathsSettingsHierarchy", ImVec2(ImGui::GetContentRegionAvailWidth(), childSize));
+
+	INC_CURSOR_7;
 	int pathModeCombo = (int)pathPlayMode;
-	if (ImGui::Combo("Play Mode", &pathModeCombo, "One Time\0Times Amount\0Loop Teleport\0Loop Cycle"))
+	if (ImGui::Combo("Play Mode", &pathModeCombo, "Play Once\0Loop X Times\0Loop Teleport\0Loop Cycle\0"))
 	{
 		pathPlayMode = (PathPlayMode)pathModeCombo;
 	}
+
+	if (pathPlayMode == PATH_LOOP_TIMES)
+	{
+		INC_CURSOR_X_7;
+		ImGui::InputInt("Times To Repeat", &targetLoopsAmount); 
+	}
+
+	INC_CURSOR_X_7;
+	Texture* iconTexture = ResourceManager::getInstance()->GetTexture("PlayIcon");
+	if (movementState == MOVEMENT_ONGOING || movementState == MOVEMENT_CYCLE)
+	{
+		iconTexture = ResourceManager::getInstance()->GetTexture("StopIcon");
+	}
+	else
+	{
+		iconTexture = ResourceManager::getInstance()->GetTexture("PlayIcon");
+	}
+
+	if (ImGui::ImageButton((ImTextureID)iconTexture->GetTextureID(), ImVec2(30, 30)))
+	{
+		if(movementState == MOVEMENT_IDLE)
+			DoAction(); 
+		else
+		{
+			Stop(true); 
+		}
+	}
+
+	ImGui::SameLine();
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 7);
+	ImGui::TextColored(ImVec4(1, 1, 1, 1.0f), "Play Movement Preview");
+	ImGui::PopFont();
+
+	ImGui::EndChild();
+	ImGui::PopStyleColor(); 
+
 }
 
 void FollowPathAction::DrawVisualSettings()

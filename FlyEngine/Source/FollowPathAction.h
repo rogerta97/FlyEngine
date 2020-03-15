@@ -31,8 +31,8 @@ private:
 
 enum PathPlayMode
 {
-	PATH_ONE_TIME, 
-	PATH_AMOUNT_TIMES,
+	PATH_PLAY_ONCE, 
+	PATH_LOOP_TIMES,
 	PATH_LOOP_TELEPORT,
 	PATH_LOOP_CYCLE,
 };
@@ -41,6 +41,7 @@ enum MovementState
 {
 	MOVEMENT_ONGOING,
 	MOVEMENT_IDLE,
+	MOVEMENT_CYCLE,
 };
 
 class FollowPathAction : public Action
@@ -85,6 +86,10 @@ private:
 	// Runtime Movement
 	int currentStepIndex; 
 	float stepTime; 
+
+	// Run Amount Times 
+	int loopsCompleted; 
+	int targetLoopsAmount; 
 
 	// Draw Path Variables
 	float2 startPosition; 
