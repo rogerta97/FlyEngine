@@ -64,7 +64,7 @@ public:
 	// Draw UI ------
 	void DrawUISettings();
 	void DrawBehaviorSettings();
-	void SetConstantSpeed();
+	void SetConstantSpeed(float newSpeed);
 	void DrawVisualSettings();
 	void DrawActionOccurenceCheckboxes(); 
 
@@ -82,6 +82,8 @@ public:
 	// Encapsulation ---
 	PathPlayMode GetPathMode();
 	void SetPathMode(PathPlayMode newPathMode);
+
+	void SetIsSpeedConstant(bool isSpeedConst);
 
 private: 
 	std::list<PathStep*>* pathSteps; 

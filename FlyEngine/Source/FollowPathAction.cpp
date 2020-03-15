@@ -299,7 +299,7 @@ void FollowPathAction::DrawUISettings()
 void FollowPathAction::DrawBehaviorSettings()
 {
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-	int childSize = 120; 
+	int childSize = 110; 
 	if (pathPlayMode == PATH_LOOP_TIMES)
 	{
 		childSize = 140;
@@ -345,7 +345,7 @@ void FollowPathAction::DrawBehaviorSettings()
 		INC_CURSOR_X_7;
 		if (ImGui::DragFloat("Constant Speed", &constantSpeed, 0.05, 0, 2))
 		{
-			SetConstantSpeed();
+			SetConstantSpeed(constantSpeed);
 		}
 	}
 
@@ -371,8 +371,9 @@ void FollowPathAction::DrawBehaviorSettings()
 
 }
 
-void FollowPathAction::SetConstantSpeed()
+void FollowPathAction::SetConstantSpeed(float newConstSpeed)
 {
+	constantSpeed = newConstSpeed; 
 	for (auto& currentStep : *pathSteps)
 	{
 		currentStep->SetMovementSpeed(constantSpeed);
@@ -416,6 +417,8 @@ void FollowPathAction::SaveAction(JSON_Object* jsonObject, string serializeObjec
 
 	// Save Reproduce type 
 	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "PlayMode").c_str(), (int)pathPlayMode);
+	json_object_dotset_boolean(jsonObject, string(toolsSerializeSection + "IsSpeedConstant").c_str(), isSpeedConstant);
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "ConstantSpeed").c_str(), constantSpeed);
 
 	// Save Steps 
 	string stepSerializeGroupStr = toolsSerializeSection + "PathSteps."; 
@@ -509,6 +512,11 @@ PathPlayMode FollowPathAction::GetPathMode()
 void FollowPathAction::SetPathMode(PathPlayMode newPathMode)
 {
 	pathPlayMode = newPathMode;
+}
+
+void FollowPathAction::SetIsSpeedConstant(bool isSpeedConst)
+{
+	isSpeedConstant = isSpeedConst; 
 }
 
 PathStep::PathStep()
