@@ -22,6 +22,8 @@ FollowPathAction::FollowPathAction(FlyObject* _parentObject)
 	movementState = MOVEMENT_IDLE; 
 	loopsCompleted = 0; 
 	targetLoopsAmount = 2;
+	constantSpeed = 0; 
+	isSpeedConstant = false; 
 
 	startPosition = parentObject->transform->GetPosition();
 	graphBoxColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -182,9 +184,9 @@ void FollowPathAction::DrawPath()
 void FollowPathAction::DrawUISettings()
 {
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-	ImGui::BeginChild("##PathSettings", ImVec2(ImGui::GetContentRegionAvailWidth(), 120));
+	ImGui::BeginChild("##PathSettings", ImVec2(ImGui::GetContentRegionAvailWidth(), 130));
 
-	INC_CURSOR_X_7;
+	INC_CURSOR_7;
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::TextColored(ImVec4(1, 1, 1, 1.0f), "Visuals:");
 	ImGui::PopFont();
@@ -251,11 +253,15 @@ void FollowPathAction::DrawUISettings()
 void FollowPathAction::DrawBehaviorSettings()
 {
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-	int childSize = 80; 
+	int childSize = 120; 
 	if (pathPlayMode == PATH_LOOP_TIMES)
 	{
-		childSize = 110;
+		childSize = 140;
 	}
+
+	if (isSpeedConstant)
+		childSize += 30; 
+
 	ImGui::BeginChild("##PathsSettingsHierarchy", ImVec2(ImGui::GetContentRegionAvailWidth(), childSize));
 
 	INC_CURSOR_7;
@@ -282,6 +288,18 @@ void FollowPathAction::DrawBehaviorSettings()
 		iconTexture = ResourceManager::getInstance()->GetTexture("PlayIcon");
 	}
 
+	ImGui::Checkbox("Constant Speed", &isSpeedConstant);
+
+	if (isSpeedConstant)
+	{
+		INC_CURSOR_X_7;
+		if (ImGui::DragFloat("Constant Speed", &constantSpeed, 0.05, 0, 2))
+		{
+			SetConstantSpeed();
+		}
+	}
+
+	INC_CURSOR_X_7;
 	if (ImGui::ImageButton((ImTextureID)iconTexture->GetTextureID(), ImVec2(30, 30)))
 	{
 		if(movementState == MOVEMENT_IDLE)
@@ -301,6 +319,14 @@ void FollowPathAction::DrawBehaviorSettings()
 	ImGui::EndChild();
 	ImGui::PopStyleColor(); 
 
+}
+
+void FollowPathAction::SetConstantSpeed()
+{
+	for (auto& currentStep : *pathSteps)
+	{
+		currentStep->SetMovementSpeed(constantSpeed);
+	}
 }
 
 void FollowPathAction::DrawVisualSettings()
@@ -384,7 +410,7 @@ void FollowPathAction::BeginMovement()
 	{
 		float2 startPosition = this->startPosition;
 		float2 finishPosition = pathSteps->front()->targetPosition; 
-		float targetTime = 5;
+		float targetTime = pathSteps->front()->GetSpeed();
 
 		flyObjectInterpolation->SetInterpolationSegment(startPosition, finishPosition); 
 	}
@@ -407,9 +433,9 @@ void FollowPathAction::BeginNextStep()
 
 	float2 startPosition = parentObject->transform->GetPosition(); 
 	float2 finishPosition = (*currentStep)->targetPosition;
-	float targetTime = 5;
 
 	flyObjectInterpolation->SetInterpolationSegment(startPosition, finishPosition);
+
 	stepTime = 0;
 }
 
@@ -477,9 +503,9 @@ void PathStep::DrawStepGUI(int stepPos, float selectableHeigth)
 		targetPosition = float2(showPositionArr[0], showPositionArr[1]);
 	}
 
-	if (ImGui::DragFloat("Speed", &targetTime, 0.1f, 0.5f, 2))
+	if (ImGui::DragFloat("Speed", &speed, 0.1f, 0.5f, 2))
 	{
-
+		SetMovementSpeed(speed);
 	}
 
 	ImGui::EndChild(); 
@@ -497,4 +523,9 @@ void PathStep::SetMovementSpeed(float _newSpeed)
 	speed = _newSpeed; 
 	float length = GetLenght(); 
 	targetTime = speed / length; 
+}
+
+float PathStep::GetSpeed()
+{
+	return speed;
 }

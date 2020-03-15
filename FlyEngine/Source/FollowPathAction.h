@@ -23,6 +23,7 @@ public:
 
 	float GetLenght(); 
 	void SetMovementSpeed(float _newSpeed); 
+	float GetSpeed(); 
 	
 private:
 	float speed; 
@@ -60,6 +61,7 @@ public:
 	// Draw UI ------
 	void DrawUISettings();
 	void DrawBehaviorSettings();
+	void SetConstantSpeed();
 	void DrawVisualSettings();
 
 	// Save ---------
@@ -86,6 +88,8 @@ private:
 	// Runtime Movement
 	int currentStepIndex; 
 	float stepTime; 
+	float constantSpeed; 
+	bool isSpeedConstant; 
 
 	// Run Amount Times 
 	int loopsCompleted; 
