@@ -62,6 +62,7 @@ void FollowPathAction::Update(float dt)
 				case PATH_PLAY_ONCE: 
 				{
 					Stop(true);
+					SetActionFinished(true); 
 				}
 					break; 
 
@@ -76,6 +77,7 @@ void FollowPathAction::Update(float dt)
 					else
 					{
 						Stop(true); 
+						SetActionFinished(true);
 					}
 				}
 					break;
@@ -467,8 +469,12 @@ void FollowPathAction::BeginMovement()
 		pathSteps->front()->SetMovementSpeed(pathSteps->front()->GetSpeed());
 
 		flyObjectInterpolation->SetInterpolationSegment(startPosition, finishPosition);
-		flyObjectInterpolation->SetTargetTime(pathSteps->front()->GetTargetTime());
-		
+		flyObjectInterpolation->SetTargetTime(pathSteps->front()->GetTargetTime());	
+	}
+
+	if (pathPlayMode == PATH_LOOP_CYCLE || pathPlayMode == PATH_LOOP_TELEPORT)
+	{
+		SetActionFinished(true); 
 	}
 }
 

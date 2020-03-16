@@ -129,7 +129,7 @@ bool DisplayAnimationAction::NextFrame()
 	if (currentFrame == -1)	
 		return false;
 
-	if (currentFrame < animation->GetFramesAmount())
+	if (currentFrame < animation->GetFramesAmount() - 1)
 	{
 		currentFrame++;
 	}

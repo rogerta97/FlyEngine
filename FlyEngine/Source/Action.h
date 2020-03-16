@@ -117,10 +117,14 @@ public:
 	bool& HasVisual(); 
 
 	ActionSelectableInfo GetActionSelectableInfo(); 
+
+	bool IsActionFinished(); 
+	void SetActionFinished(bool isFinished);
  
 protected:
 	ActionType actionType;
 	FlyObject* parentObject;
+	bool actionFinished; 
 
 	// Occurrence -----------------
 	bool occ_SceneEnter = false; 

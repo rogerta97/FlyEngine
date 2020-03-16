@@ -410,4 +410,15 @@ ActionSelectableInfo Action::GetActionSelectableInfo()
 	return returnToolInfo;
 }
 
+bool Action::IsActionFinished()
+{
+	return actionFinished;
+}
+
+void Action::SetActionFinished(bool isFinished)
+{
+	actionFinished = isFinished; 
+	flog("%s finished", this->GetActionName().c_str()); 
+}
+
 
