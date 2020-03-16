@@ -455,6 +455,8 @@ void DisplayTextAction::RenderText()
 
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	SetActionCompleted(true); 
 }
 
 void DisplayTextAction::DrawTextBox()

@@ -3,6 +3,8 @@
 #include "Transform.h"
 #include "FlyObject.h"
 
+#include "mmgr.h"
+
 FlyObjectInterpolator::FlyObjectInterpolator(FlyObject* _targetObject)
 {
 	targetObject = _targetObject; 

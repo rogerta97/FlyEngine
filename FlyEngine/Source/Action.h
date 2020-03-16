@@ -119,7 +119,7 @@ public:
 	ActionSelectableInfo GetActionSelectableInfo(); 
 
 	bool IsActionFinished(); 
-	void SetActionFinished(bool isFinished);
+	void SetActionCompleted(bool isFinished);
  
 protected:
 	ActionType actionType;

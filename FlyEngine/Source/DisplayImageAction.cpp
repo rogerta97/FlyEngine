@@ -89,6 +89,8 @@ void DisplayImageAction::Draw()
 
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
+
+	SetActionCompleted(true); 
 }
 
 void DisplayImageAction::CleanUp()

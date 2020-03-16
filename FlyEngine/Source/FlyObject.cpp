@@ -49,6 +49,11 @@ FlyObject::FlyObject(std::string _name, std::string _description, FlyObjectType 
 	gizmos = new Gizmos(this);
 }
 
+FlyObject::FlyObject()
+{
+	
+}
+
 FlyObject::~FlyObject()
 {
 
@@ -367,6 +372,10 @@ void FlyObject::SaveClickableArea(std::string serializeObjectName, JSON_Object* 
 
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "SizePerc.x").c_str(), clickableAreaSizePerc.x);
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "SizePerc.y").c_str(), clickableAreaSizePerc.y);
+}
+
+void FlyObject::DoObjectActions()
+{
 }
 
 void FlyObject::DoOnClickActions()

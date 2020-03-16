@@ -262,7 +262,7 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 			if (framesAmount > 0)
 			{
 				int playModeTmp = json_object_dotget_number(root_obj, string(serializeDisplayTextStr + "PlayMode").c_str());
-				displayAnimationAction->playMode = (AnimationPlayMode)playModeTmp;
+				displayAnimationAction->animPlayMode = (AnimationPlayMode)playModeTmp;
 
 				displayAnimationAction->GetAnimation()->SetSpeed(json_object_dotget_number(root_obj, string(serializeDisplayTextStr + "Speed").c_str()));
 

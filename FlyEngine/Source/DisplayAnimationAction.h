@@ -55,7 +55,7 @@ public:
 	void SetCurrentFrame(int currentFrame); 
 
 	AnimationState animationState = ANIMATION_STOP;
-	AnimationPlayMode playMode = ANIMATION_LOOP; 
+	AnimationPlayMode animPlayMode = ANIMATION_LOOP; 
 
 private:
 	DisplayImageAction* screenImageAction; 

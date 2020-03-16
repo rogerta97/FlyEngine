@@ -10,6 +10,8 @@
 #include "ViewportManager.h"
 #include "OpenGL.h"
 
+#include "mmgr.h"
+
 using namespace ImGui; 
 
 FollowPathAction::FollowPathAction(FlyObject* _parentObject)
@@ -62,7 +64,7 @@ void FollowPathAction::Update(float dt)
 				case PATH_PLAY_ONCE: 
 				{
 					Stop(true);
-					SetActionFinished(true); 
+					SetActionCompleted(true); 
 				}
 					break; 
 
@@ -77,7 +79,7 @@ void FollowPathAction::Update(float dt)
 					else
 					{
 						Stop(true); 
-						SetActionFinished(true);
+						SetActionCompleted(true);
 					}
 				}
 					break;
@@ -130,6 +132,21 @@ void FollowPathAction::DoAction()
 {
 	loopsCompleted = 0;
 	BeginMovement(); 
+}
+
+void FollowPathAction::CleanUp()
+{
+	for (auto& currentStep : *pathSteps)
+	{
+		currentStep->CleanUp(); 
+		delete currentStep; 
+	}
+
+	pathSteps->clear();
+	delete pathSteps; 
+
+	flyObjectInterpolation->CleanUp();
+	delete flyObjectInterpolation; 	
 }
 
 void FollowPathAction::DrawPath()
@@ -474,7 +491,7 @@ void FollowPathAction::BeginMovement()
 
 	if (pathPlayMode == PATH_LOOP_CYCLE || pathPlayMode == PATH_LOOP_TELEPORT)
 	{
-		SetActionFinished(true); 
+		SetActionCompleted(true); 
 	}
 }
 
@@ -536,6 +553,12 @@ PathStep::PathStep()
 
 PathStep::~PathStep()
 {
+}
+
+void PathStep::CleanUp()
+{
+	graphBox->CleanUp();
+	delete graphBox; 
 }
 
 void PathStep::Save(JSON_Object* jsonObject, string serializeObjectString)

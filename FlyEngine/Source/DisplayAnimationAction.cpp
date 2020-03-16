@@ -89,7 +89,7 @@ void DisplayAnimationAction::Update(float dt)
 		{
 			animationTime = 0;
 
-			if (NextFrame() && playMode == ANIMATION_ONE_TIME)
+			if (NextFrame() && animPlayMode == ANIMATION_ONE_TIME)
 				Stop();
 
 			screenImageAction->SetTexture(animation->GetFrameByPos(currentFrame));		
@@ -115,6 +115,9 @@ void DisplayAnimationAction::Play()
 {
 	currentFrame = 0; 
 	animationState = ANIMATION_PLAY; 
+
+	if (animPlayMode == AnimationPlayMode::ANIMATION_LOOP)
+		SetActionCompleted(true);
 }
 
 void DisplayAnimationAction::Stop()
@@ -135,6 +138,9 @@ bool DisplayAnimationAction::NextFrame()
 	}
 	else
 	{
+		if(animPlayMode == ANIMATION_ONE_TIME)
+			SetActionCompleted(true);
+
 		currentFrame = 0; 
 		return true; 
 	}
@@ -167,7 +173,7 @@ void DisplayAnimationAction::SaveAction(JSON_Object* jsonObject, string serializ
 	else
 	{
 		json_object_dotset_number(jsonObject, string(actionSerializeSection + "FramesAmount").c_str(), animation->GetFramesAmount());
-		json_object_dotset_number(jsonObject, string(actionSerializeSection + "PlayMode").c_str(), playMode);
+		json_object_dotset_number(jsonObject, string(actionSerializeSection + "PlayMode").c_str(), animPlayMode);
 		json_object_dotset_number(jsonObject, string(actionSerializeSection + "Speed").c_str(), animation->GetSpeed());
 
 		int count = 0; 
@@ -461,9 +467,9 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
 		animation->SetSpeed(speed); 	
 
 	INC_CURSOR_4;
-	int playModeSelected = playMode;
+	int playModeSelected = animPlayMode;
 	if (ImGui::Combo("Play Mode", &playModeSelected, "Loop\0One Time\0"))
-		playMode = (AnimationPlayMode)playModeSelected; 
+		animPlayMode = (AnimationPlayMode)playModeSelected; 
 
 	ImGui::EndChild();
 	ImGui::PopStyleColor();

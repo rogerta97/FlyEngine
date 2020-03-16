@@ -415,8 +415,11 @@ bool Action::IsActionFinished()
 	return actionFinished;
 }
 
-void Action::SetActionFinished(bool isFinished)
+void Action::SetActionCompleted(bool isFinished)
 {
+	if (isFinished == actionFinished)
+		return; 
+
 	actionFinished = isFinished; 
 	flog("%s finished", this->GetActionName().c_str()); 
 }

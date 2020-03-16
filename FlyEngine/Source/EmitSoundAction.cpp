@@ -170,4 +170,5 @@ void EmitSoundAction::SaveAction(JSON_Object* jsonObject, std::string serializeS
 void EmitSoundAction::DoAction()
 {
 	Play(); 
+	SetActionCompleted(true); 
 }

@@ -14,6 +14,8 @@ public:
 	PathStep();
 	~PathStep(); 
 
+	void CleanUp(); 
+
 	float2 targetPosition;
 	float2 startPosition; 
 	BoundingBox* graphBox; 
@@ -57,6 +59,7 @@ public:
 	void Update(float dt);
 	void Draw(); 
 	void DoAction(); 
+	void CleanUp(); 
 
 	// Draw ---------
 	void DrawPath(); 

@@ -15,6 +15,7 @@ enum FlyObjectType
 	ACTION_OBJECT, 
 	INVENTORY_ITEM,
 	UI_HOLDER, 
+	OBJECT_SEQUENTIAL,
 };
 
 class Gizmos; 
@@ -29,6 +30,7 @@ class FollowPathAction;
 class FlyObject {
 public: 
 	FlyObject(std::string objectName, std::string description = "", FlyObjectType _flyObjectType = ACTION_OBJECT, Room* parentRoom = nullptr); 
+	FlyObject();
 	~FlyObject(); 
 
 	bool Update(float dt);
@@ -52,6 +54,7 @@ public:
 	void SaveClickableArea(std::string serializeObjectName, JSON_Object* jsonObject);
 
 	// Actions ---------
+	virtual void DoObjectActions(); 
 	void DoOnClickActions(); 
 	void DoOnMouseOverActions();
 	void DoVariableConditionActions(FlyVariable* currentVariableValue);

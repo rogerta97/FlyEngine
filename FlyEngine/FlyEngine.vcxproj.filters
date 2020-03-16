@@ -118,6 +118,9 @@
     <Filter Include="Source\Tools\Interpolator">
       <UniqueIdentifier>{70649fce-2b87-4470-8447-913d7f81591a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\FlyEngine\FlyObject\FlyObject">
+      <UniqueIdentifier>{1360fb9d-9483-45e6-b946-896935ab2800}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -209,9 +212,6 @@
     </ClCompile>
     <ClCompile Include="Source\TextureMSAA.cpp">
       <Filter>Source\Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\FlyObject.cpp">
-      <Filter>Source\FlyEngine\FlyObject</Filter>
     </ClCompile>
     <ClCompile Include="Source\Quad.cpp">
       <Filter>Source\Utilities</Filter>
@@ -444,6 +444,12 @@
     <ClCompile Include="Source\FlyObjectInterpolator.cpp">
       <Filter>Source\Tools\Interpolator</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FlyObject.cpp">
+      <Filter>Source\FlyEngine\FlyObject\FlyObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FlyObjectSequential.cpp">
+      <Filter>Source\FlyEngine\FlyObject\FlyObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -550,9 +556,6 @@
     </ClInclude>
     <ClInclude Include="Source\OpenGL.h">
       <Filter>Source\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\FlyObject.h">
-      <Filter>Source\FlyEngine\FlyObject</Filter>
     </ClInclude>
     <ClInclude Include="Source\Quad.h">
       <Filter>Source\Utilities</Filter>
@@ -895,6 +898,12 @@
     </ClInclude>
     <ClInclude Include="Source\FlyObjectInterpolator.h">
       <Filter>Source\Tools\Interpolator</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FlyObject.h">
+      <Filter>Source\FlyEngine\FlyObject\FlyObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FlyObjectSequential.h">
+      <Filter>Source\FlyEngine\FlyObject\FlyObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

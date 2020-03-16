@@ -53,6 +53,11 @@ void ModifyVariableAction::DoAction()
 			roomBlackboard->ModifyIntegerVariable(currentEffect); 
 		}
 	}
+
+	if (!variablesEffectList.empty())
+	{
+		SetActionCompleted(true); 
+	}
 }
 
 void ModifyVariableAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr)

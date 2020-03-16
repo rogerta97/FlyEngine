@@ -114,8 +114,11 @@ void ChangeRoomAction::SaveAction(JSON_Object* jsonObject, string serializeObjec
 
 void ChangeRoomAction::DoAction()
 {
-	if(destinationRoom)
+	if (destinationRoom)
+	{
 		App->moduleRoomManager->SetSelectedRoom(destinationRoom);
+		SetActionCompleted(true); 
+	}
 }
 
 void ChangeRoomAction::SetDestination(Room* dstRoom)
