@@ -64,7 +64,10 @@ bool ObjectCreatorDockPanel::Draw()
 
 		else if (creatingObject->flyObjectType == FlyObjectType::INVENTORY_ITEM)		
 			iconTexture = (Texture*)ResourceManager::getInstance()->GetResource("InventoryItemIcon");
-		
+
+		else if (creatingObject->flyObjectType == FlyObjectType::OBJECT_SEQUENTIAL)
+			iconTexture = (Texture*)ResourceManager::getInstance()->GetResource("InventoryItemIcon");
+
 		ImGui::Image((ImTextureID)iconTexture->GetTextureID(), ImVec2(35, 35)); 
 		ImGui::SameLine(); 
 
@@ -91,7 +94,7 @@ bool ObjectCreatorDockPanel::Draw()
 		ImGui::InputTextMultiline("Description##ObjectDescription", newObjectDescription, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 100, 100));
 
 		static int selectedObjectType = 0;
-		if (ImGui::Combo("Object Type", &selectedObjectType, "Action Object\0Inventory Item\0"))
+		if (ImGui::Combo("Object Type", &selectedObjectType, "Action Object\0Inventory Item\0Sequential Object\0"))
 		{
 			switch (selectedObjectType)
 			{
@@ -104,7 +107,13 @@ bool ObjectCreatorDockPanel::Draw()
 				ResetObjectData();
 				clickableAreaActive = true; 
 				creatingObject->flyObjectType = INVENTORY_ITEM; 
-				break; 
+				break;
+
+			case OBJECT_SEQUENTIAL:
+				ResetObjectData();
+				clickableAreaActive = true;
+				creatingObject->flyObjectType = OBJECT_SEQUENTIAL;
+				break;
 			}
 		}
 
@@ -115,7 +124,7 @@ bool ObjectCreatorDockPanel::Draw()
 
 		ImGui::Separator(); 
 
-		if (selectedObjectType == ACTION_OBJECT)
+		if (selectedObjectType == ACTION_OBJECT || selectedObjectType == OBJECT_SEQUENTIAL)
 		{
 			ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
 			ImGui::Text("Object Attributes:");
@@ -125,7 +134,11 @@ bool ObjectCreatorDockPanel::Draw()
 
 				if (ImGui::BeginTabItem("Actions"))
 				{
-					DrawObjectCreator();
+					if(selectedObjectType == ACTION_OBJECT)
+						DrawObjectCreator();
+					else
+						DrawObjectCreator();
+
 					ImGui::EndTabItem();
 				}
 
@@ -155,6 +168,7 @@ bool ObjectCreatorDockPanel::Draw()
 			ImGui::PopFont();
 			DrawInventorySettings();
 		}
+
 	}
 
 	ImGui::End();

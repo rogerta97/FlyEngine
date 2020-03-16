@@ -846,6 +846,8 @@ void ObjectPropertiesDockPanel::DrawFixedPartObjectUI(FlyObject* selectedObject)
 		objectIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("InventoryItemIcon");
 	else if (selectedObject->flyObjectType == UI_HOLDER)
 		objectIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("UserInterfaceIcon");
+	else if (selectedObject->flyObjectType == OBJECT_SEQUENTIAL)
+		objectIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("UserInterfaceIcon");
 
 	if (objectIconTexture != nullptr)
 		ImGui::Image((ImTextureID)objectIconTexture->GetTextureID(), ImVec2(35, 35));
