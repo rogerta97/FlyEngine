@@ -60,19 +60,20 @@ public:
 	void DoVariableConditionActions(FlyVariable* currentVariableValue);
 
 	// Tools -----------
-	DisplayImageAction* AddDisplayImageAction(const char* imageTexturePath = "None");
-	ChangeRoomAction* AddChangeRoomAction();
-	ModifyVariableAction* AddModifyVariableAction();
-	EmitSoundAction* AddEmitSoundAction();
-	DisplayTextAction* AddDisplayTextAction();
-	DisplayAnimationAction* AddDisplayAnimationAction();
-	FollowPathAction* AddFollowPathAction();
+	DisplayImageAction* AddDisplayImageAction(const char* imageTexturePath = "None", bool addToSequentialActions = false);
+	ChangeRoomAction* AddChangeRoomAction(bool addToSequentialActions = false);
+	ModifyVariableAction* AddModifyVariableAction(bool addToSequentialActions = false);
+	EmitSoundAction* AddEmitSoundAction(bool addToSequentialActions = false);
+	DisplayTextAction* AddDisplayTextAction(bool addToSequentialActions = false);
+	DisplayAnimationAction* AddDisplayAnimationAction(bool addToSequentialActions = false);
+	FollowPathAction* AddFollowPathAction(bool addToSequentialActions = false);
 
 	void SetSelectedAction(ActionType toolTypeSelected); 
 	ActionType GetSelectedActionType(); 
 	Action* GetAction(std::string toolName); 
 	Action* GetAction(ActionType toolType); 
 	std::list<Action*> GetActionsList() const; 
+	std::list<Action*> GetSequentialActionsList() const;
 	void DeleteAction(ActionType toolNameToDelete);
 
 	// Clickable Area ---
@@ -143,6 +144,10 @@ private:
 	UID uid; 
 	bool hasVisuals;
 	bool isInteractable; 
+
+	// Fly Object Fixed Actions
+	std::list<Action*> sequentialActionsList;
+
 };
 
 #endif

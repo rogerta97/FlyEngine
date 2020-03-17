@@ -38,7 +38,11 @@ public:
 	void DrawObjectCreator(); 
 	void DrawObjectActionsList(); 
 	bool DrawSelectable(ActionSelectableInfo selectableInfo, bool& isSelected, int posInList, int selectableHeight, Action* currentTool);
-	void DrawAddAndDeleteActionButtons(); 
+	void DrawAddAndDeleteActionButtons(bool fromFixedAction = false);
+
+	// Sequential Actions ----------
+	void DrawObjectSequentialCreator();
+	void DrawSequentialActionsList(); 
 	
 	// Draw Prev Object Settings --
 	void DrawSelectedActionSettings();
@@ -48,7 +52,7 @@ public:
 	void DrawEmitSoundActionSettings();
 	void DrawDisplayAnimationSettings();
 
-	void OnAddActionButtonClicked(); 
+	void OnAddActionButtonClicked(bool fromFixedAction = false);
 	bool DrawCloseAndCreateButton();
 	void AddCreatingObject();
 

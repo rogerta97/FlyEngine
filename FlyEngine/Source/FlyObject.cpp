@@ -410,7 +410,7 @@ void FlyObject::CalculateCurrentGizmo()
 	}
 }
 
-DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePath)
+DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePath, bool addToSequentialActions)
 {
 	if (GetAction(ACTION_DISPLAY_IMAGE) == nullptr)
 	{
@@ -420,7 +420,10 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 		DisplayImageAction* newAtrImage = new DisplayImageAction(this);
 		newAtrImage->CreateImage(imageTexturePath);
 
-		actionsList.push_back(newAtrImage);
+		if(addToSequentialActions)
+			sequentialActionsList.push_back(newAtrImage);
+		else
+			actionsList.push_back(newAtrImage);
 
 		// Addapt Gizmo Rect to new Image
 		gizmos->FitSelectBoxSize();
@@ -447,13 +450,11 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 	return (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE); 	
 }
 
-ChangeRoomAction* FlyObject::AddChangeRoomAction()
+ChangeRoomAction* FlyObject::AddChangeRoomAction(bool addToSequentialActions)
 {
 	if (GetAction(ACTION_CHANGE_ROOM) == nullptr)
 	{
 		ChangeRoomAction* changeSceneTool = new ChangeRoomAction(this);
-
-		actionsList.push_back(changeSceneTool);
 
 		// Addapt Gizmo Rect to new Image
 		gizmos->FitSelectBoxSize();
@@ -464,43 +465,46 @@ ChangeRoomAction* FlyObject::AddChangeRoomAction()
 	return (ChangeRoomAction*)GetAction(ACTION_CHANGE_ROOM);
 }
 
-ModifyVariableAction* FlyObject::AddModifyVariableAction()
+ModifyVariableAction* FlyObject::AddModifyVariableAction(bool addToSequentialActions)
 {
 	if (GetAction(ACTION_MOD_VARIABLE) == nullptr)
 	{
 		ModifyVariableAction* mofidyVarAction = new ModifyVariableAction(this);
-		actionsList.push_back(mofidyVarAction);
 		return mofidyVarAction;
 	}
 
 	return (ModifyVariableAction*)GetAction(ACTION_MOD_VARIABLE);
 }
 
-EmitSoundAction* FlyObject::AddEmitSoundAction()
+EmitSoundAction* FlyObject::AddEmitSoundAction(bool addToSequentialActions)
 {
 	if (GetAction(ACTION_EMIT_SOUND) == nullptr)
 	{
 		EmitSoundAction* emitSoundAction = new EmitSoundAction(this);
-		actionsList.push_back(emitSoundAction);
 		return emitSoundAction;
 	}
 
 	return (EmitSoundAction*)GetAction(ACTION_EMIT_SOUND);
 }
 
-DisplayAnimationAction* FlyObject::AddDisplayAnimationAction()
+DisplayAnimationAction* FlyObject::AddDisplayAnimationAction(bool addToSequentialActions)
 {
 	if (GetAction(ACTION_DISPLAY_ANIMATION) == nullptr)
 	{
 		DisplayAnimationAction* displayAnimationAction = new DisplayAnimationAction(this);
-		actionsList.push_back(displayAnimationAction);
+
+		if (addToSequentialActions)
+			sequentialActionsList.push_back(displayAnimationAction);
+		else
+			actionsList.push_back(displayAnimationAction);
+
 		return displayAnimationAction;
 	}
 
 	return (DisplayAnimationAction*)GetAction(ACTION_DISPLAY_ANIMATION);
 }
 
-FollowPathAction* FlyObject::AddFollowPathAction()
+FollowPathAction* FlyObject::AddFollowPathAction(bool addToSequentialActions)
 {
 	if (GetAction(ACTION_FOLLOW_PATH) == nullptr)
 	{
@@ -512,7 +516,7 @@ FollowPathAction* FlyObject::AddFollowPathAction()
 	return (FollowPathAction*)GetAction(ACTION_FOLLOW_PATH);
 }
 
-DisplayTextAction* FlyObject::AddDisplayTextAction()
+DisplayTextAction* FlyObject::AddDisplayTextAction(bool addToSequentialActions)
 {
 	if (GetAction(ACTION_DISPLAY_TEXT) == nullptr)
 	{
@@ -576,6 +580,11 @@ Action* FlyObject::GetAction(ActionType toolType)
 std::list<Action*> FlyObject::GetActionsList() const
 {
 	return actionsList;
+}
+
+std::list<Action*> FlyObject::GetSequentialActionsList() const
+{
+	return sequentialActionsList;
 }
 
 void FlyObject::DeleteAction(ActionType actionType)

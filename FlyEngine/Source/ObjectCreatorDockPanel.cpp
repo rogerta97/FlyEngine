@@ -126,39 +126,21 @@ bool ObjectCreatorDockPanel::Draw()
 
 		if (selectedObjectType == ACTION_OBJECT || selectedObjectType == OBJECT_SEQUENTIAL)
 		{
-			ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
-			ImGui::Text("Object Attributes:");
-			ImGui::PopFont();
-			if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
+			if (selectedObjectType == ACTION_OBJECT)
+				DrawObjectCreator();
+			else
+				DrawObjectSequentialCreator();
+			
+			if (creatingObject->IsInteractable())
 			{
-
-				if (ImGui::BeginTabItem("Actions"))
+				ImGuiTabItemFlags tabFlags = 0;
+				if (focusClickableAreaTab)
 				{
-					if(selectedObjectType == ACTION_OBJECT)
-						DrawObjectCreator();
-					else
-						DrawObjectCreator();
-
-					ImGui::EndTabItem();
+					tabFlags |= ImGuiTabItemFlags_SetSelected;
+					focusClickableAreaTab = false;
 				}
 
-				if (creatingObject->IsInteractable())
-				{
-					ImGuiTabItemFlags tabFlags = 0;
-					if (focusClickableAreaTab)
-					{
-						tabFlags |= ImGuiTabItemFlags_SetSelected;
-						focusClickableAreaTab = false;
-					}
-
-					if (ImGui::BeginTabItem("Clickable Area", 0, tabFlags))
-					{
-						DrawClickableAreaCreator();
-						ImGui::EndTabItem();
-					}
-				}
-
-				ImGui::EndTabBar();
+				DrawClickableAreaCreator();
 			}
 		}
 		else if (selectedObjectType == INVENTORY_ITEM)
@@ -172,6 +154,30 @@ bool ObjectCreatorDockPanel::Draw()
 	}
 
 	ImGui::End();
+}
+void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
+{
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Fixed Actions:");
+	ImGui::PopFont();
+
+	DrawObjectActionsList();
+	DrawAddAndDeleteActionButtons();
+
+	ImGui::Separator(); 
+
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Sequential Actions:");
+	ImGui::PopFont();
+
+	DrawSequentialActionsList();
+	DrawAddAndDeleteActionButtons(true);
+
+	if (ImGui::BeginTabBar("SelectedSettings"))
+	{
+		DrawSelectedActionSettings();
+		ImGui::EndTabBar();
+	}
 }
 
 void ObjectCreatorDockPanel::DrawInventorySettings()
@@ -378,9 +384,9 @@ void ObjectCreatorDockPanel::DrawObjectCreator()
 
 void ObjectCreatorDockPanel::DrawObjectActionsList()
 {
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	ImGui::Text("Add Actions: ");
-	ImGui::PopFont();
+	//ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	//ImGui::Text("Add Actions: ");
+	//ImGui::PopFont();
 
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5, 5));
@@ -398,6 +404,40 @@ void ObjectCreatorDockPanel::DrawObjectActionsList()
 
 			if (displayImageAction->fromAnimation == true)
 				continue; 
+		}
+
+		DrawSelectable(selectableInfo, currentAction->IsSelected(), pos, 42, currentAction);
+		pos++;
+	}
+
+	ImGui::EndChild();
+
+	ImGui::PopStyleVar();
+	ImGui::PopStyleColor();
+}
+
+void ObjectCreatorDockPanel::DrawSequentialActionsList()
+{
+	//ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	//ImGui::Text("Add Actions: ");
+	//ImGui::PopFont();
+
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5, 5));
+
+	ImGui::BeginChild("##AttributesChildSequential", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
+
+	int pos = 0;
+	for (auto& currentAction : creatingObject->GetSequentialActionsList())
+	{
+		ActionSelectableInfo selectableInfo = currentAction->GetActionSelectableInfo();
+
+		if (currentAction->GetActionType() == ACTION_DISPLAY_IMAGE)
+		{
+			DisplayImageAction* displayImageAction = (DisplayImageAction*)currentAction;
+
+			if (displayImageAction->fromAnimation == true)
+				continue;
 		}
 
 		DrawSelectable(selectableInfo, currentAction->IsSelected(), pos, 42, currentAction);
@@ -731,7 +771,7 @@ void ObjectCreatorDockPanel::DrawDisplayAnimationSettings()
 	}
 }
 
-void ObjectCreatorDockPanel::OnAddActionButtonClicked()
+void ObjectCreatorDockPanel::OnAddActionButtonClicked(bool fromFixedAction)
 {
 	if (ImGui::BeginPopup("AddActionToObject"))
 	{	
@@ -757,7 +797,7 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 			switch (newActionSelected->actionType)
 			{
 			case ACTION_DISPLAY_IMAGE:
-				selectedAction = creatingObject->AddDisplayImageAction(std::string(MyFileSystem::getInstance()->GetIconsDirectory() + "EmptyObject.png").c_str());
+				selectedAction = creatingObject->AddDisplayImageAction(std::string(MyFileSystem::getInstance()->GetIconsDirectory() + "EmptyObject.png").c_str(), fromFixedAction);
 				break;
 
 			case ACTION_CHANGE_ROOM:
@@ -777,7 +817,7 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked()
 				break;
 
 			case ACTION_DISPLAY_ANIMATION:
-				creatingObject->AddDisplayAnimationAction();
+				creatingObject->AddDisplayAnimationAction(fromFixedAction);
 				break;
 
 			case ACTION_FOLLOW_PATH:
@@ -1151,7 +1191,7 @@ void ObjectCreatorDockPanel::DrawDisplayImageSettings()
 
 }
 
-void ObjectCreatorDockPanel::DrawAddAndDeleteActionButtons()
+void ObjectCreatorDockPanel::DrawAddAndDeleteActionButtons(bool fromFixedAction)
 {
 	ImGui::Spacing();
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
@@ -1176,8 +1216,7 @@ void ObjectCreatorDockPanel::DrawAddAndDeleteActionButtons()
 	}
 
 	ImGui::PopStyleVar();
-	ImGui::Spacing();
 
 	// Callbacks for buttons 
-	OnAddActionButtonClicked();
+	OnAddActionButtonClicked(fromFixedAction);
 }
