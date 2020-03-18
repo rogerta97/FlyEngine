@@ -9,6 +9,7 @@
 #include "Gizmos.h"
 #include "UI_Text.h"
 #include "FollowPathAction.h"
+#include "MyFileSystem.h"
 #include "ResourceManager.h"
 #include "ChangeRoomAction.h"
 #include "DisplayImageAction.h"
@@ -957,6 +958,168 @@ void ObjectPropertiesDockPanel::DrawObjectActionsTab()
 
 	// Draw Tool --------
 	DrawActionSettings();
+}
+
+void ObjectPropertiesDockPanel::DrawObjectSequenceActionsTab()
+{
+	static bool toSequentialList = false;
+	static bool updatePopup = false;
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Fixed Actions:");
+	ImGui::PopFont();
+
+	DrawActionsList();
+
+	ImGui::Spacing();
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
+
+	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
+	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
+
+	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
+	{
+		flog("Plus Fixed");
+		toSequentialList = false;
+		ImGui::OpenPopup("AddActionToObject");
+	}
+
+	ImGui::SameLine();
+	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
+	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(30, 30)))
+	{
+		/*if (selectedAction != nullptr)
+		{
+			creatingObject->DeleteAction(selectedAction->GetActionType());
+			selectedAction = nullptr;
+		}*/
+	}
+
+	ImGui::PopStyleVar();
+
+	ImGui::Spacing();
+	ImGui::Separator();
+
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Sequential Actions:");
+	ImGui::PopFont();
+
+	selectedObject->DrawSequentialActionsList();
+
+	ImGui::Spacing();
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
+
+	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
+	plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite2");
+
+	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
+	{
+		flog("Sequential Fixed");
+		toSequentialList = true;
+		ImGui::OpenPopup("AddActionToObject");
+	}
+
+	ImGui::SameLine();
+	minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
+	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(30, 30)))
+	{
+		//if (selectedAction != nullptr)
+		//{
+		//	creatingObject->DeleteAction(selectedAction->GetActionType());
+		//	selectedAction = nullptr;
+		//}
+	}
+
+	ImGui::PopStyleVar();
+
+	if (ImGui::BeginTabBar("SelectedSettings"))
+	{
+		DrawActionSettings();
+		ImGui::EndTabBar();
+	}
+
+	// Callbacks for buttons 
+	flog("%d", toSequentialList);
+
+	if (ImGui::BeginPopup("AddActionToObject"))
+	{
+		ImGui::Spacing();
+
+		// Search Bar ---------------
+		static char searchNewActionBuffer[256];
+		ImGui::InputTextWithHint("##SearchTool", "Search...", searchNewActionBuffer, IM_ARRAYSIZE(searchNewActionBuffer));
+		ImGui::SameLine();
+
+		Texture* filterIcon = (Texture*)ResourceManager::getInstance()->GetResource("FilterIcon");
+		ImGui::Image((ImTextureID)filterIcon->GetTextureID(), ImVec2(22, 22));
+
+		ImGui::Spacing();
+
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(2.0f, 2.0f));
+		ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), 150));
+
+		// Tools Dictonary ----------
+		ActionSelectableInfo* newActionSelected = nullptr;
+
+		if (toSequentialList)
+			newActionSelected = App->moduleManager->DrawActionDictionaryUI();
+		else
+			newActionSelected = App->moduleManager->DrawActionDictionaryUI(FILTER_ACTIONS_FIXED);
+
+		if (newActionSelected != nullptr)
+		{
+			Action* selectedAction = nullptr; 
+			switch (newActionSelected->actionType)
+			{
+			case ACTION_DISPLAY_IMAGE:
+				selectedAction = selectedObject->AddDisplayImageAction(std::string(MyFileSystem::getInstance()->GetIconsDirectory() + "EmptyObject.png").c_str(), toSequentialList);
+				break;
+
+			case ACTION_CHANGE_ROOM:
+				selectedAction = selectedObject->AddChangeRoomAction(toSequentialList);
+				break;
+
+			case ACTION_MOD_VARIABLE:
+				selectedAction = selectedObject->AddModifyVariableAction(toSequentialList);
+				break;
+
+			case ACTION_EMIT_SOUND:
+				selectedAction = selectedObject->AddEmitSoundAction(toSequentialList);
+				break;
+
+			case ACTION_DISPLAY_TEXT:
+				selectedAction = selectedObject->AddDisplayTextAction(toSequentialList);
+				break;
+
+			case ACTION_DISPLAY_ANIMATION:
+				selectedAction = selectedObject->AddDisplayAnimationAction(toSequentialList);
+				break;
+
+			case ACTION_FOLLOW_PATH:
+				selectedAction = selectedObject->AddFollowPathAction(toSequentialList);
+				break;
+
+			case AT_null:
+				break;
+			}
+
+			if (toSequentialList && selectedAction != nullptr)
+				selectedAction->SetActionClass(ACTION_CLASS_SEQUENTIAL);
+
+			ImGui::EndChild();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleVar();
+			ImGui::CloseCurrentPopup();
+			ImGui::EndPopup();
+			return;
+		}
+
+		ImGui::EndChild();
+		ImGui::PopStyleColor();
+		ImGui::PopStyleVar();
+
+		ImGui::EndPopup();
+	}
 }
 
 void ObjectPropertiesDockPanel::DrawClickableAreaTab()

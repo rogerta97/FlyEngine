@@ -590,6 +590,36 @@ FollowPathAction* FlyObject::AddFollowPathAction(bool addToSequentialActions)
 	return (FollowPathAction*)GetAction(ACTION_FOLLOW_PATH);
 }
 
+void FlyObject::DrawSequentialActionsList()
+{
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5, 5));
+
+	ImGui::BeginChild("##AttributesChildSequential", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
+
+	int pos = 0;
+	for (auto& currentAction : GetSequentialActionsList())
+	{
+		ActionSelectableInfo selectableInfo = currentAction->GetActionSelectableInfo();
+
+		if (currentAction->GetActionType() == ACTION_DISPLAY_IMAGE)
+		{
+			DisplayImageAction* displayImageAction = (DisplayImageAction*)currentAction;
+
+			if (displayImageAction->fromAnimation == true)
+				continue;
+		}
+
+		DrawSelectable(selectableInfo, currentAction->IsSelected(), pos, 42, currentAction);
+		pos++;
+	}
+
+	ImGui::EndChild();
+
+	ImGui::PopStyleVar();
+	ImGui::PopStyleColor();
+}
+
 DisplayTextAction* FlyObject::AddDisplayTextAction(bool addToSequentialActions)
 {
 	if (GetAction(ACTION_DISPLAY_TEXT) == nullptr)

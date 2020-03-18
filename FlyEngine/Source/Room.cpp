@@ -403,6 +403,13 @@ FlyObject* Room::CreateInventoryItem(std::string objectName, std::string descrip
 	return newObject;
 }
 
+FlyObject* Room::CreateFlyObjectSequencial(std::string objectName, std::string description)
+{
+	FlyObject* newObject = new FlyObject(objectName, description, OBJECT_SEQUENTIAL, this);
+	objectsInRoom.push_back(newObject);
+	return newObject;
+}
+
 void Room::AddFlyObject(FlyObject* newFlyObject)
 {
 	if (newFlyObject == nullptr) {

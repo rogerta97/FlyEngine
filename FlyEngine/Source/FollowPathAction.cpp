@@ -208,8 +208,7 @@ void FollowPathAction::DrawActionOccurenceCheckboxes()
 	ImGui::PopFont();
 
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
-
+	
 	if (GetActionClass() == ACTION_CLASS_SEQUENTIAL)
 	{
 		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));

@@ -68,6 +68,7 @@ void Action::DrawUISettingsInButton()
 void Action::SaveAction(JSON_Object* jsonObject, std::string serializeObjectString, bool literalString)
 {
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "ActionType").c_str(), actionType);
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "ActionClass").c_str(), actionClass);
 	SaveActionConditions(serializeObjectString, jsonObject);
 }
 

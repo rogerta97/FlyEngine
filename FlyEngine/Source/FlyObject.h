@@ -68,6 +68,8 @@ public:
 	DisplayAnimationAction* AddDisplayAnimationAction(bool addToSequentialActions = false);
 	FollowPathAction* AddFollowPathAction(bool addToSequentialActions = false);
 
+	void DrawSequentialActionsList();
+
 	void SetSelectedAction(ActionType toolTypeSelected); 
 	ActionType GetSelectedActionType(); 
 	Action* GetAction(std::string toolName); 

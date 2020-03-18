@@ -115,10 +115,13 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 	
 	// Create Object --
 	FlyObject* newObject = nullptr; 
+
 	if (flyObjectType == INVENTORY_ITEM)	
 		newObject = currentRoom->CreateInventoryItem(newObjectName.c_str());	
-	else	
+	else if(flyObjectType == ACTION_OBJECT)
 		newObject = currentRoom->CreateFlyObject(newObjectName.c_str());
+	else if (flyObjectType == OBJECT_SEQUENTIAL)
+		newObject = currentRoom->CreateFlyObjectSequencial(newObjectName.c_str());
 	
 	// UID --
 	newObject->SetUID(json_object_dotget_number(root_obj, string(serializeObjectStr + string("UID")).c_str())); 
@@ -156,7 +159,13 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayImage")).c_str()))
 		{
 			string textureName = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("DisplayImage.TextureName")).c_str());
-			DisplayImageAction* displayImageAction = newObject->AddDisplayImageAction(textureName.c_str());
+			int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+
+			DisplayImageAction* displayImageAction = nullptr; 
+			if(actionClass == ACTION_CLASS_SEQUENTIAL)
+				displayImageAction = newObject->AddDisplayImageAction(textureName.c_str(), true);
+			else
+				displayImageAction = newObject->AddDisplayImageAction(textureName.c_str());
 
 			displayImageAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayImage.Occurrence.")); 
 		}
@@ -165,7 +174,14 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ChangeRoom")).c_str()))
 		{
 			UID destinationRoomUID = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ChangeRoom.Destination")).c_str());
-			ChangeRoomAction* changeRoomAction = newObject->AddChangeRoomAction(); 
+
+			int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+
+			ChangeRoomAction* changeRoomAction = nullptr;
+			if (actionClass == ACTION_CLASS_SEQUENTIAL)
+				changeRoomAction = newObject->AddChangeRoomAction(true);
+			else
+				changeRoomAction = newObject->AddChangeRoomAction();
 
 			changeRoomAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("ChangeRoom.Occurrence."));
 
@@ -177,7 +193,14 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ModifyVariable")).c_str()))
 		{
 			int effectsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.EffectsAmount")).c_str());
-			ModifyVariableAction* modifyVariableAction = newObject->AddModifyVariableAction();
+
+			int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+
+			ModifyVariableAction* modifyVariableAction = nullptr;
+			if (actionClass == ACTION_CLASS_SEQUENTIAL)
+				modifyVariableAction = newObject->AddModifyVariableAction(true);
+			else
+				modifyVariableAction = newObject->AddModifyVariableAction();
 
 			modifyVariableAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("ModifyVariable.Occurrence."));
 
@@ -212,7 +235,13 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("EmitSound")).c_str()))
 		{
 			string audioClipPath = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("EmitSound.Path")).c_str());
-			EmitSoundAction* emitSoundAction = newObject->AddEmitSoundAction();
+			int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+
+			EmitSoundAction* emitSoundAction = nullptr;
+			if (actionClass == ACTION_CLASS_SEQUENTIAL)
+				emitSoundAction = newObject->AddEmitSoundAction(true);
+			else
+				emitSoundAction = newObject->AddEmitSoundAction();
 
 			emitSoundAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("EmitSound.Occurrence."));
 
@@ -227,7 +256,14 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		// Load Display Text Action ----------------------
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayText")).c_str()))
 		{
-			DisplayTextAction* displayTextAction = newObject->AddDisplayTextAction();
+			int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+
+			DisplayTextAction* displayTextAction = nullptr;
+			if (actionClass == ACTION_CLASS_SEQUENTIAL)
+				displayTextAction = newObject->AddDisplayTextAction(true);
+			else
+				displayTextAction = newObject->AddDisplayTextAction();
+
 			displayTextAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayText.Occurrence."));
 
 			string serializeDisplayTextStr = serializeObjectStrActions + "DisplayText."; 
@@ -251,7 +287,14 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		// Load Display Animation Action ----------------------
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayAnimation")).c_str()))
 		{
-			DisplayAnimationAction* displayAnimationAction = newObject->AddDisplayAnimationAction();
+			int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+
+			DisplayAnimationAction* displayAnimationAction = nullptr;
+			if (actionClass == ACTION_CLASS_SEQUENTIAL)
+				displayAnimationAction = newObject->AddDisplayAnimationAction(true);
+			else
+				displayAnimationAction = newObject->AddDisplayAnimationAction();
+
 			displayAnimationAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayAnimation.Occurrence."));
 
 			string serializeDisplayTextStr = serializeObjectStrActions + "DisplayAnimation.";
@@ -285,7 +328,13 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		// Load Follow Path Action
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("FollowPath")).c_str()))
 		{
-			FollowPathAction* followPathAction = newObject->AddFollowPathAction();
+			int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+			FollowPathAction* followPathAction = nullptr;
+			if (actionClass == ACTION_CLASS_SEQUENTIAL)
+				followPathAction = newObject->AddFollowPathAction(true);
+			else
+				followPathAction = newObject->AddFollowPathAction();
+
 			followPathAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("FollowPath.Occurrence."));
 
 			string serializeFollowPathStr = serializeObjectStrActions + "FollowPath.";
