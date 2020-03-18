@@ -114,11 +114,27 @@ ActionSelectableInfo* ModuleManager::DrawActionDictionaryUI(DictionaryPopupFilte
 	for (auto& currentToolDescription : toolNamesDescriptions)
 	{
 		// Filter Actions from popup type 
+		// UI Button Filter
 		if (popupFilter == FILTER_ACTIONS_UI_BUTTON &&
 			currentToolDescription.actionType == ACTION_DISPLAY_IMAGE)
 			continue;
+
+		// Inventory Filter
 		if (popupFilter == FILTER_ACTIONS_INVENTORY_CLICK &&
 			currentToolDescription.actionType == ACTION_DISPLAY_IMAGE)
+			continue;
+
+		// Sequential Filter
+		if (popupFilter == FILTER_ACTIONS_FIXED &&
+			currentToolDescription.actionType == ACTION_CHANGE_ROOM)
+			continue;
+
+		if (popupFilter == FILTER_ACTIONS_FIXED &&
+			currentToolDescription.actionType == ACTION_MOD_VARIABLE)
+			continue;
+
+		if (popupFilter == FILTER_ACTIONS_FIXED &&
+			currentToolDescription.actionType == ACTION_FOLLOW_PATH)
 			continue;
 
 		ImGui::PushFont(App->moduleImGui->rudaBoldMid);

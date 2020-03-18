@@ -174,6 +174,7 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
 		flog("Plus Fixed");
+		toSequentialList = false;
 		ImGui::OpenPopup("AddActionToObject");
 	}
 
@@ -233,7 +234,82 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 
 	// Callbacks for buttons 
 	flog("%d", toSequentialList);
-	OnAddActionButtonClicked(toSequentialList);
+
+	if (ImGui::BeginPopup("AddActionToObject"))
+	{
+		ImGui::Spacing();
+
+		// Search Bar ---------------
+		ImGui::InputTextWithHint("##SearchTool", "Search...", searchNewActionBuffer, IM_ARRAYSIZE(searchNewActionBuffer));
+		ImGui::SameLine();
+
+		Texture* filterIcon = (Texture*)ResourceManager::getInstance()->GetResource("FilterIcon");
+		ImGui::Image((ImTextureID)filterIcon->GetTextureID(), ImVec2(22, 22));
+
+		ImGui::Spacing();
+
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(2.0f, 2.0f));
+		ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), 150));
+
+		// Tools Dictonary ----------
+		ActionSelectableInfo* newActionSelected = nullptr;
+
+		if(toSequentialList)
+			newActionSelected = App->moduleManager->DrawActionDictionaryUI();
+		else
+			newActionSelected = App->moduleManager->DrawActionDictionaryUI(FILTER_ACTIONS_FIXED);
+
+		if (newActionSelected != nullptr)
+		{
+			switch (newActionSelected->actionType)
+			{
+			case ACTION_DISPLAY_IMAGE:
+				selectedAction = creatingObject->AddDisplayImageAction(std::string(MyFileSystem::getInstance()->GetIconsDirectory() + "EmptyObject.png").c_str(), toSequentialList);
+				break;
+
+			case ACTION_CHANGE_ROOM:
+				creatingObject->AddChangeRoomAction(toSequentialList);
+				break;
+
+			case ACTION_MOD_VARIABLE:
+				creatingObject->AddModifyVariableAction(toSequentialList);
+				break;
+
+			case ACTION_EMIT_SOUND:
+				creatingObject->AddEmitSoundAction(toSequentialList);
+				break;
+
+			case ACTION_DISPLAY_TEXT:
+				creatingObject->AddDisplayTextAction(toSequentialList);
+				break;
+
+			case ACTION_DISPLAY_ANIMATION:
+				creatingObject->AddDisplayAnimationAction(toSequentialList);
+				break;
+
+			case ACTION_FOLLOW_PATH:
+				creatingObject->AddFollowPathAction(toSequentialList);
+				break;
+
+			case AT_null:
+				break;
+			}
+
+			ImGui::EndChild();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleVar();
+			ImGui::CloseCurrentPopup();
+			ImGui::EndPopup();
+			return;
+		}
+
+		ImGui::EndChild();
+		ImGui::PopStyleColor();
+		ImGui::PopStyleVar();
+
+		ImGui::EndPopup();
+	}
 }
 
 void ObjectCreatorDockPanel::DrawInventorySettings()
