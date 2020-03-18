@@ -162,8 +162,36 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 	ImGui::PopFont();
 
 	DrawObjectActionsList();
-	DrawAddAndDeleteActionButtons();
+	
+	ImGui::Spacing();
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
 
+	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
+	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
+
+	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
+	{
+		flog("Plus Fixed");
+		ImGui::OpenPopup("AddActionToObject");
+	}
+
+	ImGui::SameLine();
+	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
+	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(30, 30)))
+	{
+		if (selectedAction != nullptr)
+		{
+			creatingObject->DeleteAction(selectedAction->GetActionType());
+			selectedAction = nullptr;
+		}
+	}
+
+	ImGui::PopStyleVar();
+
+	// Callbacks for buttons 
+	//OnAddActionButtonClicked(fromFixedAction);
+
+	ImGui::Spacing(); 
 	ImGui::Separator(); 
 
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
@@ -171,7 +199,36 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 	ImGui::PopFont();
 
 	DrawSequentialActionsList();
-	DrawAddAndDeleteActionButtons(true);
+	
+	ImGui::Spacing();
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
+
+	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
+	plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
+
+	ImGui::PushID(1);
+	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
+	{
+		flog("Sequential Fixed");
+		ImGui::OpenPopup("AddActionToObject");
+	}
+	ImGui::PopID(); 
+
+	ImGui::SameLine();
+	minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
+	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(30, 30)))
+	{
+		if (selectedAction != nullptr)
+		{
+			creatingObject->DeleteAction(selectedAction->GetActionType());
+			selectedAction = nullptr;
+		}
+	}
+
+	ImGui::PopStyleVar();
+
+	// Callbacks for buttons 
+	//OnAddActionButtonClicked(fromFixedAction);
 
 	if (ImGui::BeginTabBar("SelectedSettings"))
 	{
