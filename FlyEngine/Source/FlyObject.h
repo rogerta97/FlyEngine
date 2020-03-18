@@ -72,6 +72,7 @@ public:
 	ActionType GetSelectedActionType(); 
 	Action* GetAction(std::string toolName); 
 	Action* GetAction(ActionType toolType); 
+	Action* GetSequentialAction(ActionType toolType);
 	std::list<Action*> GetActionsList() const; 
 	std::list<Action*> GetSequentialActionsList() const;
 	void DeleteAction(ActionType toolNameToDelete);

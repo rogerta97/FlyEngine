@@ -13,6 +13,7 @@
 #include "ModifyVariableAction.h"
 #include "DisplayImageAction.h"
 #include "Texture.h"
+#include "FollowPathAction.h"
 #include "ImageImporter.h"
 #include "DisplayImageAction.h"
 #include "ViewportManager.h"
@@ -639,255 +640,266 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 			break;
 
 		case ACTION_FOLLOW_PATH:
-			
+			DrawFollowPathSettings();
 			break;
 		}
 	}
 }
 
+void ObjectCreatorDockPanel::DrawFollowPathSettings()
+{
+	FollowPathAction* followPathAction = (FollowPathAction*)this->selectedAction;
+
+	if (followPathAction != nullptr)
+	{
+		if (ImGui::CollapsingHeader("Follow Path Settings", ImGuiTreeNodeFlags_DefaultOpen))
+			followPathAction->DrawUISettings();
+	}
+}
+
 void ObjectCreatorDockPanel::DrawChangeRoomActionSettings()
 {
-	ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
-	ImGui::Text("Change Room Attributes:");
-	ImGui::PopFont();
-
-	ImGui::Separator();
-
-	ChangeRoomAction* changeRoomAction = (ChangeRoomAction*)this->selectedAction;
-
-	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-	ImGui::Text("Action Happens On:");
-	ImGui::PopFont();
-
-	ImGui::PushFont(App->moduleImGui->rudaRegularMid);
-	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-
-	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
-
-	ImGui::SetCursorPos(ImVec2(5, 8));
-	ImGui::Checkbox("Object Clicked", &changeRoomAction->IsOccObjectClicked());
-
-	ImGui::SetCursorPos(ImVec2(5, 38));
-	ImGui::Checkbox("Blackboard Value Condition", &changeRoomAction->IsOccCondition());
-
-	ImGui::SameLine(); 
-	if (ImGui::Button(showValueConditionButtonText.c_str()))
+	if (ImGui::CollapsingHeader("Change Room Attributes:", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		if (showValueConditions)
+		ChangeRoomAction* changeRoomAction = (ChangeRoomAction*)this->selectedAction;
+
+		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+		ImGui::Text("Action Happens On:");
+		ImGui::PopFont();
+
+		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+
+		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
+
+		ImGui::SetCursorPos(ImVec2(5, 8));
+		ImGui::Checkbox("Object Clicked", &changeRoomAction->IsOccObjectClicked());
+
+		ImGui::SetCursorPos(ImVec2(5, 38));
+		ImGui::Checkbox("Blackboard Value Condition", &changeRoomAction->IsOccCondition());
+
+		ImGui::SameLine();
+		if (ImGui::Button(showValueConditionButtonText.c_str()))
 		{
-			showValueConditions = false; 
-			showValueConditionButtonText = "Show Conditions"; 
+			if (showValueConditions)
+			{
+				showValueConditions = false;
+				showValueConditionButtonText = "Show Conditions";
+			}
+			else
+			{
+				showValueConditions = true;
+				showValueConditionButtonText = "Hide Conditions";
+			}
 		}
-		else
-		{
-			showValueConditions = true;
-			showValueConditionButtonText = "Hide Conditions";
-		}		
+
+		ImGui::Spacing();
+		ImGui::EndChild();
+
+		if (showValueConditions)
+			changeRoomAction->DrawActionConditionsList();
+
+		ImGui::PopFont();
+		ImGui::PopStyleColor();
+
+		IMGUI_SPACED_SEPARATOR;
+
+		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+		ImGui::Text("Change Room Settings: ");
+		ImGui::PopFont();
+
+		changeRoomAction->DrawSelectDestinationCombo();
 	}
-
-	ImGui::Spacing();
-	ImGui::EndChild();
-
-	if(showValueConditions)
-		changeRoomAction->DrawActionConditionsList();
-
-	ImGui::PopFont();
-	ImGui::PopStyleColor();
-
-	IMGUI_SPACED_SEPARATOR;
-
-	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-	ImGui::Text("Change Room Settings: ");
-	ImGui::PopFont();
-
-	changeRoomAction->DrawSelectDestinationCombo(); 
-
 }
 
 void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 {
-	ModifyVariableAction* modifyVariableAction = (ModifyVariableAction*)this->selectedAction;
-
-	if(modifyVariableAction == nullptr)
-		return; 
-
-	ImGui::Separator();
-
-	// Object Occurrence ---------
-	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-	ImGui::Text("Action Happens On:");
-	ImGui::PopFont();
-
-	ImGui::PushFont(App->moduleImGui->rudaRegularMid);
-	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 132));
-
-	ImGui::SetCursorPos(ImVec2(5, 8));
-	ImGui::Checkbox("Enter Room", &modifyVariableAction->IsOccSceneEnter());
-	ImGui::SetCursorPos(ImVec2(5, 38));
-	ImGui::Checkbox("Exit Room", &modifyVariableAction->IsOccSceneLeave());
-	ImGui::SetCursorPos(ImVec2(5, 68));
-	ImGui::Checkbox("Object Clicked", &modifyVariableAction->IsOccObjectClicked());
-	ImGui::SetCursorPos(ImVec2(5, 98));
-	ImGui::Checkbox("Blackboard Value Condition", &modifyVariableAction->IsOccCondition());
-
-	ImGui::SameLine();
-	if (ImGui::Button(showValueConditionButtonText.c_str()))
+	if (ImGui::CollapsingHeader("Modify Variable Attributes:", ImGuiTreeNodeFlags_DefaultOpen))
 	{
+		ModifyVariableAction* modifyVariableAction = (ModifyVariableAction*)this->selectedAction;
+
+		if (modifyVariableAction == nullptr)
+			return;
+
+		// Object Occurrence ---------
+		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+		ImGui::Text("Action Happens On:");
+		ImGui::PopFont();
+
+		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 132));
+
+		ImGui::SetCursorPos(ImVec2(5, 8));
+		ImGui::Checkbox("Enter Room", &modifyVariableAction->IsOccSceneEnter());
+		ImGui::SetCursorPos(ImVec2(5, 38));
+		ImGui::Checkbox("Exit Room", &modifyVariableAction->IsOccSceneLeave());
+		ImGui::SetCursorPos(ImVec2(5, 68));
+		ImGui::Checkbox("Object Clicked", &modifyVariableAction->IsOccObjectClicked());
+		ImGui::SetCursorPos(ImVec2(5, 98));
+		ImGui::Checkbox("Blackboard Value Condition", &modifyVariableAction->IsOccCondition());
+
+		ImGui::SameLine();
+		if (ImGui::Button(showValueConditionButtonText.c_str()))
+		{
+			if (showValueConditions)
+			{
+				showValueConditions = false;
+				showValueConditionButtonText = "Show Conditions";
+			}
+			else
+			{
+				showValueConditions = true;
+				showValueConditionButtonText = "Hide Conditions";
+			}
+		}
+
+		ImGui::EndChild();
+
 		if (showValueConditions)
+			modifyVariableAction->DrawActionConditionsList();
+
+		POP_FONT;
+		ImGui::PopStyleColor();
+
+		IMGUI_SPACED_SEPARATOR;
+
+		// Object Settings ----------
+		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+		ImGui::Text("Variables To Modify:");
+		ImGui::PopFont();
+
+		modifyVariableAction->DrawEffectVariablesUI();
+
+		Texture* plusIcon = (Texture*)ResourceManager::getInstance()->GetResource("PlusIcon");
+		if (ImGui::ImageButton((ImTextureID)plusIcon->GetTextureID(), ImVec2(30, 30)))
 		{
-			showValueConditions = false;
-			showValueConditionButtonText = "Show Conditions";
+			modifyVariableAction->AddEmptyEffect();
 		}
-		else
+
+		ImGui::SameLine();
+		Texture* minusIcon = (Texture*)ResourceManager::getInstance()->GetResource("MinusIcon");
+		if (ImGui::ImageButton((ImTextureID)minusIcon->GetTextureID(), ImVec2(30, 30)))
 		{
-			showValueConditions = true;
-			showValueConditionButtonText = "Hide Conditions";
+
 		}
-	}
-
-	ImGui::EndChild();
-
-	if (showValueConditions)
-		modifyVariableAction->DrawActionConditionsList();
-
-	POP_FONT;
-	ImGui::PopStyleColor();
-
-	IMGUI_SPACED_SEPARATOR;
-
-	// Object Settings ----------
-	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-	ImGui::Text("Variables To Modify:");
-	ImGui::PopFont();
-
-	modifyVariableAction->DrawEffectVariablesUI();
-
-	Texture* plusIcon = (Texture*)ResourceManager::getInstance()->GetResource("PlusIcon"); 
-	if (ImGui::ImageButton((ImTextureID)plusIcon->GetTextureID(), ImVec2(30, 30)))
-	{
-		modifyVariableAction->AddEmptyEffect();
-	}
-
-	ImGui::SameLine();
-	Texture* minusIcon = (Texture*)ResourceManager::getInstance()->GetResource("MinusIcon"); 
-	if (ImGui::ImageButton((ImTextureID)minusIcon->GetTextureID(), ImVec2(30, 30)))
-	{
-
-	}
+	}	
 }
 
 void ObjectCreatorDockPanel::DrawEmitSoundActionSettings()
 {
-	ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
-	ImGui::Text("Emit Sound Attributes:");
-	ImGui::PopFont();
-
-	ImGui::Separator();
-
-	EmitSoundAction* emitSoundAction = (EmitSoundAction*)this->selectedAction;
-
-	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-	ImGui::Text("Action Happens On:");
-	ImGui::PopFont();
-
-	ImGui::PushFont(App->moduleImGui->rudaRegularMid);
-	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-
-	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 130));
-
-	ImGui::SetCursorPos(ImVec2(5, 8));
-	ImGui::Checkbox("Scene Enter", &emitSoundAction->IsOccSceneEnter());
-
-	ImGui::SetCursorPos(ImVec2(5, 38));
-	ImGui::Checkbox("Scene Leave", &emitSoundAction->IsOccSceneLeave());
-
-	ImGui::SetCursorPos(ImVec2(5, 68));
-	ImGui::Checkbox("Object Clicked", &emitSoundAction->IsOccObjectClicked());
-
-	ImGui::SetCursorPos(ImVec2(5, 98));
-	ImGui::Checkbox("Blackboard Value Condition", &emitSoundAction->IsOccCondition());
-
-	ImGui::SameLine();
-	if (ImGui::Button(showValueConditionButtonText.c_str()))
+	if (ImGui::CollapsingHeader("Emit Sound Attributes:", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		if (showValueConditions)
+		//ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
+		//ImGui::Text("Emit Sound Attributes:");
+		//ImGui::PopFont();
+
+		//ImGui::Separator();
+
+		EmitSoundAction* emitSoundAction = (EmitSoundAction*)this->selectedAction;
+
+		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+		ImGui::Text("Action Happens On:");
+		ImGui::PopFont();
+
+		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+
+		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 130));
+
+		ImGui::SetCursorPos(ImVec2(5, 8));
+		ImGui::Checkbox("Scene Enter", &emitSoundAction->IsOccSceneEnter());
+
+		ImGui::SetCursorPos(ImVec2(5, 38));
+		ImGui::Checkbox("Scene Leave", &emitSoundAction->IsOccSceneLeave());
+
+		ImGui::SetCursorPos(ImVec2(5, 68));
+		ImGui::Checkbox("Object Clicked", &emitSoundAction->IsOccObjectClicked());
+
+		ImGui::SetCursorPos(ImVec2(5, 98));
+		ImGui::Checkbox("Blackboard Value Condition", &emitSoundAction->IsOccCondition());
+
+		ImGui::SameLine();
+		if (ImGui::Button(showValueConditionButtonText.c_str()))
 		{
-			showValueConditions = false;
-			showValueConditionButtonText = "Show Conditions";
-		}
-		else
-		{
-			showValueConditions = true;
-			showValueConditionButtonText = "Hide Conditions";
-		}
-	}
-
-	ImGui::Spacing();
-	ImGui::EndChild();
-
-	if (showValueConditions)
-		emitSoundAction->DrawActionConditionsList();
-
-	ImGui::PopFont();
-	ImGui::PopStyleColor();
-
-	IMGUI_SPACED_SEPARATOR;
-
-	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-	ImGui::Text("Emit Sound Settings: ");
-	ImGui::PopFont();
-
-	static char soundNameBuffer[256] = "";
-
-	Texture* playSound = (Texture*)ResourceManager::getInstance()->GetResource("PlayAudio");
-	if (ImGui::ImageButton((ImTextureID)playSound->GetTextureID(), ImVec2(20, 20)))
-	{
-		emitSoundAction->Play();
-	}
-
-	ImGui::SameLine(); 
-	
-	ImGui::InputTextWithHint("", "Select Sound...", soundNameBuffer, IM_ARRAYSIZE(soundNameBuffer), ImGuiInputTextFlags_ReadOnly);
-
-	if (ImGui::BeginDragDropTarget())
-	{
-		if(const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
-		{
-			int* selectedResourceUID = (int*)payload->Data;
-			Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID); 
-			
-			if (resourceDropped->GetType() == RESOURCE_SFX)
+			if (showValueConditions)
 			{
-				AudioClip* audioClipDropped = (AudioClip*)resourceDropped; 
-				emitSoundAction->audioClip = audioClipDropped; 
-
-				strcpy(soundNameBuffer, resourceDropped->GetName().c_str());
-			}	
+				showValueConditions = false;
+				showValueConditionButtonText = "Show Conditions";
+			}
+			else
+			{
+				showValueConditions = true;
+				showValueConditionButtonText = "Hide Conditions";
+			}
 		}
 
-		ImGui::EndDragDropTarget();
-	}
+		ImGui::Spacing();
+		ImGui::EndChild();
 
-	ImGui::SameLine(); 
+		if (showValueConditions)
+			emitSoundAction->DrawActionConditionsList();
 
-	if (ImGui::Button("Search##SearchSound"))
-	{
-		ImGui::OpenPopup("print_sound_selection_popup");
-		showSoundSelectionPopup = true; 
-	}
+		ImGui::PopFont();
+		ImGui::PopStyleColor();
 
-	if (showSoundSelectionPopup)
-	{
-		Resource* selectedSound = ResourceManager::getInstance()->PrintSoundsSelectionPopup();
+		IMGUI_SPACED_SEPARATOR;
 
-		if (selectedSound != nullptr)
+		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+		ImGui::Text("Emit Sound Settings: ");
+		ImGui::PopFont();
+
+		static char soundNameBuffer[256] = "";
+
+		Texture* playSound = (Texture*)ResourceManager::getInstance()->GetResource("PlayAudio");
+		if (ImGui::ImageButton((ImTextureID)playSound->GetTextureID(), ImVec2(20, 20)))
 		{
-			AudioClip* audioClipDropped = (AudioClip*)selectedSound;
-			emitSoundAction->audioClip = audioClipDropped;
-			
-			showSoundSelectionPopup = false;
-			strcpy(soundNameBuffer, selectedSound->GetName().c_str()); 
+			emitSoundAction->Play();
+		}
+
+		ImGui::SameLine();
+
+		ImGui::InputTextWithHint("", "Select Sound...", soundNameBuffer, IM_ARRAYSIZE(soundNameBuffer), ImGuiInputTextFlags_ReadOnly);
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+			{
+				int* selectedResourceUID = (int*)payload->Data;
+				Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+				if (resourceDropped->GetType() == RESOURCE_SFX)
+				{
+					AudioClip* audioClipDropped = (AudioClip*)resourceDropped;
+					emitSoundAction->audioClip = audioClipDropped;
+
+					strcpy(soundNameBuffer, resourceDropped->GetName().c_str());
+				}
+			}
+
+			ImGui::EndDragDropTarget();
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Search##SearchSound"))
+		{
+			ImGui::OpenPopup("print_sound_selection_popup");
+			showSoundSelectionPopup = true;
+		}
+
+		if (showSoundSelectionPopup)
+		{
+			Resource* selectedSound = ResourceManager::getInstance()->PrintSoundsSelectionPopup();
+
+			if (selectedSound != nullptr)
+			{
+				AudioClip* audioClipDropped = (AudioClip*)selectedSound;
+				emitSoundAction->audioClip = audioClipDropped;
+
+				showSoundSelectionPopup = false;
+				strcpy(soundNameBuffer, selectedSound->GetName().c_str());
+			}
 		}
 	}
 }
@@ -1240,87 +1252,183 @@ void ObjectCreatorDockPanel::AddCreatingObject()
 
 void ObjectCreatorDockPanel::DrawDisplayImageSettings()
 {
-	ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
-	ImGui::Text("Display Image Attributes:");
-	ImGui::PopFont();
-
-	ImGui::Separator();
-
-	static char buf[256] = "";
-	DisplayImageAction* selectedImageAction = (DisplayImageAction*)this->selectedAction;
-
-	// Object Occurrence -----------------------
-	selectedImageAction->DrawActionOccurenceCheckboxes();
-
-	IMGUI_SPACE_SEPARATOR;
-
-	// Settings ---------------------------------
-	//if (selectedImageAction->GetTexture() == nullptr)
-	//	selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResource("EmptyObject"));
-	//else
-	//	selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResource(selectedImageAction->GetTexture()->GetName()));
-
-	float aspect_ratio = selectedImageAction->GetTexture()->GetAspectRatio();
-	float previewQuadWidth = 150;
-	float previewQuadHeight = previewQuadWidth / aspect_ratio;
-
-	PUSH_FONT(App->moduleImGui->rudaRegularMid);
-	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-
-	int childHeight = previewQuadHeight + 20;
-
-	PUSH_FONT(App->moduleImGui->rudaBoldBig);
-	ImGui::Text("Image Settings:");
-	POP_FONT;
-
-	ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), childHeight));
-
-	ImGui::Columns(2);
-	ImGui::SetColumnWidth(0, previewQuadWidth + 10);
-
-	ImGui::Spacing();
-	ImGui::Image((ImTextureID)selectedImageAction->GetTexture()->GetTextureID(), ImVec2(previewQuadWidth, previewQuadHeight));
-
-	ImGui::NextColumn();
-
-	ImGui::Spacing();
-	ImGui::Text("Name: "); ImGui::SameLine();
-	ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%s", selectedImageAction->GetTexture()->GetName().c_str());
-
-	ImGui::Text("Width: "); ImGui::SameLine();
-	ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", selectedImageAction->GetTexture()->GetWidth());
-
-	ImGui::Text("Height: "); ImGui::SameLine();
-	ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", selectedImageAction->GetTexture()->GetHeigth());
-
-	Texture* searchTexture = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
-	if (ImGui::Button("Change Image"))
+	if (ImGui::CollapsingHeader("Display Image Attributes:", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		char const* lFilterPatterns[2] = { "*.jpg" , "*.png" };
-		const char* path = tinyfd_openFileDialog("Load Image...", NULL, 2, lFilterPatterns, NULL, 0);
+		DisplayImageAction* selectedImageAction = (DisplayImageAction*)this->selectedAction;
 
-		if (path != NULL)
+		static char buf[256] = "";
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+		ImGui::BeginChild("UI_ImagePreview", ImVec2(ImGui::GetContentRegionAvailWidth(), 195));
+
+		ImVec2 imageMaxSize = ImVec2(ImGui::GetContentRegionAvailWidth(), 135);
+		ImVec2 uiImageDimensions = ImVec2(150, 150);
+		Texture* imageTexture = selectedImageAction->GetTexture();
+		ImTextureID selectedTextureID = 0;
+
+		if (imageTexture != nullptr)
 		{
-			if (!ResourceManager::getInstance()->ExistResourcePath(path))
+			float aspectRatio = imageTexture->GetAspectRatio();
+
+			if (imageTexture->IsVertical())
 			{
-				selectedImageAction->SetTexture(ImageImporter::getInstance()->LoadTexture(path, false));
-				ResourceManager::getInstance()->AddResource(selectedImageAction->GetTexture(), selectedImageAction->GetTexture()->GetName());
+				uiImageDimensions.y = imageMaxSize.y;
+				uiImageDimensions.x = uiImageDimensions.x * aspectRatio;
 			}
 			else
 			{
-				selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResourceByPath(path));
-			}
+				uiImageDimensions.y = imageMaxSize.y;
+				uiImageDimensions.x = uiImageDimensions.y * aspectRatio;
 
-			strcpy(buf, path);
-			flog("Player Opened %s", path);
+				if (uiImageDimensions.x > imageMaxSize.x)
+				{
+					float diff = uiImageDimensions.x - imageMaxSize.x;
+					uiImageDimensions.x -= diff;
+					uiImageDimensions.y = uiImageDimensions.x * aspectRatio;
+				}
+			}
+			selectedTextureID = (ImTextureID)imageTexture->GetTextureID();
 		}
 
-	}
-	ImGui::PopStyleColor();
-	ImGui::EndChild();
+		ImGui::Spacing();
 
-	POP_FONT;
+		ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (uiImageDimensions.x / 2), imageMaxSize.y / 2 - (uiImageDimensions.y / 2) + 10));
+		ImGui::Image(selectedTextureID, uiImageDimensions);
 
+		ImGui::Spacing();
+
+		static char searchButtonImageBuffer[256];
+
+		ImGui::Spacing();
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+		ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() - 70);
+		ImGui::InputTextWithHint("", "Search Image...", searchButtonImageBuffer, IM_ARRAYSIZE(searchButtonImageBuffer));
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+			{
+				int* selectedResourceUID = (int*)payload->Data;
+				Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+				if (resourceDropped->GetType() == RESOURCE_TEXTURE)
+				{
+					Texture* textureDropped = (Texture*)resourceDropped;
+					selectedImageAction->SetTexture(textureDropped);
+				}
+			}
+
+			ImGui::EndDragDropTarget();
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("Search##SearchUIIMage"))
+		{
+			char const* lFilterPatterns[2] = { "*.jpg" , "*.png" };
+			const char* path = tinyfd_openFileDialog("Load Image...", NULL, 2, lFilterPatterns, NULL, 0);
+
+			if (path != NULL)
+			{
+				if (!ResourceManager::getInstance()->ExistResourcePath(path))
+				{
+					selectedImageAction->SetTexture(ImageImporter::getInstance()->LoadTexture(path, false));
+					ResourceManager::getInstance()->AddResource(selectedImageAction->GetTexture(), selectedImageAction->GetTexture()->GetName());
+				}
+				else
+				{
+					selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResourceByPath(path));
+				}
+
+				strcpy(buf, path);
+				flog("Player Opened %s", path);
+			}
+		}
+		ImGui::EndChild();
+		ImGui::PopStyleColor();
+	
+		//{
+		//	//ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
+		//			//ImGui::Text("Display Image Attributes:");
+		//			//ImGui::PopFont();
+
+		//			//ImGui::Separator();
+
+		//	static char buf[256] = "";
+		//	DisplayImageAction* selectedImageAction = (DisplayImageAction*)this->selectedAction;
+
+		//	// Object Occurrence -----------------------
+		//	selectedImageAction->DrawActionOccurenceCheckboxes();
+
+		//	IMGUI_SPACE_SEPARATOR;
+
+		//	// Settings ---------------------------------
+		//	//if (selectedImageAction->GetTexture() == nullptr)
+		//	//	selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResource("EmptyObject"));
+		//	//else
+		//	//	selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResource(selectedImageAction->GetTexture()->GetName()));
+
+		//	float aspect_ratio = selectedImageAction->GetTexture()->GetAspectRatio();
+		//	float previewQuadWidth = 150;
+		//	float previewQuadHeight = previewQuadWidth / aspect_ratio;
+
+		//	PUSH_FONT(App->moduleImGui->rudaRegularMid);
+		//	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+
+		//	int childHeight = previewQuadHeight + 20;
+
+		//	PUSH_FONT(App->moduleImGui->rudaBoldBig);
+		//	ImGui::Text("Image Settings:");
+		//	POP_FONT;
+
+		//	ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), childHeight));
+
+		//	ImGui::Columns(2);
+		//	ImGui::SetColumnWidth(0, previewQuadWidth + 10);
+
+		//	ImGui::Spacing();
+		//	ImGui::Image((ImTextureID)selectedImageAction->GetTexture()->GetTextureID(), ImVec2(previewQuadWidth, previewQuadHeight));
+
+		//	ImGui::NextColumn();
+
+		//	ImGui::Spacing();
+		//	ImGui::Text("Name: "); ImGui::SameLine();
+		//	ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%s", selectedImageAction->GetTexture()->GetName().c_str());
+
+		//	ImGui::Text("Width: "); ImGui::SameLine();
+		//	ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", selectedImageAction->GetTexture()->GetWidth());
+
+		//	ImGui::Text("Height: "); ImGui::SameLine();
+		//	ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", selectedImageAction->GetTexture()->GetHeigth());
+
+		//	Texture* searchTexture = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
+		//	if (ImGui::Button("Change Image"))
+		//	{
+		//		char const* lFilterPatterns[2] = { "*.jpg" , "*.png" };
+		//		const char* path = tinyfd_openFileDialog("Load Image...", NULL, 2, lFilterPatterns, NULL, 0);
+
+		//		if (path != NULL)
+		//		{
+		//			if (!ResourceManager::getInstance()->ExistResourcePath(path))
+		//			{
+		//				selectedImageAction->SetTexture(ImageImporter::getInstance()->LoadTexture(path, false));
+		//				ResourceManager::getInstance()->AddResource(selectedImageAction->GetTexture(), selectedImageAction->GetTexture()->GetName());
+		//			}
+		//			else
+		//			{
+		//				selectedImageAction->SetTexture((Texture*)ResourceManager::getInstance()->GetResourceByPath(path));
+		//			}
+
+		//			strcpy(buf, path);
+		//			flog("Player Opened %s", path);
+		//		}
+
+		//	}
+		//	ImGui::PopStyleColor();
+		//	ImGui::EndChild();
+
+		//	POP_FONT;
+		//}
+	
+	}	
 }
 
 void ObjectCreatorDockPanel::DrawAddAndDeleteActionButtons(bool fromFixedAction)

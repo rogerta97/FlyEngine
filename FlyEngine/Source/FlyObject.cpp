@@ -431,7 +431,23 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 
 		return newAtrImage;
 	}
+	else if (addToSequentialActions)
+	{
+		if (imageTexturePath == "None")
+			imageTexturePath = "EmptyObject";
 
+		DisplayImageAction* newAtrImage = new DisplayImageAction(this);
+		newAtrImage->CreateImage(imageTexturePath);
+
+		if (newAtrImage->GetAcceptSequencial())
+			sequentialActionsList.push_back(newAtrImage);
+
+		// Addapt Gizmo Rect to new Image
+		gizmos->FitSelectBoxSize();
+		hasVisuals = true;
+
+		return newAtrImage;
+	}
 	else if(imageTexturePath != "Null")
 	{
 		DisplayImageAction* newAtrImage = (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE);
@@ -446,6 +462,7 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 	
 		newAtrImage->SetTexture(newTexture);
 	}
+
 
 	return (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE); 	
 }
@@ -465,6 +482,13 @@ ChangeRoomAction* FlyObject::AddChangeRoomAction(bool addToSequentialActions)
 
 		return changeSceneTool;
 	}
+	else if (addToSequentialActions)
+	{
+		ChangeRoomAction* changeSceneTool = new ChangeRoomAction(this);
+
+		if (changeSceneTool->GetAcceptSequencial())
+			sequentialActionsList.push_back(changeSceneTool);
+	}
 
 	return (ChangeRoomAction*)GetAction(ACTION_CHANGE_ROOM);
 }
@@ -480,6 +504,13 @@ ModifyVariableAction* FlyObject::AddModifyVariableAction(bool addToSequentialAct
 			actionsList.push_back(mofidyVarAction);
 		return mofidyVarAction;
 	}
+	else if (addToSequentialActions)
+	{
+		ModifyVariableAction* mofidyVarAction = new ModifyVariableAction(this);
+
+		if (mofidyVarAction->GetAcceptSequencial())
+			sequentialActionsList.push_back(mofidyVarAction);
+	}
 
 	return (ModifyVariableAction*)GetAction(ACTION_MOD_VARIABLE);
 }
@@ -493,6 +524,15 @@ EmitSoundAction* FlyObject::AddEmitSoundAction(bool addToSequentialActions)
 			sequentialActionsList.push_back(emitSoundAction);
 		else
 			actionsList.push_back(emitSoundAction);
+
+		return emitSoundAction;
+	}
+	else if (addToSequentialActions)
+	{
+		EmitSoundAction* emitSoundAction = new EmitSoundAction(this);
+
+		if (emitSoundAction->GetAcceptSequencial())
+			sequentialActionsList.push_back(emitSoundAction);
 
 		return emitSoundAction;
 	}
@@ -513,6 +553,15 @@ DisplayAnimationAction* FlyObject::AddDisplayAnimationAction(bool addToSequentia
 
 		return displayAnimationAction;
 	}
+	else if (addToSequentialActions)
+	{
+		DisplayAnimationAction* displayAnimationAction = new DisplayAnimationAction(this);
+
+		if (displayAnimationAction->GetAcceptSequencial())
+			sequentialActionsList.push_back(displayAnimationAction);
+
+		return displayAnimationAction;
+	}
 
 	return (DisplayAnimationAction*)GetAction(ACTION_DISPLAY_ANIMATION);
 }
@@ -526,6 +575,15 @@ FollowPathAction* FlyObject::AddFollowPathAction(bool addToSequentialActions)
 			sequentialActionsList.push_back(followPathAction);
 		else
 			actionsList.push_back(followPathAction);
+		return followPathAction;
+	}
+	else if (addToSequentialActions)
+	{
+		FollowPathAction* followPathAction = new FollowPathAction(this);
+
+		if (followPathAction->GetAcceptSequencial())
+			sequentialActionsList.push_back(followPathAction);
+
 		return followPathAction;
 	}
 
@@ -545,6 +603,15 @@ DisplayTextAction* FlyObject::AddDisplayTextAction(bool addToSequentialActions)
 
 		// Addapt Gizmo Rect to new Text
 		//gizmos->FitSelectBoxSize();
+
+		return displayTextAction;
+	}
+	else if (addToSequentialActions)
+	{
+		DisplayTextAction* displayTextAction = new DisplayTextAction(this);
+
+		if (displayTextAction->GetAcceptSequencial())
+			sequentialActionsList.push_back(displayTextAction);
 
 		return displayTextAction;
 	}
@@ -576,10 +643,10 @@ ActionType FlyObject::GetSelectedActionType()
 
 Action* FlyObject::GetAction(std::string toolName)
 {
-	for (auto& currentTool : actionsList)
+	for (auto& currentAction : actionsList)
 	{
-		if (currentTool->GetActionName() == toolName)
-			return currentTool;
+		if (currentAction->GetActionName() == toolName)
+			return currentAction;
 	}
 
 	return nullptr; 
@@ -587,10 +654,21 @@ Action* FlyObject::GetAction(std::string toolName)
 
 Action* FlyObject::GetAction(ActionType toolType)
 {
-	for (auto& currentTool : actionsList)
+	for (auto& currentAction : actionsList)
 	{
-		if (currentTool->GetActionType() == toolType)
-			return currentTool;
+		if (currentAction->GetActionType() == toolType)
+			return currentAction;
+	}
+
+	return nullptr;
+}
+
+Action* FlyObject::GetSequentialAction(ActionType toolType)
+{
+	for (auto& currentAction : sequentialActionsList)
+	{
+		if (currentAction->GetActionType() == toolType)
+			return currentAction;
 	}
 
 	return nullptr;

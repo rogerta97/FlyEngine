@@ -46,6 +46,7 @@ public:
 	
 	// Draw Prev Object Settings --
 	void DrawSelectedActionSettings();
+	void DrawFollowPathSettings();
 	void DrawDisplayImageSettings(); 
 	void DrawChangeRoomActionSettings();
 	void DrawModifyVariableActionSettings();
