@@ -157,6 +157,7 @@ bool ObjectCreatorDockPanel::Draw()
 }
 void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 {
+	bool toSequentialList = false; 
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Fixed Actions:");
 	ImGui::PopFont();
@@ -188,9 +189,6 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 
 	ImGui::PopStyleVar();
 
-	// Callbacks for buttons 
-	//OnAddActionButtonClicked(fromFixedAction);
-
 	ImGui::Spacing(); 
 	ImGui::Separator(); 
 
@@ -204,15 +202,14 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
 
 	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
-	plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
+	plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite2");
 
-	ImGui::PushID(1);
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
 		flog("Sequential Fixed");
+		toSequentialList = true; 
 		ImGui::OpenPopup("AddActionToObject");
 	}
-	ImGui::PopID(); 
 
 	ImGui::SameLine();
 	minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
@@ -227,14 +224,14 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 
 	ImGui::PopStyleVar();
 
-	// Callbacks for buttons 
-	//OnAddActionButtonClicked(fromFixedAction);
-
 	if (ImGui::BeginTabBar("SelectedSettings"))
 	{
 		DrawSelectedActionSettings();
 		ImGui::EndTabBar();
 	}
+
+	// Callbacks for buttons 
+	OnAddActionButtonClicked(toSequentialList);
 }
 
 void ObjectCreatorDockPanel::DrawInventorySettings()
