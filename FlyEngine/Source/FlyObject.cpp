@@ -331,6 +331,12 @@ void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 		it->SaveAction(jsonObject, serializeObjectName);
 	}
 
+	// Save Object Sequenntial Action Settings
+	for (auto& it : sequentialActionsList)
+	{
+		it->SaveAction(jsonObject, std::string(serializeObjectName + "SequentialActions."));
+	}
+
 	// Save Object Clickable Area
 	SaveClickableArea(serializeObjectName, jsonObject);
 }

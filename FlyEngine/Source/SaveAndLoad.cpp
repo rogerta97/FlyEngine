@@ -158,217 +158,91 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		// Load Display Image Action ----------------------
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayImage")).c_str()))
 		{
-			string textureName = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("DisplayImage.TextureName")).c_str());
-			int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
-
-			DisplayImageAction* displayImageAction = nullptr; 
-			if(actionClass == ACTION_CLASS_SEQUENTIAL)
-				displayImageAction = newObject->AddDisplayImageAction(textureName.c_str(), true);
-			else
-				displayImageAction = newObject->AddDisplayImageAction(textureName.c_str());
-
-			displayImageAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayImage.Occurrence.")); 
+			instance->LoadDisplayImageAction(root_obj, serializeObjectStrActions, newObject);
 		}
 
 		// Load Change Room Action ----------------------
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ChangeRoom")).c_str()))
 		{
-			UID destinationRoomUID = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ChangeRoom.Destination")).c_str());
-
-			int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
-
-			ChangeRoomAction* changeRoomAction = nullptr;
-			if (actionClass == ACTION_CLASS_SEQUENTIAL)
-				changeRoomAction = newObject->AddChangeRoomAction(true);
-			else
-				changeRoomAction = newObject->AddChangeRoomAction();
-
-			changeRoomAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("ChangeRoom.Occurrence."));
-
-			Room* room = App->moduleRoomManager->GetRoom(destinationRoomUID);
-			changeRoomAction->SetDestination(room); 
+			instance->LoadChangeRoomAction(root_obj, serializeObjectStrActions, newObject);
 		}
 
 		// Load Modify Variable Action ----------------------
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ModifyVariable")).c_str()))
 		{
-			int effectsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.EffectsAmount")).c_str());
-
-			int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
-
-			ModifyVariableAction* modifyVariableAction = nullptr;
-			if (actionClass == ACTION_CLASS_SEQUENTIAL)
-				modifyVariableAction = newObject->AddModifyVariableAction(true);
-			else
-				modifyVariableAction = newObject->AddModifyVariableAction();
-
-			modifyVariableAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("ModifyVariable.Occurrence."));
-
-			string effectsGroupStr = serializeObjectStrActions + "ModifyVariable.EffectsGroup.";
-			int count = 0; 
-			while (count < effectsAmount)
-			{
-				ModifyVariableEffect* newEffect = new ModifyVariableEffect(); 
-				
-				string effectSerializeStr = effectsGroupStr + "Effect_" + to_string(count) + "."; 
-
-				// Load Target Variable -----------
-				string varName = json_object_dotget_string(root_obj, string(effectSerializeStr + string("TargetVariableName")).c_str());
-	
-				FlyVariable* targetVariable = currentRoom->GetBlackboardVariable(varName); 
-				newEffect->targetVariable = targetVariable;
-
-				// Load Operator Type, IncInt, NextToggle ----------
-				int varOpTmp = (int)json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.OperatorType")).c_str());
-				newEffect->variableOperatorType = (VariableOperatorType)varOpTmp; 
-
-				newEffect->incIntegerValue = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.IncIntegerValue")).c_str());
-				newEffect->nextToggleValue = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.NextToggleValue")).c_str());
-
-				modifyVariableAction->AddEffect(newEffect); 
-				count++;
-			}
-
+			instance->LoadModifyVariableAction(root_obj, serializeObjectStrActions, newObject, currentRoom);
 		}
 		
 		// Load Emit Sound Action ----------------------
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("EmitSound")).c_str()))
 		{
-			string audioClipPath = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("EmitSound.Path")).c_str());
-			int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
-
-			EmitSoundAction* emitSoundAction = nullptr;
-			if (actionClass == ACTION_CLASS_SEQUENTIAL)
-				emitSoundAction = newObject->AddEmitSoundAction(true);
-			else
-				emitSoundAction = newObject->AddEmitSoundAction();
-
-			emitSoundAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("EmitSound.Occurrence."));
-
-			if (audioClipPath != "None")
-			{
-				string audioClipResourceName = MyFileSystem::getInstance()->GetLastPathItem(audioClipPath, false);
-				AudioClip* soundClipResource = (AudioClip*)ResourceManager::getInstance()->GetResource(audioClipResourceName.c_str());
-				emitSoundAction->audioClip = soundClipResource; 
-			}
+			instance->LoadEmitSoundAction(root_obj, serializeObjectStrActions, newObject);
 		}
 
 		// Load Display Text Action ----------------------
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayText")).c_str()))
 		{
-			int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
-
-			DisplayTextAction* displayTextAction = nullptr;
-			if (actionClass == ACTION_CLASS_SEQUENTIAL)
-				displayTextAction = newObject->AddDisplayTextAction(true);
-			else
-				displayTextAction = newObject->AddDisplayTextAction();
-
-			displayTextAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayText.Occurrence."));
-
-			string serializeDisplayTextStr = serializeObjectStrActions + "DisplayText."; 
-
-			string fontTmp = json_object_dotget_string(root_obj, string(serializeDisplayTextStr + string("FontName")).c_str());
-			if (fontTmp != "None")
-			{
-				Font* textFont = (Font*)ResourceManager::GetResource(fontTmp.c_str(), RESOURCE_FONT);
-
-				if(textFont)
-					displayTextAction->SetFont(textFont);
-			}
-
-			string textTmp = json_object_dotget_string(root_obj, string(serializeDisplayTextStr + string("Text")).c_str());
-			if (textTmp != "None")
-			{
-				displayTextAction->SetText(textTmp); 
-			}
+			instance->LoadDisplayTextAction(root_obj, serializeObjectStrActions, newObject);
 		}
 
 		// Load Display Animation Action ----------------------
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayAnimation")).c_str()))
 		{
-			int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
-
-			DisplayAnimationAction* displayAnimationAction = nullptr;
-			if (actionClass == ACTION_CLASS_SEQUENTIAL)
-				displayAnimationAction = newObject->AddDisplayAnimationAction(true);
-			else
-				displayAnimationAction = newObject->AddDisplayAnimationAction();
-
-			displayAnimationAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayAnimation.Occurrence."));
-
-			string serializeDisplayTextStr = serializeObjectStrActions + "DisplayAnimation.";
-
-			int framesAmount = json_object_dotget_number(root_obj, string(serializeDisplayTextStr + "FramesAmount").c_str());
-
-
-			if (framesAmount > 0)
-			{
-				int playModeTmp = json_object_dotget_number(root_obj, string(serializeDisplayTextStr + "PlayMode").c_str());
-				displayAnimationAction->animPlayMode = (AnimationPlayMode)playModeTmp;
-
-				displayAnimationAction->GetAnimation()->SetSpeed(json_object_dotget_number(root_obj, string(serializeDisplayTextStr + "Speed").c_str()));
-
-				int count = 0; 
-				while (count < framesAmount)
-				{
-					string frameStr = serializeDisplayTextStr + "Frames.Frame_" + to_string(count);
-
-					string textureName = json_object_dotget_string(root_obj, string(frameStr + ".TextureName").c_str());
-					Texture* frameTexture = (Texture*)ResourceManager::getInstance()->GetResource(textureName); 
-
-					if (frameTexture)					
-						displayAnimationAction->AddFrame(frameTexture);
-					
-					count++;
-				}
-			}
+			instance->LoadDisplayAnimationAction(root_obj, serializeObjectStrActions, newObject);
 		}
 
 		// Load Follow Path Action
 		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("FollowPath")).c_str()))
 		{
-			int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
-			FollowPathAction* followPathAction = nullptr;
-			if (actionClass == ACTION_CLASS_SEQUENTIAL)
-				followPathAction = newObject->AddFollowPathAction(true);
-			else
-				followPathAction = newObject->AddFollowPathAction();
+			instance->LoadFollowPathAction(root_obj, serializeObjectStrActions, newObject);
+		}
+	}
 
-			followPathAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("FollowPath.Occurrence."));
+	// Create Sequential Actions ----
+	if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("Actions")).c_str()))
+	{
+		string serializeObjectStrActions = serializeObjectStr + "SequentialActions.Actions.";
 
-			string serializeFollowPathStr = serializeObjectStrActions + "FollowPath.";
+		// Load Display Image Action ----------------------
+		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayImage")).c_str()))
+		{
+			instance->LoadDisplayImageAction(root_obj, serializeObjectStrActions, newObject);
+		}
 
-			// Load Reproduce type 
-			int playModeTmp = json_object_dotget_number(root_obj, string(serializeFollowPathStr + "PlayMode").c_str());
-			followPathAction->SetPathMode((PathPlayMode)playModeTmp);
+		// Load Change Room Action ----------------------
+		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ChangeRoom")).c_str()))
+		{
+			instance->LoadChangeRoomAction(root_obj, serializeObjectStrActions, newObject);
+		}
 
-			bool isSpeedConstant = json_object_dotget_boolean(root_obj, string(serializeFollowPathStr + "IsSpeedConstant").c_str());
-			followPathAction->SetIsSpeedConstant(isSpeedConstant);
+		// Load Modify Variable Action ----------------------
+		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ModifyVariable")).c_str()))
+		{
+			instance->LoadModifyVariableAction(root_obj, serializeObjectStrActions, newObject, currentRoom);
+		}
 
-			if (isSpeedConstant)
-			{
-				float constantSpeed = json_object_dotget_number(root_obj, string(serializeFollowPathStr + "ConstantSpeed").c_str());
-				followPathAction->SetConstantSpeed(constantSpeed);
-			}
+		// Load Emit Sound Action ----------------------
+		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("EmitSound")).c_str()))
+		{
+			instance->LoadEmitSoundAction(root_obj, serializeObjectStrActions, newObject);
+		}
 
-			// Load Path Steps 
-			int stepsAmount = json_object_dotget_number(root_obj, string(serializeFollowPathStr + "PathSteps.StepsAmount").c_str());
+		// Load Display Text Action ----------------------
+		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayText")).c_str()))
+		{
+			instance->LoadDisplayTextAction(root_obj, serializeObjectStrActions, newObject);
+		}
 
-			int count = 0; 
-			while (count < stepsAmount)
-			{
-				string stepStr = serializeFollowPathStr + "PathSteps.Step_" + to_string(count) + ".";
+		// Load Display Animation Action ----------------------
+		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayAnimation")).c_str()))
+		{
+			instance->LoadDisplayAnimationAction(root_obj, serializeObjectStrActions, newObject);
+		}
 
-				PathStep* newStep = new PathStep(); 
-				newStep->targetPosition.x = json_object_dotget_number(root_obj, string(stepStr + "TargetPosition.x").c_str());
-				newStep->targetPosition.y = json_object_dotget_number(root_obj, string(stepStr + "TargetPosition.y").c_str());
-				newStep->SetMovementSpeed(json_object_dotget_number(root_obj, string(stepStr + "MovementSpeed").c_str()));
-
-				followPathAction->AddStep(newStep, count); 
-				
-				count++;
-			}
+		// Load Follow Path Action
+		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("FollowPath")).c_str()))
+		{
+			instance->LoadFollowPathAction(root_obj, serializeObjectStrActions, newObject);
 		}
 	}
 
@@ -399,6 +273,214 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
  
 	App->moduleImGui->gameViewportDockPanel->FitViewportToRegion();
 	newObject->FitObjectUtils();
+}
+
+void SaveAndLoad::LoadFollowPathAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)
+{
+	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+	FollowPathAction* followPathAction = nullptr;
+	if (actionClass == ACTION_CLASS_SEQUENTIAL)
+		followPathAction = newObject->AddFollowPathAction(true);
+	else
+		followPathAction = newObject->AddFollowPathAction();
+
+	followPathAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("FollowPath.Occurrence."));
+
+	string serializeFollowPathStr = serializeObjectStrActions + "FollowPath.";
+
+	// Load Reproduce type 
+	int playModeTmp = json_object_dotget_number(root_obj, string(serializeFollowPathStr + "PlayMode").c_str());
+	followPathAction->SetPathMode((PathPlayMode)playModeTmp);
+
+	bool isSpeedConstant = json_object_dotget_boolean(root_obj, string(serializeFollowPathStr + "IsSpeedConstant").c_str());
+	followPathAction->SetIsSpeedConstant(isSpeedConstant);
+
+	if (isSpeedConstant)
+	{
+		float constantSpeed = json_object_dotget_number(root_obj, string(serializeFollowPathStr + "ConstantSpeed").c_str());
+		followPathAction->SetConstantSpeed(constantSpeed);
+	}
+
+	// Load Path Steps 
+	int stepsAmount = json_object_dotget_number(root_obj, string(serializeFollowPathStr + "PathSteps.StepsAmount").c_str());
+
+	int count = 0;
+	while (count < stepsAmount)
+	{
+		string stepStr = serializeFollowPathStr + "PathSteps.Step_" + to_string(count) + ".";
+
+		PathStep* newStep = new PathStep();
+		newStep->targetPosition.x = json_object_dotget_number(root_obj, string(stepStr + "TargetPosition.x").c_str());
+		newStep->targetPosition.y = json_object_dotget_number(root_obj, string(stepStr + "TargetPosition.y").c_str());
+		newStep->SetMovementSpeed(json_object_dotget_number(root_obj, string(stepStr + "MovementSpeed").c_str()));
+
+		followPathAction->AddStep(newStep, count);
+
+		count++;
+	}
+}
+
+void SaveAndLoad::LoadDisplayAnimationAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)
+{
+	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+
+	DisplayAnimationAction* displayAnimationAction = nullptr;
+	if (actionClass == ACTION_CLASS_SEQUENTIAL)
+		displayAnimationAction = newObject->AddDisplayAnimationAction(true);
+	else
+		displayAnimationAction = newObject->AddDisplayAnimationAction();
+
+	displayAnimationAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayAnimation.Occurrence."));
+
+	string serializeDisplayTextStr = serializeObjectStrActions + "DisplayAnimation.";
+
+	int framesAmount = json_object_dotget_number(root_obj, string(serializeDisplayTextStr + "FramesAmount").c_str());
+
+
+	if (framesAmount > 0)
+	{
+		int playModeTmp = json_object_dotget_number(root_obj, string(serializeDisplayTextStr + "PlayMode").c_str());
+		displayAnimationAction->animPlayMode = (AnimationPlayMode)playModeTmp;
+
+		displayAnimationAction->GetAnimation()->SetSpeed(json_object_dotget_number(root_obj, string(serializeDisplayTextStr + "Speed").c_str()));
+
+		int count = 0;
+		while (count < framesAmount)
+		{
+			string frameStr = serializeDisplayTextStr + "Frames.Frame_" + to_string(count);
+
+			string textureName = json_object_dotget_string(root_obj, string(frameStr + ".TextureName").c_str());
+			Texture* frameTexture = (Texture*)ResourceManager::getInstance()->GetResource(textureName);
+
+			if (frameTexture)
+				displayAnimationAction->AddFrame(frameTexture);
+
+			count++;
+		}
+	}
+}
+
+void SaveAndLoad::LoadDisplayTextAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)
+{
+	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+
+	DisplayTextAction* displayTextAction = nullptr;
+	if (actionClass == ACTION_CLASS_SEQUENTIAL)
+		displayTextAction = newObject->AddDisplayTextAction(true);
+	else
+		displayTextAction = newObject->AddDisplayTextAction();
+
+	displayTextAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayText.Occurrence."));
+
+	string serializeDisplayTextStr = serializeObjectStrActions + "DisplayText.";
+
+	string fontTmp = json_object_dotget_string(root_obj, string(serializeDisplayTextStr + string("FontName")).c_str());
+	if (fontTmp != "None")
+	{
+		Font* textFont = (Font*)ResourceManager::GetResource(fontTmp.c_str(), RESOURCE_FONT);
+
+		if (textFont)
+			displayTextAction->SetFont(textFont);
+	}
+
+	string textTmp = json_object_dotget_string(root_obj, string(serializeDisplayTextStr + string("Text")).c_str());
+	if (textTmp != "None")
+	{
+		displayTextAction->SetText(textTmp);
+	}
+}
+
+void SaveAndLoad::LoadEmitSoundAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)
+{
+	string audioClipPath = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("EmitSound.Path")).c_str());
+	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+
+	EmitSoundAction* emitSoundAction = nullptr;
+	if (actionClass == ACTION_CLASS_SEQUENTIAL)
+		emitSoundAction = newObject->AddEmitSoundAction(true);
+	else
+		emitSoundAction = newObject->AddEmitSoundAction();
+
+	emitSoundAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("EmitSound.Occurrence."));
+
+	if (audioClipPath != "None")
+	{
+		string audioClipResourceName = MyFileSystem::getInstance()->GetLastPathItem(audioClipPath, false);
+		AudioClip* soundClipResource = (AudioClip*)ResourceManager::getInstance()->GetResource(audioClipResourceName.c_str());
+		emitSoundAction->audioClip = soundClipResource;
+	}
+}
+
+void SaveAndLoad::LoadModifyVariableAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject, Room* currentRoom)
+{
+	int effectsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.EffectsAmount")).c_str());
+
+	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+
+	ModifyVariableAction* modifyVariableAction = nullptr;
+	if (actionClass == ACTION_CLASS_SEQUENTIAL)
+		modifyVariableAction = newObject->AddModifyVariableAction(true);
+	else
+		modifyVariableAction = newObject->AddModifyVariableAction();
+
+	modifyVariableAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("ModifyVariable.Occurrence."));
+
+	string effectsGroupStr = serializeObjectStrActions + "ModifyVariable.EffectsGroup.";
+	int count = 0;
+	while (count < effectsAmount)
+	{
+		ModifyVariableEffect* newEffect = new ModifyVariableEffect();
+
+		string effectSerializeStr = effectsGroupStr + "Effect_" + to_string(count) + ".";
+
+		// Load Target Variable -----------
+		string varName = json_object_dotget_string(root_obj, string(effectSerializeStr + string("TargetVariableName")).c_str());
+
+		FlyVariable* targetVariable = currentRoom->GetBlackboardVariable(varName);
+		newEffect->targetVariable = targetVariable;
+
+		// Load Operator Type, IncInt, NextToggle ----------
+		int varOpTmp = (int)json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.OperatorType")).c_str());
+		newEffect->variableOperatorType = (VariableOperatorType)varOpTmp;
+
+		newEffect->incIntegerValue = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.IncIntegerValue")).c_str());
+		newEffect->nextToggleValue = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.NextToggleValue")).c_str());
+
+		modifyVariableAction->AddEffect(newEffect);
+		count++;
+	}
+}
+
+void SaveAndLoad::LoadChangeRoomAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)
+{
+	UID destinationRoomUID = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ChangeRoom.Destination")).c_str());
+
+	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+
+	ChangeRoomAction* changeRoomAction = nullptr;
+	if (actionClass == ACTION_CLASS_SEQUENTIAL)
+		changeRoomAction = newObject->AddChangeRoomAction(true);
+	else
+		changeRoomAction = newObject->AddChangeRoomAction();
+
+	changeRoomAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("ChangeRoom.Occurrence."));
+
+	Room* room = App->moduleRoomManager->GetRoom(destinationRoomUID);
+	changeRoomAction->SetDestination(room);
+}
+
+void SaveAndLoad::LoadDisplayImageAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)
+{
+	string textureName = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("DisplayImage.TextureName")).c_str());
+	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+
+	DisplayImageAction* displayImageAction = nullptr;
+	if (actionClass == ACTION_CLASS_SEQUENTIAL)
+		displayImageAction = newObject->AddDisplayImageAction(textureName.c_str(), true);
+	else
+		displayImageAction = newObject->AddDisplayImageAction(textureName.c_str());
+
+	displayImageAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayImage.Occurrence."));
 }
 
 void SaveAndLoad::LoadActionConditions(JSON_Object* root_obj, std::string& serializeObjectStr, Room* currentRoom)

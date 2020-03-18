@@ -955,6 +955,10 @@ void ObjectPropertiesDockPanel::DrawTransformButtons()
 void ObjectPropertiesDockPanel::DrawObjectActionsTab()
 {
 	// Draw Objects List ---------
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text("Object Actions: ");
+	ImGui::PopFont();
+
 	DrawActionsList();
 
 	ImGui::Spacing();
@@ -975,32 +979,6 @@ void ObjectPropertiesDockPanel::DrawObjectSequenceActionsTab()
 	DrawActionsList();
 
 	ImGui::Spacing();
-	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
-
-	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
-	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
-
-	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
-	{
-		flog("Plus Fixed");
-		toSequentialList = false;
-		ImGui::OpenPopup("AddActionToObject");
-	}
-
-	ImGui::SameLine();
-	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
-	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(30, 30)))
-	{
-		/*if (selectedAction != nullptr)
-		{
-			creatingObject->DeleteAction(selectedAction->GetActionType());
-			selectedAction = nullptr;
-		}*/
-	}
-
-	ImGui::PopStyleVar();
-
-	ImGui::Spacing();
 	ImGui::Separator();
 
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
@@ -1013,7 +991,7 @@ void ObjectPropertiesDockPanel::DrawObjectSequenceActionsTab()
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
 
 	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
-	plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite2");
+	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite2");
 
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
@@ -1023,7 +1001,7 @@ void ObjectPropertiesDockPanel::DrawObjectSequenceActionsTab()
 	}
 
 	ImGui::SameLine();
-	minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
+	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
 	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
 		//if (selectedAction != nullptr)
@@ -1650,10 +1628,6 @@ void ObjectPropertiesDockPanel::DrawChangeRoomSettings()
 
 void ObjectPropertiesDockPanel::DrawActionsList()
 {
-	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-	ImGui::Text("Object Actions: ");
-	ImGui::PopFont();
-
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5, 5));
 
@@ -1693,14 +1667,14 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
 
 	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
-	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(25, 25)))
+	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
 		showToolDictionary = true;
 	}
 
 	ImGui::SameLine();
 	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
-	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(25, 25)))
+	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
 		Action* selectedAction = selectedObject->selectedAction;
 

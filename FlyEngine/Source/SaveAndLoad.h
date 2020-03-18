@@ -30,6 +30,13 @@ public:
 	// Load ----
 	static void LoadDataToSelectedRoom(std::string roomDataFilePath);
 	static void CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::string& serializeObjectStr, Room* currentRoom);
+	void LoadFollowPathAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject);
+	void LoadDisplayAnimationAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject);
+	void LoadDisplayTextAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject);
+	void LoadEmitSoundAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject);
+	void LoadModifyVariableAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject, Room* currentRoom);
+	void LoadChangeRoomAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject);
+	void LoadDisplayImageAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject);
 	static void LoadActionConditions(JSON_Object* root_obj, std::string& serializeObjectStr, Room* currentRoom);
 
 	static void LoadDataToRoom(std::string roomDataFilePath, Room* roomToSave);
