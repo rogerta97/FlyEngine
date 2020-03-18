@@ -116,6 +116,9 @@ public:
 	void SetSelected(bool newSelected); 
 	bool& HasVisual(); 
 
+	bool GetAcceptSequencial();
+	void SetAcceptSequencial(bool _acSec);
+
 	ActionSelectableInfo GetActionSelectableInfo(); 
 
 	bool IsActionFinished(); 
@@ -145,6 +148,7 @@ protected:
 	std::string toolDescription; 
 	bool isSelected; 
 	bool isVisual; 
+	bool acceptSequencial; 
 }; 
 
 #endif

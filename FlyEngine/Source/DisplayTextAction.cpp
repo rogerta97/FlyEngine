@@ -18,6 +18,7 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 	parentObject = _parentObject;
 	isVisual = false;
 	drawTextBox = true;
+	acceptSequencial = true;
 
 	textQuads = new std::vector<Quad*>();
 	textBox = new BoundingBox();

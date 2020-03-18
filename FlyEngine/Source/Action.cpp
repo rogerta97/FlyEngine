@@ -25,6 +25,8 @@ Action::Action()
 	occ_blackboardValue = false;
 	occ_ObjectClicked = false;
 
+	acceptSequencial = false; 
+
 	return; 
 }
 
@@ -397,6 +399,16 @@ void Action::SetSelected(bool newSelected)
 bool& Action::HasVisual()
 {
 	return isVisual; 
+}
+
+bool Action::GetAcceptSequencial()
+{
+	return acceptSequencial;
+}
+
+void Action::SetAcceptSequencial(bool _acSec)
+{
+	acceptSequencial = _acSec;
 }
 
 ActionSelectableInfo Action::GetActionSelectableInfo()

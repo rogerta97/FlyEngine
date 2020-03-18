@@ -26,6 +26,7 @@ FollowPathAction::FollowPathAction(FlyObject* _parentObject)
 	targetLoopsAmount = 2;
 	constantSpeed = 0; 
 	isSpeedConstant = false; 
+	acceptSequencial = true;
 
 	startPosition = parentObject->transform->GetPosition();
 	graphBoxColor = float4(1.0f, 1.0f, 1.0f, 1.0f);

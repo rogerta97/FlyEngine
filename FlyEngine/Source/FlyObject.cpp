@@ -420,7 +420,7 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 		DisplayImageAction* newAtrImage = new DisplayImageAction(this);
 		newAtrImage->CreateImage(imageTexturePath);
 
-		if(addToSequentialActions)
+		if(addToSequentialActions && newAtrImage->GetAcceptSequencial())
 			sequentialActionsList.push_back(newAtrImage);
 		else
 			actionsList.push_back(newAtrImage);
@@ -456,7 +456,11 @@ ChangeRoomAction* FlyObject::AddChangeRoomAction(bool addToSequentialActions)
 	{
 		ChangeRoomAction* changeSceneTool = new ChangeRoomAction(this);
 
-		// Addapt Gizmo Rect to new Image
+		if (addToSequentialActions && changeSceneTool->GetAcceptSequencial())
+			sequentialActionsList.push_back(changeSceneTool);
+		else
+			actionsList.push_back(changeSceneTool);
+
 		gizmos->FitSelectBoxSize();
 
 		return changeSceneTool;
@@ -470,6 +474,10 @@ ModifyVariableAction* FlyObject::AddModifyVariableAction(bool addToSequentialAct
 	if (GetAction(ACTION_MOD_VARIABLE) == nullptr)
 	{
 		ModifyVariableAction* mofidyVarAction = new ModifyVariableAction(this);
+		if (addToSequentialActions && mofidyVarAction->GetAcceptSequencial())
+			sequentialActionsList.push_back(mofidyVarAction);
+		else
+			actionsList.push_back(mofidyVarAction);
 		return mofidyVarAction;
 	}
 
@@ -481,6 +489,11 @@ EmitSoundAction* FlyObject::AddEmitSoundAction(bool addToSequentialActions)
 	if (GetAction(ACTION_EMIT_SOUND) == nullptr)
 	{
 		EmitSoundAction* emitSoundAction = new EmitSoundAction(this);
+		if (addToSequentialActions && emitSoundAction->GetAcceptSequencial())
+			sequentialActionsList.push_back(emitSoundAction);
+		else
+			actionsList.push_back(emitSoundAction);
+
 		return emitSoundAction;
 	}
 
@@ -509,7 +522,10 @@ FollowPathAction* FlyObject::AddFollowPathAction(bool addToSequentialActions)
 	if (GetAction(ACTION_FOLLOW_PATH) == nullptr)
 	{
 		FollowPathAction* followPathAction = new FollowPathAction(this);
-		actionsList.push_back(followPathAction);
+		if (addToSequentialActions && followPathAction->GetAcceptSequencial())
+			sequentialActionsList.push_back(followPathAction);
+		else
+			actionsList.push_back(followPathAction);
 		return followPathAction;
 	}
 
@@ -522,7 +538,10 @@ DisplayTextAction* FlyObject::AddDisplayTextAction(bool addToSequentialActions)
 	{
 		DisplayTextAction* displayTextAction = new DisplayTextAction(this);
 
-		actionsList.push_back(displayTextAction);
+		if (addToSequentialActions && displayTextAction->GetAcceptSequencial())
+			sequentialActionsList.push_back(displayTextAction);
+		else
+			actionsList.push_back(displayTextAction);
 
 		// Addapt Gizmo Rect to new Text
 		//gizmos->FitSelectBoxSize();

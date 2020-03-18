@@ -157,7 +157,8 @@ bool ObjectCreatorDockPanel::Draw()
 }
 void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 {
-	bool toSequentialList = false; 
+	static bool toSequentialList = false; 
+	static bool updatePopup = false; 
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Fixed Actions:");
 	ImGui::PopFont();
@@ -231,6 +232,7 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 	}
 
 	// Callbacks for buttons 
+	flog("%d", toSequentialList);
 	OnAddActionButtonClicked(toSequentialList);
 }
 
