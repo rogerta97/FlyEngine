@@ -20,6 +20,12 @@ enum ActionType
 	AT_null,
 };
 
+enum ActionClass
+{
+	ACTION_CLASS_DIRECT,
+	ACTION_CLASS_SEQUENTIAL,
+};
+
 enum ConditionEvaluationCriteria
 {
 	ALL_SUCCED,
@@ -119,6 +125,9 @@ public:
 	bool GetAcceptSequencial();
 	void SetAcceptSequencial(bool _acSec);
 
+	ActionClass GetActionClass();
+	void SetActionClass(ActionClass _acSec);
+
 	ActionSelectableInfo GetActionSelectableInfo(); 
 
 	bool IsActionFinished(); 
@@ -128,6 +137,7 @@ protected:
 	ActionType actionType;
 	FlyObject* parentObject;
 	bool actionFinished; 
+	ActionClass actionClass; 
 
 	// Occurrence -----------------
 	bool occ_SceneEnter = false; 

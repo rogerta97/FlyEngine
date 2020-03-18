@@ -15,7 +15,7 @@
 #include "Texture.h"
 #include "FollowPathAction.h"
 #include "ImageImporter.h"
-#include "DisplayImageAction.h"
+#include "DisplayTextAction.h"
 #include "ViewportManager.h"
 #include "AudioClip.h"
 #include "ResourceManager.h"
@@ -270,32 +270,35 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 				break;
 
 			case ACTION_CHANGE_ROOM:
-				creatingObject->AddChangeRoomAction(toSequentialList);
+				selectedAction = creatingObject->AddChangeRoomAction(toSequentialList);
 				break;
 
 			case ACTION_MOD_VARIABLE:
-				creatingObject->AddModifyVariableAction(toSequentialList);
+				selectedAction = creatingObject->AddModifyVariableAction(toSequentialList);
 				break;
 
 			case ACTION_EMIT_SOUND:
-				creatingObject->AddEmitSoundAction(toSequentialList);
+				selectedAction = creatingObject->AddEmitSoundAction(toSequentialList);
 				break;
 
 			case ACTION_DISPLAY_TEXT:
-				creatingObject->AddDisplayTextAction(toSequentialList);
+				selectedAction = creatingObject->AddDisplayTextAction(toSequentialList);
 				break;
 
 			case ACTION_DISPLAY_ANIMATION:
-				creatingObject->AddDisplayAnimationAction(toSequentialList);
+				selectedAction = creatingObject->AddDisplayAnimationAction(toSequentialList);
 				break;
 
 			case ACTION_FOLLOW_PATH:
-				creatingObject->AddFollowPathAction(toSequentialList);
+				selectedAction = creatingObject->AddFollowPathAction(toSequentialList);
 				break;
 
 			case AT_null:
 				break;
 			}
+
+			if (toSequentialList && selectedAction != nullptr)
+				selectedAction->SetActionClass(ACTION_CLASS_SEQUENTIAL); 
 
 			ImGui::EndChild();
 			ImGui::PopStyleColor();
@@ -728,16 +731,27 @@ void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 
 		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 132));
 
-		ImGui::SetCursorPos(ImVec2(5, 8));
-		ImGui::Checkbox("Enter Room", &modifyVariableAction->IsOccSceneEnter());
-		ImGui::SetCursorPos(ImVec2(5, 38));
-		ImGui::Checkbox("Exit Room", &modifyVariableAction->IsOccSceneLeave());
-		ImGui::SetCursorPos(ImVec2(5, 68));
-		ImGui::Checkbox("Object Clicked", &modifyVariableAction->IsOccObjectClicked());
-		ImGui::SetCursorPos(ImVec2(5, 98));
-		ImGui::Checkbox("Blackboard Value Condition", &modifyVariableAction->IsOccCondition());
+		if (modifyVariableAction->GetActionClass() == ACTION_CLASS_SEQUENTIAL)
+		{
+			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
+			ImGui::Checkbox("Object Clicked", &modifyVariableAction->IsOccObjectClicked());
+			ImGui::SetCursorPos(ImVec2(5, 98));
+			ImGui::Checkbox("Blackboard Value Condition", &modifyVariableAction->IsOccCondition());
+
+		}
+		else if(modifyVariableAction->GetActionClass() == ACTION_CLASS_DIRECT)
+		{
+			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 132));
+			ImGui::SetCursorPos(ImVec2(5, 8));
+			ImGui::Checkbox("Enter Room", &modifyVariableAction->IsOccSceneEnter());
+			ImGui::SetCursorPos(ImVec2(5, 38));
+			ImGui::Checkbox("Exit Room", &modifyVariableAction->IsOccSceneLeave());
+			ImGui::SetCursorPos(ImVec2(5, 68));
+			ImGui::Checkbox("Object Clicked", &modifyVariableAction->IsOccObjectClicked());
+			ImGui::SetCursorPos(ImVec2(5, 98));
+			ImGui::Checkbox("Blackboard Value Condition", &modifyVariableAction->IsOccCondition());
+		}
 
 		ImGui::SameLine();
 		if (ImGui::Button(showValueConditionButtonText.c_str()))
@@ -790,12 +804,6 @@ void ObjectCreatorDockPanel::DrawEmitSoundActionSettings()
 {
 	if (ImGui::CollapsingHeader("Emit Sound Attributes:", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		//ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
-		//ImGui::Text("Emit Sound Attributes:");
-		//ImGui::PopFont();
-
-		//ImGui::Separator();
-
 		EmitSoundAction* emitSoundAction = (EmitSoundAction*)this->selectedAction;
 
 		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
@@ -805,19 +813,34 @@ void ObjectCreatorDockPanel::DrawEmitSoundActionSettings()
 		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 
-		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 130));
+		if (emitSoundAction->GetActionClass() == ACTION_CLASS_SEQUENTIAL)
+		{
+			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
 
-		ImGui::SetCursorPos(ImVec2(5, 8));
-		ImGui::Checkbox("Scene Enter", &emitSoundAction->IsOccSceneEnter());
+			ImGui::SetCursorPos(ImVec2(5, 68));
+			ImGui::Checkbox("Object Clicked", &emitSoundAction->IsOccObjectClicked());
 
-		ImGui::SetCursorPos(ImVec2(5, 38));
-		ImGui::Checkbox("Scene Leave", &emitSoundAction->IsOccSceneLeave());
+			ImGui::SetCursorPos(ImVec2(5, 98));
+			ImGui::Checkbox("Blackboard Value Condition", &emitSoundAction->IsOccCondition());
+		}
+		else if (emitSoundAction->GetActionClass() == ACTION_CLASS_DIRECT)
+		{
+			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 132));
 
-		ImGui::SetCursorPos(ImVec2(5, 68));
-		ImGui::Checkbox("Object Clicked", &emitSoundAction->IsOccObjectClicked());
+			ImGui::SetCursorPos(ImVec2(5, 8));
+			ImGui::Checkbox("Scene Enter", &emitSoundAction->IsOccSceneEnter());
 
-		ImGui::SetCursorPos(ImVec2(5, 98));
-		ImGui::Checkbox("Blackboard Value Condition", &emitSoundAction->IsOccCondition());
+			ImGui::SetCursorPos(ImVec2(5, 38));
+			ImGui::Checkbox("Scene Leave", &emitSoundAction->IsOccSceneLeave());
+
+			ImGui::SetCursorPos(ImVec2(5, 68));
+			ImGui::Checkbox("Object Clicked", &emitSoundAction->IsOccObjectClicked());
+
+			ImGui::SetCursorPos(ImVec2(5, 98));
+			ImGui::Checkbox("Blackboard Value Condition", &emitSoundAction->IsOccCondition());
+		}
+
+
 
 		ImGui::SameLine();
 		if (ImGui::Button(showValueConditionButtonText.c_str()))

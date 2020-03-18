@@ -26,6 +26,7 @@ Action::Action()
 	occ_ObjectClicked = false;
 
 	acceptSequencial = false; 
+	actionClass = ACTION_CLASS_DIRECT;
 
 	return; 
 }
@@ -409,6 +410,16 @@ bool Action::GetAcceptSequencial()
 void Action::SetAcceptSequencial(bool _acSec)
 {
 	acceptSequencial = _acSec;
+}
+
+ActionClass Action::GetActionClass()
+{
+	return actionClass;
+}
+
+void Action::SetActionClass(ActionClass _acSec)
+{
+	actionClass = _acSec;
 }
 
 ActionSelectableInfo Action::GetActionSelectableInfo()
