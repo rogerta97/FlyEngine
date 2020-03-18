@@ -610,7 +610,29 @@ void FlyObject::DrawSequentialActionsList()
 				continue;
 		}
 
-		DrawSelectable(selectableInfo, currentAction->IsSelected(), pos, 42, currentAction);
+		ImGui::PushFont(App->moduleImGui->rudaBoldMid);
+
+		Texture* imageIcon = App->moduleManager->GetIconFromActionType(selectableInfo.actionType);
+		int selectableHeight = 42; 
+
+		ImGui::SetCursorPos(ImVec2(10, 5 + (selectableHeight * pos)));
+		ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
+
+		ImGui::SetCursorPos(ImVec2(50, (selectableHeight * pos) + 4));
+		if (ImGui::Selectable(selectableInfo.actionName.c_str(), &isSelected, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, selectableHeight - 3))) {
+			SetSelectedAction(selectableInfo.actionType);
+			selectedAction = currentAction;
+		}
+		ImGui::PopFont();
+
+		// Description -----
+		ImGui::SetCursorPosY((selectableHeight * pos) + 24);
+		ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 52);
+
+		ImGui::PushFont(App->moduleImGui->rudaRegularTiny);
+		ImGui::TextWrapped(selectableInfo.actionDescription.c_str());
+		ImGui::PopFont();
+
 		pos++;
 	}
 

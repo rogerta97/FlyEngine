@@ -740,7 +740,11 @@ void ObjectPropertiesDockPanel::DrawObjectTabs()
 	{
 		if (ImGui::BeginTabItem("Actions"))
 		{
-			DrawObjectActionsTab();
+			if(selectedObject->flyObjectType == FlyObjectType::OBJECT_SEQUENTIAL)
+				DrawObjectSequenceActionsTab();
+			else
+				DrawObjectActionsTab();
+
 			ImGui::EndTabItem();
 		}
 
