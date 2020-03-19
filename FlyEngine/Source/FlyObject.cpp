@@ -689,6 +689,21 @@ void FlyObject::SetSelectedAction(ActionType toolTypeSelected)
 		else
 			it->SetSelected(false); 
 	}
+
+	for (auto& it : sequentialActionsList)
+	{
+		if (it->GetActionType() == toolTypeSelected)
+		{
+			it->SetSelected(true);
+			selectedAction = it;
+		}
+		else
+			it->SetSelected(false);
+	}
+}
+
+void FlyObject::SetSelectedAction(UID newSelectedActionUID)
+{
 }
 
 ActionType FlyObject::GetSelectedActionType()

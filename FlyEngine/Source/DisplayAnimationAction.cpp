@@ -50,9 +50,9 @@ void DisplayAnimationAction::DrawActionOccurenceCheckboxes()
 	if (GetActionClass() == ACTION_CLASS_SEQUENTIAL)
 	{
 		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
-		ImGui::SetCursorPos(ImVec2(5, 38));
+		ImGui::SetCursorPos(ImVec2(5, 8));
 		ImGui::Checkbox("Object Clicked", &occ_ObjectClicked);
-		ImGui::SetCursorPos(ImVec2(5, 68));
+		ImGui::SetCursorPos(ImVec2(5, 38));
 		ImGui::Checkbox("Object Condition", &occ_blackboardValue);
 	}
 	else if (GetActionClass() == ACTION_CLASS_DIRECT)

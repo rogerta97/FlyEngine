@@ -592,7 +592,8 @@ bool ObjectCreatorDockPanel::DrawSelectable(ActionSelectableInfo selectableInfo,
 	ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
 
 	ImGui::SetCursorPos(ImVec2(50, (selectableHeight * posInList) + 4));
-	if (ImGui::Selectable(selectableInfo.actionName.c_str(), &isSelected, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, selectableHeight - 3))) {
+	if (ImGui::Selectable(selectableInfo.actionName.c_str(), &isSelected, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, selectableHeight - 3))) 
+	{
 		creatingObject->SetSelectedAction(selectableInfo.actionType);
 		selectedAction = currentAction;
 		ret = true; 
@@ -731,8 +732,9 @@ void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 		if (modifyVariableAction->GetActionClass() == ACTION_CLASS_SEQUENTIAL)
 		{
 			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
+			ImGui::SetCursorPos(ImVec2(5, 8));
 			ImGui::Checkbox("Object Clicked", &modifyVariableAction->IsOccObjectClicked());
-			ImGui::SetCursorPos(ImVec2(5, 98));
+			ImGui::SetCursorPos(ImVec2(5, 38));
 			ImGui::Checkbox("Blackboard Value Condition", &modifyVariableAction->IsOccCondition());
 
 		}
@@ -813,10 +815,10 @@ void ObjectCreatorDockPanel::DrawEmitSoundActionSettings()
 		{
 			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
 
-			ImGui::SetCursorPos(ImVec2(5, 68));
+			ImGui::SetCursorPos(ImVec2(5, 8));
 			ImGui::Checkbox("Object Clicked", &emitSoundAction->IsOccObjectClicked());
 
-			ImGui::SetCursorPos(ImVec2(5, 98));
+			ImGui::SetCursorPos(ImVec2(5, 38));
 			ImGui::Checkbox("Blackboard Value Condition", &emitSoundAction->IsOccCondition());
 		}
 		else if (emitSoundAction->GetActionClass() == ACTION_CLASS_DIRECT)

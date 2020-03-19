@@ -71,6 +71,7 @@ public:
 	void DrawSequentialActionsList();
 
 	void SetSelectedAction(ActionType toolTypeSelected); 
+
 	ActionType GetSelectedActionType(); 
 	Action* GetAction(std::string toolName); 
 	Action* GetAction(ActionType toolType); 
