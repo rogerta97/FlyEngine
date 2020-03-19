@@ -282,28 +282,26 @@ void SaveAndLoad::LoadFollowPathAction(JSON_Object* root_obj, std::string& seria
 	followPathAction->SetActionClass((ActionClass)actionClass);
 	followPathAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("Occurrence."));
 
-	string serializeFollowPathStr = serializeObjectStrActions + "FollowPath.";
-
 	// Load Reproduce type 
-	int playModeTmp = json_object_dotget_number(root_obj, string(serializeFollowPathStr + "PlayMode").c_str());
+	int playModeTmp = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "PlayMode").c_str());
 	followPathAction->SetPathMode((PathPlayMode)playModeTmp);
 
-	bool isSpeedConstant = json_object_dotget_boolean(root_obj, string(serializeFollowPathStr + "IsSpeedConstant").c_str());
+	bool isSpeedConstant = json_object_dotget_boolean(root_obj, string(serializeObjectStrActions + "IsSpeedConstant").c_str());
 	followPathAction->SetIsSpeedConstant(isSpeedConstant);
 
 	if (isSpeedConstant)
 	{
-		float constantSpeed = json_object_dotget_number(root_obj, string(serializeFollowPathStr + "ConstantSpeed").c_str());
+		float constantSpeed = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "ConstantSpeed").c_str());
 		followPathAction->SetConstantSpeed(constantSpeed);
 	}
 
 	// Load Path Steps 
-	int stepsAmount = json_object_dotget_number(root_obj, string(serializeFollowPathStr + "PathSteps.StepsAmount").c_str());
+	int stepsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "PathSteps.StepsAmount").c_str());
 
 	int count = 0;
 	while (count < stepsAmount)
 	{
-		string stepStr = serializeFollowPathStr + "PathSteps.Step_" + to_string(count) + ".";
+		string stepStr = serializeObjectStrActions + "PathSteps.Step_" + to_string(count) + ".";
 
 		PathStep* newStep = new PathStep();
 		newStep->targetPosition.x = json_object_dotget_number(root_obj, string(stepStr + "TargetPosition.x").c_str());

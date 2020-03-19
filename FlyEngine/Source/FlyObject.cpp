@@ -39,6 +39,7 @@ FlyObject::FlyObject(std::string _name, std::string _description, FlyObjectType 
 	drawClickableArea = false;
 	flyObjectType = _flyObjectType; 
 	parentRoom = _parentRoom; 
+	currentSequentialAction = nullptr; 
 
 	clickableArea = new BoundingBox(); 
 	clickableAreaPosPerc = float2(0, 0); 
@@ -79,8 +80,41 @@ bool FlyObject::Update(float dt)
 		currentAction->Update(dt);
 	}
 
+	for (auto& currentAction : sequentialActionsList)
+	{
+		currentAction->Update(dt);
+	}
+
+	// Update Sequential Action If Necessary
+	if (currentSequentialAction != nullptr)
+	{
+		currentSequentialAction->DoAction();
+
+		if (currentSequentialAction->IsActionFinished())
+		{
+			bool assignNext = false;
+			for (auto& currentSequential : sequentialActionsList)
+			{
+				if (assignNext)
+				{
+					currentSequentialAction = currentSequential;
+					break;
+				}
+
+				if (currentSequential == currentSequentialAction)
+				{
+					assignNext = true;
+				}
+			}
+		}
+	}
+
 	if (App->isEngineInPlayMode && App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && GameInventory::getInstance()->droppingObject == nullptr)
 	{
+
+	
+
+
 		if (clickableArea->IsMouseOver())
 		{
 			DoOnMouseOverActions();
@@ -101,6 +135,15 @@ bool FlyObject::Update(float dt)
 				App->moduleRoomManager->GetSelectedRoom()->AddItemToInventory(this);
 				isPicked = true; 
 				ret = true; 
+				break;
+
+			case OBJECT_SEQUENTIAL:
+
+				if (currentSequentialAction == nullptr && !sequentialActionsList.empty())
+				{
+					currentSequentialAction = sequentialActionsList.front(); 
+				}
+	
 				break;
 			}
 		}
@@ -141,6 +184,10 @@ void FlyObject::Draw()
 
 	for (auto& it : actionsList) {
 		(it)->Draw(); 
+	}
+
+	for (auto& it : sequentialActionsList) {
+		(it)->Draw();
 	}
 
 	if (isSelected || ViewportManager::getInstance()->drawClickableAreaCondition == DRAW_ALWAYS)

@@ -133,6 +133,9 @@ public:
 
 private: 
 
+	// Sequential Actions Play Control ----
+	Action* currentSequentialAction; 
+
 	// Parent Room --------
 	Room* parentRoom; 
 
