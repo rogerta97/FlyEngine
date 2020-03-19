@@ -1020,8 +1020,6 @@ void ObjectPropertiesDockPanel::DrawObjectSequenceActionsTab()
 	}
 
 	// Callbacks for buttons 
-	flog("%d", toSequentialList);
-
 	if (ImGui::BeginPopup("AddActionToObject"))
 	{
 		ImGui::Spacing();

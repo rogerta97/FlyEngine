@@ -325,7 +325,7 @@ void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 
 	SaveTransform(serializeObjectName, jsonObject);
 
-	json_object_dotset_number(jsonObject, string(serializeObjectName + "ActionsAmount").c_str(), actionsList.size());
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "Actions.ActionsAmount").c_str(), actionsList.size());
 
 	// Save Object Action Settings
 	int counter = 0; 
@@ -335,10 +335,14 @@ void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 		counter++;
 	}
 
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "SequentialActions.ActionsAmount").c_str(), sequentialActionsList.size());
+
 	// Save Object Sequenntial Action Settings
+	counter = 0;
 	for (auto& it : sequentialActionsList)
 	{
-		it->SaveAction(jsonObject, std::string(serializeObjectName + "SequentialActions."));
+		it->SaveAction(jsonObject, std::string(serializeObjectName + "SequentialActions."), false, counter);
+		counter++; 
 	}
 
 	// Save Object Clickable Area
