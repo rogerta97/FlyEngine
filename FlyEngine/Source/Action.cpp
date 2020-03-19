@@ -65,6 +65,14 @@ void Action::DrawUISettingsInButton()
 {
 }
 
+bool Action::IsActionSequential()
+{
+	if(actionClass == ActionClass::ACTION_CLASS_SEQUENTIAL)
+		return true;
+
+	return false; 
+}
+
 void Action::SaveAction(JSON_Object* jsonObject, std::string serializeObjectString, bool literalString)
 {
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "ActionType").c_str(), actionType);

@@ -67,6 +67,9 @@ public:
 	virtual void DrawUISettings(); 
 	virtual void DrawUISettingsInButton(); 
 
+	// Utility ------------------------
+	bool IsActionSequential(); 
+
 	// Save & Load --------------------
 	virtual void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
 

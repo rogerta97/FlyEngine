@@ -677,11 +677,11 @@ DisplayTextAction* FlyObject::AddDisplayTextAction(bool addToSequentialActions)
 	return (DisplayTextAction*)GetAction(ACTION_DISPLAY_TEXT);
 }
 
-void FlyObject::SetSelectedAction(ActionType toolTypeSelected)
+void FlyObject::SetSelectedAction(ActionType toolTypeSelected, bool isSequential)
 {
 	for (auto& it : actionsList)
 	{
-		if (it->GetActionType() == toolTypeSelected)
+		if (it->GetActionType() == toolTypeSelected && !isSequential)
 		{
 			it->SetSelected(true);
 			selectedAction = it; 
@@ -692,7 +692,7 @@ void FlyObject::SetSelectedAction(ActionType toolTypeSelected)
 
 	for (auto& it : sequentialActionsList)
 	{
-		if (it->GetActionType() == toolTypeSelected)
+		if (it->GetActionType() == toolTypeSelected && isSequential)
 		{
 			it->SetSelected(true);
 			selectedAction = it;
@@ -700,10 +700,6 @@ void FlyObject::SetSelectedAction(ActionType toolTypeSelected)
 		else
 			it->SetSelected(false);
 	}
-}
-
-void FlyObject::SetSelectedAction(UID newSelectedActionUID)
-{
 }
 
 ActionType FlyObject::GetSelectedActionType()

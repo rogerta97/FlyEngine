@@ -594,7 +594,7 @@ bool ObjectCreatorDockPanel::DrawSelectable(ActionSelectableInfo selectableInfo,
 	ImGui::SetCursorPos(ImVec2(50, (selectableHeight * posInList) + 4));
 	if (ImGui::Selectable(selectableInfo.actionName.c_str(), &isSelected, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, selectableHeight - 3))) 
 	{
-		creatingObject->SetSelectedAction(selectableInfo.actionType);
+		creatingObject->SetSelectedAction(selectableInfo.actionType, currentAction->IsActionSequential());
 		selectedAction = currentAction;
 		ret = true; 
 	}

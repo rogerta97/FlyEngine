@@ -344,7 +344,7 @@ void ObjectPropertiesDockPanel::DrawOnClickActionButtonList(UI_Button* selectedB
 
 		if (DrawActionSelectable(selectableInfo, currentAction, count, 40))
 		{
-			selectedButton->GetHolderObject()->SetSelectedAction(currentAction->GetActionType()); 
+			selectedButton->GetHolderObject()->SetSelectedAction(currentAction->GetActionType(), currentAction->IsActionSequential()); 
 			RoomUIHandler* selectedRoomUI = App->moduleRoomManager->GetSelectedRoomUI();
 			selectedRoomUI->selectedButtonUIAction = currentAction;
 			scrollToEnd = true; 

@@ -69,8 +69,7 @@ public:
 	FollowPathAction* AddFollowPathAction(bool addToSequentialActions = false);
 
 	void DrawSequentialActionsList();
-
-	void SetSelectedAction(ActionType toolTypeSelected); 
+	void SetSelectedAction(ActionType toolTypeSelected, bool isSequential = false);
 
 	ActionType GetSelectedActionType(); 
 	Action* GetAction(std::string toolName); 
