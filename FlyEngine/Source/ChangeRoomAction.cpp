@@ -95,12 +95,12 @@ void ChangeRoomAction::DrawUISettingsInButton()
 	DrawSelectDestinationCombo(); 
 }
 
-void ChangeRoomAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr)
+void ChangeRoomAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr, int actionPositionInObject)
 {
 	string toolsSerializeSection;
 	
 	if (!literalStr)
-		toolsSerializeSection = serializeObjectString + string("Actions.ChangeRoom.");
+		toolsSerializeSection = serializeObjectString + string("Actions.Action_") + to_string(actionPositionInObject) + ".";
 	else
 		toolsSerializeSection = serializeObjectString; 
 

@@ -71,7 +71,7 @@ public:
 	bool IsActionSequential(); 
 
 	// Save & Load --------------------
-	virtual void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
+	virtual void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false, int actionPositionInObject = 0);
 
 	// Occurrence ---------------------
 	void SaveOccurrence(JSON_Object* jsonObject, string serializeObjectString);

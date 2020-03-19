@@ -61,12 +61,12 @@ void ModifyVariableAction::DoAction()
 	}
 }
 
-void ModifyVariableAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr)
+void ModifyVariableAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr, int actionPositionInObject)
 {
 	string toolsSerializeSection;
 
 	if (!literalStr)
-		toolsSerializeSection = serializeObjectString + string("Actions.ModifyVariable.");
+		toolsSerializeSection = serializeObjectString + string("Actions.Action_") + to_string(actionPositionInObject) + ".";
 	else
 		toolsSerializeSection = serializeObjectString;
 

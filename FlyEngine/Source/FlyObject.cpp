@@ -326,9 +326,11 @@ void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 	SaveTransform(serializeObjectName, jsonObject);
 
 	// Save Object Action Settings
+	int counter = 0; 
 	for (auto& it : actionsList)
 	{
-		it->SaveAction(jsonObject, serializeObjectName);
+		it->SaveAction(jsonObject, serializeObjectName, false, counter);
+		counter++;
 	}
 
 	// Save Object Sequenntial Action Settings

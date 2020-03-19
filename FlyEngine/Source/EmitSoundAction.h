@@ -18,7 +18,7 @@ public:
 	void Play(); 
 
 	void DrawActionOccurenceCheckboxes(); 
-	void SaveAction(JSON_Object* jsonObject, std::string serializeStr, bool literalStr = false);
+	void SaveAction(JSON_Object* jsonObject, std::string serializeStr, bool literalStr = false, int actionPositionInObject = 0);
 	void DoAction(); 
 
 public:

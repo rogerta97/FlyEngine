@@ -199,7 +199,7 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 	}
 
 	// Create Sequential Actions ----
-	if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("Actions")).c_str()))
+	if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("SequentialActions")).c_str()))
 	{
 		string serializeObjectStrActions = serializeObjectStr + "SequentialActions.Actions.";
 
@@ -279,7 +279,8 @@ void SaveAndLoad::LoadFollowPathAction(JSON_Object* root_obj, std::string& seria
 {
 	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
 	FollowPathAction* followPathAction = nullptr;
-	if (actionClass == ACTION_CLASS_SEQUENTIAL)
+
+	if (actionClass == ACTION_CLASS_SEQUENTIAL && newObject->flyObjectType == FlyObjectType::OBJECT_SEQUENTIAL)
 		followPathAction = newObject->AddFollowPathAction(true);
 	else
 		followPathAction = newObject->AddFollowPathAction();

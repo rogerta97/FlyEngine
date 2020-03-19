@@ -148,15 +148,14 @@ void EmitSoundAction::Play()
 		audioClip->Play(); 
 }
 
-void EmitSoundAction::SaveAction(JSON_Object* jsonObject, std::string serializeStr, bool literalStr)
+void EmitSoundAction::SaveAction(JSON_Object* jsonObject, std::string serializeStr, bool literalStr, int actionPositionInObject)
 {
 	string toolsSerializeSection; 
 	
 	if (!literalStr)
-		toolsSerializeSection = serializeStr + string("Actions.EmitSound.");
+		toolsSerializeSection = serializeStr + string("Actions.Action_") + to_string(actionPositionInObject) + ".";
 	else
-		toolsSerializeSection = serializeStr; 
-
+		toolsSerializeSection = serializeStr;
 
 	Action::SaveAction(jsonObject, toolsSerializeSection); 
 	Action::SaveOccurrence(jsonObject, toolsSerializeSection);

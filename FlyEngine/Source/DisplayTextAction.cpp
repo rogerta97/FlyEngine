@@ -66,12 +66,12 @@ void DisplayTextAction::CleanUp()
 	delete textQuads;
 }
 
-void DisplayTextAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr)
+void DisplayTextAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr, int actionPositionInObject)
 {
 	string toolsSerializeSection;
 
 	if (!literalStr)
-		toolsSerializeSection = serializeObjectString + string("Actions.DisplayText.");
+		toolsSerializeSection = serializeObjectString + string("Actions.Action_") + to_string(actionPositionInObject) + ".";
 	else
 		toolsSerializeSection = serializeObjectString;
 

@@ -24,7 +24,7 @@ public:
 	void DrawUISettingsInButton(); 
 	void DrawActionOccurenceCheckboxes(); 
 
-	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
+	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false, int actionPositionInObject = 0);
 	void DoAction(); 
 
 	void SetDestination(Room* dstRoom); 

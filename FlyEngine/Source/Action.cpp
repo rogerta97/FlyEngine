@@ -73,8 +73,9 @@ bool Action::IsActionSequential()
 	return false; 
 }
 
-void Action::SaveAction(JSON_Object* jsonObject, std::string serializeObjectString, bool literalString)
+void Action::SaveAction(JSON_Object* jsonObject, std::string serializeObjectString, bool literalString, int actionPositionInObject)
 {
+	json_object_dotset_string(jsonObject, string(serializeObjectString + "Name").c_str(), GetActionName().c_str());
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "ActionType").c_str(), actionType);
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "ActionClass").c_str(), actionClass);
 	SaveActionConditions(serializeObjectString, jsonObject);

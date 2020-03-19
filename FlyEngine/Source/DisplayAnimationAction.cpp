@@ -169,12 +169,12 @@ void DisplayAnimationAction::AddFrame(Texture* newFrame)
 	screenImageAction->SetTexture(newFrame);
 }
 
-void DisplayAnimationAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr)
+void DisplayAnimationAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr, int actionPositionInObject)
 {
 	string actionSerializeSection;
 
 	if (!literalStr)
-		actionSerializeSection = serializeObjectString + string("Actions.DisplayAnimation.");
+		actionSerializeSection = serializeObjectString + string("Actions.Action_") + to_string(actionPositionInObject) + ".";
 	else
 		actionSerializeSection = serializeObjectString;
 

@@ -434,12 +434,12 @@ void FollowPathAction::DrawVisualSettings()
 	}
 }
 
-void FollowPathAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr)
+void FollowPathAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr, int actionPositionInObject)
 {
 	string toolsSerializeSection;
 
 	if (!literalStr)
-		toolsSerializeSection = serializeObjectString + string("Actions.FollowPath.");
+		toolsSerializeSection = serializeObjectString + string("Actions.Action_") + to_string(actionPositionInObject) + ".";
 	else
 		toolsSerializeSection = serializeObjectString;
 

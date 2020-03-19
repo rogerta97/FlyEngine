@@ -72,7 +72,7 @@ public:
 	void DrawActionOccurenceCheckboxes(); 
 
 	// Save ---------
-	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false);
+	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false, int actionPositionInObject = 0);
 
 	// Utility ---
 	void AddStep(PathStep* newStep, int stepIndex);
