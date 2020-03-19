@@ -325,6 +325,8 @@ void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 
 	SaveTransform(serializeObjectName, jsonObject);
 
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "ActionsAmount").c_str(), actionsList.size());
+
 	// Save Object Action Settings
 	int counter = 0; 
 	for (auto& it : actionsList)

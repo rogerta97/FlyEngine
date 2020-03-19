@@ -154,96 +154,178 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 	if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("Actions")).c_str()))
 	{
 		string serializeObjectStrActions = serializeObjectStr + "Actions.";
+		int actionsAmount = json_object_dotget_number(root_obj, string(serializeObjectStr + string("ActionsAmount")).c_str());
+
+		int counter = 0; 
+		while (counter < actionsAmount)
+		{
+			std::string actionSectionStr = serializeObjectStrActions + "Action_" + to_string(counter) + ".";
+			int objectType = json_object_dothas_value(root_obj, string(actionSectionStr + string("ActionType")).c_str());
+			ActionType actionType = (ActionType)objectType;
+
+			switch (actionType)
+			{
+			case ACTION_DISPLAY_IMAGE:
+				instance->LoadDisplayImageAction(root_obj, serializeObjectStrActions, newObject);
+				break;
+			case ACTION_CHANGE_ROOM:
+				instance->LoadChangeRoomAction(root_obj, serializeObjectStrActions, newObject);
+				break;
+			case ACTION_MOD_VARIABLE:
+				instance->LoadModifyVariableAction(root_obj, serializeObjectStrActions, newObject, currentRoom);
+				break;
+			case ACTION_EMIT_SOUND:
+				instance->LoadEmitSoundAction(root_obj, serializeObjectStrActions, newObject);
+				break;
+			case ACTION_DISPLAY_TEXT:
+				instance->LoadDisplayTextAction(root_obj, serializeObjectStrActions, newObject);
+				break;
+			case ACTION_DISPLAY_ANIMATION:
+				instance->LoadDisplayAnimationAction(root_obj, serializeObjectStrActions, newObject);
+				break;
+			case ACTION_FOLLOW_PATH:
+				instance->LoadFollowPathAction(root_obj, serializeObjectStrActions, newObject);
+				break;
+			case AT_null:
+				break;
+			default:
+				break;
+			}
+
+			counter++;
+		}
 
 		// Load Display Image Action ----------------------
-		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayImage")).c_str()))
-		{
-			instance->LoadDisplayImageAction(root_obj, serializeObjectStrActions, newObject);
-		}
+		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayImage")).c_str()))
+		//{
+		//	instance->LoadDisplayImageAction(root_obj, serializeObjectStrActions, newObject);
+		//}
 
-		// Load Change Room Action ----------------------
-		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ChangeRoom")).c_str()))
-		{
-			instance->LoadChangeRoomAction(root_obj, serializeObjectStrActions, newObject);
-		}
+		//// Load Change Room Action ----------------------
+		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ChangeRoom")).c_str()))
+		//{
+		//	
+		//}
 
-		// Load Modify Variable Action ----------------------
-		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ModifyVariable")).c_str()))
-		{
-			instance->LoadModifyVariableAction(root_obj, serializeObjectStrActions, newObject, currentRoom);
-		}
-		
-		// Load Emit Sound Action ----------------------
-		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("EmitSound")).c_str()))
-		{
-			instance->LoadEmitSoundAction(root_obj, serializeObjectStrActions, newObject);
-		}
+		//// Load Modify Variable Action ----------------------
+		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ModifyVariable")).c_str()))
+		//{
+		//	
+		//}
+		//
+		//// Load Emit Sound Action ----------------------
+		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("EmitSound")).c_str()))
+		//{
+		//	
+		//}
 
-		// Load Display Text Action ----------------------
-		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayText")).c_str()))
-		{
-			instance->LoadDisplayTextAction(root_obj, serializeObjectStrActions, newObject);
-		}
+		//// Load Display Text Action ----------------------
+		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayText")).c_str()))
+		//{
+		//
+		//}
 
-		// Load Display Animation Action ----------------------
-		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayAnimation")).c_str()))
-		{
-			instance->LoadDisplayAnimationAction(root_obj, serializeObjectStrActions, newObject);
-		}
+		//// Load Display Animation Action ----------------------
+		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayAnimation")).c_str()))
+		//{
+		//	
+		//}
 
-		// Load Follow Path Action
-		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("FollowPath")).c_str()))
-		{
-			instance->LoadFollowPathAction(root_obj, serializeObjectStrActions, newObject);
-		}
+		//// Load Follow Path Action
+		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("FollowPath")).c_str()))
+		//{
+		//	
+		//}
 	}
 
 	// Create Sequential Actions ----
 	if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("SequentialActions")).c_str()))
 	{
-		string serializeObjectStrActions = serializeObjectStr + "SequentialActions.Actions.";
+		string serializeObjectStrActions = serializeObjectStr + "Actions.";
+		int actionsAmount = json_object_dotget_number(root_obj, string(serializeObjectStr + string("ActionsAmount")).c_str());
 
-		// Load Display Image Action ----------------------
-		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayImage")).c_str()))
+		int counter = 0;
+		while (counter < actionsAmount)
 		{
-			instance->LoadDisplayImageAction(root_obj, serializeObjectStrActions, newObject);
+			std::string actionSectionStr = serializeObjectStr + ".Action_" + to_string(counter) + ".";
+			int objectType = json_object_dothas_value(root_obj, string(actionSectionStr + string("ActionType")).c_str());
+			ActionType actionType = (ActionType)objectType;
+
+			switch (actionType)
+			{
+			case ACTION_DISPLAY_IMAGE:
+				instance->LoadDisplayImageAction(root_obj, serializeObjectStrActions, newObject);
+				break;
+			case ACTION_CHANGE_ROOM:
+				instance->LoadChangeRoomAction(root_obj, serializeObjectStrActions, newObject);
+				break;
+			case ACTION_MOD_VARIABLE:
+				instance->LoadModifyVariableAction(root_obj, serializeObjectStrActions, newObject, currentRoom);
+				break;
+			case ACTION_EMIT_SOUND:
+				instance->LoadEmitSoundAction(root_obj, serializeObjectStrActions, newObject);
+				break;
+			case ACTION_DISPLAY_TEXT:
+				instance->LoadDisplayTextAction(root_obj, serializeObjectStrActions, newObject);
+				break;
+			case ACTION_DISPLAY_ANIMATION:
+				instance->LoadDisplayAnimationAction(root_obj, serializeObjectStrActions, newObject);
+				break;
+			case ACTION_FOLLOW_PATH:
+				instance->LoadFollowPathAction(root_obj, serializeObjectStrActions, newObject);
+				break;
+			case AT_null:
+				break;
+			default:
+				break;
+			}
+
+			counter++;
 		}
 
-		// Load Change Room Action ----------------------
-		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ChangeRoom")).c_str()))
-		{
-			instance->LoadChangeRoomAction(root_obj, serializeObjectStrActions, newObject);
-		}
+		//string serializeObjectStrActions = serializeObjectStr + "SequentialActions.Actions.";
 
-		// Load Modify Variable Action ----------------------
-		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ModifyVariable")).c_str()))
-		{
-			instance->LoadModifyVariableAction(root_obj, serializeObjectStrActions, newObject, currentRoom);
-		}
+		//// Load Display Image Action ----------------------
+		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayImage")).c_str()))
+		//{
+		//	instance->LoadDisplayImageAction(root_obj, serializeObjectStrActions, newObject);
+		//}
 
-		// Load Emit Sound Action ----------------------
-		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("EmitSound")).c_str()))
-		{
-			instance->LoadEmitSoundAction(root_obj, serializeObjectStrActions, newObject);
-		}
+		//// Load Change Room Action ----------------------
+		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ChangeRoom")).c_str()))
+		//{
+		//	instance->LoadChangeRoomAction(root_obj, serializeObjectStrActions, newObject);
+		//}
 
-		// Load Display Text Action ----------------------
-		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayText")).c_str()))
-		{
-			instance->LoadDisplayTextAction(root_obj, serializeObjectStrActions, newObject);
-		}
+		//// Load Modify Variable Action ----------------------
+		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ModifyVariable")).c_str()))
+		//{
+		//	instance->LoadModifyVariableAction(root_obj, serializeObjectStrActions, newObject, currentRoom);
+		//}
 
-		// Load Display Animation Action ----------------------
-		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayAnimation")).c_str()))
-		{
-			instance->LoadDisplayAnimationAction(root_obj, serializeObjectStrActions, newObject);
-		}
+		//// Load Emit Sound Action ----------------------
+		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("EmitSound")).c_str()))
+		//{
+		//	instance->LoadEmitSoundAction(root_obj, serializeObjectStrActions, newObject);
+		//}
 
-		// Load Follow Path Action
-		if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("FollowPath")).c_str()))
-		{
-			instance->LoadFollowPathAction(root_obj, serializeObjectStrActions, newObject);
-		}
+		//// Load Display Text Action ----------------------
+		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayText")).c_str()))
+		//{
+		//	instance->LoadDisplayTextAction(root_obj, serializeObjectStrActions, newObject);
+		//}
+
+		//// Load Display Animation Action ----------------------
+		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayAnimation")).c_str()))
+		//{
+		//	instance->LoadDisplayAnimationAction(root_obj, serializeObjectStrActions, newObject);
+		//}
+
+		//// Load Follow Path Action
+		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("FollowPath")).c_str()))
+		//{
+		//	instance->LoadFollowPathAction(root_obj, serializeObjectStrActions, newObject);
+		//}
 	}
 
 	// Clickable Area
@@ -472,8 +554,8 @@ void SaveAndLoad::LoadChangeRoomAction(JSON_Object* root_obj, std::string& seria
 
 void SaveAndLoad::LoadDisplayImageAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)
 {
-	string textureName = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("DisplayImage.TextureName")).c_str());
-	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+	string textureName = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("TextureName")).c_str());
+	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "ActionClass").c_str());
 
 	DisplayImageAction* displayImageAction = nullptr;
 	if (actionClass == ACTION_CLASS_SEQUENTIAL)
@@ -481,7 +563,7 @@ void SaveAndLoad::LoadDisplayImageAction(JSON_Object* root_obj, std::string& ser
 	else
 		displayImageAction = newObject->AddDisplayImageAction(textureName.c_str());
 
-	displayImageAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayImage.Occurrence."));
+	displayImageAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("Occurrence."));
 }
 
 void SaveAndLoad::LoadActionConditions(JSON_Object* root_obj, std::string& serializeObjectStr, Room* currentRoom)
