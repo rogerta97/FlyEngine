@@ -92,6 +92,8 @@ public:
 	void SetClickableAreaPosOne(float2 newAreaPosOne);
 	void SetClickableAreaSizeOne(float2 newAreaSizeOne);
 
+	Action* GetSelectedAction(); 
+
 	std::string GetName() const;
 	void SetName(std::string newName); 
 

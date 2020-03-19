@@ -633,8 +633,9 @@ void FlyObject::DrawSequentialActionsList()
 		ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
 
 		ImGui::SetCursorPos(ImVec2(50, (selectableHeight * pos) + 4));
-		if (ImGui::Selectable(selectableInfo.actionName.c_str(), &isSelected, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, selectableHeight - 3))) {
-			SetSelectedAction(selectableInfo.actionType);
+		if (ImGui::Selectable(selectableInfo.actionName.c_str(), &currentAction->IsSelected(), ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, selectableHeight - 3))) 
+		{
+			SetSelectedAction(selectableInfo.actionType, currentAction->IsActionSequential());
 			selectedAction = currentAction;
 		}
 		ImGui::PopFont();
@@ -811,6 +812,11 @@ void FlyObject::SetClickableAreaPosOne(float2 newAreaPosOne)
 void FlyObject::SetClickableAreaSizeOne(float2 newAreaSizeOne)
 {
 	clickableAreaSizePerc = newAreaSizeOne; 
+}
+
+Action* FlyObject::GetSelectedAction()
+{
+	return selectedAction;
 }
 
 float2 FlyObject::SetCASizeFromOne(float2 percentagePos, float2 percentageSize, bool directiPosition)

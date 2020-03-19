@@ -156,7 +156,7 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		string serializeObjectStrActions = serializeObjectStr + "Actions.";
 		int actionsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ActionsAmount")).c_str());
 
-		int counter = 0; 
+		int counter = 0;
 		while (counter < actionsAmount)
 		{
 			std::string actionSectionStr = serializeObjectStrActions + "Action_" + to_string(counter) + ".";
@@ -191,51 +191,8 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 			default:
 				break;
 			}
-
 			counter++;
 		}
-
-		// Load Display Image Action ----------------------
-		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayImage")).c_str()))
-		//{
-		//	instance->LoadDisplayImageAction(root_obj, serializeObjectStrActions, newObject);
-		//}
-
-		//// Load Change Room Action ----------------------
-		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ChangeRoom")).c_str()))
-		//{
-		//	
-		//}
-
-		//// Load Modify Variable Action ----------------------
-		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ModifyVariable")).c_str()))
-		//{
-		//	
-		//}
-		//
-		//// Load Emit Sound Action ----------------------
-		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("EmitSound")).c_str()))
-		//{
-		//	
-		//}
-
-		//// Load Display Text Action ----------------------
-		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayText")).c_str()))
-		//{
-		//
-		//}
-
-		//// Load Display Animation Action ----------------------
-		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayAnimation")).c_str()))
-		//{
-		//	
-		//}
-
-		//// Load Follow Path Action
-		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("FollowPath")).c_str()))
-		//{
-		//	
-		//}
 	}
 
 	// Create Sequential Actions ----
@@ -279,53 +236,8 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 			default:
 				break;
 			}
-
 			counter++;
 		}
-
-		//string serializeObjectStrActions = serializeObjectStr + "SequentialActions.Actions.";
-
-		//// Load Display Image Action ----------------------
-		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayImage")).c_str()))
-		//{
-		//	instance->LoadDisplayImageAction(root_obj, serializeObjectStrActions, newObject);
-		//}
-
-		//// Load Change Room Action ----------------------
-		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ChangeRoom")).c_str()))
-		//{
-		//	instance->LoadChangeRoomAction(root_obj, serializeObjectStrActions, newObject);
-		//}
-
-		//// Load Modify Variable Action ----------------------
-		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("ModifyVariable")).c_str()))
-		//{
-		//	instance->LoadModifyVariableAction(root_obj, serializeObjectStrActions, newObject, currentRoom);
-		//}
-
-		//// Load Emit Sound Action ----------------------
-		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("EmitSound")).c_str()))
-		//{
-		//	instance->LoadEmitSoundAction(root_obj, serializeObjectStrActions, newObject);
-		//}
-
-		//// Load Display Text Action ----------------------
-		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayText")).c_str()))
-		//{
-		//	instance->LoadDisplayTextAction(root_obj, serializeObjectStrActions, newObject);
-		//}
-
-		//// Load Display Animation Action ----------------------
-		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("DisplayAnimation")).c_str()))
-		//{
-		//	instance->LoadDisplayAnimationAction(root_obj, serializeObjectStrActions, newObject);
-		//}
-
-		//// Load Follow Path Action
-		//if (json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("FollowPath")).c_str()))
-		//{
-		//	instance->LoadFollowPathAction(root_obj, serializeObjectStrActions, newObject);
-		//}
 	}
 
 	// Clickable Area
@@ -367,6 +279,7 @@ void SaveAndLoad::LoadFollowPathAction(JSON_Object* root_obj, std::string& seria
 	else
 		followPathAction = newObject->AddFollowPathAction();
 
+	followPathAction->SetActionClass((ActionClass)actionClass);
 	followPathAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("Occurrence."));
 
 	string serializeFollowPathStr = serializeObjectStrActions + "FollowPath.";
@@ -413,6 +326,7 @@ void SaveAndLoad::LoadDisplayAnimationAction(JSON_Object* root_obj, std::string&
 	else
 		displayAnimationAction = newObject->AddDisplayAnimationAction();
 
+	displayAnimationAction->SetActionClass((ActionClass)actionClass);
 	displayAnimationAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayAnimation.Occurrence."));
 
 	string serializeDisplayTextStr = serializeObjectStrActions + "DisplayAnimation.";
@@ -453,6 +367,7 @@ void SaveAndLoad::LoadDisplayTextAction(JSON_Object* root_obj, std::string& seri
 	else
 		displayTextAction = newObject->AddDisplayTextAction();
 
+	displayTextAction->SetActionClass((ActionClass)actionClass);
 	displayTextAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayText.Occurrence."));
 
 	string serializeDisplayTextStr = serializeObjectStrActions + "DisplayText.";
@@ -484,6 +399,8 @@ void SaveAndLoad::LoadEmitSoundAction(JSON_Object* root_obj, std::string& serial
 	else
 		emitSoundAction = newObject->AddEmitSoundAction();
 
+	emitSoundAction->SetActionClass((ActionClass)actionClass);
+	emitSoundAction->SetActionClass((ActionClass)actionClass); 
 	emitSoundAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("EmitSound.Occurrence."));
 
 	if (audioClipPath != "None")
@@ -506,6 +423,7 @@ void SaveAndLoad::LoadModifyVariableAction(JSON_Object* root_obj, std::string& s
 	else
 		modifyVariableAction = newObject->AddModifyVariableAction();
 
+	modifyVariableAction->SetActionClass((ActionClass)actionClass);
 	modifyVariableAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("ModifyVariable.Occurrence."));
 
 	string effectsGroupStr = serializeObjectStrActions + "ModifyVariable.EffectsGroup.";
@@ -546,6 +464,7 @@ void SaveAndLoad::LoadChangeRoomAction(JSON_Object* root_obj, std::string& seria
 	else
 		changeRoomAction = newObject->AddChangeRoomAction();
 
+	changeRoomAction->SetActionClass((ActionClass)actionClass);
 	changeRoomAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("ChangeRoom.Occurrence."));
 
 	Room* room = App->moduleRoomManager->GetRoom(destinationRoomUID);
@@ -563,6 +482,7 @@ void SaveAndLoad::LoadDisplayImageAction(JSON_Object* root_obj, std::string& ser
 	else
 		displayImageAction = newObject->AddDisplayImageAction(textureName.c_str());
 
+	displayImageAction->SetActionClass((ActionClass)actionClass);
 	displayImageAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("Occurrence."));
 }
 

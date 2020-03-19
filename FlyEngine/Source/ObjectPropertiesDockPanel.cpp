@@ -1012,13 +1012,9 @@ void ObjectPropertiesDockPanel::DrawObjectSequenceActionsTab()
 	}
 
 	ImGui::PopStyleVar();
-
-	if (ImGui::BeginTabBar("SelectedSettings"))
-	{
-		DrawActionSettings();
-		ImGui::EndTabBar();
-	}
-
+	
+	DrawActionSettings();
+		
 	// Callbacks for buttons 
 	if (ImGui::BeginPopup("AddActionToObject"))
 	{
@@ -1170,39 +1166,44 @@ void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 
 void ObjectPropertiesDockPanel::DrawActionSettings()
 {
-	if (selectedObject->GetSelectedActionType() != AT_null)
-	{
-		switch (selectedObject->GetSelectedActionType())
-		{
-		case ACTION_DISPLAY_IMAGE:
-			DrawToolImageSettings();
-			break;
+	Action* selectedAction = selectedObject->GetSelectedAction();
+	
+	if(selectedAction)
+		selectedAction->DrawUISettings();
 
-		case ACTION_CHANGE_ROOM:
-			DrawChangeRoomSettings();
-			break;
+	//if (selectedObject->GetSelectedActionType() != AT_null)
+	//{
+	//	switch (selectedObject->GetSelectedActionType())
+	//	{
+	//	case ACTION_DISPLAY_IMAGE:
+	//		DrawToolImageSettings();
+	//		break;
 
-		case ACTION_MOD_VARIABLE:
-			DrawModifyVariableSettings();
-			break;
+	//	case ACTION_CHANGE_ROOM:
+	//		DrawChangeRoomSettings();
+	//		break;
 
-		case ACTION_EMIT_SOUND:
-			DrawEmitSoundSettings();
-			break;
+	//	case ACTION_MOD_VARIABLE:
+	//		DrawModifyVariableSettings();
+	//		break;
 
-		case ACTION_DISPLAY_TEXT:
-			DrawDisplayTextSettings();
-			break;
+	//	case ACTION_EMIT_SOUND:
+	//		DrawEmitSoundSettings();
+	//		break;
 
-		case ACTION_DISPLAY_ANIMATION:
-			DrawDisplayAnimationSettings(); 
-			break;
+	//	case ACTION_DISPLAY_TEXT:
+	//		DrawDisplayTextSettings();
+	//		break;
 
-		case ACTION_FOLLOW_PATH:
-			DrawFollowPathSettings();
-			break;
-		}
-	}
+	//	case ACTION_DISPLAY_ANIMATION:
+	//		DrawDisplayAnimationSettings(); 
+	//		break;
+
+	//	case ACTION_FOLLOW_PATH:
+	//		DrawFollowPathSettings();
+	//		break;
+	//	}
+	//}
 }
 
 void ObjectPropertiesDockPanel::DrawDisplayTextSettings()
@@ -1548,7 +1549,10 @@ void ObjectPropertiesDockPanel::DrawDisplayAnimationSettings()
 
 void ObjectPropertiesDockPanel::DrawFollowPathSettings()
 {
-	FollowPathAction* followPathAction = (FollowPathAction*)selectedObject->GetAction(ACTION_FOLLOW_PATH);
+	FollowPathAction* followPathAction = nullptr;
+
+
+	(FollowPathAction*)selectedObject->GetAction(ACTION_FOLLOW_PATH);
 
 	if (followPathAction != nullptr)
 	{
@@ -1645,7 +1649,7 @@ void ObjectPropertiesDockPanel::DrawActionsList()
 		ActionSelectableInfo selectableInfo = currentAction->GetActionSelectableInfo();
 		if (DrawActionSelectable(selectableInfo, currentAction, count, 40))
 		{
-			selectedObject->SetSelectedAction(selectableInfo.actionType);
+			selectedObject->SetSelectedAction(selectableInfo.actionType, currentAction->IsActionSequential());
 			App->moduleManager->selectedAction = selectedObject->GetAction(selectableInfo.actionType); 
 		}
 		
