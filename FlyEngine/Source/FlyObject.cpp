@@ -85,18 +85,19 @@ bool FlyObject::Update(float dt)
 		currentAction->Update(dt);
 	}
 
-	// Update Sequential Action If Necessary
+	// Update Sequential Action If Necessary ----------
+
 	if (currentSequentialAction != nullptr)
 	{
-		currentSequentialAction->DoAction();
-
 		if (currentSequentialAction->IsActionFinished())
 		{
 			bool assignNext = false;
+			bool assignedSuccess = false; 
 			for (auto& currentSequential : sequentialActionsList)
 			{
 				if (assignNext)
 				{
+					assignedSuccess = true; 
 					currentSequentialAction = currentSequential;
 					break;
 				}
@@ -106,15 +107,22 @@ bool FlyObject::Update(float dt)
 					assignNext = true;
 				}
 			}
+
+			if (!assignedSuccess)
+			{
+				currentSequentialAction = nullptr; 
+			}
+		}
+
+		if (currentSequentialAction != nullptr)
+		{
+			currentSequentialAction->DoAction();
+			flog("Current Action Name: %s", currentSequentialAction->GetActionName().c_str());
 		}
 	}
 
 	if (App->isEngineInPlayMode && App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && GameInventory::getInstance()->droppingObject == nullptr)
 	{
-
-	
-
-
 		if (clickableArea->IsMouseOver())
 		{
 			DoOnMouseOverActions();

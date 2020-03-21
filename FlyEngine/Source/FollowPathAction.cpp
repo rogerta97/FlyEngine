@@ -59,12 +59,16 @@ void FollowPathAction::Update(float dt)
 
 			if (currentStepIndex >= pathSteps->size() - 1)
 			{
-
 				switch (pathPlayMode)
 				{
 				case PATH_PLAY_ONCE: 
 				{
-					Stop(true);
+					bool goToStart = true; 
+
+					if (App->isEngineInPlayMode)
+						goToStart = false; 
+
+					Stop(goToStart);
 					SetActionCompleted(true); 
 				}
 					break; 
@@ -257,74 +261,76 @@ void FollowPathAction::DrawActionOccurenceCheckboxes()
 
 void FollowPathAction::DrawUISettings()
 {
-	DrawActionOccurenceCheckboxes(); 
-
-	ImGui::Separator(); 
-
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	ImGui::TextColored(ImVec4(1, 1, 1, 1.0f), "Visuals:");
-	ImGui::PopFont();
-
-	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-	ImGui::BeginChild("##PathSettings", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
-
-	DrawVisualSettings();
-
-	ImGui::PopStyleColor();
-	ImGui::EndChild();
-
-	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-
-	ImGui::Separator();
-
-	DrawBehaviorSettings();
-
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	ImGui::TextColored(ImVec4(1, 1, 1, 1.0f), "Steps List:");
-	ImGui::PopFont();
-
-	ImGui::BeginChild("##PathsListHierarchy", ImVec2(ImGui::GetContentRegionAvailWidth(), 250));
-
-	ImGui::PopStyleColor();
-
-	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.0f, 2.0f));
-	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-	ImGui::Spacing();
-
-	if (pathSteps->size() <= 0)
+	if (ImGui::CollapsingHeader("Emit Sound Settings", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		INC_CURSOR_X_7;
-		ImGui::PushFont(App->moduleImGui->rudaBlackGiant);
-		ImGui::TextColored(ImVec4(1, 1, 1, 0.04f), "Empty");
+		DrawActionOccurenceCheckboxes(); 
+
+		ImGui::Separator(); 
+
+		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+		ImGui::TextColored(ImVec4(1, 1, 1, 1.0f), "Visuals:");
 		ImGui::PopFont();
-	}
-	else
-	{
-		int count = 0; 
-		for (auto& currentStep : *pathSteps)
+
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+		ImGui::BeginChild("##PathSettings", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
+
+		DrawVisualSettings();
+
+		ImGui::PopStyleColor();
+		ImGui::EndChild();
+
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+
+		ImGui::Separator();
+
+		DrawBehaviorSettings();
+
+		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+		ImGui::TextColored(ImVec4(1, 1, 1, 1.0f), "Steps List:");
+		ImGui::PopFont();
+
+		ImGui::BeginChild("##PathsListHierarchy", ImVec2(ImGui::GetContentRegionAvailWidth(), 250));
+
+		ImGui::PopStyleColor();
+
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.0f, 2.0f));
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+		ImGui::Spacing();
+
+		if (pathSteps->size() <= 0)
 		{
-			currentStep->DrawStepGUI(count);
-			count++;
+			INC_CURSOR_X_7;
+			ImGui::PushFont(App->moduleImGui->rudaBlackGiant);
+			ImGui::TextColored(ImVec4(1, 1, 1, 0.04f), "Empty");
+			ImGui::PopFont();
+		}
+		else
+		{
+			int count = 0; 
+			for (auto& currentStep : *pathSteps)
+			{
+				currentStep->DrawStepGUI(count);
+				count++;
+			}
+		}
+
+		ImGui::PopStyleVar();
+		ImGui::EndChild();
+
+		if (ImGui::Button("Add Step To Center"))
+		{
+			PathStep* newStep = new PathStep();
+			newStep->targetPosition = float2(0, 0);
+			newStep->SetMovementSpeed(5.0f);
+			pathSteps->push_back(newStep);
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("Edit In Viewport"))
+		{
+
 		}
 	}
-
-	ImGui::PopStyleVar();
-	ImGui::EndChild();
-
-	if (ImGui::Button("Add Step To Center"))
-	{
-		PathStep* newStep = new PathStep();
-		newStep->targetPosition = float2(0, 0);
-		newStep->SetMovementSpeed(5.0f);
-		pathSteps->push_back(newStep);
-	}
-
-	ImGui::SameLine();
-	if (ImGui::Button("Edit In Viewport"))
-	{
-
-	}
-
 }
 
 void FollowPathAction::DrawBehaviorSettings()

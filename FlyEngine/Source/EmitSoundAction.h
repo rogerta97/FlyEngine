@@ -8,7 +8,7 @@ using namespace std;
 enum AudioPlayMode
 {
 	ONE_TIME, 
-	LOOP,
+	AUDIO_LOOP,
 };
 
 class AudioClip; 
@@ -18,13 +18,16 @@ public:
 	EmitSoundAction(FlyObject* _parentObject);
 	~EmitSoundAction();
 
+	void Update(float dt); 
+
 	void DrawUISettings(); 
 	void DrawUISettingsInButton(); 
 
-	void OnFinishAudio(int channel); 
-	void Play(); 
-
 	void DrawActionOccurenceCheckboxes(); 
+	
+	void Play(); 
+	void Stop(); 
+
 	void SaveAction(JSON_Object* jsonObject, std::string serializeStr, bool literalStr = false, int actionPositionInObject = 0);
 	void DoAction(); 
 
@@ -33,8 +36,11 @@ public:
 	AudioPlayMode audioPlayMode; 
 
 private: 
+	bool showVariableConditions = false;
+
 	bool showSoundSelectionPopup = false; 
 	bool isPlaying = false; 
+	int audioChannel = -1; 
 };
 
 #endif 

@@ -10,8 +10,8 @@ public:
 	AudioClip();
 	~AudioClip();
 
-	// Play
-	void Play(int loops = 0); 
+	// Play & Pause
+	int Play(int loops = 0); 
 
 	// Set & Get 
 	Mix_Chunk* GetChunk();
