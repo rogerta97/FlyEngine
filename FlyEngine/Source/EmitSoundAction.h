@@ -5,6 +5,12 @@
 
 using namespace std;
 
+enum AudioPlayMode
+{
+	ONE_TIME, 
+	LOOP,
+};
+
 class AudioClip; 
 class EmitSoundAction : public Action
 {
@@ -15,6 +21,7 @@ public:
 	void DrawUISettings(); 
 	void DrawUISettingsInButton(); 
 
+	void OnFinishAudio(int channel); 
 	void Play(); 
 
 	void DrawActionOccurenceCheckboxes(); 
@@ -23,9 +30,11 @@ public:
 
 public:
 	AudioClip* audioClip; 
+	AudioPlayMode audioPlayMode; 
 
 private: 
 	bool showSoundSelectionPopup = false; 
+	bool isPlaying = false; 
 };
 
 #endif 

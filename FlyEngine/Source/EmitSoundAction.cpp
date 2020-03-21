@@ -9,12 +9,15 @@
 #include "Application.h"
 #include "ModuleImGui.h"
 
+#include "SDL_Mixer/SDL_mixer.h"
+
 EmitSoundAction::EmitSoundAction(FlyObject* _parentObject)
 {
 	actionType = ACTION_EMIT_SOUND;
 	parentObject = _parentObject;
 	isVisual = false;
 	acceptSequencial = true;
+	audioPlayMode = ONE_TIME; 
 
 	SetActionName("Emit Sound");
 	SetToolDescription("This should be the description of the emit sound");
@@ -142,10 +145,18 @@ void EmitSoundAction::DrawActionOccurenceCheckboxes()
 	
 }
 
+void EmitSoundAction::OnFinishAudio(int channel)
+{
+	printf("Sound finished"); 
+}
+
 void EmitSoundAction::Play()
 {
-	if(audioClip)
-		audioClip->Play(); 
+	if (audioClip && !isPlaying)
+	{
+		audioClip->Play();
+		isPlaying = true; 
+	}
 }
 
 void EmitSoundAction::SaveAction(JSON_Object* jsonObject, std::string serializeStr, bool literalStr, int actionPositionInObject)
