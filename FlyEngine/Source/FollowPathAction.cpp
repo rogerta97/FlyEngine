@@ -28,10 +28,14 @@ FollowPathAction::FollowPathAction(FlyObject* _parentObject)
 	isSpeedConstant = false; 
 	acceptSequencial = true;
 
-	startPosition = parentObject->transform->GetPosition();
+	startBox = new BoundingBox();
+	startBox->SetSize(25, 25); 
+
+	startPosition = float2(0,0);
 	graphBoxColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
 	lineColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
 	lineWidth = 5.0f; 
+	alphaFactor = 0.2f;
 
 	SetActionName("Follow Path");
 	SetToolDescription("This should be the description of follow path action");
@@ -128,9 +132,15 @@ void FollowPathAction::Stop(bool goToStart)
 	movementState = MOVEMENT_IDLE;
 }
 
+void FollowPathAction::SetAlphaFactor(float _alphaFactor)
+{
+	alphaFactor = _alphaFactor;
+}
+
 void FollowPathAction::Draw()
 {
-	DrawPath(); 
+	if(parentObject->isSelected)
+		DrawPath(); 
 }
 
 void FollowPathAction::DoAction()
@@ -151,7 +161,10 @@ void FollowPathAction::CleanUp()
 	delete pathSteps; 
 
 	flyObjectInterpolation->CleanUp();
-	delete flyObjectInterpolation; 	
+	delete flyObjectInterpolation; 
+
+	startBox->CleanUp();
+	delete startBox; 
 }
 
 void FollowPathAction::DrawPath()
@@ -179,8 +192,13 @@ void FollowPathAction::DrawPath()
 
 
 		glLineWidth(lineWidth); 
-		glColor4f(lineColor.x, lineColor.y, lineColor.z, lineColor.w);
 
+	
+		glColor4f(lineColor.x, lineColor.y, lineColor.z, alphaFactor);
+
+		if(isSelected)
+			glColor4f(lineColor.x, lineColor.y, lineColor.z, lineColor.w);
+		
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
@@ -196,13 +214,27 @@ void FollowPathAction::DrawPath()
 	}
 
 	for (auto currentStep : *pathSteps)
-	{
-		// Draw the box
-		glColor4f(graphBoxColor.x, graphBoxColor.y, graphBoxColor.z, graphBoxColor.w);
+	{			
 		currentStep->graphBox->SetPosition(currentStep->targetPosition * ViewportManager::getInstance()->GetAspectRatio());
-		currentStep->graphBox->Draw(true, float4(0.0f, 1.0f, 0.0f, 1.0f)); 
+
+		if (isSelected)
+			currentStep->graphBox->Draw(true, float4(graphBoxColor.x, graphBoxColor.y, graphBoxColor.z, graphBoxColor.w));
+		else
+			currentStep->graphBox->Draw(true, float4(graphBoxColor.x, graphBoxColor.y, graphBoxColor.z, alphaFactor));
+
 		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	}
+
+	// Draw Starting Box 
+	startBox->SetPosition(startPosition * ViewportManager::getInstance()->GetAspectRatio());
+
+	if (isSelected)
+		startBox->Draw(true, float4(graphBoxColor.x, graphBoxColor.y, graphBoxColor.z, graphBoxColor.w));
+	else
+		startBox->Draw(true, float4(graphBoxColor.x, graphBoxColor.y, graphBoxColor.z, alphaFactor));
+
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
 }
 
 void FollowPathAction::DrawActionOccurenceCheckboxes()
@@ -291,11 +323,24 @@ void FollowPathAction::DrawUISettings()
 
 		ImGui::BeginChild("##PathsListHierarchy", ImVec2(ImGui::GetContentRegionAvailWidth(), 250));
 
+		PUSH_CHILD_BG_COLOR_DARK;
+		INC_CURSOR_4;
+		ImGui::BeginChild("StartPosPathDark", ImVec2(ImGui::GetContentRegionAvailWidth() - 5, 38));
+
+		float startPos[2] = { startPosition.x, startPosition.y }; 
+		INC_CURSOR_7;
+		if (ImGui::InputFloat2("Start Position", startPos, 2))
+		{
+			startPosition = float2(startPos[0], startPos[1]); 
+		}
+
+		ImGui::EndChild();
+		ImGui::PopStyleColor(); 
+
 		ImGui::PopStyleColor();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.0f, 2.0f));
-		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-		ImGui::Spacing();
+		IMGUI_SPACED_SEPARATOR;
 
 		if (pathSteps->size() <= 0)
 		{

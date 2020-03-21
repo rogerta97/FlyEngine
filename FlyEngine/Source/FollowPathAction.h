@@ -82,6 +82,8 @@ public:
 	void ResetPathMovement(); 
 	void Stop(bool goToStart);
 
+	void SetAlphaFactor(float _alphaFactor);
+
 	// Encapsulation ---
 	PathPlayMode GetPathMode();
 	void SetPathMode(PathPlayMode newPathMode);
@@ -93,6 +95,7 @@ private:
 	PathPlayMode pathPlayMode; 
 	FlyObjectInterpolator* flyObjectInterpolation; 
 	MovementState movementState; 
+	BoundingBox* startBox; 
 
 	bool showVariableConditions; 
 
@@ -111,6 +114,7 @@ private:
 	float4 graphBoxColor; 
 	float4 lineColor; 
 	float lineWidth; 
+	float alphaFactor; 
 };
 
 #endif 
