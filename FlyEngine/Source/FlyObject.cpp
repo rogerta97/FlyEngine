@@ -688,9 +688,9 @@ void FlyObject::DrawSequentialActionsList()
 		ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
 
 		ImGui::SetCursorPos(ImVec2(50, (selectableHeight * pos) + 4));
-		if (ImGui::Selectable(selectableInfo.actionName.c_str(), &currentAction->IsSelected(), ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, selectableHeight - 3))) 
+		if (ImGui::Selectable(std::string(selectableInfo.actionName + "##" + to_string(currentAction->GetUID())).c_str(), &currentAction->IsSelected(), ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, selectableHeight - 3))) 
 		{
-			SetSelectedAction(selectableInfo.actionType, currentAction->IsActionSequential());
+			SetSelectedAction(currentAction->GetUID(), currentAction->IsActionSequential());
 			selectedAction = currentAction;
 		}
 		ImGui::PopFont();
@@ -741,11 +741,11 @@ DisplayTextAction* FlyObject::AddDisplayTextAction(bool addToSequentialActions)
 	return (DisplayTextAction*)GetAction(ACTION_DISPLAY_TEXT);
 }
 
-void FlyObject::SetSelectedAction(ActionType toolTypeSelected, bool isSequential)
+void FlyObject::SetSelectedAction(UID toolTypeSelectedUID, bool isSequential)
 {
 	for (auto& it : actionsList)
 	{
-		if (it->GetActionType() == toolTypeSelected && !isSequential)
+		if (it->GetUID() == toolTypeSelectedUID && !isSequential)
 		{
 			it->SetSelected(true);
 			selectedAction = it; 
@@ -756,7 +756,7 @@ void FlyObject::SetSelectedAction(ActionType toolTypeSelected, bool isSequential
 
 	for (auto& it : sequentialActionsList)
 	{
-		if (it->GetActionType() == toolTypeSelected && isSequential)
+		if (it->GetUID() == toolTypeSelectedUID && isSequential)
 		{
 			it->SetSelected(true);
 			selectedAction = it;
@@ -790,6 +790,17 @@ Action* FlyObject::GetAction(ActionType toolType)
 	for (auto& currentAction : actionsList)
 	{
 		if (currentAction->GetActionType() == toolType)
+			return currentAction;
+	}
+
+	return nullptr;
+}
+
+Action* FlyObject::GetAction(UID actionUID)
+{
+	for (auto& currentAction : actionsList)
+	{
+		if (currentAction->GetUID() == actionUID)
 			return currentAction;
 	}
 

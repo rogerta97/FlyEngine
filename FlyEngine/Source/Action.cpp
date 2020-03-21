@@ -28,6 +28,8 @@ Action::Action()
 	acceptSequencial = false; 
 	actionClass = ACTION_CLASS_DIRECT;
 
+	uid = RandomNumberGenerator::getInstance()->GenerateUID();
+
 	return; 
 }
 
@@ -420,6 +422,16 @@ bool Action::GetAcceptSequencial()
 void Action::SetAcceptSequencial(bool _acSec)
 {
 	acceptSequencial = _acSec;
+}
+
+UID Action::GetUID()
+{
+	return uid;
+}
+
+void Action::SetUID(UID newUID)
+{
+	uid = newUID; 
 }
 
 ActionClass Action::GetActionClass()

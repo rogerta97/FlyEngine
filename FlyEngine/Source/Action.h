@@ -128,6 +128,9 @@ public:
 	bool GetAcceptSequencial();
 	void SetAcceptSequencial(bool _acSec);
 
+	UID GetUID();
+	void SetUID(UID newUID);
+
 	ActionClass GetActionClass();
 	void SetActionClass(ActionClass _acSec);
 
@@ -141,6 +144,7 @@ protected:
 	FlyObject* parentObject;
 	bool actionFinished; 
 	ActionClass actionClass; 
+	UID uid; 
 
 	// Occurrence -----------------
 	bool occ_SceneEnter = false; 
