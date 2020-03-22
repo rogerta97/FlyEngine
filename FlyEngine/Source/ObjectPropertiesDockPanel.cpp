@@ -1649,7 +1649,7 @@ void ObjectPropertiesDockPanel::DrawActionsList()
 		ActionSelectableInfo selectableInfo = currentAction->GetActionSelectableInfo();
 		if (DrawActionSelectable(selectableInfo, currentAction, count, 40))
 		{
-			selectedObject->SetSelectedAction(selectableInfo.actionType, currentAction->IsActionSequential());
+			selectedObject->SetSelectedAction(currentAction->GetUID(), currentAction->IsActionSequential());
 			App->moduleManager->selectedAction = selectedObject->GetAction(selectableInfo.actionType); 
 		}
 		
@@ -1769,7 +1769,7 @@ bool ObjectPropertiesDockPanel::DrawActionSelectable(ActionSelectableInfo& selec
 	ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
 
 	ImGui::SetCursorPos(ImVec2(50, ((selectableHeigth + 5) * posInList)));
-	if (ImGui::Selectable(selectableInfo.actionName.c_str(), currentAction->IsSelected(), ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), selectableHeigth)))
+	if (ImGui::Selectable(std::string(selectableInfo.actionName + "##" + to_string(currentAction->GetUID())).c_str(), currentAction->IsSelected(), ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvailWidth(), selectableHeigth)))
 		ret = true; 
 	
 	ImGui::PopFont();

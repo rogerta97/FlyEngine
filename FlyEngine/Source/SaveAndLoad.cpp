@@ -298,6 +298,12 @@ void SaveAndLoad::LoadFollowPathAction(JSON_Object* root_obj, std::string& seria
 	// Load Path Steps 
 	int stepsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "PathSteps.StepsAmount").c_str());
 
+	// Save Start Pos
+	float2 startPos = float2::zero;
+	startPos.x = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "PathSteps.StartPosition.x").c_str());
+	startPos.y = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "PathSteps.StartPosition.y").c_str());
+	followPathAction->SetStartPosition(startPos); 
+
 	int count = 0;
 	while (count < stepsAmount)
 	{

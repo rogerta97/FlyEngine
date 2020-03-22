@@ -88,6 +88,9 @@ public:
 	PathPlayMode GetPathMode();
 	void SetPathMode(PathPlayMode newPathMode);
 
+	float2 GetStartPosition();
+	void SetStartPosition(float2 _newStartPos);
+
 	void SetIsSpeedConstant(bool isSpeedConst);
 
 private: 
@@ -111,10 +114,12 @@ private:
 
 	// Draw Path Variables
 	float2 startPosition; 
-	float4 graphBoxColor; 
-	float4 lineColor; 
 	float lineWidth; 
 	float alphaFactor; 
+
+	float4 graphBoxColor; 
+	float4 startBoxColor; 
+	float4 lineColor; 
 };
 
 #endif 

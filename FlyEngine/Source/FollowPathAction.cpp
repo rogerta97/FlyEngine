@@ -32,10 +32,12 @@ FollowPathAction::FollowPathAction(FlyObject* _parentObject)
 	startBox->SetSize(25, 25); 
 
 	startPosition = float2(0,0);
-	graphBoxColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
-	lineColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
 	lineWidth = 5.0f; 
 	alphaFactor = 0.2f;
+
+	graphBoxColor = float4(0.0f, 1.0f, 0.0f, 1.0f);
+	lineColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
+	startBoxColor = float4(1.0f, 0.0f, 0.0f, 1.0f);
 
 	SetActionName("Follow Path");
 	SetToolDescription("This should be the description of follow path action");
@@ -179,7 +181,7 @@ void FollowPathAction::DrawPath()
 		// Draw the line from the desired position to the next one 
 		if (count == 0)
 		{
-			startStepPos = startPosition; 
+			startStepPos = startPosition * ViewportManager::getInstance()->GetAspectRatio();
 			finishStepPos = currentStep->targetPosition * ViewportManager::getInstance()->GetAspectRatio(); 
 			prevTargetPos = finishStepPos; 
 		}
@@ -192,7 +194,6 @@ void FollowPathAction::DrawPath()
 
 
 		glLineWidth(lineWidth); 
-
 	
 		glColor4f(lineColor.x, lineColor.y, lineColor.z, alphaFactor);
 
@@ -222,18 +223,18 @@ void FollowPathAction::DrawPath()
 		else
 			currentStep->graphBox->Draw(true, float4(graphBoxColor.x, graphBoxColor.y, graphBoxColor.z, alphaFactor));
 
-		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		//glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
 	// Draw Starting Box 
 	startBox->SetPosition(startPosition * ViewportManager::getInstance()->GetAspectRatio());
 
 	if (isSelected)
-		startBox->Draw(true, float4(graphBoxColor.x, graphBoxColor.y, graphBoxColor.z, graphBoxColor.w));
+		startBox->Draw(true, float4(startBoxColor.x, startBoxColor.y, startBoxColor.z, startBoxColor.w));
 	else
-		startBox->Draw(true, float4(graphBoxColor.x, graphBoxColor.y, graphBoxColor.z, alphaFactor));
+		startBox->Draw(true, float4(startBoxColor.x, startBoxColor.y, startBoxColor.z, alphaFactor));
 
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	//glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 }
 
@@ -329,7 +330,7 @@ void FollowPathAction::DrawUISettings()
 
 		float startPos[2] = { startPosition.x, startPosition.y }; 
 		INC_CURSOR_7;
-		if (ImGui::InputFloat2("Start Position", startPos, 2))
+		if (ImGui::DragFloat2("Start Position", startPos, 0.5f, -500.0f, 500.0f, "%.2f"))
 		{
 			startPosition = float2(startPos[0], startPos[1]); 
 		}
@@ -506,6 +507,10 @@ void FollowPathAction::SaveAction(JSON_Object* jsonObject, string serializeObjec
 	string stepSerializeGroupStr = toolsSerializeSection + "PathSteps."; 
 	json_object_dotset_number(jsonObject, string(stepSerializeGroupStr + "StepsAmount").c_str(), pathSteps->size());
 
+	// Save Start Pos
+	json_object_dotset_number(jsonObject, string(stepSerializeGroupStr + "StartPosition.x").c_str(), startPosition.x);
+	json_object_dotset_number(jsonObject, string(stepSerializeGroupStr + "StartPosition.y").c_str(), startPosition.y);
+
 	int count = 0; 
 	for(auto& currentStep : *pathSteps)
 	{
@@ -598,6 +603,16 @@ PathPlayMode FollowPathAction::GetPathMode()
 void FollowPathAction::SetPathMode(PathPlayMode newPathMode)
 {
 	pathPlayMode = newPathMode;
+}
+
+float2 FollowPathAction::GetStartPosition()
+{
+	return startPosition;
+}
+
+void FollowPathAction::SetStartPosition(float2 _newStartPos)
+{
+	startPosition = _newStartPos;
 }
 
 void FollowPathAction::SetIsSpeedConstant(bool isSpeedConst)
