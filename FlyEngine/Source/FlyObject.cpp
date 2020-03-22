@@ -117,7 +117,7 @@ bool FlyObject::Update(float dt)
 		if (currentSequentialAction != nullptr)
 		{
 			currentSequentialAction->DoAction();
-			flog("Current Action Name: %s", currentSequentialAction->GetActionName().c_str());
+			//flog("Current Action Name: %s", currentSequentialAction->GetActionName().c_str());
 		}
 	}
 
@@ -185,6 +185,32 @@ void FlyObject::DoVariableConditionActions(FlyVariable* currentVariableValue)
 	}
 }
 
+bool FlyObject::HasAction(ActionType _actionToCheckType)
+{
+	for(auto& currentAction : actionsList)
+	{
+		if (currentAction->GetType() == _actionToCheckType)
+		{
+			return true;  
+		}
+	}
+
+	return false; 
+}
+
+bool FlyObject::HasSequentialAction(ActionType _actionToCheckType)
+{
+	for (auto& currentAction : sequentialActionsList)
+	{
+		if (currentAction->GetType() == _actionToCheckType)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void FlyObject::Draw()
 {
 	if (isPicked)
@@ -206,7 +232,7 @@ void FlyObject::Draw()
 
 	if(isSelected)
 	{
-		if (App->moduleManager->selectedAction != nullptr && App->moduleManager->selectedAction->GetActionType() == ACTION_DISPLAY_TEXT)
+		if (App->moduleManager->selectedAction != nullptr && App->moduleManager->selectedAction->GetType() == ACTION_DISPLAY_TEXT)
 			return; 
 
 		gizmos->Draw();
@@ -502,19 +528,12 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 	}
 	else if (addToSequentialActions)
 	{
-		if (imageTexturePath == "None")
-			imageTexturePath = "EmptyObject";
-
 		DisplayImageAction* newAtrImage = new DisplayImageAction(this);
-		newAtrImage->CreateImage(imageTexturePath);
+		newAtrImage->SetIsInfoHolder(true); 
+		newAtrImage->SetImageTextureByPath(imageTexturePath); 
 
-		if (newAtrImage->GetAcceptSequencial())
-			sequentialActionsList.push_back(newAtrImage);
-
-		// Addapt Gizmo Rect to new Image
-		gizmos->FitSelectBoxSize();
-		hasVisuals = true;
-
+		sequentialActionsList.push_back(newAtrImage);
+		
 		return newAtrImage;
 	}
 	else if(imageTexturePath != "Null")
@@ -671,7 +690,7 @@ void FlyObject::DrawSequentialActionsList()
 	{
 		ActionSelectableInfo selectableInfo = currentAction->GetActionSelectableInfo();
 
-		if (currentAction->GetActionType() == ACTION_DISPLAY_IMAGE)
+		if (currentAction->GetType() == ACTION_DISPLAY_IMAGE)
 		{
 			DisplayImageAction* displayImageAction = (DisplayImageAction*)currentAction;
 
@@ -771,7 +790,7 @@ ActionType FlyObject::GetSelectedActionType()
 	if (selectedAction == nullptr)
 		return AT_null; 
 
-	return selectedAction->GetActionType();
+	return selectedAction->GetType();
 }
 
 Action* FlyObject::GetAction(std::string toolName)
@@ -789,7 +808,7 @@ Action* FlyObject::GetAction(ActionType toolType)
 {
 	for (auto& currentAction : actionsList)
 	{
-		if (currentAction->GetActionType() == toolType)
+		if (currentAction->GetType() == toolType)
 			return currentAction;
 	}
 
@@ -811,7 +830,7 @@ Action* FlyObject::GetSequentialAction(ActionType toolType)
 {
 	for (auto& currentAction : sequentialActionsList)
 	{
-		if (currentAction->GetActionType() == toolType)
+		if (currentAction->GetType() == toolType)
 			return currentAction;
 	}
 
@@ -832,7 +851,7 @@ void FlyObject::DeleteAction(ActionType actionType)
 {
 	for (auto currentTool = actionsList.begin(); currentTool != actionsList.end(); currentTool++)
 	{
-		if ((*currentTool)->GetActionType() == actionType)
+		if ((*currentTool)->GetType() == actionType)
 		{
 			(*currentTool)->CleanUp();
 			delete (*currentTool);

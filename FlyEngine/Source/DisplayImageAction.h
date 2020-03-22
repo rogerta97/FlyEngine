@@ -18,13 +18,16 @@ public:
 	// Virtuals ----------
 	void Init(); 
 	void Draw(); 
+	void DoAction(); 
 	void CleanUp();
 
 	void DrawUISettings();
 
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false, int actionPositionInObject = 0);
 	void DrawActionOccurenceCheckboxes(); 
-	bool CreateImage(const char* texturePath); 
+	bool CreateImage(const char* texturePath);
+	void SetImageTextureByPath(const char* texturePath);
+
 
 	// Set & Get --------
 	Quad* GetQuad() const;
@@ -41,6 +44,7 @@ public:
 
 public:
 	bool fromAnimation = false; 
+	bool holdingData = false; 
 
 private:
 	Quad*		quadMesh;

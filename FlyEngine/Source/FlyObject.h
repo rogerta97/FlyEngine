@@ -58,6 +58,8 @@ public:
 	void DoOnClickActions(); 
 	void DoOnMouseOverActions();
 	void DoVariableConditionActions(FlyVariable* currentVariableValue);
+	bool HasAction(ActionType _actionToCheckType);
+	bool HasSequentialAction(ActionType _actionToCheckType);
 
 	// Tools -----------
 	DisplayImageAction* AddDisplayImageAction(const char* imageTexturePath = "None", bool addToSequentialActions = false);

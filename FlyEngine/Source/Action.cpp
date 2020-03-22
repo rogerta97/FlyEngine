@@ -384,7 +384,7 @@ void Action::SetToolDescription(std::string newDescription)
 	toolDescription = newDescription; 
 }
 
-ActionType Action::GetActionType() const
+ActionType Action::GetType() const
 {
 	return actionType;
 }
@@ -402,6 +402,16 @@ bool& Action::IsSelected()
 void Action::SetIsSelected(bool _isSelected)
 {
 	isSelected = _isSelected; 
+}
+
+bool& Action::IsInfoHolder()
+{
+	return isInfoHolder;
+}
+
+void Action::SetIsInfoHolder(bool _isInfoHolder)
+{
+	isInfoHolder = _isInfoHolder; 
 }
 
 void Action::SetSelected(bool newSelected)

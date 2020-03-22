@@ -29,7 +29,7 @@ void UI_Text::Draw()
 
 void UI_Text::CleanUp()
 {
-	uiObject->DeleteAction(displayTextAction->GetActionType());
+	uiObject->DeleteAction(displayTextAction->GetType());
 	displayTextAction = nullptr;
 	UI_Element::CleanUp();
 }

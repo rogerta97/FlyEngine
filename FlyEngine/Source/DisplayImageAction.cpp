@@ -42,6 +42,9 @@ void DisplayImageAction::Init()
 
 void DisplayImageAction::Draw()
 {
+	if (isInfoHolder)
+		return; 
+
 	glEnableClientState(GL_VERTEX_ARRAY); 
 	glBindBuffer(GL_ARRAY_BUFFER, quadMesh->verticesID); 
 	glVertexPointer(3, GL_FLOAT, 0, NULL); 
@@ -92,6 +95,28 @@ void DisplayImageAction::Draw()
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 	SetActionCompleted(true); 
+}
+
+void DisplayImageAction::DoAction()
+{
+	if (IsActionSequential() && holdingData == false)
+	{
+		DisplayImageAction* fixedDisplayImageAction = (DisplayImageAction*)parentObject->GetAction(ACTION_DISPLAY_IMAGE);
+
+		if (fixedDisplayImageAction != nullptr)
+		{
+			fixedDisplayImageAction->SetTexture(this->GetTexture()); 
+		}
+		else
+		{
+			if(imageTexture == nullptr)
+				CreateImage("None");
+			else
+				CreateImage(imageTexture->GetPath());
+		}
+
+		holdingData = true;
+	}
 }
 
 void DisplayImageAction::CleanUp()
@@ -236,13 +261,7 @@ void DisplayImageAction::DrawActionOccurenceCheckboxes()
 
 bool DisplayImageAction::CreateImage(const char* texturePath)
 {
-	if (texturePath != "None")
-	{
-		string resourceName = MyFileSystem::getInstance()->GetLastPathItem(texturePath, false);
-		imageTexture = (Texture*)ResourceManager::getInstance()->GetResource(resourceName.c_str());
-	}
-	else
-		imageTexture = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject");
+	SetImageTextureByPath(texturePath);
 
 	if (imageTexture != nullptr)
 	{
@@ -252,8 +271,20 @@ bool DisplayImageAction::CreateImage(const char* texturePath)
 
 	quadMesh = new Quad(); 
 	quadMesh->Create(imageWidth, imageHeight); 
+	holdingData = true; 
 
 	return true; 
+}
+
+void DisplayImageAction::SetImageTextureByPath(const char* texturePath)
+{
+	if (texturePath != "None")
+	{
+		string resourceName = MyFileSystem::getInstance()->GetLastPathItem(texturePath, false);
+		imageTexture = (Texture*)ResourceManager::getInstance()->GetResource(resourceName.c_str());
+	}
+	else
+		imageTexture = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject");
 }
 
 Quad* DisplayImageAction::GetQuad() const
@@ -269,15 +300,18 @@ void DisplayImageAction::SetQuad(Quad* newQuad)
 void DisplayImageAction::SetTexture(Texture* newTexture)
 {
 	// Addapt Quad 
-	quadMesh->CleanUp();
-	delete quadMesh; 
+	if(!isInfoHolder)
+	{
+		quadMesh->CleanUp();
+		delete quadMesh; 
 
-	quadMesh = new Quad(); 
+		quadMesh = new Quad(); 
 
-	if(newTexture != nullptr)
-		quadMesh->Create(newTexture->GetWidth(), newTexture->GetHeigth());
-	else
-		quadMesh->Create(100, 100);
+		if(newTexture != nullptr)
+			quadMesh->Create(newTexture->GetWidth(), newTexture->GetHeigth());
+		else
+			quadMesh->Create(100, 100);
+	}
 
 	// Set Texture 
 	imageTexture = newTexture;

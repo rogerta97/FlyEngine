@@ -344,7 +344,7 @@ void ObjectPropertiesDockPanel::DrawOnClickActionButtonList(UI_Button* selectedB
 
 		if (DrawActionSelectable(selectableInfo, currentAction, count, 40))
 		{
-			selectedButton->GetHolderObject()->SetSelectedAction(currentAction->GetActionType(), currentAction->IsActionSequential()); 
+			selectedButton->GetHolderObject()->SetSelectedAction(currentAction->GetType(), currentAction->IsActionSequential()); 
 			RoomUIHandler* selectedRoomUI = App->moduleRoomManager->GetSelectedRoomUI();
 			selectedRoomUI->selectedButtonUIAction = currentAction;
 			scrollToEnd = true; 
@@ -1638,7 +1638,7 @@ void ObjectPropertiesDockPanel::DrawActionsList()
 	int count = 0;
 	for (auto& currentAction : selectedObject->GetActionsList())
 	{
-		if (currentAction->GetActionType() == ACTION_DISPLAY_IMAGE)
+		if (currentAction->GetType() == ACTION_DISPLAY_IMAGE)
 		{
 			DisplayImageAction* displayImage = (DisplayImageAction*)currentAction;
 
@@ -1683,7 +1683,7 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 		if (selectedAction != nullptr)
 		{
 			selectedAction->CleanUp();
-			selectedObject->DeleteAction(selectedAction->GetActionType());
+			selectedObject->DeleteAction(selectedAction->GetType());
 			selectedAction = nullptr;
 		}
 	}
@@ -1827,8 +1827,9 @@ void ObjectPropertiesDockPanel::DrawToolImageSettings()
 
 	if (imageTool != nullptr)
 	{
-		if (ImGui::CollapsingHeader("Image Tool Settings", ImGuiTreeNodeFlags_DefaultOpen))
-		{
+		imageTool->DrawUISettings(); 
+		//if (ImGui::CollapsingHeader("Image Tool Settings", ImGuiTreeNodeFlags_DefaultOpen))
+		/*{
 			static char buf[256] = "";
 
 			Texture* imageToolTexture = imageTool->GetTexture();
@@ -1895,7 +1896,7 @@ void ObjectPropertiesDockPanel::DrawToolImageSettings()
 			ImGui::PopStyleColor(2);
 			ImGui::EndChild();
 			ImGui::PopFont();
-		}
+		}*/
 	}
 }
 

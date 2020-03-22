@@ -341,7 +341,7 @@ void ModuleManager::DrawActionListWithSettings(FlyObject* ownerObejct)
 	objectProperties = (ObjectPropertiesDockPanel*)App->moduleImGui->GetDockPanel(DOCK_OBJECT_PROPERTIES);
 	for (auto& currentAction : ownerObejct->GetActionsList())
 	{
-		if (ownerObejct->IsInventoryItem() && currentAction->GetActionType() == ACTION_DISPLAY_IMAGE)
+		if (ownerObejct->IsInventoryItem() && currentAction->GetType() == ACTION_DISPLAY_IMAGE)
 			continue; 
 
 		ActionSelectableInfo selectableInfo = currentAction->GetActionSelectableInfo();

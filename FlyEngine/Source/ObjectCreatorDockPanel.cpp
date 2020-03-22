@@ -185,7 +185,7 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 	{
 		if (selectedAction != nullptr)
 		{
-			creatingObject->DeleteAction(selectedAction->GetActionType());
+			creatingObject->DeleteAction(selectedAction->GetType());
 			selectedAction = nullptr;
 		}
 	}
@@ -220,7 +220,7 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 	{
 		if (selectedAction != nullptr)
 		{
-			creatingObject->DeleteAction(selectedAction->GetActionType());
+			creatingObject->DeleteAction(selectedAction->GetType());
 			selectedAction = nullptr;
 		}
 	}
@@ -234,8 +234,6 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 	}
 
 	// Callbacks for buttons 
-	flog("%d", toSequentialList);
-
 	if (ImGui::BeginPopup("AddActionToObject"))
 	{
 		ImGui::Spacing();
@@ -534,7 +532,7 @@ void ObjectCreatorDockPanel::DrawObjectActionsList()
 	{
 		ActionSelectableInfo selectableInfo = currentAction->GetActionSelectableInfo();
 
-		if (currentAction->GetActionType() == ACTION_DISPLAY_IMAGE)
+		if (currentAction->GetType() == ACTION_DISPLAY_IMAGE)
 		{
 			DisplayImageAction* displayImageAction = (DisplayImageAction*)currentAction;
 
@@ -564,7 +562,7 @@ void ObjectCreatorDockPanel::DrawSequentialActionsList()
 	{
 		ActionSelectableInfo selectableInfo = currentAction->GetActionSelectableInfo();
 
-		if (currentAction->GetActionType() == ACTION_DISPLAY_IMAGE)
+		if (currentAction->GetType() == ACTION_DISPLAY_IMAGE)
 		{
 			DisplayImageAction* displayImageAction = (DisplayImageAction*)currentAction;
 
@@ -617,7 +615,7 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 	{
 		ImGui::Spacing();
 
-		switch (selectedAction->GetActionType())
+		switch (selectedAction->GetType())
 		{
 		case ACTION_DISPLAY_IMAGE:
 			DrawDisplayImageSettings();
@@ -1469,7 +1467,7 @@ void ObjectCreatorDockPanel::DrawAddAndDeleteActionButtons(bool fromFixedAction)
 	{
 		if (selectedAction != nullptr) 
 		{
-			creatingObject->DeleteAction(selectedAction->GetActionType());
+			creatingObject->DeleteAction(selectedAction->GetType());
 			selectedAction = nullptr; 
 		}
 	}

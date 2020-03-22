@@ -116,11 +116,14 @@ public:
 	std::string GetToolDescription() const;
 	void SetToolDescription(std::string newDescription);
 
-	ActionType GetActionType() const;
+	ActionType GetType() const;
 	void SetToolType(ActionType newToolType);
 
 	bool& IsSelected(); 
 	void SetIsSelected(bool _isSelected);
+
+	bool& IsInfoHolder();
+	void SetIsInfoHolder(bool _isInfoHolder);
 
 	void SetSelected(bool newSelected); 
 	bool& HasVisual(); 
@@ -145,6 +148,7 @@ protected:
 	bool actionFinished; 
 	ActionClass actionClass; 
 	UID uid; 
+	bool isInfoHolder = false;
 
 	// Occurrence -----------------
 	bool occ_SceneEnter = false; 
