@@ -992,23 +992,17 @@ void ObjectPropertiesDockPanel::DrawObjectSequenceActionsTab()
 
 	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
 	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite2");
-
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
-		flog("Sequential Fixed");
 		toSequentialList = true;
 		ImGui::OpenPopup("AddActionToObject");
 	}
 
 	ImGui::SameLine();
-	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
+	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite2");
 	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
-		//if (selectedAction != nullptr)
-		//{
-		//	creatingObject->DeleteAction(selectedAction->GetActionType());
-		//	selectedAction = nullptr;
-		//}
+
 	}
 
 	ImGui::PopStyleVar();
@@ -1828,75 +1822,6 @@ void ObjectPropertiesDockPanel::DrawToolImageSettings()
 	if (imageTool != nullptr)
 	{
 		imageTool->DrawUISettings(); 
-		//if (ImGui::CollapsingHeader("Image Tool Settings", ImGuiTreeNodeFlags_DefaultOpen))
-		/*{
-			static char buf[256] = "";
-
-			Texture* imageToolTexture = imageTool->GetTexture();
-
-			if (imageToolTexture == nullptr)
-				imageToolTexture = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject");
-
-			float aspect_ratio = imageToolTexture->GetAspectRatio();
-			float previewQuadWidth = 150;
-			float previewQuadHeight = previewQuadWidth / aspect_ratio;
-
-			ImGui::Spacing();
-			PUSH_FONT(App->moduleImGui->rudaRegularMid);
-
-			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-			ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), previewQuadHeight + 18));
-
-			ImGui::Columns(2);
-			ImGui::SetColumnWidth(0, previewQuadWidth + 10);
-
-			ImGui::Spacing();
-			ImGui::Image((ImTextureID)imageToolTexture->GetTextureID(), ImVec2(previewQuadWidth, previewQuadHeight));
-
-			ImGui::NextColumn();
-
-			ImGui::Spacing();
-			ImGui::Text("Name: "); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%s", imageToolTexture->GetName().c_str());
-
-			ImGui::Text("Width: "); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", imageToolTexture->GetWidth());
-
-			ImGui::Text("Height: "); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", imageToolTexture->GetHeigth());
-
-			Texture* searchTexture = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-
-			if (ImGui::ImageButton((ImTextureID)searchTexture->GetTextureID(), ImVec2(24, 24)))
-			{
-				char const* lFilterPatterns[2] = { "*.jpg" , "*.png" };
-				const char* path = tinyfd_openFileDialog("Load Image...", NULL, 2, lFilterPatterns, NULL, 0);
-
-				if (path != NULL)
-				{
-					if (!ResourceManager::getInstance()->ExistResourcePath(path))
-					{
-						imageToolTexture = ImageImporter::getInstance()->LoadTexture(path, false);
-						ResourceManager::getInstance()->AddResource(imageToolTexture, imageToolTexture->GetName());
-					}
-					else
-					{
-						imageToolTexture = (Texture*)ResourceManager::getInstance()->GetResourceByPath(path);
-					}
-
-					imageTool->SetTexture(imageToolTexture);
-
-					strcpy(buf, path);
-					flog("Player Opened %s", path);
-				}
-
-			}
-
-			ImGui::PopStyleColor(2);
-			ImGui::EndChild();
-			ImGui::PopFont();
-		}*/
 	}
 }
 

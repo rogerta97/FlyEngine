@@ -81,6 +81,7 @@ public:
 	std::list<Action*> GetActionsList() const; 
 	std::list<Action*> GetSequentialActionsList() const;
 	void DeleteAction(ActionType toolNameToDelete);
+	void DeleteAction(UID toolNameToDelete);
 
 	// Clickable Area ---
 	void CreateClickableArea(float2 percentagePos, float2 percentageSize, bool directPosition = false);

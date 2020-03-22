@@ -86,7 +86,6 @@ bool FlyObject::Update(float dt)
 	}
 
 	// Update Sequential Action If Necessary ----------
-
 	if (currentSequentialAction != nullptr)
 	{
 		if (currentSequentialAction->IsActionFinished())
@@ -146,12 +145,10 @@ bool FlyObject::Update(float dt)
 				break;
 
 			case OBJECT_SEQUENTIAL:
-
 				if (currentSequentialAction == nullptr && !sequentialActionsList.empty())
 				{
 					currentSequentialAction = sequentialActionsList.front(); 
 				}
-	
 				break;
 			}
 		}
@@ -858,6 +855,21 @@ void FlyObject::DeleteAction(ActionType actionType)
 			(*currentTool) = nullptr; 
 			currentTool = actionsList.erase(currentTool); 
 			return; 
+		}
+	}
+}
+
+void FlyObject::DeleteAction(UID actionUID)
+{
+	for (auto currentTool = actionsList.begin(); currentTool != actionsList.end(); currentTool++)
+	{
+		if ((*currentTool)->GetUID() == actionUID)
+		{
+			(*currentTool)->CleanUp();
+			delete (*currentTool);
+			(*currentTool) = nullptr;
+			currentTool = actionsList.erase(currentTool);
+			return;
 		}
 	}
 }
