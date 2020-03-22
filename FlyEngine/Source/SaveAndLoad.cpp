@@ -385,33 +385,33 @@ void SaveAndLoad::LoadDisplayAnimationAction(JSON_Object* root_obj, std::string&
 
 void SaveAndLoad::LoadDisplayTextAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)
 {
-	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+	//int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
 
-	DisplayTextAction* displayTextAction = nullptr;
-	if (actionClass == ACTION_CLASS_SEQUENTIAL)
-		displayTextAction = newObject->AddDisplayTextAction(true);
-	else
-		displayTextAction = newObject->AddDisplayTextAction();
+	//DisplayTextAction* displayTextAction = nullptr;
+	//if (actionClass == ACTION_CLASS_SEQUENTIAL)
+	//	displayTextAction = newObject->AddDisplayTextAction(true);
+	//else
+	//	displayTextAction = newObject->AddDisplayTextAction();
 
-	displayTextAction->SetActionClass((ActionClass)actionClass);
-	displayTextAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayText.Occurrence."));
+	//displayTextAction->SetActionClass((ActionClass)actionClass);
+	//displayTextAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayText.Occurrence."));
 
-	string serializeDisplayTextStr = serializeObjectStrActions + "DisplayText.";
+	//string serializeDisplayTextStr = serializeObjectStrActions + "DisplayText.";
 
-	string fontTmp = json_object_dotget_string(root_obj, string(serializeDisplayTextStr + string("FontName")).c_str());
-	if (fontTmp != "None")
-	{
-		Font* textFont = (Font*)ResourceManager::GetResource(fontTmp.c_str(), RESOURCE_FONT);
+	//string fontTmp = json_object_dotget_string(root_obj, string(serializeDisplayTextStr + string("FontName")).c_str());
+	//if (fontTmp != "None")
+	//{
+	//	Font* textFont = (Font*)ResourceManager::GetResource(fontTmp.c_str(), RESOURCE_FONT);
 
-		if (textFont)
-			displayTextAction->SetFont(textFont);
-	}
+	//	if (textFont)
+	//		displayTextAction->SetFont(textFont);
+	//}
 
-	string textTmp = json_object_dotget_string(root_obj, string(serializeDisplayTextStr + string("Text")).c_str());
-	if (textTmp != "None")
-	{
-		displayTextAction->SetText(textTmp);
-	}
+	//string textTmp = json_object_dotget_string(root_obj, string(serializeDisplayTextStr + string("Text")).c_str());
+	//if (textTmp != "None")
+	//{
+	//	displayTextAction->SetText(textTmp);
+	//}
 }
 
 void SaveAndLoad::LoadEmitSoundAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)

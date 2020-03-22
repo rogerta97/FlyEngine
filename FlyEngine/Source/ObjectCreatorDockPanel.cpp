@@ -225,6 +225,18 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 		}
 	}
 
+	ImGui::SameLine();
+	Texture* arrowIcon = (Texture*)ResourceManager::getInstance()->GetResource("ArrowDownWhite");
+	if (ImGui::ImageButton((ImTextureID)arrowIcon->GetTextureID(), ImVec2(30, 30)))
+	{
+	}
+
+	ImGui::SameLine();
+	arrowIcon = (Texture*)ResourceManager::getInstance()->GetResource("ArrowUpWhite");
+	if (ImGui::ImageButton((ImTextureID)arrowIcon->GetTextureID(), ImVec2(30, 30)))
+	{
+	}
+
 	ImGui::PopStyleVar();
 
 	if (ImGui::BeginTabBar("SelectedSettings"))

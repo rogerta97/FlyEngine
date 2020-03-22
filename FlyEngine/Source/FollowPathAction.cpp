@@ -516,6 +516,7 @@ void FollowPathAction::SaveAction(JSON_Object* jsonObject, string serializeObjec
 
 	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "Visuals.StartBoxColor.r").c_str(), startBoxColor.x);
 	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "Visuals.StartBoxColor.g").c_str(), startBoxColor.y);
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "Visuals.StartBoxColor.g").c_str(), startBoxColor.y);
 	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "Visuals.StartBoxColor.b").c_str(), startBoxColor.z);
 	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "Visuals.StartBoxColor.a").c_str(), startBoxColor.w);
 

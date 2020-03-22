@@ -84,6 +84,8 @@ public:
 	void DeleteSequentialAction(UID toolNameToDelete);
 	void DeleteAction(UID toolNameToDelete);
 
+	void MoveSequentialAction(UID actionUID, int moveType);
+
 	// Clickable Area ---
 	void CreateClickableArea(float2 percentagePos, float2 percentageSize, bool directPosition = false);
 	void DrawClickableArea();

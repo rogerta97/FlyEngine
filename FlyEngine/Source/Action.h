@@ -128,6 +128,15 @@ public:
 	void SetSelected(bool newSelected); 
 	bool& HasVisual(); 
 
+	void SetDrawIfSequential(bool _dis);
+	bool& GetDrawIfSequential();
+
+	void SetVisible(bool isVisible);
+	bool& GetIsVisible();
+
+	void SetIsDisplay(bool _dis);
+	bool& GetIsDisplay();
+
 	bool GetAcceptSequencial();
 	void SetAcceptSequencial(bool _acSec);
 
@@ -148,7 +157,11 @@ protected:
 	bool actionFinished; 
 	ActionClass actionClass; 
 	UID uid; 
+
 	bool isInfoHolder = false;
+	bool drawIfSequential = true; 
+	bool isDisplay = false; 
+	bool isVisible = true; 
 
 	// Occurrence -----------------
 	bool occ_SceneEnter = false; 

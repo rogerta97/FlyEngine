@@ -424,6 +424,36 @@ bool& Action::HasVisual()
 	return isVisual; 
 }
 
+void Action::SetDrawIfSequential(bool _dis)
+{
+	drawIfSequential = _dis; 
+}
+
+bool& Action::GetDrawIfSequential()
+{
+	return drawIfSequential; 
+}
+
+void Action::SetVisible(bool isVisible)
+{
+	this->isVisible = isVisible; 
+}
+
+bool& Action::GetIsVisible()
+{
+	return isVisible; 
+}
+
+void Action::SetIsDisplay(bool _dis)
+{
+	isDisplay = _dis; 
+}
+
+bool& Action::GetIsDisplay()
+{
+	return isDisplay;
+}
+
 bool Action::GetAcceptSequencial()
 {
 	return acceptSequencial;

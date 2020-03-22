@@ -217,8 +217,10 @@ void FlyObject::Draw()
 		(it)->Draw(); 
 	}
 
-	for (auto& it : sequentialActionsList) {
-		(it)->Draw();
+	for (auto& it : sequentialActionsList) 
+	{	
+		if(it->GetDrawIfSequential())
+			(it)->Draw();
 	}
 
 	if (isSelected || ViewportManager::getInstance()->drawClickableAreaCondition == DRAW_ALWAYS)
@@ -504,7 +506,24 @@ void FlyObject::CalculateCurrentGizmo()
 
 DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePath, bool addToSequentialActions)
 {
-	if (GetAction(ACTION_DISPLAY_IMAGE) == nullptr)
+	if (addToSequentialActions)
+	{
+		// Add Action to the parent
+		if (!HasAction(ACTION_DISPLAY_IMAGE))
+		{
+			DisplayImageAction* displayImageAct = AddDisplayImageAction("Null", false);
+			displayImageAct->SetVisible(false); 
+		}
+
+		// Create Sequencial 
+		DisplayImageAction* newAtrImage = new DisplayImageAction(this);
+		newAtrImage->SetIsInfoHolder(true);
+		newAtrImage->SetImageTextureByPath(imageTexturePath);
+
+		sequentialActionsList.push_back(newAtrImage);
+		return newAtrImage;
+	}
+	else if (GetAction(ACTION_DISPLAY_IMAGE) == nullptr)
 	{
 		if (imageTexturePath == "None")
 			imageTexturePath = "EmptyObject"; 
@@ -521,16 +540,6 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 		gizmos->FitSelectBoxSize();
 		hasVisuals = true; 
 
-		return newAtrImage;
-	}
-	else if (addToSequentialActions)
-	{
-		DisplayImageAction* newAtrImage = new DisplayImageAction(this);
-		newAtrImage->SetIsInfoHolder(true); 
-		newAtrImage->SetImageTextureByPath(imageTexturePath); 
-
-		sequentialActionsList.push_back(newAtrImage);
-		
 		return newAtrImage;
 	}
 	else if(imageTexturePath != "Null")
@@ -885,6 +894,22 @@ void FlyObject::DeleteAction(UID actionUID)
 			(*currentTool) = nullptr;
 			currentTool = actionsList.erase(currentTool);
 			return;
+		}
+	}
+}
+
+// 0 == up / 1 == down
+void FlyObject::MoveSequentialAction(UID actionUID, int moveType)
+{
+	int counter = 0; 
+	for (auto& currentSequential : sequentialActionsList)
+	{
+		if (currentSequential->GetUID() == actionUID)
+		{
+			if (moveType == 0 && counter > 0)
+			{
+				sequentialActionsList.swap()
+			}
 		}
 	}
 }

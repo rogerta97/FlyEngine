@@ -26,6 +26,8 @@ DisplayImageAction::DisplayImageAction(FlyObject* _parentObject = nullptr)
 	isVisual = true; 
 	fromAnimation = false; 
 	acceptSequencial = true;
+	drawIfSequential = false; 
+	isDisplay = true; 
 
 	SetActionName("Display Image"); 
 	SetToolDescription("This should be the description of the image"); 
@@ -42,7 +44,7 @@ void DisplayImageAction::Init()
 
 void DisplayImageAction::Draw()
 {
-	if (isInfoHolder)
+	if (!isVisible)
 		return; 
 
 	glEnableClientState(GL_VERTEX_ARRAY); 
@@ -117,6 +119,8 @@ void DisplayImageAction::DoAction()
 
 		holdingData = true;
 	}
+
+	SetActionCompleted(true);
 }
 
 void DisplayImageAction::CleanUp()
