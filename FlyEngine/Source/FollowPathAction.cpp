@@ -503,6 +503,22 @@ void FollowPathAction::SaveAction(JSON_Object* jsonObject, string serializeObjec
 	json_object_dotset_boolean(jsonObject, string(toolsSerializeSection + "IsSpeedConstant").c_str(), isSpeedConstant);
 	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "ConstantSpeed").c_str(), constantSpeed);
 
+	// Save Visuals 
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "Visuals.LineColor.r").c_str(), lineColor.x);
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "Visuals.LineColor.g").c_str(), lineColor.y);
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "Visuals.LineColor.b").c_str(), lineColor.z);
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "Visuals.LineColor.a").c_str(), lineColor.w);
+
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "Visuals.BoxColor.r").c_str(), graphBoxColor.x);
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "Visuals.BoxColor.g").c_str(), graphBoxColor.y);
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "Visuals.BoxColor.b").c_str(), graphBoxColor.z);
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "Visuals.BoxColor.a").c_str(), graphBoxColor.w);
+
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "Visuals.StartBoxColor.r").c_str(), startBoxColor.x);
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "Visuals.StartBoxColor.g").c_str(), startBoxColor.y);
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "Visuals.StartBoxColor.b").c_str(), startBoxColor.z);
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + "Visuals.StartBoxColor.a").c_str(), startBoxColor.w);
+
 	// Save Steps 
 	string stepSerializeGroupStr = toolsSerializeSection + "PathSteps."; 
 	json_object_dotset_number(jsonObject, string(stepSerializeGroupStr + "StepsAmount").c_str(), pathSteps->size());
@@ -613,6 +629,36 @@ float2 FollowPathAction::GetStartPosition()
 void FollowPathAction::SetStartPosition(float2 _newStartPos)
 {
 	startPosition = _newStartPos;
+}
+
+float4 FollowPathAction::GetLineColor()
+{
+	return lineColor;
+}
+
+void FollowPathAction::SetLineColor(float4 newLineColor)
+{
+	lineColor = newLineColor;
+}
+
+float4 FollowPathAction::GetBoxColor()
+{
+	return graphBoxColor;
+}
+
+void FollowPathAction::SetBoxColor(float4 newBoxColor)
+{
+	graphBoxColor = newBoxColor;
+}
+
+float4 FollowPathAction::GetStartBoxColor()
+{
+	return startBoxColor;
+}
+
+void FollowPathAction::SetStartBoxColor(float4 newStartBoxColor)
+{
+	startBoxColor = newStartBoxColor; 
 }
 
 void FollowPathAction::SetIsSpeedConstant(bool isSpeedConst)

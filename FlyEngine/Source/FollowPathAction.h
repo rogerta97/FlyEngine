@@ -91,6 +91,15 @@ public:
 	float2 GetStartPosition();
 	void SetStartPosition(float2 _newStartPos);
 
+	float4 GetLineColor();
+	void SetLineColor(float4 newLineColor);
+
+	float4 GetBoxColor();
+	void SetBoxColor(float4 newBoxColor);
+
+	float4 GetStartBoxColor();
+	void SetStartBoxColor(float4 newStartBoxColor);
+
 	void SetIsSpeedConstant(bool isSpeedConst);
 
 private: 

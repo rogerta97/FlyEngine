@@ -295,6 +295,28 @@ void SaveAndLoad::LoadFollowPathAction(JSON_Object* root_obj, std::string& seria
 		followPathAction->SetConstantSpeed(constantSpeed);
 	}
 
+	// Load Visuals 
+	float4 lineColor = float4::zero; 
+	lineColor.x = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "Visuals.LineColor.r").c_str());
+	lineColor.y = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "Visuals.LineColor.g").c_str());
+	lineColor.z = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "Visuals.LineColor.b").c_str());
+	lineColor.w = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "Visuals.LineColor.a").c_str());
+	followPathAction->SetLineColor(lineColor); 
+
+	float4 boxColor = float4::zero;
+	boxColor.x = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "Visuals.BoxColor.r").c_str());
+	boxColor.y = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "Visuals.BoxColor.g").c_str());
+	boxColor.z = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "Visuals.BoxColor.b").c_str());
+	boxColor.w = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "Visuals.BoxColor.a").c_str());
+	followPathAction->SetBoxColor(boxColor);
+
+	float4 startBoxColor = float4::zero;
+	startBoxColor.x = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "Visuals.StartBoxColor.r").c_str());
+	startBoxColor.y = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "Visuals.StartBoxColor.g").c_str());
+	startBoxColor.z = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "Visuals.StartBoxColor.b").c_str());
+	startBoxColor.w = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "Visuals.StartBoxColor.a").c_str());
+	//followPathAction->SetStartBoxColor(startBoxColor);
+
 	// Load Path Steps 
 	int stepsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "PathSteps.StepsAmount").c_str());
 
