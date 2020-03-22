@@ -908,7 +908,12 @@ void FlyObject::MoveSequentialAction(UID actionUID, int moveType)
 		{
 			if (moveType == 0 && counter > 0)
 			{
-				sequentialActionsList.swap()
+				
+			}
+
+			if (moveType == 1 && counter < sequentialActionsList.size() - 1)
+			{
+
 			}
 		}
 	}
