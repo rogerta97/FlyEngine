@@ -859,6 +859,21 @@ void FlyObject::DeleteAction(ActionType actionType)
 	}
 }
 
+void FlyObject::DeleteSequentialAction(UID actionUID)
+{
+	for (auto currentTool = sequentialActionsList.begin(); currentTool != sequentialActionsList.end(); currentTool++)
+	{
+		if ((*currentTool)->GetUID() == actionUID)
+		{
+			(*currentTool)->CleanUp();
+			delete (*currentTool);
+			(*currentTool) = nullptr;
+			currentTool = sequentialActionsList.erase(currentTool);
+			return;
+		}
+	}
+}
+
 void FlyObject::DeleteAction(UID actionUID)
 {
 	for (auto currentTool = actionsList.begin(); currentTool != actionsList.end(); currentTool++)

@@ -1002,7 +1002,14 @@ void ObjectPropertiesDockPanel::DrawObjectSequenceActionsTab()
 	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite2");
 	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
+		Action* selectedAction = selectedObject->selectedAction;
 
+		if (selectedAction != nullptr)
+		{
+			selectedObject->DeleteSequentialAction(selectedAction->GetUID());
+			selectedAction = nullptr;
+			selectedObject->selectedAction = nullptr;
+		}
 	}
 
 	ImGui::PopStyleVar();
@@ -1676,9 +1683,9 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 
 		if (selectedAction != nullptr)
 		{
-			selectedAction->CleanUp();
 			selectedObject->DeleteAction(selectedAction->GetType());
 			selectedAction = nullptr;
+			selectedObject->selectedAction = nullptr; 
 		}
 	}
 

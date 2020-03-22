@@ -81,6 +81,7 @@ public:
 	std::list<Action*> GetActionsList() const; 
 	std::list<Action*> GetSequentialActionsList() const;
 	void DeleteAction(ActionType toolNameToDelete);
+	void DeleteSequentialAction(UID toolNameToDelete);
 	void DeleteAction(UID toolNameToDelete);
 
 	// Clickable Area ---
