@@ -345,3 +345,8 @@ float DisplayImageAction::GetHeigth() const
 {
 	return imageHeight;
 }
+
+void DisplayImageAction::SetVisible(bool newVisible)
+{
+	Action::SetVisible(newVisible); 
+}

@@ -41,6 +41,8 @@ public:
 	void SetHeigth(float newWidth);
 	float GetHeigth() const;
 
+	void SetVisible(bool newVisible);
+
 public:
 	bool fromAnimation = false; 
 	bool holdingData = false; 

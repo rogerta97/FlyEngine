@@ -131,7 +131,7 @@ public:
 	void SetDrawIfSequential(bool _dis);
 	bool& GetDrawIfSequential();
 
-	void SetVisible(bool isVisible);
+	virtual void SetVisible(bool isVisible);
 	bool& GetIsVisible();
 
 	void SetIsDisplay(bool _dis);

@@ -56,6 +56,8 @@ public:
 	int GetCurrentFrame();
 	void SetCurrentFrame(int currentFrame); 
 
+	void SetVisible(bool newVisible);
+
 	AnimationState animationState = ANIMATION_STOP;
 	AnimationPlayMode animPlayMode = ANIMATION_LOOP; 
 

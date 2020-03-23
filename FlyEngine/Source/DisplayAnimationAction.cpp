@@ -550,3 +550,11 @@ void DisplayAnimationAction::SetCurrentFrame(int _currentFrame)
 {
 	currentFrame = _currentFrame;
 }
+
+void DisplayAnimationAction::SetVisible(bool newVisible)
+{
+	Action::SetVisible(newVisible); 
+
+	if (screenImageAction != nullptr)
+		screenImageAction->SetVisible(newVisible);	
+}
