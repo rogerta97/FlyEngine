@@ -205,35 +205,42 @@ void DisplayAnimationAction::SaveAction(JSON_Object* jsonObject, string serializ
 
 void DisplayAnimationAction::DrawUISettings()
 {
-	int framesAmount = 0;
+	if (ImGui::CollapsingHeader("Animation Settings"))
+	{
+		int framesAmount = 0;
 
-	if (animation)
-		framesAmount = animation->GetFramesAmount();
+		if (animation)
+			framesAmount = animation->GetFramesAmount();
 
-	DrawActionOccurenceCheckboxes();
+		DrawActionOccurenceCheckboxes();
 
-	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
-	ImGui::Text("Frames Amount:"); ImGui::SameLine();
-	ImGui::TextColored(ImVec4(0.43137f, 0.56863f, 0.80392f, 1.0f), "%d", framesAmount);
-	ImGui::PopFont();
+		ImGui::Separator();
 
-	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
-	ImGui::Text("Current Frame:"); ImGui::SameLine();
-	ImGui::TextColored(ImVec4(0.43137f, 0.56863f, 0.80392f, 1.0f), "%d", currentFrame);
-	ImGui::PopFont();
+		ImGui::PushFont(App->moduleImGui->rudaBlackMid);
+		ImGui::Text("Frames Amount:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.43137f, 0.56863f, 0.80392f, 1.0f), "%d", framesAmount);
+		ImGui::PopFont();
 
-	ImGui::Spacing();
-	ImGui::Separator();
+		ImGui::PushFont(App->moduleImGui->rudaBlackMid);
+		ImGui::Text("Current Frame:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.43137f, 0.56863f, 0.80392f, 1.0f), "%d", currentFrame);
+		ImGui::PopFont();
 
-	float squareSize = 250;
-	ImGui::Columns(2); 
-	ImGui::SetColumnWidth(0, squareSize + 5);
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing(); 
 
-	DrawUISettingsLeftColumn(squareSize);
+		float squareSize = 250;
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, squareSize + 5);
 
-	ImGui::NextColumn(); 
+		DrawUISettingsLeftColumn(squareSize);
 
-	DrawSettingsRightColumn();
+		ImGui::NextColumn();
+
+		DrawSettingsRightColumn();
+	}
+	
 }
 
 void DisplayAnimationAction::DrawAddFramePopup()

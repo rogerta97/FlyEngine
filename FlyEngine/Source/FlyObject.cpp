@@ -636,7 +636,23 @@ EmitSoundAction* FlyObject::AddEmitSoundAction(bool addToSequentialActions)
 
 DisplayAnimationAction* FlyObject::AddDisplayAnimationAction(bool addToSequentialActions)
 {
-	if (GetAction(ACTION_DISPLAY_ANIMATION) == nullptr)
+	if (addToSequentialActions)
+	{
+		// Add Action to the parent
+		if (!HasAction(ACTION_DISPLAY_ANIMATION))
+		{
+			DisplayAnimationAction* displayAnimAct = AddDisplayAnimationAction(false);
+			displayAnimAct->SetVisible(false);
+		}
+
+		// Create Sequencial 
+		DisplayAnimationAction* newAtrImage = new DisplayAnimationAction(this);
+		newAtrImage->SetIsInfoHolder(true);
+
+		sequentialActionsList.push_back(newAtrImage);
+		return newAtrImage;
+	}
+	else if (GetAction(ACTION_DISPLAY_ANIMATION) == nullptr)
 	{
 		DisplayAnimationAction* displayAnimationAction = new DisplayAnimationAction(this);
 
@@ -647,16 +663,7 @@ DisplayAnimationAction* FlyObject::AddDisplayAnimationAction(bool addToSequentia
 
 		return displayAnimationAction;
 	}
-	else if (addToSequentialActions)
-	{
-		DisplayAnimationAction* displayAnimationAction = new DisplayAnimationAction(this);
-
-		if (displayAnimationAction->GetAcceptSequencial())
-			sequentialActionsList.push_back(displayAnimationAction);
-
-		return displayAnimationAction;
-	}
-
+	
 	return (DisplayAnimationAction*)GetAction(ACTION_DISPLAY_ANIMATION);
 }
 

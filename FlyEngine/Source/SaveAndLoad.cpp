@@ -344,7 +344,7 @@ void SaveAndLoad::LoadFollowPathAction(JSON_Object* root_obj, std::string& seria
 
 void SaveAndLoad::LoadDisplayAnimationAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)
 {
-	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "ActionClass").c_str());
 
 	DisplayAnimationAction* displayAnimationAction = nullptr;
 	if (actionClass == ACTION_CLASS_SEQUENTIAL)
@@ -353,24 +353,22 @@ void SaveAndLoad::LoadDisplayAnimationAction(JSON_Object* root_obj, std::string&
 		displayAnimationAction = newObject->AddDisplayAnimationAction();
 
 	displayAnimationAction->SetActionClass((ActionClass)actionClass);
-	displayAnimationAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("DisplayAnimation.Occurrence."));
+	displayAnimationAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("Occurrence."));
 
-	string serializeDisplayTextStr = serializeObjectStrActions + "DisplayAnimation.";
-
-	int framesAmount = json_object_dotget_number(root_obj, string(serializeDisplayTextStr + "FramesAmount").c_str());
+	int framesAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "FramesAmount").c_str());
 
 
 	if (framesAmount > 0)
 	{
-		int playModeTmp = json_object_dotget_number(root_obj, string(serializeDisplayTextStr + "PlayMode").c_str());
+		int playModeTmp = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "PlayMode").c_str());
 		displayAnimationAction->animPlayMode = (AnimationPlayMode)playModeTmp;
 
-		displayAnimationAction->GetAnimation()->SetSpeed(json_object_dotget_number(root_obj, string(serializeDisplayTextStr + "Speed").c_str()));
+		displayAnimationAction->GetAnimation()->SetSpeed(json_object_dotget_number(root_obj, string(serializeObjectStrActions + "Speed").c_str()));
 
 		int count = 0;
 		while (count < framesAmount)
 		{
-			string frameStr = serializeDisplayTextStr + "Frames.Frame_" + to_string(count);
+			string frameStr = serializeObjectStrActions + "Frames.Frame_" + to_string(count);
 
 			string textureName = json_object_dotget_string(root_obj, string(frameStr + ".TextureName").c_str());
 			Texture* frameTexture = (Texture*)ResourceManager::getInstance()->GetResource(textureName);
