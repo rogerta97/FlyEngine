@@ -645,12 +645,15 @@ DisplayAnimationAction* FlyObject::AddDisplayAnimationAction(bool addToSequentia
 			displayAnimAct->SetVisible(false);
 		}
 
-		// Create Sequencial 
-		DisplayAnimationAction* newAtrImage = new DisplayAnimationAction(this);
-		newAtrImage->SetIsInfoHolder(true);
+		// Get Fixed Image
+		DisplayImageAction* attachImage = (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE);
 
-		sequentialActionsList.push_back(newAtrImage);
-		return newAtrImage;
+		// Create Sequencial 
+		DisplayAnimationAction* newAtrAnimation = new DisplayAnimationAction(this, attachImage);
+		newAtrAnimation->SetIsInfoHolder(true);
+
+		sequentialActionsList.push_back(newAtrAnimation);
+		return newAtrAnimation;
 	}
 	else if (GetAction(ACTION_DISPLAY_ANIMATION) == nullptr)
 	{

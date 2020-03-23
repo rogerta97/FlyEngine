@@ -304,7 +304,7 @@ void DisplayImageAction::SetQuad(Quad* newQuad)
 void DisplayImageAction::SetTexture(Texture* newTexture)
 {
 	// Addapt Quad 
-	if(!isInfoHolder)
+	if(!isHolderInfo)
 	{
 		quadMesh->CleanUp();
 		delete quadMesh; 

@@ -26,7 +26,7 @@ class DisplayImageAction;
 class DisplayAnimationAction : public Action
 {
 public:
-	DisplayAnimationAction(FlyObject* _parentObject);
+	DisplayAnimationAction(FlyObject* _parentObject, DisplayImageAction* imageToAttach = nullptr);
 	~DisplayAnimationAction();
 
 	void Init();

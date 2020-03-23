@@ -158,7 +158,7 @@ protected:
 	ActionClass actionClass; 
 	UID uid; 
 
-	bool isInfoHolder = false;
+	bool isHolderInfo = false;
 	bool drawIfSequential = true; 
 	bool isDisplay = false; 
 	bool isVisible = true; 

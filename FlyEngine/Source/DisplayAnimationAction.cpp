@@ -12,7 +12,7 @@
 
 #include "mmgr.h"
 
-DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject)
+DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject, DisplayImageAction* displayImageAttached)
 {
 	actionType = ACTION_DISPLAY_ANIMATION;
 	isVisual = false;
@@ -26,7 +26,11 @@ DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject)
 	animation = new Animation(); 
 	currentFrame = -1; 
 
-	screenImageAction = parentObject->AddDisplayImageAction(); 
+	if (displayImageAttached != nullptr)
+		screenImageAction = displayImageAttached; 
+	else
+		screenImageAction = parentObject->AddDisplayImageAction(); 
+
 	screenImageAction->fromAnimation = true; 
 }
 
@@ -106,7 +110,8 @@ void DisplayAnimationAction::Update(float dt)
 			if (NextFrame() && animPlayMode == ANIMATION_ONE_TIME)
 				Stop();
 
-			screenImageAction->SetTexture(animation->GetFrameByPos(currentFrame));		
+			if(!isHolderInfo)
+				screenImageAction->SetTexture(animation->GetFrameByPos(currentFrame));		
 		}
 	}
 }
@@ -167,7 +172,9 @@ void DisplayAnimationAction::AddFrame(Texture* newFrame)
 {
 	animation->AddFrame(newFrame);
 	currentFrame = animation->GetFramesAmount() - 1;
-	screenImageAction->SetTexture(newFrame);
+
+	if(!isHolderInfo)
+		screenImageAction->SetTexture(newFrame);
 }
 
 void DisplayAnimationAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr, int actionPositionInObject)
@@ -205,7 +212,7 @@ void DisplayAnimationAction::SaveAction(JSON_Object* jsonObject, string serializ
 
 void DisplayAnimationAction::DrawUISettings()
 {
-	if (ImGui::CollapsingHeader("Animation Settings"))
+	if (ImGui::CollapsingHeader("Animation Settings", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		int framesAmount = 0;
 
@@ -305,7 +312,9 @@ void DisplayAnimationAction::DrawAddFramePopup()
 
 				animation->AddFrame(newFrameTexture);
 				currentFrame = animation->GetFramesAmount() - 1;
-				screenImageAction->SetTexture(newFrameTexture);
+
+				if(!isHolderInfo)
+					screenImageAction->SetTexture(newFrameTexture);
 
 				ImGui::CloseCurrentPopup();
 				ImGui::EndPopup(); 
@@ -467,7 +476,9 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
 		else if (animationState == ANIMATION_PLAY)
 		{
 			Stop(); 
-			screenImageAction->SetTexture(animation->GetFrameByPos(0));	
+
+			if(!isHolderInfo)
+				screenImageAction->SetTexture(animation->GetFrameByPos(0));	
 		}
 	}
 

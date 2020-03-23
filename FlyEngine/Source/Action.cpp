@@ -406,12 +406,12 @@ void Action::SetIsSelected(bool _isSelected)
 
 bool& Action::IsInfoHolder()
 {
-	return isInfoHolder;
+	return isHolderInfo;
 }
 
 void Action::SetIsInfoHolder(bool _isInfoHolder)
 {
-	isInfoHolder = _isInfoHolder; 
+	isHolderInfo = _isInfoHolder; 
 }
 
 void Action::SetSelected(bool newSelected)
