@@ -1016,12 +1016,16 @@ void ObjectPropertiesDockPanel::DrawObjectSequenceActionsTab()
 	Texture* arrowIcon = (Texture*)ResourceManager::getInstance()->GetResource("ArrowDownWhite");
 	if (ImGui::ImageButton((ImTextureID)arrowIcon->GetTextureID(), ImVec2(30, 30)))
 	{
+		if(selectedObject->selectedAction != nullptr)
+			selectedObject->MoveSequentialAction(selectedObject->selectedAction->GetUID(), 1);
 	}
 
 	ImGui::SameLine();
 	arrowIcon = (Texture*)ResourceManager::getInstance()->GetResource("ArrowUpWhite");
 	if (ImGui::ImageButton((ImTextureID)arrowIcon->GetTextureID(), ImVec2(30, 30)))
 	{
+		if (selectedObject->selectedAction != nullptr)
+			selectedObject->MoveSequentialAction(selectedObject->selectedAction->GetUID(), 0);
 	}
 
 	ImGui::PopStyleVar();

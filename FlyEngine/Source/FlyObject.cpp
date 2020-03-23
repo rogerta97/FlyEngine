@@ -902,20 +902,21 @@ void FlyObject::DeleteAction(UID actionUID)
 void FlyObject::MoveSequentialAction(UID actionUID, int moveType)
 {
 	int counter = 0; 
-	for (auto& currentSequential : sequentialActionsList)
+	for (auto currentSequential = sequentialActionsList.begin(); currentSequential != sequentialActionsList.end(); currentSequential++)
 	{
-		if (currentSequential->GetUID() == actionUID)
+		if ((*currentSequential)->GetUID() == actionUID)
 		{
 			if (moveType == 0 && counter > 0)
 			{
-				
+				std::swap(*currentSequential, *std::prev(currentSequential));
 			}
 
 			if (moveType == 1 && counter < sequentialActionsList.size() - 1)
 			{
-
+				std::swap(*currentSequential, *std::next(currentSequential));
 			}
 		}
+		counter++;
 	}
 }
 
