@@ -158,6 +158,7 @@ protected:
 	ActionClass actionClass; 
 	UID uid; 
 
+	bool isDataAttached = false; 
 	bool isHolderInfo = false;
 	bool drawIfSequential = true; 
 	bool isDisplay = false; 

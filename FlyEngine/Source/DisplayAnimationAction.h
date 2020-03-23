@@ -29,6 +29,8 @@ public:
 	DisplayAnimationAction(FlyObject* _parentObject, DisplayImageAction* imageToAttach = nullptr);
 	~DisplayAnimationAction();
 
+	void CopyData(DisplayAnimationAction* otherAction);
+
 	void Init();
 	void Update(float dt);
 	void CleanUp();

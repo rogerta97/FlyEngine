@@ -38,6 +38,16 @@ DisplayAnimationAction::~DisplayAnimationAction()
 {
 }
 
+void DisplayAnimationAction::CopyData(DisplayAnimationAction* otherAction)
+{
+	if (otherAction->GetAnimation() != nullptr)
+	{
+		SetAnimation(otherAction->GetAnimation());
+	}
+
+	animPlayMode = otherAction->animPlayMode; 
+}
+
 void DisplayAnimationAction::Init()
 {
 	
@@ -127,7 +137,17 @@ void DisplayAnimationAction::CleanUp()
 
 void DisplayAnimationAction::DoAction()
 {
-	Play(); 
+	if (!isHolderInfo)
+	{
+		Play(); 
+	}
+	else if(!isDataAttached && actionClass == ActionClass::ACTION_CLASS_SEQUENTIAL)
+	{
+		// Get The Fixed Animation (The one displaying) 
+		DisplayAnimationAction* fixedAnimAction = (DisplayAnimationAction*) parentObject->GetAction(ACTION_DISPLAY_ANIMATION);
+		fixedAnimAction->CopyData(this);
+		isDataAttached = true; 
+	}
 }
 
 void DisplayAnimationAction::Play()
