@@ -156,7 +156,12 @@ void DisplayAnimationAction::DoAction()
 		else
 		{
 			isDedicatedImage = true; 
-			screenImageAction = parentObject->AddDisplayImageAction("Null");
+			DisplayImageAction* animCanvasAction = parentObject->AddDisplayImageAction("Null", true);
+			animCanvasAction->CreateImage("None");
+			animCanvasAction->SetDrawIfSequential(true);
+			animCanvasAction->fromAnimation = true; 
+
+			this->AttachToImage(animCanvasAction); 
 		}
 
 		isDataAttached = true; 
@@ -167,12 +172,12 @@ void DisplayAnimationAction::DoAction()
 
 void DisplayAnimationAction::StopAction()
 {
-	if (App->isEngineInPlayMode && isDedicatedImage)
+	/*if (App->isEngineInPlayMode && isDedicatedImage)
 	{
 		parentObject->DeleteAction(ACTION_DISPLAY_IMAGE); 
 	}
 
-	Stop(); 
+	Stop(); */
 }
 
 void DisplayAnimationAction::Play()

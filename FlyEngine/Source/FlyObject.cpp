@@ -60,7 +60,9 @@ FlyObject::~FlyObject()
 
 }
 
-//Returns true if this objects is deleted in the middle of the update
+//Returns true if this objects is deleted in the middle of the 
+
+
 bool FlyObject::Update(float dt)
 {
 	bool ret = false; 
@@ -80,8 +82,10 @@ bool FlyObject::Update(float dt)
 		currentAction->Update(dt);
 	}
 
-	if(currentSequentialAction != nullptr)
-		currentSequentialAction->Update(dt);
+	for (auto& currentAction : sequentialActionsList)
+	{
+		currentAction->Update(dt);
+	}
 
 	//for (auto& currentAction : sequentialActionsList)
 	//{
