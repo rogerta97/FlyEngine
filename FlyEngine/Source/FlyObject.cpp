@@ -638,26 +638,43 @@ DisplayAnimationAction* FlyObject::AddDisplayAnimationAction(bool addToSequentia
 {
 	if (addToSequentialActions)
 	{
-		// Add Action to the parent
-		if (!HasAction(ACTION_DISPLAY_ANIMATION))
+		DisplayAnimationAction* newAtrAnimation = new DisplayAnimationAction(this);
+		newAtrAnimation->SetIsInfoHolder(true);
+		sequentialActionsList.push_back(newAtrAnimation);
+		
+		DisplayImageAction* fixedImageAction = (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE);
+		
+		// If there is a fixed image
+		if (fixedImageAction != nullptr)
 		{
-			DisplayAnimationAction* displayAnimAct = AddDisplayAnimationAction(false);
-			displayAnimAct->SetVisible(false);
+			newAtrAnimation->AttachToImage(fixedImageAction); 
 		}
 
+		//// Add Action to the parent
+		//if (!HasAction(ACTION_DISPLAY_ANIMATION))
+		//{
+		//	DisplayAnimationAction* displayAnimAct = AddDisplayAnimationAction(false);
+		//	displayAnimAct->SetVisible(false);
+		//}
+
 		// Get Fixed Image
-		DisplayImageAction* attachImage = (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE);
 
 		// Create Sequencial 
-		DisplayAnimationAction* newAtrAnimation = new DisplayAnimationAction(this, attachImage);
-		newAtrAnimation->SetIsInfoHolder(true);
 
-		sequentialActionsList.push_back(newAtrAnimation);
 		return newAtrAnimation;
 	}
 	else if (GetAction(ACTION_DISPLAY_ANIMATION) == nullptr)
 	{
 		DisplayAnimationAction* displayAnimationAction = new DisplayAnimationAction(this);
+
+		DisplayImageAction* fixedImageAction = (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE);
+		fixedImageAction->fromAnimation = true;
+
+		// If there is a fixed image
+		if (fixedImageAction != nullptr)
+		{
+			displayAnimationAction->AttachToImage(fixedImageAction);
+		}
 
 		if (addToSequentialActions)
 			sequentialActionsList.push_back(displayAnimationAction);

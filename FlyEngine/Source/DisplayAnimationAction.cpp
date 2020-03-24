@@ -12,7 +12,7 @@
 
 #include "mmgr.h"
 
-DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject, DisplayImageAction* displayImageAttached)
+DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject)
 {
 	actionType = ACTION_DISPLAY_ANIMATION;
 	isVisual = false;
@@ -26,12 +26,13 @@ DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject, Display
 	animation = new Animation(); 
 	currentFrame = -1; 
 
-	if (displayImageAttached != nullptr)
-		screenImageAction = displayImageAttached; 
-	else
-		screenImageAction = parentObject->AddDisplayImageAction(); 
+	parentObject->AddDisplayImageAction();
 
-	screenImageAction->fromAnimation = true; 
+	//if (displayImageAttached != nullptr)
+	//	screenImageAction = displayImageAttached; 
+	//else
+	//screenImageAction = parentObject->AddDisplayImageAction(); 
+	//screenImageAction->fromAnimation = true; 
 }
 
 DisplayAnimationAction::~DisplayAnimationAction()
@@ -46,6 +47,12 @@ void DisplayAnimationAction::CopyData(DisplayAnimationAction* otherAction)
 	}
 
 	animPlayMode = otherAction->animPlayMode; 
+}
+
+void DisplayAnimationAction::AttachToImage(DisplayImageAction* imageToAttach)
+{
+	if (imageToAttach != nullptr)
+		screenImageAction = imageToAttach;
 }
 
 void DisplayAnimationAction::Init()
@@ -119,8 +126,8 @@ void DisplayAnimationAction::Update(float dt)
 
 			if (NextFrame() && animPlayMode == ANIMATION_ONE_TIME)
 				Stop();
-
-			if(!isHolderInfo)
+		
+			if(screenImageAction != nullptr)
 				screenImageAction->SetTexture(animation->GetFrameByPos(currentFrame));		
 		}
 	}
@@ -143,10 +150,11 @@ void DisplayAnimationAction::DoAction()
 	}
 	else if(!isDataAttached && actionClass == ActionClass::ACTION_CLASS_SEQUENTIAL)
 	{
-		// Get The Fixed Animation (The one displaying) 
-		DisplayAnimationAction* fixedAnimAction = (DisplayAnimationAction*) parentObject->GetAction(ACTION_DISPLAY_ANIMATION);
-		fixedAnimAction->CopyData(this);
-		isDataAttached = true; 
+		Play();
+		//// Get The Fixed Animation (The one displaying) 
+		//DisplayImageAction* fixedAnimAction = (DisplayAnimationAction*) parentObject->GetAction(ACTION_DISPLAY_ANIMATION);
+		//fixedAnimAction->CopyData(this);
+		//isDataAttached = true; 
 	}
 }
 
@@ -333,7 +341,7 @@ void DisplayAnimationAction::DrawAddFramePopup()
 				animation->AddFrame(newFrameTexture);
 				currentFrame = animation->GetFramesAmount() - 1;
 
-				if(!isHolderInfo)
+				if(screenImageAction != nullptr)
 					screenImageAction->SetTexture(newFrameTexture);
 
 				ImGui::CloseCurrentPopup();

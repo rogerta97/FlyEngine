@@ -26,10 +26,11 @@ class DisplayImageAction;
 class DisplayAnimationAction : public Action
 {
 public:
-	DisplayAnimationAction(FlyObject* _parentObject, DisplayImageAction* imageToAttach = nullptr);
+	DisplayAnimationAction(FlyObject* _parentObject);
 	~DisplayAnimationAction();
 
 	void CopyData(DisplayAnimationAction* otherAction);
+	void AttachToImage(DisplayImageAction* imageToAttach);
 
 	void Init();
 	void Update(float dt);
