@@ -341,7 +341,7 @@ void DisplayAnimationAction::DrawAddFramePopup()
 				animation->AddFrame(newFrameTexture);
 				currentFrame = animation->GetFramesAmount() - 1;
 
-				if(screenImageAction != nullptr)
+				if(screenImageAction != nullptr && !isSequencial)
 					screenImageAction->SetTexture(newFrameTexture);
 
 				ImGui::CloseCurrentPopup();

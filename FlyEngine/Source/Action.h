@@ -125,6 +125,9 @@ public:
 	bool& IsInfoHolder();
 	void SetIsInfoHolder(bool _isInfoHolder);
 
+	bool& GetIsSequencial();
+	void SetIsSequencial(bool _isSequential);
+
 	void SetSelected(bool newSelected); 
 	bool& HasVisual(); 
 
@@ -183,7 +186,9 @@ protected:
 	std::string toolDescription; 
 	bool isSelected; 
 	bool isVisual; 
+
 	bool acceptSequencial; 
+	bool isSequencial; 
 }; 
 
 #endif

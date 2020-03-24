@@ -518,6 +518,7 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 		// Create Sequencial 
 		DisplayImageAction* newAtrImage = new DisplayImageAction(this);
 		newAtrImage->SetIsInfoHolder(true);
+		newAtrImage->SetIsSequencial(true); 
 		newAtrImage->SetImageTextureByPath(imageTexturePath);
 
 		sequentialActionsList.push_back(newAtrImage);
@@ -640,6 +641,7 @@ DisplayAnimationAction* FlyObject::AddDisplayAnimationAction(bool addToSequentia
 	{
 		DisplayAnimationAction* newAtrAnimation = new DisplayAnimationAction(this);
 		newAtrAnimation->SetIsInfoHolder(true);
+		newAtrAnimation->SetIsSequencial(true); 
 		sequentialActionsList.push_back(newAtrAnimation);
 		
 		DisplayImageAction* fixedImageAction = (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE);

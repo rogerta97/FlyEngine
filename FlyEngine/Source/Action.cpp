@@ -414,6 +414,16 @@ void Action::SetIsInfoHolder(bool _isInfoHolder)
 	isHolderInfo = _isInfoHolder; 
 }
 
+bool& Action::GetIsSequencial()
+{
+	return isSequencial;
+}
+
+void Action::SetIsSequencial(bool _isSequential)
+{
+	isSequencial = _isSequential;
+}
+
 void Action::SetSelected(bool newSelected)
 {
 	isSelected = newSelected; 
