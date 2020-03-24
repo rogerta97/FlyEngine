@@ -19,15 +19,13 @@ DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject)
 	parentObject = _parentObject; 
 	acceptSequencial = true;
 	isDisplay = true; 
+	isSequential = false; 
 
 	SetActionName("Display Animation");
 	SetToolDescription("This should be the description of the animation action");
 
 	animation = new Animation(); 
 	currentFrame = -1; 
-
-	parentObject->AddDisplayImageAction();
-
 	//if (displayImageAttached != nullptr)
 	//	screenImageAction = displayImageAttached; 
 	//else
@@ -150,12 +148,31 @@ void DisplayAnimationAction::DoAction()
 	}
 	else if(!isDataAttached && actionClass == ActionClass::ACTION_CLASS_SEQUENTIAL)
 	{
-		Play();
 		//// Get The Fixed Animation (The one displaying) 
-		//DisplayImageAction* fixedAnimAction = (DisplayAnimationAction*) parentObject->GetAction(ACTION_DISPLAY_ANIMATION);
-		//fixedAnimAction->CopyData(this);
-		//isDataAttached = true; 
+		DisplayAnimationAction* fixedAnimAction = (DisplayAnimationAction*)parentObject->GetAction(ACTION_DISPLAY_ANIMATION);
+
+		if (fixedAnimAction)
+			fixedAnimAction->CopyData(this);
+		else
+		{
+			isDedicatedImage = true; 
+			screenImageAction = parentObject->AddDisplayImageAction("Null");
+		}
+
+		isDataAttached = true; 
+
+		Play();
 	}
+}
+
+void DisplayAnimationAction::StopAction()
+{
+	if (App->isEngineInPlayMode && isDedicatedImage)
+	{
+		parentObject->DeleteAction(ACTION_DISPLAY_IMAGE); 
+	}
+
+	Stop(); 
 }
 
 void DisplayAnimationAction::Play()
@@ -341,7 +358,7 @@ void DisplayAnimationAction::DrawAddFramePopup()
 				animation->AddFrame(newFrameTexture);
 				currentFrame = animation->GetFramesAmount() - 1;
 
-				if(screenImageAction != nullptr && !isSequencial)
+				if(screenImageAction != nullptr && !isSequential)
 					screenImageAction->SetTexture(newFrameTexture);
 
 				ImGui::CloseCurrentPopup();

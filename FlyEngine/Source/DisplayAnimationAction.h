@@ -36,6 +36,7 @@ public:
 	void Update(float dt);
 	void CleanUp();
 	void DoAction(); 
+	void StopAction(); 
 
 	void Play(); 
 	void Stop(); 
@@ -63,6 +64,8 @@ public:
 	AnimationPlayMode animPlayMode = ANIMATION_LOOP; 
 
 private:
+
+	bool isDedicatedImage = false; 
 	DisplayImageAction* screenImageAction; 
 
 	Animation* animation = nullptr; 

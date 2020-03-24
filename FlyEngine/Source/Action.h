@@ -80,6 +80,7 @@ public:
 
 	// Actions ------------------------
 	virtual void DoAction(); 
+	virtual void StopAction(); 
 
 	// Occurrence & Conditions --------
 	void LoadConditions(JSON_Object* jsonObject, string serializeObjectString); 
@@ -188,7 +189,7 @@ protected:
 	bool isVisual; 
 
 	bool acceptSequencial; 
-	bool isSequencial; 
+	bool isSequential; 
 }; 
 
 #endif

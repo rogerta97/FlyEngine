@@ -122,6 +122,10 @@ void Action::DoAction()
 	
 }
 
+void Action::StopAction()
+{
+}
+
 void Action::DrawActionConditionsList()
 {
 	// Evalutation Criteria
@@ -416,12 +420,12 @@ void Action::SetIsInfoHolder(bool _isInfoHolder)
 
 bool& Action::GetIsSequencial()
 {
-	return isSequencial;
+	return isSequential;
 }
 
 void Action::SetIsSequencial(bool _isSequential)
 {
-	isSequencial = _isSequential;
+	isSequential = _isSequential;
 }
 
 void Action::SetSelected(bool newSelected)

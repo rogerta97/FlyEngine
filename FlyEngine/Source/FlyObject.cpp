@@ -80,10 +80,13 @@ bool FlyObject::Update(float dt)
 		currentAction->Update(dt);
 	}
 
-	for (auto& currentAction : sequentialActionsList)
-	{
-		currentAction->Update(dt);
-	}
+	if(currentSequentialAction != nullptr)
+		currentSequentialAction->Update(dt);
+
+	//for (auto& currentAction : sequentialActionsList)
+	//{
+	//	currentAction->Update(dt);
+	//}
 
 	// Update Sequential Action If Necessary ----------
 	if (currentSequentialAction != nullptr)
@@ -92,25 +95,44 @@ bool FlyObject::Update(float dt)
 		{
 			bool assignNext = false;
 			bool assignedSuccess = false; 
-			for (auto& currentSequential : sequentialActionsList)
+			int actionIndex = 0; 
+			for (auto currentSequential = sequentialActionsList.begin(); currentSequential != sequentialActionsList.end(); currentSequential++)
 			{
-				if (assignNext)
+				/*if (assignNext)
 				{
-					assignedSuccess = true; 
+					assignedSuccess = true;
+					currentSequentialAction->StopAction();
 					currentSequentialAction = currentSequential;
 					break;
 				}
 
-				if (currentSequential == currentSequentialAction)
+				if (actionIndex == sequentialActionsList.size() - 1)
 				{
-					assignNext = true;
+					assignedSuccess = true;
+					currentSequentialAction = nullptr;
+					break;
+				}*/
+		
+				if (*currentSequential == currentSequentialAction)
+				{
+					if (actionIndex < sequentialActionsList.size() - 1)
+					{
+						currentSequentialAction->StopAction();
+						currentSequentialAction = *std::next(currentSequential);
+						break;
+					}
+					else
+						currentSequentialAction = nullptr;
+					
 				}
+
+				actionIndex++;
 			}
 
-			if (!assignedSuccess)
+	/*		if (!assignedSuccess)
 			{
 				currentSequentialAction = nullptr; 
-			}
+			}*/
 		}
 
 		if (currentSequentialAction != nullptr)
@@ -642,6 +664,7 @@ DisplayAnimationAction* FlyObject::AddDisplayAnimationAction(bool addToSequentia
 		DisplayAnimationAction* newAtrAnimation = new DisplayAnimationAction(this);
 		newAtrAnimation->SetIsInfoHolder(true);
 		newAtrAnimation->SetIsSequencial(true); 
+
 		sequentialActionsList.push_back(newAtrAnimation);
 		
 		DisplayImageAction* fixedImageAction = (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE);
@@ -668,8 +691,15 @@ DisplayAnimationAction* FlyObject::AddDisplayAnimationAction(bool addToSequentia
 	else if (GetAction(ACTION_DISPLAY_ANIMATION) == nullptr)
 	{
 		DisplayAnimationAction* displayAnimationAction = new DisplayAnimationAction(this);
+		displayAnimationAction->SetIsSequencial(false); 
 
 		DisplayImageAction* fixedImageAction = (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE);
+
+		if(fixedImageAction == nullptr)
+		{ 
+			fixedImageAction = AddDisplayImageAction("Null", false);
+		}
+
 		fixedImageAction->fromAnimation = true;
 
 		// If there is a fixed image
