@@ -115,6 +115,8 @@ void DisplayImageAction::DoAction()
 				CreateImage("None");
 			else
 				CreateImage(imageTexture->GetPath());
+
+			drawIfSequential = true;
 		}
 
 		holdingData = true;

@@ -509,11 +509,11 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 	if (addToSequentialActions)
 	{
 		// Add Action to the parent
-		if (!HasAction(ACTION_DISPLAY_IMAGE))
+	/*	if (!HasAction(ACTION_DISPLAY_IMAGE))
 		{
 			DisplayImageAction* displayImageAct = AddDisplayImageAction("Null", false);
 			displayImageAct->SetVisible(false); 
-		}
+		}*/
 
 		// Create Sequencial 
 		DisplayImageAction* newAtrImage = new DisplayImageAction(this);
