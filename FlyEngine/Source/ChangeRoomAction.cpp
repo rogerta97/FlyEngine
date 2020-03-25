@@ -78,11 +78,10 @@ void ChangeRoomAction::DrawSelectDestinationCombo()
 
 void ChangeRoomAction::DrawUISettings()
 {
-	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-	ImGui::Text("Change Room Settings: ");
-	ImGui::PopFont();
-
-	DrawSelectDestinationCombo();
+	if (ImGui::CollapsingHeader("Change Room Settings"))
+	{
+		DrawSelectDestinationCombo();
+	}
 }
 
 void ChangeRoomAction::DrawUISettingsInButton()

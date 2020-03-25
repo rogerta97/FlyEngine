@@ -28,6 +28,11 @@ Gizmos::Gizmos(FlyObject* _objectAttached)
 	SetScaleGizmoStyle(7.0f, 90.0f, 5.0f, 20, 23, 25); 
 }
 
+Gizmos::Gizmos(BoundingBox* boxAttached)
+{
+	this->boxAttached = boxAttached;
+}
+
 Gizmos::~Gizmos()
 {
 

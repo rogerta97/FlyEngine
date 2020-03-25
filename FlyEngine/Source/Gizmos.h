@@ -103,6 +103,8 @@ class Gizmos
 {
 public:
 	Gizmos(FlyObject* objectAttached);
+	Gizmos(BoundingBox* boxAttached);
+
 	~Gizmos();
 
 	void Update();
@@ -134,12 +136,13 @@ public:
 	void SetMoveGizmoStyle(float centerSize, float lineLenght, float _arrowWidth, float arrowLength, float arrowWidth, float xySquareSize);
 	void SetScaleGizmoStyle(float centerSize, float lineLenght, float _arrowWidth, float arrowLength, float arrowWidth, float xySquareSize);
 
-	SelectGizmo* selectGizmo; 
-	MoveGizmo* moveGizmo;
-	ScaleGizmo* scaleGizmo; 
+	SelectGizmo*	selectGizmo; 
+	MoveGizmo*		moveGizmo;
+	ScaleGizmo*		scaleGizmo; 
 
 private: 
-	FlyObject* objectAttached;
+	FlyObject*		objectAttached;
+	BoundingBox*	boxAttached; 
 };
 
 #endif // ! _GIZMOS_H_

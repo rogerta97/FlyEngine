@@ -4,6 +4,7 @@
 #include "MathGeoLib.h"
 
 class FlyObject; 
+class Gizmos; 
 class BoundingBox 
 {
 public: 
@@ -20,13 +21,14 @@ public:
 	float2 GetCenter(); 
 	void CenterMinMaxPointsToScreen();
 	void EnableDrag(bool enable); 
+	void CreateGizmos();
 
 	//Input ----------
 	bool IsMouseOver();
 	bool IsBoxClicked();
 	float2 HandleDrag(CardinalAxis limitOnAxis = CardinalAxis::AxisNone);
 
-	// Set & Get 
+	// Set & Getc 
 	void SetPosition(float2 newPositon); 
 	void SetPositionInc(float2 newPositon); 
 	float2 GetPosition();
@@ -47,6 +49,9 @@ public:
 
 
 protected:
+	bool displayGizmos; 
+	Gizmos* boxGizmos; 
+
 	float2 size;
 	float4 squareColor; 
 

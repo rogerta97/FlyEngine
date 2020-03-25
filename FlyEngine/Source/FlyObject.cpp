@@ -69,7 +69,8 @@ bool FlyObject::Update(float dt)
 
 	if (isSelected) 
 	{
-		gizmos->Update();
+		if(!(selectedAction != nullptr && selectedAction->GetType() == ACTION_DISPLAY_TEXT))
+			gizmos->Update();
 
 		if(clickableArea != nullptr)
 		{
@@ -259,7 +260,7 @@ void FlyObject::Draw()
 	{
 		if (App->moduleManager->selectedAction != nullptr && App->moduleManager->selectedAction->GetType() == ACTION_DISPLAY_TEXT)
 			return; 
-
+	
 		gizmos->Draw();
 	}
 }

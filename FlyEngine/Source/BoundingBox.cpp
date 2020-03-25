@@ -8,6 +8,7 @@
 #include "ViewportManager.h"
 #include "imgui.h"
 #include "ModuleInput.h"
+#include "Gizmos.h"
 #include "mmgr.h"
 
 BoundingBox::BoundingBox()
@@ -16,6 +17,8 @@ BoundingBox::BoundingBox()
 
 	minPoint = float2(0, 0); 
 	maxPoint = float2(0, 0); 
+
+	displayGizmos = false; 
 }
 
 BoundingBox::~BoundingBox()
@@ -128,6 +131,12 @@ bool& BoundingBox::IsDragging()
 void BoundingBox::EnableDrag(bool enable)
 {
 	isDragEnabled = enable; 
+}
+
+void BoundingBox::CreateGizmos()
+{
+	boxGizmos = new Gizmos(this);
+
 }
 
 float2 BoundingBox::GetCenter()

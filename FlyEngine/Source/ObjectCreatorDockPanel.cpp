@@ -530,10 +530,6 @@ void ObjectCreatorDockPanel::DrawObjectCreator()
 
 void ObjectCreatorDockPanel::DrawObjectActionsList()
 {
-	//ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	//ImGui::Text("Add Actions: ");
-	//ImGui::PopFont();
-
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5, 5));
 
@@ -623,7 +619,14 @@ bool ObjectCreatorDockPanel::DrawSelectable(ActionSelectableInfo selectableInfo,
 
 void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 {
-	if (selectedAction)
+
+	if (selectedAction != nullptr)
+	{
+		ImGui::Spacing(); 
+		selectedAction->DrawUISettings(); 
+	}
+
+	/*if (selectedAction)
 	{
 		ImGui::Spacing();
 
@@ -653,7 +656,7 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 			DrawFollowPathSettings();
 			break;
 		}
-	}
+	}*/
 }
 
 void ObjectCreatorDockPanel::DrawFollowPathSettings()

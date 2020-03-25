@@ -20,6 +20,7 @@ public:
 
 	// Virtual -----------------------------
 	void Draw();
+	void Update(float dt);
 	void CleanUp();
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false, int actionPositionInObject = 0);
 	void DrawUISettings();

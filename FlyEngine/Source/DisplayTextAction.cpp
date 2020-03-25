@@ -21,6 +21,7 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 
 	textQuads = new std::vector<Quad*>();
 	textBox = new BoundingBox();
+	textBox->CreateGizmos();
 
 	textBox->SetSize(300, 120); 
 	CalculateOriginTextPosition(); 
@@ -46,8 +47,16 @@ void DisplayTextAction::Draw()
 	if (!text.empty())
 		RenderText(); 
 
-	if (isSelected && drawTextBox)
+	if (parentObject->isSelected && drawTextBox)
 		DrawTextBox(); 
+}
+
+void DisplayTextAction::Update(float dt)
+{
+	if (textBox->IsBoxClicked())
+	{
+		parentObject->SetSelectedAction(uid); 
+	}
 }
 
 void DisplayTextAction::CleanUp()
@@ -397,9 +406,6 @@ void DisplayTextAction::RenderText()
 
 			FT_Get_Kerning(textFont->fontFace, previous, glyph_index,
 				0, &delta);
-
-			flog("New Letter: ");
-			flog("%ld", delta.x);
 
 			pen.x += delta.x >> 6;
 		}
