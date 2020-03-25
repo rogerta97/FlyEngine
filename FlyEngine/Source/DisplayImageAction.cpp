@@ -143,76 +143,69 @@ void DisplayImageAction::CleanUp()
 
 void DisplayImageAction::DrawUISettings()
 {
-	ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
-	ImGui::Text("Display Image Attributes:");
-	ImGui::PopFont();
-
-	ImGui::Separator();
-
-	static char buf[256] = "";
-
-	// Object Occurrence -----------------------
-	DrawActionOccurenceCheckboxes();
-
-	IMGUI_SPACE_SEPARATOR;
-
-	float aspect_ratio = GetTexture()->GetAspectRatio();
-	float previewQuadWidth = 150;
-	float previewQuadHeight = previewQuadWidth / aspect_ratio;
-
-	PUSH_FONT(App->moduleImGui->rudaRegularMid);
-	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-
-	int childHeight = previewQuadHeight + 20;
-
-	PUSH_FONT(App->moduleImGui->rudaBoldBig);
-	ImGui::Text("Image Settings:");
-	POP_FONT;
-
-	ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), childHeight));
-
-	ImGui::Columns(2);
-	ImGui::SetColumnWidth(0, previewQuadWidth + 10);
-
-	ImGui::Spacing();
-	ImGui::Image((ImTextureID)GetTexture()->GetTextureID(), ImVec2(previewQuadWidth, previewQuadHeight));
-
-	ImGui::NextColumn();
-
-	ImGui::Spacing();
-	ImGui::Text("Name: "); ImGui::SameLine();
-	ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%s", GetTexture()->GetName().c_str());
-
-	ImGui::Text("Width: "); ImGui::SameLine();
-	ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", GetTexture()->GetWidth());
-
-	ImGui::Text("Height: "); ImGui::SameLine();
-	ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", GetTexture()->GetHeigth());
-
-	Texture* searchTexture = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
-	if (ImGui::Button("Change Image"))
+	if (ImGui::CollapsingHeader("Image Settings", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		char const* lFilterPatterns[2] = { "*.jpg" , "*.png" };
-		const char* path = tinyfd_openFileDialog("Load Image...", NULL, 2, lFilterPatterns, NULL, 0);
+		static char buf[256] = "";
 
-		if (path != NULL)
+		// Object Occurrence -----------------------
+		float aspect_ratio = GetTexture()->GetAspectRatio();
+		float previewQuadWidth = 150;
+		float previewQuadHeight = previewQuadWidth / aspect_ratio;
+
+		PUSH_FONT(App->moduleImGui->rudaRegularMid);
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+
+		int childHeight = previewQuadHeight + 20;
+
+		PUSH_FONT(App->moduleImGui->rudaBoldBig);
+		ImGui::Text("Image Settings:");
+		POP_FONT;
+
+		ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), childHeight));
+
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, previewQuadWidth + 10);
+
+		ImGui::Spacing();
+		ImGui::Image((ImTextureID)GetTexture()->GetTextureID(), ImVec2(previewQuadWidth, previewQuadHeight));
+
+		ImGui::NextColumn();
+
+		ImGui::Spacing();
+		ImGui::Text("Name: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%s", GetTexture()->GetName().c_str());
+
+		ImGui::Text("Width: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", GetTexture()->GetWidth());
+
+		ImGui::Text("Height: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", GetTexture()->GetHeigth());
+
+		Texture* searchTexture = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
+		if (ImGui::Button("Change Image"))
 		{
-			if (!ResourceManager::getInstance()->ExistResourcePath(path))
-			{
-				SetTexture(ImageImporter::getInstance()->LoadTexture(path, false));
-				ResourceManager::getInstance()->AddResource(GetTexture(), GetTexture()->GetName());
-			}
-			else		
-				SetTexture((Texture*)ResourceManager::getInstance()->GetResourceByPath(path));
-			
-			strcpy(buf, path);
-			flog("Player Opened %s", path);
-		}
-	}
-	ImGui::PopStyleColor();
-	ImGui::EndChild();
+			char const* lFilterPatterns[2] = { "*.jpg" , "*.png" };
+			const char* path = tinyfd_openFileDialog("Load Image...", NULL, 2, lFilterPatterns, NULL, 0);
 
-	POP_FONT;
+			if (path != NULL)
+			{
+				if (!ResourceManager::getInstance()->ExistResourcePath(path))
+				{
+					SetTexture(ImageImporter::getInstance()->LoadTexture(path, false));
+					ResourceManager::getInstance()->AddResource(GetTexture(), GetTexture()->GetName());
+				}
+				else		
+					SetTexture((Texture*)ResourceManager::getInstance()->GetResourceByPath(path));
+			
+				strcpy(buf, path);
+				flog("Player Opened %s", path);
+			}
+		}
+		ImGui::PopStyleColor();
+		ImGui::EndChild();
+
+		POP_FONT;
+	}
 }
 
 void DisplayImageAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr, int actionPositionInObject)

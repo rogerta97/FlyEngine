@@ -248,11 +248,14 @@ void ModuleManager::DeleteObjectsNow()
 	{
 		Room* containerRoom = currentObject->GetParentRoom();
 
-		containerRoom->DeleteFlyObjectFromList(currentObject);
+		if (containerRoom != nullptr)
+		{
+			containerRoom->DeleteFlyObjectFromList(currentObject);
 		
-		currentObject->CleanUp();
-		delete currentObject;
-		currentObject = nullptr;
+			currentObject->CleanUp();
+			delete currentObject;
+			currentObject = nullptr;
+		}
 	}
 
 	deleteObjectsTick.clear(); 

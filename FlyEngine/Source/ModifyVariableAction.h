@@ -54,7 +54,9 @@ public:
 	void DoAction(); 
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false, int actionPositionInObject = 0);
 
-	void DrawUISettings(); 
+	void DrawUISettings();
+	void DrawActionOccurenceCheckboxes();
+
 	void DrawUISettingsInButton();
 
 	// Draw -----------

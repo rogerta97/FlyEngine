@@ -102,10 +102,10 @@ void DisplayTextAction::DrawUISettings()
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
 
-		ImGui::SetCursorPos(ImVec2(5, 8));
+		ImGui::SetCursorPos(ImVec2(5, 5));
 		ImGui::Checkbox("On Mouse Over", &IsOccMouseOver());
 
-		ImGui::SetCursorPos(ImVec2(5, 38));
+		ImGui::SetCursorPos(ImVec2(5, 35));
 		ImGui::Checkbox("Blackboard Value Condition", &IsOccCondition());
 
 		ImGui::SameLine();

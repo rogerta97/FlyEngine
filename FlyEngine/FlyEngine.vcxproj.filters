@@ -450,6 +450,9 @@
     <ClCompile Include="Source\FlyObjectSequential.cpp">
       <Filter>Source\FlyEngine\FlyObject\FlyObject</Filter>
     </ClCompile>
+    <ClCompile Include="Source\DialogAction.cpp">
+      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -904,6 +907,9 @@
     </ClInclude>
     <ClInclude Include="Source\FlyObjectSequential.h">
       <Filter>Source\FlyEngine\FlyObject\FlyObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DialogAction.h">
+      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

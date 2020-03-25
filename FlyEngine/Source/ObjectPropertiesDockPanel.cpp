@@ -1030,6 +1030,8 @@ void ObjectPropertiesDockPanel::DrawObjectSequenceActionsTab()
 
 	ImGui::PopStyleVar();
 	
+	IMGUI_SPACED_SEPARATOR;
+
 	DrawActionSettings();
 		
 	// Callbacks for buttons 

@@ -280,6 +280,12 @@ void FlyObject::CleanUp()
 		delete it; 
 	}
 
+	for (auto& it : sequentialActionsList)
+	{
+		(it)->CleanUp();
+		delete it;
+	}
+
 	actionsList.clear(); 
 	delete transform; 
 

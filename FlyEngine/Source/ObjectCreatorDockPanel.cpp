@@ -1277,6 +1277,8 @@ void ObjectCreatorDockPanel::AddCreatingObject()
 	App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(creatingObject);
 	App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GizmoMode::GIZMO_SELECT);
 	creatingObject->FitObjectUtils();
+
+	creatingObject->SetParentRoom(App->moduleRoomManager->GetSelectedRoom()); 
 }
 
 void ObjectCreatorDockPanel::DrawDisplayImageSettings()

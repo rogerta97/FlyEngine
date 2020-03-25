@@ -64,6 +64,7 @@
     <ClCompile Include="Source\Animation.cpp" />
     <ClCompile Include="Source\AudioClip.cpp" />
     <ClCompile Include="Source\AudioImporter.cpp" />
+    <ClCompile Include="Source\DialogAction.cpp" />
     <ClCompile Include="Source\DisplayAnimationAction.cpp" />
     <ClCompile Include="Source\DisplayTextAction.cpp" />
     <ClCompile Include="Source\EmitSoundAction.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\AudioClip.h" />
     <ClInclude Include="Source\AudioImporter.h" />
+    <ClInclude Include="Source\DialogAction.h" />
     <ClInclude Include="Source\DisplayAnimationAction.h" />
     <ClInclude Include="Source\DisplayTextAction.h" />
     <ClInclude Include="Source\EmitSoundAction.h" />

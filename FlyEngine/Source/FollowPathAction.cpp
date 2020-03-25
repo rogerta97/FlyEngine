@@ -248,20 +248,18 @@ void FollowPathAction::DrawActionOccurenceCheckboxes()
 	
 	if (GetActionClass() == ACTION_CLASS_SEQUENTIAL)
 	{
-		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
-		ImGui::SetCursorPos(ImVec2(5, 8));
-		ImGui::Checkbox("Object Clicked", &occ_ObjectClicked);
-		ImGui::SetCursorPos(ImVec2(5, 38));
+		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 35));
+		ImGui::SetCursorPos(ImVec2(5, 5));
 		ImGui::Checkbox("Object Condition", &occ_blackboardValue);
 	}
 	else if (GetActionClass() == ACTION_CLASS_DIRECT)
 	{
 		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 110));
-		ImGui::SetCursorPos(ImVec2(5, 8));
+		ImGui::SetCursorPos(ImVec2(5, 5));
 		ImGui::Checkbox("Scene Enter", &occ_SceneEnter);
-		ImGui::SetCursorPos(ImVec2(5, 38));
+		ImGui::SetCursorPos(ImVec2(5, 35));
 		ImGui::Checkbox("Object Clicked", &occ_ObjectClicked);
-		ImGui::SetCursorPos(ImVec2(5, 68));
+		ImGui::SetCursorPos(ImVec2(5, 65));
 		ImGui::Checkbox("Object Condition", &occ_blackboardValue);
 	}
 

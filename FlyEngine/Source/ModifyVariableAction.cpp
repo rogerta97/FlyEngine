@@ -91,39 +91,7 @@ void ModifyVariableAction::DrawUISettings()
 		ImGui::Text("Action Happens On:");
 		ImGui::PopFont();
 
-		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
-		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-
-		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
-
-		ImGui::SetCursorPos(ImVec2(5, 8));
-		ImGui::Checkbox("Object Clicked", &IsOccObjectClicked());
-		ImGui::SetCursorPos(ImVec2(5, 38));
-		ImGui::Checkbox("Blackboard Value Condition", &IsOccCondition());
-
-		ImGui::SameLine();
-		static std::string showValueConditionButtonText = "Show Conditions";
-		if (ImGui::Button(showValueConditionButtonText.c_str()))
-		{
-			if (showVariableConditions)
-			{
-				showVariableConditions = false;
-				showValueConditionButtonText = "Show Conditions";
-			}
-			else
-			{
-				showVariableConditions = true;
-				showValueConditionButtonText = "Hide Conditions";
-			}
-		}
-
-		ImGui::EndChild();
-
-		if (showVariableConditions)
-			DrawActionConditionsList();
-
-		POP_FONT;
-		ImGui::PopStyleColor();
+		DrawActionOccurenceCheckboxes();
 
 		IMGUI_SPACED_SEPARATOR;
 
@@ -147,6 +115,58 @@ void ModifyVariableAction::DrawUISettings()
 
 		}
 	}
+}
+
+void ModifyVariableAction::DrawActionOccurenceCheckboxes()
+{
+	ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+
+	if (GetActionClass() == ACTION_CLASS_SEQUENTIAL)
+	{
+		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 35));
+		ImGui::SetCursorPos(ImVec2(5, 5));
+		ImGui::Checkbox("Object Condition", &occ_blackboardValue);
+	}
+	else if (GetActionClass() == ACTION_CLASS_DIRECT)
+	{
+		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
+		ImGui::SetCursorPos(ImVec2(5, 5));
+		ImGui::Checkbox("Object Clicked", &occ_ObjectClicked);
+		ImGui::SetCursorPos(ImVec2(5, 35));
+		ImGui::Checkbox("Blackboard Value Condition", &IsOccCondition());
+	}
+
+	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
+
+	ImGui::SetCursorPos(ImVec2(5, 8));
+	ImGui::Checkbox("Object Clicked", &IsOccObjectClicked());
+	ImGui::SetCursorPos(ImVec2(5, 38));
+	ImGui::Checkbox("Blackboard Value Condition", &IsOccCondition());
+
+	ImGui::SameLine();
+	static std::string showValueConditionButtonText = "Show Conditions";
+	if (ImGui::Button(showValueConditionButtonText.c_str()))
+	{
+		if (showVariableConditions)
+		{
+			showVariableConditions = false;
+			showValueConditionButtonText = "Show Conditions";
+		}
+		else
+		{
+			showVariableConditions = true;
+			showValueConditionButtonText = "Hide Conditions";
+		}
+	}
+
+	ImGui::EndChild();
+
+	if (showVariableConditions)
+		DrawActionConditionsList();
+
+	POP_FONT;
+	ImGui::PopStyleColor();
 }
 
 void ModifyVariableAction::DrawUISettingsInButton()
