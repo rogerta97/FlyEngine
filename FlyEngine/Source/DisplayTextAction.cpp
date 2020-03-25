@@ -366,12 +366,16 @@ void DisplayTextAction::RenderText()
 	int x = textBox->GetMinPoint().x; 
 	int y = textBox->GetMaxPoint().y; 
 
-	float2 cursorPos = originTextPosition;
+	float2 pen = originTextPosition;
 
 	int currentLine = 0; 
 	int letterCount = 0;
 	int cursorXInc = 0; 
 	int cursorYInc = 0; 
+
+	FT_Bool use_kerning = FT_HAS_KERNING(textFont->fontFace);
+	FT_UInt previous = 0;
+
 	for (currentLetter = text.begin(); currentLetter != text.end(); currentLetter++)
 	{
 		if (textFont == nullptr)
@@ -383,24 +387,43 @@ void DisplayTextAction::RenderText()
 		// Get The Current Character 
 		Character currentCharacter = textFont->GetCharacter(*currentLetter);
 
+		/* convert character code to glyph index */
+		FT_UInt glyph_index = FT_Get_Char_Index(textFont->fontFace, (*currentLetter));
+
+		/* retrieve kerning distance and move pen position */
+		if (use_kerning && previous && glyph_index)
+		{
+			FT_Vector  delta;
+
+			FT_Get_Kerning(textFont->fontFace, previous, glyph_index,
+				0, &delta);
+
+			flog("New Letter: ");
+			flog("%ld", delta.x);
+
+			pen.x += delta.x >> 6;
+		}
+
+		previous = glyph_index;
+
 		// Get The Corresponding Quad 
 		Quad* renderQuad = textQuads->at(letterCount);
 
 		// Push Matrix to place the Corresponding quad in the correct position
 		float4x4 characterTransformMatrix = float4x4::identity;
-		cursorPos.y = y - currentCharacter.bearing.y + textFont->GetSize() + (currentLine * lineSpacing);
-		characterTransformMatrix.SetTranslatePart(float3(cursorPos.x, cursorPos.y, 0));
+		pen.y = y - currentCharacter.bearing.y + textFont->GetSize() + (currentLine * lineSpacing);
+		characterTransformMatrix.SetTranslatePart(float3(pen.x, pen.y, 0));
 		glMatrixMode(GL_MODELVIEW);
 		glLoadMatrixf((GLfloat*)(characterTransformMatrix.Transposed()).v);
 
-		cursorPos.x += currentCharacter.Advance;
+		pen.x += currentCharacter.Advance;
 
 		// Supose Wrapping = true; 
 		cursorXInc += currentCharacter.Advance;
 		if (cursorXInc > textBox->GetSize().x - 30)
 		{
 			currentLine++;
-			cursorPos.x = textBox->GetMinPoint().x;
+			pen.x = textBox->GetMinPoint().x;
 			cursorXInc = 0; 
 			cursorYInc += lineSpacing; 
 		}

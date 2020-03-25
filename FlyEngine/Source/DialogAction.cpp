@@ -1,5 +1,7 @@
 #include "DialogAction.h"
 
+#include "mmgr.h"
+
 DialogAction::DialogAction(FlyObject* _parentObject)
 {
 	actionType = ACTION_DIALOG;

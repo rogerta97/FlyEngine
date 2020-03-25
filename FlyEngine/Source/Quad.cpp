@@ -38,7 +38,7 @@ void Quad::CreateLiteralSize(const float desiredWidth, const float desiredHeight
 
 void Quad::SetQuadData(const float desiredWidth, const float desiredHeight, bool topLeftCenter)
 {
-	flog("SetData"); 
+	//flog("SetData"); 
 
 	numVertices = 4;
 	vertices = new vec3[numVertices];

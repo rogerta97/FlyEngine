@@ -590,7 +590,7 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 		newAtrImage->SetTexture(newTexture);
 	}
 
-
+	
 	return (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE); 	
 }
 
@@ -810,6 +810,7 @@ DisplayTextAction* FlyObject::AddDisplayTextAction(bool addToSequentialActions)
 	if (GetAction(ACTION_DISPLAY_TEXT) == nullptr)
 	{
 		DisplayTextAction* displayTextAction = new DisplayTextAction(this);
+		displayTextAction->SetText("Text");
 
 		if (addToSequentialActions )
 			sequentialActionsList.push_back(displayTextAction);
