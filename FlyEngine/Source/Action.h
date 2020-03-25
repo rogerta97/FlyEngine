@@ -139,12 +139,6 @@ public:
 	virtual void SetVisible(bool isVisible);
 	bool& GetIsVisible();
 
-	void SetIsDisplay(bool _dis);
-	bool& GetIsDisplay();
-
-	bool GetAcceptSequencial();
-	void SetAcceptSequencial(bool _acSec);
-
 	UID GetUID();
 	void SetUID(UID newUID);
 
@@ -163,12 +157,6 @@ protected:
 	ActionClass actionClass; 
 	UID uid; 
 
-	bool isDataAttached = false; 
-	bool isHolderInfo = false;
-	bool drawIfSequential = true; 
-	bool isDisplay = false; 
-	bool isVisible = true; 
-
 	// Occurrence -----------------
 	bool occ_SceneEnter = false; 
 	bool occ_SceneLeave = false;
@@ -186,11 +174,14 @@ protected:
 	// Vars -----------------------
 	std::string toolName; 
 	std::string toolDescription; 
-	bool isSelected; 
-	bool isVisual; 
-
-	bool acceptSequencial; 
-	bool isSequential; 
+	
+	bool isSelected = false; 
+	bool isVisual = false; 
+	bool isSequential = false; 
+	bool isDataAttached = false; 
+	bool isHolderInfo = false;
+	bool drawIfSequential = true; 
+	bool isVisible = true; 
 }; 
 
 #endif

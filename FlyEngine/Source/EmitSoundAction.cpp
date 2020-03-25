@@ -16,7 +16,6 @@ EmitSoundAction::EmitSoundAction(FlyObject* _parentObject)
 	actionType = ACTION_EMIT_SOUND;
 	parentObject = _parentObject;
 	isVisual = false;
-	acceptSequencial = true;
 	audioPlayMode = ONE_TIME; 
 
 	SetActionName("Emit Sound");

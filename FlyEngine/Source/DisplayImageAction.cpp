@@ -25,9 +25,7 @@ DisplayImageAction::DisplayImageAction(FlyObject* _parentObject = nullptr)
 	parentObject = _parentObject; 
 	isVisual = true; 
 	fromAnimation = false; 
-	acceptSequencial = true;
 	drawIfSequential = false; 
-	isDisplay = true; 
 
 	SetActionName("Display Image"); 
 	SetToolDescription("This should be the description of the image"); 

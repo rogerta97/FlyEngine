@@ -564,7 +564,7 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 		DisplayImageAction* newAtrImage = new DisplayImageAction(this);
 		newAtrImage->CreateImage(imageTexturePath);
 
-		if(addToSequentialActions && newAtrImage->GetAcceptSequencial())
+		if(addToSequentialActions )
 			sequentialActionsList.push_back(newAtrImage);
 		else
 			actionsList.push_back(newAtrImage);
@@ -600,7 +600,7 @@ ChangeRoomAction* FlyObject::AddChangeRoomAction(bool addToSequentialActions)
 	{
 		ChangeRoomAction* changeSceneTool = new ChangeRoomAction(this);
 
-		if (addToSequentialActions && changeSceneTool->GetAcceptSequencial())
+		if (addToSequentialActions )
 			sequentialActionsList.push_back(changeSceneTool);
 		else
 			actionsList.push_back(changeSceneTool);
@@ -613,8 +613,7 @@ ChangeRoomAction* FlyObject::AddChangeRoomAction(bool addToSequentialActions)
 	{
 		ChangeRoomAction* changeSceneTool = new ChangeRoomAction(this);
 
-		if (changeSceneTool->GetAcceptSequencial())
-			sequentialActionsList.push_back(changeSceneTool);
+		sequentialActionsList.push_back(changeSceneTool);
 	}
 
 	return (ChangeRoomAction*)GetAction(ACTION_CHANGE_ROOM);
@@ -625,7 +624,7 @@ ModifyVariableAction* FlyObject::AddModifyVariableAction(bool addToSequentialAct
 	if (GetAction(ACTION_MOD_VARIABLE) == nullptr)
 	{
 		ModifyVariableAction* mofidyVarAction = new ModifyVariableAction(this);
-		if (addToSequentialActions && mofidyVarAction->GetAcceptSequencial())
+		if (addToSequentialActions )
 			sequentialActionsList.push_back(mofidyVarAction);
 		else
 			actionsList.push_back(mofidyVarAction);
@@ -635,7 +634,7 @@ ModifyVariableAction* FlyObject::AddModifyVariableAction(bool addToSequentialAct
 	{
 		ModifyVariableAction* mofidyVarAction = new ModifyVariableAction(this);
 
-		if (mofidyVarAction->GetAcceptSequencial())
+	
 			sequentialActionsList.push_back(mofidyVarAction);
 	}
 
@@ -647,7 +646,7 @@ EmitSoundAction* FlyObject::AddEmitSoundAction(bool addToSequentialActions)
 	if (GetAction(ACTION_EMIT_SOUND) == nullptr)
 	{
 		EmitSoundAction* emitSoundAction = new EmitSoundAction(this);
-		if (addToSequentialActions && emitSoundAction->GetAcceptSequencial())
+		if (addToSequentialActions)
 			sequentialActionsList.push_back(emitSoundAction);
 		else
 			actionsList.push_back(emitSoundAction);
@@ -658,7 +657,7 @@ EmitSoundAction* FlyObject::AddEmitSoundAction(bool addToSequentialActions)
 	{
 		EmitSoundAction* emitSoundAction = new EmitSoundAction(this);
 
-		if (emitSoundAction->GetAcceptSequencial())
+	
 			sequentialActionsList.push_back(emitSoundAction);
 
 		return emitSoundAction;
@@ -734,7 +733,7 @@ FollowPathAction* FlyObject::AddFollowPathAction(bool addToSequentialActions)
 	if (GetAction(ACTION_FOLLOW_PATH) == nullptr)
 	{
 		FollowPathAction* followPathAction = new FollowPathAction(this);
-		if (addToSequentialActions && followPathAction->GetAcceptSequencial())
+		if (addToSequentialActions)
 			sequentialActionsList.push_back(followPathAction);
 		else
 			actionsList.push_back(followPathAction);
@@ -744,7 +743,7 @@ FollowPathAction* FlyObject::AddFollowPathAction(bool addToSequentialActions)
 	{
 		FollowPathAction* followPathAction = new FollowPathAction(this);
 
-		if (followPathAction->GetAcceptSequencial())
+		
 			sequentialActionsList.push_back(followPathAction);
 
 		return followPathAction;
@@ -812,7 +811,7 @@ DisplayTextAction* FlyObject::AddDisplayTextAction(bool addToSequentialActions)
 	{
 		DisplayTextAction* displayTextAction = new DisplayTextAction(this);
 
-		if (addToSequentialActions && displayTextAction->GetAcceptSequencial())
+		if (addToSequentialActions )
 			sequentialActionsList.push_back(displayTextAction);
 		else
 			actionsList.push_back(displayTextAction);
@@ -825,9 +824,8 @@ DisplayTextAction* FlyObject::AddDisplayTextAction(bool addToSequentialActions)
 	else if (addToSequentialActions)
 	{
 		DisplayTextAction* displayTextAction = new DisplayTextAction(this);
-
-		if (displayTextAction->GetAcceptSequencial())
-			sequentialActionsList.push_back(displayTextAction);
+	
+		sequentialActionsList.push_back(displayTextAction);
 
 		return displayTextAction;
 	}

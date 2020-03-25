@@ -25,7 +25,6 @@ Action::Action()
 	occ_blackboardValue = false;
 	occ_ObjectClicked = false;
 
-	acceptSequencial = false; 
 	actionClass = ACTION_CLASS_DIRECT;
 
 	uid = RandomNumberGenerator::getInstance()->GenerateUID();
@@ -456,26 +455,6 @@ void Action::SetVisible(bool isVisible)
 bool& Action::GetIsVisible()
 {
 	return isVisible; 
-}
-
-void Action::SetIsDisplay(bool _dis)
-{
-	isDisplay = _dis; 
-}
-
-bool& Action::GetIsDisplay()
-{
-	return isDisplay;
-}
-
-bool Action::GetAcceptSequencial()
-{
-	return acceptSequencial;
-}
-
-void Action::SetAcceptSequencial(bool _acSec)
-{
-	acceptSequencial = _acSec;
 }
 
 UID Action::GetUID()

@@ -13,7 +13,6 @@ ChangeRoomAction::ChangeRoomAction(FlyObject* _parentObject)
 {
 	actionType = ACTION_CHANGE_ROOM;
 	isVisual = false;
-	acceptSequencial = true;
 
 	SetActionName("Change Room");
 	SetToolDescription("This should be the description of the scene change");

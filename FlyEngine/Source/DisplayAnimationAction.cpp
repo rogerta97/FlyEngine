@@ -17,8 +17,6 @@ DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject)
 	actionType = ACTION_DISPLAY_ANIMATION;
 	isVisual = false;
 	parentObject = _parentObject; 
-	acceptSequencial = true;
-	isDisplay = true; 
 	isSequential = false; 
 
 	SetActionName("Display Animation");

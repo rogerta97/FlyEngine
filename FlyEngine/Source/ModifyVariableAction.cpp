@@ -17,7 +17,6 @@ ModifyVariableAction::ModifyVariableAction(FlyObject* _parentObject)
 {
 	actionType = ACTION_MOD_VARIABLE;
 	isVisual = false;
-	acceptSequencial = true;
 
 	SetActionName("Modify Variable");
 	SetToolDescription("This should be the description of the modify variable action");
