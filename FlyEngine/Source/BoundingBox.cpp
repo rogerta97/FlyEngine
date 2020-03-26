@@ -28,6 +28,16 @@ BoundingBox::~BoundingBox()
 void BoundingBox::Draw(bool fill, float4 color)
 {
 	DrawSquare(color, fill);
+
+
+}
+
+void BoundingBox::DrawBoxGizmos()
+{
+	if (displayGizmos && boxGizmos != nullptr)
+	{
+		boxGizmos->Draw();
+	}
 }
 
 void BoundingBox::CleanUp()
@@ -136,7 +146,7 @@ void BoundingBox::EnableDrag(bool enable)
 void BoundingBox::CreateGizmos()
 {
 	boxGizmos = new Gizmos(this);
-
+	displayGizmos = true; 
 }
 
 float2 BoundingBox::GetCenter()
@@ -169,7 +179,6 @@ bool BoundingBox::IsMouseOver()
 		ret = false;
 	
 	return ret;
-
 }
 
 bool BoundingBox::IsBoxClicked()

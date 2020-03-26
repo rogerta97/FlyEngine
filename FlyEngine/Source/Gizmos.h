@@ -18,7 +18,7 @@ enum DragAxis
 class SelectGizmo
 {
 public: 
-	SelectGizmo(FlyObject* parentObject); 
+	SelectGizmo(); 
 	~SelectGizmo(); 
 
 	void CleanUp();
@@ -33,7 +33,7 @@ class MoveGizmo
 {
 public: 
 
-	MoveGizmo(FlyObject* parentObject);
+	MoveGizmo();
 	~MoveGizmo(); 
 
 	void CleanUp();
@@ -64,7 +64,7 @@ class ScaleGizmo
 {
 public:
 
-	ScaleGizmo(FlyObject* parentObject);
+	ScaleGizmo();
 	~ScaleGizmo();
 
 	void CleanUp(); 

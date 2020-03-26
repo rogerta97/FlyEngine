@@ -1,6 +1,7 @@
 #include "DisplayTextAction.h"
 #include "Quad.h"
 #include "OpenGL.h"
+#include "Room.h"
 #include "Font.h"
 #include "FlyObject.h"
 
@@ -9,6 +10,7 @@
 #include "Quad.h"
 #include "GameViewportDockPanel.h"
 #include "ResourceManager.h"
+#include "ViewportManager.h"
 
 #include "mmgr.h"
 
@@ -20,6 +22,7 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 	drawTextBox = true;
 
 	textQuads = new std::vector<Quad*>();
+
 	textBox = new BoundingBox();
 	textBox->CreateGizmos();
 
@@ -53,9 +56,10 @@ void DisplayTextAction::Draw()
 
 void DisplayTextAction::Update(float dt)
 {
-	if (textBox->IsBoxClicked())
+	if (textBox->IsBoxClicked() && parentObject->isSelected)
 	{
-		parentObject->SetSelectedAction(uid); 
+		parentObject->SetSelectedAction(uid);
+		ViewportManager::getInstance()->blockInputTick = true;
 	}
 }
 
@@ -506,6 +510,9 @@ void DisplayTextAction::DrawTextBox()
 	}
 
 	textBox->Draw(false, float4(0, 1.0f, 0, 1.0f)); 
+
+	if (isSelected)
+		textBox->DrawBoxGizmos(); 
 }
 
 void DisplayTextAction::CleanQuads()

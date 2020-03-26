@@ -69,7 +69,6 @@ public:
 	ActionSelectableInfo GetToolNameDescription(int pos) const;
 
 	FlyVariable* fakeVarInitAttach = nullptr;
-	Action* selectedAction = nullptr;
 
 private: 
 	std::list<ActionSelectableInfo> toolNamesDescriptions; 

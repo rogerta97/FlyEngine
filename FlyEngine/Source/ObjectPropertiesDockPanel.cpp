@@ -1669,7 +1669,7 @@ void ObjectPropertiesDockPanel::DrawActionsList()
 		if (DrawActionSelectable(selectableInfo, currentAction, count, 40))
 		{
 			selectedObject->SetSelectedAction(currentAction->GetUID(), currentAction->IsActionSequential());
-			App->moduleManager->selectedAction = selectedObject->GetAction(selectableInfo.actionType); 
+			//App->moduleManager->selectedAction = selectedObject->GetAction(selectableInfo.actionType); 
 		}
 		
 		count++;

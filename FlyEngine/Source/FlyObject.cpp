@@ -258,9 +258,9 @@ void FlyObject::Draw()
 
 	if(isSelected)
 	{
-		if (App->moduleManager->selectedAction != nullptr && App->moduleManager->selectedAction->GetType() == ACTION_DISPLAY_TEXT)
+		if (selectedAction != nullptr && selectedAction->GetType() == ACTION_DISPLAY_TEXT)
 			return; 
-	
+			
 		gizmos->Draw();
 	}
 }

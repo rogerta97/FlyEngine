@@ -19,9 +19,9 @@ Gizmos::Gizmos(FlyObject* _objectAttached)
 {
 	objectAttached = _objectAttached; 
 
-	selectGizmo = new SelectGizmo(_objectAttached);
-	moveGizmo = new MoveGizmo(_objectAttached);
-	scaleGizmo = new ScaleGizmo(_objectAttached);
+	selectGizmo = new SelectGizmo();
+	moveGizmo = new MoveGizmo();
+	scaleGizmo = new ScaleGizmo();
 
 	selectGizmo->objectBorderBox->SetSquareColor(float4(0.4f, 0.4f, 1.0f, 0.2f));
 	SetMoveGizmoStyle(7.0f, 100.0f, 5.0f, 20, 20, 25);
@@ -31,6 +31,14 @@ Gizmos::Gizmos(FlyObject* _objectAttached)
 Gizmos::Gizmos(BoundingBox* boxAttached)
 {
 	this->boxAttached = boxAttached;
+
+	selectGizmo = new SelectGizmo();
+	moveGizmo = new MoveGizmo();
+	scaleGizmo = new ScaleGizmo();
+
+	selectGizmo->objectBorderBox->SetSquareColor(float4(0.4f, 0.4f, 1.0f, 0.2f));
+	SetMoveGizmoStyle(7.0f, 100.0f, 5.0f, 20, 20, 25);
+	SetScaleGizmoStyle(7.0f, 90.0f, 5.0f, 20, 23, 25);
 }
 
 Gizmos::~Gizmos()
@@ -318,7 +326,13 @@ void Gizmos::DrawMoveGizmo()
 	float4x4 moveGizmoViewMat = float4x4::identity;
 	moveGizmoViewMat.RotateX(0);
 	moveGizmoViewMat.RotateY(0);
-	float2 objectPosition = objectAttached->transform->GetPosition();
+
+	float2 objectPosition = float2(0, 0); 
+	if (objectAttached != nullptr)
+		objectPosition = objectAttached->transform->GetPosition();
+	else if (boxAttached != nullptr)
+		objectPosition = boxAttached->GetCenter();
+
 	moveGizmoViewMat.SetTranslatePart(float3(objectPosition.x * ViewportManager::getInstance()->GetAspectRatio(), objectPosition.y * ViewportManager::getInstance()->GetAspectRatio(), 0));
 	glLoadMatrixf((GLfloat*)moveGizmoViewMat.Transposed().v);
 
@@ -498,7 +512,7 @@ void Gizmos::SetCenterSquareSize(float& _centerSize)
 	moveGizmo->centerSquareSize = _centerSize;
 }
 
-SelectGizmo::SelectGizmo(FlyObject* parentObject)
+SelectGizmo::SelectGizmo()
 {
 	objectBorderBox = new BoundingBox(); 
 	objectBorderBox->EnableDrag(false); 
@@ -538,7 +552,7 @@ void SelectGizmo::AddaptSelectBox(FlyObject* objectAttached)
 	objectBorderBox->SetMinPoint(selectMinPoint);
 }
 
-MoveGizmo::MoveGizmo(FlyObject* parentObject)
+MoveGizmo::MoveGizmo()
 {
 	axisXBox = new BoundingBox();
 	axisYBox = new BoundingBox();
@@ -619,7 +633,7 @@ void MoveGizmo::AddaptAxisBoxes(FlyObject* objectAttached)
 	axisXYBox->SetMaxPoint(moveMaxPoint);
 }
 
-ScaleGizmo::ScaleGizmo(FlyObject* parentObject)
+ScaleGizmo::ScaleGizmo()
 {
 	borderBoundingBox = new BoundingBox(); 
 

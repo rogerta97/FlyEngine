@@ -44,6 +44,12 @@ Room::~Room()
 
 void Room::Update()
 {
+	if (ViewportManager::getInstance()->blockInputTick)
+	{
+		ViewportManager::getInstance()->blockInputTick = false;
+		return;
+	}
+
 	if (App->moduleRoomManager->GetSelectedRoom() == this)
 	{
 		UpdateRoomObjects();
@@ -52,39 +58,40 @@ void Room::Update()
 		// Check for new Selected Objects -------
 		if (CheckRaycastConditions())
 		{
-			switch (ViewportManager::getInstance()->editRoomMode)
-			{
-
-			case EditRoomMode::EDIT_ROOM_OBJECTS:
-			{
-				if (objectsInRoom.empty())
-					return; 
-
-				list<FlyObject*> objectCandidates = ViewportManager::getInstance()->RaycastMouseClickObjects();
-
-				if (!objectCandidates.empty())
-					App->moduleManager->SetSelectedFlyObject(objectCandidates.back());
-				else
+				switch (ViewportManager::getInstance()->editRoomMode)
 				{
-					App->moduleManager->SetSelectedFlyObject(nullptr);
+
+				case EditRoomMode::EDIT_ROOM_OBJECTS:
+				{
+					if (objectsInRoom.empty())
+						return;
+
+					list<FlyObject*> objectCandidates = ViewportManager::getInstance()->RaycastMouseClickObjects();
+
+					if (!objectCandidates.empty())
+						App->moduleManager->SetSelectedFlyObject(objectCandidates.back());
+					else
+					{
+						App->moduleManager->SetSelectedFlyObject(nullptr);
+					}
 				}
-			}
-				break; 
-
-			case EditRoomMode::EDIT_ROOM_UI:
-			{
-				if (roomUIHandler->uiElements.empty())
-					return;
-
-				list<UI_Element*> objectCandidates = ViewportManager::getInstance()->RaycastMouseClickUI();
-
-				if (!objectCandidates.empty())
-					App->moduleManager->SetSelectedUIElement(objectCandidates.back());
-				else
-					App->moduleManager->SetSelectedUIElement(nullptr);
-			}
 				break;
-			}
+
+				case EditRoomMode::EDIT_ROOM_UI:
+				{
+					if (roomUIHandler->uiElements.empty())
+						return;
+
+					list<UI_Element*> objectCandidates = ViewportManager::getInstance()->RaycastMouseClickUI();
+
+					if (!objectCandidates.empty())
+						App->moduleManager->SetSelectedUIElement(objectCandidates.back());
+					else
+						App->moduleManager->SetSelectedUIElement(nullptr);
+				}
+				break;
+				}
+			
 		}
 	}
 
@@ -196,7 +203,8 @@ bool Room::CheckRaycastConditions()
 {
 	return App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && 
 		App->moduleImGui->gameViewportDockPanel->IsMouseInViewport() &&
-		!App->moduleImGui->objectCreatorDockPanel->IsVisible();
+		!App->moduleImGui->objectCreatorDockPanel->IsVisible() &&
+		!ViewportManager::getInstance()->blockInputTick;
 }
 
 void Room::NotifyVariableChange(FlyVariable* currentVariableValue)
@@ -479,29 +487,30 @@ void Room::SetUID(UID roomID)
 void Room::SetSelectedObject(FlyObject* newObject)
 {
 	if (App->moduleManager->GetSelectedFlyObject() == newObject)
-		return; 
+		return;
 
 	for (auto& it : objectsInRoom)
 	{
 		if ((it) == newObject)
 		{
-			(it)->isSelected = true; 
+			(it)->isSelected = true;
 		}
 		else
-		{		
-			it->isSelected = false; 
+		{
+			it->isSelected = false;
 		}
 
-		for (auto& currentAction : it->GetActionsList())		
-			currentAction->SetIsSelected(false); 
-		
+		for (auto& currentAction : it->GetActionsList())
+			currentAction->SetIsSelected(false);
+
+		it->selectedAction = nullptr;
 	}
 
 	selectedObject = newObject;
 
 	ObjectPropertiesDockPanel* propertiesDockPanel = nullptr;
 	propertiesDockPanel = (ObjectPropertiesDockPanel*)App->moduleImGui->GetDockPanel(DOCK_OBJECT_PROPERTIES);
-	propertiesDockPanel->SetSelectedObject(selectedObject); 	
+	propertiesDockPanel->SetSelectedObject(selectedObject); 
 }
 
 FlyObject* Room::GetSelectedObject() const

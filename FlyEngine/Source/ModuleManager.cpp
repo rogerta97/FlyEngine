@@ -352,7 +352,6 @@ void ModuleManager::DrawActionListWithSettings(FlyObject* ownerObejct)
 		if (objectProperties->DrawActionSelectable(selectableInfo, currentAction, count, 40))
 		{
 			ownerObejct->SetSelectedAction(selectableInfo.actionType);
-			selectedAction = currentAction;
 		}
 
 		count++;
@@ -363,8 +362,8 @@ void ModuleManager::DrawActionListWithSettings(FlyObject* ownerObejct)
 	ImGui::PopStyleVar();
 	ImGui::PopStyleColor();
 
-	if (selectedAction)
-		selectedAction->DrawUISettingsInButton();
+	if (ownerObejct->GetSelectedAction())
+		ownerObejct->GetSelectedAction()->DrawUISettingsInButton();
 }
 
 void ModuleManager::DrawImageFitInCenter(Texture* textureToShow)
@@ -444,7 +443,6 @@ FlyObject* ModuleManager::GetSelectedFlyObject()
 void ModuleManager::SetSelectedFlyObject(FlyObject* newSelectedObject)
 {
 	App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(newSelectedObject);
-	selectedAction = nullptr; 
 }
 
 UI_Element* ModuleManager::GetSelectedUIElement()
