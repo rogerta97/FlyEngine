@@ -85,11 +85,19 @@ void DisplayTextAction::SaveAction(JSON_Object* jsonObject, string serializeObje
 
 	Action::SaveAction(jsonObject, toolsSerializeSection);
 
+	// Save Bounding Box Position 
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("TextBox.MinPoint.x")).c_str(), textBox->GetMinPoint().x);
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("TextBox.MinPoint.y")).c_str(), textBox->GetMinPoint().y);
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("TextBox.MaxPoint.x")).c_str(), textBox->GetMaxPoint().x);
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("TextBox.MaxPoint.y")).c_str(), textBox->GetMaxPoint().y);
+
+	// Save Text String
 	if (text.empty())	
 		json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("Text")).c_str(), "None");	
 	else	
 		json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("Text")).c_str(), text.c_str());	
 
+	// Save Text Font 
 	if(textFont != nullptr)
 		json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("FontName")).c_str(), textFont->GetName().c_str());
 	else

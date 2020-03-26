@@ -394,6 +394,18 @@ void SaveAndLoad::LoadDisplayTextAction(JSON_Object* root_obj, std::string& seri
 	displayTextAction->SetActionClass((ActionClass)actionClass);
 	displayTextAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("Occurrence."));
 
+	float2 minPoint = float2::zero; 
+	float2 maxPoint = float2::zero; 
+
+	minPoint.x = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("TextBox.MinPoint.x")).c_str());
+	minPoint.y = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("TextBox.MinPoint.y")).c_str());
+
+	maxPoint.x = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("TextBox.MaxPoint.x")).c_str());
+	maxPoint.y = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("TextBox.MaxPoint.y")).c_str());
+
+	displayTextAction->GetTextBox()->SetMinPoint(minPoint);
+	displayTextAction->GetTextBox()->SetMaxPoint(maxPoint);
+
 	string fontTmp = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("FontName")).c_str());
 	if (fontTmp != "None")
 	{
