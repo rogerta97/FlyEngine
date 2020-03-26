@@ -8,6 +8,7 @@
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "Quad.h"
+#include "Gizmos.h"
 #include "GameViewportDockPanel.h"
 #include "ResourceManager.h"
 #include "ViewportManager.h"
@@ -60,6 +61,11 @@ void DisplayTextAction::Update(float dt)
 	{
 		parentObject->SetSelectedAction(uid);
 		ViewportManager::getInstance()->blockInputTick = true;
+	}
+
+	if (isSelected)
+	{
+		textBox->UpdateGizmos();
 	}
 }
 

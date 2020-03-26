@@ -25,11 +25,15 @@ BoundingBox::~BoundingBox()
 {
 }
 
+void BoundingBox::UpdateGizmos()
+{
+	if (boxGizmos)
+		boxGizmos->Update(); 
+}
+
 void BoundingBox::Draw(bool fill, float4 color)
 {
 	DrawSquare(color, fill);
-
-
 }
 
 void BoundingBox::DrawBoxGizmos()
@@ -72,6 +76,8 @@ void BoundingBox::SetPosition(float2 newPositon)
 	CenterMinMaxPointsToScreen(); 
 	minPoint += newPositon; 
 	maxPoint += newPositon; 
+
+	// Update here the position of the bounding box gizmos if they have calling  gizmos->moveGizmo->AddaptAxisBoxer(send the bounding box); overloaded function with BB  
 }
 
 void BoundingBox::SetPositionInc(float2 newPositon)
@@ -118,6 +124,11 @@ void BoundingBox::SetMinPoint(float2 _minPoint)
 
 	size.x = abs(maxPoint.x - minPoint.x);
 	size.y = abs(maxPoint.y - minPoint.y);
+}
+
+Gizmos* BoundingBox::GetBoxGizmos()
+{
+	return boxGizmos;
 }
 
 float2& BoundingBox::GetMaxPoint()

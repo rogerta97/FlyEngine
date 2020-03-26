@@ -11,6 +11,7 @@ public:
 	BoundingBox(); 
 	~BoundingBox();
 
+	void UpdateGizmos(); 
 	virtual void Draw(bool fill, float4 color);
 	virtual void DrawBoxGizmos();
 	virtual void CleanUp();
@@ -42,6 +43,8 @@ public:
 
 	float2& GetMinPoint();
 	void SetMinPoint(float2 _minPoint); 
+
+	Gizmos* GetBoxGizmos();
 
 	float2& GetMaxPoint();
 	void SetMaxPoint(float2 _maxPoint);
