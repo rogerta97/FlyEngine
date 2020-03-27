@@ -67,6 +67,7 @@ private:
 	BoundingBox* textBox; 
 	float2 originTextPosition; 
 	bool drawTextBox; 
+	float2 pevBoxPos; 
 	
 	int quadsAllocated = 0; 
 	std::vector<Quad*>* textQuads;

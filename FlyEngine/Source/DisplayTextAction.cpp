@@ -21,6 +21,7 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 	parentObject = _parentObject;
 	isVisual = false;
 	drawTextBox = true;
+	pevBoxPos = float2::zero; 
 
 	textQuads = new std::vector<Quad*>();
 
@@ -246,16 +247,14 @@ void DisplayTextAction::DrawUISettings()
 		ImGui::PopFont();
 
 		// Box Position 
-		float2 boxPos = GetTextBox()->GetPosition();
-		var[2]
-		if (ImGui::DragFloat2("Position", (float*)& boxPos, 2))
+		float showPositionArr[2] = { GetTextBox()->GetPosition().x,  GetTextBox()->GetPosition().y };
+
+		if (ImGui::DragFloat2("Position", showPositionArr, 2))
 		{
 			//float2 inc = boxPos - prevPos;
 			//inc *= ViewportManager::getInstance()->GetAspectRatio();
-			boxPos *= ViewportManager::getInstance()->GetAspectRatio();
-			GetTextBox()->SetPosition(float2(boxPos.x, boxPos.y));
-			GetTextBox()->CalculateAllGizmos();
-			CalculateOriginTextPosition();
+			//boxPos *= ViewportManager::getInstance()->GetAspectRatio();
+			GetTextBox()->SetPosition(float2(showPositionArr[0], showPositionArr[1]));
 		}
 
 		// Box Width & Heigth
@@ -263,7 +262,13 @@ void DisplayTextAction::DrawUISettings()
 		if (ImGui::DragFloat2("Width & Heigth", (float*)& boxSize, 2))
 		{
 			GetTextBox()->SetSize(boxSize.x, boxSize.y);
-			GetTextBox()->SetPosition(float2(boxPos.x, boxPos.y));
+			GetTextBox()->SetPosition(float2(showPositionArr[0], showPositionArr[1]));
+		}
+		
+		if (!GetTextBox()->GetPosition().Equals(pevBoxPos))
+		{
+			pevBoxPos = GetTextBox()->GetPosition(); 
+			GetTextBox()->CalculateAllGizmos();
 			CalculateOriginTextPosition();
 		}
 
@@ -548,6 +553,7 @@ void DisplayTextAction::CalculateOriginTextPosition()
 		assert(false); 
 	}
 
+	flog("Origin: %f %f", originTextPosition.x, originTextPosition.y);
 	originTextPosition = float2(textBox->GetMinPoint().x, textBox->GetMaxPoint().y);
 }
 
