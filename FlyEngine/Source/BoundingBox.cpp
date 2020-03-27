@@ -31,6 +31,13 @@ void BoundingBox::UpdateGizmos()
 		boxGizmos->Update(); 
 }
 
+void BoundingBox::CalculateAllGizmos()
+{
+	//boxGizmos->CalculateSelectGizmo(this);
+	boxGizmos->CalculateMoveGizmo(this);
+	//boxGizmos->CalculateScaleGizmo(this);
+}
+
 void BoundingBox::Draw(bool fill, float4 color)
 {
 	DrawSquare(color, fill);
@@ -77,9 +84,9 @@ void BoundingBox::SetPosition(float2 newPositon)
 	minPoint += newPositon; 
 	maxPoint += newPositon; 
 
-	// Update here the position of the bounding box gizmos if they have calling  gizmos->moveGizmo->AddaptAxisBoxer(send the bounding box); overloaded function with BB  
-	if(boxGizmos != nullptr)
-		boxGizmos->CalculateMoveGizmo(this); 
+	//// Update here the position of the bounding box gizmos if they have calling  gizmos->moveGizmo->AddaptAxisBoxer(send the bounding box); overloaded function with BB  
+	//if(boxGizmos != nullptr)
+	//	boxGizmos->CalculateMoveGizmo(this); 
 }
 
 void BoundingBox::SetPositionInc(float2 newPositon)

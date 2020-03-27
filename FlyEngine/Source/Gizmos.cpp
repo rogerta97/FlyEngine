@@ -657,11 +657,11 @@ void MoveGizmo::AddaptAxisBoxes(BoundingBox* boxAttached)
 	moveMaxPoint.x += lineLength / 2;
 	moveMinPoint.x += lineLength / 2;
 
-	moveMinPoint.x += boxAttached->GetCenter().x * ViewportManager::getInstance()->GetAspectRatio();
-	moveMinPoint.y += boxAttached->GetCenter().y * ViewportManager::getInstance()->GetAspectRatio();
+	moveMinPoint.x += boxAttached->GetCenter().x;
+	moveMinPoint.y += boxAttached->GetCenter().y;
 
-	moveMaxPoint.x += boxAttached->GetCenter().x * ViewportManager::getInstance()->GetAspectRatio();
-	moveMaxPoint.y += boxAttached->GetCenter().y * ViewportManager::getInstance()->GetAspectRatio();
+	moveMaxPoint.x += boxAttached->GetCenter().x;
+	moveMaxPoint.y += boxAttached->GetCenter().y;
 
 	axisXBox->SetMinPoint(moveMinPoint);
 	axisXBox->SetMaxPoint(moveMaxPoint);
@@ -674,11 +674,11 @@ void MoveGizmo::AddaptAxisBoxes(BoundingBox* boxAttached)
 	moveMaxPoint.y -= lineLength / 2;
 	moveMinPoint.y -= lineLength / 2;
 
-	moveMinPoint.x += boxAttached->GetCenter().x * ViewportManager::getInstance()->GetAspectRatio();
-	moveMinPoint.y += boxAttached->GetCenter().y * ViewportManager::getInstance()->GetAspectRatio();
+	moveMinPoint.x += boxAttached->GetCenter().x;
+	moveMinPoint.y += boxAttached->GetCenter().y;
 
-	moveMaxPoint.x += boxAttached->GetCenter().x * ViewportManager::getInstance()->GetAspectRatio();
-	moveMaxPoint.y += boxAttached->GetCenter().y * ViewportManager::getInstance()->GetAspectRatio();
+	moveMaxPoint.x += boxAttached->GetCenter().x;
+	moveMaxPoint.y += boxAttached->GetCenter().y;
 
 	axisYBox->SetMinPoint(moveMinPoint);
 	axisYBox->SetMaxPoint(moveMaxPoint);

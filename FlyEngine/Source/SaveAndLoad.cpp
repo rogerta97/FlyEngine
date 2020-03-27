@@ -15,6 +15,7 @@
 #include "FlyObject.h"
 
 #include "EmitSoundAction.h"
+#include "Gizmos.h"
 #include "DisplayImageAction.h"
 #include "DisplayTextAction.h"
 #include "ChangeRoomAction.h"
@@ -420,6 +421,8 @@ void SaveAndLoad::LoadDisplayTextAction(JSON_Object* root_obj, std::string& seri
 	{
 		displayTextAction->SetText(textTmp);
 	}
+
+	displayTextAction->GetTextBox()->CalculateAllGizmos();
 }
 
 void SaveAndLoad::LoadEmitSoundAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)

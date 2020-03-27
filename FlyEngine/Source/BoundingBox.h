@@ -12,6 +12,7 @@ public:
 	~BoundingBox();
 
 	void UpdateGizmos(); 
+	void CalculateAllGizmos();
 	virtual void Draw(bool fill, float4 color);
 	virtual void DrawBoxGizmos();
 	virtual void CleanUp();

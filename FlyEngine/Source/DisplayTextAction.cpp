@@ -247,6 +247,7 @@ void DisplayTextAction::DrawUISettings()
 		if (ImGui::DragFloat2("Position", (float*)& boxPos, 2))
 		{
 			GetTextBox()->SetPosition(float2(boxPos.x, boxPos.y));
+			GetTextBox()->CalculateAllGizmos();
 			CalculateOriginTextPosition();
 		}
 
