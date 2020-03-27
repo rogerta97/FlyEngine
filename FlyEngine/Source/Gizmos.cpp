@@ -284,7 +284,14 @@ void Gizmos::CalculateSelectGizmo(FlyObject* objectAttached)
 
 void Gizmos::CalculateMoveGizmo(FlyObject* objectAttached)
 {
-	moveGizmo->AddaptAxisBoxes(objectAttached);
+	if(objectAttached != nullptr)
+		moveGizmo->AddaptAxisBoxes(objectAttached);
+}
+
+void Gizmos::CalculateMoveGizmo(BoundingBox* boxattached)
+{
+	if (boxattached != nullptr)
+		moveGizmo->AddaptAxisBoxes(boxattached);
 }
 
 void Gizmos::CalculateScaleGizmo(FlyObject* objectAttached)
@@ -323,17 +330,24 @@ void Gizmos::DrawMoveGizmo()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+	moveGizmo->axisXBox->DrawSquare();
+	moveGizmo->axisYBox->DrawSquare();
+	moveGizmo->axisXYBox->DrawSquare();
+
 	float4x4 moveGizmoViewMat = float4x4::identity;
 	moveGizmoViewMat.RotateX(0);
 	moveGizmoViewMat.RotateY(0);
 
 	float2 objectPosition = float2(0, 0); 
 	if (objectAttached != nullptr)
+	{
 		objectPosition = objectAttached->transform->GetPosition();
+		objectPosition *= ViewportManager::getInstance()->GetAspectRatio(); 
+	}
 	else if (boxAttached != nullptr)
 		objectPosition = boxAttached->GetCenter();
 
-	moveGizmoViewMat.SetTranslatePart(float3(objectPosition.x * ViewportManager::getInstance()->GetAspectRatio(), objectPosition.y * ViewportManager::getInstance()->GetAspectRatio(), 0));
+	moveGizmoViewMat.SetTranslatePart(float3(objectPosition.x, objectPosition.y, 0));
 	glLoadMatrixf((GLfloat*)moveGizmoViewMat.Transposed().v);
 
 	glLineWidth(moveGizmo->lineWidth);
@@ -628,6 +642,57 @@ void MoveGizmo::AddaptAxisBoxes(FlyObject* objectAttached)
 
 	moveMaxPoint.x += objectAttached->transform->GetPosition(true).x + xySquarePos.x;
 	moveMaxPoint.y += objectAttached->transform->GetPosition(true).y + xySquarePos.y;
+
+	axisXYBox->SetMinPoint(moveMinPoint);
+	axisXYBox->SetMaxPoint(moveMaxPoint);
+}
+
+void MoveGizmo::AddaptAxisBoxes(BoundingBox* boxAttached)
+{
+	// X Axis 
+	axisXBox->CenterMinMaxPointsToScreen();
+	float2 moveMaxPoint = float2(axisXBox->GetMaxPoint().x, axisXBox->GetMaxPoint().y);
+	float2 moveMinPoint = float2(axisXBox->GetMinPoint().x, axisXBox->GetMinPoint().y);
+
+	moveMaxPoint.x += lineLength / 2;
+	moveMinPoint.x += lineLength / 2;
+
+	moveMinPoint.x += boxAttached->GetCenter().x * ViewportManager::getInstance()->GetAspectRatio();
+	moveMinPoint.y += boxAttached->GetCenter().y * ViewportManager::getInstance()->GetAspectRatio();
+
+	moveMaxPoint.x += boxAttached->GetCenter().x * ViewportManager::getInstance()->GetAspectRatio();
+	moveMaxPoint.y += boxAttached->GetCenter().y * ViewportManager::getInstance()->GetAspectRatio();
+
+	axisXBox->SetMinPoint(moveMinPoint);
+	axisXBox->SetMaxPoint(moveMaxPoint);
+
+	// Y Axis 
+	axisYBox->CenterMinMaxPointsToScreen();
+	moveMaxPoint = float2(axisYBox->GetMaxPoint().x, axisYBox->GetMaxPoint().y);
+	moveMinPoint = float2(axisYBox->GetMinPoint().x, axisYBox->GetMinPoint().y);
+
+	moveMaxPoint.y -= lineLength / 2;
+	moveMinPoint.y -= lineLength / 2;
+
+	moveMinPoint.x += boxAttached->GetCenter().x * ViewportManager::getInstance()->GetAspectRatio();
+	moveMinPoint.y += boxAttached->GetCenter().y * ViewportManager::getInstance()->GetAspectRatio();
+
+	moveMaxPoint.x += boxAttached->GetCenter().x * ViewportManager::getInstance()->GetAspectRatio();
+	moveMaxPoint.y += boxAttached->GetCenter().y * ViewportManager::getInstance()->GetAspectRatio();
+
+	axisYBox->SetMinPoint(moveMinPoint);
+	axisYBox->SetMaxPoint(moveMaxPoint);
+
+	// Center Box 
+	axisXYBox->CenterMinMaxPointsToScreen();
+	moveMaxPoint = float2(axisXYBox->GetMaxPoint().x, axisXYBox->GetMaxPoint().y);
+	moveMinPoint = float2(axisXYBox->GetMinPoint().x, axisXYBox->GetMinPoint().y);
+
+	moveMinPoint.x += boxAttached->GetCenter().x * ViewportManager::getInstance()->GetAspectRatio();
+	moveMinPoint.y += boxAttached->GetCenter().y * ViewportManager::getInstance()->GetAspectRatio();
+
+	moveMaxPoint.x += boxAttached->GetCenter().x * ViewportManager::getInstance()->GetAspectRatio();
+	moveMaxPoint.y += boxAttached->GetCenter().y * ViewportManager::getInstance()->GetAspectRatio();
 
 	axisXYBox->SetMinPoint(moveMinPoint);
 	axisXYBox->SetMaxPoint(moveMaxPoint);

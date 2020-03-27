@@ -38,6 +38,7 @@ public:
 
 	void CleanUp();
 	void AddaptAxisBoxes(FlyObject* objectAttached);
+	void AddaptAxisBoxes(BoundingBox* boxAttached);
 
 public:
 	float lineLength; 
@@ -126,6 +127,7 @@ public:
 	// Fitting ---------------
 	void CalculateSelectGizmo(FlyObject* objectAttached);
 	void CalculateMoveGizmo(FlyObject* objectAttached);
+	void CalculateMoveGizmo(BoundingBox* boxAttached);
 	void CalculateScaleGizmo(FlyObject* objectAttached);
 
 	void FitSelectBoxSize(); 
