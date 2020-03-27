@@ -58,10 +58,11 @@ void Gizmos::CleanUp()
 	delete scaleGizmo;
 }
 
-void Gizmos::Update()
+bool Gizmos::Update()
 {
+	bool ret = false; 
 	if (!App->moduleImGui->gameViewportDockPanel->IsMouseInViewport() || !ViewportManager::getInstance()->drawGizmos)
-		return;
+		return false;
 
 	GizmoMode gizmoMode = App->moduleImGui->gameViewportDockPanel->GetGizmoMode();
 	if (gizmoMode != GIZMO_null)
@@ -69,7 +70,7 @@ void Gizmos::Update()
 		switch (gizmoMode)
 		{
 		case GIZMO_MOVE:
-			HandleMoveGizmo();
+			ret = HandleMoveGizmo();
 			break;
 
 		case GIZMO_SCALE:
@@ -80,6 +81,8 @@ void Gizmos::Update()
 			break;
 		}
 	}
+
+	return ret; 
 }
 
 void Gizmos::Draw()
@@ -103,7 +106,7 @@ void Gizmos::Draw()
 	}
 }
 
-void Gizmos::HandleScaleGizmo()
+bool Gizmos::HandleScaleGizmo()
 {
 	// X axis -----
 	if (scaleGizmo->axisXBox->IsBoxClicked())
@@ -186,9 +189,11 @@ void Gizmos::HandleScaleGizmo()
 
 		objectAttached->FitObjectUtils();
 	}
+
+	return false; 
 }
 
-void Gizmos::HandleMoveGizmo()
+bool Gizmos::HandleMoveGizmo()
 {
 	// Get drag movement 
 	float dragMovementIncX = moveGizmo->axisXBox->HandleDrag(CardinalAxis::AxisX).x;
@@ -212,6 +217,11 @@ void Gizmos::HandleMoveGizmo()
 		prevPos = dragMovementIncXY;
 	
 	HandleDrag(dragMovementIncX, inc, prevPosX, aspectRatio, dragMovementIncY, prevPosY, dragMovementIncXY, prevPos);
+
+	if(dragMovementIncX != 0 || dragMovementIncY != 0)
+		return true; 	
+
+	return false; 
 }
 
 void Gizmos::HandleDrag(float dragMovementIncX, math::float2& inc, float& prevPosX, float aspectRatio, float dragMovementIncY, float& prevPosY, math::float2& dragMovementIncXY, math::float2& prevPos)
@@ -222,39 +232,81 @@ void Gizmos::HandleDrag(float dragMovementIncX, math::float2& inc, float& prevPo
 		//prevPosX = dragMovementIncX;
 		inc.x = dragMovementIncX - prevPosX;
 		prevPosX = dragMovementIncX;
-		objectAttached->transform->SetPosition(objectAttached->transform->GetPosition().x - inc.x, objectAttached->transform->GetPosition().y);
 
-		// Fit other Boxes
-		moveGizmo->axisYBox->SetPosition(float2(objectAttached->transform->GetPosition().x * aspectRatio, moveGizmo->axisYBox->GetCenter().y));
-		moveGizmo->axisXYBox->SetPosition(float2((objectAttached->transform->GetPosition().x * aspectRatio) + moveGizmo->xySquarePos.x, moveGizmo->axisXYBox->GetCenter().y));
+		if (objectAttached != nullptr)
+		{
+			objectAttached->transform->SetPosition(objectAttached->transform->GetPosition().x - inc.x, objectAttached->transform->GetPosition().y);
 
-		objectAttached->FitObjectUtils(); 
+			// Fit other Boxes
+			moveGizmo->axisYBox->SetPosition(float2(objectAttached->transform->GetPosition().x * aspectRatio, moveGizmo->axisYBox->GetCenter().y));
+			moveGizmo->axisXYBox->SetPosition(float2((objectAttached->transform->GetPosition().x * aspectRatio) + moveGizmo->xySquarePos.x, moveGizmo->axisXYBox->GetCenter().y));
+
+			objectAttached->FitObjectUtils(); 
+		}
+		else if (boxAttached != nullptr)
+		{
+			boxAttached->SetPosition(float2(boxAttached->GetPosition().x - inc.x, boxAttached->GetPosition().y));
+
+			// Fit other Boxes
+			moveGizmo->axisYBox->SetPosition(float2(boxAttached->GetPosition().x, moveGizmo->axisYBox->GetCenter().y));
+			moveGizmo->axisXYBox->SetPosition(float2((boxAttached->GetPosition().x ) + moveGizmo->xySquarePos.x, moveGizmo->axisXYBox->GetCenter().y));
+
+			boxAttached->GetBoxGizmos()->CalculateMoveGizmo(boxAttached); 
+		}
 	}
 
 	if (dragMovementIncY != 0)
 	{
 		inc.y = dragMovementIncY - prevPosY;
 		prevPosY = dragMovementIncY;
-		objectAttached->transform->SetPosition(objectAttached->transform->GetPosition().x, objectAttached->transform->GetPosition().y - inc.y);
 
-		// Fit other Boxes
-		moveGizmo->axisXBox->SetPosition(float2(moveGizmo->axisXBox->GetCenter().x, objectAttached->transform->GetPosition().y * aspectRatio));
-		moveGizmo->axisXYBox->SetPosition(float2(moveGizmo->axisXYBox->GetCenter().x, (objectAttached->transform->GetPosition().y * aspectRatio) + moveGizmo->xySquarePos.y));
+		if (objectAttached != nullptr)
+		{
+			objectAttached->transform->SetPosition(objectAttached->transform->GetPosition().x * aspectRatio, objectAttached->transform->GetPosition().y * aspectRatio - inc.y);
 
-		objectAttached->FitObjectUtils();
+			// Fit other Boxes
+			moveGizmo->axisXBox->SetPosition(float2(moveGizmo->axisXBox->GetCenter().x, objectAttached->transform->GetPosition().y * aspectRatio));
+			moveGizmo->axisXYBox->SetPosition(float2(moveGizmo->axisXYBox->GetCenter().x, (objectAttached->transform->GetPosition().y * aspectRatio) + moveGizmo->xySquarePos.y));
+
+			objectAttached->FitObjectUtils();
+		}
+		else if (boxAttached != nullptr)
+		{
+			boxAttached->SetPosition(float2(boxAttached->GetPosition().x, boxAttached->GetPosition().y - inc.y));
+
+			// Fit other Boxes
+			moveGizmo->axisXBox->SetPosition(float2(moveGizmo->axisXBox->GetCenter().x, boxAttached->GetPosition().y ));
+			moveGizmo->axisXYBox->SetPosition(float2(moveGizmo->axisXYBox->GetCenter().x, (boxAttached->GetPosition().y ) + moveGizmo->xySquarePos.y));
+
+			boxAttached->GetBoxGizmos()->CalculateMoveGizmo(boxAttached);
+		}
 	}
 
 	if (!dragMovementIncXY.Equals(float2(0, 0)))
 	{
 		float2 inc = dragMovementIncXY - prevPos;
 		prevPos = dragMovementIncXY;
-		objectAttached->transform->SetPosition(objectAttached->transform->GetPosition().x - inc.x, objectAttached->transform->GetPosition().y - inc.y);
 
-		// Fit other Boxes
-		moveGizmo->axisXBox->SetPosition(float2(moveGizmo->axisXBox->GetPosition().x - inc.x * aspectRatio, objectAttached->transform->GetPosition().y * aspectRatio));
-		moveGizmo->axisYBox->SetPosition(float2(objectAttached->transform->GetPosition().x * aspectRatio, moveGizmo->axisYBox->GetCenter().y - inc.y * aspectRatio));
+		if (objectAttached != nullptr)
+		{
+			objectAttached->transform->SetPosition(objectAttached->transform->GetPosition().x - inc.x, objectAttached->transform->GetPosition().y - inc.y);
 
-		objectAttached->FitObjectUtils();
+			// Fit other Boxes
+			moveGizmo->axisXBox->SetPosition(float2(moveGizmo->axisXBox->GetPosition().x - inc.x * aspectRatio, objectAttached->transform->GetPosition().y * aspectRatio));
+			moveGizmo->axisYBox->SetPosition(float2(objectAttached->transform->GetPosition().x * aspectRatio, moveGizmo->axisYBox->GetCenter().y - inc.y * aspectRatio));
+
+			objectAttached->FitObjectUtils();
+		}
+		else if (boxAttached != nullptr)
+		{
+			boxAttached->SetPosition(float2(boxAttached->GetPosition().x - inc.x, boxAttached->GetPosition().y - inc.y));
+
+			// Fit other Boxes
+			moveGizmo->axisXBox->SetPosition(float2(moveGizmo->axisXBox->GetPosition().x - inc.x , boxAttached->GetPosition().y ));
+			moveGizmo->axisYBox->SetPosition(float2(boxAttached->GetPosition().x , moveGizmo->axisYBox->GetCenter().y - inc.y ));
+
+			boxAttached->GetBoxGizmos()->CalculateMoveGizmo(boxAttached);
+		}
 	}
 }
 
@@ -345,7 +397,7 @@ void Gizmos::DrawMoveGizmo()
 		objectPosition *= ViewportManager::getInstance()->GetAspectRatio(); 
 	}
 	else if (boxAttached != nullptr)
-		objectPosition = boxAttached->GetCenter();
+		objectPosition = boxAttached->GetCenter() * ViewportManager::getInstance()->GetAspectRatio();
 
 	moveGizmoViewMat.SetTranslatePart(float3(objectPosition.x, objectPosition.y, 0));
 	glLoadMatrixf((GLfloat*)moveGizmoViewMat.Transposed().v);
@@ -556,11 +608,11 @@ void SelectGizmo::AddaptSelectBox(FlyObject* objectAttached)
 	selectMinPoint.y *= objectAttached->transform->GetScale().y;
 
 	// Position
-	selectMaxPoint.x += objectAttached->transform->GetPosition(true).x;
-	selectMaxPoint.y += objectAttached->transform->GetPosition(true).y;
+	selectMaxPoint.x += objectAttached->transform->GetPosition().x * ViewportManager::getInstance()->GetAspectRatio(); 
+	selectMaxPoint.y += objectAttached->transform->GetPosition().y * ViewportManager::getInstance()->GetAspectRatio(); 
 						
-	selectMinPoint.x += objectAttached->transform->GetPosition(true).x; 
-	selectMinPoint.y += objectAttached->transform->GetPosition(true).y; 
+	selectMinPoint.x += objectAttached->transform->GetPosition().x * ViewportManager::getInstance()->GetAspectRatio();
+	selectMinPoint.y += objectAttached->transform->GetPosition().y * ViewportManager::getInstance()->GetAspectRatio();
 								
 	objectBorderBox->SetMaxPoint(selectMaxPoint);
 	objectBorderBox->SetMinPoint(selectMinPoint);
@@ -657,11 +709,11 @@ void MoveGizmo::AddaptAxisBoxes(BoundingBox* boxAttached)
 	moveMaxPoint.x += lineLength / 2;
 	moveMinPoint.x += lineLength / 2;
 
-	moveMinPoint.x += boxAttached->GetCenter().x;
-	moveMinPoint.y += boxAttached->GetCenter().y;
+	moveMinPoint.x += boxAttached->GetCenter().x * ViewportManager::getInstance()->GetAspectRatio();
+	moveMinPoint.y += boxAttached->GetCenter().y * ViewportManager::getInstance()->GetAspectRatio();
 
-	moveMaxPoint.x += boxAttached->GetCenter().x;
-	moveMaxPoint.y += boxAttached->GetCenter().y;
+	moveMaxPoint.x += boxAttached->GetCenter().x* ViewportManager::getInstance()->GetAspectRatio();
+	moveMaxPoint.y += boxAttached->GetCenter().y* ViewportManager::getInstance()->GetAspectRatio();
 
 	axisXBox->SetMinPoint(moveMinPoint);
 	axisXBox->SetMaxPoint(moveMaxPoint);
@@ -674,30 +726,30 @@ void MoveGizmo::AddaptAxisBoxes(BoundingBox* boxAttached)
 	moveMaxPoint.y -= lineLength / 2;
 	moveMinPoint.y -= lineLength / 2;
 
-	moveMinPoint.x += boxAttached->GetCenter().x;
-	moveMinPoint.y += boxAttached->GetCenter().y;
+	moveMinPoint.x += boxAttached->GetCenter().x* ViewportManager::getInstance()->GetAspectRatio();
+	moveMinPoint.y += boxAttached->GetCenter().y* ViewportManager::getInstance()->GetAspectRatio();
 
-	moveMaxPoint.x += boxAttached->GetCenter().x;
-	moveMaxPoint.y += boxAttached->GetCenter().y;
+	moveMaxPoint.x += boxAttached->GetCenter().x* ViewportManager::getInstance()->GetAspectRatio();
+	moveMaxPoint.y += boxAttached->GetCenter().y* ViewportManager::getInstance()->GetAspectRatio();
 
 	axisYBox->SetMinPoint(moveMinPoint);
 	axisYBox->SetMaxPoint(moveMaxPoint);
 
-	// Center Box 
+	//// Center Box 
 	axisXYBox->CenterMinMaxPointsToScreen();
 	moveMaxPoint = float2(axisXYBox->GetMaxPoint().x, axisXYBox->GetMaxPoint().y);
 	moveMinPoint = float2(axisXYBox->GetMinPoint().x, axisXYBox->GetMinPoint().y);
 
-	moveMinPoint.x += boxAttached->GetCenter().x * ViewportManager::getInstance()->GetAspectRatio();
-	moveMinPoint.y += boxAttached->GetCenter().y * ViewportManager::getInstance()->GetAspectRatio();
+	moveMinPoint.x += boxAttached->GetCenter().x* ViewportManager::getInstance()->GetAspectRatio();+ xySquarePos.x;
+	moveMinPoint.y += boxAttached->GetCenter().y* ViewportManager::getInstance()->GetAspectRatio();+ xySquarePos.y;
 
-	moveMaxPoint.x += boxAttached->GetCenter().x * ViewportManager::getInstance()->GetAspectRatio();
-	moveMaxPoint.y += boxAttached->GetCenter().y * ViewportManager::getInstance()->GetAspectRatio();
+	moveMaxPoint.x += boxAttached->GetCenter().x* ViewportManager::getInstance()->GetAspectRatio(); + xySquarePos.x;
+	moveMaxPoint.y += boxAttached->GetCenter().y* ViewportManager::getInstance()->GetAspectRatio(); + xySquarePos.y;
 
 	axisXYBox->SetMinPoint(moveMinPoint);
 	axisXYBox->SetMaxPoint(moveMaxPoint);
 }
-
+ 
 ScaleGizmo::ScaleGizmo()
 {
 	borderBoundingBox = new BoundingBox(); 

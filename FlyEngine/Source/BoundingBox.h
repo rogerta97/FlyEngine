@@ -11,7 +11,7 @@ public:
 	BoundingBox(); 
 	~BoundingBox();
 
-	void UpdateGizmos(); 
+	bool UpdateGizmos(); 
 	void CalculateAllGizmos();
 	virtual void Draw(bool fill, float4 color);
 	virtual void DrawBoxGizmos();

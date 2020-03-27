@@ -65,7 +65,10 @@ void DisplayTextAction::Update(float dt)
 
 	if (isSelected)
 	{
-		textBox->UpdateGizmos();
+		if (textBox->UpdateGizmos())
+		{
+			CalculateOriginTextPosition();
+		}
 	}
 }
 
@@ -244,8 +247,12 @@ void DisplayTextAction::DrawUISettings()
 
 		// Box Position 
 		float2 boxPos = GetTextBox()->GetPosition();
+		var[2]
 		if (ImGui::DragFloat2("Position", (float*)& boxPos, 2))
 		{
+			//float2 inc = boxPos - prevPos;
+			//inc *= ViewportManager::getInstance()->GetAspectRatio();
+			boxPos *= ViewportManager::getInstance()->GetAspectRatio();
 			GetTextBox()->SetPosition(float2(boxPos.x, boxPos.y));
 			GetTextBox()->CalculateAllGizmos();
 			CalculateOriginTextPosition();

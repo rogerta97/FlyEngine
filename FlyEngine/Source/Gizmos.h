@@ -108,9 +108,9 @@ public:
 
 	~Gizmos();
 
-	void Update();
-	void HandleScaleGizmo();
-	void HandleMoveGizmo();
+	bool Update();
+	bool HandleScaleGizmo();
+	bool HandleMoveGizmo();
 	void HandleDrag(float dragMovementIncX, math::float2& inc, float& prevPosX, float aspectRatio, float dragMovementIncY, float& prevPosY, math::float2& dragMovementIncXY, math::float2& prevPos);
 	void CleanUp(); 
 
