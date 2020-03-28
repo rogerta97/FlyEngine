@@ -6,6 +6,7 @@
 #include "ModifyVariableAction.h"
 #include "DisplayAnimationAction.h"
 #include "FollowPathAction.h"
+#include "DialogueAction.h"
 #include "ResourceManager.h"
 #include "GameViewportDockPanel.h"
 #include "ModuleImGui.h"
@@ -187,6 +188,9 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 			case ACTION_FOLLOW_PATH:
 				instance->LoadFollowPathAction(root_obj, actionSectionStr, newObject);
 				break;
+			case ACTION_DIALOGUE:
+				instance->LoadDialogueAction(root_obj, serializeObjectStrActions, newObject);
+				break;
 			case AT_null:
 				break;
 			default:
@@ -232,6 +236,9 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 			case ACTION_FOLLOW_PATH:
 				instance->LoadFollowPathAction(root_obj, actionSectionStr, newObject);
 				break;
+			case ACTION_DIALOGUE:
+				instance->LoadDialogueAction(root_obj, actionSectionStr, newObject);
+				break;
 			case AT_null:
 				break;
 			default:
@@ -268,6 +275,20 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
  
 	App->moduleImGui->gameViewportDockPanel->FitViewportToRegion();
 	newObject->FitObjectUtils();
+}
+
+void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)
+{
+	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "ActionClass").c_str());
+	DialogueAction* dialogueAction = nullptr;
+
+	if (actionClass == ACTION_CLASS_SEQUENTIAL && newObject->flyObjectType == FlyObjectType::OBJECT_SEQUENTIAL)
+		dialogueAction = newObject->AddDialogueAction(true);
+	else
+		dialogueAction = newObject->AddDialogueAction();
+
+	dialogueAction->SetActionClass((ActionClass)actionClass);
+	dialogueAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("Occurrence."));
 }
 
 void SaveAndLoad::LoadFollowPathAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)

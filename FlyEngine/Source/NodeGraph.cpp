@@ -220,8 +220,7 @@ void NodeGraph::CheckNewConnection()
 }
 
 void NodeGraph::DrawNodeGraph()
-{
-	static ImNodes::CanvasState canvas;
+{	
 	ImNodes::BeginCanvas(&canvas);
 
 	//if (instance == nullptr) {

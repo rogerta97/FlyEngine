@@ -1000,6 +1000,10 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked(bool fromFixedAction)
 				creatingObject->AddFollowPathAction();
 				break;
 
+			case ACTION_DIALOGUE:
+				creatingObject->AddDialogueAction();
+				break;
+
 			case AT_null:
 				break;
 			}

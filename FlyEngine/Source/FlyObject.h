@@ -27,6 +27,7 @@ class Room;
 class EmitSoundAction; 
 class DisplayAnimationAction;
 class FollowPathAction; 
+class DialogueAction;
 class FlyObject {
 public: 
 	FlyObject(std::string objectName, std::string description = "", FlyObjectType _flyObjectType = ACTION_OBJECT, Room* parentRoom = nullptr); 
@@ -69,6 +70,7 @@ public:
 	DisplayTextAction* AddDisplayTextAction(bool addToSequentialActions = false);
 	DisplayAnimationAction* AddDisplayAnimationAction(bool addToSequentialActions = false);
 	FollowPathAction* AddFollowPathAction(bool addToSequentialActions = false);
+	DialogueAction* AddDialogueAction(bool addToSequentialActions = false);
 
 	void DrawSequentialActionsList();
 	void SetSelectedAction(UID toolTypeSelected, bool isSequential = false);

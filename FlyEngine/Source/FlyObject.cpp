@@ -10,6 +10,7 @@
 #include "ModuleManager.h"
 #include "GameViewportDockPanel.h"
 #include "FollowPathAction.h"
+#include "DialogueAction.h"
 #include "ChangeRoomAction.h"
 #include "ModuleInput.h"
 #include "DisplayTextAction.h"
@@ -742,15 +743,35 @@ FollowPathAction* FlyObject::AddFollowPathAction(bool addToSequentialActions)
 	}
 	else if (addToSequentialActions)
 	{
-		FollowPathAction* followPathAction = new FollowPathAction(this);
-
-		
-			sequentialActionsList.push_back(followPathAction);
-
+		FollowPathAction* followPathAction = new FollowPathAction(this);	
+		sequentialActionsList.push_back(followPathAction);
 		return followPathAction;
 	}
 
 	return (FollowPathAction*)GetAction(ACTION_FOLLOW_PATH);
+}
+
+DialogueAction* FlyObject::AddDialogueAction(bool addToSequentialActions)
+{
+	if (GetAction(ACTION_DIALOGUE) == nullptr)
+	{
+		DialogueAction* dialogueAction = new DialogueAction(this);
+
+		if (addToSequentialActions)
+			sequentialActionsList.push_back(dialogueAction);
+		else
+			actionsList.push_back(dialogueAction);
+
+		return dialogueAction;
+	}
+	else if (addToSequentialActions)
+	{
+		DialogueAction* dialogueAction = new DialogueAction(this);
+		sequentialActionsList.push_back(dialogueAction);
+		return dialogueAction;
+	}
+
+	return (DialogueAction*)GetAction(ACTION_DIALOGUE);
 }
 
 void FlyObject::DrawSequentialActionsList()

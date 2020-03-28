@@ -4,6 +4,7 @@
 #include "DockPanel.h"
 #include "ImGui/imgui.h"
 
+class NodeGraph; 
 class DialogueEditorDockPanel : public DockPanel {
 
 public:
@@ -12,6 +13,9 @@ public:
 	~DialogueEditorDockPanel();
 
 	bool Draw();
+
+private: 
+	NodeGraph* nodeGraph; 
 };
 
 #endif // !_FILE_BROWSER_DOCK_PANEL_H_

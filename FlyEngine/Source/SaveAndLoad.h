@@ -40,6 +40,7 @@ public:
 	static void LoadChangeRoomAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject);
 	static void LoadDisplayImageAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject);
 	static void LoadActionConditions(JSON_Object* root_obj, std::string& serializeObjectStr, Room* currentRoom);
+	static void LoadDialogueAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject);
 
 	static void LoadDataToRoom(std::string roomDataFilePath, Room* roomToSave);
 };

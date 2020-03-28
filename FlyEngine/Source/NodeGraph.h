@@ -52,6 +52,7 @@ public:
 
 class NodeGraph
 {
+public:
 	NodeGraph();
 	~NodeGraph(); 
 
@@ -89,6 +90,8 @@ private:
 	Node* GetNodeByTitle(string nodeName);
 
 private:
+	ImNodes::CanvasState canvas;
+
 	list<Node*> graphNodeList;
 	list<NodeGraphConnection*> connectionsList; 
 
