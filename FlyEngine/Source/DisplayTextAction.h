@@ -29,6 +29,7 @@ public:
 	// Render ------------------------------
 	void RenderText(); 
 	void DrawTextBox(); 
+	void DrawTextBoundingBox(); 
 
 	// Utility -----------------------------
 	void CleanQuads();
