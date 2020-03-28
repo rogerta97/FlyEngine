@@ -2,18 +2,23 @@
 #define _DIALOGUE_TEXT_H_
 
 #include <list>
+#include <string>
 #include "FlyObject.h"
 
 using namespace std;
 
 class DialogueStep;
-class DialogueText 
+class DisplayTextAction;
+class DialogueText
 {
 public:
 	DialogueText();
 	~DialogueText();
+ 
+	void SetDialogueText(string newDialogueText); 
 
-private: 
+private:
+	DisplayTextAction* displayTextAction; 
 	
 };
 

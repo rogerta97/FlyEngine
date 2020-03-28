@@ -11,6 +11,8 @@ DialogueAction::DialogueAction(FlyObject* _parentObject)
 
 	SetActionName("Dialog");
 	SetToolDescription("This should be the description of the dialog");
+
+	dialogue = new Dialogue(); 
 }
 
 DialogueAction::~DialogueAction()

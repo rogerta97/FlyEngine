@@ -28,6 +28,9 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 	textBox = new BoundingBox();
 	textBox->CreateGizmos();
 
+	textBoundingBox = new BoundingBox();
+	textBoundingBox->SetSize(1, 1);
+
 	textBox->SetSize(300, 120); 
 	CalculateOriginTextPosition(); 
 
@@ -545,6 +548,78 @@ void DisplayTextAction::CleanQuads()
 	textQuads->clear(); 
 }
 
+void DisplayTextAction::CalculateTextBB()
+{
+	std::string::const_iterator currentLetter;
+	int x = textBox->GetMinPoint().x;
+	int y = textBox->GetMaxPoint().y;
+
+	float2 pen = originTextPosition;
+
+	int currentLine = 0;
+	int letterCount = 0;
+	int cursorXInc = 0;
+	int cursorYInc = 0;
+
+	FT_Bool use_kerning = FT_HAS_KERNING(textFont->fontFace);
+	FT_UInt previous = 0;
+
+	for (currentLetter = text.begin(); currentLetter != text.end(); currentLetter++)
+	{
+		if (textFont == nullptr)
+		{
+			FLY_ERROR("A text with no font can not be rendered");
+			assert(false);
+		}
+
+		// Get The Current Character 
+		Character currentCharacter = textFont->GetCharacter(*currentLetter);
+
+		/* convert character code to glyph index */
+		FT_UInt glyph_index = FT_Get_Char_Index(textFont->fontFace, (*currentLetter));
+		currentCharacter.size.y
+		/* retrieve kerning distance and move pen position */
+		if (use_kerning && previous && glyph_index)
+		{
+			FT_Vector  delta;
+
+			FT_Get_Kerning(textFont->fontFace, previous, glyph_index,
+				0, &delta);
+
+			pen.x += delta.x >> 6;
+		}
+
+		previous = glyph_index;
+
+		// Get The Corresponding Quad 
+		Quad* renderQuad = textQuads->at(letterCount);
+
+		// Push Matrix to place the Corresponding quad in the correct position
+		float4x4 characterTransformMatrix = float4x4::identity;
+		pen.y = y - currentCharacter.bearing.y + textFont->GetSize() + (currentLine * lineSpacing);
+		characterTransformMatrix.SetTranslatePart(float3(pen.x, pen.y, 0));
+		glMatrixMode(GL_MODELVIEW);
+		glLoadMatrixf((GLfloat*)(characterTransformMatrix.Transposed()).v);
+
+		pen.x += currentCharacter.Advance;
+
+		// Supose Wrapping = true; 
+		cursorXInc += currentCharacter.Advance;
+		if (cursorXInc > textBox->GetSize().x - 30)
+		{
+			currentLine++;
+			pen.x = textBox->GetMinPoint().x;
+			cursorXInc = 0;
+			cursorYInc += lineSpacing;
+		}
+
+		if (cursorYInc > textBox->GetSize().y - 30)
+		{
+			continue;
+		}
+	}
+}
+
 void DisplayTextAction::CalculateOriginTextPosition()
 {
 	if (textBox == nullptr)
@@ -568,6 +643,8 @@ void DisplayTextAction::SetText(std::string newText)
 
 	UpdateTextQuads();
 	CalculateOriginTextPosition(); 
+
+
 }
 
 std::string& DisplayTextAction::GetText()

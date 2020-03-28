@@ -7,6 +7,7 @@
 using namespace std; 
 
 class DialogueAnswer;
+class DialogueText; 
 class DialogueStep
 {
 public: 
@@ -14,7 +15,7 @@ public:
 	~DialogueStep(); 
 
 private: 
-	string stepSentence; 
+	DialogueText* dialogueText; 
 	list<DialogueAnswer*> answersList; 
 };
 

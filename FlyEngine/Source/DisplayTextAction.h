@@ -32,6 +32,7 @@ public:
 
 	// Utility -----------------------------
 	void CleanQuads();
+	void CalculateTextBB(); 
 
 	// Positioning -------------------------
 	void CalculateOriginTextPosition(); 
@@ -65,6 +66,7 @@ private:
 
 	// Text Box ----------
 	BoundingBox* textBox; 
+	BoundingBox* textBoundingBox; 
 	float2 originTextPosition; 
 	bool drawTextBox; 
 	float2 pevBoxPos; 
