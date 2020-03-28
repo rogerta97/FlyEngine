@@ -7,20 +7,10 @@
 #include "ModuleRoomManager.h"
 #include "mmgr.h"
 
-NodeGraph* NodeGraph::instance = 0;
-
-NodeGraph* NodeGraph::getInstance()
-{
-	if (instance == 0) {
-		instance = new NodeGraph();
-	}
-
-	return instance;
-}
 
 void NodeGraph::Update()
 {
-	instance->DrawNodeGraph();
+	DrawNodeGraph();
 }
 
 NodeGraph::NodeGraph()
@@ -35,7 +25,7 @@ NodeGraph::~NodeGraph()
 
 void NodeGraph::SelectNode(string nodeToSelect)
 {
-	for (auto it : instance->graphNodeList) {
+	for (auto it : graphNodeList) {
 
 		if(it->title != nodeToSelect)
 			it->selected = false;
@@ -55,16 +45,16 @@ void NodeGraph::CreateNode(string nodeName, ImVec2 pos, UID roomID)
 	newNode->outputs.push_back({ "Out", 1 });
 	newNode->roomID = roomID; 
 
-	instance->graphNodeList.push_back(newNode);
+	graphNodeList.push_back(newNode);
 }
 
 void NodeGraph::DeleteNode(string nodeName)
 {
-	for (auto it = instance->graphNodeList.begin(); it != instance->graphNodeList.end(); it++) {
+	for (auto it = graphNodeList.begin(); it != graphNodeList.end(); it++) {
 		
 		if ((*it)->title == nodeName) {
 			delete (*it); 
-			instance->graphNodeList.erase(it);
+			graphNodeList.erase(it);
 			return;
 		}
 	}
@@ -72,13 +62,13 @@ void NodeGraph::DeleteNode(string nodeName)
 
 std::list<Node*>& NodeGraph::GetNodeList()
 {
-	return instance->graphNodeList;
+	return graphNodeList;
 }
 
 std::string NodeGraph::GetNodesAsCombo()
 {
 	std::string returnString;
-	for (auto it : instance->graphNodeList) {
+	for (auto it : graphNodeList) {
 		returnString += it->title;
 		returnString += '\0'; 
 	}
@@ -88,33 +78,32 @@ std::string NodeGraph::GetNodesAsCombo()
 
 void NodeGraph::DeleteAllNodes()
 {
-	if (instance->graphNodeList.empty())
+	if (graphNodeList.empty())
 		return; 
 
-	for (auto it = instance->graphNodeList.begin(); it != instance->graphNodeList.end(); it++) {
+	for (auto it = graphNodeList.begin(); it != graphNodeList.end(); it++) {
 		delete (*it);
 	}
 
-	instance->graphNodeList.clear();
-	delete instance; 
+	graphNodeList.clear();
 }
 
 void NodeGraph::DrawNodeConnections()
 {
-	for (auto it : instance->connectionsList) {
+	for (auto it : connectionsList) {
 		it->DrawConnection();
 	}	
 }
 
 list<NodeGraphConnection*> NodeGraph::GetConnectionList()
 {
-	return instance->connectionsList;
+	return connectionsList;
 }
 
 std::string NodeGraph::GetConnectionsAsCombo()
 {
 	std::string returnString;
-	for (auto it : instance->connectionsList) {
+	for (auto it : connectionsList) {
 		returnString += "Should Add Sth";
 		returnString += '\0';
 	}
@@ -124,10 +113,10 @@ std::string NodeGraph::GetConnectionsAsCombo()
 
 void NodeGraph::SelectConnection(UID connectionID)
 {
-	for (auto it : instance->connectionsList) {
+	for (auto it : connectionsList) {
 		if (it->connectionID == connectionID) {
 			it->isSelected = true; 
-			instance->connectionSelected = it;
+			connectionSelected = it;
 		}
 		else {
 			it->isSelected = false; 
@@ -137,15 +126,15 @@ void NodeGraph::SelectConnection(UID connectionID)
 
 void NodeGraph::ConnectNodes(string originNodeTitle, string originSlotName, string destinationNodeTitle, string destinationSlotName, UID logicConnectionID)
 {
-	Node* originNode = instance->GetNodeByTitle(originNodeTitle); 
-	Node* destinationNode = instance->GetNodeByTitle(destinationNodeTitle);
+	Node* originNode = GetNodeByTitle(originNodeTitle); 
+	Node* destinationNode = GetNodeByTitle(destinationNodeTitle);
 
 	NodeGraphConnection* newGraphConnection = new NodeGraphConnection(); 
 	newGraphConnection->connectionID = logicConnectionID; 
 	newGraphConnection->SetConnectionOrigin(originNode, originSlotName); 
 	newGraphConnection->SetConnectionDestination(destinationNode, destinationSlotName); 
 
-	instance->connectionsList.push_back(newGraphConnection); 
+	connectionsList.push_back(newGraphConnection); 
 
 	flog("NEW GRAPH CONNECTION: %s -> %s", originNodeTitle.c_str(), destinationNodeTitle.c_str());
 	flog("NEW GRAPH CONNECTION ID: %f", logicConnectionID); 
@@ -158,16 +147,16 @@ void NodeGraph::ConnectNodes(Node* originNode, string originSlotName, Node* dest
 	newGraphConnection->SetConnectionOrigin(originNode, originSlotName);
 	newGraphConnection->SetConnectionDestination(destinationNode, destinationSlotName);
 
-	instance->connectionsList.push_back(newGraphConnection);
+	connectionsList.push_back(newGraphConnection);
 }
 
 void NodeGraph::DeleteConnection(int connectionID)
 {
-	for (auto it = instance->connectionsList.begin(); it != instance->connectionsList.end(); it++) {
+	for (auto it = connectionsList.begin(); it != connectionsList.end(); it++) {
 
 		if ((*it)->connectionID == connectionID) {
 			delete (*it);
-			instance->connectionsList.erase(it);
+			connectionsList.erase(it);
 			return;
 		}
 	}
@@ -175,14 +164,14 @@ void NodeGraph::DeleteConnection(int connectionID)
 
 void NodeGraph::DeleteConnections(vector<UID> connectionsToDelIDVector)
 {
-	for (auto currentConnection = instance->connectionsList.begin(); currentConnection != instance->connectionsList.end();) 
+	for (auto currentConnection = connectionsList.begin(); currentConnection != connectionsList.end();) 
 	{
 		for (auto checkID = connectionsToDelIDVector.begin(); checkID != connectionsToDelIDVector.end();)
 		{
 			if ((*currentConnection)->connectionID == (*checkID))
 			{
 				delete (*currentConnection); 
-				currentConnection = instance->connectionsList.erase(currentConnection); 
+				currentConnection = connectionsList.erase(currentConnection); 
 				checkID = connectionsToDelIDVector.erase(checkID);
 				break;
 			}
@@ -197,16 +186,16 @@ void NodeGraph::DeleteConnections(vector<UID> connectionsToDelIDVector)
 
 int NodeGraph::DeleteAllConnections()
 {
-	int conexionsDeletedAmount = instance->connectionsList.size(); 
+	int conexionsDeletedAmount = connectionsList.size(); 
 
 	if (conexionsDeletedAmount == 0)
 		return false; 
 
-	for (auto it = instance->connectionsList.begin(); it != instance->connectionsList.end(); it++) {
+	for (auto it = connectionsList.begin(); it != connectionsList.end(); it++) {
 		delete (*it);
 	}
 
-	instance->connectionsList.clear();
+	connectionsList.clear();
 
 	return conexionsDeletedAmount; 
 }
@@ -232,18 +221,17 @@ void NodeGraph::CheckNewConnection()
 
 void NodeGraph::DrawNodeGraph()
 {
-
 	static ImNodes::CanvasState canvas;
 	ImNodes::BeginCanvas(&canvas);
 
-	if (instance == nullptr) {
-		ImNodes::EndCanvas();
-		return;
-	}
+	//if (instance == nullptr) {
+	//	ImNodes::EndCanvas();
+	//	return;
+	//}
 
-	instance->DrawNodeConnections();
+	DrawNodeConnections();
 
-	for (auto it : instance->graphNodeList) {
+	for (auto it : graphNodeList) {
 
 		if (ImNodes::Ez::BeginNode(it, it->title.c_str(), &it->position, &it->selected))
 		{
@@ -254,7 +242,7 @@ void NodeGraph::DrawNodeGraph()
 		} 
 	}
 
-	instance->CheckNewConnection();
+	CheckNewConnection();
 
 
 	ImNodes::EndCanvas(); 
@@ -302,6 +290,6 @@ void NodeGraphConnection::DrawConnection()
 {
 	if (ImNodes::Connection(destinationNode, destinationSlotName.c_str(), originNode, originSlotName.c_str(), isSelected))
 	{
-		NodeGraph::getInstance()->connectionSelected = this; 
+		//NodeGraph::getInstance()->connectionSelected = this; 
 	}
 }

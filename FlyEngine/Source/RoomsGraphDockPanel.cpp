@@ -30,7 +30,7 @@ bool RoomsGraphDockPanel::Draw()
 #pragma endregion
 
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
-		NodeGraph::Update();
+	//	NodeGraph::Update();
 
 		if(App->moduleRoomManager->GetSelectedRoom() != nullptr && App->moduleInput->GetKey(SDL_SCANCODE_DELETE)){
 			App->moduleRoomManager->DeleteRoom(App->moduleRoomManager->GetSelectedRoom()->GetName()); 

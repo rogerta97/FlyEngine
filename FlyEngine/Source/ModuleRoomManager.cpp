@@ -164,7 +164,7 @@ void ModuleRoomManager::DeleteRoom(UID roomID)
 
 			(*it)->DeleteAllConnections();
 
-			NodeGraph::getInstance()->DeleteNode((*it)->GetName());
+			//	NodeGraph::getInstance()->DeleteNode((*it)->GetName());
 			(*it)->CleanUp(); 
 			delete (*it);
 
@@ -264,7 +264,7 @@ void ModuleRoomManager::SetSelectedRoom(Room* nextSelectedRoom)
 {
 	if (nextSelectedRoom != nullptr) {
 		selectedRoom = nextSelectedRoom;
-		NodeGraph::getInstance()->SelectNode(nextSelectedRoom->GetName());
+		//NodeGraph::getInstance()->SelectNode(nextSelectedRoom->GetName());
 	}
 }
 

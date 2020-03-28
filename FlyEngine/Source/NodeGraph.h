@@ -52,41 +52,36 @@ public:
 
 class NodeGraph
 {
-private:
-	static NodeGraph* instance;
 	NodeGraph();
+	~NodeGraph(); 
 
-public:
-	static NodeGraph* getInstance();
-	~NodeGraph();
-
-	static void Update();
-	static void DrawNodeGraph();
+	void Update();
+	void DrawNodeGraph();
 
 	// Nodes
-	static void SelectNode(string nodeToSelect); 
-	static void CreateNode(string nodeName, ImVec2 pos, UID roomID);
-	static void DeleteNode(string nodeName);
+	void SelectNode(string nodeToSelect); 
+	void CreateNode(string nodeName, ImVec2 pos, UID roomID);
+	void DeleteNode(string nodeName);
 
-	static list<Node*>& GetNodeList();
-	static std::string GetNodesAsCombo(); 
+	list<Node*>& GetNodeList();
+	std::string GetNodesAsCombo(); 
 
-	static void DeleteAllNodes();
+	void DeleteAllNodes();
 
 	// Connections
-	static void ConnectNodes(string originNodeTitle, string originSlotName, string destinationNodeTitle, string destinationSlotName, UID logicConectionID);
-	static void ConnectNodes(Node* originNode, string originSlotName, Node* destinationNode, string destinationSlotName, UID logicConectionID);
-	static void DrawNodeConnections(); 
+	void ConnectNodes(string originNodeTitle, string originSlotName, string destinationNodeTitle, string destinationSlotName, UID logicConectionID);
+	void ConnectNodes(Node* originNode, string originSlotName, Node* destinationNode, string destinationSlotName, UID logicConectionID);
+	void DrawNodeConnections(); 
 
-	static list<NodeGraphConnection*> GetConnectionList();
-	static std::string GetConnectionsAsCombo();
-	static void SelectConnection(UID connectionID); 
+	list<NodeGraphConnection*> GetConnectionList();
+	std::string GetConnectionsAsCombo();
+	void SelectConnection(UID connectionID); 
 
-	static void DeleteConnection(int connectionID); 
-	static void DeleteConnections(vector<UID> connectionsList); 
-	static int DeleteAllConnections(); 
+	void DeleteConnection(int connectionID); 
+	void DeleteConnections(vector<UID> connectionsList); 
+	int DeleteAllConnections(); 
 
-	static void CheckNewConnection(); 
+	void CheckNewConnection(); 
 
 	NodeGraphConnection* connectionSelected = nullptr;
 

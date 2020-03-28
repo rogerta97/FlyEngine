@@ -297,8 +297,8 @@ void ModuleImGui::ReceiveEvent(FlyEngineEvent eventType)
 bool ModuleImGui::CleanUp()
 {
 	DeletePanels(); 
-	NodeGraph::getInstance()->DeleteAllConnections();
-	NodeGraph::getInstance()->DeleteAllNodes();
+	//NodeGraph::getInstance()->DeleteAllConnections();
+	//NodeGraph::getInstance()->DeleteAllNodes();
 
 	ImGui_ImplSDL2_Shutdown(); 
 

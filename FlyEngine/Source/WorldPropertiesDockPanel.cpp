@@ -98,8 +98,8 @@ void WorldPropertiesDockPanel::NewConnectionButtonHandler()
 		static int originRoomSelected = 0;
 		static int destinationRoomSelected = 0;
 
-		ImGui::Combo("Origin Room", &originRoomSelected, NodeGraph::getInstance()->GetNodesAsCombo().c_str());
-		ImGui::Combo("Destination Room", &destinationRoomSelected, NodeGraph::getInstance()->GetNodesAsCombo().c_str());
+	/*	ImGui::Combo("Origin Room", &originRoomSelected, NodeGraph::getInstance()->GetNodesAsCombo().c_str());
+		ImGui::Combo("Destination Room", &destinationRoomSelected, NodeGraph::getInstance()->GetNodesAsCombo().c_str());*/
 
 		if (ImGui::Button("Connect")) 
 		{
@@ -124,13 +124,13 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 	
 	ImGui::BeginChild("RoomsList", ImVec2(ImGui::GetWindowContentRegionWidth(), ImGui::GetWindowHeight() / 4), true);
 
-	for (auto it : NodeGraph::getInstance()->GetNodeList()) {
+	/*for (auto it : NodeGraph::getInstance()->GetNodeList()) {
 
 		if (ImGui::Selectable(it->title.c_str(), &it->selected)) {
 			App->moduleRoomManager->SetSelectedRoom(it->title);
 		}
 	}
-
+*/
 	ImGui::EndChild();
 
 	// New Room Button 

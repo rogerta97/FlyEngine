@@ -27,7 +27,7 @@ Room::Room(string roomName)
 	backgroundMusic = nullptr; 
 
 	static int placer = 50;
-	NodeGraph::getInstance()->CreateNode(roomName, ImVec2(placer, 50), roomID);
+	//NodeGraph::getInstance()->CreateNode(roomName, ImVec2(placer, 50), roomID);
 
 	roomBlackboard = new Blackboard(); 
 	roomUIHandler = new RoomUIHandler(this); 
@@ -254,7 +254,7 @@ RoomConnection* Room::ConnectToRoom(Room* destinationRoom)
 	destinationRoom->inRoomUIDs.push_back(GetUID());
 
 	// Update Graph 
-	NodeGraph::getInstance()->ConnectNodes(GetName(), "Out", destinationRoom->GetName(), "In", newConnection->connectionID);
+	//NodeGraph::getInstance()->ConnectNodes(GetName(), "Out", destinationRoom->GetName(), "In", newConnection->connectionID);
 	flog("Room %s connected the LOGIC succesfuly with %s", roomName.c_str(), destinationRoom->GetName().c_str()); 
 	App->moduleRoomManager->connectionsInWorldAmount++; 
 	return newConnection;
@@ -547,7 +547,7 @@ RoomConnection::RoomConnection(Room* _originRoom, Room* _roomConnected, string _
 
 void RoomConnection::DeleteOnGraph()
 {
-	NodeGraph::getInstance()->DeleteConnection(connectionID); 
+	//NodeGraph::getInstance()->DeleteConnection(connectionID); 
 	originRoom = nullptr; 
 	destinationRoom = nullptr; 
 }
