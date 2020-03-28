@@ -8,8 +8,11 @@ using namespace std;
 class DialogueStep; 
 class Dialogue
 {
+public:
 	Dialogue();
 	~Dialogue();
+
+	DialogueStep* AddDialogueStep();
 
 private: 
 	list<DialogueStep*> dialogueSteps; 

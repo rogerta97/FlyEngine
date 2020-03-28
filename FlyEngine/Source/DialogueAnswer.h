@@ -7,6 +7,7 @@ using namespace std;
 
 class DialogueAnswer
 {
+public:
 	DialogueAnswer();
 	~DialogueAnswer();
 };

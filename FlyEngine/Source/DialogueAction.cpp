@@ -1,6 +1,7 @@
 #include "DialogueAction.h"
 #include "imgui.h"
-
+#include "Dialogue.h"
+#include "DialogueStep.h"
 #include "mmgr.h"
 
 DialogueAction::DialogueAction(FlyObject* _parentObject)
@@ -37,5 +38,15 @@ void DialogueAction::DrawUISettings()
 		{
 
 		}
+
+		if (ImGui::Button("Add Empty Slot"))
+		{
+			DialogueStep* newStep = AddDialogueStep(); 
+		}
 	}
+}
+
+DialogueStep* DialogueAction::AddDialogueStep()
+{
+	return dialogue->AddDialogueStep(); 
 }

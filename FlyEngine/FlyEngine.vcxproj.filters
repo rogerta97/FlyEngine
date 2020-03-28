@@ -468,6 +468,9 @@
     <ClCompile Include="Source\DialogueAction.cpp">
       <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClCompile>
+    <ClCompile Include="Source\DialogueText.cpp">
+      <Filter>Source\Tools\Dialogues</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -937,6 +940,9 @@
     </ClInclude>
     <ClInclude Include="Source\DialogueAction.h">
       <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DialogueText.h">
+      <Filter>Source\Tools\Dialogues</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
