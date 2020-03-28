@@ -61,6 +61,7 @@ bool ModuleManager::Init()
 	AddToolsNameDescription("Display Text", "This should be the description of the display text tool", ACTION_DISPLAY_TEXT);
 	AddToolsNameDescription("Display Animation", "This should be the description of the display animation tool", ACTION_DISPLAY_ANIMATION);
 	AddToolsNameDescription("Follow Path", "This should be the description of the follow path tool", ACTION_FOLLOW_PATH);
+	AddToolsNameDescription("Dialogue", "This should be the description of the dialog tool", ACTION_DIALOGUE);
 
 	return true;
 }
@@ -203,6 +204,10 @@ Texture* ModuleManager::GetIconFromActionType(ActionType toolType)
 
 	case ACTION_FOLLOW_PATH:
 		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("PathIcon");
+		break;
+
+	case ACTION_DIALOGUE:
+		toolIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("DialogueIcon");
 		break;
 
 	default:

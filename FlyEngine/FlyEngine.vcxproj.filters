@@ -121,6 +121,9 @@
     <Filter Include="Source\FlyEngine\FlyObject\FlyObject">
       <UniqueIdentifier>{1360fb9d-9483-45e6-b946-896935ab2800}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Tools\Dialogues">
+      <UniqueIdentifier>{7bddf65c-ad1b-4f8b-be07-458b3d3cf7cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -452,6 +455,15 @@
     </ClCompile>
     <ClCompile Include="Source\DialogAction.cpp">
       <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DialogueEditorDockPanel.cpp">
+      <Filter>Source\Modules\DockingPanels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DialogueStep.cpp">
+      <Filter>Source\Tools\Dialogues</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DialogueAnswer.cpp">
+      <Filter>Source\Tools\Dialogues</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -910,6 +922,15 @@
     </ClInclude>
     <ClInclude Include="Source\DialogAction.h">
       <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DialogueEditorDockPanel.h">
+      <Filter>Source\Modules\DockingPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DialogueStep.h">
+      <Filter>Source\Tools\Dialogues</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DialogueAnswer.h">
+      <Filter>Source\Tools\Dialogues</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

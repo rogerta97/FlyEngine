@@ -1,10 +1,11 @@
 #include "DialogAction.h"
+#include "imgui.h"
 
 #include "mmgr.h"
 
 DialogAction::DialogAction(FlyObject* _parentObject)
 {
-	actionType = ACTION_DIALOG;
+	actionType = ACTION_DIALOGUE;
 	isVisual = false;
 
 	SetActionName("Dialog");
@@ -13,4 +14,15 @@ DialogAction::DialogAction(FlyObject* _parentObject)
 
 DialogAction::~DialogAction()
 {
+}
+
+void DialogAction::DrawUISettings()
+{
+	if (ImGui::CollapsingHeader("Dialogue Settings:"))
+	{
+		if (ImGui::Button("Open Dialogue Editor"))
+		{
+
+		}
+	}
 }

@@ -10,6 +10,8 @@ class DialogAction : public Action
 public:
 	DialogAction(FlyObject* _parentObject);
 	~DialogAction();
+
+	void DrawUISettings();
 };
 
 #endif 

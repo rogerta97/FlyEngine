@@ -382,10 +382,6 @@ void Gizmos::DrawMoveGizmo()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	moveGizmo->axisXBox->DrawSquare();
-	moveGizmo->axisYBox->DrawSquare();
-	moveGizmo->axisXYBox->DrawSquare();
-
 	float4x4 moveGizmoViewMat = float4x4::identity;
 	moveGizmoViewMat.RotateX(0);
 	moveGizmoViewMat.RotateY(0);

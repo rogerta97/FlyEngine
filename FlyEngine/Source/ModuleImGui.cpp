@@ -8,6 +8,7 @@
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_opengl3.h"
 
+#include "DialogueEditorDockPanel.h"
 #include "ConsoleDockPanel.h"
 #include "RoomsGraphDockPanel.h"
 #include "ChangeRoomAction.h"
@@ -99,25 +100,6 @@ bool ModuleImGui::Start()
 	CreatePanels();
 	SetStyle();
 
-	//AddaptToFlySection(FLY_SECTION_ROOM_EDIT); 
-
-	//// Test Change Scene Object
-	//Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom(); 
-	//FlyObject* itemInventoryObject = selectedRoom->CreateFlyObject("Inventory", "This is the first inventory object :D");
-	//itemInventoryObject->flyObjectType = INVENTORY_ITEM; 
-
-	//itemInventoryObject->AddDisplayImageAction(string(MyFileSystem::GetSolutionDirectory() + "\\EngineResources\\Images\\Key.png").c_str()); 
-
-
-	//ChangeRoomAction* changeRoomAction = parrot->AddChangeRoomAction();
-
-	//changeRoomAction->SetOccObjectClicked(true); 
-	//changeRoomAction->SetDestination(App->moduleRoomManager->GetRoom("Lake")); 
-
-	//parrot->CreateClickableArea(float2(0, 0), float2(150, 150), true);
-	//parrot->clickableAreaActive = true; 
-	//ViewportManager::getInstance()->drawClickableArea = true; 
-
 	return true; 
 }
 
@@ -134,6 +116,7 @@ void ModuleImGui::CreatePanels()
 	RoomObjectsDockPanel* roomObjectsDockPanel = new RoomObjectsDockPanel(false);
 	ObjectPropertiesDockPanel* objectPropertiesDockPanel = new ObjectPropertiesDockPanel(false);
 	RoomDockPanel* sceneDockPanel = new RoomDockPanel(false); 
+	DialogueEditorDockPanel* dialogueEditorDockPanel = new DialogueEditorDockPanel(this); 
 
 	dockPanels.push_back(consolePanel); 
 	dockPanels.push_back(roomsGraphPanel);
@@ -146,6 +129,7 @@ void ModuleImGui::CreatePanels()
 	dockPanels.push_back(objectPropertiesDockPanel);
 	dockPanels.push_back(sceneDockPanel);
 	dockPanels.push_back(fileBrowserDockPanel); 
+	dockPanels.push_back(dialogueEditorDockPanel); 
 
 	consoleDockPanel = consolePanel; 
 	graphPropertiesDockPanel = graphPropertiesPanel;
