@@ -59,6 +59,9 @@ public:
 
 	void UpdateTextQuads(); 
 
+public: 
+	bool displayTextBB = false; 
+
 private: 
 	Font* textFont = nullptr; 
 	std::string text; 
@@ -67,10 +70,14 @@ private:
 
 	// Text Box ----------
 	BoundingBox* textBox; 
-	BoundingBox* textBoundingBox; 
 	float2 originTextPosition; 
 	bool drawTextBox; 
 	float2 pevBoxPos; 
+
+	// Text Bounding Box -----
+	float2 textBBMinPoint;
+	float2 textBBMaxPoint;
+	BoundingBox* textBoundingBox; 
 	
 	int quadsAllocated = 0; 
 	std::vector<Quad*>* textQuads;

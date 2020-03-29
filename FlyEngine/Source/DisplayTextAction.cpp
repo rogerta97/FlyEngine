@@ -22,6 +22,8 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 	isVisual = false;
 	drawTextBox = true;
 	pevBoxPos = float2::zero; 
+	textBBMinPoint = float2(1000, -1000); 
+	textBBMaxPoint = float2(-1000, 1000); 
 
 	textQuads = new std::vector<Quad*>();
 
@@ -58,7 +60,9 @@ void DisplayTextAction::Draw()
 	if (parentObject->isSelected && drawTextBox)
 	{
 		DrawTextBox(); 
-		DrawTextBoundingBox(); 
+
+		if(displayTextBB)
+			DrawTextBoundingBox(); 
 	}
 }
 
@@ -424,6 +428,8 @@ void DisplayTextAction::RenderText()
 
 	for (currentLetter = text.begin(); currentLetter != text.end(); currentLetter++)
 	{
+
+
 		if (textFont == nullptr)
 		{
 			FLY_ERROR("A text with no font can not be rendered");
@@ -432,6 +438,7 @@ void DisplayTextAction::RenderText()
 
 		// Get The Current Character 
 		Character currentCharacter = textFont->GetCharacter(*currentLetter);
+
 
 		/* convert character code to glyph index */
 		FT_UInt glyph_index = FT_Get_Char_Index(textFont->fontFace, (*currentLetter));
@@ -459,6 +466,24 @@ void DisplayTextAction::RenderText()
 		glMatrixMode(GL_MODELVIEW);
 		glLoadMatrixf((GLfloat*)(characterTransformMatrix.Transposed()).v);
 
+		float offsetLastLetter = 0; 
+
+		if (*currentLetter == text.back())
+			offsetLastLetter = currentCharacter.size.x;
+
+		// Text Bounding Box
+		if (pen.x + offsetLastLetter > textBBMaxPoint.x)
+			textBBMaxPoint.x = pen.x + offsetLastLetter;
+
+		if (pen.y < textBBMaxPoint.y)
+			textBBMaxPoint.y = pen.y;
+
+		if (pen.x < textBBMinPoint.x)
+			textBBMinPoint.x = pen.x;
+
+		if (pen.y + (currentCharacter.size.y / 64) > textBBMinPoint.y)
+			textBBMinPoint.y = pen.y + (currentCharacter.size.y / 64);
+
 		pen.x += currentCharacter.Advance;
 
 		// Supose Wrapping = true; 
@@ -481,8 +506,8 @@ void DisplayTextAction::RenderText()
 		glBindBuffer(GL_ARRAY_BUFFER, renderQuad->verticesID);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-		if (currentCharacter.textureID != 0) {
-
+		if (currentCharacter.textureID != 0) 
+		{
 			glEnable(GL_TEXTURE_2D);
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glBindBuffer(GL_ARRAY_BUFFER, renderQuad->uvsID);
@@ -518,6 +543,23 @@ void DisplayTextAction::RenderText()
 		letterCount++;
 
 	}
+/*
+		textBBMinPoint.y = pen.y + (lastChar.size.y / 
+	Character lastChar = textFont->GetCharacter(text.back());
+
+	if (pen.x + (lastChar.size.x / 64) > textBBMaxPoint.x)
+		textBBMaxPoint.x = pen.x + (lastChar.size.x / 64);
+
+	if (pen.y < textBBMaxPoint.y)
+		textBBMaxPoint.y = pen.y;
+
+	if (pen.x < textBBMinPoint.x)
+		textBBMinPoint.x = pen.x;
+	
+	if (pen.y + (lastChar.size.y / 64) > textBBMinPoint.y)64);*/
+
+	textBoundingBox->SetMaxPoint(textBBMaxPoint);
+	textBoundingBox->SetMinPoint(textBBMinPoint);
 
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -542,7 +584,7 @@ void DisplayTextAction::DrawTextBox()
 
 void DisplayTextAction::DrawTextBoundingBox()
 {
-	textBoundingBox->DrawSquare(); 
+	textBoundingBox->Draw(false, float4(1.0f, 0.0f, 0.0f, 1.0f));
 }
 
 void DisplayTextAction::CleanQuads()
