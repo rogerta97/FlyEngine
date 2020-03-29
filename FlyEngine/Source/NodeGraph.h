@@ -14,6 +14,12 @@ using namespace std;
 using namespace ImNodes; 
 using namespace Ez; 
 
+enum NodeGraphType
+{
+	ROOM_GRAPH,
+	DIALOGUE_GRAPH
+};
+
 struct Node {
 
 	UID nodeID; 
@@ -24,6 +30,18 @@ struct Node {
 
 	list<SlotInfo> inputs; 
 	list<SlotInfo> outputs;
+};
+
+struct DialogueNode : public Node
+{
+	string sentence; 
+	list<string> answersStrList; 
+};
+
+struct RoomNode : public Node
+{
+	string roomTitle;
+	ImTextureID sceneTextureID;
 };
 
 struct NodeGraphConnection {
@@ -53,7 +71,7 @@ public:
 class NodeGraph
 {
 public:
-	NodeGraph();
+	NodeGraph(NodeGraphType nodeGraphType);
 	~NodeGraph(); 
 
 	void Update();
@@ -85,6 +103,7 @@ public:
 	void CheckNewConnection(); 
 
 	NodeGraphConnection* connectionSelected = nullptr;
+	NodeGraphType nodeGraphType; 
 
 private: 
 	Node* GetNodeByTitle(string nodeName);

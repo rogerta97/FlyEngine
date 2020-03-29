@@ -6,7 +6,7 @@ DialogueEditorDockPanel::DialogueEditorDockPanel(bool isVisible) : DockPanel("Di
 	flyEngineSection = FLY_SECTION_ROOM_EDIT;
 	dockPanelType = DOCK_DIALOGUE_EDITOR; 
 
-	nodeGraph = new NodeGraph(); 
+	nodeGraph = new NodeGraph(DIALOGUE_GRAPH); 
 }
 
 DialogueEditorDockPanel::~DialogueEditorDockPanel()

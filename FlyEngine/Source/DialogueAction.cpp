@@ -44,6 +44,11 @@ void DialogueAction::DrawUISettings()
 		if (ImGui::Button("Add Empty Slot"))
 		{
 			DialogueSlot* newStep = AddDialogueSlot("This Is a Sentence"); 
+			newStep->AddStepAnswer("This The Answer 1");
+			newStep->AddStepAnswer("This The Answer 2");
+			newStep->AddStepAnswer("This The Answer 3");
+			newStep->AddStepAnswer("This The Answer 4");
+			newStep->AddStepAnswer("This The Answer 5");
 		}
 	}
 }

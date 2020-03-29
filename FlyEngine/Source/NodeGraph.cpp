@@ -14,8 +14,9 @@ void NodeGraph::Update()
 	DrawNodeGraph();
 }
 
-NodeGraph::NodeGraph()
+NodeGraph::NodeGraph(NodeGraphType _nodeGraphType)
 {
+	nodeGraphType = _nodeGraphType; 
 	graphNodeList.clear();
 	connectionsList.clear(); 
 }
@@ -224,26 +225,35 @@ void NodeGraph::DrawNodeGraph()
 {	
 	ImNodes::BeginCanvas(&canvas);
 
-	//if (instance == nullptr) {
-	//	ImNodes::EndCanvas();
-	//	return;
-	//}
+	if (nodeGraphType == DIALOGUE_GRAPH)
+	{
+		for (auto it : graphNodeList) {
 
-	DrawNodeConnections();
-
-	for (auto it : graphNodeList) {
-
-		if (ImNodes::Ez::BeginNode(it, it->title.c_str(), &it->position, &it->selected))
-		{
-			ImGui::Image(0, ImVec2(100, 100)); 
-			ImNodes::Ez::InputSlots(it->inputs);
-			ImNodes::Ez::OutputSlots(it->outputs);
-			ImNodes::Ez::EndNode(it->title.c_str());
-		} 
+			if (ImNodes::Ez::BeginNode(it, it->title.c_str(), &it->position, &it->selected))
+			{
+				ImNodes::Ez::InputSlots(it->inputs);
+				ImNodes::Ez::OutputSlots(it->outputs);
+				ImNodes::Ez::EndNode(it->title.c_str());
+			}
+		}
 	}
+	if (nodeGraphType == ROOM_GRAPH)
+	{
+		DrawNodeConnections();
 
-	CheckNewConnection();
+		for (auto it : graphNodeList) {
 
+			if (ImNodes::Ez::BeginNode(it, it->title.c_str(), &it->position, &it->selected))
+			{
+				ImGui::Image(0, ImVec2(100, 100)); 
+				ImNodes::Ez::InputSlots(it->inputs);
+				ImNodes::Ez::OutputSlots(it->outputs);
+				ImNodes::Ez::EndNode(it->title.c_str());
+			} 
+		}
+
+		CheckNewConnection();
+	}
 
 	ImNodes::EndCanvas(); 
 }
