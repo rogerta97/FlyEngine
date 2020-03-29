@@ -12,6 +12,7 @@ DialogueSlot::DialogueSlot(string _dialogueText)
 {
 	dialogueText = new DialogueText();
 	dialogueText->SetDialogueText(_dialogueText);
+	slotUID = RandomNumberGenerator::getInstance()->GenerateUID(); 
 }
 
 DialogueSlot::~DialogueSlot()
@@ -28,13 +29,24 @@ void DialogueSlot::AddStepAnswer(string _answerText)
 {
 	// Add Answer ----
 	StepAnswer* newStepAnswer = new StepAnswer(); 
+	newStepAnswer->SetAnswerText(_answerText);
 	answersList.push_back(newStepAnswer); 
 
 	// Add Node Slot 
 	NodeGraph* dialoguesNodeGraph = App->moduleManager->GetCurrentDialogueEditor()->GetNodeGraph();
 
 	if (dialoguesNodeGraph != nullptr)
-		dialoguesNodeGraph->CreateNode(_stepText, ImVec2(0, 0));
+	{
+		Node* currentDialogueNode = dialoguesNodeGraph->GetNode(this->slotUID);
+		
+		if (currentDialogueNode != nullptr)
+		{
+			currentDialogueNode->outputs.push_back({ _answerText.c_str(), 1 });
+		}
+	}
+}
 
-	return newDialogueSlot;
+UID DialogueSlot::GetUID() const
+{
+	return slotUID;
 }

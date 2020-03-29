@@ -36,7 +36,7 @@ void NodeGraph::SelectNode(string nodeToSelect)
 	}
 }
 
-void NodeGraph::CreateNode(string nodeName, ImVec2 pos)
+void NodeGraph::CreateNode(string nodeName, ImVec2 pos, UID _nodeID)
 {
 	Node* newNode = new Node();
 
@@ -45,7 +45,7 @@ void NodeGraph::CreateNode(string nodeName, ImVec2 pos)
 	newNode->position = pos;
 	newNode->inputs.push_back({ "In", 1 });
 	newNode->outputs.push_back({ "Out", 1 });
-	newNode->nodeID = RandomNumberGenerator::getInstance()->GenerateUID(); 
+	newNode->nodeID = _nodeID;
 
 	graphNodeList.push_back(newNode);
 }
@@ -76,6 +76,19 @@ std::string NodeGraph::GetNodesAsCombo()
 	}
 
 	return returnString; 
+}
+
+Node* NodeGraph::GetNode(UID nodeID)
+{
+	for (auto& it : graphNodeList) 
+	{
+		if (it->nodeID == nodeID)
+		{
+			return it; 
+		}
+	}
+
+	return nullptr; 
 }
 
 void NodeGraph::DeleteAllNodes()
@@ -232,6 +245,12 @@ void NodeGraph::DrawNodeGraph()
 			if (ImNodes::Ez::BeginNode(it, it->title.c_str(), &it->position, &it->selected))
 			{
 				ImNodes::Ez::InputSlots(it->inputs);
+
+				/*for (auto& currentAnswer : it->outputs)
+				{
+
+				}*/
+
 				ImNodes::Ez::OutputSlots(it->outputs);
 				ImNodes::Ez::EndNode(it->title.c_str());
 			}

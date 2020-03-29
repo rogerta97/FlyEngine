@@ -1,6 +1,8 @@
 #ifndef _DIALOGUE_SLOT_H_
 #define _DIALOGUE_SLOT_H_
 
+#include "Globals.h"
+
 #include <list>
 #include <string>
 
@@ -17,12 +19,17 @@ public:
 	// Step Utilities ----
 	void SetDialogueText(string _dialogueText); 
 
-	// Answers -----
+	// Answers -----------
 	void AddStepAnswer(string _answerText);
+
+	// Set & Get ---------
+	UID GetUID() const; 
 
 private: 
 	DialogueText* dialogueText; 
 	list<StepAnswer*> answersList; 
+
+	UID slotUID; 
 };
 
 

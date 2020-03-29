@@ -79,11 +79,12 @@ public:
 
 	// Nodes
 	void SelectNode(string nodeToSelect); 
-	void CreateNode(string nodeName, ImVec2 pos);
+	void CreateNode(string nodeName, ImVec2 pos, UID nodeUID);
 	void DeleteNode(string nodeName);
 
 	list<Node*>& GetNodeList();
 	std::string GetNodesAsCombo(); 
+	Node* GetNode(UID nodeID);
 
 	void DeleteAllNodes();
 

@@ -24,7 +24,7 @@ DialogueSlot* Dialogue::AddDialogueSlot(string _stepText)
 	NodeGraph* dialoguesNodeGraph = App->moduleManager->GetCurrentDialogueEditor()->GetNodeGraph();
 	
 	if (dialoguesNodeGraph != nullptr)
-		dialoguesNodeGraph->CreateNode(_stepText, ImVec2(0, 0)); 
+		dialoguesNodeGraph->CreateNode(_stepText, ImVec2(0, 0), newDialogueSlot->GetUID()); 
 	
 	return newDialogueSlot; 
 }
