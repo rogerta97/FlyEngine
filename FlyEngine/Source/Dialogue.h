@@ -6,17 +6,17 @@
 
 using namespace std;
 
-class DialogueStep; 
+class DialogueSlot; 
 class Dialogue
 {
 public:
 	Dialogue();
 	~Dialogue();
 
-	DialogueStep* AddDialogueStep(string _stepText);
+	DialogueSlot* AddDialogueSlot(string _stepText);
 
 private: 
-	list<DialogueStep*> dialogueSteps; 
+	list<DialogueSlot*> dialogueSlots; 
 };
 
 

@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class DialogueStep;
+class DialogueSlot;
 class DisplayTextAction;
 class DialogueText
 {

@@ -1,7 +1,7 @@
 #include "DialogueAction.h"
 #include "imgui.h"
 #include "Dialogue.h"
-#include "DialogueStep.h"
+#include "DialogueSlot.h"
 #include "mmgr.h"
 
 DialogueAction::DialogueAction(FlyObject* _parentObject)
@@ -43,12 +43,12 @@ void DialogueAction::DrawUISettings()
 
 		if (ImGui::Button("Add Empty Slot"))
 		{
-			DialogueStep* newStep = AddDialogueStep("This Is a Sentence"); 
+			DialogueSlot* newStep = AddDialogueSlot("This Is a Sentence"); 
 		}
 	}
 }
 
-DialogueStep* DialogueAction::AddDialogueStep(string _dialogueStepText)
+DialogueSlot* DialogueAction::AddDialogueSlot(string _dialogueSlotText)
 {
-	return dialogue->AddDialogueStep(_dialogueStepText);
+	return dialogue->AddDialogueSlot(_dialogueSlotText);
 }

@@ -68,7 +68,7 @@
     <ClCompile Include="Source\Dialogue.cpp" />
     <ClCompile Include="Source\StepAnswer.cpp" />
     <ClCompile Include="Source\DialogueEditorDockPanel.cpp" />
-    <ClCompile Include="Source\DialogueStep.cpp" />
+    <ClCompile Include="Source\DialogueSlot.cpp" />
     <ClCompile Include="Source\DialogueText.cpp" />
     <ClCompile Include="Source\DisplayAnimationAction.cpp" />
     <ClCompile Include="Source\DisplayTextAction.cpp" />
@@ -225,7 +225,7 @@
     <ClInclude Include="Source\Dialogue.h" />
     <ClInclude Include="Source\StepAnswer.h" />
     <ClInclude Include="Source\DialogueEditorDockPanel.h" />
-    <ClInclude Include="Source\DialogueStep.h" />
+    <ClInclude Include="Source\DialogueSlot.h" />
     <ClInclude Include="Source\DialogueText.h" />
     <ClInclude Include="Source\DisplayAnimationAction.h" />
     <ClInclude Include="Source\DisplayTextAction.h" />

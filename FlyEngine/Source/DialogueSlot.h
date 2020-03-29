@@ -1,5 +1,5 @@
-#ifndef _DIALOGUE_STEP_H_
-#define _DIALOGUE_STEP_H_
+#ifndef _DIALOGUE_SLOT_H_
+#define _DIALOGUE_SLOT_H_
 
 #include <list>
 #include <string>
@@ -8,11 +8,11 @@ using namespace std;
 
 class StepAnswer;
 class DialogueText; 
-class DialogueStep
+class DialogueSlot
 {
 public: 
-	DialogueStep(string _dialogueText = "");
-	~DialogueStep(); 
+	DialogueSlot(string _dialogueText = "");
+	~DialogueSlot(); 
 
 	// Step Utilities ----
 	void SetDialogueText(string _dialogueText); 

@@ -7,7 +7,7 @@
 using namespace std;
 
 class Action; 
-class DialogueStep; 
+class DialogueSlot; 
 class DialogueText; 
 class StepAnswer
 {
@@ -21,12 +21,12 @@ public:
 	void SetAnswerText(string newAnswerText); 
 	DialogueText* GetAnswerDialogueText();
 	
-	void SetDestinationStep(DialogueStep* dstStep);
-	DialogueStep* GetDestinationStep();
+	void SetDestinationStep(DialogueSlot* dstStep);
+	DialogueSlot* GetDestinationStep();
 
 private: 
 	DialogueText* answerDialogueText; 
-	DialogueStep* destinationStep; 
+	DialogueSlot* destinationStep; 
 	list<Action*> callbackActions;
 };
 

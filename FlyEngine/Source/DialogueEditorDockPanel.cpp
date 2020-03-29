@@ -24,3 +24,8 @@ bool DialogueEditorDockPanel::Draw()
 
 	return true;
 }
+
+NodeGraph* DialogueEditorDockPanel::GetNodeGraph()
+{
+	return nodeGraph;
+}

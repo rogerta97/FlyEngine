@@ -456,9 +456,6 @@
     <ClCompile Include="Source\DialogueEditorDockPanel.cpp">
       <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
     </ClCompile>
-    <ClCompile Include="Source\DialogueStep.cpp">
-      <Filter>Source\Tools\Dialogues</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Dialogue.cpp">
       <Filter>Source\Tools\Dialogues</Filter>
     </ClCompile>
@@ -469,6 +466,9 @@
       <Filter>Source\Tools\Dialogues</Filter>
     </ClCompile>
     <ClCompile Include="Source\StepAnswer.cpp">
+      <Filter>Source\Tools\Dialogues</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DialogueSlot.cpp">
       <Filter>Source\Tools\Dialogues</Filter>
     </ClCompile>
   </ItemGroup>
@@ -929,9 +929,6 @@
     <ClInclude Include="Source\DialogueEditorDockPanel.h">
       <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
     </ClInclude>
-    <ClInclude Include="Source\DialogueStep.h">
-      <Filter>Source\Tools\Dialogues</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Dialogue.h">
       <Filter>Source\Tools\Dialogues</Filter>
     </ClInclude>
@@ -942,6 +939,9 @@
       <Filter>Source\Tools\Dialogues</Filter>
     </ClInclude>
     <ClInclude Include="Source\StepAnswer.h">
+      <Filter>Source\Tools\Dialogues</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DialogueSlot.h">
       <Filter>Source\Tools\Dialogues</Filter>
     </ClInclude>
   </ItemGroup>

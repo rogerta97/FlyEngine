@@ -1,25 +1,25 @@
-#include "DialogueStep.h"
+#include "DialogueSlot.h"
 #include "DialogueText.h"
 #include "DisplayTextAction.h"
 #include "StepAnswer.h"
 
-DialogueStep::DialogueStep(string _dialogueText)
+DialogueSlot::DialogueSlot(string _dialogueText)
 {
 	dialogueText = new DialogueText();
 	dialogueText->SetDialogueText(_dialogueText);
 }
 
-DialogueStep::~DialogueStep()
+DialogueSlot::~DialogueSlot()
 {
 	
 }
 
-void DialogueStep::SetDialogueText(string _dialogueText)
+void DialogueSlot::SetDialogueText(string _dialogueText)
 {
 	dialogueText->SetDialogueText(_dialogueText);
 }
 
-void DialogueStep::AddStepAnswer(string _answerText)
+void DialogueSlot::AddStepAnswer(string _answerText)
 {
 	StepAnswer* newStepAnswer = new StepAnswer(); 
 	answersList.push_back(newStepAnswer); 

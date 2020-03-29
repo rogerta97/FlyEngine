@@ -19,7 +19,7 @@ void StepAnswer::SetAnswerText(string newAnswerText)
 	answerDialogueText->SetDialogueText(newAnswerText); 
 }
 
-void StepAnswer::SetDestinationStep(DialogueStep* dstStep)
+void StepAnswer::SetDestinationStep(DialogueSlot* dstStep)
 {
 	destinationStep = dstStep;
 }
@@ -35,7 +35,7 @@ DialogueText* StepAnswer::GetAnswerDialogueText()
 	return answerDialogueText;
 }
 
-DialogueStep* StepAnswer::GetDestinationStep()
+DialogueSlot* StepAnswer::GetDestinationStep()
 {
 	return destinationStep;
 }

@@ -14,6 +14,8 @@ public:
 
 	bool Draw();
 
+	NodeGraph* GetNodeGraph(); 
+
 private: 
 	NodeGraph* nodeGraph; 
 };
