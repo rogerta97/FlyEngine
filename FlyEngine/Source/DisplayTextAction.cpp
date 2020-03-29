@@ -61,7 +61,7 @@ void DisplayTextAction::Draw()
 	{
 		DrawTextBox(); 
 
-		if(displayTextBB)
+		//if(displayTextBB)
 			DrawTextBoundingBox(); 
 	}
 }
@@ -273,6 +273,8 @@ void DisplayTextAction::DrawUISettings()
 		{
 			GetTextBox()->SetSize(boxSize.x, boxSize.y);
 			GetTextBox()->SetPosition(float2(showPositionArr[0], showPositionArr[1]));
+			GetTextBox()->CalculateAllGizmos();
+			CalculateOriginTextPosition();
 		}
 		
 		if (!GetTextBox()->GetPosition().Equals(pevBoxPos))
@@ -426,10 +428,11 @@ void DisplayTextAction::RenderText()
 	FT_Bool use_kerning = FT_HAS_KERNING(textFont->fontFace);
 	FT_UInt previous = 0;
 
+	textBBMinPoint = float2(1000, -1000);
+	textBBMaxPoint = float2(-1000, 1000);
+
 	for (currentLetter = text.begin(); currentLetter != text.end(); currentLetter++)
 	{
-
-
 		if (textFont == nullptr)
 		{
 			FLY_ERROR("A text with no font can not be rendered");
@@ -466,14 +469,14 @@ void DisplayTextAction::RenderText()
 		glMatrixMode(GL_MODELVIEW);
 		glLoadMatrixf((GLfloat*)(characterTransformMatrix.Transposed()).v);
 
-		float offsetLastLetter = 0; 
+		float offsetBBLetter = 0; 
 
 		if (*currentLetter == text.back())
-			offsetLastLetter = currentCharacter.size.x;
+			offsetBBLetter = currentCharacter.size.x;
 
 		// Text Bounding Box
-		if (pen.x + offsetLastLetter > textBBMaxPoint.x)
-			textBBMaxPoint.x = pen.x + offsetLastLetter;
+		if (pen.x + offsetBBLetter > textBBMaxPoint.x)
+			textBBMaxPoint.x = pen.x + offsetBBLetter;
 
 		if (pen.y < textBBMaxPoint.y)
 			textBBMaxPoint.y = pen.y;
@@ -481,15 +484,23 @@ void DisplayTextAction::RenderText()
 		if (pen.x < textBBMinPoint.x)
 			textBBMinPoint.x = pen.x;
 
-		if (pen.y + (currentCharacter.size.y / 64) > textBBMinPoint.y)
-			textBBMinPoint.y = pen.y + (currentCharacter.size.y / 64);
+		if (pen.y + currentCharacter.size.y > textBBMinPoint.y)
+			textBBMinPoint.y = pen.y + currentCharacter.size.y;
 
 		pen.x += currentCharacter.Advance;
 
 		// Supose Wrapping = true; 
 		cursorXInc += currentCharacter.Advance;
+
 		if (cursorXInc > textBox->GetSize().x - 30)
 		{
+
+			if (pen.x + offsetBBLetter > textBBMaxPoint.x)
+				textBBMaxPoint.x = pen.x + offsetBBLetter;
+
+			if (pen.y < textBBMaxPoint.y)
+				textBBMaxPoint.y = pen.y;
+
 			currentLine++;
 			pen.x = textBox->GetMinPoint().x;
 			cursorXInc = 0; 
