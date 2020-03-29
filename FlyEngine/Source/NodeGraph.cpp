@@ -1,6 +1,7 @@
 #include "NodeGraph.h"
 #include "ImNode.h"
 #include "ImNodeEz.h"
+#include "RandomNumberGenerator.h"
 
 #include "Application.h"
 #include "Room.h"
@@ -34,7 +35,7 @@ void NodeGraph::SelectNode(string nodeToSelect)
 	}
 }
 
-void NodeGraph::CreateNode(string nodeName, ImVec2 pos, UID roomID)
+void NodeGraph::CreateNode(string nodeName, ImVec2 pos)
 {
 	Node* newNode = new Node();
 
@@ -43,7 +44,7 @@ void NodeGraph::CreateNode(string nodeName, ImVec2 pos, UID roomID)
 	newNode->position = pos;
 	newNode->inputs.push_back({ "In", 1 });
 	newNode->outputs.push_back({ "Out", 1 });
-	newNode->roomID = roomID; 
+	newNode->nodeID = RandomNumberGenerator::getInstance()->GenerateUID(); 
 
 	graphNodeList.push_back(newNode);
 }

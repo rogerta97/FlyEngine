@@ -2,6 +2,7 @@
 #define _DIALOGUE_H_
 
 #include <list>
+#include <string>
 
 using namespace std;
 
@@ -12,7 +13,7 @@ public:
 	Dialogue();
 	~Dialogue();
 
-	DialogueStep* AddDialogueStep();
+	DialogueStep* AddDialogueStep(string _stepText);
 
 private: 
 	list<DialogueStep*> dialogueSteps; 

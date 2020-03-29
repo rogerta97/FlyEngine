@@ -23,6 +23,7 @@ class FlyVariable;
 class UI_Element; 
 class Texture; 
 class FlyObject; 
+class DialogueEditorDockPanel; 
 class ModuleManager : public Module
 {
 public:
@@ -34,6 +35,9 @@ public:
 	bool Init();
 	bool Start(); 
 	bool CleanUp(); 
+
+	// Dialogues -------------------
+	DialogueEditorDockPanel* GetCurrentDialogueEditor(); 
 
 	// Utils -----------------------
 	int GetToolsAmount() const; 

@@ -66,7 +66,7 @@
     <ClCompile Include="Source\AudioImporter.cpp" />
     <ClCompile Include="Source\DialogueAction.cpp" />
     <ClCompile Include="Source\Dialogue.cpp" />
-    <ClCompile Include="Source\DialogueAnswer.cpp" />
+    <ClCompile Include="Source\StepAnswer.cpp" />
     <ClCompile Include="Source\DialogueEditorDockPanel.cpp" />
     <ClCompile Include="Source\DialogueStep.cpp" />
     <ClCompile Include="Source\DialogueText.cpp" />
@@ -223,7 +223,7 @@
     <ClInclude Include="Source\AudioImporter.h" />
     <ClInclude Include="Source\DialogueAction.h" />
     <ClInclude Include="Source\Dialogue.h" />
-    <ClInclude Include="Source\DialogueAnswer.h" />
+    <ClInclude Include="Source\StepAnswer.h" />
     <ClInclude Include="Source\DialogueEditorDockPanel.h" />
     <ClInclude Include="Source\DialogueStep.h" />
     <ClInclude Include="Source\DialogueText.h" />

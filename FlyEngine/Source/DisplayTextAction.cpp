@@ -59,9 +59,10 @@ void DisplayTextAction::Draw()
 
 	if (parentObject->isSelected && drawTextBox)
 	{
-		DrawTextBox(); 
+		if(displayTextBox)
+			DrawTextBox(); 
 
-		//if(displayTextBB)
+		if(displayTextBB)
 			DrawTextBoundingBox(); 
 	}
 }
@@ -442,6 +443,16 @@ void DisplayTextAction::RenderText()
 		// Get The Current Character 
 		Character currentCharacter = textFont->GetCharacter(*currentLetter);
 
+		if (cursorYInc > textBox->GetSize().y - 30)
+		{
+			if (pen.x < textBBMinPoint.x)
+				textBBMinPoint.x = pen.x;
+
+			if (pen.y + currentCharacter.size.y > textBBMinPoint.y)
+				textBBMinPoint.y = pen.y + currentCharacter.size.y;
+
+			continue;
+		}
 
 		/* convert character code to glyph index */
 		FT_UInt glyph_index = FT_Get_Char_Index(textFont->fontFace, (*currentLetter));
@@ -509,6 +520,12 @@ void DisplayTextAction::RenderText()
 
 		if (cursorYInc > textBox->GetSize().y - 30)
 		{
+			if (pen.x < textBBMinPoint.x)
+				textBBMinPoint.x = pen.x;
+
+			if (pen.y + currentCharacter.size.y > textBBMinPoint.y)
+				textBBMinPoint.y = pen.y + currentCharacter.size.y;
+
 			continue; 
 		}
 
@@ -704,8 +721,6 @@ void DisplayTextAction::SetText(std::string newText)
 
 	UpdateTextQuads();
 	CalculateOriginTextPosition(); 
-
-
 }
 
 std::string& DisplayTextAction::GetText()

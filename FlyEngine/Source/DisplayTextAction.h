@@ -61,6 +61,7 @@ public:
 
 public: 
 	bool displayTextBB = false; 
+	bool displayTextBox = false; 
 
 private: 
 	Font* textFont = nullptr; 

@@ -16,7 +16,7 @@ using namespace Ez;
 
 struct Node {
 
-	UID roomID; 
+	UID nodeID; 
 
 	ImVec2 position;
 	bool selected; 
@@ -61,7 +61,7 @@ public:
 
 	// Nodes
 	void SelectNode(string nodeToSelect); 
-	void CreateNode(string nodeName, ImVec2 pos, UID roomID);
+	void CreateNode(string nodeName, ImVec2 pos);
 	void DeleteNode(string nodeName);
 
 	list<Node*>& GetNodeList();

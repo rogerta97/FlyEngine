@@ -3,14 +3,17 @@
 
 DialogueText::DialogueText()
 {
+	displayTextAction = new DisplayTextAction(nullptr);
+	displayTextAction->displayTextBox = false;
+	displayTextAction->displayTextBB = true;
 }
 
 DialogueText::~DialogueText()
 {
-	displayTextAction = new DisplayTextAction(nullptr);
+
 }
 
 void DialogueText::SetDialogueText(string newDialogueText)
 {
-	
+	displayTextAction->SetText(newDialogueText); 
 }

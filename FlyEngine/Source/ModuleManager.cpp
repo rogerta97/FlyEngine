@@ -100,6 +100,12 @@ bool ModuleManager::CleanUp()
 	return true;
 }
 
+DialogueEditorDockPanel* ModuleManager::GetCurrentDialogueEditor()
+{
+	DialogueEditorDockPanel* dialogueEditor = (DialogueEditorDockPanel*) App->moduleImGui->GetDockPanel(DockPanelType::DOCK_DIALOGUE_EDITOR);
+	return dialogueEditor;
+}
+
 int ModuleManager::GetToolsAmount() const
 {
 	return toolNamesDescriptions.size();

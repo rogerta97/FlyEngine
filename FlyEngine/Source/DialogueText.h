@@ -18,8 +18,7 @@ public:
 	void SetDialogueText(string newDialogueText); 
 
 private:
-	DisplayTextAction* displayTextAction; 
-	
+	DisplayTextAction* displayTextAction; 	
 };
 
 

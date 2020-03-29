@@ -9,9 +9,9 @@ Dialogue::~Dialogue()
 {
 }
 
-DialogueStep* Dialogue::AddDialogueStep()
+DialogueStep* Dialogue::AddDialogueStep(string _stepText)
 {
-	DialogueStep* newDialogueStep = new DialogueStep(); 
+	DialogueStep* newDialogueStep = new DialogueStep(_stepText);
 	dialogueSteps.push_back(newDialogueStep); 
 	return newDialogueStep; 
 }
