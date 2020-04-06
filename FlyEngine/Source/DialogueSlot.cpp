@@ -31,19 +31,6 @@ void DialogueSlot::AddStepAnswer(string _answerText)
 	StepAnswer* newStepAnswer = new StepAnswer(); 
 	newStepAnswer->SetAnswerText(_answerText);
 	answersList.push_back(newStepAnswer); 
-
-	// Add Node Slot 
-	NodeGraph* dialoguesNodeGraph = App->moduleManager->GetCurrentDialogueEditor()->GetNodeGraph();
-
-	if (dialoguesNodeGraph != nullptr)
-	{
-		Node* currentDialogueNode = dialoguesNodeGraph->GetNode(this->slotUID);
-		
-		if (currentDialogueNode != nullptr)
-		{
-			currentDialogueNode->outputs.push_back({ _answerText.c_str(), 1 });
-		}
-	}
 }
 
 UID DialogueSlot::GetUID() const

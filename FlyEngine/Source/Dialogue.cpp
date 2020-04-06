@@ -20,11 +20,11 @@ DialogueSlot* Dialogue::AddDialogueSlot(string _stepText)
 	DialogueSlot* newDialogueSlot = new DialogueSlot(_stepText);
 	dialogueSlots.push_back(newDialogueSlot); 
 
-	// Add Slot to the node graph -------------
-	NodeGraph* dialoguesNodeGraph = App->moduleManager->GetCurrentDialogueEditor()->GetNodeGraph();
-	
-	if (dialoguesNodeGraph != nullptr)
-		dialoguesNodeGraph->CreateNode(_stepText, ImVec2(0, 0), newDialogueSlot->GetUID()); 
-	
+	//// Add Slot to the node graph -------------
+	//NodeGraph* dialoguesNodeGraph = App->moduleManager->GetCurrentDialogueEditor()->GetNodeGraph();
+	//
+	//if (dialoguesNodeGraph != nullptr)
+	//	dialoguesNodeGraph->CreateNode(_stepText, ImVec2(0, 0), newDialogueSlot->GetUID()); 
+	//
 	return newDialogueSlot; 
 }

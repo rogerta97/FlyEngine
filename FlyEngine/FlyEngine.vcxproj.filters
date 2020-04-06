@@ -124,6 +124,9 @@
     <Filter Include="Source\FlyEngine\FlyObject\DockingPanels">
       <UniqueIdentifier>{c27d716c-5ae7-4394-875d-a3ad33ff3aef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\3rdParty\imnodes">
+      <UniqueIdentifier>{e07cfcd7-db8a-406d-b7b0-baf7915c2c3f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -470,6 +473,12 @@
     </ClCompile>
     <ClCompile Include="Source\DialogueSlot.cpp">
       <Filter>Source\Tools\Dialogues</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\imnodes.cpp">
+      <Filter>Source\3rdParty\imnodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DialogueNodeGraph.cpp">
+      <Filter>Source\Tools\NodeGraph</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -943,6 +952,12 @@
     </ClInclude>
     <ClInclude Include="Source\DialogueSlot.h">
       <Filter>Source\Tools\Dialogues</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\imnodes.h">
+      <Filter>Source\3rdParty\imnodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DialogueNodeGraph.h">
+      <Filter>Source\Tools\NodeGraph</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

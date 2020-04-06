@@ -5,6 +5,8 @@
 #include "Texture.h"
 #include "TinyFileDialog.h"
 #include "Quad.h"
+#include "DialogueEditorDockPanel.h"
+#include "DialogueNodeGraph.h"
 #include "ImageImporter.h"
 #include "DisplayAnimationAction.h"
 #include "ModuleManager.h"
@@ -878,6 +880,12 @@ void FlyObject::SetSelectedAction(UID toolTypeSelectedUID, bool isSequential)
 		}
 		else
 			it->SetSelected(false);
+	}
+
+	if (selectedAction != nullptr && selectedAction->GetType() == ACTION_DIALOGUE)
+	{
+		DialogueAction* selectedDialogueAction = (DialogueAction*)selectedAction;
+		App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->AttachDialogue(selectedDialogueAction->GetDialogueData()); 
 	}
 }
 

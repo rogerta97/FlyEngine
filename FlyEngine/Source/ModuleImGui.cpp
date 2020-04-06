@@ -7,6 +7,7 @@
 #include "imgui_internal.h"
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_opengl3.h"
+#include "imnodes.h"
 
 #include "DialogueEditorDockPanel.h"
 #include "ConsoleDockPanel.h"
@@ -100,6 +101,9 @@ bool ModuleImGui::Start()
 	CreatePanels();
 	SetStyle();
 
+	// Initialize ImNodes Graph 
+	imnodes::Initialize();
+
 	return true; 
 }
 
@@ -116,7 +120,7 @@ void ModuleImGui::CreatePanels()
 	RoomObjectsDockPanel* roomObjectsDockPanel = new RoomObjectsDockPanel(false);
 	ObjectPropertiesDockPanel* objectPropertiesDockPanel = new ObjectPropertiesDockPanel(false);
 	RoomDockPanel* sceneDockPanel = new RoomDockPanel(false); 
-	DialogueEditorDockPanel* dialogueEditorDockPanel = new DialogueEditorDockPanel(this); 
+	DialogueEditorDockPanel* dialogueEditorPanel = new DialogueEditorDockPanel(this); 
 
 	dockPanels.push_back(consolePanel); 
 	dockPanels.push_back(roomsGraphPanel);
@@ -129,12 +133,13 @@ void ModuleImGui::CreatePanels()
 	dockPanels.push_back(objectPropertiesDockPanel);
 	dockPanels.push_back(sceneDockPanel);
 	dockPanels.push_back(fileBrowserDockPanel); 
-	dockPanels.push_back(dialogueEditorDockPanel); 
+	dockPanels.push_back(dialogueEditorPanel);
 
 	consoleDockPanel = consolePanel; 
 	graphPropertiesDockPanel = graphPropertiesPanel;
 	objectCreatorDockPanel = objectCreatorPanel; 
 	gameViewportDockPanel = gameViewporPanel;
+	dialogueEditorDockPanel = dialogueEditorPanel;
 }
 
 void ModuleImGui::DeletePanels()
@@ -300,6 +305,7 @@ bool ModuleImGui::CleanUp()
 	//NodeGraph::getInstance()->DeleteAllConnections();
 	//NodeGraph::getInstance()->DeleteAllNodes();
 
+	imnodes::Shutdown();
 	ImGui_ImplSDL2_Shutdown(); 
 
 	return true;

@@ -18,6 +18,8 @@ public:
 	void DrawUISettings();
 
 	DialogueSlot* AddDialogueSlot(string _dialogueSlotText = "");
+	Dialogue* GetDialogueData(); 
+
 
 private: 
 	Dialogue* dialogue; 

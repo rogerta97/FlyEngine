@@ -54,3 +54,8 @@ DialogueSlot* DialogueAction::AddDialogueSlot(string _dialogueSlotText)
 {
 	return dialogue->AddDialogueSlot(_dialogueSlotText);
 }
+
+Dialogue* DialogueAction::GetDialogueData()
+{
+	return dialogue;
+}

@@ -1,12 +1,13 @@
 #include "DialogueEditorDockPanel.h"
 #include "NodeGraph.h"
+#include "DialogueNodeGraph.h"
 
 DialogueEditorDockPanel::DialogueEditorDockPanel(bool isVisible) : DockPanel("Dialogue Editor", isVisible)
 {
 	flyEngineSection = FLY_SECTION_ROOM_EDIT;
 	dockPanelType = DOCK_DIALOGUE_EDITOR; 
 
-	nodeGraph = new NodeGraph(DIALOGUE_GRAPH); 
+	nodeGraph = new DialogueNodeGraph();
 }
 
 DialogueEditorDockPanel::~DialogueEditorDockPanel()
@@ -17,7 +18,7 @@ bool DialogueEditorDockPanel::Draw()
 {
 	if (ImGui::Begin(panelName.c_str(), &visible)) 
 	{
-		nodeGraph->DrawNodeGraph(); 
+		nodeGraph->DrawGraph();
 	}
 
 	ImGui::End();
@@ -25,7 +26,7 @@ bool DialogueEditorDockPanel::Draw()
 	return true;
 }
 
-NodeGraph* DialogueEditorDockPanel::GetNodeGraph()
+DialogueNodeGraph* DialogueEditorDockPanel::GetNodeGraph()
 {
 	return nodeGraph;
 }
