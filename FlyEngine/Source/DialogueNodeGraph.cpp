@@ -29,12 +29,10 @@ void DialogueNodeGraph::DrawGraph()
 			imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(150, 80, 191, 255));
 
 			imnodes::BeginNodeTitleBar();
-			ImGui::Text("Hello Boy! Are you enjoying this?"); 
+			ImGui::Text("%s", currentStep->GetStepTextStr().c_str()); 
 			imnodes::EndNodeTitleBar();
 
 			imnodes::PopColorStyle(); 
-
-		//	ImGui::Dummy(ImVec2(350.0f, 0.0f));
 
 			imnodes::BeginInputAttribute(currentStep->GetUID() + 1);
 			ImGui::Text("In");

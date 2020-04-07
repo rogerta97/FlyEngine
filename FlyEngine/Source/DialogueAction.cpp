@@ -2,6 +2,9 @@
 #include "imgui.h"
 #include "Dialogue.h"
 #include "DialogueStep.h"
+#include "DisplayTextAction.h"
+#include "DialogueText.h"
+#include "StepAnswer.h"
 
 #include "Application.h"
 #include "ModuleImGui.h"
@@ -57,7 +60,11 @@ void DialogueAction::DrawUISettings()
 
 		for (auto& currentStep : dialogue->GetDialogueSteps())
 		{
-			ImGui::Selectable(currentStep->GetStepTextStr().c_str());
+			string selectableName = currentStep->GetStepTextStr() + "##" + to_string(currentStep->GetUID());
+			if (ImGui::Selectable(selectableName.c_str(), currentStep->isSelected))
+			{
+				dialogue->SetSelectedStep(currentStep->GetUID());
+			}
 		}
 
 		ImGui::EndChild();
@@ -72,6 +79,36 @@ void DialogueAction::DrawUISettings()
 		}
 
 		ImGui::Separator();
+
+		if (dialogue->GetSelectedStep() != nullptr)
+		{
+			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+			ImGui::Text("Step Settings");
+			ImGui::PopFont();
+
+			char demo[256] = "";
+			ImGui::InputText("Name", demo, IM_ARRAYSIZE(demo)); 
+
+
+			char demo2[256] = "";
+			ImGui::InputTextMultiline("Description##ObjectDescription", demo2, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 100, 100));	
+
+			PUSH_CHILD_BG_COLOR_DARK;
+			ImGui::BeginChild("Answers Dialogue Holder", ImVec2(ImGui::GetContentRegionAvail().x, 200));
+
+			for (auto& currentAnswer : dialogue->GetSelectedStep()->GetAnswersList())
+			{
+				string selectableName = currentAnswer->GetAnswerDialogueText()->GetTextAction()->GetText() + "##" + to_string(currentAnswer->GetUID());
+				if (ImGui::CollapsingHeader(selectableName.c_str()))
+				{
+					char demo2[256] = "";
+					ImGui::InputTextMultiline("Description##ObjectDescription", demo2, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 100, 100));
+				}
+			}
+
+			ImGui::EndChild();
+			ImGui::PopStyleColor();
+		}
 	}
 }
 

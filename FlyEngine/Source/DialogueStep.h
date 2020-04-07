@@ -27,6 +27,8 @@ public:
 	// Set & Get ---------
 	UID GetUID() const; 
 
+	bool isSelected = false; 
+
 private: 
 	DialogueText* dialogueText; 
 	list<StepAnswer*> answersList; 

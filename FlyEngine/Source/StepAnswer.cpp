@@ -32,6 +32,7 @@ void StepAnswer::AddCallbackAction(Action* newCallbackAction)
 		callbackActions.push_back(newCallbackAction);
 }
 
+
 DialogueText* StepAnswer::GetAnswerDialogueText()
 {
 	return answerDialogueText;

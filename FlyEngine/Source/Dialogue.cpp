@@ -8,6 +8,7 @@
 
 Dialogue::Dialogue()
 {
+	selectedStep = nullptr;
 }
 
 Dialogue::~Dialogue()
@@ -32,4 +33,28 @@ DialogueStep* Dialogue::AddDialogueStep(string _stepText)
 list<DialogueStep*>& Dialogue::GetDialogueSteps()
 {
 	return dialogueSteps; 
+}
+
+DialogueStep* Dialogue::GetSelectedStep()
+{
+	return selectedStep;
+}
+
+void Dialogue::SetSelectedStep(UID selectedStepUID)
+{
+	bool set = false; 
+	for (auto& currentStep : dialogueSteps)
+	{
+		if (selectedStepUID == currentStep->GetUID())
+		{
+			currentStep->isSelected = true;
+			selectedStep = currentStep; 
+			set = true; 
+		}		
+		else
+			currentStep->isSelected = false; 
+	}
+
+	if (!set)
+		selectedStep = nullptr; 
 }

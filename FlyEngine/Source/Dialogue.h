@@ -1,6 +1,8 @@
 #ifndef _DIALOGUE_H_
 #define _DIALOGUE_H_
 
+#include "Globals.h"
+
 #include <list>
 #include <string>
 
@@ -16,8 +18,12 @@ public:
 	DialogueStep* AddDialogueStep(string _stepText);
 	list<DialogueStep*>& GetDialogueSteps(); 
 
+	DialogueStep* GetSelectedStep(); 
+	void SetSelectedStep(UID selectedStepUID); 
+
 private: 
 	list<DialogueStep*> dialogueSteps; 
+	DialogueStep* selectedStep; 
 };
 
 
