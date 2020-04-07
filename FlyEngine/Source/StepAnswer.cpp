@@ -1,10 +1,12 @@
 #include "StepAnswer.h"
 #include "DialogueText.h"
+#include "RandomNumberGenerator.h"
 
 StepAnswer::StepAnswer(string newAnswerText)
 {
 	answerDialogueText = new DialogueText();
 	answerDialogueText->SetDialogueText(newAnswerText);  
+	answerUID = RandomNumberGenerator::getInstance()->GenerateUID(); 
 
 	destinationStep = nullptr; 
 }
@@ -19,7 +21,7 @@ void StepAnswer::SetAnswerText(string newAnswerText)
 	answerDialogueText->SetDialogueText(newAnswerText); 
 }
 
-void StepAnswer::SetDestinationStep(DialogueSlot* dstStep)
+void StepAnswer::SetDestinationStep(DialogueStep* dstStep)
 {
 	destinationStep = dstStep;
 }
@@ -35,7 +37,12 @@ DialogueText* StepAnswer::GetAnswerDialogueText()
 	return answerDialogueText;
 }
 
-DialogueSlot* StepAnswer::GetDestinationStep()
+DialogueStep* StepAnswer::GetDestinationStep()
 {
 	return destinationStep;
+}
+
+UID StepAnswer::GetUID()
+{
+	return answerUID;
 }

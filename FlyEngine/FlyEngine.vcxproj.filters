@@ -471,14 +471,14 @@
     <ClCompile Include="Source\StepAnswer.cpp">
       <Filter>Source\Tools\Dialogues</Filter>
     </ClCompile>
-    <ClCompile Include="Source\DialogueSlot.cpp">
-      <Filter>Source\Tools\Dialogues</Filter>
-    </ClCompile>
     <ClCompile Include="Source\imnodes.cpp">
       <Filter>Source\3rdParty\imnodes</Filter>
     </ClCompile>
     <ClCompile Include="Source\DialogueNodeGraph.cpp">
       <Filter>Source\Tools\NodeGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DialogueStep.cpp">
+      <Filter>Source\Tools\Dialogues</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -950,14 +950,14 @@
     <ClInclude Include="Source\StepAnswer.h">
       <Filter>Source\Tools\Dialogues</Filter>
     </ClInclude>
-    <ClInclude Include="Source\DialogueSlot.h">
-      <Filter>Source\Tools\Dialogues</Filter>
-    </ClInclude>
     <ClInclude Include="Source\imnodes.h">
       <Filter>Source\3rdParty\imnodes</Filter>
     </ClInclude>
     <ClInclude Include="Source\DialogueNodeGraph.h">
       <Filter>Source\Tools\NodeGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DialogueStep.h">
+      <Filter>Source\Tools\Dialogues</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

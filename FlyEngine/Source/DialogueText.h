@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class DialogueSlot;
+class DialogueStep;
 class DisplayTextAction;
 class DialogueText
 {
@@ -16,6 +16,7 @@ public:
 	~DialogueText();
  
 	void SetDialogueText(string newDialogueText); 
+	DisplayTextAction* GetTextAction(); 
 
 private:
 	DisplayTextAction* displayTextAction; 	

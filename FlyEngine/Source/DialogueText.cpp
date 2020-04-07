@@ -17,3 +17,8 @@ void DialogueText::SetDialogueText(string newDialogueText)
 {
 	displayTextAction->SetText(newDialogueText); 
 }
+
+DisplayTextAction* DialogueText::GetTextAction()
+{
+	return displayTextAction;
+}

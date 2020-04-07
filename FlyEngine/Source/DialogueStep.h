@@ -10,17 +10,19 @@ using namespace std;
 
 class StepAnswer;
 class DialogueText; 
-class DialogueSlot
+class DialogueStep
 {
 public: 
-	DialogueSlot(string _dialogueText = "");
-	~DialogueSlot(); 
+	DialogueStep(string _dialogueText = "");
+	~DialogueStep(); 
 
 	// Step Utilities ----
-	void SetDialogueText(string _dialogueText); 
+	void SetStepText(string _dialogueText); 
+	string GetStepTextStr();
 
 	// Answers -----------
 	void AddStepAnswer(string _answerText);
+	list<StepAnswer*>& GetAnswersList();
 
 	// Set & Get ---------
 	UID GetUID() const; 
@@ -29,7 +31,7 @@ private:
 	DialogueText* dialogueText; 
 	list<StepAnswer*> answersList; 
 
-	UID slotUID; 
+	UID stepUID; 
 };
 
 

@@ -1,4 +1,9 @@
 #include "DialogueNodeGraph.h"
+#include "Dialogue.h"
+#include "DialogueStep.h"
+#include "DialogueText.h"
+#include "StepAnswer.h"
+#include "DisplayTextAction.h"
 #include "imgui.h"
 
 DialogueNodeGraph::DialogueNodeGraph()
@@ -17,9 +22,41 @@ void DialogueNodeGraph::DrawGraph()
 	{
 		imnodes::BeginNodeEditor();
 
-		imnodes::BeginNode(1);
-		ImGui::Dummy(ImVec2(80.0f, 45.0f));
-		imnodes::EndNode();
+		for (auto& currentStep : dialogue->GetDialogueSteps())
+		{
+			imnodes::BeginNode(currentStep->GetUID());
+
+			imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(150, 80, 191, 255));
+
+			imnodes::BeginNodeTitleBar();
+			ImGui::Text("Hello Boy! Are you enjoying this?"); 
+			imnodes::EndNodeTitleBar();
+
+			imnodes::PopColorStyle(); 
+
+		//	ImGui::Dummy(ImVec2(350.0f, 0.0f));
+
+			imnodes::BeginInputAttribute(currentStep->GetUID() + 1);
+			ImGui::Text("In");
+			imnodes::EndAttribute();
+
+			// Draw Answer Pins
+			int counter = 0; 
+			for (auto& currentAnswer : currentStep->GetAnswersList())
+			{
+				string answerText = currentAnswer->GetAnswerDialogueText()->GetTextAction()->GetText();
+
+				imnodes::BeginOutputAttribute(currentAnswer->GetUID());
+				const float label_width = ImGui::CalcTextSize(answerText.c_str()).x;
+
+				ImGui::Indent(350 - label_width);
+				ImGui::Text("%s", answerText.c_str()); 
+
+				imnodes::EndAttribute();
+			}
+
+			imnodes::EndNode();
+		}
 
 		imnodes::EndNodeEditor();
 	}

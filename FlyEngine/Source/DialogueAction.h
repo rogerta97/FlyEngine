@@ -7,7 +7,7 @@
 using namespace std;
 
 class Dialogue; 
-class DialogueSlot; 
+class DialogueStep; 
 class DialogueAction : public Action
 {
 public:
@@ -16,12 +16,14 @@ public:
 
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false, int actionPositionInObject = 0);
 	void DrawUISettings();
+	void DrawActionOccurenceCheckboxes();
 
-	DialogueSlot* AddDialogueSlot(string _dialogueSlotText = "");
+	DialogueStep* AddDialogueStep(string _dialogueSlotText = "");
 	Dialogue* GetDialogueData(); 
 
-
 private: 
+
+	bool showVariableConditions; 
 	Dialogue* dialogue; 
 };
 

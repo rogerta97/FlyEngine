@@ -1,5 +1,5 @@
 #include "Dialogue.h"
-#include "DialogueSlot.h"
+#include "DialogueStep.h"
 #include "NodeGraph.h"
 
 #include "Application.h"
@@ -14,11 +14,11 @@ Dialogue::~Dialogue()
 {
 }
 
-DialogueSlot* Dialogue::AddDialogueSlot(string _stepText)
+DialogueStep* Dialogue::AddDialogueStep(string _stepText)
 {
 	// Add Slot To Dialogue -------------------
-	DialogueSlot* newDialogueSlot = new DialogueSlot(_stepText);
-	dialogueSlots.push_back(newDialogueSlot); 
+	DialogueStep* newDialogueStep = new DialogueStep(_stepText);
+	dialogueSteps.push_back(newDialogueStep); 
 
 	//// Add Slot to the node graph -------------
 	//NodeGraph* dialoguesNodeGraph = App->moduleManager->GetCurrentDialogueEditor()->GetNodeGraph();
@@ -26,5 +26,10 @@ DialogueSlot* Dialogue::AddDialogueSlot(string _stepText)
 	//if (dialoguesNodeGraph != nullptr)
 	//	dialoguesNodeGraph->CreateNode(_stepText, ImVec2(0, 0), newDialogueSlot->GetUID()); 
 	//
-	return newDialogueSlot; 
+	return newDialogueStep; 
+}
+
+list<DialogueStep*>& Dialogue::GetDialogueSteps()
+{
+	return dialogueSteps; 
 }

@@ -706,7 +706,7 @@ void DisplayTextAction::CalculateOriginTextPosition()
 		assert(false); 
 	}
 
-	flog("Origin: %f %f", originTextPosition.x, originTextPosition.y);
+	//flog("Origin: %f %f", originTextPosition.x, originTextPosition.y);
 	originTextPosition = float2(textBox->GetMinPoint().x, textBox->GetMaxPoint().y);
 }
 

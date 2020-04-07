@@ -1,13 +1,15 @@
 #ifndef _DIALOGUE_ANSWER_H_
 #define _DIALOGUE_ANSWER_H_
 
+#include "Globals.h"
+
 #include <list>
 #include <string>
 
 using namespace std;
 
 class Action; 
-class DialogueSlot; 
+class DialogueStep; 
 class DialogueText; 
 class StepAnswer
 {
@@ -21,13 +23,18 @@ public:
 	void SetAnswerText(string newAnswerText); 
 	DialogueText* GetAnswerDialogueText();
 	
-	void SetDestinationStep(DialogueSlot* dstStep);
-	DialogueSlot* GetDestinationStep();
+	void SetDestinationStep(DialogueStep* dstStep);
+	DialogueStep* GetDestinationStep();
+
+	UID GetUID(); 
 
 private: 
+
 	DialogueText* answerDialogueText; 
-	DialogueSlot* destinationStep; 
+	DialogueStep* destinationStep; 
 	list<Action*> callbackActions;
+
+	UID answerUID; 
 };
 
 
