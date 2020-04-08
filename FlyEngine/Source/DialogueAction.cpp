@@ -60,7 +60,7 @@ void DialogueAction::DrawUISettings()
 
 		for (auto& currentStep : dialogue->GetDialogueSteps())
 		{
-			string selectableName = currentStep->GetStepTextStr() + "##" + to_string(currentStep->GetUID());
+			string selectableName = currentStep->GetName() + "##" + to_string(currentStep->GetUID());
 			if (ImGui::Selectable(selectableName.c_str(), currentStep->isSelected))
 			{
 				dialogue->SetSelectedStep(currentStep->GetUID());
@@ -86,26 +86,68 @@ void DialogueAction::DrawUISettings()
 			ImGui::Text("Step Settings");
 			ImGui::PopFont();
 
-			char demo[256] = "";
-			ImGui::InputText("Name", demo, IM_ARRAYSIZE(demo)); 
+			ImGui::Separator();
 
+			char stepNameBuffer[256] = "";
+			if (!dialogue->GetSelectedStep()->GetName().empty())
+				strcpy(stepNameBuffer, dialogue->GetSelectedStep()->GetName().c_str());
 
-			char demo2[256] = "";
-			ImGui::InputTextMultiline("Description##ObjectDescription", demo2, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 100, 100));	
+			if (ImGui::InputText("Name", stepNameBuffer, IM_ARRAYSIZE(stepNameBuffer)))
+			{
+				dialogue->GetSelectedStep()->SetName(stepNameBuffer);
+			}
 
-			PUSH_CHILD_BG_COLOR_DARK;
+			static char stepTextBuffer[256] = "";
+			if (!dialogue->GetSelectedStep()->GetStepTextStr().empty())
+				strcpy(stepTextBuffer, dialogue->GetSelectedStep()->GetStepTextStr().c_str());
+
+			if (ImGui::InputTextMultiline("Description##ObjectDescription", stepTextBuffer, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 100, 100)))
+			{
+				dialogue->GetSelectedStep()->SetStepText(stepTextBuffer);
+			}
+			
+			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+			ImGui::Text("Answers List:");
+			ImGui::PopFont();
+
+			ImGui::Separator();
+
+			PUSH_CHILD_BG_COLOR;
 			ImGui::BeginChild("Answers Dialogue Holder", ImVec2(ImGui::GetContentRegionAvail().x, 200));
 
+			INC_CURSOR_7;
+			ImGui::BeginChild("Answers Dialogue Holder", ImVec2(ImGui::GetContentRegionAvail().x - 8, 190));
 			for (auto& currentAnswer : dialogue->GetSelectedStep()->GetAnswersList())
 			{
-				string selectableName = currentAnswer->GetAnswerDialogueText()->GetTextAction()->GetText() + "##" + to_string(currentAnswer->GetUID());
-				if (ImGui::CollapsingHeader(selectableName.c_str()))
+				string headerName = currentAnswer->GetName();
+				string headerNameWithUID = currentAnswer->GetName() +"##" + to_string(currentAnswer->GetUID());
+				if (ImGui::CollapsingHeader(headerNameWithUID.c_str()))
 				{
-					char demo2[256] = "";
-					ImGui::InputTextMultiline("Description##ObjectDescription", demo2, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 100, 100));
+					char answerNameBuffer[256] = "";
+
+					if(!headerName.empty())
+						strcpy(answerNameBuffer, headerName.c_str());
+
+					if (ImGui::InputText("Name", answerNameBuffer, IM_ARRAYSIZE(answerNameBuffer)))
+					{
+						currentAnswer->SetName(answerNameBuffer); 
+					}
+				
+					string answerText = currentAnswer->GetAnswerDialogueText()->GetTextAction()->GetText() + "##" + to_string(currentAnswer->GetUID());
+					static char answerTextBuffer[256] = "";
+
+					if (!answerText.empty())
+						strcpy(answerNameBuffer, answerText.c_str());
+
+					if (ImGui::InputTextMultiline("Description##AnswerDescription", answerTextBuffer, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 100, 100)))
+					{
+						currentAnswer->SetAnswerText(answerTextBuffer);
+					}
+					
 				}
 			}
 
+			ImGui::EndChild();
 			ImGui::EndChild();
 			ImGui::PopStyleColor();
 		}

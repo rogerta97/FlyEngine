@@ -25,6 +25,9 @@ public:
 	list<StepAnswer*>& GetAnswersList();
 
 	// Set & Get ---------
+	string GetName();
+	void SetName(string newName);
+
 	UID GetUID() const; 
 
 	bool isSelected = false; 
@@ -33,6 +36,7 @@ private:
 	DialogueText* dialogueText; 
 	list<StepAnswer*> answersList; 
 
+	string stepName; 
 	UID stepUID; 
 };
 

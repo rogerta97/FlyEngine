@@ -7,6 +7,7 @@ StepAnswer::StepAnswer(string newAnswerText)
 	answerDialogueText = new DialogueText();
 	answerDialogueText->SetDialogueText(newAnswerText);  
 	answerUID = RandomNumberGenerator::getInstance()->GenerateUID(); 
+	SetName("Answer..."); 
 
 	destinationStep = nullptr; 
 }
@@ -41,6 +42,16 @@ DialogueText* StepAnswer::GetAnswerDialogueText()
 DialogueStep* StepAnswer::GetDestinationStep()
 {
 	return destinationStep;
+}
+
+string StepAnswer::GetName()
+{
+	return answerName;
+}
+
+void StepAnswer::SetName(string newName)
+{
+	answerName = newName; 
 }
 
 UID StepAnswer::GetUID()

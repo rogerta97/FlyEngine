@@ -26,6 +26,9 @@ public:
 	void SetDestinationStep(DialogueStep* dstStep);
 	DialogueStep* GetDestinationStep();
 
+	string GetName(); 
+	void SetName(string newName);
+
 	UID GetUID(); 
 
 private: 
@@ -34,6 +37,7 @@ private:
 	DialogueStep* destinationStep; 
 	list<Action*> callbackActions;
 
+	string answerName; 
 	UID answerUID; 
 };
 
