@@ -58,15 +58,18 @@ void DialogueAction::DrawUISettings()
 		PUSH_CHILD_BG_COLOR_DARK;
 		ImGui::BeginChild("Steps Dialogue Holder", ImVec2(ImGui::GetContentRegionAvail().x, 150)); 
 
+		INC_CURSOR_7;
+		ImGui::BeginChild("Steps Dialogue Holder Inside", ImVec2(ImGui::GetContentRegionAvail().x - 8, 140));
 		for (auto& currentStep : dialogue->GetDialogueSteps())
 		{
 			string selectableName = currentStep->GetName() + "##" + to_string(currentStep->GetUID());
-			if (ImGui::Selectable(selectableName.c_str(), currentStep->isSelected))
+			if (ImGui::Selectable(string(" " + selectableName).c_str(), currentStep->isSelected))
 			{
 				dialogue->SetSelectedStep(currentStep->GetUID());
 			}
 		}
 
+		ImGui::EndChild();
 		ImGui::EndChild();
 		ImGui::PopStyleColor(); 
 
@@ -85,8 +88,6 @@ void DialogueAction::DrawUISettings()
 			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 			ImGui::Text("Step Settings");
 			ImGui::PopFont();
-
-			ImGui::Separator();
 
 			char stepNameBuffer[256] = "";
 			if (!dialogue->GetSelectedStep()->GetName().empty())
@@ -121,29 +122,33 @@ void DialogueAction::DrawUISettings()
 			{
 				string headerName = currentAnswer->GetName();
 				string headerNameWithUID = currentAnswer->GetName() +"##" + to_string(currentAnswer->GetUID());
-				if (ImGui::CollapsingHeader(headerNameWithUID.c_str()))
+				if (ImGui::CollapsingHeader(headerNameWithUID.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 				{
-					char answerNameBuffer[256] = "";
+					static char answerNameBuffer[256] = "";
 
 					if(!headerName.empty())
 						strcpy(answerNameBuffer, headerName.c_str());
 
-					if (ImGui::InputText("Name", answerNameBuffer, IM_ARRAYSIZE(answerNameBuffer)))
+					ImGui::Indent(15);
+					if (ImGui::InputText(string("Name##" + to_string(currentAnswer->GetUID())).c_str(), answerNameBuffer, IM_ARRAYSIZE(answerNameBuffer)))
 					{
 						currentAnswer->SetName(answerNameBuffer); 
 					}
 				
-					string answerText = currentAnswer->GetAnswerDialogueText()->GetTextAction()->GetText() + "##" + to_string(currentAnswer->GetUID());
+					string answerText = currentAnswer->GetAnswerDialogueText()->GetTextAction()->GetText();
+					string answerTextWithUID = currentAnswer->GetAnswerDialogueText()->GetTextAction()->GetText() + "##" + to_string(currentAnswer->GetUID());
+
 					static char answerTextBuffer[256] = "";
 
 					if (!answerText.empty())
-						strcpy(answerNameBuffer, answerText.c_str());
+						strcpy(answerTextBuffer, answerText.c_str());
 
-					if (ImGui::InputTextMultiline("Description##AnswerDescription", answerTextBuffer, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 100, 100)))
+					if (ImGui::InputTextMultiline(string("Text##" + to_string(currentAnswer->GetUID())).c_str(), answerTextBuffer, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 100, 100)))
 					{
 						currentAnswer->SetAnswerText(answerTextBuffer);
 					}
-					
+					ImGui::Indent(-15);
+					ImGui::Spacing(); 
 				}
 			}
 
