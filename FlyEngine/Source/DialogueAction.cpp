@@ -42,6 +42,8 @@ void DialogueAction::SaveAction(JSON_Object* jsonObject, string serializeObjectS
 	Action::SaveAction(jsonObject, actionSerializeSection);
 	Action::SaveOccurrence(jsonObject, actionSerializeSection);
 
+	json_object_dotset_number(jsonObject, string(actionSerializeSection + "NodeGraphID").c_str(), dialogue->GetUID());
+
 	// Save Steps Data 
 	string serialiseStepStr = actionSerializeSection + "Steps.";
 	json_object_dotset_number(jsonObject, string(serialiseStepStr + "StepsAmount").c_str(), dialogue->GetDialogueSteps().size()); 
@@ -53,6 +55,9 @@ void DialogueAction::SaveAction(JSON_Object* jsonObject, string serializeObjectS
 		currentStep->SaveStep(jsonObject, stepStr);
 		counter++;
 	}
+
+	// Save Node Graph Data
+
 }
 
 void DialogueAction::DrawUISettings()

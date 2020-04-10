@@ -35,6 +35,7 @@ public:
 	// Get Directories ---
 	static string GetIconsDirectory();
 	static string GetSavedDataDirectory(); 
+	static string GetDialogueNodesDirectory();
 	static string GetSolutionDirectory();
 	static string GetGameDirectory(); 
 	static string GetResourcesDirectory(); 

@@ -161,6 +161,11 @@ string MyFileSystem::GetSavedDataDirectory()
 	return instance->GetSolutionDirectory() + "Source\\Game\\Resources\\EngineResources\\EngineSavedData\\";
 }
 
+string MyFileSystem::GetDialogueNodesDirectory()
+{
+	return instance->GetSolutionDirectory() + "Source\\Game\\Resources\\EngineResources\\EngineSavedData\\NodeGraphData\\Dialogues\\";
+}
+
 void MyFileSystem::GetRelativeDirectory(string& directory)
 {
 	instance->DeleteFrontItem(directory);

@@ -23,9 +23,13 @@ public:
 
 	DialogueStep* GetStepFromID(UID stepUI); 
 
+	UID GetUID(); 
+
 private: 
 	list<DialogueStep*> dialogueSteps; 
 	DialogueStep* selectedStep; 
+
+	UID dialogueUID; 
 };
 
 

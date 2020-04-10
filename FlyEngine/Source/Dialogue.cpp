@@ -6,9 +6,14 @@
 #include "ModuleManager.h"
 #include "DialogueEditorDockPanel.h"
 
+#include "RandomNumberGenerator.h"
+
+#include "mmgr.h"
+
 Dialogue::Dialogue()
 {
 	selectedStep = nullptr;
+	dialogueUID = RandomNumberGenerator::getInstance()->GenerateUID(); 
 }
 
 Dialogue::~Dialogue()
@@ -57,6 +62,11 @@ void Dialogue::SetSelectedStep(UID selectedStepUID)
 
 	if (!set)
 		selectedStep = nullptr; 
+}
+
+UID Dialogue::GetUID()
+{
+	return dialogueUID;
 }
 
 DialogueStep* Dialogue::GetStepFromID(UID stepUID)

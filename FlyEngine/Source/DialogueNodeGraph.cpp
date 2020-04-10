@@ -4,6 +4,11 @@
 #include "DialogueText.h"
 #include "StepAnswer.h"
 #include "DisplayTextAction.h"
+#include "MyFileSystem.h"
+
+#include "Application.h"
+#include "ModuleInput.h"
+
 #include "imgui.h"
 
 DialogueNodeGraph::DialogueNodeGraph()
@@ -83,7 +88,17 @@ void DialogueNodeGraph::DrawGraph()
 				links.push_back(std::make_pair(start_attr, end_attr));
 		}
 
-		//imnodes::SaveCurrentEditorStateToIniFile()
+		if (App->moduleInput->GetKey(SDL_SCANCODE_0))
+		{
+			string nodeGraphPath = MyFileSystem::getInstance()->GetDialogueNodesDirectory() + to_string((int)dialogue->GetUID()) + ".ini";
+			imnodes::SaveCurrentEditorStateToIniFile(nodeGraphPath.c_str());
+		}
+
+		if (App->moduleInput->GetKey(SDL_SCANCODE_1))
+		{
+			string nodeGraphPath = MyFileSystem::getInstance()->GetDialogueNodesDirectory() + to_string((int)dialogue->GetUID()) + ".ini";
+			imnodes::LoadCurrentEditorStateFromIniFile(nodeGraphPath.c_str());
+		}
 	}
 }
 
