@@ -2,6 +2,7 @@
 #define _DIALOGUE_SLOT_H_
 
 #include "Globals.h"
+#include "SaveAndLoad.h" // bazokazo
 
 #include <list>
 #include <string>
@@ -10,11 +11,14 @@ using namespace std;
 
 class StepAnswer;
 class DialogueText; 
+
 class DialogueStep
 {
 public: 
 	DialogueStep(string _dialogueText = "");
 	~DialogueStep(); 
+
+	void SaveStep(JSON_Object* jsonObject, string serializeObjectString);
 
 	// Step Utilities ----
 	void SetStepText(string _dialogueText); 

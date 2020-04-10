@@ -241,6 +241,8 @@ void MyFileSystem::Init()
 {
 	CreateDirectory(string(GetSavedDataDirectory() + "RoomsData").c_str(), NULL);
 	CreateDirectory(string(GetSavedDataDirectory() + "BlackboardsData").c_str(), NULL);
+	CreateDirectory(string(GetSavedDataDirectory() + "NodeGraphData").c_str(), NULL);
+	CreateDirectory(string(GetSavedDataDirectory() + "NodeGraphData\\Dialogues").c_str(), NULL);
 }
 
 void MyFileSystem::Delete()

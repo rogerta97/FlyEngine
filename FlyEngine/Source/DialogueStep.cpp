@@ -21,6 +21,22 @@ DialogueStep::~DialogueStep()
 	
 }
 
+void DialogueStep::SaveStep(JSON_Object* jsonObject, string serializeObjectString)
+{
+	json_object_dotset_string(jsonObject, string(serializeObjectString + "Name").c_str(), stepName.c_str());
+	json_object_dotset_string(jsonObject, string(serializeObjectString + "Text").c_str(), dialogueText->GetTextAction()->GetText().c_str());
+
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "Answers.AnswersAmount").c_str(), answersList.size());
+	
+	int counter = 0; 
+	for (auto& currentAnswer : answersList)
+	{
+		string serializeAnswerStr = serializeObjectString + "Answers.Answer_" + to_string(counter) + ".";
+		currentAnswer->SaveAnswer(jsonObject, serializeAnswerStr);
+		counter++; 
+	}
+}
+
 void DialogueStep::SetStepText(string _dialogueText)
 {
 	dialogueText->SetDialogueText(_dialogueText);

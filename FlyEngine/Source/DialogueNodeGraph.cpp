@@ -76,8 +76,14 @@ void DialogueNodeGraph::DrawGraph()
 		int start_attr, end_attr;
 		if (imnodes::IsLinkCreated(&start_attr, &end_attr))
 		{
-			links.push_back(std::make_pair(start_attr, end_attr));
+			flog("%d", start_attr);
+			flog("%d", end_attr);
+
+			if(dialogue->GetStepFromID(end_attr - 1) != nullptr)
+				links.push_back(std::make_pair(start_attr, end_attr));
 		}
+
+		//imnodes::SaveCurrentEditorStateToIniFile()
 	}
 }
 
