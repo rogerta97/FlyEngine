@@ -21,6 +21,8 @@ public:
 	DialogueStep* GetSelectedStep(); 
 	void SetSelectedStep(UID selectedStepUID); 
 
+	DialogueStep* GetStepFromID(UID stepUI); 
+
 private: 
 	list<DialogueStep*> dialogueSteps; 
 	DialogueStep* selectedStep; 

@@ -58,3 +58,14 @@ void Dialogue::SetSelectedStep(UID selectedStepUID)
 	if (!set)
 		selectedStep = nullptr; 
 }
+
+DialogueStep* Dialogue::GetStepFromID(UID stepUID)
+{
+	for (auto& currentStep : dialogueSteps)
+	{
+		if (currentStep->GetUID() == stepUID)
+			return currentStep;
+	}
+
+	return nullptr; 
+}

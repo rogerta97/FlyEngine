@@ -5,6 +5,7 @@
 #include "imnodes.h"
 
 #include <list>
+#include <vector>
 #include <string>
 
 //class DialogueSlot; 
@@ -45,6 +46,7 @@ public:
 
 private:
 	Dialogue* dialogue;
+	std::vector<std::pair<int, int>> links;
 };
 
 #endif

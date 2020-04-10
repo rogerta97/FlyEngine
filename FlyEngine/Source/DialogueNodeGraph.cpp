@@ -22,6 +22,7 @@ void DialogueNodeGraph::DrawGraph()
 	{
 		imnodes::BeginNodeEditor();
 
+		// Draw Nodes 
 		for (auto& currentStep : dialogue->GetDialogueSteps())
 		{
 			imnodes::BeginNode(currentStep->GetUID());
@@ -53,10 +54,30 @@ void DialogueNodeGraph::DrawGraph()
 				imnodes::EndAttribute();
 			}
 
+
 			imnodes::EndNode();
 		}
 
+
+		// Draw Links
+		for (int i = 0; i < links.size(); ++i)
+		{
+			const std::pair<int, int> p = links[i];
+
+			// in this case, we just use the array index of the link
+			// as the unique identifier
+
+			imnodes::Link(i, p.first, p.second);
+		}
+
 		imnodes::EndNodeEditor();
+
+		// Check new links 
+		int start_attr, end_attr;
+		if (imnodes::IsLinkCreated(&start_attr, &end_attr))
+		{
+			links.push_back(std::make_pair(start_attr, end_attr));
+		}
 	}
 }
 
