@@ -2,17 +2,19 @@
 #include "DialogueText.h"
 #include "DisplayTextAction.h"
 #include "StepAnswer.h"
+#include "Dialogue.h"
 #include "NodeGraph.h"
 
 #include "Application.h"
 #include "ModuleManager.h"
 #include "DialogueEditorDockPanel.h"
 
-DialogueStep::DialogueStep(string _dialogueText, string _dialogueName)
+DialogueStep::DialogueStep(Dialogue* _parentDialogue, string _dialogueText, string _dialogueName)
 {
 	dialogueText = new DialogueText();
 	dialogueText->SetDialogueText(_dialogueText);
 	stepUID = RandomNumberGenerator::getInstance()->GenerateUID(); 
+	parentDialogue = _parentDialogue; 
 	SetName(_dialogueName.c_str());
 }
 
@@ -55,9 +57,11 @@ string DialogueStep::GetTextStr()
 StepAnswer* DialogueStep::AddStepAnswer(string _answerText, string _answerName)
 {
 	// Add Answer ----
-	StepAnswer* newStepAnswer = new StepAnswer(); 
+	StepAnswer* newStepAnswer = new StepAnswer(this); 
 	newStepAnswer->SetAnswerText(_answerText);
 	answersList.push_back(newStepAnswer); 
+	parentDialogue->answersMap.insert(std::make_pair(newAnswer->GetUID(), newAnswer));
+
 	return newStepAnswer; 
 }
 
@@ -74,6 +78,16 @@ string DialogueStep::GetName()
 void DialogueStep::SetName(string newName)
 {
 	stepName = newName; 
+}
+
+Dialogue* DialogueStep::GetParentDialogue()
+{
+	return parentDialogue;
+}
+
+void DialogueStep::SetParentDialogue(Dialogue* newParentDialogue)
+{
+	parentDialogue = newParentDialogue; 
 }
 
 UID DialogueStep::GetUID() const

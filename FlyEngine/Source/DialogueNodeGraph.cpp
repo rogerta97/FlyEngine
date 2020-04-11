@@ -85,12 +85,12 @@ void DialogueNodeGraph::DrawGraph()
 		flog("%d", start_attr);
 		flog("%d", end_attr);
 
-	/*	DialogueStep* destinationStep = dialogue->GetStepFromID(end_attr - 1);
+		DialogueStep* destinationStep = dialogue->GetStepFromID(end_attr - 1);
 		if (destinationStep != nullptr)
 		{
-			destinationStep->
+			StepAnswer* stepAnswer = dialogue->GetAnswerFromID(start_attr);
 			links.push_back(std::make_pair(start_attr, end_attr));
-		}*/
+		}
 	}
 
 	// Load Node Graph If Needed -----------------------------

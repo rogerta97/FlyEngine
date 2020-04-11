@@ -23,8 +23,9 @@ Dialogue::~Dialogue()
 DialogueStep* Dialogue::AddDialogueStep(string _stepText, string _stepName)
 {
 	// Add Slot To Dialogue -------------------
-	DialogueStep* newDialogueStep = new DialogueStep(_stepText, _stepName);
+	DialogueStep* newDialogueStep = new DialogueStep(this, _stepText, _stepName);
 	dialogueSteps.push_back(newDialogueStep); 
+	stepsMap.insert(std::make_pair(newDialogueStep->GetUID(), newDialogueStep));
 
 	//// Add Slot to the node graph -------------
 	//NodeGraph* dialoguesNodeGraph = App->moduleManager->GetCurrentDialogueEditor()->GetNodeGraph();
@@ -69,13 +70,23 @@ UID Dialogue::GetUID()
 	return dialogueUID;
 }
 
-DialogueStep* Dialogue::GetStepFromID(UID stepUID)
-{
-	for (auto& currentStep : dialogueSteps)
-	{
-		if (currentStep->GetUID() == stepUID)
-			return currentStep;
-	}
+//DialogueStep* Dialogue::GetStepFromID(UID stepUID)
+//{
+//	for (auto& currentStep : dialogueSteps)
+//	{
+//		if (currentStep->GetUID() == stepUID)
+//			return currentStep;
+//	}
+//
+//	return nullptr; 
+//}
 
-	return nullptr; 
+StepAnswer* Dialogue::GetAnswerFromID(UID key)
+{	
+	return answersMap[key];
+}
+
+DialogueStep* Dialogue::GetStepFromID(UID key)
+{
+	return stepsMap[key]; 	
 }

@@ -4,12 +4,13 @@
 #include "RandomNumberGenerator.h"
 #include "DisplayTextAction.h"
 
-StepAnswer::StepAnswer(string newAnswerText, string newAnswerName)
+StepAnswer::StepAnswer(DialogueStep* _parentStep, string newAnswerText, string newAnswerName)
 {
 	answerDialogueText = new DialogueText();
 	answerDialogueText->SetDialogueText(newAnswerText);  
 	answerUID = RandomNumberGenerator::getInstance()->GenerateUID(); 
 	SetName(newAnswerName.c_str());
+	parentStep = _parentStep;
 
 	destinationStep = nullptr; 
 }
@@ -72,6 +73,16 @@ string StepAnswer::GetName()
 void StepAnswer::SetName(string newName)
 {
 	answerName = newName; 
+}
+
+DialogueStep* StepAnswer::GetParentStep()
+{
+	return parentStep;
+}
+
+void StepAnswer::SetParentStep(DialogueStep* newParentStep)
+{
+	parentStep = newParentStep; 
 }
 
 UID StepAnswer::GetUID()

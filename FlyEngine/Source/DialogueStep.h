@@ -11,11 +11,11 @@ using namespace std;
 
 class StepAnswer;
 class DialogueText; 
-
+class Dialogue; 
 class DialogueStep
 {
 public: 
-	DialogueStep(string _dialogueText = "", string _dialogueName = "");
+	DialogueStep(Dialogue* parentDialogue, string _dialogueText = "", string _dialogueName = "");
 	~DialogueStep(); 
 
 	void SaveStep(JSON_Object* jsonObject, string serializeObjectString);
@@ -32,11 +32,15 @@ public:
 	string GetName();
 	void SetName(string newName);
 
+	Dialogue* GetParentDialogue();
+	void SetParentDialogue(Dialogue* newParentStep);
+
 	UID GetUID() const; 
 
 	bool isSelected = false; 
 
 private: 
+	Dialogue* parentDialogue; 
 	DialogueText* dialogueText; 
 	list<StepAnswer*> answersList; 
 

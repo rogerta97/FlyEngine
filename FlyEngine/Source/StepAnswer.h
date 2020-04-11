@@ -16,7 +16,7 @@ class DialogueText;
 class StepAnswer
 {
 public:
-	StepAnswer(string newAnswerText = "Text", string newAnswerName = "Answer Name");
+	StepAnswer(DialogueStep* parentStep, string newAnswerText = "Text", string newAnswerName = "Answer Name");
 	~StepAnswer();
 
 	void SaveAnswer(JSON_Object* jsonObject, string serializeObjectString);
@@ -32,12 +32,18 @@ public:
 	string GetName(); 
 	void SetName(string newName);
 
+	DialogueStep* GetParentStep();
+	void SetParentStep(DialogueStep* newParentStep);
+
 	UID GetUID(); 
 
 private: 
 
 	DialogueText* answerDialogueText; 
+
 	DialogueStep* destinationStep; 
+	DialogueStep* parentStep; 
+
 	list<Action*> callbackActions;
 
 	string answerName; 

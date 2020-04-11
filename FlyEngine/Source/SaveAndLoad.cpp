@@ -339,7 +339,10 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 				newAnswer->SetName(answerName);
 				newAnswer->SetAnswerText(answerText);
 
-				// Answer Destination Step 
+				newAnswer->SetAnswerText(answerText);
+			
+				// Answer Destination Step
+				
 				UID destinationStepUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "DestinationStepUID").c_str());
 
 				if (destinationStepUID != 0)
