@@ -16,7 +16,7 @@ class DialogueText;
 class StepAnswer
 {
 public:
-	StepAnswer(string newAnswerText = "");
+	StepAnswer(string newAnswerText = "Text", string newAnswerName = "Answer Name");
 	~StepAnswer();
 
 	void SaveAnswer(JSON_Object* jsonObject, string serializeObjectString);

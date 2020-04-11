@@ -15,7 +15,7 @@ public:
 	Dialogue();
 	~Dialogue();
 
-	DialogueStep* AddDialogueStep(string _stepText);
+	DialogueStep* AddDialogueStep(string _stepText, string _stepName = "");
 	list<DialogueStep*>& GetDialogueSteps(); 
 
 	DialogueStep* GetSelectedStep(); 

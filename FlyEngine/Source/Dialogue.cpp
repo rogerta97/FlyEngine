@@ -20,10 +20,10 @@ Dialogue::~Dialogue()
 {
 }
 
-DialogueStep* Dialogue::AddDialogueStep(string _stepText)
+DialogueStep* Dialogue::AddDialogueStep(string _stepText, string _stepName)
 {
 	// Add Slot To Dialogue -------------------
-	DialogueStep* newDialogueStep = new DialogueStep(_stepText);
+	DialogueStep* newDialogueStep = new DialogueStep(_stepText, _stepName);
 	dialogueSteps.push_back(newDialogueStep); 
 
 	//// Add Slot to the node graph -------------

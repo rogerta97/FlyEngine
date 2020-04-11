@@ -18,7 +18,7 @@ public:
 	void DrawUISettings();
 	void DrawActionOccurenceCheckboxes();
 
-	DialogueStep* AddDialogueStep(string _dialogueSlotText = "");
+	DialogueStep* AddDialogueStep(string _dialogueSlotText = "Text", string _dialogueStepName = "Name");
 	Dialogue* GetDialogueData(); 
 
 private: 

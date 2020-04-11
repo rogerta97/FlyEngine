@@ -56,8 +56,6 @@ void DialogueAction::SaveAction(JSON_Object* jsonObject, string serializeObjectS
 		counter++;
 	}
 
-	// Save Node Graph Data
-
 }
 
 void DialogueAction::DrawUISettings()
@@ -116,12 +114,12 @@ void DialogueAction::DrawUISettings()
 			}
 
 			static char stepTextBuffer[256] = "";
-			if (!dialogue->GetSelectedStep()->GetStepTextStr().empty())
-				strcpy(stepTextBuffer, dialogue->GetSelectedStep()->GetStepTextStr().c_str());
+			if (!dialogue->GetSelectedStep()->GetTextStr().empty())
+				strcpy(stepTextBuffer, dialogue->GetSelectedStep()->GetTextStr().c_str());
 
 			if (ImGui::InputTextMultiline("Description##ObjectDescription", stepTextBuffer, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 100, 100)))
 			{
-				dialogue->GetSelectedStep()->SetStepText(stepTextBuffer);
+				dialogue->GetSelectedStep()->SetText(stepTextBuffer);
 			}
 			
 			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
@@ -227,9 +225,9 @@ void DialogueAction::DrawActionOccurenceCheckboxes()
 
 }
 
-DialogueStep* DialogueAction::AddDialogueStep(string _dialogueSlotText)
+DialogueStep* DialogueAction::AddDialogueStep(string _dialogueSlotText, string _dialogueStepName)
 {
-	return dialogue->AddDialogueStep(_dialogueSlotText);
+	return dialogue->AddDialogueStep(_dialogueSlotText, _dialogueStepName);
 }
 
 Dialogue* DialogueAction::GetDialogueData()

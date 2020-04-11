@@ -3,6 +3,7 @@
 #include "MyFileSystem.h"
 #include "Application.h"
 #include "ModuleRoomManager.h"
+#include "StepAnswer.h"
 #include "ModifyVariableAction.h"
 #include "DisplayAnimationAction.h"
 #include "FollowPathAction.h"
@@ -13,6 +14,7 @@
 #include "RoomUIHandler.h"
 #include "Animation.h"
 #include "Room.h"
+#include "DialogueStep.h"
 #include "FlyObject.h"
 
 #include "EmitSoundAction.h"
@@ -279,16 +281,72 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 
 void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)
 {
-	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "ActionClass").c_str());
-	DialogueAction* dialogueAction = nullptr;
+	int actionsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "ActionsAmount").c_str());
 
-	if (actionClass == ACTION_CLASS_SEQUENTIAL && newObject->flyObjectType == FlyObjectType::OBJECT_SEQUENTIAL)
-		dialogueAction = newObject->AddDialogueAction(true);
-	else
-		dialogueAction = newObject->AddDialogueAction();
+	for (int i = 0; i < actionsAmount; i++)
+	{
+		string serialiseCurrentActionStr = serializeObjectStrActions + "Action_" + to_string(i) + ".";
 
-	dialogueAction->SetActionClass((ActionClass)actionClass);
-	dialogueAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("Occurrence."));
+		int actionClass = json_object_dotget_number(root_obj, string(serialiseCurrentActionStr + "ActionClass").c_str());
+		DialogueAction* dialogueAction = nullptr;
+
+		if (actionClass == ACTION_CLASS_SEQUENTIAL && newObject->flyObjectType == FlyObjectType::OBJECT_SEQUENTIAL)
+			dialogueAction = newObject->AddDialogueAction(true);
+		else
+			dialogueAction = newObject->AddDialogueAction();
+
+		dialogueAction->SetActionClass((ActionClass)actionClass);
+		dialogueAction->LoadOccurrence(root_obj, serialiseCurrentActionStr + string("Occurrence."));
+
+		// Load Dialogue Data 
+		UID nodeGraphID = json_object_dotget_number(root_obj, string(serialiseCurrentActionStr + "NodeGraphID").c_str());
+
+		// Load Steps Data
+		string serialiseStepsStr = serialiseCurrentActionStr + "Steps.";
+		int stepsAmount = json_object_dotget_number(root_obj, string(serialiseStepsStr + "StepsAmount").c_str());
+
+		for (int y = 0; y < stepsAmount; y++)
+		{
+			// Load Name & Text 
+			string stepSerializeStr = serialiseStepsStr + "Step_" + to_string(y) + ".";
+
+			DialogueStep* newStep = dialogueAction->AddDialogueStep();
+
+			string stepName = json_object_dotget_string(root_obj, string(stepSerializeStr + "Name").c_str());
+			string stepText = json_object_dotget_string(root_obj, string(stepSerializeStr + "Text").c_str());
+
+			newStep->SetName(stepName);
+			newStep->SetText(stepText);
+
+			// Load Step Answers ------------------
+			string answersSerializeStr = stepSerializeStr + "Answers."; 
+
+			int answersAmount = json_object_dotget_number(root_obj, string(answersSerializeStr + "AnswersAmount").c_str());
+			for (int k = 0; k < answersAmount; k++)
+			{
+				// Load Name & Text 
+				string answerSerializeStr = answersSerializeStr + "Answer_" + to_string(k) + ".";
+
+				string answerName = json_object_dotget_string(root_obj, string(answerSerializeStr + "Name").c_str());
+				string answerText = json_object_dotget_string(root_obj, string(answerSerializeStr + "Text").c_str());
+
+				StepAnswer* newAnswer = newStep->AddStepAnswer(answerText, answerName);
+
+				newAnswer->SetName(answerName);
+				newAnswer->SetAnswerText(answerText);
+
+				// Answer Destination Step 
+				UID destinationStepUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "DestinationStepUID").c_str());
+
+				if (destinationStepUID != 0)
+				{
+
+				}
+			}
+		}
+	}
+	
+
 }
 
 void SaveAndLoad::LoadFollowPathAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)

@@ -8,12 +8,12 @@
 #include "ModuleManager.h"
 #include "DialogueEditorDockPanel.h"
 
-DialogueStep::DialogueStep(string _dialogueText)
+DialogueStep::DialogueStep(string _dialogueText, string _dialogueName)
 {
 	dialogueText = new DialogueText();
 	dialogueText->SetDialogueText(_dialogueText);
 	stepUID = RandomNumberGenerator::getInstance()->GenerateUID(); 
-	SetName("StepName...");
+	SetName(_dialogueName.c_str());
 }
 
 DialogueStep::~DialogueStep()
@@ -37,12 +37,12 @@ void DialogueStep::SaveStep(JSON_Object* jsonObject, string serializeObjectStrin
 	}
 }
 
-void DialogueStep::SetStepText(string _dialogueText)
+void DialogueStep::SetText(string _dialogueText)
 {
 	dialogueText->SetDialogueText(_dialogueText);
 }
 
-string DialogueStep::GetStepTextStr()
+string DialogueStep::GetTextStr()
 {
 	if (dialogueText != nullptr)
 	{
@@ -52,12 +52,13 @@ string DialogueStep::GetStepTextStr()
 	return string();
 }
 
-void DialogueStep::AddStepAnswer(string _answerText)
+StepAnswer* DialogueStep::AddStepAnswer(string _answerText, string _answerName)
 {
 	// Add Answer ----
 	StepAnswer* newStepAnswer = new StepAnswer(); 
 	newStepAnswer->SetAnswerText(_answerText);
 	answersList.push_back(newStepAnswer); 
+	return newStepAnswer; 
 }
 
 list<StepAnswer*>& DialogueStep::GetAnswersList()

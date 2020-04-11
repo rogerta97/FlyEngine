@@ -15,17 +15,17 @@ class DialogueText;
 class DialogueStep
 {
 public: 
-	DialogueStep(string _dialogueText = "");
+	DialogueStep(string _dialogueText = "", string _dialogueName = "");
 	~DialogueStep(); 
 
 	void SaveStep(JSON_Object* jsonObject, string serializeObjectString);
 
 	// Step Utilities ----
-	void SetStepText(string _dialogueText); 
-	string GetStepTextStr();
+	void SetText(string _dialogueText); 
+	string GetTextStr();
 
 	// Answers -----------
-	void AddStepAnswer(string _answerText);
+	StepAnswer* AddStepAnswer(string _answerText, string _answerName = "Name");
 	list<StepAnswer*>& GetAnswersList();
 
 	// Set & Get ---------
