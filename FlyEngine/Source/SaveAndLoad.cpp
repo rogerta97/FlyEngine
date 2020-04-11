@@ -318,9 +318,13 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 
 			string stepName = json_object_dotget_string(root_obj, string(stepSerializeStr + "Name").c_str());
 			string stepText = json_object_dotget_string(root_obj, string(stepSerializeStr + "Text").c_str());
+			UID stepUID = json_object_dotget_number(root_obj, string(stepSerializeStr + "StepID").c_str());
 
 			newStep->SetName(stepName);
 			newStep->SetText(stepText);
+			newStep->SetUID(stepUID);
+
+			dialogueAction->GetDialogueData()->stepsMap.insert(std::make_pair(newStep->GetUID(), newStep));
 
 			// Load Step Answers ------------------
 			string answersSerializeStr = stepSerializeStr + "Answers."; 
@@ -333,27 +337,24 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 
 				string answerName = json_object_dotget_string(root_obj, string(answerSerializeStr + "Name").c_str());
 				string answerText = json_object_dotget_string(root_obj, string(answerSerializeStr + "Text").c_str());
+				//UID answerUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "AnswerUID").c_str());
 
 				StepAnswer* newAnswer = newStep->AddStepAnswer(answerText, answerName);
 
 				newAnswer->SetName(answerName);
 				newAnswer->SetAnswerText(answerText);
-
-				newAnswer->SetAnswerText(answerText);
 			
-				// Answer Destination Step
-				
+				// Answer Destination Step		
 				UID destinationStepUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "DestinationStepUID").c_str());
 
 				if (destinationStepUID != 0)
 				{
-
-				}
+					DialogueStep* dstDialogueStep = dialogueAction->GetDialogueData()->GetStepFromID(destinationStepUID);
+					newAnswer->SetDestinationStep(dstDialogueStep); 
+				}	
 			}
 		}
 	}
-	
-
 }
 
 void SaveAndLoad::LoadFollowPathAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)

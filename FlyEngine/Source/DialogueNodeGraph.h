@@ -44,6 +44,8 @@ public:
 	Dialogue* GetDialogueData();
 	void AttachDialogue(Dialogue* newDialogue);
 
+	void GenerateLinksFromDialogueAttached(); 
+
 	bool saveData = false; 
 
 private:

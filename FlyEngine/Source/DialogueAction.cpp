@@ -92,8 +92,6 @@ void DialogueAction::DrawUISettings()
 		if (ImGui::ImageButton((ImTextureID)plusTexture->GetTextureID(), ImVec2(35, 35)))
 		{
 			DialogueStep* newStep = AddDialogueStep("This Is a Sentence"); 
-			newStep->AddStepAnswer("I'm bored, this place is a shit");
-			newStep->AddStepAnswer("Happy, just give me more of that she");
 		}
 
 		ImGui::Separator();
@@ -170,6 +168,15 @@ void DialogueAction::DrawUISettings()
 			ImGui::EndChild();
 			ImGui::EndChild();
 			ImGui::PopStyleColor();
+		
+			if(ImGui::Button("New Answer"))
+			{
+				if (dialogue->GetSelectedStep() != nullptr)
+				{
+					StepAnswer* sa = dialogue->GetSelectedStep()->AddStepAnswer("Test");
+					dialogue->answersMap.insert(std::make_pair(sa->GetUID(), sa)); 
+				}
+			}
 		}
 	}
 }

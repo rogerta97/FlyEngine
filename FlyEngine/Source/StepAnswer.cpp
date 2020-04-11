@@ -34,6 +34,7 @@ void StepAnswer::SaveAnswer(JSON_Object* jsonObject, string serializeObjectStrin
 {
 	json_object_dotset_string(jsonObject, string(serializeObjectString + "Name").c_str(), answerName.c_str());
 	json_object_dotset_string(jsonObject, string(serializeObjectString + "Text").c_str(), answerDialogueText->GetTextAction()->GetText().c_str());
+//	json_object_dotset_string(jsonObject, string(serializeObjectString + "AnswerUID").c_str(), answerDialogueText->GetTextAction()->GetText().c_str());
 
 	if(destinationStep != nullptr)
 		json_object_dotset_number(jsonObject, string(serializeObjectString + "DestinationStepUID").c_str(), destinationStep->GetUID());
@@ -88,4 +89,9 @@ void StepAnswer::SetParentStep(DialogueStep* newParentStep)
 UID StepAnswer::GetUID()
 {
 	return answerUID;
+}
+
+void StepAnswer::SetUID(UID newUID)
+{
+	answerUID = newUID; 
 }

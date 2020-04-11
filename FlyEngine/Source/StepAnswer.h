@@ -36,6 +36,7 @@ public:
 	void SetParentStep(DialogueStep* newParentStep);
 
 	UID GetUID(); 
+	void SetUID(UID newUID); 
 
 private: 
 

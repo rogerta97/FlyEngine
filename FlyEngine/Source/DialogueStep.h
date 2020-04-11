@@ -36,6 +36,7 @@ public:
 	void SetParentDialogue(Dialogue* newParentStep);
 
 	UID GetUID() const; 
+	void SetUID(UID newUID); 
 
 	bool isSelected = false; 
 

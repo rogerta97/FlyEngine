@@ -40,7 +40,6 @@ private:
 	list<DialogueStep*> dialogueSteps; 
 	DialogueStep* selectedStep; 
 
-
 	UID dialogueUID; 
 };
 

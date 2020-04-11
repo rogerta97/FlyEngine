@@ -89,6 +89,7 @@ void DialogueNodeGraph::DrawGraph()
 		if (destinationStep != nullptr)
 		{
 			StepAnswer* stepAnswer = dialogue->GetAnswerFromID(start_attr);
+			stepAnswer->SetDestinationStep(destinationStep); 
 			links.push_back(std::make_pair(start_attr, end_attr));
 		}
 	}
@@ -102,7 +103,7 @@ void DialogueNodeGraph::DrawGraph()
 	}
 
 	// Save Node Graph If Needed -----------------------------
-	if (saveData)
+	if (saveData || App->moduleInput->GetKey(SDL_SCANCODE_0))
 	{
 		string nodeGraphPath = MyFileSystem::getInstance()->GetDialogueNodesDirectory() + to_string((int)dialogue->GetUID()) + ".ini";
 		imnodes::SaveCurrentEditorStateToIniFile(nodeGraphPath.c_str());
@@ -118,4 +119,20 @@ Dialogue* DialogueNodeGraph::GetDialogueData()
 void DialogueNodeGraph::AttachDialogue(Dialogue* newDialogue)
 {
 	dialogue = newDialogue;
+	GenerateLinksFromDialogueAttached(); 
+	dialogue->needReload = true; 
+}
+
+void DialogueNodeGraph::GenerateLinksFromDialogueAttached()
+{
+	for (auto& currentStep : dialogue->GetDialogueSteps())
+	{
+		for (auto& currentAnswer : currentStep->GetAnswersList())
+		{
+			if (currentAnswer->GetDestinationStep() != nullptr)
+			{
+				links.push_back(std::make_pair(currentAnswer->GetUID(), currentAnswer->GetDestinationStep()->GetUID() + 1));
+			}
+		}
+	}
 }

@@ -25,7 +25,6 @@ DialogueStep* Dialogue::AddDialogueStep(string _stepText, string _stepName)
 	// Add Slot To Dialogue -------------------
 	DialogueStep* newDialogueStep = new DialogueStep(this, _stepText, _stepName);
 	dialogueSteps.push_back(newDialogueStep); 
-	stepsMap.insert(std::make_pair(newDialogueStep->GetUID(), newDialogueStep));
 
 	//// Add Slot to the node graph -------------
 	//NodeGraph* dialoguesNodeGraph = App->moduleManager->GetCurrentDialogueEditor()->GetNodeGraph();
