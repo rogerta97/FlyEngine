@@ -23,7 +23,7 @@ DialogueNodeGraph::~DialogueNodeGraph()
 
 void DialogueNodeGraph::DrawGraph()
 {
-
+	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(59, 131, 255, 255));
 	imnodes::BeginNodeEditor();
 
 	if (dialogue != nullptr)
@@ -31,19 +31,21 @@ void DialogueNodeGraph::DrawGraph()
 		// Draw Nodes 
 		for (auto& currentStep : dialogue->GetDialogueSteps())
 		{
+			if (currentStep->isFirst)
+				imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(247, 59, 59, 255));
+
 			imnodes::BeginNode(currentStep->GetUID());
-
-			imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(150, 80, 191, 255));
-
+	
 			imnodes::BeginNodeTitleBar();
 			ImGui::Text("%s", currentStep->GetTextStr().c_str());
 			imnodes::EndNodeTitleBar();
 
-			imnodes::PopColorStyle();
-
-			imnodes::BeginInputAttribute(currentStep->GetUID() + 1);
-			ImGui::Text("In");
-			imnodes::EndAttribute();
+			if (!currentStep->isFirst)
+			{
+				imnodes::BeginInputAttribute(currentStep->GetUID() + 1);
+				ImGui::Text("In");
+				imnodes::EndAttribute();
+			}
 
 			// Draw Answer Pins
 			int counter = 0;
@@ -61,6 +63,9 @@ void DialogueNodeGraph::DrawGraph()
 			}
 
 			imnodes::EndNode();
+
+			if (currentStep->isFirst)
+				imnodes::PopColorStyle();
 		}
 
 
@@ -77,6 +82,9 @@ void DialogueNodeGraph::DrawGraph()
 	}
 
 	imnodes::EndNodeEditor();
+
+	imnodes::PopColorStyle();
+
 
 	// Check new links --------------------------------------
 	int start_attr, end_attr;

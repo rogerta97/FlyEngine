@@ -26,12 +26,11 @@ DialogueStep* Dialogue::AddDialogueStep(string _stepText, string _stepName)
 	DialogueStep* newDialogueStep = new DialogueStep(this, _stepText, _stepName);
 	dialogueSteps.push_back(newDialogueStep); 
 
-	//// Add Slot to the node graph -------------
-	//NodeGraph* dialoguesNodeGraph = App->moduleManager->GetCurrentDialogueEditor()->GetNodeGraph();
-	//
-	//if (dialoguesNodeGraph != nullptr)
-	//	dialoguesNodeGraph->CreateNode(_stepText, ImVec2(0, 0), newDialogueSlot->GetUID()); 
-	//
+	if (dialogueSteps.size() == 1)
+	{
+		newDialogueStep->GetParentDialogue()->SetFirstStep(newDialogueStep); 
+	}
+	 
 	return newDialogueStep; 
 }
 
@@ -88,4 +87,23 @@ StepAnswer* Dialogue::GetAnswerFromID(UID key)
 DialogueStep* Dialogue::GetStepFromID(UID key)
 {
 	return stepsMap[key]; 	
+}
+
+DialogueStep* Dialogue::GetFirstStep()
+{
+	return firstStep;
+}
+
+void Dialogue::SetFirstStep(DialogueStep* firstStep)
+{
+	for (auto& currentStep : dialogueSteps)
+	{
+		currentStep->isFirst = false; 
+
+		if (currentStep->GetUID() == firstStep->GetUID())
+		{
+			firstStep = currentStep; 
+			currentStep->isFirst = true;
+		}
+	}
 }

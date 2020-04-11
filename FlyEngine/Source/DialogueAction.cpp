@@ -86,6 +86,7 @@ void DialogueAction::DrawUISettings()
 
 		ImGui::EndChild();
 		ImGui::EndChild();
+
 		ImGui::PopStyleColor(); 
 
 		Texture* plusTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite2"); 
@@ -94,7 +95,7 @@ void DialogueAction::DrawUISettings()
 			DialogueStep* newStep = AddDialogueStep("This Is a Sentence"); 
 		}
 
-		ImGui::Separator();
+		ImGui::Separator(); 
 
 		if (dialogue->GetSelectedStep() != nullptr)
 		{
@@ -178,6 +179,7 @@ void DialogueAction::DrawUISettings()
 				}
 			}
 		}
+
 	}
 }
 

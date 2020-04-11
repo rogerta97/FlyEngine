@@ -1094,6 +1094,10 @@ void ObjectPropertiesDockPanel::DrawObjectSequenceActionsTab()
 				selectedAction = selectedObject->AddFollowPathAction(toSequentialList);
 				break;
 
+			case ACTION_DIALOGUE:
+				selectedAction = (Action*)selectedObject->AddDialogueAction(toSequentialList);
+				break;
+
 			case AT_null:
 				break;
 			}
@@ -1761,6 +1765,10 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 
 			case ACTION_FOLLOW_PATH:
 				selectedObject->AddFollowPathAction();
+				break;
+
+			case ACTION_DIALOGUE:
+				selectedObject->AddDialogueAction();
 				break;
 
 			case AT_null:

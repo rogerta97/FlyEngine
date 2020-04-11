@@ -39,6 +39,7 @@ public:
 	void SetUID(UID newUID); 
 
 	bool isSelected = false; 
+	bool isFirst = false; 
 
 private: 
 	Dialogue* parentDialogue; 

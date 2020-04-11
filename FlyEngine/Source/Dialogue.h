@@ -23,10 +23,11 @@ public:
 	DialogueStep* GetSelectedStep(); 
 	void SetSelectedStep(UID selectedStepUID); 
 
-//	DialogueStep* GetStepFromID(UID stepUI); 
-
 	StepAnswer* GetAnswerFromID(UID key);
 	DialogueStep* GetStepFromID(UID key);
+
+	DialogueStep* GetFirstStep();
+	void SetFirstStep(DialogueStep* firstStep);
 
 	UID GetUID(); 
 
@@ -38,7 +39,9 @@ public:
 
 private: 
 	list<DialogueStep*> dialogueSteps; 
+
 	DialogueStep* selectedStep; 
+	DialogueStep* firstStep; 
 
 	UID dialogueUID; 
 };
