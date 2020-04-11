@@ -11,6 +11,12 @@
 class Quad; 
 using namespace std;
 
+enum TextAlignment
+{
+	ALIGN_TOP_LEFT,
+	ALIGN_CENTER
+};
+
 class BoundingBox; 
 class DisplayTextAction : public Action
 {
@@ -62,6 +68,7 @@ public:
 public: 
 	bool displayTextBB = false; 
 	bool displayTextBox = false; 
+	TextAlignment textAlignment = ALIGN_TOP_LEFT; 
 
 private: 
 	Font* textFont = nullptr; 

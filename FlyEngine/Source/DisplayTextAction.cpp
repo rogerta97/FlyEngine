@@ -32,9 +32,13 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 
 	textBoundingBox = new BoundingBox();
 	textBoundingBox->SetSize(1, 1);
+	textAlignment = ALIGN_CENTER; 
 
 	textBox->SetSize(300, 120); 
 	CalculateOriginTextPosition(); 
+
+	displayTextBox = true; 
+	displayTextBB = true; 
 
 	originTextPosition = float2(0, 0);
 
@@ -505,7 +509,6 @@ void DisplayTextAction::RenderText()
 
 		if (cursorXInc > textBox->GetSize().x - 30)
 		{
-
 			if (pen.x + offsetBBLetter > textBBMaxPoint.x)
 				textBBMaxPoint.x = pen.x + offsetBBLetter;
 
@@ -706,8 +709,11 @@ void DisplayTextAction::CalculateOriginTextPosition()
 		assert(false); 
 	}
 
-	//flog("Origin: %f %f", originTextPosition.x, originTextPosition.y);
-	originTextPosition = float2(textBox->GetMinPoint().x, textBox->GetMaxPoint().y);
+	if(textAlignment == ALIGN_TOP_LEFT)
+		originTextPosition = float2(textBox->GetMinPoint().x, textBox->GetMinPoint().y + (textBox->GetSize().y / 2) + (textBoundingBox->GetSize().y / 2));
+	else
+		originTextPosition = float2(textBox->GetMinPoint().x, textBox->GetMaxPoint().y);
+
 }
 
 void DisplayTextAction::SetText(std::string newText)
