@@ -78,17 +78,22 @@ void DialogueNodeGraph::DrawGraph()
 
 	imnodes::EndNodeEditor();
 
-	// Check new links 
+	// Check new links --------------------------------------
 	int start_attr, end_attr;
 	if (imnodes::IsLinkCreated(&start_attr, &end_attr))
 	{
 		flog("%d", start_attr);
 		flog("%d", end_attr);
 
-		if (dialogue->GetStepFromID(end_attr - 1) != nullptr)
+	/*	DialogueStep* destinationStep = dialogue->GetStepFromID(end_attr - 1);
+		if (destinationStep != nullptr)
+		{
+			destinationStep->
 			links.push_back(std::make_pair(start_attr, end_attr));
+		}*/
 	}
 
+	// Load Node Graph If Needed -----------------------------
 	if (dialogue != nullptr && dialogue->needReload)
 	{
 		string nodeGraphPath = MyFileSystem::getInstance()->GetDialogueNodesDirectory() + to_string((int)dialogue->GetUID()) + ".ini";
@@ -96,6 +101,7 @@ void DialogueNodeGraph::DrawGraph()
 		dialogue->needReload = false;
 	}
 
+	// Save Node Graph If Needed -----------------------------
 	if (saveData)
 	{
 		string nodeGraphPath = MyFileSystem::getInstance()->GetDialogueNodesDirectory() + to_string((int)dialogue->GetUID()) + ".ini";
