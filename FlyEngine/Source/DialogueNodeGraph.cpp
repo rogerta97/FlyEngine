@@ -24,6 +24,7 @@ DialogueNodeGraph::~DialogueNodeGraph()
 void DialogueNodeGraph::DrawGraph()
 {
 	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(59, 131, 255, 255));
+
 	imnodes::BeginNodeEditor();
 
 	if (dialogue != nullptr)
@@ -32,7 +33,11 @@ void DialogueNodeGraph::DrawGraph()
 		for (auto& currentStep : dialogue->GetDialogueSteps())
 		{
 			if (currentStep->isFirst)
+			{
 				imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(247, 59, 59, 255));
+				imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarHovered, IM_COL32(255, 132, 132, 255));
+				imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarSelected, IM_COL32(59, 131, 255, 255));
+			}
 
 			imnodes::BeginNode(currentStep->GetUID());
 	
@@ -65,7 +70,11 @@ void DialogueNodeGraph::DrawGraph()
 			imnodes::EndNode();
 
 			if (currentStep->isFirst)
+			{
 				imnodes::PopColorStyle();
+				imnodes::PopColorStyle();
+				imnodes::PopColorStyle();
+			}
 		}
 
 
@@ -84,7 +93,6 @@ void DialogueNodeGraph::DrawGraph()
 	imnodes::EndNodeEditor();
 
 	imnodes::PopColorStyle();
-
 
 	// Check new links --------------------------------------
 	int start_attr, end_attr;

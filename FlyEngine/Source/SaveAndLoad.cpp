@@ -337,12 +337,15 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 
 				string answerName = json_object_dotget_string(root_obj, string(answerSerializeStr + "Name").c_str());
 				string answerText = json_object_dotget_string(root_obj, string(answerSerializeStr + "Text").c_str());
-				//UID answerUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "AnswerUID").c_str());
+				UID answerUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "AnswerUID").c_str());
 
 				StepAnswer* newAnswer = newStep->AddStepAnswer(answerText, answerName);
 
 				newAnswer->SetName(answerName);
 				newAnswer->SetAnswerText(answerText);
+				newAnswer->SetUID(stepUID);
+
+				dialogueAction->GetDialogueData()->answersMap.insert(std::make_pair(newAnswer->GetUID(), newAnswer));
 			
 				// Answer Destination Step		
 				UID destinationStepUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "DestinationStepUID").c_str());
