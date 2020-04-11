@@ -25,6 +25,8 @@ public:
 
 	UID GetUID(); 
 
+	bool needReload = false; 
+
 private: 
 	list<DialogueStep*> dialogueSteps; 
 	DialogueStep* selectedStep; 

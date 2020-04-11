@@ -44,6 +44,8 @@ public:
 	Dialogue* GetDialogueData();
 	void AttachDialogue(Dialogue* newDialogue);
 
+	bool saveData = false; 
+
 private:
 	Dialogue* dialogue;
 	std::vector<std::pair<int, int>> links;

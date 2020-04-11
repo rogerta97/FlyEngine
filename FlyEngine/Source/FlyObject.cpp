@@ -860,6 +860,11 @@ DisplayTextAction* FlyObject::AddDisplayTextAction(bool addToSequentialActions)
 
 void FlyObject::SetSelectedAction(UID toolTypeSelectedUID, bool isSequential)
 {
+	bool prevSelectedDialogue = false; 
+
+	if (selectedAction != nullptr && selectedAction->GetType() == ACTION_DIALOGUE)	
+		prevSelectedDialogue = true; 	
+
 	for (auto& it : actionsList)
 	{
 		if (it->GetUID() == toolTypeSelectedUID && !isSequential)
@@ -882,10 +887,15 @@ void FlyObject::SetSelectedAction(UID toolTypeSelectedUID, bool isSequential)
 			it->SetSelected(false);
 	}
 
-	if (selectedAction != nullptr && selectedAction->GetType() == ACTION_DIALOGUE)
+	if (selectedAction != nullptr)
 	{
 		DialogueAction* selectedDialogueAction = (DialogueAction*)selectedAction;
-		App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->AttachDialogue(selectedDialogueAction->GetDialogueData()); 
+
+		if (prevSelectedDialogue)	
+			App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->saveData = true; 
+		
+		if (selectedAction->GetType() == ACTION_DIALOGUE)	
+			App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->AttachDialogue(selectedDialogueAction->GetDialogueData()); 
 	}
 }
 

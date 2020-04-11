@@ -28,8 +28,6 @@ void DialogueNodeGraph::DrawGraph()
 
 	if (dialogue != nullptr)
 	{
-
-
 		// Draw Nodes 
 		for (auto& currentStep : dialogue->GetDialogueSteps())
 		{
@@ -62,7 +60,6 @@ void DialogueNodeGraph::DrawGraph()
 				imnodes::EndAttribute();
 			}
 
-
 			imnodes::EndNode();
 		}
 
@@ -92,18 +89,19 @@ void DialogueNodeGraph::DrawGraph()
 			links.push_back(std::make_pair(start_attr, end_attr));
 	}
 
-	if (App->moduleInput->GetKey(SDL_SCANCODE_0))
-	{
-		string nodeGraphPath = MyFileSystem::getInstance()->GetDialogueNodesDirectory() + to_string((int)dialogue->GetUID()) + ".ini";
-		imnodes::SaveCurrentEditorStateToIniFile(nodeGraphPath.c_str());
-	}
-
-	if (App->moduleInput->GetKey(SDL_SCANCODE_1))
+	if (dialogue != nullptr && dialogue->needReload)
 	{
 		string nodeGraphPath = MyFileSystem::getInstance()->GetDialogueNodesDirectory() + to_string((int)dialogue->GetUID()) + ".ini";
 		imnodes::LoadCurrentEditorStateFromIniFile(nodeGraphPath.c_str());
+		dialogue->needReload = false;
 	}
 
+	if (saveData)
+	{
+		string nodeGraphPath = MyFileSystem::getInstance()->GetDialogueNodesDirectory() + to_string((int)dialogue->GetUID()) + ".ini";
+		imnodes::SaveCurrentEditorStateToIniFile(nodeGraphPath.c_str());
+		saveData = false; 
+	}
 }
 
 Dialogue* DialogueNodeGraph::GetDialogueData()

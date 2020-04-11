@@ -15,6 +15,7 @@
 #include "Animation.h"
 #include "Room.h"
 #include "DialogueStep.h"
+#include "Dialogue.h"
 #include "FlyObject.h"
 
 #include "EmitSoundAction.h"
@@ -300,6 +301,9 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 
 		// Load Dialogue Data 
 		UID nodeGraphID = json_object_dotget_number(root_obj, string(serialiseCurrentActionStr + "NodeGraphID").c_str());
+
+		if(nodeGraphID != 0)
+			dialogueAction->GetDialogueData()->needReload = true; 
 
 		// Load Steps Data
 		string serialiseStepsStr = serialiseCurrentActionStr + "Steps.";
