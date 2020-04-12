@@ -6,6 +6,7 @@
 #include "DialogueText.h"
 #include "StepAnswer.h"
 
+#include "DialogueViewportHandler.h"
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "ResourceManager.h"
@@ -30,8 +31,23 @@ DialogueAction::~DialogueAction()
 {
 }
 
+void DialogueAction::Draw()
+{
+	if(dialogue != nullptr)
+		dialogue->Draw(); 
+}
+
 void DialogueAction::DoAction()
 {
+	if (dialogue != nullptr)
+	{
+		DialogueStep* dialogueFirstStep = dialogue->GetFirstStep();
+
+		if (dialogueFirstStep != nullptr)
+		{
+			dialogue->dialogueViewportHandler->SetCurrentStep(dialogueFirstStep);
+		}
+	}
 }
 
 void DialogueAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr, int actionPositionInObject)

@@ -15,19 +15,17 @@ Dialogue::Dialogue()
 {
 	selectedStep = nullptr;
 	dialogueUID = RandomNumberGenerator::getInstance()->GenerateUID(); 
+	dialogueViewportHandler = new DialogueViewportHandler(); 
 }
 
 Dialogue::~Dialogue()
 {
 }
 
-void Dialogue::Update()
-{
-}
-
 void Dialogue::Draw()
 {
-	dialogueViewportHandler->DrawDialogue(); 
+	if(dialogueViewportHandler != nullptr)
+		dialogueViewportHandler->DrawDialogue(); 
 }
 
 DialogueStep* Dialogue::AddDialogueStep(string _stepText, string _stepName)

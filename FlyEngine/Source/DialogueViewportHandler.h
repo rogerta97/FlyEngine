@@ -25,7 +25,7 @@ public:
 	UID GetAnswerSelected();
 
 	DialogueStep* GetCurrentStep();
-	void GetCurrentStep(DialogueStep* newCurrentStep);
+	void SetCurrentStep(DialogueStep* newCurrentStep);
 
 private:
 	BoundingBox* sentenceBackgroundSquare; 
