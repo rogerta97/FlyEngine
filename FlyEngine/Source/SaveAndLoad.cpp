@@ -136,6 +136,8 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		newObject->SetDescription(json_object_dotget_string(root_obj, string(serializeObjectStr + string("Description")).c_str()));
 	}
 
+	// Interactable
+	newObject->SetInteractable(json_object_dotget_boolean(root_obj, string(serializeObjectStr + string("Interactable")).c_str()));
 	// Parent Room --
 	newObject->SetParentRoom(currentRoom); 
 

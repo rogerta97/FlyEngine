@@ -39,6 +39,7 @@ FlyObject::FlyObject(std::string _name, std::string _description, FlyObjectType 
 	hasVisuals = false; 
 	clickableAreaActive = false;
 	isPicked = false; 
+	isInteractable = true; 
 	drawClickableArea = false;
 	flyObjectType = _flyObjectType; 
 	parentRoom = _parentRoom; 

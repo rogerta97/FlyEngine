@@ -58,7 +58,7 @@ list<FlyObject*> ViewportManager::RaycastMouseClickObjects()
 
 	for (auto& currentObject : App->moduleRoomManager->GetSelectedRoom()->objectsInRoom)
 	{
-		if (currentObject->IsMouseOver())
+		if (currentObject->IsMouseOver() && currentObject->IsInteractable())
 			objectCandidates.push_back(currentObject);
 	}
 

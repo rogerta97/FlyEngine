@@ -58,9 +58,6 @@ DisplayTextAction::~DisplayTextAction()
 
 void DisplayTextAction::Draw()
 {
-	if (!text.empty())
-		RenderText(); 
-
 	if (parentObject->isSelected && drawTextBox)
 	{
 		if(displayTextBox)
@@ -69,6 +66,9 @@ void DisplayTextAction::Draw()
 		if(displayTextBB)
 			DrawTextBoundingBox(); 
 	}
+
+	if (!text.empty())
+		RenderText(); 
 }
 
 void DisplayTextAction::Update(float dt)
@@ -713,7 +713,6 @@ void DisplayTextAction::CalculateOriginTextPosition()
 		originTextPosition = float2(textBox->GetMinPoint().x, textBox->GetMinPoint().y + (textBox->GetSize().y / 2) + (textBoundingBox->GetSize().y / 2));
 	else
 		originTextPosition = float2(textBox->GetMinPoint().x, textBox->GetMaxPoint().y);
-
 }
 
 void DisplayTextAction::SetText(std::string newText)

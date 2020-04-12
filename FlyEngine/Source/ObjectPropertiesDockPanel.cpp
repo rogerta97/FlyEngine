@@ -717,6 +717,12 @@ void ObjectPropertiesDockPanel::DrawFlyObjectProperties()
 	{
 		DrawFixedPartObjectUI(selectedObject);
 
+		bool interactable = selectedObject->IsInteractable(); 
+		if(ImGui::Checkbox("Interactable", &interactable))
+		{
+			selectedObject->SetInteractable(interactable);
+		}
+
 		ImGui::Separator();
 
 		if (selectedObject->IsInventoryItem())
