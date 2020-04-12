@@ -30,6 +30,10 @@ DialogueAction::~DialogueAction()
 {
 }
 
+void DialogueAction::DoAction()
+{
+}
+
 void DialogueAction::SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr, int actionPositionInObject)
 {
 	string actionSerializeSection;

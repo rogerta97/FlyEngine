@@ -480,6 +480,9 @@
     <ClCompile Include="Source\DialogueStep.cpp">
       <Filter>Source\Tools\Dialogues</Filter>
     </ClCompile>
+    <ClCompile Include="Source\DialogueViewportHandler.cpp">
+      <Filter>Source\Tools\NodeGraph</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -958,6 +961,9 @@
     </ClInclude>
     <ClInclude Include="Source\DialogueStep.h">
       <Filter>Source\Tools\Dialogues</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DialogueViewportHandler.h">
+      <Filter>Source\Tools\NodeGraph</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -11,11 +11,15 @@ using namespace std;
 
 class DialogueStep; 
 class StepAnswer; 
+class DialogueViewportHandler; 
 class Dialogue
 {
 public:
 	Dialogue();
 	~Dialogue();
+	
+	void Update(); 
+	void Draw(); 
 
 	DialogueStep* AddDialogueStep(string _stepText, string _stepName = "");
 	list<DialogueStep*>& GetDialogueSteps(); 
@@ -32,10 +36,13 @@ public:
 	UID GetUID(); 
 
 	bool needReload = false; 
+	bool drawOnViewport = false; 
 
 	// Quick Acces ----------
 	std::map<UID, StepAnswer*> answersMap; 
 	std::map<UID, DialogueStep*> stepsMap; 
+
+	DialogueViewportHandler* dialogueViewportHandler;
 
 private: 
 	list<DialogueStep*> dialogueSteps; 

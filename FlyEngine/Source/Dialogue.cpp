@@ -5,6 +5,7 @@
 #include "Application.h"
 #include "ModuleManager.h"
 #include "DialogueEditorDockPanel.h"
+#include "DialogueViewportHandler.h"
 
 #include "RandomNumberGenerator.h"
 
@@ -18,6 +19,15 @@ Dialogue::Dialogue()
 
 Dialogue::~Dialogue()
 {
+}
+
+void Dialogue::Update()
+{
+}
+
+void Dialogue::Draw()
+{
+	dialogueViewportHandler->DrawDialogue(); 
 }
 
 DialogueStep* Dialogue::AddDialogueStep(string _stepText, string _stepName)
