@@ -72,7 +72,7 @@ void DialogueViewportHandler::DrawAnswers()
 			currentAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextBox()->SetMinPoint(textBoxMinPoint);
 			currentAnswer->GetAnswerDialogueText()->GetTextAction()->CalculateOriginTextPosition();
 
-			currentAnswer->GetAnswerDialogueText()->GetTextAction()->DrawTextBoundingBox();
+			currentAnswer->GetAnswerDialogueText()->GetTextAction()->DrawTextBoundingBox(true);
 			currentAnswer->GetAnswerDialogueText()->GetTextAction()->RenderText(); 
 
 			counter++; 

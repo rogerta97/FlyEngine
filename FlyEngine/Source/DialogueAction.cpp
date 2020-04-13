@@ -263,12 +263,68 @@ void DialogueAction::DrawUISettings()
 			{
 				selectedStep->SetText(stepTextBuffer);
 			}
+
+			ImGui::Separator();
+
+			// Draw answers settings ---------------------------------
+			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+			ImGui::Text("Answers Visual Settings:");
+			ImGui::PopFont();
+
+			StepAnswer* firstAnswer = selectedStep->GetAnswersList().front();
+
+			if (firstAnswer != nullptr)
+			{
+				// Answer Font ---------------------
+				Font* currentFont = nullptr;
+
+				if (firstAnswer != nullptr)
+				{
+					//currentFont = selectedStep->GetDialogueText()->GetTextAction()->GetFont();
+				}
+
+				string buttonString = "Find##FindFontAnswer";
+				if (ImGui::Button(buttonString.c_str()))
+				{
+					/*	if (selectedStep != nullptr)
+							ImGui::OpenPopup("print_font_selection_popup");*/
+				}
+
+				Font* fontSelected = (Font*)ResourceManager::getInstance()->PrintFontSelectionPopup();
+				if (fontSelected != nullptr)
+				{
+					//selectedStep->GetDialogueText()->GetTextAction()->SetFont(fontSelected);
+				}
+
+				char actionFontNameBuffer[256] = "None";
+				if (currentFont != nullptr)
+				{
+					strcpy(actionFontNameBuffer, currentFont->GetName().c_str());
+				}
+
+				ImGui::SameLine();
+				if (ImGui::InputText("Font", actionFontNameBuffer, IM_ARRAYSIZE(actionFontNameBuffer), ImGuiInputTextFlags_ReadOnly))
+				{
+
+				}
+
+				// Backrgound Color
+				float4 backgroundColor = float4::zero;
+				if (firstAnswer != nullptr && dialogue->dialogueViewportHandler != nullptr)
+					backgroundColor = firstAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextBBColor();
+
+				if (ImGui::ColorEdit4("Background Color##Answer", (float*)& backgroundColor))
+				{
+					if (firstAnswer != nullptr && dialogue->dialogueViewportHandler != nullptr)
+						firstAnswer->GetAnswerDialogueText()->GetTextAction()->SetTextBBColor(backgroundColor);
+				}
+			}
+		
+			ImGui::Separator();
 			
 			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 			ImGui::Text("Answers List:");
 			ImGui::PopFont();
-
-			ImGui::Separator();
 
 			PUSH_CHILD_BG_COLOR;
 			ImGui::BeginChild("Answers Dialogue Holder", ImVec2(ImGui::GetContentRegionAvail().x, 200));
