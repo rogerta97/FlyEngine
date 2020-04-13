@@ -113,7 +113,7 @@ void BoundingBox::SetSquareColor(float4 newSquareColor)
 	squareColor = newSquareColor;
 }
 
-float4& BoundingBox::GetsquareColor()
+float4& BoundingBox::GetSquareColor()
 {
 	return squareColor; 
 }

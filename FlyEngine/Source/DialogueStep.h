@@ -9,6 +9,12 @@
 
 using namespace std; 
 
+enum Sentence_Display_Mode
+{
+	SENTENCE_DISPLAY_TOP,
+	SENTENCE_DISPLAY_OVER_ANSWERS
+};
+
 class StepAnswer;
 class DialogueText; 
 class Dialogue; 
@@ -41,6 +47,7 @@ public:
 
 	bool isSelected = false; 
 	bool isFirst = false; 
+	Sentence_Display_Mode sentenceDisplayMode = SENTENCE_DISPLAY_TOP;
 
 private: 
 	Dialogue* parentDialogue; 

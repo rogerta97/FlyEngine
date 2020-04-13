@@ -27,13 +27,20 @@ public:
 	// Set & Get
 	UID GetAnswerSelected();
 
+	float GetAnswersSpacing(); 
+
+	BoundingBox* GetSentenceBackgroundBB(); 
+
 	DialogueStep* GetCurrentStep();
 	void SetCurrentStep(DialogueStep* newCurrentStep);
 
 private:
 
 	float sentencePadding; 
-	BoundingBox* sentenceBackgroundSquare; 
+	float answersSpacing; 
+	float answersHeight; 
+
+	BoundingBox* sentenceBackgroundBB; 
 	DialogueStep* currentStep; 
 };
 

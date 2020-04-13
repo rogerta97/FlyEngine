@@ -3,6 +3,7 @@
 
 #include <string>
 #include "Action.h"
+#include "Math/float4.h"
 
 using namespace std;
 
@@ -25,6 +26,12 @@ public:
 	Dialogue* GetDialogueData(); 
 
 private: 
+	bool showPreview; 
+
+	// Dialogue Settings Var
+	int sentencePlacementCombo; 
+	int fontSize; 
+	float4 fontColor; 
 
 	bool showVariableConditions; 
 	Dialogue* dialogue; 

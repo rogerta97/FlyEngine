@@ -40,7 +40,7 @@ public:
 	float2& GetSize();
 
 	void SetSquareColor(float4 newSquareColor);
-	float4& GetsquareColor();
+	float4& GetSquareColor();
 
 	float2& GetMinPoint();
 	void SetMinPoint(float2 _minPoint); 

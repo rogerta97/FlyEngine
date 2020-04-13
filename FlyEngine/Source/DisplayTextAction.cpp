@@ -402,7 +402,7 @@ void DisplayTextAction::DrawUISettingsInButton()
 
 void DisplayTextAction::RenderText()
 {
-	textBox->DrawSquare(); 
+	//textBox->DrawSquare(); 
 
 	// Push Parent View Matrix ----------------
 	if (parentObject != nullptr && parentObject->transform != nullptr)
