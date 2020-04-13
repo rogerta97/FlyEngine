@@ -338,9 +338,7 @@ void DialogueAction::DrawUISettings()
 					}
 				}
 			}
-
-			
-		
+	
 			ImGui::Separator();
 			
 			ImGui::PushFont(App->moduleImGui->rudaBoldBig);

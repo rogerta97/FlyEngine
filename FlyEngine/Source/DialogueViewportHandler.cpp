@@ -61,32 +61,8 @@ void DialogueViewportHandler::DrawAnswers()
 
 		for (auto& currentAnswer : currentStep->GetAnswersList())
 		{
-			//// Calculate Text Position
-			//pen.x = -450 * ar;
-			//pen.y = 400 - (answersSpacing * counter) - (answersHeight * counter);
-
-			//float2 textBoxMinPoint = pen + float2(0, answersHeight);
-			//float2 textBoxMaxPoint = pen + float2(800 * ar, 0);
-
-			//DisplayTextAction* answerTextAction = currentAnswer->GetAnswerDialogueText()->GetTextAction();
-
-			//// Addapt Text Box
-			//answerTextAction->GetTextBox()->SetMaxPoint(textBoxMaxPoint);
-			//answerTextAction->GetTextBox()->SetMinPoint(textBoxMinPoint);
-			//answerTextAction->CalculateOriginTextPosition();
-
-			//// Addapt Text Bounding Box
-			//float2 textBBMaxPoint = answerTextAction->GetTextBB()->GetMaxPoint();
-			//float2 textBBMinPoint = answerTextAction->GetTextBB()->GetMinPoint();
-
-			//answerTextAction->GetTextBB()->SetMaxPoint(textBBMaxPoint + float2(10, -10));
-			//answerTextAction->GetTextBB()->SetMinPoint(textBBMinPoint + float2(-10, 10));
-
-			// Draw Answer
 			currentAnswer->GetAnswerDialogueText()->GetTextAction()->DrawTextBoundingBox(true);
-			currentAnswer->GetAnswerDialogueText()->GetTextAction()->RenderText(); 
-
-			//counter++; 
+			currentAnswer->GetAnswerDialogueText()->GetTextAction()->RenderText(false, 10); 
 		}
 	}	
 }
@@ -149,19 +125,14 @@ void DialogueViewportHandler::SetCurrentStep(DialogueStep* newCurrentStep)
 			answerTextAction->GetTextBox()->SetMinPoint(textBoxMinPoint);
 			answerTextAction->CalculateOriginTextPosition();
 
-			// Addapt Text Bounding Box
+			//// Addapt Text Bounding Box
+			currentAnswer->GetAnswerDialogueText()->GetTextAction()->RenderText(true);
+
 			float2 textBBMaxPoint = answerTextAction->GetTextBB()->GetMaxPoint();
 			float2 textBBMinPoint = answerTextAction->GetTextBB()->GetMinPoint();
 
-			answerTextAction->UpdateTextQuads();
-			answerTextAction->CalculateTextBB(); 
-
 			answerTextAction->GetTextBB()->SetMaxPoint(textBBMaxPoint + float2(10, -10));
 			answerTextAction->GetTextBB()->SetMinPoint(textBBMinPoint + float2(-10, 10));
-
-			//// Draw Answer
-			//currentAnswer->GetAnswerDialogueText()->GetTextAction()->DrawTextBoundingBox(true);
-			//currentAnswer->GetAnswerDialogueText()->GetTextAction()->RenderText();
 
 			counter++;
 		}

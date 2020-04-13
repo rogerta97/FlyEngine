@@ -33,7 +33,7 @@ public:
 	void DrawUISettingsInButton();
 
 	// Render ------------------------------
-	void RenderText(); 
+	void RenderText(bool setup = false, float bbOffset = 10.0f);
 	void DrawTextBox(); 
 	void DrawTextBoundingBox(bool fill = false);
 

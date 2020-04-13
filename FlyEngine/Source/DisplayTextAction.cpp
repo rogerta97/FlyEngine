@@ -402,7 +402,7 @@ void DisplayTextAction::DrawUISettingsInButton()
 	}
 }
 
-void DisplayTextAction::RenderText()
+void DisplayTextAction::RenderText(bool setup, float bbOffset)
 {
 	//textBox->DrawSquare(); 
 
@@ -536,6 +536,10 @@ void DisplayTextAction::RenderText()
 			continue; 
 		}
 
+
+		if (setup)
+			continue;
+
 		// Draw the quad with the correct texture 
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, renderQuad->verticesID);
@@ -576,7 +580,6 @@ void DisplayTextAction::RenderText()
 		glDisableClientState(GL_VERTEX_ARRAY);
 
 		letterCount++;
-
 	}
 /*
 		textBBMinPoint.y = pen.y + (lastChar.size.y / 
@@ -593,8 +596,8 @@ void DisplayTextAction::RenderText()
 	
 	if (pen.y + (lastChar.size.y / 64) > textBBMinPoint.y)64);*/
 
-	textBoundingBox->SetMaxPoint(textBBMaxPoint);
-	textBoundingBox->SetMinPoint(textBBMinPoint);
+	textBoundingBox->SetMaxPoint(textBBMaxPoint + float2(bbOffset, -bbOffset));
+	textBoundingBox->SetMinPoint(textBBMinPoint + float2(-bbOffset, bbOffset));
 
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
