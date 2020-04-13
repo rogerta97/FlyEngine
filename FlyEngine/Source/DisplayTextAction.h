@@ -35,7 +35,7 @@ public:
 	// Render ------------------------------
 	void RenderText(); 
 	void DrawTextBox(); 
-	void DrawTextBoundingBox(); 
+	void DrawTextBoundingBox(bool fill = false);
 
 	// Utility -----------------------------
 	void CleanQuads();
@@ -56,6 +56,9 @@ public:
 
 	void SetTextColor(float4 newColor);
 	float4& GetTextColor();
+
+	void SetTextBBColor(float4 newColor);
+	float4& GetTextBBColor();
 
 	void SetDrawTextBox(bool _draw);
 	bool& GetDrawTextBox();
@@ -86,6 +89,7 @@ private:
 	float2 textBBMinPoint;
 	float2 textBBMaxPoint;
 	BoundingBox* textBoundingBox; 
+	float4 textBoundingBoxColor;
 	
 	int quadsAllocated = 0; 
 	std::vector<Quad*>* textQuads;

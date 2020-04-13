@@ -32,6 +32,8 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 
 	textBoundingBox = new BoundingBox();
 	textBoundingBox->SetSize(1, 1);
+	textBoundingBoxColor = float4(1.0f, 0.0f, 0.0f, 1.0f); 
+
 	textAlignment = ALIGN_CENTER; 
 
 	textBox->SetSize(300, 120); 
@@ -615,9 +617,9 @@ void DisplayTextAction::DrawTextBox()
 		textBox->DrawBoxGizmos(); 
 }
 
-void DisplayTextAction::DrawTextBoundingBox()
+void DisplayTextAction::DrawTextBoundingBox(bool fill)
 {
-	textBoundingBox->Draw(false, float4(1.0f, 0.0f, 0.0f, 1.0f));
+	textBoundingBox->Draw(fill, textBoundingBoxColor);
 }
 
 void DisplayTextAction::CleanQuads()
@@ -769,6 +771,16 @@ void DisplayTextAction::SetTextColor(float4 newColor)
 float4& DisplayTextAction::GetTextColor()
 {
 	return textColor; 
+}
+
+void DisplayTextAction::SetTextBBColor(float4 newColor)
+{
+	textBoundingBoxColor = newColor;
+}
+
+float4& DisplayTextAction::GetTextBBColor()
+{
+	return textBoundingBoxColor; 
 }
 
 void DisplayTextAction::SetDrawTextBox(bool _draw)

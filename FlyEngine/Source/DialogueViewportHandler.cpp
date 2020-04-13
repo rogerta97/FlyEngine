@@ -15,7 +15,7 @@ DialogueViewportHandler::DialogueViewportHandler()
 	sentenceBackgroundBB = new BoundingBox();
 	sentencePadding = 15.0f;
 	answersSpacing = 25.0f; 
-	answersHeight = 75.0f;
+	answersHeight = 60.0f;
 
 	float ar = App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
 	sentenceBackgroundBB->SetMaxPoint(float2(500 * ar, -500));
@@ -62,8 +62,8 @@ void DialogueViewportHandler::DrawAnswers()
 		for (auto& currentAnswer : currentStep->GetAnswersList())
 		{
 			// Calculate Text Position
-			pen.x = -400 * ar;
-			pen.y = 450 - (answersSpacing * counter) - (answersHeight * counter);
+			pen.x = -450 * ar;
+			pen.y = 400 - (answersSpacing * counter) - (answersHeight * counter);
 
 			float2 textBoxMinPoint = pen + float2(0, answersHeight);
 			float2 textBoxMaxPoint = pen + float2(800 * ar, 0);
@@ -71,6 +71,11 @@ void DialogueViewportHandler::DrawAnswers()
 			currentAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextBox()->SetMaxPoint(textBoxMaxPoint);
 			currentAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextBox()->SetMinPoint(textBoxMinPoint);
 			currentAnswer->GetAnswerDialogueText()->GetTextAction()->CalculateOriginTextPosition();
+
+			currentAnswer->GetAnswerDialogueText()->GetTextAction()->DrawTextBoundingBox();
+			currentAnswer->GetAnswerDialogueText()->GetTextAction()->RenderText(); 
+
+			counter++; 
 		}
 	}	
 }
