@@ -402,8 +402,10 @@ void DisplayTextAction::DrawUISettingsInButton()
 
 void DisplayTextAction::RenderText()
 {
+	textBox->DrawSquare(); 
+
 	// Push Parent View Matrix ----------------
-	if (parentObject->transform != nullptr)
+	if (parentObject != nullptr && parentObject->transform != nullptr)
 	{
 		float2 appliedArPos = parentObject->transform->GetPosition(true);
 		parentObject->transform->SetPosition(appliedArPos);

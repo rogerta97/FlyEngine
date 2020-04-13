@@ -27,6 +27,7 @@ public:
 	// Answers -----------
 	StepAnswer* AddStepAnswer(string _answerText, string _answerName = "Name");
 	list<StepAnswer*>& GetAnswersList();
+	DialogueText* GetDialogueText(); 
 
 	// Set & Get ---------
 	string GetName();

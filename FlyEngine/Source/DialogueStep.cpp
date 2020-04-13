@@ -28,6 +28,7 @@ void DialogueStep::SaveStep(JSON_Object* jsonObject, string serializeObjectStrin
 	json_object_dotset_string(jsonObject, string(serializeObjectString + "Name").c_str(), stepName.c_str());
 	json_object_dotset_string(jsonObject, string(serializeObjectString + "Text").c_str(), dialogueText->GetTextAction()->GetText().c_str());
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "StepID").c_str(), GetUID());
+	json_object_dotset_boolean(jsonObject, string(serializeObjectString + "First").c_str(), isFirst);
 
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "Answers.AnswersAmount").c_str(), answersList.size());
 	
@@ -70,6 +71,11 @@ StepAnswer* DialogueStep::AddStepAnswer(string _answerText, string _answerName)
 list<StepAnswer*>& DialogueStep::GetAnswersList()
 {
 	return answersList;
+}
+
+DialogueText* DialogueStep::GetDialogueText()
+{
+	return dialogueText;
 }
 
 string DialogueStep::GetName()

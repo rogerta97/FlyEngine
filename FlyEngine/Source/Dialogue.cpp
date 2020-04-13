@@ -110,8 +110,8 @@ void Dialogue::SetFirstStep(DialogueStep* firstStep)
 
 		if (currentStep->GetUID() == firstStep->GetUID())
 		{
-			firstStep = currentStep; 
+			this->firstStep = currentStep; 
 			currentStep->isFirst = true;
 		}
-	}
+	}	
 }

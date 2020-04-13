@@ -321,10 +321,16 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 			string stepName = json_object_dotget_string(root_obj, string(stepSerializeStr + "Name").c_str());
 			string stepText = json_object_dotget_string(root_obj, string(stepSerializeStr + "Text").c_str());
 			UID stepUID = json_object_dotget_number(root_obj, string(stepSerializeStr + "StepID").c_str());
+			bool isFirst = json_object_dotget_boolean(root_obj, string(stepSerializeStr + "First").c_str());
 
 			newStep->SetName(stepName);
 			newStep->SetText(stepText);
 			newStep->SetUID(stepUID);
+
+			newStep->isFirst = isFirst; 
+
+			if (isFirst)
+				dialogueAction->GetDialogueData()->SetFirstStep(newStep);
 
 			dialogueAction->GetDialogueData()->stepsMap.insert(std::make_pair(newStep->GetUID(), newStep));
 

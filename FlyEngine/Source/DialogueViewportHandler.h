@@ -21,6 +21,9 @@ public:
 	// Draw Answers 
 	void DrawAnswers(); 
 
+	// Utility
+	void AddaptSentenceTextBox(); 
+
 	// Set & Get
 	UID GetAnswerSelected();
 
@@ -28,6 +31,8 @@ public:
 	void SetCurrentStep(DialogueStep* newCurrentStep);
 
 private:
+
+	float sentencePadding; 
 	BoundingBox* sentenceBackgroundSquare; 
 	DialogueStep* currentStep; 
 };
