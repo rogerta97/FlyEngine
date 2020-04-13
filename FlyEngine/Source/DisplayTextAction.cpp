@@ -22,8 +22,8 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 	isVisual = false;
 	drawTextBox = true;
 	pevBoxPos = float2::zero; 
-	textBBMinPoint = float2(1000, -1000); 
-	textBBMaxPoint = float2(-1000, 1000); 
+	textBBMinPoint = float2(0, -0); 
+	textBBMaxPoint = float2(-0, 0); 
 
 	textQuads = new std::vector<Quad*>();
 
@@ -31,7 +31,7 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 	textBox->CreateGizmos();
 
 	textBoundingBox = new BoundingBox();
-	textBoundingBox->SetSize(1, 1);
+	textBoundingBox->SetSize(0, 0);
 	textBoundingBoxColor = float4(1.0f, 0.0f, 0.0f, 1.0f); 
 
 	textAlignment = ALIGN_CENTER; 
@@ -761,6 +761,11 @@ void DisplayTextAction::SetTextBoxSize(BoundingBox* newFont)
 BoundingBox* DisplayTextAction::GetTextBox()
 {
 	return textBox;
+}
+
+BoundingBox* DisplayTextAction::GetTextBB()
+{
+	return textBoundingBox;
 }
 
 void DisplayTextAction::SetTextColor(float4 newColor)

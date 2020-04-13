@@ -351,7 +351,7 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 
 				newAnswer->SetName(answerName);
 				newAnswer->SetAnswerText(answerText);
-				newAnswer->SetUID(stepUID);
+				newAnswer->SetUID(answerUID);
 
 				dialogueAction->GetDialogueData()->answersMap.insert(std::make_pair(newAnswer->GetUID(), newAnswer));
 			

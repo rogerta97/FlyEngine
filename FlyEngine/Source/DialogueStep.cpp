@@ -7,6 +7,7 @@
 
 #include "Application.h"
 #include "ModuleManager.h"
+#include "ModuleInput.h"
 #include "DialogueEditorDockPanel.h"
 
 DialogueStep::DialogueStep(Dialogue* _parentDialogue, string _dialogueText, string _dialogueName)
@@ -54,6 +55,17 @@ string DialogueStep::GetTextStr()
 	}
 
 	return string();
+}
+
+StepAnswer* DialogueStep::ListenAnswerClick()
+{
+	for (auto& currentAnswer : answersList)
+	{
+		if (currentAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextBB()->IsBoxClicked())
+			return currentAnswer;
+	}
+
+	return nullptr; 
 }
 
 StepAnswer* DialogueStep::AddStepAnswer(string _answerText, string _answerName)

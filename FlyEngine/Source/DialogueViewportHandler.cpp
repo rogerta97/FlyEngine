@@ -61,21 +61,32 @@ void DialogueViewportHandler::DrawAnswers()
 
 		for (auto& currentAnswer : currentStep->GetAnswersList())
 		{
-			// Calculate Text Position
-			pen.x = -450 * ar;
-			pen.y = 400 - (answersSpacing * counter) - (answersHeight * counter);
+			//// Calculate Text Position
+			//pen.x = -450 * ar;
+			//pen.y = 400 - (answersSpacing * counter) - (answersHeight * counter);
 
-			float2 textBoxMinPoint = pen + float2(0, answersHeight);
-			float2 textBoxMaxPoint = pen + float2(800 * ar, 0);
+			//float2 textBoxMinPoint = pen + float2(0, answersHeight);
+			//float2 textBoxMaxPoint = pen + float2(800 * ar, 0);
 
-			currentAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextBox()->SetMaxPoint(textBoxMaxPoint);
-			currentAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextBox()->SetMinPoint(textBoxMinPoint);
-			currentAnswer->GetAnswerDialogueText()->GetTextAction()->CalculateOriginTextPosition();
+			//DisplayTextAction* answerTextAction = currentAnswer->GetAnswerDialogueText()->GetTextAction();
 
+			//// Addapt Text Box
+			//answerTextAction->GetTextBox()->SetMaxPoint(textBoxMaxPoint);
+			//answerTextAction->GetTextBox()->SetMinPoint(textBoxMinPoint);
+			//answerTextAction->CalculateOriginTextPosition();
+
+			//// Addapt Text Bounding Box
+			//float2 textBBMaxPoint = answerTextAction->GetTextBB()->GetMaxPoint();
+			//float2 textBBMinPoint = answerTextAction->GetTextBB()->GetMinPoint();
+
+			//answerTextAction->GetTextBB()->SetMaxPoint(textBBMaxPoint + float2(10, -10));
+			//answerTextAction->GetTextBB()->SetMinPoint(textBBMinPoint + float2(-10, 10));
+
+			// Draw Answer
 			currentAnswer->GetAnswerDialogueText()->GetTextAction()->DrawTextBoundingBox(true);
 			currentAnswer->GetAnswerDialogueText()->GetTextAction()->RenderText(); 
 
-			counter++; 
+			//counter++; 
 		}
 	}	
 }
@@ -113,5 +124,47 @@ DialogueStep* DialogueViewportHandler::GetCurrentStep()
 void DialogueViewportHandler::SetCurrentStep(DialogueStep* newCurrentStep)
 {
 	currentStep = newCurrentStep; 
-	AddaptSentenceTextBox(); 
+
+	if (currentStep != nullptr)
+	{
+		AddaptSentenceTextBox(); 
+
+		int counter = 0;
+		float2 pen;
+		float ar = App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
+
+		for (auto& currentAnswer : currentStep->GetAnswersList())
+		{
+			// Calculate Text Position
+			pen.x = -450 * ar;
+			pen.y = 400 - (answersSpacing * counter) - (answersHeight * counter);
+
+			float2 textBoxMinPoint = pen + float2(0, answersHeight);
+			float2 textBoxMaxPoint = pen + float2(800 * ar, 0);
+
+			DisplayTextAction* answerTextAction = currentAnswer->GetAnswerDialogueText()->GetTextAction();
+
+			// Addapt Text Box
+			answerTextAction->GetTextBox()->SetMaxPoint(textBoxMaxPoint);
+			answerTextAction->GetTextBox()->SetMinPoint(textBoxMinPoint);
+			answerTextAction->CalculateOriginTextPosition();
+
+			// Addapt Text Bounding Box
+			float2 textBBMaxPoint = answerTextAction->GetTextBB()->GetMaxPoint();
+			float2 textBBMinPoint = answerTextAction->GetTextBB()->GetMinPoint();
+
+			answerTextAction->UpdateTextQuads();
+			answerTextAction->CalculateTextBB(); 
+
+			answerTextAction->GetTextBB()->SetMaxPoint(textBBMaxPoint + float2(10, -10));
+			answerTextAction->GetTextBB()->SetMinPoint(textBBMinPoint + float2(-10, 10));
+
+			//// Draw Answer
+			//currentAnswer->GetAnswerDialogueText()->GetTextAction()->DrawTextBoundingBox(true);
+			//currentAnswer->GetAnswerDialogueText()->GetTextAction()->RenderText();
+
+			counter++;
+		}
+	}
+	
 }

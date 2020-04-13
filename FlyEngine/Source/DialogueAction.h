@@ -15,6 +15,7 @@ public:
 	DialogueAction(FlyObject* _parentObject);
 	~DialogueAction();
 
+	void Update(float dt); 
 	void Draw(); 
 	void DoAction(); 
 
@@ -27,6 +28,7 @@ public:
 
 private: 
 	bool showPreview; 
+	bool dialoguePlaying; 
 
 	// Dialogue Settings Var
 	int sentencePlacementCombo; 

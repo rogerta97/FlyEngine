@@ -65,8 +65,6 @@ FlyObject::~FlyObject()
 }
 
 //Returns true if this objects is deleted in the middle of the 
-
-
 bool FlyObject::Update(float dt)
 {
 	bool ret = false; 
@@ -196,9 +194,9 @@ void FlyObject::DoOnMouseOverActions()
 		{
 			if (it->IsOccCondition() && !it->PassConditionTest())
 				continue;
-		}
 
-		it->DoAction();
+			it->DoAction();
+		}
 	}
 }
 
@@ -256,7 +254,7 @@ void FlyObject::Draw()
 
 	if (isSelected || ViewportManager::getInstance()->drawClickableAreaCondition == DRAW_ALWAYS)
 	{
-		if (clickableArea != nullptr && drawClickableArea && clickableAreaActive)		
+		if (clickableArea != nullptr && drawClickableArea && clickableAreaActive && !App->isEngineInPlayMode)		
 			DrawClickableArea();
 	}
 

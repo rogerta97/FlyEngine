@@ -24,6 +24,7 @@ DialogueAction::DialogueAction(FlyObject* _parentObject)
 	sentencePlacementCombo = 0;
 	fontSize = 0; 
 	fontColor = float4::zero; 
+	dialoguePlaying = false; 
 
 	SetActionName("Dialog");
 	SetToolDescription("This should be the description of the dialog");
@@ -33,6 +34,20 @@ DialogueAction::DialogueAction(FlyObject* _parentObject)
 
 DialogueAction::~DialogueAction()
 {
+}
+
+void DialogueAction::Update(float dt)
+{
+	if (dialoguePlaying)
+	{
+		DialogueStep* currentStep = dialogue->dialogueViewportHandler->GetCurrentStep();
+		StepAnswer* clickedAnswer = currentStep->ListenAnswerClick();
+
+		if (clickedAnswer != nullptr)
+		{
+			flog("Congrats, you have clicked the answer %s", clickedAnswer->GetName().c_str()); 
+		}
+	}
 }
 
 void DialogueAction::Draw()
@@ -50,6 +65,7 @@ void DialogueAction::DoAction()
 		if (dialogueFirstStep != nullptr)
 		{
 			dialogue->dialogueViewportHandler->SetCurrentStep(dialogueFirstStep);
+			dialoguePlaying = true; 
 		}
 	}
 }
@@ -271,54 +287,59 @@ void DialogueAction::DrawUISettings()
 			ImGui::Text("Answers Visual Settings:");
 			ImGui::PopFont();
 
-			StepAnswer* firstAnswer = selectedStep->GetAnswersList().front();
-
-			if (firstAnswer != nullptr)
+			if (selectedStep != nullptr && !selectedStep->GetAnswersList().empty())
 			{
-				// Answer Font ---------------------
-				Font* currentFont = nullptr;
+				StepAnswer* firstAnswer = selectedStep->GetAnswersList().front();
 
 				if (firstAnswer != nullptr)
 				{
-					//currentFont = selectedStep->GetDialogueText()->GetTextAction()->GetFont();
-				}
+					// Answer Font ---------------------
+					Font* currentFont = nullptr;
 
-				string buttonString = "Find##FindFontAnswer";
-				if (ImGui::Button(buttonString.c_str()))
-				{
-					/*	if (selectedStep != nullptr)
-							ImGui::OpenPopup("print_font_selection_popup");*/
-				}
+					if (firstAnswer != nullptr)
+					{
+						//currentFont = selectedStep->GetDialogueText()->GetTextAction()->GetFont();
+					}
 
-				Font* fontSelected = (Font*)ResourceManager::getInstance()->PrintFontSelectionPopup();
-				if (fontSelected != nullptr)
-				{
-					//selectedStep->GetDialogueText()->GetTextAction()->SetFont(fontSelected);
-				}
+					string buttonString = "Find##FindFontAnswer";
+					if (ImGui::Button(buttonString.c_str()))
+					{
+						/*	if (selectedStep != nullptr)
+								ImGui::OpenPopup("print_font_selection_popup");*/
+					}
 
-				char actionFontNameBuffer[256] = "None";
-				if (currentFont != nullptr)
-				{
-					strcpy(actionFontNameBuffer, currentFont->GetName().c_str());
-				}
+					Font* fontSelected = (Font*)ResourceManager::getInstance()->PrintFontSelectionPopup();
+					if (fontSelected != nullptr)
+					{
+						//selectedStep->GetDialogueText()->GetTextAction()->SetFont(fontSelected);
+					}
 
-				ImGui::SameLine();
-				if (ImGui::InputText("Font", actionFontNameBuffer, IM_ARRAYSIZE(actionFontNameBuffer), ImGuiInputTextFlags_ReadOnly))
-				{
+					char actionFontNameBuffer[256] = "None";
+					if (currentFont != nullptr)
+					{
+						strcpy(actionFontNameBuffer, currentFont->GetName().c_str());
+					}
 
-				}
+					ImGui::SameLine();
+					if (ImGui::InputText("Font", actionFontNameBuffer, IM_ARRAYSIZE(actionFontNameBuffer), ImGuiInputTextFlags_ReadOnly))
+					{
 
-				// Backrgound Color
-				float4 backgroundColor = float4::zero;
-				if (firstAnswer != nullptr && dialogue->dialogueViewportHandler != nullptr)
-					backgroundColor = firstAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextBBColor();
+					}
 
-				if (ImGui::ColorEdit4("Background Color##Answer", (float*)& backgroundColor))
-				{
+					// Backrgound Color
+					float4 backgroundColor = float4::zero;
 					if (firstAnswer != nullptr && dialogue->dialogueViewportHandler != nullptr)
-						firstAnswer->GetAnswerDialogueText()->GetTextAction()->SetTextBBColor(backgroundColor);
+						backgroundColor = firstAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextBBColor();
+
+					if (ImGui::ColorEdit4("Background Color##Answer", (float*)&backgroundColor))
+					{
+						if (firstAnswer != nullptr && dialogue->dialogueViewportHandler != nullptr)
+							firstAnswer->GetAnswerDialogueText()->GetTextAction()->SetTextBBColor(backgroundColor);
+					}
 				}
 			}
+
+			
 		
 			ImGui::Separator();
 			

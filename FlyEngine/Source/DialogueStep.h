@@ -29,6 +29,7 @@ public:
 	// Step Utilities ----
 	void SetText(string _dialogueText); 
 	string GetTextStr();
+	StepAnswer* ListenAnswerClick(); 
 
 	// Answers -----------
 	StepAnswer* AddStepAnswer(string _answerText, string _answerName = "Name");

@@ -53,6 +53,7 @@ public:
 
 	void SetTextBoxSize(BoundingBox* newFont);
 	BoundingBox* GetTextBox();
+	BoundingBox* GetTextBB();
 
 	void SetTextColor(float4 newColor);
 	float4& GetTextColor();

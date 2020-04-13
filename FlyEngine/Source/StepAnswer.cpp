@@ -34,7 +34,7 @@ void StepAnswer::SaveAnswer(JSON_Object* jsonObject, string serializeObjectStrin
 {
 	json_object_dotset_string(jsonObject, string(serializeObjectString + "Name").c_str(), answerName.c_str());
 	json_object_dotset_string(jsonObject, string(serializeObjectString + "Text").c_str(), answerDialogueText->GetTextAction()->GetText().c_str());
-//	json_object_dotset_string(jsonObject, string(serializeObjectString + "AnswerUID").c_str(), answerDialogueText->GetTextAction()->GetText().c_str());
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "AnswerUID").c_str(), GetUID());
 
 	if(destinationStep != nullptr)
 		json_object_dotset_number(jsonObject, string(serializeObjectString + "DestinationStepUID").c_str(), destinationStep->GetUID());
