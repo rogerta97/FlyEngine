@@ -127,13 +127,13 @@ void ModuleImGui::CreatePanels()
 	dockPanels.push_back(graphPropertiesPanel);
 	dockPanels.push_back(roomPropertiesPanel); 
 
+	dockPanels.push_back(dialogueEditorPanel);
 	dockPanels.push_back(gameViewporPanel);
 	dockPanels.push_back(objectCreatorPanel); 
 	dockPanels.push_back(roomObjectsDockPanel);
 	dockPanels.push_back(objectPropertiesDockPanel);
 	dockPanels.push_back(sceneDockPanel);
 	dockPanels.push_back(fileBrowserDockPanel); 
-	dockPanels.push_back(dialogueEditorPanel);
 
 	consoleDockPanel = consolePanel; 
 	graphPropertiesDockPanel = graphPropertiesPanel;

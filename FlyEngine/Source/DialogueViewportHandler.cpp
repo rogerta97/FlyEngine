@@ -12,7 +12,7 @@ DialogueViewportHandler::DialogueViewportHandler()
 {
 	currentStep = nullptr; 
 	sentenceBackgroundSquare = new BoundingBox();
-	sentencePadding = 10.0f;
+	sentencePadding = 15.0f;
 
 	float ar = App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
 	sentenceBackgroundSquare->SetMaxPoint(float2(500 * ar, -500));
