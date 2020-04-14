@@ -1,8 +1,10 @@
 #include "DialogueStep.h"
 #include "DialogueText.h"
 #include "DisplayTextAction.h"
+#include "DialogueViewportHandler.h"
 #include "StepAnswer.h"
 #include "Dialogue.h"
+#include "BoundingBox.h"
 #include "NodeGraph.h"
 
 #include "Application.h"
@@ -17,6 +19,10 @@ DialogueStep::DialogueStep(Dialogue* _parentDialogue, string _dialogueText, stri
 	stepUID = RandomNumberGenerator::getInstance()->GenerateUID(); 
 	parentDialogue = _parentDialogue; 
 	SetName(_dialogueName.c_str());
+
+	fontNameHold = "None";
+	backgroundColorHold = float4(0, 0, 0, 1);
+	fontColorHold = float4(1, 1, 1, 1);
 }
 
 DialogueStep::~DialogueStep()
@@ -33,11 +39,31 @@ void DialogueStep::SaveStep(JSON_Object* jsonObject, string serializeObjectStrin
 	json_object_dotset_boolean(jsonObject, string(serializeObjectString + "First").c_str(), isFirst);
 
 	// Save Step Visualization Data ----------
-	json_object_dotset_string(jsonObject, string(serializeObjectString + "Visuals.FontName").c_str(), stepName.c_str());
-	json_object_dotset_string(jsonObject, string(serializeObjectString + "Visuals.BackgroundColor").c_str(), stepName.c_str());
-	json_object_dotset_string(jsonObject, string(serializeObjectString + "Visuals.FontColor").c_str(), stepName.c_str());
+	json_object_dotset_string(jsonObject, string(serializeObjectString + "Visuals.FontName").c_str(), fontNameHold.c_str());
+
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "Visuals.BackgroundColor.r").c_str(), backgroundColorHold.x);
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "Visuals.BackgroundColor.g").c_str(), backgroundColorHold.y);
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "Visuals.BackgroundColor.b").c_str(), backgroundColorHold.z);
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "Visuals.BackgroundColor.a").c_str(), backgroundColorHold.w);
+
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "Visuals.FontColor.r").c_str(), answerFontColorHold.x);
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "Visuals.FontColor.g").c_str(), answerFontColorHold.y);
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "Visuals.FontColor.b").c_str(), answerFontColorHold.z);
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "Visuals.FontColor.a").c_str(), answerFontColorHold.w);
 
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "Answers.AnswersAmount").c_str(), answersList.size());
+
+	if (!answersList.empty())
+	{
+		StepAnswer* firstAnswer = answersList.front(); 
+
+		json_object_dotset_string(jsonObject, string(serializeObjectString + "Answers.Visuals.FontName").c_str(), firstAnswer->GetAnswerDialogueText()->GetTextAction()->GetFont()->GetName().c_str());
+
+		json_object_dotset_number(jsonObject, string(serializeObjectString + "Answers.Visuals.BackgroundColor.r").c_str(), firstAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextColor().x);
+		json_object_dotset_number(jsonObject, string(serializeObjectString + "Answers.Visuals.BackgroundColor.g").c_str(), firstAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextColor().y);
+		json_object_dotset_number(jsonObject, string(serializeObjectString + "Answers.Visuals.BackgroundColor.b").c_str(), firstAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextColor().z);
+		json_object_dotset_number(jsonObject, string(serializeObjectString + "Answers.Visuals.BackgroundColor.a").c_str(), firstAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextColor().w);
+	}
 	
 	int counter = 0; 
 	for (auto& currentAnswer : answersList)

@@ -678,33 +678,6 @@ void DisplayTextAction::CalculateTextBB()
 		}
 
 		previous = glyph_index;
-
-		//// Get The Corresponding Quad 
-		//Quad* renderQuad = textQuads->at(letterCount);
-
-		//// Push Matrix to place the Corresponding quad in the correct position
-		//float4x4 characterTransformMatrix = float4x4::identity;
-		//pen.y = y - currentCharacter.bearing.y + textFont->GetSize() + (currentLine * lineSpacing);
-		//characterTransformMatrix.SetTranslatePart(float3(pen.x, pen.y, 0));
-		//glMatrixMode(GL_MODELVIEW);
-		//glLoadMatrixf((GLfloat*)(characterTransformMatrix.Transposed()).v);
-
-		//pen.x += currentCharacter.Advance;
-
-		//// Supose Wrapping = true; 
-		//cursorXInc += currentCharacter.Advance;
-		//if (cursorXInc > textBox->GetSize().x - 30)
-		//{
-		//	currentLine++;
-		//	pen.x = textBox->GetMinPoint().x;
-		//	cursorXInc = 0;
-		//	cursorYInc += lineSpacing;
-		//}
-
-		//if (cursorYInc > textBox->GetSize().y - 30)
-		//{
-		//	continue;
-		//}
 	}
 }
 

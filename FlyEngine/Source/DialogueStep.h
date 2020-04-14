@@ -3,6 +3,7 @@
 
 #include "Globals.h"
 #include "SaveAndLoad.h" // bazokazo
+#include "Math/float4.h"
 
 #include <list>
 #include <string>
@@ -48,7 +49,16 @@ public:
 
 	bool isSelected = false; 
 	bool isFirst = false; 
+
+	// Draw Hold Data 
+	string fontNameHold;
+	float4 backgroundColorHold; 
+	float4 fontColorHold; 
 	Sentence_Display_Mode sentenceDisplayMode = SENTENCE_DISPLAY_TOP;
+
+	string answerFontNameHold;
+	float4 answerBackgroundColorHold;
+	float4 answerFontColorHold;
 
 private: 
 	Dialogue* parentDialogue; 

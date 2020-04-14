@@ -141,10 +141,10 @@ void DialogueAction::DrawUISettings()
 		// Text Font ------------------------------------------------
 		Font* currentFont = nullptr; 
 
-		if (selectedStep != nullptr)
-		{
-			currentFont = selectedStep->GetDialogueText()->GetTextAction()->GetFont();
-		}
+		//if (selectedStep != nullptr)
+		//{
+		//	currentFont = selectedStep->GetDialogueText()->GetTextAction()->GetFont();
+		//}
 
 		string buttonString = "Find##FindFont";
 		if (ImGui::Button(buttonString.c_str()))
@@ -157,12 +157,13 @@ void DialogueAction::DrawUISettings()
 		if (fontSelected != nullptr)
 		{
 			selectedStep->GetDialogueText()->GetTextAction()->SetFont(fontSelected);
+			selectedStep->fontNameHold = fontSelected->GetName();
 		}
 
 		char actionFontNameBuffer[256] = "None";
-		if (currentFont != nullptr)
+		if (fontSelected != nullptr)
 		{
-			strcpy(actionFontNameBuffer, currentFont->GetName().c_str());
+			strcpy(actionFontNameBuffer, selectedStep->fontNameHold.c_str());
 		}
 
 		ImGui::SameLine();
@@ -172,39 +173,45 @@ void DialogueAction::DrawUISettings()
 		}
 
 		// Text Size ------------------------------------------------
-		int textSize = 0; 
-		if (selectedStep != nullptr && selectedStep->GetDialogueText()->GetTextAction() != nullptr)
-			textSize = selectedStep->GetDialogueText()->GetTextAction()->GetFont()->GetSize();
+		//int textSize = 0; 
+		//if (selectedStep != nullptr && selectedStep->GetDialogueText()->GetTextAction() != nullptr)
+		//	textSize = selectedStep->GetDialogueText()->GetTextAction()->GetFont()->GetSize();
 
-		if (ImGui::InputInt("Text Size", &textSize, 1, 5))
-		{
-			if (selectedStep != nullptr && selectedStep->GetDialogueText()->GetTextAction() != nullptr)
-			{
-				selectedStep->GetDialogueText()->GetTextAction()->GetFont()->SetSize(textSize);
-				selectedStep->GetDialogueText()->GetTextAction()->UpdateTextQuads(); 
-			}
-		}
+		//if (ImGui::InputInt("Text Size", &textSize, 1, 5))
+		//{
+		//	if (selectedStep != nullptr && selectedStep->GetDialogueText()->GetTextAction() != nullptr)
+		//	{
+		//		selectedStep->GetDialogueText()->GetTextAction()->GetFont()->SetSize(textSize);
+		//		selectedStep->GetDialogueText()->GetTextAction()->UpdateTextQuads(); 
+		//	}
+		//}
 
 		// Text Color ------------------------------------------------
 		float4 textColor = float4::zero;
 		if (selectedStep != nullptr && selectedStep->GetDialogueText()->GetTextAction() != nullptr)
-			textColor = selectedStep->GetDialogueText()->GetTextAction()->GetTextColor(); 
+			textColor = selectedStep->fontColorHold;
 
 		if (ImGui::ColorEdit4("Text Color", (float*)& textColor))
 		{
 			if (selectedStep != nullptr && selectedStep->GetDialogueText()->GetTextAction() != nullptr)
+			{
 				selectedStep->GetDialogueText()->GetTextAction()->SetTextColor(textColor);
+				selectedStep->fontColorHold = textColor;
+			}
 		}
 
 		// Background Color ------------------------------------------------
 		float4 backgroundColor = float4::zero;
 		if (selectedStep != nullptr && dialogue->dialogueViewportHandler != nullptr)
-			backgroundColor = dialogue->dialogueViewportHandler->GetSentenceBackgroundBB()->GetSquareColor();
+			backgroundColor = selectedStep->backgroundColorHold;
 
 		if (ImGui::ColorEdit4("Background Color", (float*)& backgroundColor))
 		{
 			if (selectedStep != nullptr && dialogue->dialogueViewportHandler != nullptr)
+			{
+				selectedStep->backgroundColorHold = backgroundColor; 
 				dialogue->dialogueViewportHandler->GetSentenceBackgroundBB()->SetSquareColor(backgroundColor); 
+			}
 		}
 
 		string buttonPreviewText = "Show Preview"; 
