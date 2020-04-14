@@ -26,10 +26,16 @@ DialogueStep::~DialogueStep()
 
 void DialogueStep::SaveStep(JSON_Object* jsonObject, string serializeObjectString)
 {
+	// Save Step Data ----------
 	json_object_dotset_string(jsonObject, string(serializeObjectString + "Name").c_str(), stepName.c_str());
 	json_object_dotset_string(jsonObject, string(serializeObjectString + "Text").c_str(), dialogueText->GetTextAction()->GetText().c_str());
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "StepID").c_str(), GetUID());
 	json_object_dotset_boolean(jsonObject, string(serializeObjectString + "First").c_str(), isFirst);
+
+	// Save Step Visualization Data ----------
+	json_object_dotset_string(jsonObject, string(serializeObjectString + "Visuals.FontName").c_str(), stepName.c_str());
+	json_object_dotset_string(jsonObject, string(serializeObjectString + "Visuals.BackgroundColor").c_str(), stepName.c_str());
+	json_object_dotset_string(jsonObject, string(serializeObjectString + "Visuals.FontColor").c_str(), stepName.c_str());
 
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "Answers.AnswersAmount").c_str(), answersList.size());
 	
