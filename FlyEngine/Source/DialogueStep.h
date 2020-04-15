@@ -47,13 +47,16 @@ public:
 	UID GetUID() const; 
 	void SetUID(UID newUID); 
 
+	// Public Vars
 	bool isSelected = false; 
 	bool isFirst = false; 
+	bool styleModified = false; 
 
 	// Draw Hold Data 
 	string fontNameHold;
 	float4 backgroundColorHold; 
 	float4 fontColorHold; 
+
 	Sentence_Display_Mode sentenceDisplayMode = SENTENCE_DISPLAY_TOP;
 
 	string answerFontNameHold;

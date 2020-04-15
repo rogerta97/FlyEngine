@@ -39,6 +39,8 @@ void DialogueViewportHandler::DrawSentence()
 	if (currentStep != nullptr)
 	{
 		DrawSentenceBackground();
+
+		currentStep->GetDialogueText()->GetTextAction()->SetTextColor(currentStep->fontColorHold);
 		currentStep->GetDialogueText()->GetTextAction()->RenderText();
 	}
 }
@@ -47,7 +49,7 @@ void DialogueViewportHandler::DrawSentenceBackground()
 {
 	if (currentStep != nullptr)
 	{
-		sentenceBackgroundBB->Draw(true, sentenceBackgroundBB->GetSquareColor());
+		sentenceBackgroundBB->Draw(true, currentStep->backgroundColorHold);
 	}
 }
 

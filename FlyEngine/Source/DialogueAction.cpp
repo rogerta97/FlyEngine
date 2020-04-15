@@ -106,130 +106,45 @@ void DialogueAction::DrawUISettings()
 		DialogueStep* selectedStep = dialogue->GetSelectedStep();
 
 		ImGui::Separator();
-
-		// Draw Step Visual Settings -------------------------------------------------------------------------------
-		string stepSettingsStr = "Step Visual Settings [";
-	
-		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-
-		if (selectedStep == nullptr)
+		if (selectedStep)
 		{
-			ImGui::Text(stepSettingsStr.c_str()); ImGui::SameLine(); 
-			ImGui::TextColored(ImVec4(255, 0, 0, 1), "None Selected"); ImGui::SameLine();
-			ImGui::Text("]");
-		}
-		else
-		{
-			stepSettingsStr += string(selectedStep->GetName() + ']');
-			ImGui::Text(stepSettingsStr.c_str());
-		}
-
-		ImGui::PopFont();
-		
-		// Display Mode ------------------------------------------------
-		int displayMode = 0; 
-
-		if (selectedStep != nullptr)
-			displayMode = selectedStep->sentenceDisplayMode; 
-
-		if (ImGui::Combo("Sentence Placement", &displayMode, "Display On Top Screen\0Display Over Answers"))
-		{
-			if (selectedStep != nullptr)
-				selectedStep->sentenceDisplayMode = (Sentence_Display_Mode)displayMode;
-		}
-
-		// Text Font ------------------------------------------------
-		Font* currentFont = nullptr; 
-
-		//if (selectedStep != nullptr)
-		//{
-		//	currentFont = selectedStep->GetDialogueText()->GetTextAction()->GetFont();
-		//}
-
-		string buttonString = "Find##FindFont";
-		if (ImGui::Button(buttonString.c_str()))
-		{
-			if (selectedStep != nullptr)
-				ImGui::OpenPopup("print_font_selection_popup");
-		}
-
-		Font* fontSelected = (Font*)ResourceManager::getInstance()->PrintFontSelectionPopup();
-		if (fontSelected != nullptr)
-		{
-			selectedStep->GetDialogueText()->GetTextAction()->SetFont(fontSelected);
-			selectedStep->fontNameHold = fontSelected->GetName();
-		}
-
-		char actionFontNameBuffer[256] = "None";
-		if (fontSelected != nullptr)
-		{
-			strcpy(actionFontNameBuffer, selectedStep->fontNameHold.c_str());
-		}
-
-		ImGui::SameLine();
-		if (ImGui::InputText("Font", actionFontNameBuffer, IM_ARRAYSIZE(actionFontNameBuffer), ImGuiInputTextFlags_ReadOnly))
-		{
+			DrawStepVisualSettings(selectedStep);
 			
-		}
+			ImGui::Spacing(); 
+			DrawAnswersVisualSettings(selectedStep);
 
-		// Text Size ------------------------------------------------
-		//int textSize = 0; 
-		//if (selectedStep != nullptr && selectedStep->GetDialogueText()->GetTextAction() != nullptr)
-		//	textSize = selectedStep->GetDialogueText()->GetTextAction()->GetFont()->GetSize();
+			// Preview Button 
+			string buttonPreviewText = "Show Preview"; 
 
-		//if (ImGui::InputInt("Text Size", &textSize, 1, 5))
-		//{
-		//	if (selectedStep != nullptr && selectedStep->GetDialogueText()->GetTextAction() != nullptr)
-		//	{
-		//		selectedStep->GetDialogueText()->GetTextAction()->GetFont()->SetSize(textSize);
-		//		selectedStep->GetDialogueText()->GetTextAction()->UpdateTextQuads(); 
-		//	}
-		//}
+			if (showPreview == true)
+				buttonPreviewText = "Hide Preview"; 
 
-		// Text Color ------------------------------------------------
-		float4 textColor = float4::zero;
-		if (selectedStep != nullptr && selectedStep->GetDialogueText()->GetTextAction() != nullptr)
-			textColor = selectedStep->fontColorHold;
-
-		if (ImGui::ColorEdit4("Text Color", (float*)& textColor))
-		{
-			if (selectedStep != nullptr && selectedStep->GetDialogueText()->GetTextAction() != nullptr)
+			if (ImGui::Button(buttonPreviewText.c_str(), ImVec2(100, 35)))
 			{
-				selectedStep->GetDialogueText()->GetTextAction()->SetTextColor(textColor);
-				selectedStep->fontColorHold = textColor;
+				if(showPreview)
+					dialogue->dialogueViewportHandler->SetCurrentStep(nullptr);
+				else
+					dialogue->dialogueViewportHandler->SetCurrentStep(selectedStep);
+
+				showPreview = !showPreview; 
 			}
-		}
-
-		// Background Color ------------------------------------------------
-		float4 backgroundColor = float4::zero;
-		if (selectedStep != nullptr && dialogue->dialogueViewportHandler != nullptr)
-			backgroundColor = selectedStep->backgroundColorHold;
-
-		if (ImGui::ColorEdit4("Background Color", (float*)& backgroundColor))
-		{
-			if (selectedStep != nullptr && dialogue->dialogueViewportHandler != nullptr)
-			{
-				selectedStep->backgroundColorHold = backgroundColor; 
-				dialogue->dialogueViewportHandler->GetSentenceBackgroundBB()->SetSquareColor(backgroundColor); 
-			}
-		}
-
-		string buttonPreviewText = "Show Preview"; 
-
-		if (showPreview == true)
-			buttonPreviewText = "Hide Preview"; 
-
-		if (ImGui::Button(buttonPreviewText.c_str()))
-		{
-			if(showPreview)
-				dialogue->dialogueViewportHandler->SetCurrentStep(nullptr);
-			else
-				dialogue->dialogueViewportHandler->SetCurrentStep(selectedStep);
-
-			showPreview = !showPreview; 
-		}
 		
-		IMGUI_SPACED_SEPARATOR;
+			IMGUI_SPACED_SEPARATOR;
+		}
+
+		if (drawFontPopup)
+		{
+			Font* selectedFont = (Font*)ResourceManager::getInstance()->PrintFontSelectionPopup();
+			if (selectedFont != nullptr && fontToSentence)
+			{
+				selectedStep->fontNameHold = selectedFont->GetName(); 
+			}
+			else if (selectedFont != nullptr && fontToAnswer)
+			{
+				selectedStep->answerFontNameHold = selectedFont->GetName();
+			}
+		}
+
 
 		// Draw Step Settings -------------------------------------------------------------------------------------
 		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
@@ -287,65 +202,6 @@ void DialogueAction::DrawUISettings()
 				selectedStep->SetText(stepTextBuffer);
 			}
 
-			ImGui::Separator();
-
-			// Draw answers settings ---------------------------------
-			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-			ImGui::Text("Answers Visual Settings:");
-			ImGui::PopFont();
-
-			if (selectedStep != nullptr && !selectedStep->GetAnswersList().empty())
-			{
-				StepAnswer* firstAnswer = selectedStep->GetAnswersList().front();
-
-				if (firstAnswer != nullptr)
-				{
-					// Answer Font ---------------------
-					Font* currentFont = nullptr;
-
-					if (firstAnswer != nullptr)
-					{
-						//currentFont = selectedStep->GetDialogueText()->GetTextAction()->GetFont();
-					}
-
-					string buttonString = "Find##FindFontAnswer";
-					if (ImGui::Button(buttonString.c_str()))
-					{
-						/*	if (selectedStep != nullptr)
-								ImGui::OpenPopup("print_font_selection_popup");*/
-					}
-
-					Font* fontSelected = (Font*)ResourceManager::getInstance()->PrintFontSelectionPopup();
-					if (fontSelected != nullptr)
-					{
-						//selectedStep->GetDialogueText()->GetTextAction()->SetFont(fontSelected);
-					}
-
-					char actionFontNameBuffer[256] = "None";
-					if (currentFont != nullptr)
-					{
-						strcpy(actionFontNameBuffer, currentFont->GetName().c_str());
-					}
-
-					ImGui::SameLine();
-					if (ImGui::InputText("Font", actionFontNameBuffer, IM_ARRAYSIZE(actionFontNameBuffer), ImGuiInputTextFlags_ReadOnly))
-					{
-
-					}
-
-					// Backrgound Color
-					float4 backgroundColor = float4::zero;
-					if (firstAnswer != nullptr && dialogue->dialogueViewportHandler != nullptr)
-						backgroundColor = firstAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextBBColor();
-
-					if (ImGui::ColorEdit4("Background Color##Answer", (float*)&backgroundColor))
-					{
-						if (firstAnswer != nullptr && dialogue->dialogueViewportHandler != nullptr)
-							firstAnswer->GetAnswerDialogueText()->GetTextAction()->SetTextBBColor(backgroundColor);
-					}
-				}
-			}
-	
 			ImGui::Separator();
 			
 			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
@@ -405,6 +261,140 @@ void DialogueAction::DrawUISettings()
 			}
 		}
 
+	}
+}
+
+void DialogueAction::DrawAnswersVisualSettings(DialogueStep* selectedStep)
+{
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	ImGui::Text("Answers Visual Settings:");
+	ImGui::PopFont();
+
+	string answerButtonString = "Find##FindFontAnswer";
+	if (ImGui::Button(answerButtonString.c_str()))
+	{
+		drawFontPopup = true; 
+		fontToSentence = false; 
+		fontToAnswer = true; 
+
+		if (selectedStep != nullptr)
+			ImGui::OpenPopup("print_font_selection_popup");
+	}
+
+	char actionFontNameBuffer[256] = "None";
+	if (selectedStep != nullptr && selectedStep->answerFontNameHold != "")
+	{
+		strcpy(actionFontNameBuffer, selectedStep->answerFontNameHold.c_str());
+	}
+
+	ImGui::SameLine();
+	if (ImGui::InputText("Font", actionFontNameBuffer, IM_ARRAYSIZE(actionFontNameBuffer), ImGuiInputTextFlags_ReadOnly))
+	{
+
+	}
+
+	// Backrgound Color
+	//float4 backgroundColor = float4::zero;
+	//if (firstAnswer != nullptr && dialogue->dialogueViewportHandler != nullptr)
+	//	backgroundColor = firstAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextBBColor();
+
+	/*if (ImGui::ColorEdit4("Background Color##Answer", (float*)&backgroundColor))
+	{
+	if (firstAnswer != nullptr && dialogue->dialogueViewportHandler != nullptr)
+	firstAnswer->GetAnswerDialogueText()->GetTextAction()->SetTextBBColor(backgroundColor);
+	}*/
+}
+
+void DialogueAction::DrawStepVisualSettings(DialogueStep* selectedStep)
+{
+	string stepSettingsStr = "Step Visual Settings [";
+
+	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+
+	if (selectedStep == nullptr)
+	{
+		ImGui::Text(stepSettingsStr.c_str()); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(255, 0, 0, 1), "None Selected"); ImGui::SameLine();
+		ImGui::Text("]");
+	}
+	else
+	{
+		stepSettingsStr += string(selectedStep->GetName() + ']');
+		ImGui::Text(stepSettingsStr.c_str());
+	}
+
+	ImGui::PopFont();
+
+	// Display Mode ------------------------------------------------
+	ImGui::Spacing(); 
+	
+	if (selectedStep != nullptr)
+	{
+		int displayMode = 0;
+
+		// Draw Display Mode -------------------------------------------------------
+		if (selectedStep != nullptr)
+			displayMode = selectedStep->sentenceDisplayMode;
+
+		if (ImGui::Combo("Sentence Placement", &displayMode, "Display On Top Screen\0Display Over Answers"))
+		{
+			if (selectedStep != nullptr)
+				selectedStep->sentenceDisplayMode = (Sentence_Display_Mode)displayMode;
+		}
+
+		// Draw Font Button -------------------------------------------------------
+		string buttonString = "Find##FindFont";
+		if (ImGui::Button(buttonString.c_str()))
+		{
+			drawFontPopup = true;
+
+			fontToSentence = true;
+			fontToAnswer = false;
+
+			if (selectedStep != nullptr)
+				ImGui::OpenPopup("print_font_selection_popup");
+		}
+
+		// Draw Font Name -------------------------------------------------------
+		char actionFontNameBuffer[256] = "None";
+		if (!selectedStep->fontNameHold.empty())
+		{
+			strcpy(actionFontNameBuffer, selectedStep->fontNameHold.c_str());
+		}
+
+		ImGui::SameLine();
+		if (ImGui::InputText("Font", actionFontNameBuffer, IM_ARRAYSIZE(actionFontNameBuffer), ImGuiInputTextFlags_ReadOnly))
+		{
+
+		}
+
+		// Text Color ------------------------------------------------
+		float4 textColor = float4::zero;
+		if (selectedStep != nullptr && selectedStep->GetDialogueText()->GetTextAction() != nullptr)
+			textColor = selectedStep->fontColorHold;
+
+		if (ImGui::ColorEdit4("Text Color", (float*)&textColor))
+		{
+			if (selectedStep != nullptr && selectedStep->GetDialogueText()->GetTextAction() != nullptr)
+			{
+				selectedStep->GetDialogueText()->GetTextAction()->SetTextColor(textColor);
+				selectedStep->fontColorHold = textColor;
+			}
+		}
+
+		// Background Color ------------------------------------------------
+		float4 backgroundColor = float4::zero;
+		if (selectedStep != nullptr && dialogue->dialogueViewportHandler != nullptr)
+			backgroundColor = selectedStep->backgroundColorHold;
+
+		if (ImGui::ColorEdit4("Background Color", (float*)&backgroundColor))
+		{
+			if (selectedStep != nullptr && dialogue->dialogueViewportHandler != nullptr)
+			{
+				selectedStep->backgroundColorHold = backgroundColor;
+				//dialogue->dialogueViewportHandler->GetSentenceBackgroundBB()->SetSquareColor(backgroundColor); 
+			}
+		}
 	}
 }
 

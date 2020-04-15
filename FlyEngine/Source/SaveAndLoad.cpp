@@ -343,8 +343,17 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 			newStep->fontColorHold.w = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.FontColor.a").c_str());
 
 			// Visuals for answers 
-			if (isFirst)
-				dialogueAction->GetDialogueData()->SetFirstStep(newStep);
+			newStep->answerFontNameHold = json_object_dotget_string(root_obj, string(stepSerializeStr + "Answers.Visuals.FontName").c_str());
+
+			newStep->answerBackgroundColorHold.x = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.BackgroundColor.r").c_str());
+			newStep->answerBackgroundColorHold.y = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.BackgroundColor.g").c_str());
+			newStep->answerBackgroundColorHold.z = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.BackgroundColor.b").c_str());
+			newStep->answerBackgroundColorHold.w = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.BackgroundColor.a").c_str());
+
+			newStep->answerFontColorHold.x = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.FontColor.r").c_str());
+			newStep->answerFontColorHold.y = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.FontColor.g").c_str());
+			newStep->answerFontColorHold.z = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.FontColor.b").c_str());
+			newStep->answerFontColorHold.w = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.FontColor.a").c_str());
 
 			dialogueAction->GetDialogueData()->stepsMap.insert(std::make_pair(newStep->GetUID(), newStep));
 

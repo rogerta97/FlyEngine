@@ -21,6 +21,8 @@ public:
 
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false, int actionPositionInObject = 0);
 	void DrawUISettings();
+	void DrawAnswersVisualSettings(DialogueStep* selectedStep);
+	void DrawStepVisualSettings(DialogueStep* selectedStep);
 	void DrawActionOccurenceCheckboxes();
 
 	DialogueStep* AddDialogueStep(string _dialogueSlotText = "Text", string _dialogueStepName = "Name");
@@ -29,6 +31,10 @@ public:
 private: 
 	bool showPreview; 
 	bool dialoguePlaying; 
+
+	bool drawFontPopup; 
+	bool fontToSentence; 
+	bool fontToAnswer; 
 
 	// Dialogue Settings Var
 	int sentencePlacementCombo; 
