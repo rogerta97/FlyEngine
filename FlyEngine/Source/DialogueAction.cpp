@@ -256,7 +256,9 @@ void DialogueAction::DrawUISettings()
 				if (selectedStep != nullptr)
 				{
 					StepAnswer* sa = selectedStep->AddStepAnswer("Test");
-					dialogue->answersMap.insert(std::make_pair(sa->GetUID(), sa)); 
+					dialogue->answersMap.insert(std::make_pair(sa->GetUID(), sa)); 		
+					dialogue->dialogueViewportHandler->AddaptAnswersPosition();
+					
 				}
 			}
 		}

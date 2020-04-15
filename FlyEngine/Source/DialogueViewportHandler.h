@@ -34,6 +34,8 @@ public:
 	DialogueStep* GetCurrentStep();
 	void SetCurrentStep(DialogueStep* newCurrentStep);
 
+	void AddaptAnswersPosition();
+
 private:
 
 	float sentencePadding; 
