@@ -23,6 +23,10 @@ DialogueStep::DialogueStep(Dialogue* _parentDialogue, string _dialogueText, stri
 	fontNameHold = "None";
 	backgroundColorHold = float4(0, 0, 0, 1);
 	fontColorHold = float4(1, 1, 1, 1);
+
+	answerFontNameHold = "None";
+	answerBackgroundColorHold = float4(0, 0, 0, 1);
+	answerFontColorHold = float4(1, 1, 1, 1);
 }
 
 DialogueStep::~DialogueStep()
@@ -64,19 +68,7 @@ void DialogueStep::SaveStep(JSON_Object* jsonObject, string serializeObjectStrin
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "Answers.Visuals.FontColor.r").c_str(), answerFontColorHold.x);
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "Answers.Visuals.FontColor.g").c_str(), answerFontColorHold.y);
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "Answers.Visuals.FontColor.b").c_str(), answerFontColorHold.z);
-	json_object_dotset_number(jsonObject, string(serializeObjectString + "Answers.Visuals.FontColor.a").c_str(), answerFontColorHold.w);
-																	
-	if (!answersList.empty())
-	{
-		StepAnswer* firstAnswer = answersList.front(); 
-
-		json_object_dotset_string(jsonObject, string(serializeObjectString + "Answers.Visuals.FontName").c_str(), firstAnswer->GetAnswerDialogueText()->GetTextAction()->GetFont()->GetName().c_str());
-
-		json_object_dotset_number(jsonObject, string(serializeObjectString + "Answers.Visuals.BackgroundColor.r").c_str(), firstAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextColor().x);
-		json_object_dotset_number(jsonObject, string(serializeObjectString + "Answers.Visuals.BackgroundColor.g").c_str(), firstAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextColor().y);
-		json_object_dotset_number(jsonObject, string(serializeObjectString + "Answers.Visuals.BackgroundColor.b").c_str(), firstAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextColor().z);
-		json_object_dotset_number(jsonObject, string(serializeObjectString + "Answers.Visuals.BackgroundColor.a").c_str(), firstAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextColor().w);
-	}
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "Answers.Visuals.FontColor.a").c_str(), answerFontColorHold.w);															
 	
 	int counter = 0; 
 	for (auto& currentAnswer : answersList)

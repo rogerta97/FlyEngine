@@ -212,7 +212,7 @@ void DialogueAction::DrawUISettings()
 			ImGui::BeginChild("Answers Dialogue Holder", ImVec2(ImGui::GetContentRegionAvail().x, 200));
 
 			INC_CURSOR_7;
-			ImGui::BeginChild("Answers Dialogue Holder", ImVec2(ImGui::GetContentRegionAvail().x - 8, 190));
+			ImGui::BeginChild("Answers Dialogue Holder Holderdd", ImVec2(ImGui::GetContentRegionAvail().x - 8, 190));
 			for (auto& currentAnswer : selectedStep->GetAnswersList())
 			{
 				string headerName = currentAnswer->GetName();
@@ -293,16 +293,33 @@ void DialogueAction::DrawAnswersVisualSettings(DialogueStep* selectedStep)
 
 	}
 
-	// Backrgound Color
-	//float4 backgroundColor = float4::zero;
-	//if (firstAnswer != nullptr && dialogue->dialogueViewportHandler != nullptr)
-	//	backgroundColor = firstAnswer->GetAnswerDialogueText()->GetTextAction()->GetTextBBColor();
+	// Text Color --------------------------------
+	float4 textColor = float4::zero;
+	if (selectedStep != nullptr && selectedStep->GetDialogueText()->GetTextAction() != nullptr)
+		textColor = selectedStep->answerFontColorHold;
 
-	/*if (ImGui::ColorEdit4("Background Color##Answer", (float*)&backgroundColor))
+	if (ImGui::ColorEdit4("Text Color Answer", (float*)& textColor))
 	{
-	if (firstAnswer != nullptr && dialogue->dialogueViewportHandler != nullptr)
-	firstAnswer->GetAnswerDialogueText()->GetTextAction()->SetTextBBColor(backgroundColor);
-	}*/
+		if (selectedStep != nullptr && selectedStep->GetDialogueText()->GetTextAction() != nullptr)
+		{
+			selectedStep->answerFontColorHold = textColor;
+		}
+	}
+
+	// Background Color -------------------------
+	float4 backgroundColor = float4::zero;
+	if (selectedStep != nullptr && dialogue->dialogueViewportHandler != nullptr)
+		backgroundColor = selectedStep->answerBackgroundColorHold;
+
+	if (ImGui::ColorEdit4("Background Color Answer", (float*)& backgroundColor))
+	{
+		if (selectedStep != nullptr && dialogue->dialogueViewportHandler != nullptr)
+		{
+			selectedStep->answerBackgroundColorHold = backgroundColor;
+			//dialogue->dialogueViewportHandler->GetSentenceBackgroundBB()->SetSquareColor(backgroundColor); 
+		}
+	}
+
 }
 
 void DialogueAction::DrawStepVisualSettings(DialogueStep* selectedStep)

@@ -63,6 +63,9 @@ void DialogueViewportHandler::DrawAnswers()
 
 		for (auto& currentAnswer : currentStep->GetAnswersList())
 		{
+			currentAnswer->GetAnswerDialogueText()->GetTextAction()->SetTextBBColor(currentStep->answerBackgroundColorHold);
+			flog("%f", currentStep->answerFontColorHold.x);
+			currentAnswer->GetAnswerDialogueText()->GetTextAction()->SetTextColor(currentStep->answerFontColorHold); 
 			currentAnswer->GetAnswerDialogueText()->GetTextAction()->DrawTextBoundingBox(true);
 			currentAnswer->GetAnswerDialogueText()->GetTextAction()->RenderText(false, 10); 
 		}
