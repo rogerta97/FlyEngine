@@ -329,6 +329,20 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 
 			newStep->isFirst = isFirst; 
 
+			// Visuals For Sentence 
+			newStep->fontNameHold = json_object_dotget_string(root_obj, string(stepSerializeStr + "Visuals.FontName").c_str());
+
+			newStep->backgroundColorHold.x = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.BackgroundColor.r").c_str());
+			newStep->backgroundColorHold.y = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.BackgroundColor.g").c_str());
+			newStep->backgroundColorHold.z = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.BackgroundColor.b").c_str());
+			newStep->backgroundColorHold.w = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.BackgroundColor.a").c_str());
+
+			newStep->fontColorHold.x = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.FontColor.r").c_str());
+			newStep->fontColorHold.y = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.FontColor.g").c_str());
+			newStep->fontColorHold.z = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.FontColor.b").c_str());
+			newStep->fontColorHold.w = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.FontColor.a").c_str());
+
+			// Visuals for answers 
 			if (isFirst)
 				dialogueAction->GetDialogueData()->SetFirstStep(newStep);
 
