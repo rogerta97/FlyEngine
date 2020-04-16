@@ -499,7 +499,7 @@ void Action::SetActionCompleted(bool isFinished)
 		return; 
 
 	actionFinished = isFinished; 
-	flog("%s finished", this->GetActionName().c_str()); 
+	//flog("%s finished", this->GetActionName().c_str()); 
 }
 
 

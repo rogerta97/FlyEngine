@@ -110,7 +110,6 @@ void DialogueViewportHandler::SetCurrentStep(DialogueStep* newCurrentStep)
 		AddaptSentenceTextBox(); 
 		AddaptAnswersPosition();
 	}
-	
 }
 
 void DialogueViewportHandler::AddaptAnswersPosition()

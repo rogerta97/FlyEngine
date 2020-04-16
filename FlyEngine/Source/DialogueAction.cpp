@@ -38,14 +38,24 @@ DialogueAction::~DialogueAction()
 
 void DialogueAction::Update(float dt)
 {
-	if (dialoguePlaying)
+	if (dialoguePlaying && dialogue->dialogueViewportHandler->GetCurrentStep() != nullptr)
 	{
 		DialogueStep* currentStep = dialogue->dialogueViewportHandler->GetCurrentStep();
 		StepAnswer* clickedAnswer = currentStep->ListenAnswerClick();
 
+		if(clickedAnswer != nullptr)
+			flog("Congrats, you have clicked the answer %s", clickedAnswer->GetName().c_str()); 
+
 		if (clickedAnswer != nullptr)
 		{
-			flog("Congrats, you have clicked the answer %s", clickedAnswer->GetName().c_str()); 
+			DialogueStep* nextStep = clickedAnswer->GetDestinationStep();
+			dialogue->dialogueViewportHandler->SetCurrentStep(nextStep); 	
+
+			if (nextStep == nullptr)
+			{
+				actionFinished = true;
+				flog("The Dialog Has Finsihed"); 
+			}
 		}
 	}
 }
@@ -162,6 +172,9 @@ void DialogueAction::DrawUISettings()
 			if (ImGui::Selectable(string(" " + selectableName).c_str(), currentStep->isSelected))
 			{
 				dialogue->SetSelectedStep(currentStep->GetUID());
+
+				if(showPreview)
+					dialogue->dialogueViewportHandler->SetCurrentStep(currentStep);
 			}
 		}
 
