@@ -77,6 +77,8 @@ public:
 	ImFont* rudaBoldGiant;
 	ImFont* rudaBlackGiant;
 
+	int viewportDockID; 
+
 private: 
 
 	// Fonts & Style 

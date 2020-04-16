@@ -37,7 +37,6 @@ GameViewportDockPanel::~GameViewportDockPanel()
 bool GameViewportDockPanel::Draw()
 {
 #pragma region secutiryChecks
-
 	if (!DockPanel::Draw())
 		return false;
 
@@ -74,6 +73,9 @@ bool GameViewportDockPanel::Draw()
 		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - (viewportSize.y / 2) + (verticalOffset)));
 		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(viewportSize.x - 1, viewportSize.y - 2));
 	}
+
+	if (ImGui::IsWindowFocused())	
+		ViewportManager::getInstance()->blockInput = false;
 
 	glDisable(GL_TEXTURE_2D);
 

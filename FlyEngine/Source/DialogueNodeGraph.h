@@ -33,13 +33,17 @@
 //};
 
 class Dialogue;
+class DialogueStep;
 class DialogueNodeGraph
 {
 public:
 	DialogueNodeGraph();
 	~DialogueNodeGraph(); 
 
-	void DrawGraph(); 
+	void DrawGraph();
+	void HandleNodeClick();
+	void DrawAnswerPins(DialogueStep* currentStep);
+
 
 	Dialogue* GetDialogueData();
 	void AttachDialogue(Dialogue* newDialogue);

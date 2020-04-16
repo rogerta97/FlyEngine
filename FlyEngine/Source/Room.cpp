@@ -44,11 +44,15 @@ Room::~Room()
 
 void Room::Update()
 {
+
 	if (ViewportManager::getInstance()->blockInputTick)
 	{
 		ViewportManager::getInstance()->blockInputTick = false;
 		return;
 	}
+
+	if (ViewportManager::getInstance()->blockInput)
+		return; 
 
 	if (App->moduleRoomManager->GetSelectedRoom() == this)
 	{

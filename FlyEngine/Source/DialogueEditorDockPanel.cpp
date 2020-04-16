@@ -1,6 +1,10 @@
 #include "DialogueEditorDockPanel.h"
 #include "NodeGraph.h"
 #include "DialogueNodeGraph.h"
+#include "ViewportManager.h"
+
+#include "Application.h"
+#include "ModuleInput.h"
 
 DialogueEditorDockPanel::DialogueEditorDockPanel(bool isVisible) : DockPanel("Dialogue Editor", isVisible)
 {
@@ -21,6 +25,9 @@ bool DialogueEditorDockPanel::Draw()
 		nodeGraph->DrawGraph();
 	}
 
+	if (ImGui::IsWindowFocused())
+		ViewportManager::getInstance()->blockInput = true;
+	
 	ImGui::End();
 
 	return true;

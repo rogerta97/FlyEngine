@@ -194,7 +194,7 @@ void DialogueAction::DrawUISettings()
 		if (selectedStep != nullptr)
 		{
 			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-			ImGui::Text("Step Settings");
+			ImGui::Text("%s Settings", selectedStep->GetName());
 			ImGui::PopFont();
 
 			char stepNameBuffer[256] = "";
@@ -268,10 +268,9 @@ void DialogueAction::DrawUISettings()
 			{
 				if (selectedStep != nullptr)
 				{
-					StepAnswer* sa = selectedStep->AddStepAnswer("Test");
+					StepAnswer* sa = selectedStep->AddStepAnswer("This is the text of the answer", "New Answer");
 					dialogue->answersMap.insert(std::make_pair(sa->GetUID(), sa)); 		
-					dialogue->dialogueViewportHandler->AddaptAnswersPosition();
-					
+					dialogue->dialogueViewportHandler->AddaptAnswersPosition();		
 				}
 			}
 		}

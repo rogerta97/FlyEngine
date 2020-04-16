@@ -118,6 +118,9 @@ void DialogueViewportHandler::AddaptAnswersPosition()
 	float2 pen;
 	float ar = App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
 
+	if (currentStep == nullptr)
+		return;
+
 	for (auto& currentAnswer : currentStep->GetAnswersList())
 	{
 		// Calculate Text Position

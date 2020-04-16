@@ -39,8 +39,8 @@ public:
 	bool drawOnViewport = false; 
 
 	// Quick Acces ----------
-	std::map<UID, StepAnswer*> answersMap; 
-	std::map<UID, DialogueStep*> stepsMap; 
+	std::map<int, StepAnswer*> answersMap; 
+	std::map<int, DialogueStep*> stepsMap; 
 
 	DialogueViewportHandler* dialogueViewportHandler;
 

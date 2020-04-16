@@ -48,6 +48,7 @@
 ModuleImGui::ModuleImGui(bool start_enabled)
 {
 	moduleType = MODULE_IMGUI;
+	viewportDockID = 0; 
 }
 
 ModuleImGui::~ModuleImGui()

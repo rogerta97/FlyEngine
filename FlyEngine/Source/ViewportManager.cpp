@@ -26,6 +26,7 @@ ViewportManager::ViewportManager()
 	viewportAspectRatio = AR_4_3; 
 	editRoomMode = EDIT_ROOM_OBJECTS; 
 	drawClickableAreaCondition = DRAW_ON_SELECTED; 
+	blockInput = false; 
 }
 
 ViewportManager* ViewportManager::getInstance()
@@ -54,6 +55,8 @@ void ViewportManager::ResizeViewport()
 
 list<FlyObject*> ViewportManager::RaycastMouseClickObjects()
 {
+
+
 	list<FlyObject*> objectCandidates = list<FlyObject*>();
 
 	for (auto& currentObject : App->moduleRoomManager->GetSelectedRoom()->objectsInRoom)

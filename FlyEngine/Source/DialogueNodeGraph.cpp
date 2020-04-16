@@ -34,9 +34,9 @@ void DialogueNodeGraph::DrawGraph()
 		{
 			if (currentStep->isFirst)
 			{
-				imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(247, 59, 59, 255));
-				imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarHovered, IM_COL32(255, 132, 132, 255));
-				imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarSelected, IM_COL32(59, 131, 255, 255));
+				imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(247, 40, 40, 255));
+				imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarHovered, IM_COL32(255, 80, 80, 255));
+				imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarSelected, IM_COL32(255, 80, 80, 255));
 			}
 
 			imnodes::BeginNode(currentStep->GetUID());
@@ -53,28 +53,8 @@ void DialogueNodeGraph::DrawGraph()
 			}
 
 			// Draw Answer Pins
-			int counter = 0;
-			for (auto& currentAnswer : currentStep->GetAnswersList())
-			{
-				string answerText = currentAnswer->GetAnswerDialogueText()->GetTextAction()->GetText();
+			DrawAnswerPins(currentStep);
 
-				imnodes::BeginOutputAttribute(currentAnswer->GetUID());
-				const float label_width = ImGui::CalcTextSize(answerText.c_str()).x;
-
-				ImGui::Indent(350 - label_width);
-				ImGui::Text("%s", answerText.c_str());
-
-				imnodes::EndAttribute();
-			}
-
-			imnodes::EndNode();
-
-			if (currentStep->isFirst)
-			{
-				imnodes::PopColorStyle();
-				imnodes::PopColorStyle();
-				imnodes::PopColorStyle();
-			}
 		}
 
 
@@ -91,6 +71,11 @@ void DialogueNodeGraph::DrawGraph()
 	}
 
 	imnodes::EndNodeEditor();
+
+	// Check node clicks
+
+	if(App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN)
+		HandleNodeClick();
 
 	imnodes::PopColorStyle();
 
@@ -124,6 +109,55 @@ void DialogueNodeGraph::DrawGraph()
 		string nodeGraphPath = MyFileSystem::getInstance()->GetDialogueNodesDirectory() + to_string((int)dialogue->GetUID()) + ".ini";
 		imnodes::SaveCurrentEditorStateToIniFile(nodeGraphPath.c_str());
 		saveData = false; 
+	}
+}
+
+void DialogueNodeGraph::HandleNodeClick()
+{
+	int num_selected_nodes = imnodes::NumSelectedNodes();
+	if (num_selected_nodes > 0)
+	{
+		std::vector<int> selected_nodes_id_list;
+		selected_nodes_id_list.resize(num_selected_nodes);
+		imnodes::GetSelectedNodes(selected_nodes_id_list.data());
+
+		for (auto& selectedNodeID : selected_nodes_id_list)
+		{
+			DialogueStep* selectedDialogueStep = this->GetDialogueData()->GetStepFromID(selectedNodeID);
+
+			if (selectedDialogueStep != nullptr)
+			{
+				dialogue->SetSelectedStep(selectedNodeID);		
+				num_selected_nodes = 0;
+				return;
+			}
+		}
+	}
+}
+
+void DialogueNodeGraph::DrawAnswerPins(DialogueStep* currentStep)
+{
+	int counter = 0;
+	for (auto& currentAnswer : currentStep->GetAnswersList())
+	{
+		string answerText = currentAnswer->GetAnswerDialogueText()->GetTextAction()->GetText();
+
+		imnodes::BeginOutputAttribute(currentAnswer->GetUID());
+		const float label_width = ImGui::CalcTextSize(answerText.c_str()).x;
+
+		ImGui::Indent(350 - label_width);
+		ImGui::Text("%s", answerText.c_str());
+
+		imnodes::EndAttribute();
+	}
+
+	imnodes::EndNode();
+
+	if (currentStep->isFirst)
+	{
+		imnodes::PopColorStyle();
+		imnodes::PopColorStyle();
+		imnodes::PopColorStyle();
 	}
 }
 

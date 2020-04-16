@@ -89,12 +89,12 @@ UID Dialogue::GetUID()
 
 StepAnswer* Dialogue::GetAnswerFromID(UID key)
 {	
-	return answersMap[key];
+	return answersMap[(int)key];
 }
 
 DialogueStep* Dialogue::GetStepFromID(UID key)
 {
-	return stepsMap[key]; 	
+	return stepsMap[(int)key]; 	
 }
 
 DialogueStep* Dialogue::GetFirstStep()
