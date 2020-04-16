@@ -191,6 +191,7 @@ void DialogueAction::DrawUISettings()
 		if (ImGui::ImageButton((ImTextureID)plusTexture->GetTextureID(), ImVec2(35, 35)))
 		{
 			DialogueStep* newStep = AddDialogueStep("This Is a Sentence"); 
+			newStep->SetUID(RandomNumberGenerator::getInstance()->GenerateUID());
 			dialogue->stepsMap.insert(std::make_pair(newStep->GetUID(), newStep));
 		}
 

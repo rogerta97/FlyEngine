@@ -13,7 +13,7 @@
 
 DialogueNodeGraph::DialogueNodeGraph()
 {
-	dialogue = nullptr;
+	dialogue = nullptr; 
 }
 
 DialogueNodeGraph::~DialogueNodeGraph()
@@ -24,6 +24,7 @@ DialogueNodeGraph::~DialogueNodeGraph()
 void DialogueNodeGraph::DrawGraph()
 {
 	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(59, 131, 255, 255));
+	imnodes::PushColorStyle(imnodes::ColorStyle_LinkHovered, IM_COL32(255, 173, 51, 255));
 
 	imnodes::BeginNodeEditor();
 
@@ -42,19 +43,64 @@ void DialogueNodeGraph::DrawGraph()
 	if(App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN)
 		HandleNodeClick();
 
+	static int nodeHovered = 0;
 	if (ImGui::IsMouseDown(1) && dialogue != nullptr)
 	{
-		ImGui::OpenPopup("right_click_dialogue_graph");
-	}
+		imnodes::IsNodeHovered(&nodeHovered);
 
-	if (ImGui::BeginPopup("right_click_dialogue_graph"))
-	{
-		if (ImGui::Selectable("New Node"))
+		if (nodeHovered != 0)
 		{
-
+			ImGui::OpenPopup("node_dialogue_popup");
+		}
+		else
+		{
+			ImGui::OpenPopup("empty_space_dialogue_popup");
 		}
 	}
 
+	if (ImGui::BeginPopup("empty_space_dialogue_popup"))
+	{
+		if (ImGui::Selectable("New Node"))
+		{
+			DialogueStep* newStep = dialogue->AddDialogueStep("New Step Sentence", "New Step Name");
+			newStep->SetUID(RandomNumberGenerator::getInstance()->GenerateUID());
+
+			if(dialogue != nullptr)
+				dialogue->stepsMap.insert(std::make_pair(newStep->GetUID(), newStep));
+				
+			imnodes::SetNodeScreenSpacePos(newStep->GetUID(), ImGui::GetMousePos());
+
+			ImGui::EndPopup();
+			ImGui::CloseCurrentPopup();			
+		}
+		else
+		{
+			ImGui::EndPopup(); 
+		}
+
+	}
+
+	if (ImGui::BeginPopup("node_dialogue_popup"))
+	{
+		if (ImGui::Selectable("Add New Answer"))
+		{
+			DialogueStep* newStep = dialogue->GetStepFromID(nodeHovered);
+			StepAnswer* newAnswer = newStep->AddStepAnswer("Answer Text", "New Answer");
+
+			if (dialogue != nullptr)
+				dialogue->answersMap.insert(std::make_pair(newAnswer->GetUID(), newAnswer));
+
+			ImGui::EndPopup();
+			ImGui::CloseCurrentPopup();
+		}
+		else
+		{
+			ImGui::EndPopup();
+		}
+
+	}
+
+	imnodes::PopColorStyle();
 	imnodes::PopColorStyle();
 
 	// Check new links --------------------------------------
@@ -69,8 +115,13 @@ void DialogueNodeGraph::DrawGraph()
 		if (destinationStep != nullptr)
 		{
 			StepAnswer* stepAnswer = dialogue->GetAnswerFromID(start_attr);
-			stepAnswer->SetDestinationStep(destinationStep); 
-			links.push_back(std::make_pair(start_attr, end_attr));
+
+			if (stepAnswer->GetDestinationStep() == nullptr)
+			{
+				stepAnswer->SetDestinationStep(destinationStep); 
+				links.push_back(std::make_pair(start_attr, end_attr));
+			}
+
 		}
 	}
 
