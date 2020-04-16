@@ -124,12 +124,14 @@ void DialogueAction::DrawUISettings()
 			DrawAnswersVisualSettings(selectedStep);
 
 			// Preview Button 
+
+			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 			string buttonPreviewText = "Show Preview"; 
 
 			if (showPreview == true)
 				buttonPreviewText = "Hide Preview"; 
 
-			if (ImGui::Button(buttonPreviewText.c_str(), ImVec2(100, 35)))
+			if (ImGui::Button(buttonPreviewText.c_str(), ImVec2(130, 35)))
 			{
 				if(showPreview)
 					dialogue->dialogueViewportHandler->SetCurrentStep(nullptr);
@@ -139,6 +141,8 @@ void DialogueAction::DrawUISettings()
 				showPreview = !showPreview; 
 			}
 		
+			ImGui::PopFont();
+
 			IMGUI_SPACED_SEPARATOR;
 		}
 
@@ -187,6 +191,7 @@ void DialogueAction::DrawUISettings()
 		if (ImGui::ImageButton((ImTextureID)plusTexture->GetTextureID(), ImVec2(35, 35)))
 		{
 			DialogueStep* newStep = AddDialogueStep("This Is a Sentence"); 
+			dialogue->stepsMap.insert(std::make_pair(newStep->GetUID(), newStep));
 		}
 
 		ImGui::Separator(); 
@@ -194,7 +199,7 @@ void DialogueAction::DrawUISettings()
 		if (selectedStep != nullptr)
 		{
 			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-			ImGui::Text("%s Settings", selectedStep->GetName());
+			ImGui::Text("%s Settings", selectedStep->GetName().c_str());
 			ImGui::PopFont();
 
 			char stepNameBuffer[256] = "";

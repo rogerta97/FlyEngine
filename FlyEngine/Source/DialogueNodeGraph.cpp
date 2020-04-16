@@ -30,52 +30,30 @@ void DialogueNodeGraph::DrawGraph()
 	if (dialogue != nullptr)
 	{
 		// Draw Nodes 
-		for (auto& currentStep : dialogue->GetDialogueSteps())
-		{
-			if (currentStep->isFirst)
-			{
-				imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(247, 40, 40, 255));
-				imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarHovered, IM_COL32(255, 80, 80, 255));
-				imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarSelected, IM_COL32(255, 80, 80, 255));
-			}
-
-			imnodes::BeginNode(currentStep->GetUID());
-	
-			imnodes::BeginNodeTitleBar();
-			ImGui::Text("%s", currentStep->GetTextStr().c_str());
-			imnodes::EndNodeTitleBar();
-
-			if (!currentStep->isFirst)
-			{
-				imnodes::BeginInputAttribute(currentStep->GetUID() + 1);
-				ImGui::Text("In");
-				imnodes::EndAttribute();
-			}
-
-			// Draw Answer Pins
-			DrawAnswerPins(currentStep);
-
-		}
-
+		DrawGraphNodes();
 
 		// Draw Links
-		for (int i = 0; i < links.size(); ++i)
-		{
-			const std::pair<int, int> p = links[i];
-
-			// in this case, we just use the array index of the link
-			// as the unique identifier
-
-			imnodes::Link(i, p.first, p.second);
-		}
+		DrawGraphLinks();
 	}
 
 	imnodes::EndNodeEditor();
 
 	// Check node clicks
-
 	if(App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN)
 		HandleNodeClick();
+
+	if (ImGui::IsMouseDown(1) && dialogue != nullptr)
+	{
+		ImGui::OpenPopup("right_click_dialogue_graph");
+	}
+
+	if (ImGui::BeginPopup("right_click_dialogue_graph"))
+	{
+		if (ImGui::Selectable("New Node"))
+		{
+
+		}
+	}
 
 	imnodes::PopColorStyle();
 
@@ -86,7 +64,8 @@ void DialogueNodeGraph::DrawGraph()
 		flog("%d", start_attr);
 		flog("%d", end_attr);
 
-		DialogueStep* destinationStep = dialogue->GetStepFromID(end_attr - 1);
+		int stepID = end_attr - 1; 
+		DialogueStep* destinationStep = dialogue->GetStepFromID(stepID);
 		if (destinationStep != nullptr)
 		{
 			StepAnswer* stepAnswer = dialogue->GetAnswerFromID(start_attr);
@@ -109,6 +88,49 @@ void DialogueNodeGraph::DrawGraph()
 		string nodeGraphPath = MyFileSystem::getInstance()->GetDialogueNodesDirectory() + to_string((int)dialogue->GetUID()) + ".ini";
 		imnodes::SaveCurrentEditorStateToIniFile(nodeGraphPath.c_str());
 		saveData = false; 
+	}
+}
+
+void DialogueNodeGraph::DrawGraphLinks()
+{
+	for (int i = 0; i < links.size(); ++i)
+	{
+		const std::pair<int, int> p = links[i];
+
+		// in this case, we just use the array index of the link
+		// as the unique identifier
+
+		imnodes::Link(i, p.first, p.second);
+	}
+}
+
+void DialogueNodeGraph::DrawGraphNodes()
+{
+	for (auto& currentStep : dialogue->GetDialogueSteps())
+	{
+		if (currentStep->isFirst)
+		{
+			imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(247, 40, 40, 255));
+			imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarHovered, IM_COL32(255, 80, 80, 255));
+			imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarSelected, IM_COL32(255, 80, 80, 255));
+		}
+
+		imnodes::BeginNode(currentStep->GetUID());
+
+		imnodes::BeginNodeTitleBar();
+		ImGui::Text("%s", currentStep->GetTextStr().c_str());
+		imnodes::EndNodeTitleBar();
+
+		if (!currentStep->isFirst)
+		{
+			imnodes::BeginInputAttribute(currentStep->GetUID() + 1);
+			ImGui::Text("In");
+			imnodes::EndAttribute();
+		}
+
+		// Draw Answer Pins
+		DrawAnswerPins(currentStep);
+
 	}
 }
 

@@ -1556,7 +1556,7 @@ void EndNodeEditor()
 
     // apply panning if the mouse was dragged
     if (ImGui::IsWindowHovered() && !ImGui::IsAnyItemActive() &&
-        (ImGui::IsMouseDragging(2, 0) || ImGui::IsMouseDragging(1, 0)))
+        ImGui::IsMouseDragging(2, 0))
     {
         editor.panning = editor.panning + imgui_io.MouseDelta;
     }

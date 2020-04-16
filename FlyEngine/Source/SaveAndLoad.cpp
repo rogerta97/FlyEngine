@@ -356,11 +356,16 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 			newStep->answerFontColorHold.w = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.FontColor.a").c_str());
 
 			dialogueAction->GetDialogueData()->stepsMap.insert(std::make_pair(newStep->GetUID(), newStep));
+		}
 
+		int count = 0; 
+		for (auto& currentStep : dialogueAction->GetDialogueData()->GetDialogueSteps())
+		{
 			// Load Step Answers ------------------
-			string answersSerializeStr = stepSerializeStr + "Answers."; 
+			string answersSerializeStr = serialiseStepsStr + "Step_" + to_string(count) + "." + "Answers.";
 
 			int answersAmount = json_object_dotget_number(root_obj, string(answersSerializeStr + "AnswersAmount").c_str());
+
 			for (int k = 0; k < answersAmount; k++)
 			{
 				// Load Name & Text 
@@ -370,23 +375,25 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 				string answerText = json_object_dotget_string(root_obj, string(answerSerializeStr + "Text").c_str());
 				UID answerUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "AnswerUID").c_str());
 
-				StepAnswer* newAnswer = newStep->AddStepAnswer(answerText, answerName);
+				StepAnswer* newAnswer = currentStep->AddStepAnswer(answerText, answerName);
 
 				newAnswer->SetName(answerName);
 				newAnswer->SetAnswerText(answerText);
 				newAnswer->SetUID(answerUID);
 
 				dialogueAction->GetDialogueData()->answersMap.insert(std::make_pair(newAnswer->GetUID(), newAnswer));
-			
+
 				// Answer Destination Step		
 				UID destinationStepUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "DestinationStepUID").c_str());
 
 				if (destinationStepUID != 0)
 				{
 					DialogueStep* dstDialogueStep = dialogueAction->GetDialogueData()->GetStepFromID(destinationStepUID);
-					newAnswer->SetDestinationStep(dstDialogueStep); 
-				}	
+					newAnswer->SetDestinationStep(dstDialogueStep);
+				}
 			}
+
+			count++;
 		}
 	}
 }

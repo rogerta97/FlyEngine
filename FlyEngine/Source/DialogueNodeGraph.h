@@ -41,6 +41,8 @@ public:
 	~DialogueNodeGraph(); 
 
 	void DrawGraph();
+	void DrawGraphLinks();
+	void DrawGraphNodes();
 	void HandleNodeClick();
 	void DrawAnswerPins(DialogueStep* currentStep);
 
