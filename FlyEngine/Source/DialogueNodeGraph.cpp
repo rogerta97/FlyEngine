@@ -43,12 +43,15 @@ void DialogueNodeGraph::DrawGraph()
 	if(App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN)
 		HandleNodeClick();
 
+
+
 	int nodeHovered = 0;
-	imnodes::IsNodeHovered(&nodeHovered);
+
+	if (!imnodes::IsNodeHovered(&nodeHovered))
+		nodeHovered = 0;
 
 	flog("%d", nodeHovered);
-
-	if (ImGui::IsMouseDown(1) && dialogue != nullptr)
+	if (App->moduleInput->GetKey(SDL_SCANCODE_C) == KEY_DOWN && dialogue != nullptr)
 	{
 		if (nodeHovered != 0)
 		{

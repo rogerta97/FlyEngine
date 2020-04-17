@@ -17,6 +17,7 @@ public:
 	~DialogueNodeGraph(); 
 
 	void DrawGraph();
+	void HandleRightClickPopups(int nodeHovered);
 	void DrawGraphLinks();
 	void DrawGraphNodes();
 	void HandleNodeClick();
