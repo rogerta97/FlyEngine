@@ -43,11 +43,13 @@ void DialogueNodeGraph::DrawGraph()
 	if(App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN)
 		HandleNodeClick();
 
-	static int nodeHovered = 0;
+	int nodeHovered = 0;
+	imnodes::IsNodeHovered(&nodeHovered);
+
+	flog("%d", nodeHovered);
+
 	if (ImGui::IsMouseDown(1) && dialogue != nullptr)
 	{
-		imnodes::IsNodeHovered(&nodeHovered);
-
 		if (nodeHovered != 0)
 		{
 			ImGui::OpenPopup("node_dialogue_popup");
@@ -118,10 +120,9 @@ void DialogueNodeGraph::DrawGraph()
 
 			if (stepAnswer->GetDestinationStep() == nullptr)
 			{
-				stepAnswer->SetDestinationStep(destinationStep); 
+				stepAnswer->GetLink()->destinationStep = destinationStep; 
 				links.push_back(std::make_pair(start_attr, end_attr));
 			}
-
 		}
 	}
 

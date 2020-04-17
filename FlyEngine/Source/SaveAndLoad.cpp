@@ -374,6 +374,7 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 				string answerName = json_object_dotget_string(root_obj, string(answerSerializeStr + "Name").c_str());
 				string answerText = json_object_dotget_string(root_obj, string(answerSerializeStr + "Text").c_str());
 				UID answerUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "AnswerUID").c_str());
+				UID linkUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "linkUID").c_str());
 
 				StepAnswer* newAnswer = currentStep->AddStepAnswer(answerText, answerName);
 
@@ -389,7 +390,7 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 				if (destinationStepUID != 0)
 				{
 					DialogueStep* dstDialogueStep = dialogueAction->GetDialogueData()->GetStepFromID(destinationStepUID);
-					newAnswer->SetDestinationStep(dstDialogueStep);
+					newAnswer->GetLink()->destinationStep = dstDialogueStep;
 				}
 			}
 

@@ -9,10 +9,21 @@
 
 using namespace std;
 
-class Action; 
-class DialogueStep; 
-class DialogueText; 
 
+class DialogueStep; 
+class DialogueLink
+{
+public:
+	DialogueLink();
+	~DialogueLink(); 
+
+	UID linkUID;
+	DialogueStep* destinationStep;
+	DialogueStep* sourceStep;
+};
+
+class Action; 
+class DialogueText; 
 class StepAnswer
 {
 public:
@@ -26,7 +37,6 @@ public:
 	void SetAnswerText(string newAnswerText); 
 	DialogueText* GetAnswerDialogueText();
 	
-	void SetDestinationStep(DialogueStep* dstStep);
 	DialogueStep* GetDestinationStep();
 
 	string GetName(); 
@@ -38,13 +48,12 @@ public:
 	UID GetUID(); 
 	void SetUID(UID newUID); 
 
-private: 
+	DialogueLink* GetLink();
 
+private: 
 	DialogueText* answerDialogueText; 
 
-	DialogueStep* destinationStep; 
-	DialogueStep* parentStep; 
-
+	DialogueLink* dialogueLink; 
 	list<Action*> callbackActions;
 
 	string answerName; 
