@@ -49,11 +49,13 @@ list<DialogueStep*>& Dialogue::GetDialogueSteps()
 
 void Dialogue::DeleteDialogueStep(UID stepToDeleteUID)
 {
-	for (auto& currentStep : this->dialogueSteps)
+	for (auto currentStep = dialogueSteps.begin(); currentStep != dialogueSteps.end(); currentStep++)
 	{
-		if (currentStep->GetUID() == stepToDeleteUID)
+		if ((*currentStep)->GetUID() == stepToDeleteUID)
 		{
-			currentStep->CleanUp();
+			(*currentStep)->CleanUp();
+			dialogueSteps.erase(currentStep);
+			break; 
 		}
 	}
 }

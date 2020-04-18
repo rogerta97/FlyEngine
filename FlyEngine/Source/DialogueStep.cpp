@@ -83,11 +83,16 @@ void DialogueStep::SaveStep(JSON_Object* jsonObject, string serializeObjectStrin
 void DialogueStep::CleanUp()
 {
 	dialogueText->GetTextAction()->CleanUp(); 
+	delete dialogueText; 
 	
-	for (auto currentAnswer = answersList.begin(); cu)
+	for (auto currentAnswer = answersList.begin(); currentAnswer != answersList.end(); currentAnswer++)
 	{
+		// Erase Link
 		App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->EraseGraphLink(GetUID());
-		DeleteAnswer(currentAnswer->GetUID()); 
+		(*currentAnswer)->DeleteLink();
+
+		// Erase Answer
+		DeleteAnswer((*currentAnswer)->GetUID()); 
 		
 	}
 }
