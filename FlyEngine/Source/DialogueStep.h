@@ -26,6 +26,7 @@ public:
 	~DialogueStep(); 
 
 	void SaveStep(JSON_Object* jsonObject, string serializeObjectString);
+	void CleanUp();
 
 	// Step Utilities ----
 	void SetText(string _dialogueText); 

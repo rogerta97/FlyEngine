@@ -1,4 +1,5 @@
 #include "DialogueNodeGraph.h"
+#include "DialogueViewportHandler.h"
 #include "Dialogue.h"
 #include "DialogueStep.h"
 #include "DialogueText.h"
@@ -8,6 +9,8 @@
 
 #include "Application.h"
 #include "ModuleInput.h"
+#include "DialogueEditorDockPanel.h"
+#include "ModuleImGui.h"
 
 #include "imgui.h"
 
@@ -128,6 +131,7 @@ void DialogueNodeGraph::DrawGraph()
 			}	
 		}
 
+		// Delete Answer
 		if (!hoveredNode->GetAnswersList().empty())
 		{
 			if (ImGui::BeginMenu("Delete Answer"))
@@ -149,6 +153,17 @@ void DialogueNodeGraph::DrawGraph()
 
 					counter++;
 				}
+
+				ImGui::EndMenu();
+			}
+		}
+
+		if (!hoveredNode->GetAnswersList().empty())
+		{
+			if (ImGui::BeginMenu("Delete Step"))
+			{
+				dialogue->DeleteDialogueStep(hoveredNode->GetUID());
+				App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->EraseGraphNode(hoveredNode->GetUID());
 
 				ImGui::EndMenu();
 			}
@@ -308,6 +323,18 @@ void DialogueNodeGraph::EraseGraphLink(UID start_attr)
 		{
 			links.erase(currentLink);
 			break; 
+		}
+	}
+}
+
+void DialogueNodeGraph::EraseGraphNode(UID stepUID)
+{
+	for (auto currentNode = dialogue->stepsMap.begin(); currentNode != dialogue->stepsMap.end(); currentNode++)
+	{
+		if ((*currentNode).first == stepUID)
+		{
+			dialogue->stepsMap.erase(currentNode);
+			break;
 		}
 	}
 }

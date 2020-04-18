@@ -80,6 +80,17 @@ void DialogueStep::SaveStep(JSON_Object* jsonObject, string serializeObjectStrin
 	}
 }
 
+void DialogueStep::CleanUp()
+{
+	dialogueText->GetTextAction()->CleanUp(); 
+	
+	for (auto& currentAnswer : answersList)
+	{
+		
+		
+	}
+}
+
 void DialogueStep::SetText(string _dialogueText)
 {
 	dialogueText->SetDialogueText(_dialogueText);

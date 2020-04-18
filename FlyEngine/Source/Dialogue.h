@@ -22,7 +22,8 @@ public:
 	void Draw(); 
 
 	DialogueStep* AddDialogueStep(string _stepText, string _stepName = "");
-	list<DialogueStep*>& GetDialogueSteps(); 
+	list<DialogueStep*>& GetDialogueSteps();
+	void DeleteDialogueStep(UID stepToDeleteUID);
 
 	DialogueStep* GetSelectedStep(); 
 	void SetSelectedStep(UID selectedStepUID); 

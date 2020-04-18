@@ -47,6 +47,17 @@ list<DialogueStep*>& Dialogue::GetDialogueSteps()
 	return dialogueSteps; 
 }
 
+void Dialogue::DeleteDialogueStep(UID stepToDeleteUID)
+{
+	for (auto& currentStep : this->dialogueSteps)
+	{
+		if (currentStep->GetUID() == stepToDeleteUID)
+		{
+			currentStep->CleanUp();
+		}
+	}
+}
+
 DialogueStep* Dialogue::GetSelectedStep()
 {
 	return selectedStep;
