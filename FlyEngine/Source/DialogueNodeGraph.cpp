@@ -160,12 +160,10 @@ void DialogueNodeGraph::DrawGraph()
 
 		if (!hoveredNode->GetAnswersList().empty())
 		{
-			if (ImGui::BeginMenu("Delete Step"))
+			if (ImGui::Selectable("Delete Step"))
 			{
 				dialogue->DeleteDialogueStep(hoveredNode->GetUID());
 				App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->EraseGraphNode(hoveredNode->GetUID());
-
-				ImGui::EndMenu();
 			}
 		}
 

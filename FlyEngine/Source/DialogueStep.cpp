@@ -6,7 +6,7 @@
 #include "Dialogue.h"
 #include "BoundingBox.h"
 #include "NodeGraph.h"
-
+#include "DialogueNodeGraph.h"
 #include "Application.h"
 #include "ModuleManager.h"
 #include "ModuleImGui.h"
@@ -84,9 +84,10 @@ void DialogueStep::CleanUp()
 {
 	dialogueText->GetTextAction()->CleanUp(); 
 	
-	for (auto& currentAnswer : answersList)
+	for (auto currentAnswer = answersList.begin(); cu)
 	{
-		
+		App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->EraseGraphLink(GetUID());
+		DeleteAnswer(currentAnswer->GetUID()); 
 		
 	}
 }
