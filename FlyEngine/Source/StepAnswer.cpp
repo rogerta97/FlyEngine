@@ -32,7 +32,11 @@ void StepAnswer::SaveAnswer(JSON_Object* jsonObject, string serializeObjectStrin
 	json_object_dotset_string(jsonObject, string(serializeObjectString + "Name").c_str(), answerName.c_str());
 	json_object_dotset_string(jsonObject, string(serializeObjectString + "Text").c_str(), answerDialogueText->GetTextAction()->GetText().c_str());
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "AnswerUID").c_str(), GetUID());
-	json_object_dotset_number(jsonObject, string(serializeObjectString + "LinkUID").c_str(), dialogueLink->linkUID);
+
+	// Save Link Info
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "Link.LinkUID").c_str(), dialogueLink->linkUID);
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "Link.startPinUID").c_str(), dialogueLink->startPinUID);
+	json_object_dotset_number(jsonObject, string(serializeObjectString + "Link.endPinUID").c_str(), dialogueLink->endPinUID);
 
 	if(dialogueLink->destinationStep != nullptr)
 		json_object_dotset_number(jsonObject, string(serializeObjectString + "DestinationStepUID").c_str(), dialogueLink->destinationStep->GetUID());

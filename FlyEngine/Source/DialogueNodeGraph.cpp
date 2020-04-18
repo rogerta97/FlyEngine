@@ -158,13 +158,10 @@ void DialogueNodeGraph::DrawGraph()
 			}
 		}
 
-		if (!hoveredNode->GetAnswersList().empty())
+		if (ImGui::Selectable("Delete Step"))
 		{
-			if (ImGui::Selectable("Delete Step"))
-			{
-				dialogue->DeleteDialogueStep(hoveredNode->GetUID());
-				App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->EraseGraphNode(hoveredNode->GetUID());
-			}
+			App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->EraseGraphNode(hoveredNode->GetUID());
+			dialogue->DeleteDialogueStep(hoveredNode->GetUID());
 		}
 
 		ImGui::EndPopup();
@@ -193,6 +190,9 @@ void DialogueNodeGraph::DrawGraph()
 			if (stepAnswer->GetDestinationStep() == nullptr)
 			{
 				stepAnswer->GetLink()->destinationStep = destinationStep; 
+				stepAnswer->GetLink()->endPinUID = end_attr;
+				stepAnswer->GetLink()->startPinUID = start_attr;
+
 				links.push_back(std::make_pair(start_attr, end_attr));
 			}
 			else

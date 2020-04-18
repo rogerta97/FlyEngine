@@ -323,6 +323,7 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 			UID stepUID = json_object_dotget_number(root_obj, string(stepSerializeStr + "StepID").c_str());
 			bool isFirst = json_object_dotget_boolean(root_obj, string(stepSerializeStr + "First").c_str());
 
+			// Load Step Data
 			newStep->SetName(stepName);
 			newStep->SetText(stepText);
 			newStep->SetUID(stepUID);
@@ -374,14 +375,24 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 				string answerName = json_object_dotget_string(root_obj, string(answerSerializeStr + "Name").c_str());
 				string answerText = json_object_dotget_string(root_obj, string(answerSerializeStr + "Text").c_str());
 				UID answerUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "AnswerUID").c_str());
-				UID linkUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "linkUID").c_str());
+
+				UID linkUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "Link.linkUID").c_str());
+				UID startPinUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "Link.startPinUID").c_str());
+				UID endPinUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "Link.endPinUID").c_str());
 
 				StepAnswer* newAnswer = currentStep->AddStepAnswer(answerText, answerName);
 
 				newAnswer->SetName(answerName);
 				newAnswer->SetAnswerText(answerText);
+
+				// Load answers UIDs
 				newAnswer->SetUID(answerUID);
 
+				// Load Link
+				newAnswer->GetLink()->startPinUID = startPinUID; 
+				newAnswer->GetLink()->endPinUID = endPinUID;
+				newAnswer->GetLink()->linkUID = linkUID;
+		
 				dialogueAction->GetDialogueData()->answersMap.insert(std::make_pair(newAnswer->GetUID(), newAnswer));
 
 				// Answer Destination Step		

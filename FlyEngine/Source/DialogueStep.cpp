@@ -56,7 +56,6 @@ void DialogueStep::SaveStep(JSON_Object* jsonObject, string serializeObjectStrin
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "Visuals.FontColor.b").c_str(), fontColorHold.z);
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "Visuals.FontColor.a").c_str(), fontColorHold.w);
 
-
 	// Save Answer Visualization Data ----------
 	json_object_dotset_number(jsonObject, string(serializeObjectString + "Answers.AnswersAmount").c_str(), answersList.size());
 	json_object_dotset_string(jsonObject, string(serializeObjectString + "Answers.Visuals.FontName").c_str(), answerFontNameHold.c_str());
@@ -82,13 +81,14 @@ void DialogueStep::SaveStep(JSON_Object* jsonObject, string serializeObjectStrin
 
 void DialogueStep::CleanUp()
 {
-	dialogueText->GetTextAction()->CleanUp(); 
-	delete dialogueText; 
+	//dialogueText->GetTextAction()->CleanUp(); 
+	//delete dialogueText; 
+	//dialogueText = nullptr; 
 	
 	// Erase Links
 	for (auto currentAnswer = answersList.begin(); currentAnswer != answersList.end(); currentAnswer++)
 	{
-		App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->EraseGraphLink(GetUID());
+		App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->EraseGraphLink((*currentAnswer)->GetLink()->startPinUID);
 		(*currentAnswer)->DeleteLink();
 
 		//// Erase Answer

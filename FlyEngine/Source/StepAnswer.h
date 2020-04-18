@@ -18,6 +18,9 @@ public:
 	~DialogueLink(); 
 
 	UID linkUID;
+	UID startPinUID;
+	UID endPinUID;
+
 	DialogueStep* destinationStep;
 	DialogueStep* sourceStep;
 };
