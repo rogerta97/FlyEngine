@@ -85,16 +85,21 @@ void DialogueStep::CleanUp()
 	dialogueText->GetTextAction()->CleanUp(); 
 	delete dialogueText; 
 	
+	// Erase Links
 	for (auto currentAnswer = answersList.begin(); currentAnswer != answersList.end(); currentAnswer++)
 	{
-		// Erase Link
 		App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->EraseGraphLink(GetUID());
 		(*currentAnswer)->DeleteLink();
 
-		// Erase Answer
-		DeleteAnswer((*currentAnswer)->GetUID()); 
-		
+		//// Erase Answer
+		//App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->EraseGraphNode(GetUID());
+		//DeleteAnswer((*currentAnswer)->GetUID());
 	}
+
+	//for (auto currentAnswer = answersList.begin(); currentAnswer != answersList.end();)
+	//{
+
+	//}
 }
 
 void DialogueStep::SetText(string _dialogueText)
