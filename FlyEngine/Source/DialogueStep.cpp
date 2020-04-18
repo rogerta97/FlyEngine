@@ -9,6 +9,7 @@
 
 #include "Application.h"
 #include "ModuleManager.h"
+#include "ModuleImGui.h"
 #include "ModuleInput.h"
 #include "DialogueEditorDockPanel.h"
 
@@ -125,6 +126,22 @@ list<StepAnswer*>& DialogueStep::GetAnswersList()
 DialogueText* DialogueStep::GetDialogueText()
 {
 	return dialogueText;
+}
+
+void DialogueStep::DeleteAnswer(UID answerUID)
+{
+	for (auto currentAnswer = answersList.begin(); currentAnswer != answersList.end(); currentAnswer++)
+	{
+		if ((*currentAnswer)->GetUID() == answerUID)
+		{
+			(*currentAnswer)->DeleteLink();
+			parentDialogue->answersMap.erase(answerUID);
+			(*currentAnswer)->CleanUp(); 
+			delete (*currentAnswer); 
+			answersList.erase(currentAnswer);			
+			break; 		
+		}
+	}
 }
 
 string DialogueStep::GetName()

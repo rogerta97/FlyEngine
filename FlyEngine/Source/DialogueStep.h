@@ -36,6 +36,7 @@ public:
 	StepAnswer* AddStepAnswer(string _answerText, string _answerName = "Name");
 	list<StepAnswer*>& GetAnswersList();
 	DialogueText* GetDialogueText(); 
+	void DeleteAnswer(UID answerUID); 
 
 	// Set & Get ---------
 	string GetName();

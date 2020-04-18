@@ -54,6 +54,10 @@ void StepAnswer::AddCallbackAction(Action* newCallbackAction)
 		callbackActions.push_back(newCallbackAction);
 }
 
+void StepAnswer::CleanUp()
+{
+}
+
 DialogueText* StepAnswer::GetAnswerDialogueText()
 {
 	return answerDialogueText;
@@ -97,6 +101,19 @@ void StepAnswer::SetUID(UID newUID)
 DialogueLink* StepAnswer::GetLink()
 {
 	return dialogueLink;
+}
+
+void StepAnswer::DeleteLink()
+{
+	if (dialogueLink != nullptr)
+	{
+		dialogueLink->sourceStep = nullptr; 
+		dialogueLink->destinationStep = nullptr; 
+		dialogueLink->linkUID = 0; 
+
+		delete dialogueLink; 
+		dialogueLink = nullptr;
+	}
 }
 
 DialogueLink::~DialogueLink()

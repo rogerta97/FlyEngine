@@ -43,20 +43,20 @@ void DialogueNodeGraph::DrawGraph()
 	if(App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN)
 		HandleNodeClick();
 
-
-
 	int nodeHovered = 0;
 	int linkHovered = 0; 
+	static DialogueStep* hoveredNode = nullptr;
 
 	if (!imnodes::IsNodeHovered(&nodeHovered))
 		nodeHovered = 0;
 
-	flog("%d", nodeHovered);
-	if (App->moduleInput->GetKey(SDL_SCANCODE_C) == KEY_DOWN && dialogue != nullptr)
+	//flog("%d", nodeHovered);
+	if (App->moduleInput->GetMouseButton(RIGHT_CLICK) == KEY_DOWN && dialogue != nullptr)
 	{
 		if (nodeHovered != 0)
 		{
 			ImGui::OpenPopup("node_dialogue_popup");
+			hoveredNode = dialogue->GetStepFromID(nodeHovered); 
 		}
 		else
 		{
@@ -88,11 +88,8 @@ void DialogueNodeGraph::DrawGraph()
 
 	if (ImGui::BeginPopup("node_dialogue_popup"))
 	{
-		DialogueStep* hoveredNode = nullptr;
-
-		if(nodeHovered != 0)
-			hoveredNode = dialogue->GetStepFromID(nodeHovered);
-
+		bool closePopup = false; 
+		// New Answer Item
 		if (ImGui::Selectable("Add New Answer"))
 		{
 			if (hoveredNode != nullptr)
@@ -100,31 +97,67 @@ void DialogueNodeGraph::DrawGraph()
 				StepAnswer* newAnswer = hoveredNode->AddStepAnswer("Answer Text", "New Answer");
 
 				if (dialogue != nullptr)
-					dialogue->answersMap.insert(std::make_pair(newAnswer->GetUID(), newAnswer));
+					dialogue->answersMap.insert(std::make_pair(newAnswer->GetUID(), newAnswer));	
 
-				ImGui::EndPopup();
-				ImGui::CloseCurrentPopup();
+				closePopup = true; 
 			}
 		}
 
-		if (ImGui::BeginMenu("Delete Link"))
+		// Delete Links Item 
+		if (!hoveredNode->GetAnswersList().empty())
 		{
-			int counter = 0; 
-			for (auto& currentAnswer : hoveredNode->GetAnswersList())
+			if (ImGui::BeginMenu("Delete Link"))
 			{
-				string itemStr = "Link " + to_string(counter + 1); 
-				if (ImGui::MenuItem(itemStr.c_str()))
+				int counter = 0;
+				for (auto currentAnswer = hoveredNode->GetAnswersList().begin(); currentAnswer != hoveredNode->GetAnswersList().end(); currentAnswer++)
 				{
+					string itemStr = "Delete " + (*currentAnswer)->GetAnswerDialogueText()->GetTextAction()->GetText();
+					if (ImGui::MenuItem(itemStr.c_str()))
+					{
+						EraseGraphLink((*currentAnswer)->GetUID());
+						(*currentAnswer)->DeleteLink();
 
+						closePopup = true;
+						break;
+					}
+			
+					counter++;
 				}
 
-				counter++;
-			}
+				ImGui::EndMenu();
+			}	
+		}
 
-			ImGui::EndMenu();
+		if (!hoveredNode->GetAnswersList().empty())
+		{
+			if (ImGui::BeginMenu("Delete Answer"))
+			{
+				int counter = 0;
+				for (auto currentAnswer = hoveredNode->GetAnswersList().begin(); currentAnswer != hoveredNode->GetAnswersList().end(); currentAnswer++)
+				{
+					string itemStr = "Delete " + (*currentAnswer)->GetAnswerDialogueText()->GetTextAction()->GetText();
+					if (ImGui::MenuItem(itemStr.c_str()))
+					{
+						EraseGraphLink((*currentAnswer)->GetUID());
+						//(*currentAnswer)->DeleteLink();
+
+						hoveredNode->DeleteAnswer((*currentAnswer)->GetUID());
+
+						closePopup = true;
+						break;
+					}
+
+					counter++;
+				}
+
+				ImGui::EndMenu();
+			}
 		}
 
 		ImGui::EndPopup();
+
+		if (closePopup)
+			ImGui::CloseCurrentPopup();
 	}
 
 
@@ -148,6 +181,10 @@ void DialogueNodeGraph::DrawGraph()
 			{
 				stepAnswer->GetLink()->destinationStep = destinationStep; 
 				links.push_back(std::make_pair(start_attr, end_attr));
+			}
+			else
+			{
+				FLY_ERROR("The link could not be created: answer already linked");
 			}
 		}
 	}
@@ -179,6 +216,8 @@ void DialogueNodeGraph::DrawGraphLinks()
 		// as the unique identifier
 
 		imnodes::Link(i, p.first, p.second);
+
+
 	}
 }
 
@@ -258,6 +297,18 @@ void DialogueNodeGraph::DrawAnswerPins(DialogueStep* currentStep)
 		imnodes::PopColorStyle();
 		imnodes::PopColorStyle();
 		imnodes::PopColorStyle();
+	}
+}
+
+void DialogueNodeGraph::EraseGraphLink(UID start_attr)
+{
+	for (auto currentLink = links.begin(); currentLink != links.end(); currentLink++)
+	{
+		if (currentLink->first == start_attr)
+		{
+			links.erase(currentLink);
+			break; 
+		}
 	}
 }
 

@@ -22,7 +22,7 @@ public:
 	void DrawGraphNodes();
 	void HandleNodeClick();
 	void DrawAnswerPins(DialogueStep* currentStep);
-
+	void EraseGraphLink(UID start_attr);
 
 	Dialogue* GetDialogueData();
 	void AttachDialogue(Dialogue* newDialogue);

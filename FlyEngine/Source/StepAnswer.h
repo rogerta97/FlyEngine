@@ -32,6 +32,11 @@ public:
 
 	void SaveAnswer(JSON_Object* jsonObject, string serializeObjectString);
 	void AddCallbackAction(Action* newCallbackAction); 
+	void CleanUp(); 
+
+	// Link ---------------
+	DialogueLink* GetLink();
+	void DeleteLink(); 
 
 	// Set & Get ----------
 	void SetAnswerText(string newAnswerText); 
@@ -48,7 +53,6 @@ public:
 	UID GetUID(); 
 	void SetUID(UID newUID); 
 
-	DialogueLink* GetLink();
 
 private: 
 	DialogueText* answerDialogueText; 
