@@ -46,6 +46,7 @@ void DialogueNodeGraph::DrawGraph()
 
 
 	int nodeHovered = 0;
+	int linkHovered = 0; 
 
 	if (!imnodes::IsNodeHovered(&nodeHovered))
 		nodeHovered = 0;
@@ -87,23 +88,45 @@ void DialogueNodeGraph::DrawGraph()
 
 	if (ImGui::BeginPopup("node_dialogue_popup"))
 	{
+		DialogueStep* hoveredNode = nullptr;
+
+		if(nodeHovered != 0)
+			hoveredNode = dialogue->GetStepFromID(nodeHovered);
+
 		if (ImGui::Selectable("Add New Answer"))
 		{
-			DialogueStep* newStep = dialogue->GetStepFromID(nodeHovered);
-			StepAnswer* newAnswer = newStep->AddStepAnswer("Answer Text", "New Answer");
+			if (hoveredNode != nullptr)
+			{
+				StepAnswer* newAnswer = hoveredNode->AddStepAnswer("Answer Text", "New Answer");
 
-			if (dialogue != nullptr)
-				dialogue->answersMap.insert(std::make_pair(newAnswer->GetUID(), newAnswer));
+				if (dialogue != nullptr)
+					dialogue->answersMap.insert(std::make_pair(newAnswer->GetUID(), newAnswer));
 
-			ImGui::EndPopup();
-			ImGui::CloseCurrentPopup();
+				ImGui::EndPopup();
+				ImGui::CloseCurrentPopup();
+			}
 		}
-		else
+
+		if (ImGui::BeginMenu("Delete Link"))
 		{
-			ImGui::EndPopup();
+			int counter = 0; 
+			for (auto& currentAnswer : hoveredNode->GetAnswersList())
+			{
+				string itemStr = "Link " + to_string(counter + 1); 
+				if (ImGui::MenuItem(itemStr.c_str()))
+				{
+
+				}
+
+				counter++;
+			}
+
+			ImGui::EndMenu();
 		}
 
+		ImGui::EndPopup();
 	}
+
 
 	imnodes::PopColorStyle();
 	imnodes::PopColorStyle();
