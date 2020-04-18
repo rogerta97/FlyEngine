@@ -28,6 +28,8 @@ public:
 	void SaveStep(JSON_Object* jsonObject, string serializeObjectString);
 	void CleanUp();
 
+	void DeleteLinksAndAnswers();
+
 	// Step Utilities ----
 	void SetText(string _dialogueText); 
 	string GetTextStr();
@@ -66,6 +68,7 @@ public:
 	float4 answerFontColorHold;
 
 private: 
+
 	Dialogue* parentDialogue; 
 	DialogueText* dialogueText; 
 	list<StepAnswer*> answersList; 

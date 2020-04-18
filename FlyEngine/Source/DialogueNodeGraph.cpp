@@ -224,13 +224,7 @@ void DialogueNodeGraph::DrawGraphLinks()
 	for (int i = 0; i < links.size(); ++i)
 	{
 		const std::pair<int, int> p = links[i];
-
-		// in this case, we just use the array index of the link
-		// as the unique identifier
-
 		imnodes::Link(i, p.first, p.second);
-
-
 	}
 }
 
@@ -311,6 +305,17 @@ void DialogueNodeGraph::DrawAnswerPins(DialogueStep* currentStep)
 		imnodes::PopColorStyle();
 		imnodes::PopColorStyle();
 	}
+}
+
+std::pair<int, int> DialogueNodeGraph::GetGraphLinkFromDstUID(UID dstUID)
+{
+	for (auto currentLink = links.begin(); currentLink != links.end(); currentLink++)
+	{
+		if (currentLink->second == dstUID)
+			return std::pair<int, int>(currentLink->first, currentLink->second);
+	}
+
+	return std::pair<int, int>(0,0);
 }
 
 void DialogueNodeGraph::EraseGraphLink(UID start_attr)

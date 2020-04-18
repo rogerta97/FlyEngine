@@ -23,6 +23,7 @@ public:
 	void HandleNodeClick();
 	void DrawAnswerPins(DialogueStep* currentStep);
 
+	std::pair<int, int> GetGraphLinkFromDstUID(UID dstUID);
 	void EraseGraphLink(UID start_attr);
 	void EraseGraphNode(UID start_attr);
 

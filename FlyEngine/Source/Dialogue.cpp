@@ -54,12 +54,13 @@ void Dialogue::DeleteDialogueStep(UID stepToDeleteUID)
 		if ((*currentStep)->GetUID() == stepToDeleteUID)
 		{
 			(*currentStep)->CleanUp();
+
 			(*currentStep) == selectedStep; 
 			selectedStep = nullptr; 
 			
 			delete (*currentStep);
-
 			dialogueSteps.erase(currentStep);
+
 			break; 
 		}
 	}

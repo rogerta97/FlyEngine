@@ -80,26 +80,34 @@ void DialogueStep::SaveStep(JSON_Object* jsonObject, string serializeObjectStrin
 }
 
 void DialogueStep::CleanUp()
+{		
+	// Delete Exit Links and Answers 
+	DeleteLinksAndAnswers();
+	 
+	dialogueText->GetTextAction()->CleanUp(); 
+	delete dialogueText; 
+	dialogueText = nullptr; 
+}
+
+void DialogueStep::DeleteLinksAndAnswers()
 {
-	//dialogueText->GetTextAction()->CleanUp(); 
-	//delete dialogueText; 
-	//dialogueText = nullptr; 
-	
-	// Erase Links
-	for (auto currentAnswer = answersList.begin(); currentAnswer != answersList.end(); currentAnswer++)
+	for (auto currentAnswer = answersList.begin(); currentAnswer != answersList.end();)
 	{
+		// Erase Links
 		App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->EraseGraphLink((*currentAnswer)->GetLink()->startPinUID);
 		(*currentAnswer)->DeleteLink();
 
-		//// Erase Answer
-		//App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->EraseGraphNode(GetUID());
-		//DeleteAnswer((*currentAnswer)->GetUID());
+		// Erase Answer
+		parentDialogue->answersMap.erase((*currentAnswer)->GetUID());
+		(*currentAnswer)->CleanUp();
+		delete (*currentAnswer);
+		currentAnswer = answersList.erase(currentAnswer);
 	}
 
-	//for (auto currentAnswer = answersList.begin(); currentAnswer != answersList.end();)
-	//{
-
-	//}
+	// Delete Enter Link
+	std::pair<int, int> linkExtremes = App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->GetGraphLinkFromDstUID(GetUID() + 1);
+	StepAnswer* stepOrigin = parentDialogue->GetAnswerFromID(linkExtremes.first);
+	
 }
 
 void DialogueStep::SetText(string _dialogueText)
