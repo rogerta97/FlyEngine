@@ -235,11 +235,12 @@ void DialogueAction::DrawUISettings()
 			ImGui::Text("Answers List:");
 			ImGui::PopFont();
 
+			// Draw Answers 
 			PUSH_CHILD_BG_COLOR;
-			ImGui::BeginChild("Answers Dialogue Holder", ImVec2(ImGui::GetContentRegionAvail().x, 200));
+			ImGui::BeginChild("Answers Dialogue Holder", ImVec2(ImGui::GetContentRegionAvail().x, 300));
 
 			INC_CURSOR_7;
-			ImGui::BeginChild("Answers Dialogue Holder Holderdd", ImVec2(ImGui::GetContentRegionAvail().x - 8, 190));
+			ImGui::BeginChild("Answers Dialogue Holder Holderdd", ImVec2(ImGui::GetContentRegionAvail().x - 8, 290));
 			for (auto& currentAnswer : selectedStep->GetAnswersList())
 			{
 				string headerName = currentAnswer->GetName();
@@ -271,6 +272,20 @@ void DialogueAction::DrawUISettings()
 					}
 					ImGui::Indent(-15);
 					ImGui::Spacing(); 
+
+					// Actions Effects -----------------------
+					ImGui::Indent(15);
+					ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+					ImGui::Text("Decision Effects:");
+					ImGui::PopFont();
+
+					PUSH_CHILD_BG_COLOR_DARK;
+					ImGui::BeginChild("Answers Effect Childs", ImVec2(ImGui::GetContentRegionAvail().x - 8, 200));
+
+
+					ImGui::EndChild(); 
+					ImGui::PopStyleColor();
+					ImGui::Indent(-15);
 				}
 			}
 
