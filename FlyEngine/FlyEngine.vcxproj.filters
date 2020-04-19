@@ -453,9 +453,6 @@
     <ClCompile Include="Source\FlyObject.cpp">
       <Filter>Source\FlyEngine\FlyObject\FlyObject</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FlyObjectSequential.cpp">
-      <Filter>Source\FlyEngine\FlyObject\FlyObject</Filter>
-    </ClCompile>
     <ClCompile Include="Source\DialogueEditorDockPanel.cpp">
       <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
     </ClCompile>
@@ -482,6 +479,9 @@
     </ClCompile>
     <ClCompile Include="Source\DialogueViewportHandler.cpp">
       <Filter>Source\Tools\NodeGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FlyObjectCharacter.cpp">
+      <Filter>Source\FlyEngine\FlyObject\FlyObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -935,9 +935,6 @@
     <ClInclude Include="Source\FlyObject.h">
       <Filter>Source\FlyEngine\FlyObject\FlyObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\FlyObjectSequential.h">
-      <Filter>Source\FlyEngine\FlyObject\FlyObject</Filter>
-    </ClInclude>
     <ClInclude Include="Source\DialogueEditorDockPanel.h">
       <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
     </ClInclude>
@@ -964,6 +961,9 @@
     </ClInclude>
     <ClInclude Include="Source\DialogueViewportHandler.h">
       <Filter>Source\Tools\NodeGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FlyObjectCharacter.h">
+      <Filter>Source\FlyEngine\FlyObject\FlyObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

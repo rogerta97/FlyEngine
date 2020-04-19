@@ -164,7 +164,6 @@ private:
 
 	// Fly Object Fixed Actions
 	std::list<Action*> sequentialActionsList;
-
 };
 
 #endif
