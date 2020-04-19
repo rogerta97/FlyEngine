@@ -39,6 +39,13 @@ void DialogueNodeGraph::DrawGraph()
 		// Draw Links
 		DrawGraphLinks();
 	}
+	else
+	{
+		INC_CURSOR_X_7;
+		ImGui::PushFont(App->moduleImGui->rudaBlackGiant);
+		ImGui::TextColored(ImVec4(1, 0.5f, 0.5f, 0.25f), "No dialogue selected");
+		ImGui::PopFont();
+	}
 
 	imnodes::EndNodeEditor();
 

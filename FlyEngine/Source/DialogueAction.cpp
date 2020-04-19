@@ -68,6 +68,9 @@ void DialogueAction::Draw()
 
 void DialogueAction::DoAction()
 {
+	if (dialoguePlaying) 
+		return; 
+
 	if (dialogue != nullptr)
 	{
 		DialogueStep* dialogueFirstStep = dialogue->GetFirstStep();
@@ -75,10 +78,10 @@ void DialogueAction::DoAction()
 		if (dialogueFirstStep != nullptr)
 		{
 			dialogue->dialogueViewportHandler->SetCurrentStep(dialogueFirstStep);
-			dialoguePlaying = true;
+			dialoguePlaying = true; 
 		}
-		else if (actionFinished == false)
-			actionFinished = true; 
+		else if(actionFinished == false)
+			actionFinished = true;
 	}
 }
 
@@ -120,13 +123,7 @@ void DialogueAction::DrawUISettings()
 		ImGui::Separator();
 		if (selectedStep)
 		{
-			DrawStepVisualSettings(selectedStep);
-			
-			ImGui::Spacing(); 
-			DrawAnswersVisualSettings(selectedStep);
-
 			// Preview Button 
-
 			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 			string buttonPreviewText = "Show Preview"; 
 
@@ -189,12 +186,21 @@ void DialogueAction::DrawUISettings()
 
 		ImGui::PopStyleColor(); 
 
-		Texture* plusTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite2"); 
-		if (ImGui::ImageButton((ImTextureID)plusTexture->GetTextureID(), ImVec2(35, 35)))
+		if (ImGui::Button("Add New Step"))
 		{
 			DialogueStep* newStep = AddDialogueStep("This Is a Sentence"); 
 			newStep->SetUID(RandomNumberGenerator::getInstance()->GenerateUID());
 			dialogue->stepsMap.insert(std::make_pair(newStep->GetUID(), newStep));
+		}
+
+		if (ImGui::TreeNode("Visual Settings"))
+		{
+			DrawStepVisualSettings(selectedStep);
+
+			ImGui::Spacing();
+			DrawAnswersVisualSettings(selectedStep);
+
+			ImGui::TreePop();
 		}
 
 		ImGui::Separator(); 
