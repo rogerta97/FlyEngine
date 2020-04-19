@@ -399,15 +399,14 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 			}
 
 			// Answer Callback Actions ------------------------------------------------------------
-			bool hasCallbackActions = json_object_dotget_number(root_obj, string(answerSerializeStr + "CallbackActions.HasCallbackActions").c_str());
+			bool hasCallbackActions = json_object_dotget_boolean(root_obj, string(answerSerializeStr + "CallbackActions.HasCallbackActions").c_str());
 
 			if (hasCallbackActions)
 			{
-				int effectsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.EffectsAmount")).c_str());
-				int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+				int effectsAmount = json_object_dotget_number(root_obj, string(answerSerializeStr + string("CallbackActions.EffectsAmount")).c_str());
 				ModifyVariableAction* newCallbackModifyAction = new ModifyVariableAction(nullptr);
 
-				string effectsGroupStr = serializeObjectStrActions + "ModifyVariable.EffectsGroup.";
+				string effectsGroupStr = answerSerializeStr + "CallbackActions.EffectsGroup.";
 				int count = 0;
 				while (count < effectsAmount)
 				{
@@ -422,11 +421,11 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 					newEffect->targetVariable = targetVariable;
 
 					// Load Operator Type, IncInt, NextToggle ----------
-					int varOpTmp = (int)json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.OperatorType")).c_str());
+					int varOpTmp = (int)json_object_dotget_number(root_obj, string(effectSerializeStr + string("OperatorType")).c_str());
 					newEffect->variableOperatorType = (VariableOperatorType)varOpTmp;
 
-					newEffect->incIntegerValue = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.IncIntegerValue")).c_str());
-					newEffect->nextToggleValue = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.NextToggleValue")).c_str());
+					newEffect->incIntegerValue = json_object_dotget_number(root_obj, string(effectSerializeStr + string("IncIntegerValue")).c_str());
+					newEffect->nextToggleValue = json_object_dotget_number(root_obj, string(effectSerializeStr + string("NextToggleValue")).c_str());
 
 					newCallbackModifyAction->AddEffect(newEffect);
 					count++;
