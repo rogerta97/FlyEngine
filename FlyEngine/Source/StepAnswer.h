@@ -27,6 +27,7 @@ public:
 
 class Action; 
 class DialogueText; 
+class ModifyVariableAction;
 class StepAnswer
 {
 public:
@@ -36,6 +37,7 @@ public:
 	void SaveAnswer(JSON_Object* jsonObject, string serializeObjectString);
 	void AddCallbackAction(Action* newCallbackAction); 
 	void CleanUp(); 
+	void DoCallbackActions(); 
 
 	// Link ---------------
 	DialogueLink* GetLink();
@@ -46,6 +48,9 @@ public:
 	DialogueText* GetAnswerDialogueText();
 	
 	DialogueStep* GetDestinationStep();
+
+	ModifyVariableAction* GetModifyVarEffect(); 
+	void SetModifyVarEffect(ModifyVariableAction* newMofidyVarAction);
 
 	string GetName(); 
 	void SetName(string newName);
@@ -61,7 +66,7 @@ private:
 	DialogueText* answerDialogueText; 
 
 	DialogueLink* dialogueLink; 
-	list<Action*> callbackActions;
+	ModifyVariableAction* callbackModifyVariables;
 
 	string answerName; 
 	UID answerUID; 

@@ -374,29 +374,67 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 			UID startPinUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "Link.startPinUID").c_str());
 			UID endPinUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "Link.endPinUID").c_str());
 
-			StepAnswer* newAnswer = currentStep->AddStepAnswer(answerText, answerName);
+			StepAnswer* createdAnswer = currentStep->AddStepAnswer(answerText, answerName);
 
-			newAnswer->SetName(answerName);
-			newAnswer->SetAnswerText(answerText);
+			createdAnswer->SetName(answerName);
+			createdAnswer->SetAnswerText(answerText);
 
-			// Load answers UIDs
-			newAnswer->SetUID(answerUID);
+			// Load answers UIDs ------------------------------------------------------------------
+			createdAnswer->SetUID(answerUID);
 
-			// Load Link
-			newAnswer->GetLink()->startPinUID = startPinUID;
-			newAnswer->GetLink()->endPinUID = endPinUID;
-			newAnswer->GetLink()->linkUID = linkUID;
+			// Load Link --------------------------------------------------------------------------
+			createdAnswer->GetLink()->startPinUID = startPinUID;
+			createdAnswer->GetLink()->endPinUID = endPinUID;
+			createdAnswer->GetLink()->linkUID = linkUID;
 
-			dialogueAction->GetDialogueData()->answersMap.insert(std::make_pair(newAnswer->GetUID(), newAnswer));
+			dialogueAction->GetDialogueData()->answersMap.insert(std::make_pair(createdAnswer->GetUID(), createdAnswer));
 
-			// Answer Destination Step		
+			// Answer Destination Step	-----------------------------------------------------------	
 			UID destinationStepUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "DestinationStepUID").c_str());
 
 			if (destinationStepUID != 0)
 			{
 				DialogueStep* dstDialogueStep = dialogueAction->GetDialogueData()->GetStepFromID(destinationStepUID);
-				newAnswer->GetLink()->destinationStep = dstDialogueStep;
+				createdAnswer->GetLink()->destinationStep = dstDialogueStep;
 			}
+
+			// Answer Callback Actions ------------------------------------------------------------
+			bool hasCallbackActions = json_object_dotget_number(root_obj, string(answerSerializeStr + "CallbackActions.HasCallbackActions").c_str());
+
+			if (hasCallbackActions)
+			{
+				int effectsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.EffectsAmount")).c_str());
+				int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+				ModifyVariableAction* newCallbackModifyAction = new ModifyVariableAction(nullptr);
+
+				string effectsGroupStr = serializeObjectStrActions + "ModifyVariable.EffectsGroup.";
+				int count = 0;
+				while (count < effectsAmount)
+				{
+					ModifyVariableEffect* newEffect = new ModifyVariableEffect();
+
+					string effectSerializeStr = effectsGroupStr + "Effect_" + to_string(count) + ".";
+
+					// Load Target Variable -----------
+					string varName = json_object_dotget_string(root_obj, string(effectSerializeStr + string("TargetVariableName")).c_str());
+
+					FlyVariable* targetVariable = newObject->GetParentRoom()->GetBlackboardVariable(varName);
+					newEffect->targetVariable = targetVariable;
+
+					// Load Operator Type, IncInt, NextToggle ----------
+					int varOpTmp = (int)json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.OperatorType")).c_str());
+					newEffect->variableOperatorType = (VariableOperatorType)varOpTmp;
+
+					newEffect->incIntegerValue = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.IncIntegerValue")).c_str());
+					newEffect->nextToggleValue = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.NextToggleValue")).c_str());
+
+					newCallbackModifyAction->AddEffect(newEffect);
+					count++;
+				}
+
+				createdAnswer->SetModifyVarEffect(newCallbackModifyAction);
+			}
+
 		}
 
 		count++;

@@ -1,6 +1,7 @@
 #include "StepAnswer.h"
 #include "DialogueText.h"
 #include "DialogueStep.h"
+#include "ModifyVariableAction.h"
 #include "RandomNumberGenerator.h"
 #include "DisplayTextAction.h"
 
@@ -15,6 +16,7 @@ StepAnswer::StepAnswer(DialogueStep* _parentStep, string newAnswerText, string n
 	SetName(newAnswerName.c_str());
 	dialogueLink->sourceStep = _parentStep;
 	dialogueLink->destinationStep = nullptr;
+	callbackModifyVariables = nullptr; 
 }
 
 StepAnswer::~StepAnswer()
@@ -43,23 +45,34 @@ void StepAnswer::SaveAnswer(JSON_Object* jsonObject, string serializeObjectStrin
 	else
 		json_object_dotset_number(jsonObject, string(serializeObjectString + "DestinationStepUID").c_str(), 0);
 
-	int counter = 0;
-	for (auto& currentCallbackAction : callbackActions)
+	bool hasCallbackActions = false; 
+	if (callbackModifyVariables != nullptr)
+		hasCallbackActions = true; 
+	
+	json_object_dotset_boolean(jsonObject, string(serializeObjectString + "CallbackActions.HasCallbackActions").c_str(), hasCallbackActions);
+
+	if (hasCallbackActions)
 	{
-		string serializeAnswerStr = serializeObjectString + ".Answers.Answer_" + to_string(counter) + ".";
-		currentCallbackAction->SaveAction(jsonObject, serializeAnswerStr);
-		counter++;
+		callbackModifyVariables->SaveAction(jsonObject, string(serializeObjectString + "CallbackActions."), true);
 	}
 }
 
 void StepAnswer::AddCallbackAction(Action* newCallbackAction)
 {
-	if(newCallbackAction != nullptr)
-		callbackActions.push_back(newCallbackAction);
+	//if(newCallbackAction != nullptr)
+	//	callbackActions.push_back(newCallbackAction);
 }
 
 void StepAnswer::CleanUp()
 {
+}
+
+void StepAnswer::DoCallbackActions()
+{
+	if (callbackModifyVariables != nullptr)
+	{
+		callbackModifyVariables->DoAction(); 
+	}
 }
 
 DialogueText* StepAnswer::GetAnswerDialogueText()
@@ -73,6 +86,16 @@ DialogueStep* StepAnswer::GetDestinationStep()
 		return nullptr; 
 	else
 		return dialogueLink->destinationStep;
+}
+
+ModifyVariableAction* StepAnswer::GetModifyVarEffect()
+{
+	return callbackModifyVariables;
+}
+
+void StepAnswer::SetModifyVarEffect(ModifyVariableAction* newMofidyVarAction)
+{
+	callbackModifyVariables = newMofidyVarAction; 
 }
 
 string StepAnswer::GetName()

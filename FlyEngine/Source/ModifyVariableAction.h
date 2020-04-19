@@ -61,6 +61,7 @@ public:
 
 	// Draw -----------
 	void DrawEffectVariablesUI();
+	void DrawEffectsList();
 	void DrawEffectItem(ModifyVariableEffect*& currentVariable, int pos);
 
 	// Utility --------

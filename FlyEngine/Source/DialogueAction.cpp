@@ -8,6 +8,7 @@
 
 #include "DialogueViewportHandler.h"
 #include "Application.h"
+#include "ModifyVariableAction.h"
 #include "ModuleImGui.h"
 #include "ResourceManager.h"
 #include "Texture.h"
@@ -49,7 +50,8 @@ void DialogueAction::Update(float dt)
 		if (clickedAnswer != nullptr)
 		{
 			DialogueStep* nextStep = clickedAnswer->GetDestinationStep();
-			dialogue->dialogueViewportHandler->SetCurrentStep(nextStep); 	
+			dialogue->dialogueViewportHandler->SetCurrentStep(nextStep); 
+			clickedAnswer->DoCallbackActions(); 
 
 			if (nextStep == nullptr)
 			{
@@ -121,30 +123,7 @@ void DialogueAction::DrawUISettings()
 		DialogueStep* selectedStep = dialogue->GetSelectedStep();
 
 		ImGui::Separator();
-		if (selectedStep)
-		{
-			// Preview Button 
-			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-			string buttonPreviewText = "Show Preview"; 
-
-			if (showPreview == true)
-				buttonPreviewText = "Hide Preview"; 
-
-			if (ImGui::Button(buttonPreviewText.c_str(), ImVec2(130, 35)))
-			{
-				if(showPreview)
-					dialogue->dialogueViewportHandler->SetCurrentStep(nullptr);
-				else
-					dialogue->dialogueViewportHandler->SetCurrentStep(selectedStep);
-
-				showPreview = !showPreview; 
-			}
 		
-			ImGui::PopFont();
-
-			IMGUI_SPACED_SEPARATOR;
-		}
-
 		if (drawFontPopup)
 		{
 			Font* selectedFont = (Font*)ResourceManager::getInstance()->PrintFontSelectionPopup();
@@ -157,7 +136,6 @@ void DialogueAction::DrawUISettings()
 				selectedStep->answerFontNameHold = selectedFont->GetName();
 			}
 		}
-
 
 		// Draw Step Settings -------------------------------------------------------------------------------------
 		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
@@ -193,6 +171,24 @@ void DialogueAction::DrawUISettings()
 			dialogue->stepsMap.insert(std::make_pair(newStep->GetUID(), newStep));
 		}
 
+		ImGui::SameLine();
+
+		// Preview Button 
+		string buttonPreviewText = "Show Preview";
+
+		if (showPreview == true)
+			buttonPreviewText = "Hide Preview";
+
+		if (ImGui::Button(buttonPreviewText.c_str()))
+		{
+			if (showPreview)
+				dialogue->dialogueViewportHandler->SetCurrentStep(nullptr);
+			else
+				dialogue->dialogueViewportHandler->SetCurrentStep(selectedStep);
+
+			showPreview = !showPreview;
+		}
+
 		if (ImGui::TreeNode("Visual Settings"))
 		{
 			DrawStepVisualSettings(selectedStep);
@@ -211,15 +207,6 @@ void DialogueAction::DrawUISettings()
 			ImGui::Text("%s Settings", selectedStep->GetName().c_str());
 			ImGui::PopFont();
 
-			char stepNameBuffer[256] = "";
-			if (!selectedStep->GetName().empty())
-				strcpy(stepNameBuffer, selectedStep->GetName().c_str());
-
-			if (ImGui::InputText("Name", stepNameBuffer, IM_ARRAYSIZE(stepNameBuffer)))
-			{
-				selectedStep->SetName(stepNameBuffer);
-			}
-
 			static char stepTextBuffer[256] = "";
 			if (!selectedStep->GetTextStr().empty())
 				strcpy(stepTextBuffer, selectedStep->GetTextStr().c_str());
@@ -227,6 +214,15 @@ void DialogueAction::DrawUISettings()
 			if (ImGui::InputTextMultiline("Description##ObjectDescription", stepTextBuffer, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 100, 100)))
 			{
 				selectedStep->SetText(stepTextBuffer);
+			}
+
+			char stepNameBuffer[256] = "";
+			if (!selectedStep->GetName().empty())
+				strcpy(stepNameBuffer, selectedStep->GetName().c_str());
+
+			if (ImGui::InputText("Name", stepNameBuffer, IM_ARRAYSIZE(stepNameBuffer)))
+			{
+				selectedStep->SetName(stepNameBuffer);
 			}
 
 			ImGui::Separator();
@@ -247,17 +243,6 @@ void DialogueAction::DrawUISettings()
 				string headerNameWithUID = currentAnswer->GetName() +"##" + to_string(currentAnswer->GetUID());
 				if (ImGui::CollapsingHeader(headerNameWithUID.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 				{
-					static char answerNameBuffer[256] = "";
-
-					if(!headerName.empty())
-						strcpy(answerNameBuffer, headerName.c_str());
-
-					ImGui::Indent(15);
-					if (ImGui::InputText(string("Name##" + to_string(currentAnswer->GetUID())).c_str(), answerNameBuffer, IM_ARRAYSIZE(answerNameBuffer)))
-					{
-						currentAnswer->SetName(answerNameBuffer); 
-					}
-				
 					string answerText = currentAnswer->GetAnswerDialogueText()->GetTextAction()->GetText();
 					string answerTextWithUID = currentAnswer->GetAnswerDialogueText()->GetTextAction()->GetText() + "##" + to_string(currentAnswer->GetUID());
 
@@ -266,15 +251,23 @@ void DialogueAction::DrawUISettings()
 					if (!answerText.empty())
 						strcpy(answerTextBuffer, answerText.c_str());
 
+					ImGui::Indent(15);
 					if (ImGui::InputTextMultiline(string("Text##" + to_string(currentAnswer->GetUID())).c_str(), answerTextBuffer, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 100, 100)))
 					{
 						currentAnswer->SetAnswerText(answerTextBuffer);
 					}
-					ImGui::Indent(-15);
-					ImGui::Spacing(); 
 
+					static char answerNameBuffer[256] = "";
+
+					if(!headerName.empty())
+						strcpy(answerNameBuffer, headerName.c_str());
+
+					if (ImGui::InputText(string("Name##" + to_string(currentAnswer->GetUID())).c_str(), answerNameBuffer, IM_ARRAYSIZE(answerNameBuffer)))
+					{
+						currentAnswer->SetName(answerNameBuffer); 
+					}
+				
 					// Actions Effects -----------------------
-					ImGui::Indent(15);
 					ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 					ImGui::Text("Decision Effects:");
 					ImGui::PopFont();
@@ -282,9 +275,25 @@ void DialogueAction::DrawUISettings()
 					PUSH_CHILD_BG_COLOR_DARK;
 					ImGui::BeginChild("Answers Effect Childs", ImVec2(ImGui::GetContentRegionAvail().x - 8, 200));
 
+					if (currentAnswer->GetModifyVarEffect() != nullptr)
+						currentAnswer->GetModifyVarEffect()->DrawEffectsList();
 
 					ImGui::EndChild(); 
 					ImGui::PopStyleColor();
+
+					string buttonAddEffectStr = "Add Effect##" + to_string(currentAnswer->GetUID());
+					if (ImGui::Button(buttonAddEffectStr.c_str()))
+					{
+						if (currentAnswer->GetModifyVarEffect() == nullptr)
+						{
+							ModifyVariableAction* newCallbackAction = new ModifyVariableAction(nullptr);
+							currentAnswer->SetModifyVarEffect(newCallbackAction);
+						}
+
+						currentAnswer->GetModifyVarEffect()->AddEmptyEffect(); 	
+
+					}
+
 					ImGui::Indent(-15);
 				}
 			}

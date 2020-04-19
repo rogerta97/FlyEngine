@@ -198,13 +198,21 @@ void ModifyVariableAction::DrawEffectVariablesUI()
 
 	bool searchVarClicked = false; 
 
-	int count = 0; 
-	for (auto& currentEffect: variablesEffectList)
+	DrawEffectsList();
+
+	ImGui::EndChild();
+	ImGui::PopStyleColor();
+}
+
+void ModifyVariableAction::DrawEffectsList()
+{
+	int count = 0;
+	for (auto& currentEffect : variablesEffectList)
 	{
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.28f, 0.43f, 0.56, 0.2f));
 		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 5, ImGui::GetCursorPos().y + 5));
 
-		string childStr = "ChildItem" + to_string(count++); 
+		string childStr = "ChildItem" + to_string(count++);
 		ImGui::BeginChild(childStr.c_str(), ImVec2(ImGui::GetContentRegionAvail().x - 5, 100));
 
 		DrawEffectItem(currentEffect, count);
@@ -212,9 +220,6 @@ void ModifyVariableAction::DrawEffectVariablesUI()
 		ImGui::EndChild();
 		ImGui::PopStyleColor();
 	}
-
-	ImGui::EndChild();
-	ImGui::PopStyleColor();
 }
 
 void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect, int pos)
