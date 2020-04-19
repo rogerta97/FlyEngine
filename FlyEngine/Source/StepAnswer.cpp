@@ -69,7 +69,10 @@ DialogueText* StepAnswer::GetAnswerDialogueText()
 
 DialogueStep* StepAnswer::GetDestinationStep()
 {
-	return dialogueLink->destinationStep;
+	if (dialogueLink == nullptr)
+		return nullptr; 
+	else
+		return dialogueLink->destinationStep;
 }
 
 string StepAnswer::GetName()

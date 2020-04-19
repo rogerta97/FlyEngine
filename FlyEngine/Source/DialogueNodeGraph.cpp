@@ -164,6 +164,12 @@ void DialogueNodeGraph::DrawGraph()
 			dialogue->DeleteDialogueStep(hoveredNode->GetUID());
 		}
 
+
+		if (ImGui::Selectable("Set As First"))
+		{
+			dialogue->SetFirstStep(hoveredNode); 
+		}
+
 		ImGui::EndPopup();
 
 		if (closePopup)
@@ -307,15 +313,19 @@ void DialogueNodeGraph::DrawAnswerPins(DialogueStep* currentStep)
 	}
 }
 
-std::pair<int, int> DialogueNodeGraph::GetGraphLinkFromDstUID(UID dstUID)
+std::list<StepAnswer*> DialogueNodeGraph::GetGraphLinkFromDstUID(UID dstUID)
 {
+	std::list<StepAnswer*> retList; 
 	for (auto currentLink = links.begin(); currentLink != links.end(); currentLink++)
 	{
 		if (currentLink->second == dstUID)
-			return std::pair<int, int>(currentLink->first, currentLink->second);
+		{
+			StepAnswer* linkData = dialogue->answersMap[currentLink->first];
+			retList.push_back(linkData);
+		}
 	}
 
-	return std::pair<int, int>(0,0);
+	return retList;
 }
 
 void DialogueNodeGraph::EraseGraphLink(UID start_attr)

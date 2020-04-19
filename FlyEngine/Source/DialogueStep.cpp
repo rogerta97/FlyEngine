@@ -84,9 +84,12 @@ void DialogueStep::CleanUp()
 	// Delete Exit Links and Answers 
 	DeleteLinksAndAnswers();
 	 
-	dialogueText->GetTextAction()->CleanUp(); 
-	delete dialogueText; 
-	dialogueText = nullptr; 
+	if (dialogueText != nullptr)
+	{
+		dialogueText->GetTextAction()->CleanUp(); 
+		delete dialogueText; 
+		dialogueText = nullptr; 
+	}
 }
 
 void DialogueStep::DeleteLinksAndAnswers()
@@ -94,8 +97,11 @@ void DialogueStep::DeleteLinksAndAnswers()
 	for (auto currentAnswer = answersList.begin(); currentAnswer != answersList.end();)
 	{
 		// Erase Links
-		App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->EraseGraphLink((*currentAnswer)->GetLink()->startPinUID);
-		(*currentAnswer)->DeleteLink();
+		if ((*currentAnswer)->GetLink() != nullptr)
+		{
+			App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->EraseGraphLink((*currentAnswer)->GetLink()->startPinUID);
+			(*currentAnswer)->DeleteLink();
+		}
 
 		// Erase Answer
 		parentDialogue->answersMap.erase((*currentAnswer)->GetUID());
@@ -104,10 +110,14 @@ void DialogueStep::DeleteLinksAndAnswers()
 		currentAnswer = answersList.erase(currentAnswer);
 	}
 
-	// Delete Enter Link
-	std::pair<int, int> linkExtremes = App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->GetGraphLinkFromDstUID(GetUID() + 1);
-	StepAnswer* stepOrigin = parentDialogue->GetAnswerFromID(linkExtremes.first);
-	
+	// Delete Enter Links
+	std::list<StepAnswer*> answerCandidates = App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->GetGraphLinkFromDstUID(GetUID() + 1);
+
+	for (auto& currentAnswer : answerCandidates)
+	{
+		App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->EraseGraphLink(currentAnswer->GetLink()->startPinUID);
+		currentAnswer->DeleteLink();
+	}
 }
 
 void DialogueStep::SetText(string _dialogueText)

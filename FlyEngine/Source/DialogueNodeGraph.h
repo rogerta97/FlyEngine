@@ -10,6 +10,7 @@
 
 class Dialogue;
 class DialogueStep;
+class StepAnswer; 
 class DialogueNodeGraph
 {
 public:
@@ -23,7 +24,7 @@ public:
 	void HandleNodeClick();
 	void DrawAnswerPins(DialogueStep* currentStep);
 
-	std::pair<int, int> GetGraphLinkFromDstUID(UID dstUID);
+	std::list<StepAnswer*> GetGraphLinkFromDstUID(UID dstUID);
 	void EraseGraphLink(UID start_attr);
 	void EraseGraphNode(UID start_attr);
 
