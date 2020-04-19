@@ -75,8 +75,10 @@ void DialogueAction::DoAction()
 		if (dialogueFirstStep != nullptr)
 		{
 			dialogue->dialogueViewportHandler->SetCurrentStep(dialogueFirstStep);
-			dialoguePlaying = true; 
+			dialoguePlaying = true;
 		}
+		else if (actionFinished == false)
+			actionFinished = true; 
 	}
 }
 

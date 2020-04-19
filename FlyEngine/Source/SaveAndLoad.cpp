@@ -194,7 +194,7 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 				instance->LoadFollowPathAction(root_obj, actionSectionStr, newObject);
 				break;
 			case ACTION_DIALOGUE:
-				instance->LoadDialogueAction(root_obj, serializeObjectStrActions, newObject);
+				instance->LoadDialogueAction(root_obj, actionSectionStr, newObject);
 				break;
 			case AT_null:
 				break;
@@ -284,129 +284,122 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 
 void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)
 {
-	int actionsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "ActionsAmount").c_str());
+	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "ActionClass").c_str());
+	DialogueAction* dialogueAction = nullptr;
 
-	for (int i = 0; i < actionsAmount; i++)
+	if (actionClass == ACTION_CLASS_SEQUENTIAL && newObject->flyObjectType == FlyObjectType::OBJECT_SEQUENTIAL)
+		dialogueAction = newObject->AddDialogueAction(true);
+	else
+		dialogueAction = newObject->AddDialogueAction();
+
+	dialogueAction->SetActionClass((ActionClass)actionClass);
+	dialogueAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("Occurrence."));
+
+	// Load Dialogue Data 
+	UID nodeGraphID = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "NodeGraphID").c_str());
+
+	if (nodeGraphID != 0)
+		dialogueAction->GetDialogueData()->needReload = true;
+
+	// Load Steps Data
+	string serialiseStepsStr = serializeObjectStrActions + "Steps.";
+	int stepsAmount = json_object_dotget_number(root_obj, string(serialiseStepsStr + "StepsAmount").c_str());
+
+	for (int y = 0; y < stepsAmount; y++)
 	{
-		string serialiseCurrentActionStr = serializeObjectStrActions + "Action_" + to_string(i) + ".";
+		// Load Name & Text 
+		string stepSerializeStr = serialiseStepsStr + "Step_" + to_string(y) + ".";
 
-		int actionClass = json_object_dotget_number(root_obj, string(serialiseCurrentActionStr + "ActionClass").c_str());
-		DialogueAction* dialogueAction = nullptr;
+		DialogueStep* newStep = dialogueAction->AddDialogueStep();
 
-		if (actionClass == ACTION_CLASS_SEQUENTIAL && newObject->flyObjectType == FlyObjectType::OBJECT_SEQUENTIAL)
-			dialogueAction = newObject->AddDialogueAction(true);
-		else
-			dialogueAction = newObject->AddDialogueAction();
+		string stepName = json_object_dotget_string(root_obj, string(stepSerializeStr + "Name").c_str());
+		string stepText = json_object_dotget_string(root_obj, string(stepSerializeStr + "Text").c_str());
+		UID stepUID = json_object_dotget_number(root_obj, string(stepSerializeStr + "StepID").c_str());
+		bool isFirst = json_object_dotget_boolean(root_obj, string(stepSerializeStr + "First").c_str());
 
-		dialogueAction->SetActionClass((ActionClass)actionClass);
-		dialogueAction->LoadOccurrence(root_obj, serialiseCurrentActionStr + string("Occurrence."));
+		// Load Step Data
+		newStep->SetName(stepName);
+		newStep->SetText(stepText);
+		newStep->SetUID(stepUID);
 
-		// Load Dialogue Data 
-		UID nodeGraphID = json_object_dotget_number(root_obj, string(serialiseCurrentActionStr + "NodeGraphID").c_str());
+		newStep->isFirst = isFirst;
 
-		if(nodeGraphID != 0)
-			dialogueAction->GetDialogueData()->needReload = true; 
+		// Visuals For Sentence 
+		newStep->fontNameHold = json_object_dotget_string(root_obj, string(stepSerializeStr + "Visuals.FontName").c_str());
 
-		// Load Steps Data
-		string serialiseStepsStr = serialiseCurrentActionStr + "Steps.";
-		int stepsAmount = json_object_dotget_number(root_obj, string(serialiseStepsStr + "StepsAmount").c_str());
+		newStep->backgroundColorHold.x = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.BackgroundColor.r").c_str());
+		newStep->backgroundColorHold.y = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.BackgroundColor.g").c_str());
+		newStep->backgroundColorHold.z = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.BackgroundColor.b").c_str());
+		newStep->backgroundColorHold.w = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.BackgroundColor.a").c_str());
 
-		for (int y = 0; y < stepsAmount; y++)
+		newStep->fontColorHold.x = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.FontColor.r").c_str());
+		newStep->fontColorHold.y = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.FontColor.g").c_str());
+		newStep->fontColorHold.z = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.FontColor.b").c_str());
+		newStep->fontColorHold.w = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.FontColor.a").c_str());
+
+		// Visuals for answers 
+		newStep->answerFontNameHold = json_object_dotget_string(root_obj, string(stepSerializeStr + "Answers.Visuals.FontName").c_str());
+
+		newStep->answerBackgroundColorHold.x = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.BackgroundColor.r").c_str());
+		newStep->answerBackgroundColorHold.y = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.BackgroundColor.g").c_str());
+		newStep->answerBackgroundColorHold.z = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.BackgroundColor.b").c_str());
+		newStep->answerBackgroundColorHold.w = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.BackgroundColor.a").c_str());
+
+		newStep->answerFontColorHold.x = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.FontColor.r").c_str());
+		newStep->answerFontColorHold.y = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.FontColor.g").c_str());
+		newStep->answerFontColorHold.z = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.FontColor.b").c_str());
+		newStep->answerFontColorHold.w = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.FontColor.a").c_str());
+
+		dialogueAction->GetDialogueData()->stepsMap.insert(std::make_pair(newStep->GetUID(), newStep));
+	}
+
+	int count = 0;
+	for (auto& currentStep : dialogueAction->GetDialogueData()->GetDialogueSteps())
+	{
+		// Load Step Answers ------------------
+		string answersSerializeStr = serialiseStepsStr + "Step_" + to_string(count) + "." + "Answers.";
+
+		int answersAmount = json_object_dotget_number(root_obj, string(answersSerializeStr + "AnswersAmount").c_str());
+
+		for (int k = 0; k < answersAmount; k++)
 		{
 			// Load Name & Text 
-			string stepSerializeStr = serialiseStepsStr + "Step_" + to_string(y) + ".";
+			string answerSerializeStr = answersSerializeStr + "Answer_" + to_string(k) + ".";
 
-			DialogueStep* newStep = dialogueAction->AddDialogueStep();
+			string answerName = json_object_dotget_string(root_obj, string(answerSerializeStr + "Name").c_str());
+			string answerText = json_object_dotget_string(root_obj, string(answerSerializeStr + "Text").c_str());
+			UID answerUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "AnswerUID").c_str());
 
-			string stepName = json_object_dotget_string(root_obj, string(stepSerializeStr + "Name").c_str());
-			string stepText = json_object_dotget_string(root_obj, string(stepSerializeStr + "Text").c_str());
-			UID stepUID = json_object_dotget_number(root_obj, string(stepSerializeStr + "StepID").c_str());
-			bool isFirst = json_object_dotget_boolean(root_obj, string(stepSerializeStr + "First").c_str());
+			UID linkUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "Link.linkUID").c_str());
+			UID startPinUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "Link.startPinUID").c_str());
+			UID endPinUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "Link.endPinUID").c_str());
 
-			// Load Step Data
-			newStep->SetName(stepName);
-			newStep->SetText(stepText);
-			newStep->SetUID(stepUID);
+			StepAnswer* newAnswer = currentStep->AddStepAnswer(answerText, answerName);
 
-			newStep->isFirst = isFirst; 
+			newAnswer->SetName(answerName);
+			newAnswer->SetAnswerText(answerText);
 
-			// Visuals For Sentence 
-			newStep->fontNameHold = json_object_dotget_string(root_obj, string(stepSerializeStr + "Visuals.FontName").c_str());
+			// Load answers UIDs
+			newAnswer->SetUID(answerUID);
 
-			newStep->backgroundColorHold.x = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.BackgroundColor.r").c_str());
-			newStep->backgroundColorHold.y = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.BackgroundColor.g").c_str());
-			newStep->backgroundColorHold.z = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.BackgroundColor.b").c_str());
-			newStep->backgroundColorHold.w = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.BackgroundColor.a").c_str());
+			// Load Link
+			newAnswer->GetLink()->startPinUID = startPinUID;
+			newAnswer->GetLink()->endPinUID = endPinUID;
+			newAnswer->GetLink()->linkUID = linkUID;
 
-			newStep->fontColorHold.x = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.FontColor.r").c_str());
-			newStep->fontColorHold.y = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.FontColor.g").c_str());
-			newStep->fontColorHold.z = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.FontColor.b").c_str());
-			newStep->fontColorHold.w = json_object_dotget_number(root_obj, string(stepSerializeStr + "Visuals.FontColor.a").c_str());
+			dialogueAction->GetDialogueData()->answersMap.insert(std::make_pair(newAnswer->GetUID(), newAnswer));
 
-			// Visuals for answers 
-			newStep->answerFontNameHold = json_object_dotget_string(root_obj, string(stepSerializeStr + "Answers.Visuals.FontName").c_str());
+			// Answer Destination Step		
+			UID destinationStepUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "DestinationStepUID").c_str());
 
-			newStep->answerBackgroundColorHold.x = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.BackgroundColor.r").c_str());
-			newStep->answerBackgroundColorHold.y = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.BackgroundColor.g").c_str());
-			newStep->answerBackgroundColorHold.z = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.BackgroundColor.b").c_str());
-			newStep->answerBackgroundColorHold.w = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.BackgroundColor.a").c_str());
-
-			newStep->answerFontColorHold.x = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.FontColor.r").c_str());
-			newStep->answerFontColorHold.y = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.FontColor.g").c_str());
-			newStep->answerFontColorHold.z = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.FontColor.b").c_str());
-			newStep->answerFontColorHold.w = json_object_dotget_number(root_obj, string(stepSerializeStr + "Answers.Visuals.FontColor.a").c_str());
-
-			dialogueAction->GetDialogueData()->stepsMap.insert(std::make_pair(newStep->GetUID(), newStep));
-		}
-
-		int count = 0; 
-		for (auto& currentStep : dialogueAction->GetDialogueData()->GetDialogueSteps())
-		{
-			// Load Step Answers ------------------
-			string answersSerializeStr = serialiseStepsStr + "Step_" + to_string(count) + "." + "Answers.";
-
-			int answersAmount = json_object_dotget_number(root_obj, string(answersSerializeStr + "AnswersAmount").c_str());
-
-			for (int k = 0; k < answersAmount; k++)
+			if (destinationStepUID != 0)
 			{
-				// Load Name & Text 
-				string answerSerializeStr = answersSerializeStr + "Answer_" + to_string(k) + ".";
-
-				string answerName = json_object_dotget_string(root_obj, string(answerSerializeStr + "Name").c_str());
-				string answerText = json_object_dotget_string(root_obj, string(answerSerializeStr + "Text").c_str());
-				UID answerUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "AnswerUID").c_str());
-
-				UID linkUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "Link.linkUID").c_str());
-				UID startPinUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "Link.startPinUID").c_str());
-				UID endPinUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "Link.endPinUID").c_str());
-
-				StepAnswer* newAnswer = currentStep->AddStepAnswer(answerText, answerName);
-
-				newAnswer->SetName(answerName);
-				newAnswer->SetAnswerText(answerText);
-
-				// Load answers UIDs
-				newAnswer->SetUID(answerUID);
-
-				// Load Link
-				newAnswer->GetLink()->startPinUID = startPinUID; 
-				newAnswer->GetLink()->endPinUID = endPinUID;
-				newAnswer->GetLink()->linkUID = linkUID;
-		
-				dialogueAction->GetDialogueData()->answersMap.insert(std::make_pair(newAnswer->GetUID(), newAnswer));
-
-				// Answer Destination Step		
-				UID destinationStepUID = json_object_dotget_number(root_obj, string(answerSerializeStr + "DestinationStepUID").c_str());
-
-				if (destinationStepUID != 0)
-				{
-					DialogueStep* dstDialogueStep = dialogueAction->GetDialogueData()->GetStepFromID(destinationStepUID);
-					newAnswer->GetLink()->destinationStep = dstDialogueStep;
-				}
+				DialogueStep* dstDialogueStep = dialogueAction->GetDialogueData()->GetStepFromID(destinationStepUID);
+				newAnswer->GetLink()->destinationStep = dstDialogueStep;
 			}
-
-			count++;
 		}
+
+		count++;
 	}
 }
 

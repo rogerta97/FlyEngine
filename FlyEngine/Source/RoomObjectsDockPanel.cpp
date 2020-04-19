@@ -62,7 +62,23 @@ void RoomObjectsDockPanel::DrawObjectHierarchy()
 				flog("CLICKED RIGHT BUTTON");
 			}
 		}
+
 		POP_FONT;
+	}
+
+	if (ImGui::BeginPopup("right_click_item_hierarchy"))
+	{
+		if (ImGui::Selectable("Rename"))
+		{
+
+		}
+
+		if (ImGui::Selectable("Delete"))
+		{
+
+		}
+
+		ImGui::EndPopup();
 	}
 
 	ImGui::PopStyleVar();
