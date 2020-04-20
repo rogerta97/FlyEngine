@@ -10,6 +10,14 @@ FlyObjectCharacter::FlyObjectCharacter()
 {
 }
 
+void FlyObjectCharacter::InitCharacter()
+{
+	if (HasAction(ACTION_DISPLAY_IMAGE))
+	{
+
+	}
+}
+
 FlyObjectCharacter::~FlyObjectCharacter()
 {
 }

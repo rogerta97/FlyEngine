@@ -49,7 +49,6 @@ void DockPanel::ReceiveEvent(FlyEngineEvent eventType)
 
 bool DockPanel::CleanUp()
 {
-
 	switch (dockPanelType)
 	{
 	case DOCK_CONSOLE:

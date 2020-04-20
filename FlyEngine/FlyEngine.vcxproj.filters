@@ -483,6 +483,9 @@
     <ClCompile Include="Source\FlyObjectCharacter.cpp">
       <Filter>Source\FlyEngine\FlyObject\FlyObject</Filter>
     </ClCompile>
+    <ClCompile Include="Source\CharacterCreatorDockPanel.cpp">
+      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -964,6 +967,9 @@
     </ClInclude>
     <ClInclude Include="Source\FlyObjectCharacter.h">
       <Filter>Source\FlyEngine\FlyObject\FlyObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CharacterCreatorDockPanel.h">
+      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

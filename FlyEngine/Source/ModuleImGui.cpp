@@ -15,6 +15,7 @@
 #include "ChangeRoomAction.h"
 #include "ViewportManager.h"
 #include "TextureMSAA.h"
+#include "CharacterCreatorDockPanel.h"
 #include "ResourceManager.h"
 #include "WorldPropertiesDockPanel.h"
 #include "ModuleInput.h"
@@ -121,7 +122,8 @@ void ModuleImGui::CreatePanels()
 	RoomObjectsDockPanel* roomObjectsDockPanel = new RoomObjectsDockPanel(false);
 	ObjectPropertiesDockPanel* objectPropertiesDockPanel = new ObjectPropertiesDockPanel(false);
 	RoomDockPanel* sceneDockPanel = new RoomDockPanel(false); 
-	DialogueEditorDockPanel* dialogueEditorPanel = new DialogueEditorDockPanel(this); 
+	DialogueEditorDockPanel* dialogueEditorPanel = new DialogueEditorDockPanel(false); 
+	CharacterCreatorDockPanel* characterCreatorPanel = new CharacterCreatorDockPanel(false); 
 
 	dockPanels.push_back(consolePanel); 
 	dockPanels.push_back(roomsGraphPanel);
@@ -135,12 +137,14 @@ void ModuleImGui::CreatePanels()
 	dockPanels.push_back(objectPropertiesDockPanel);
 	dockPanels.push_back(sceneDockPanel);
 	dockPanels.push_back(fileBrowserDockPanel); 
+	dockPanels.push_back(characterCreatorPanel); 
 
 	consoleDockPanel = consolePanel; 
 	graphPropertiesDockPanel = graphPropertiesPanel;
 	objectCreatorDockPanel = objectCreatorPanel; 
 	gameViewportDockPanel = gameViewporPanel;
 	dialogueEditorDockPanel = dialogueEditorPanel;
+	characterCreatorDockPanel = characterCreatorPanel; 
 }
 
 void ModuleImGui::DeletePanels()

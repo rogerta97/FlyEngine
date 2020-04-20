@@ -6,6 +6,7 @@
 #include "ModuleInput.h"
 #include "ResourceManager.h"
 #include "ObjectCreatorDockPanel.h"
+#include "CharacterCreatorDockPanel.h"
 #include "ModuleImGui.h"
 
 #include "UI_Image.h"
@@ -304,6 +305,15 @@ void RoomDockPanel::DrawTopButtons()
 	{
 		App->moduleImGui->objectCreatorDockPanel->ResetObjectData();
 		App->moduleImGui->objectCreatorDockPanel->ToggleVisibility();
+	}
+
+	// Create Character Button ---
+	Texture* characterCreatorIcon = (Texture*)ResourceManager::getInstance()->GetResource("AddCharacterIcon");
+	ImGui::SameLine(); 
+	if (ImGui::ImageButton((ImTextureID)characterCreatorIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, 1)))
+	{
+		App->moduleImGui->characterCreatorDockPanel->ResetObjectData();
+		App->moduleImGui->characterCreatorDockPanel->ToggleVisibility();
 	}
 
 	// Save Button ------------
