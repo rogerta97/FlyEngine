@@ -296,6 +296,25 @@ void DisplayAnimationAction::DrawUISettings()
 	
 }
 
+void DisplayAnimationAction::DrawUICharacterSettings(string previewTitle)
+{
+	int framesAmount = 0;
+
+	if (animation)
+		framesAmount = animation->GetFramesAmount();
+
+	ImGui::Spacing(); 
+	float squareSize = 250;
+	ImGui::Columns(2);
+	ImGui::SetColumnWidth(0, squareSize + 5);
+
+	DrawUISettingsLeftColumn(squareSize, previewTitle);
+
+	ImGui::NextColumn();
+
+	DrawSettingsRightColumn();
+}
+
 void DisplayAnimationAction::DrawAddFramePopup()
 {
 	if (ImGui::BeginPopup("add_frame_popup"))
@@ -459,10 +478,10 @@ void DisplayAnimationAction::DrawSettingsRightColumn()
 	ImGui::PopStyleColor();
 }
 
-void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
+void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize, string previewTitle)
 {
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	ImGui::Text("Preview:");
+	ImGui::Text(previewTitle.c_str());
 	ImGui::PopFont();
 
 	// Current Frame Preview
@@ -535,6 +554,11 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize)
 	{
 
 	}
+
+	ImGui::SameLine();
+	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
+	ImGui::TextColored(ImVec4(0.43137f, 0.56863f, 0.80392f, 1.0f), "%d/%d", currentFrame, animation->GetFramesAmount());
+	ImGui::PopFont();
 
 	ImGui::Separator();
 

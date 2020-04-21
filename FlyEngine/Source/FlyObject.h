@@ -140,7 +140,7 @@ public:
 	bool drawClickableArea = false;
 	bool isPicked = false; 
 
-private: 
+protected: 
 
 	// Sequential Actions Play Control ----
 	Action* currentSequentialAction; 

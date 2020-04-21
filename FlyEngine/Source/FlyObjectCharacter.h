@@ -7,6 +7,7 @@
 
 class Room;
 class Animation; 
+class DisplayAnimationAction; 
 class FlyObjectCharacter : public FlyObject
 {
 public: 
@@ -15,12 +16,16 @@ public:
 
 	void InitCharacter(); 
 
+	DisplayAnimationAction* GetWalkAnimation();
+	DisplayAnimationAction* GetIdleAnimation();
+	DisplayAnimationAction* GetTalkAnimation();
+
 	~FlyObjectCharacter();
 
 private: 
-	Animation* walkAnimation;
-	Animation* idleAnimation;
-	Animation* talkAnimation;
+	DisplayAnimationAction* walkAnimation;
+	DisplayAnimationAction* idleAnimation;
+	DisplayAnimationAction* talkAnimation;
 };
 
 #endif

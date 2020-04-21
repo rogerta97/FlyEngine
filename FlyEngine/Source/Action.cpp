@@ -62,6 +62,10 @@ void Action::DrawUISettings()
 {
 }
 
+void Action::DrawUISettingsSequential()
+{
+}
+
 void Action::DrawUISettingsInButton()
 {
 }

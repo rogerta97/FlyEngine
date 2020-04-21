@@ -4,6 +4,7 @@
 #include "DockPanel.h"
 
 class FlyObjectCharacter; 
+class Action; 
 class CharacterCreatorDockPanel : public DockPanel
 {
 public:
@@ -13,10 +14,13 @@ public:
 	void ResetObjectData(); 
 	void ToggleVisiblity(); 
 
-	bool Draw(); 
+	bool Draw();
+	void DrawCharacterSequentialActionsUI();
+	void DrawCharacterAnimationsUI();
 
 private: 
 	FlyObjectCharacter* creatingCharacterFO; 
+	Action* selectedActionUI; 
 };
 
 #endif

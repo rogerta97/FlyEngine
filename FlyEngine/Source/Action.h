@@ -66,6 +66,7 @@ public:
 	virtual void CleanUp();
 
 	virtual void DrawUISettings(); 
+	virtual void DrawUISettingsSequential(); 
 	virtual void DrawUISettingsInButton(); 
 
 	// Utility ------------------------
