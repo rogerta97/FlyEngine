@@ -556,10 +556,13 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize, string p
 	}
 
 	ImGui::SameLine();
-	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
+	ImGui::PushFont(App->moduleImGui->rudaBlackHuge);
+
+	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 7, ImGui::GetCursorPosY() + 2));
 	ImGui::TextColored(ImVec4(0.43137f, 0.56863f, 0.80392f, 1.0f), "%d/%d", currentFrame, animation->GetFramesAmount());
 	ImGui::PopFont();
 
+	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() +-7, ImGui::GetCursorPosY() + -2));
 	ImGui::Separator();
 
 	int speed = animation->GetSpeed();

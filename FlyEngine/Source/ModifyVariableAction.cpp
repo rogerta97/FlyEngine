@@ -136,12 +136,12 @@ void ModifyVariableAction::DrawActionOccurenceCheckboxes()
 		ImGui::Checkbox("Blackboard Value Condition", &IsOccCondition());
 	}
 
-	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
+	//ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
 
-	ImGui::SetCursorPos(ImVec2(5, 8));
-	ImGui::Checkbox("Object Clicked", &IsOccObjectClicked());
-	ImGui::SetCursorPos(ImVec2(5, 38));
-	ImGui::Checkbox("Blackboard Value Condition", &IsOccCondition());
+	//ImGui::SetCursorPos(ImVec2(5, 8));
+	//ImGui::Checkbox("Object Clicked", &IsOccObjectClicked());
+	//ImGui::SetCursorPos(ImVec2(5, 38));
+	//ImGui::Checkbox("Blackboard Value Condition", &IsOccCondition());
 
 	ImGui::SameLine();
 	static std::string showValueConditionButtonText = "Show Conditions";

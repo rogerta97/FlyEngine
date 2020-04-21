@@ -178,7 +178,6 @@ bool CharacterCreatorDockPanel::Draw()
 			ImGui::EndChild();
 			ImGui::PopStyleColor();
 			ImGui::PopStyleVar();
-
 			ImGui::EndPopup();
 		}
 	}
@@ -243,8 +242,8 @@ void CharacterCreatorDockPanel::DrawCharacterAnimationsUI()
 	{
 		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
 
+		ImGui::Indent(-10);
 		ImGui::BeginChild("Idle Anims Child", ImVec2(ImGui::GetContentRegionAvail().x, 335));
-		ImGui::Separator(); 
 		creatingCharacterFO->GetIdleAnimation()->DrawUICharacterSettings("Animation Preview:");
 		ImGui::EndChild();
 		ImGui::PopFont(); 
@@ -255,9 +254,8 @@ void CharacterCreatorDockPanel::DrawCharacterAnimationsUI()
 	if (ImGui::TreeNode("Walk Animation"))
 	{
 		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
-
+		ImGui::Indent(-10);
 		ImGui::BeginChild("Walk Anims Child", ImVec2(ImGui::GetContentRegionAvail().x, 335));
-		ImGui::Separator();
 		creatingCharacterFO->GetWalkAnimation()->DrawUICharacterSettings("Animation Preview:");
 		ImGui::EndChild();
 
@@ -268,9 +266,8 @@ void CharacterCreatorDockPanel::DrawCharacterAnimationsUI()
 	if (ImGui::TreeNode("Talk Animation"))
 	{
 		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
-
+		ImGui::Indent(-10);
 		ImGui::BeginChild("Talk Anims Child", ImVec2(ImGui::GetContentRegionAvail().x, 335));
-		ImGui::Separator();
 		creatingCharacterFO->GetTalkAnimation()->DrawUICharacterSettings("Animation Preview:");
 		ImGui::EndChild();
 
