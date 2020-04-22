@@ -1021,6 +1021,165 @@ void ObjectPropertiesDockPanel::DrawCharacterTab()
 
 	ImGui::PopFont();
 	ImGui::Separator();
+
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Sequence Actions:");
+	ImGui::PopFont();
+
+	PUSH_CHILD_BG_COLOR_DARK;
+	INC_CURSOR_4;
+	ImGui::BeginChild("Holder Character Actions", ImVec2(ImGui::GetContentRegionAvail().x - 4, 200));
+
+	if (selectedObject != nullptr)
+		selectedObject->DrawSequentialActionsList(); 
+
+	//int pos = 0;
+	//for (auto& currentAction : selectedObject->GetSequentialActionsList())
+	//{
+	//	ActionSelectableInfo selectableInfo = currentAction->GetActionSelectableInfo();
+
+	//	if (currentAction->GetType() == ACTION_DISPLAY_IMAGE)
+	//	{
+	//		DisplayImageAction* displayImageAction = (DisplayImageAction*)currentAction;
+
+	//		if (displayImageAction->fromAnimation == true)
+	//			continue;
+	//	}
+
+	//	bool ret = false;
+	//	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
+
+	//	Texture* imageIcon = App->moduleManager->GetIconFromActionType(selectableInfo.actionType);
+	//	ImGui::SetCursorPos(ImVec2(10, 5 + (42 * pos)));
+	//	ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
+
+	//	ImGui::SetCursorPos(ImVec2(50, (42 * pos) + 4));
+	//	bool selected = false;
+
+	//	if (selectedActionUI != nullptr && selectedActionUI->GetUID() == currentAction->GetUID())
+	//		selected = true;
+
+	//	if (ImGui::Selectable(selectableInfo.actionName.c_str(), selected, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, 42 - 3)))
+	//	{
+	//		creatingCharacterFO->SetSelectedAction(selectableInfo.actionType, currentAction->IsActionSequential());
+	//		selectedActionUI = currentAction;
+	//		ret = true;
+	//	}
+	//	ImGui::PopFont();
+
+	//	// Description -----
+	//	ImGui::SetCursorPosY((42 * pos) + 24);
+	//	ImGui::SetCursorPosX(ImGui::GetCursorPos().x + 52);
+
+	//	ImGui::PushFont(App->moduleImGui->rudaRegularTiny);
+	//	ImGui::TextWrapped(selectableInfo.actionDescription.c_str());
+	//	ImGui::PopFont();
+
+	//	pos++;
+	//}
+
+	ImGui::EndChild();
+	ImGui::PopStyleColor();
+
+	if (ImGui::Button("Add Action"))
+	{
+		ImGui::OpenPopup("AddActionToObject");
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Delete Action"))
+	{
+
+	}
+
+	Action* selectedActionUI = selectedObject->GetSelectedAction(); 
+	if (selectedActionUI != nullptr)
+		selectedActionUI->DrawUISettings();
+
+	if (ImGui::BeginPopup("AddActionToObject"))
+	{
+		ImGui::Spacing();
+
+		// Search Bar ---------------
+		static char searchNewActionBuffer[256];
+		ImGui::InputTextWithHint("##SearchTool", "Search...", searchNewActionBuffer, IM_ARRAYSIZE(searchNewActionBuffer));
+		ImGui::SameLine();
+
+		Texture* filterIcon = (Texture*)ResourceManager::getInstance()->GetResource("FilterIcon");
+		ImGui::Image((ImTextureID)filterIcon->GetTextureID(), ImVec2(22, 22));
+
+		ImGui::Spacing();
+
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(2.0f, 2.0f));
+		ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), 150));
+
+		// Tools Dictonary ----------
+		ActionSelectableInfo* newActionSelected = nullptr;
+
+		//if (toSequentialList)
+		newActionSelected = App->moduleManager->DrawActionDictionaryUI();
+		//else
+		//	newActionSelected = App->moduleManager->DrawActionDictionaryUI(FILTER_ACTIONS_FIXED);
+
+		if (newActionSelected != nullptr)
+		{
+			Action* selectedAction = nullptr;
+			switch (newActionSelected->actionType)
+			{
+			case ACTION_DISPLAY_IMAGE:
+				selectedAction = (Action*)selectedObject->AddDisplayImageAction(std::string(MyFileSystem::getInstance()->GetIconsDirectory() + "EmptyObject.png").c_str(), true);
+				break;
+
+			case ACTION_CHANGE_ROOM:
+				selectedAction = (Action*)selectedObject->AddChangeRoomAction(true);
+				break;
+
+			case ACTION_MOD_VARIABLE:
+				selectedAction = (Action*)selectedObject->AddModifyVariableAction(true);
+				break;
+
+			case ACTION_EMIT_SOUND:
+				selectedAction = (Action*)selectedObject->AddEmitSoundAction(true);
+				break;
+
+			case ACTION_DISPLAY_TEXT:
+				selectedAction = (Action*)selectedObject->AddDisplayTextAction(true);
+				break;
+
+			case ACTION_DISPLAY_ANIMATION:
+				selectedAction = (Action*)selectedObject->AddDisplayAnimationAction(true);
+				break;
+
+			case ACTION_FOLLOW_PATH:
+				selectedAction = (Action*)selectedObject->AddFollowPathAction(true);
+				break;
+
+			case ACTION_DIALOGUE:
+				selectedAction = (Action*)selectedObject->AddDialogueAction(true);
+				break;
+
+			case AT_null:
+				break;
+			}
+
+			if (selectedAction != nullptr)
+				selectedAction->SetActionClass(ACTION_CLASS_SEQUENTIAL);
+
+			ImGui::EndChild();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleVar();
+			ImGui::CloseCurrentPopup();
+			ImGui::EndPopup();
+			ImGui::End();
+			return;
+		}
+
+		ImGui::EndChild();
+		ImGui::PopStyleColor();
+		ImGui::PopStyleVar();
+		ImGui::EndPopup();
+	}
 }
 
 void ObjectPropertiesDockPanel::DrawObjectSequenceActionsTab()
