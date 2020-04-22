@@ -127,9 +127,12 @@ void DisplayImageAction::CleanUp()
 {
 	Action::CleanUp();
 
-	quadMesh->CleanUp();
-	delete quadMesh; 
-	quadMesh = nullptr; 
+	if (quadMesh != nullptr)
+	{
+		quadMesh->CleanUp();
+		delete quadMesh; 
+		quadMesh = nullptr; 
+	}
 
 	if (imageTexture != nullptr)
 	{

@@ -862,6 +862,8 @@ void ObjectPropertiesDockPanel::DrawFixedPartObjectUI(FlyObject* selectedObject)
 		objectIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("UserInterfaceIcon");
 	else if (selectedObject->flyObjectType == OBJECT_SEQUENTIAL)
 		objectIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("UserInterfaceIcon");
+	else if (selectedObject->flyObjectType == OBJECT_CHARACTER)
+		objectIconTexture = (Texture*)ResourceManager::getInstance()->GetResource("AddCharacterIcon");
 
 	if (objectIconTexture != nullptr)
 		ImGui::Image((ImTextureID)objectIconTexture->GetTextureID(), ImVec2(35, 35));
@@ -1118,7 +1120,7 @@ void ObjectPropertiesDockPanel::DrawCharacterTab()
 		ActionSelectableInfo* newActionSelected = nullptr;
 
 		//if (toSequentialList)
-		newActionSelected = App->moduleManager->DrawActionDictionaryUI();
+		newActionSelected = App->moduleManager->DrawActionDictionaryUI(FILTER_ACTIONS_CHARACTER);
 		//else
 		//	newActionSelected = App->moduleManager->DrawActionDictionaryUI(FILTER_ACTIONS_FIXED);
 
@@ -1171,7 +1173,6 @@ void ObjectPropertiesDockPanel::DrawCharacterTab()
 			ImGui::PopStyleVar();
 			ImGui::CloseCurrentPopup();
 			ImGui::EndPopup();
-			ImGui::End();
 			return;
 		}
 

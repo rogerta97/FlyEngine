@@ -139,7 +139,6 @@ bool CharacterCreatorDockPanel::Draw()
 
 		DrawCharacterSequentialActionsUI();
 
-
 		ImGui::EndChild();
 		ImGui::PopStyleColor();
 

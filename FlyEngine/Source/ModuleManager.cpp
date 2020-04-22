@@ -122,8 +122,14 @@ ActionSelectableInfo* ModuleManager::DrawActionDictionaryUI(DictionaryPopupFilte
 	{
 		// Filter Actions from popup type 
 		// UI Button Filter
-		if (popupFilter == FILTER_ACTIONS_UI_BUTTON &&
+		if ((popupFilter == FILTER_ACTIONS_UI_BUTTON) &&
 			currentToolDescription.actionType == ACTION_DISPLAY_IMAGE)
+			continue;
+
+		if (popupFilter == FILTER_ACTIONS_CHARACTER &&
+			(currentToolDescription.actionType == ACTION_DISPLAY_IMAGE ||
+			 currentToolDescription.actionType == ACTION_DISPLAY_TEXT ||
+				currentToolDescription.actionType == ACTION_DISPLAY_ANIMATION))
 			continue;
 
 		// Inventory Filter
