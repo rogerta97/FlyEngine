@@ -5,7 +5,7 @@
 
 FlyObjectCharacter::FlyObjectCharacter(std::string objectName, std::string description, FlyObjectType _flyObjectType, Room* parentRoom) : FlyObject(objectName, description,  _flyObjectType, parentRoom)
 {
-	flyObjectType = OBJECT_SEQUENTIAL; 
+	flyObjectType = OBJECT_CHARACTER;
 }
 
 FlyObjectCharacter::FlyObjectCharacter()

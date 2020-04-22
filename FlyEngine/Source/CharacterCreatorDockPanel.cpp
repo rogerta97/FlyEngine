@@ -6,11 +6,14 @@
 #include "DisplayAnimationAction.h"
 #include "MyFileSystem.h"
 #include "DisplayImageAction.h"
+#include "Room.h"
+#include "GameViewportDockPanel.h"
 #include "FlyObject.h"
 
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "ModuleManager.h"
+#include "ModuleRoomManager.h"
 
 #include "mmgr.h"
 
@@ -57,15 +60,72 @@ bool CharacterCreatorDockPanel::Draw()
 		ImGui::SameLine();
 		ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 100);
 		ImGui::PushFont(App->moduleImGui->rudaBlackMid);
+
 		if (ImGui::Button("Create##CreateCharacter", ImVec2(100, 30)))
 		{
+			std::string newObjectNameStr(newObjectName);
+			if (newObjectNameStr.empty())
+			{
+				FLY_ERROR("Object with no name can not be created");
+				ImGui::PopFont();
+				ImGui::End();
+				return false;
+			}
+			else
+			{
+				ToggleVisibility();
+				//AddCharacterObject();
+				//if (creatingCharacterFO->IsInventoryItem() && creatingObject->GetAction(ACTION_DISPLAY_IMAGE) == nullptr)
+				//	creatingObject->AddDisplayImageAction();
 
+				//// Clickable Area
+				//if (clickableAreaActive)
+				//{
+				//	if (!creatingObject->HasVisuals())
+				//	{
+				//		creatingObject->CreateClickableArea(clickableAreaPosPerc, clickableAreaSizePerc, true);
+				//		creatingObject->drawClickableArea = true;
+				//	}
+				//	else
+				//	{
+				//		creatingObject->CreateClickableArea(clickableAreaPosPerc, clickableAreaSizePerc);
+				//		creatingObject->drawClickableArea = true;
+				//	}
+				//	creatingObject->clickableAreaActive = true;
+				//}
+
+				//creatingObject->SetClickableAreaPosOne(clickableAreaPosPerc);
+				//creatingObject->SetClickableAreaSizeOne(clickableAreaSizePerc);
+
+				// Add Object
+				creatingCharacterFO->SetName(newObjectName);
+				App->moduleRoomManager->GetSelectedRoom()->AddFlyObject(creatingCharacterFO);
+
+				App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(creatingCharacterFO);
+				App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GizmoMode::GIZMO_SELECT);
+				creatingCharacterFO->FitObjectUtils();
+
+				creatingCharacterFO->SetParentRoom(App->moduleRoomManager->GetSelectedRoom());
+
+				ImGui::PopFont();
+				ImGui::End();
+				return false;
+			}
 		}
 
 		ImGui::PopFont();
 
 		ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
 		IMGUI_SPACED_SEPARATOR;
+
+		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+		ImGui::InputTextWithHint("Name##ObjectNaming", "Name...", newObjectName, 256 * sizeof(char));
+		ImGui::PopFont();
+
+		ImGui::InputTextMultiline("Description##ObjectDescription", newObjectDescription, 256 * sizeof(char), ImVec2(ImGui::GetContentRegionMax().x - 100, 100));
+		
+		ImGui::Spacing();
+		ImGui::Separator();
 
 		DrawCharacterAnimationsUI();
 		
@@ -247,7 +307,7 @@ void CharacterCreatorDockPanel::DrawCharacterAnimationsUI()
 		creatingCharacterFO->GetIdleAnimation()->DrawUICharacterSettings("Animation Preview:");
 		ImGui::EndChild();
 		ImGui::PopFont(); 
-
+		ImGui::Indent(10);
 		ImGui::TreePop();
 	}
 
@@ -258,7 +318,7 @@ void CharacterCreatorDockPanel::DrawCharacterAnimationsUI()
 		ImGui::BeginChild("Walk Anims Child", ImVec2(ImGui::GetContentRegionAvail().x, 335));
 		creatingCharacterFO->GetWalkAnimation()->DrawUICharacterSettings("Animation Preview:");
 		ImGui::EndChild();
-
+		ImGui::Indent(10);
 		ImGui::PopFont();
 		ImGui::TreePop();
 	}
@@ -270,7 +330,7 @@ void CharacterCreatorDockPanel::DrawCharacterAnimationsUI()
 		ImGui::BeginChild("Talk Anims Child", ImVec2(ImGui::GetContentRegionAvail().x, 335));
 		creatingCharacterFO->GetTalkAnimation()->DrawUICharacterSettings("Animation Preview:");
 		ImGui::EndChild();
-
+		ImGui::Indent(10);
 		ImGui::PopFont();
 		ImGui::TreePop();
 	}

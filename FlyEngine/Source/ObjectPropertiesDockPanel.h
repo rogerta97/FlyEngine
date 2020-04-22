@@ -43,6 +43,7 @@ public:
 
 	// Object Tools Tab
 	void DrawObjectActionsTab();
+	void DrawCharacterTab();
 	void DrawObjectSequenceActionsTab();
 	void DrawActionSettings();
 

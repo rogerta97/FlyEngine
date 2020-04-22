@@ -15,6 +15,7 @@
 #include "DisplayImageAction.h"
 #include "DisplayTextAction.h"
 #include "DisplayAnimationAction.h"
+#include "FlyObjectCharacter.h"
 #include "RoomUIHandler.h"
 #include "AudioClip.h"
 #include "GameViewportDockPanel.h"
@@ -746,10 +747,12 @@ void ObjectPropertiesDockPanel::DrawObjectTabs()
 	{
 		if (ImGui::BeginTabItem("Actions"))
 		{
-			if(selectedObject->flyObjectType == FlyObjectType::OBJECT_SEQUENTIAL)
+			if (selectedObject->flyObjectType == FlyObjectType::OBJECT_SEQUENTIAL)
 				DrawObjectSequenceActionsTab();
-			else
+			else if (selectedObject->flyObjectType == FlyObjectType::ACTION_OBJECT)
 				DrawObjectActionsTab();
+			else if (selectedObject->flyObjectType == FlyObjectType::OBJECT_CHARACTER)
+				DrawCharacterTab(); 
 
 			ImGui::EndTabItem();
 		}
@@ -972,6 +975,52 @@ void ObjectPropertiesDockPanel::DrawObjectActionsTab()
 
 	// Draw Tool --------
 	DrawActionSettings();
+}
+
+void ObjectPropertiesDockPanel::DrawCharacterTab()
+{
+	FlyObjectCharacter* selectedCharacter = (FlyObjectCharacter*)selectedObject;
+
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	if (ImGui::TreeNode("Idle Animation"))
+	{
+		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+
+		ImGui::Indent(-10);
+		ImGui::BeginChild("Idle Anims Child", ImVec2(ImGui::GetContentRegionAvail().x, 335));
+		selectedCharacter->GetIdleAnimation()->DrawUICharacterSettings("Animation Preview:");
+		ImGui::EndChild();
+		ImGui::PopFont();
+		ImGui::Indent(10);
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNode("Walk Animation"))
+	{
+		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+		ImGui::Indent(-10);
+		ImGui::BeginChild("Walk Anims Child", ImVec2(ImGui::GetContentRegionAvail().x, 335));
+		selectedCharacter->GetWalkAnimation()->DrawUICharacterSettings("Animation Preview:");
+		ImGui::EndChild();
+		ImGui::Indent(10);
+		ImGui::PopFont();
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNode("Talk Animation"))
+	{
+		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
+		ImGui::Indent(-10);
+		ImGui::BeginChild("Talk Anims Child", ImVec2(ImGui::GetContentRegionAvail().x, 335));
+		selectedCharacter->GetTalkAnimation()->DrawUICharacterSettings("Animation Preview:");
+		ImGui::EndChild();
+		ImGui::Indent(10);
+		ImGui::PopFont();
+		ImGui::TreePop();
+	}
+
+	ImGui::PopFont();
+	ImGui::Separator();
 }
 
 void ObjectPropertiesDockPanel::DrawObjectSequenceActionsTab()

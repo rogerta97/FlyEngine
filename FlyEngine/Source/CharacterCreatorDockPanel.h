@@ -3,8 +3,8 @@
 
 #include "DockPanel.h"
 
-class FlyObjectCharacter; 
 class Action; 
+class FlyObjectCharacter; 
 class CharacterCreatorDockPanel : public DockPanel
 {
 public:
@@ -19,6 +19,9 @@ public:
 	void DrawCharacterAnimationsUI();
 
 private: 
+	char newObjectName[256];
+	char newObjectDescription[256];
+
 	FlyObjectCharacter* creatingCharacterFO; 
 	Action* selectedActionUI; 
 };
