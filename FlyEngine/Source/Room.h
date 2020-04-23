@@ -89,6 +89,7 @@ public:
 	FlyObject* CreateFlyObject(std::string objectName, std::string description = "");
 	FlyObject* CreateInventoryItem(std::string objectName, std::string description = "");
 	FlyObject* CreateFlyObjectSequencial(std::string objectName, std::string description = "");
+	FlyObject* CreateCharacter(std::string objectName, std::string description = "", bool init = false);
 	void AddFlyObject(FlyObject* newFlyObject);
 	void DeleteFlyObject(FlyObject* objectToDelete);
 	void DeleteFlyObjectFromList(FlyObject* objectToDelete);

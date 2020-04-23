@@ -30,7 +30,7 @@ CharacterCreatorDockPanel::~CharacterCreatorDockPanel()
 void CharacterCreatorDockPanel::ResetObjectData()
 {
 	flog("Object Data Reset");
-	//selectedAction = nullptr;
+	//selectedAction = nullptr
 	creatingCharacterFO = new FlyObjectCharacter("Prev");
 	creatingCharacterFO->InitCharacter();
 }
@@ -177,10 +177,7 @@ bool CharacterCreatorDockPanel::Draw()
 			// Tools Dictonary ----------
 			ActionSelectableInfo* newActionSelected = nullptr;
 
-			//if (toSequentialList)
-			newActionSelected = App->moduleManager->DrawActionDictionaryUI();
-			//else
-			//	newActionSelected = App->moduleManager->DrawActionDictionaryUI(FILTER_ACTIONS_FIXED);
+			newActionSelected = App->moduleManager->DrawActionDictionaryUI(FILTER_ACTIONS_CHARACTER);
 
 			if (newActionSelected != nullptr)
 			{
@@ -298,7 +295,7 @@ void CharacterCreatorDockPanel::DrawCharacterSequentialActionsUI()
 void CharacterCreatorDockPanel::DrawCharacterAnimationsUI()
 {
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	if (ImGui::TreeNode("Idle Animation"))
+	if (ImGui::CollapsingHeader("Idle Animation"))
 	{
 		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
 
@@ -308,10 +305,10 @@ void CharacterCreatorDockPanel::DrawCharacterAnimationsUI()
 		ImGui::EndChild();
 		ImGui::PopFont(); 
 		ImGui::Indent(10);
-		ImGui::TreePop();
+		//ImGui::TreePop();
 	}
 
-	if (ImGui::TreeNode("Walk Animation"))
+	if (ImGui::CollapsingHeader("Walk Animation"))
 	{
 		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
 		ImGui::Indent(-10);
@@ -320,10 +317,10 @@ void CharacterCreatorDockPanel::DrawCharacterAnimationsUI()
 		ImGui::EndChild();
 		ImGui::Indent(10);
 		ImGui::PopFont();
-		ImGui::TreePop();
+		//ImGui::TreePop();
 	}
 
-	if (ImGui::TreeNode("Talk Animation"))
+	if (ImGui::CollapsingHeader("Talk Animation"))
 	{
 		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
 		ImGui::Indent(-10);
@@ -332,7 +329,7 @@ void CharacterCreatorDockPanel::DrawCharacterAnimationsUI()
 		ImGui::EndChild();
 		ImGui::Indent(10);
 		ImGui::PopFont();
-		ImGui::TreePop();
+		//ImGui::TreePop();
 	}
 
 	ImGui::PopFont(); 

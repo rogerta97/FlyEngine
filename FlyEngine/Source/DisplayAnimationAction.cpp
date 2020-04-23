@@ -24,11 +24,6 @@ DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject)
 
 	animation = new Animation(); 
 	currentFrame = -1; 
-	//if (displayImageAttached != nullptr)
-	//	screenImageAction = displayImageAttached; 
-	//else
-	//screenImageAction = parentObject->AddDisplayImageAction(); 
-	//screenImageAction->fromAnimation = true; 
 }
 
 DisplayAnimationAction::~DisplayAnimationAction()
@@ -253,7 +248,6 @@ void DisplayAnimationAction::SaveAction(JSON_Object* jsonObject, string serializ
 			count++; 
 		}	
 	}
-
 }
 
 void DisplayAnimationAction::DrawUISettings()
@@ -268,20 +262,6 @@ void DisplayAnimationAction::DrawUISettings()
 		DrawActionOccurenceCheckboxes();
 
 		ImGui::Separator();
-
-		ImGui::PushFont(App->moduleImGui->rudaBlackMid);
-		ImGui::Text("Frames Amount:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.43137f, 0.56863f, 0.80392f, 1.0f), "%d", framesAmount);
-		ImGui::PopFont();
-
-		ImGui::PushFont(App->moduleImGui->rudaBlackMid);
-		ImGui::Text("Current Frame:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.43137f, 0.56863f, 0.80392f, 1.0f), "%d", currentFrame);
-		ImGui::PopFont();
-
-		ImGui::Spacing();
-		ImGui::Separator();
-		ImGui::Spacing(); 
 
 		float squareSize = 250;
 		ImGui::Columns(2);
@@ -321,15 +301,16 @@ void DisplayAnimationAction::DrawAddFramePopup()
 	{
 		static int currentSelection = 0;
 
-		Texture* iconTexture = 0; 
-		if (currentSelection == 0)
-			iconTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageIcon"); 
-		else if (currentSelection == 1)
-			iconTexture = (Texture*)ResourceManager::getInstance()->GetResource("FolderIcon");
+		//static Texture* iconTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageIcon");
 
-		ImGui::Image(0, ImVec2(23, 23));
-		ImGui::SameLine(); 
+		//ImGui::Image((ImTextureID)iconTexture->GetTextureID(), ImVec2(23, 23), ImVec2(1,0), ImVec2(0, 1));
+//		ImGui::SameLine(); 
 		ImGui::Combo("##LoadFrameType", &currentSelection, "Load Image\0Load Folder");
+
+		//if (currentSelection == 0)
+		//	iconTexture = (Texture*)ResourceManager::getInstance()->GetResource("ImageIcon"); 
+		//else if (currentSelection == 1)
+		//	iconTexture = (Texture*)ResourceManager::getInstance()->GetResource("FolderIcon");
 
 		string hint = "";
 		if (ImGui::Button("Search##SearchAnimFrame"))
@@ -378,7 +359,7 @@ void DisplayAnimationAction::DrawAddFramePopup()
 				animation->AddFrame(newFrameTexture);
 				currentFrame = animation->GetFramesAmount() - 1;
 
-				if(screenImageAction != nullptr && !isSequential)
+				if(screenImageAction != nullptr && !isSequential && canChangeCanvas)
 					screenImageAction->SetTexture(newFrameTexture);
 
 				ImGui::CloseCurrentPopup();
@@ -488,22 +469,24 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize, string p
 	PUSH_CHILD_BG_COLOR;
 	ImGui::BeginChild("AnimationPreview", ImVec2(squareSize, 175));
 
+	Texture* frameTexture = nullptr;
+
+	if (animation->GetFramesAmount() <= 0)
+		frameTexture = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject");
+
 	if (currentFrame != -1)
 	{
-		Texture* frameTexture; 
-
-		if(App->isEngineInPlayMode)
-			frameTexture = animation->GetFrameByPos(0); 
+		if (App->isEngineInPlayMode)
+			frameTexture = animation->GetFrameByPos(0);
 		else
-			frameTexture = animation->GetFrameByPos(currentFrame); 
-
-		App->moduleManager->DrawImageFitInCenter(frameTexture);
+			frameTexture = animation->GetFrameByPos(currentFrame);
 	}
-	
+
+	App->moduleManager->DrawImageFitInCenter(frameTexture);
+
 	ImGui::EndChild();
 	ImGui::PopStyleColor();
 
-	//flog("%f", App->GetDeltaTime());
 
 	// Frame Controls
 	ImVec2 centerControlls = ImVec2(ImGui::GetContentRegionAvail().x / 2, 30);
@@ -525,7 +508,7 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize, string p
 
 
 	Texture* previewFrame = (Texture*)ResourceManager::getInstance()->GetResource("PreviewFrameIcon");
-	ImGui::SetCursorPos(ImVec2(centerControlls.x - 25 - 20 - 25, centerControlls.y - 25));
+	ImGui::SetCursorPos(ImVec2(centerControlls.x - 80, centerControlls.y - 25));
 	if (ImGui::ImageButton((ImTextureID)previewFrame->GetTextureID(), ImVec2(25, 25)))
 	{
 		
@@ -533,7 +516,7 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize, string p
 
 	INC_CURSOR_4;
 	ImGui::SameLine();
-	ImGui::SetCursorPos(ImVec2(centerControlls.x - 25, centerControlls.y - 25));
+	ImGui::SetCursorPos(ImVec2(centerControlls.x - 35, centerControlls.y - 25));
 	if (ImGui::ImageButton(playPauseIconID, ImVec2(25, 25)))
 	{
 		if (animationState == ANIMATION_STOP)
@@ -549,7 +532,7 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize, string p
 
 	ImGui::SameLine();
 	Texture* nextFrame = (Texture*)ResourceManager::getInstance()->GetResource("NextFrameIcon");
-	ImGui::SetCursorPos(ImVec2(centerControlls.x + 20, centerControlls.y - 25));
+	ImGui::SetCursorPos(ImVec2(centerControlls.x + 10, centerControlls.y - 25));
 	if (ImGui::ImageButton((ImTextureID)nextFrame->GetTextureID(), ImVec2(25, 25)))
 	{
 
@@ -558,8 +541,13 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize, string p
 	ImGui::SameLine();
 	ImGui::PushFont(App->moduleImGui->rudaBlackHuge);
 
+	int displayCurrentFrame = currentFrame + 1; 
+
+	if (currentFrame == -1)
+		displayCurrentFrame = 0; 
+
 	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 7, ImGui::GetCursorPosY() + 2));
-	ImGui::TextColored(ImVec4(0.43137f, 0.56863f, 0.80392f, 1.0f), "%d/%d", currentFrame, animation->GetFramesAmount());
+	ImGui::TextColored(ImVec4(0.43137f, 0.56863f, 0.80392f, 1.0f), "%d/%d", displayCurrentFrame, animation->GetFramesAmount());
 	ImGui::PopFont();
 
 	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() +-7, ImGui::GetCursorPosY() + -2));

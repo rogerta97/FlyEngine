@@ -216,9 +216,9 @@ Resource* ResourceManager::PrintImagesSelectionPopup()
 			if (currentResource->GetType() != ResourceType::RESOURCE_TEXTURE)
 				continue;
 
-			Texture* imageIcon = (Texture*)ResourceManager::getInstance()->GetResource("ImageIcon");
+			Texture* imageIcon = (Texture*)currentResource;
 
-			ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30));
 			ImGui::SameLine();
 
 			if (ImGui::Selectable(currentResource->GetName().c_str(), false, 0, ImVec2(ImGui::GetContentRegionAvail().x, 25)))

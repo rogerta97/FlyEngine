@@ -14,6 +14,8 @@ public:
 	FlyObjectCharacter(std::string objectName, std::string description = "", FlyObjectType _flyObjectType = ACTION_OBJECT, Room* parentRoom = nullptr);
 	FlyObjectCharacter();
 
+	void SaveObjectData(JSON_Object* jsonObject, int objectIndex);
+
 	void InitCharacter(); 
 
 	DisplayAnimationAction* GetWalkAnimation();

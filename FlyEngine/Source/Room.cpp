@@ -13,6 +13,7 @@
 #include "ModuleImGui.h"
 #include "MusicTrack.h"
 #include "TextureMSAA.h"
+#include "FlyObjectCharacter.h"
 #include "FlyVariable.h"
 #include "ObjectPropertiesDockPanel.h"
 #include "ModuleRoomManager.h"
@@ -405,6 +406,18 @@ FlyObject* Room::CreateFlyObject(std::string objectName, std::string description
 	objectsInRoom.push_back(newObject); 
 	flog("New Object");
 	return newObject; 
+}
+
+FlyObject* Room::CreateCharacter(std::string objectName, std::string description, bool init)
+{
+	FlyObjectCharacter* newObject = new FlyObjectCharacter(objectName, description, OBJECT_CHARACTER, this);
+	objectsInRoom.push_back(newObject);
+	flog("New Object");
+
+	if (init)
+		newObject->InitCharacter(); 
+
+	return newObject;
 }
 
 FlyObject* Room::CreateInventoryItem(std::string objectName, std::string description)

@@ -64,6 +64,8 @@ public:
 	AnimationState animationState = ANIMATION_STOP;
 	AnimationPlayMode animPlayMode = ANIMATION_LOOP; 
 
+	bool canChangeCanvas = true; 
+
 private:
 
 	bool isDedicatedImage = false; 

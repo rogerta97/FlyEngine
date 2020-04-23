@@ -127,6 +127,8 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		newObject = currentRoom->CreateFlyObject(newObjectName.c_str());
 	else if (flyObjectType == OBJECT_SEQUENTIAL)
 		newObject = currentRoom->CreateFlyObjectSequencial(newObjectName.c_str());
+	else if (flyObjectType == OBJECT_CHARACTER)
+		newObject = currentRoom->CreateCharacter(newObjectName.c_str(), "", true);
 	
 	// UID --
 	newObject->SetUID(json_object_dotget_number(root_obj, string(serializeObjectStr + string("UID")).c_str())); 

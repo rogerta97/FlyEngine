@@ -1,6 +1,6 @@
 {
   "RoomData": {
-    "ObjectsAmount": 2,
+    "ObjectsAmount": 3,
     "Name": "Game",
     "UID": 8315004,
     "Objects": {
@@ -65,10 +65,58 @@
         }
       },
       "FlyObject_1": {
-        "Name": "dialoguetest",
-        "UID": 307314,
+        "Name": "D",
+        "UID": 5367485,
         "Interactable": true,
-        "ObjectType": 0,
+        "ObjectType": 3,
+        "CharacterAnimations": {
+          "IdleAnimation": {
+            "Name": "Display Animation",
+            "ActionType": 5,
+            "ActionClass": 0,
+            "Conditions": { "ConditionsAmount": 0 },
+            "Occurrence": {
+              "SceneEnter": false,
+              "SceneLeave": false,
+              "ObjectClicked": false,
+              "BlackboardCondition": false
+            },
+            "FramesAmount": 1,
+            "PlayMode": 0,
+            "Speed": 1,
+            "Frames": { "Frame_0": { "TextureName": "BackButton" } }
+          },
+          "WalkAnimation": {
+            "Name": "Display Animation",
+            "ActionType": 5,
+            "ActionClass": 0,
+            "Conditions": { "ConditionsAmount": 0 },
+            "Occurrence": {
+              "SceneEnter": false,
+              "SceneLeave": false,
+              "ObjectClicked": false,
+              "BlackboardCondition": false
+            },
+            "FramesAmount": 0,
+            "PlayMode": 0,
+            "Speed": 1
+          },
+          "TalkAnimation": {
+            "Name": "Display Animation",
+            "ActionType": 5,
+            "ActionClass": 0,
+            "Conditions": { "ConditionsAmount": 0 },
+            "Occurrence": {
+              "SceneEnter": false,
+              "SceneLeave": false,
+              "ObjectClicked": false,
+              "BlackboardCondition": false
+            },
+            "FramesAmount": 0,
+            "PlayMode": 0,
+            "Speed": 1
+          }
+        },
         "Transform": {
           "Position": {
             "x": 0,
@@ -86,8 +134,77 @@
         "Actions": {
           "ActionsAmount": 1,
           "Action_0": {
-            "Name": "Dialog",
-            "ActionType": 7,
+            "Name": "Display Image",
+            "ActionType": 0,
+            "ActionClass": 0,
+            "Conditions": { "ConditionsAmount": 0 },
+            "ImageWidth": 512,
+            "ImageHeigth": 512,
+            "TextureName": "BackButton.png"
+          }
+        },
+        "SequentialActions": { "ActionsAmount": 0 },
+        "ClickableArea": {
+          "Active": false,
+          "Draw": false,
+          "DirectPosition": false,
+          "Color": {
+            "r": 1,
+            "g": 0.80000001192092896,
+            "b": 0.80000001192092896,
+            "a": 0.40000000596046448
+          },
+          "MinPoint": {
+            "x": -100,
+            "y": -100
+          },
+          "MaxPoint": {
+            "x": -100,
+            "y": -100
+          },
+          "PosPerc": {
+            "x": 0,
+            "y": 0
+          },
+          "SizePerc": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      },
+      "FlyObject_2": {
+        "Name": "fs",
+        "UID": 7010690,
+        "Interactable": true,
+        "ObjectType": 0,
+        "Transform": {
+          "Position": {
+            "x": 0,
+            "y": 0
+          },
+          "Rotation": {
+            "x": 0,
+            "y": 0
+          },
+          "Scale": {
+            "x": 1,
+            "y": 1
+          }
+        },
+        "Actions": {
+          "ActionsAmount": 2,
+          "Action_0": {
+            "Name": "Display Image",
+            "ActionType": 0,
+            "ActionClass": 0,
+            "Conditions": { "ConditionsAmount": 0 },
+            "ImageWidth": 512,
+            "ImageHeigth": 512,
+            "TextureName": "EmptyObject.png"
+          },
+          "Action_1": {
+            "Name": "Follow Path",
+            "ActionType": 6,
             "ActionClass": 0,
             "Conditions": { "ConditionsAmount": 0 },
             "Occurrence": {
@@ -96,119 +213,34 @@
               "ObjectClicked": false,
               "BlackboardCondition": false
             },
-            "NodeGraphID": 3422246,
-            "Steps": {
-              "StepsAmount": 2,
-              "Step_0": {
-                "Name": "Name",
-                "Text": "This Is a Sentence",
-                "StepID": 6777173,
-                "First": true,
-                "Visuals": {
-                  "FontName": "None",
-                  "BackgroundColor": {
-                    "r": 0,
-                    "g": 0,
-                    "b": 0,
-                    "a": 1
-                  },
-                  "FontColor": {
-                    "r": 1,
-                    "g": 1,
-                    "b": 1,
-                    "a": 1
-                  }
-                },
-                "Answers": {
-                  "AnswersAmount": 1,
-                  "Visuals": {
-                    "FontName": "None",
-                    "BackgroundColor": {
-                      "r": 0,
-                      "g": 0,
-                      "b": 0,
-                      "a": 1
-                    },
-                    "FontColor": {
-                      "r": 1,
-                      "g": 1,
-                      "b": 1,
-                      "a": 1
-                    }
-                  },
-                  "Answer_0": {
-                    "Name": "Answer Name",
-                    "Text": "Answer Text",
-                    "AnswerUID": 6351925,
-                    "Link": {
-                      "LinkUID": 0,
-                      "startPinUID": 6351925,
-                      "endPinUID": 7141855
-                    },
-                    "DestinationStepUID": 7141854,
-                    "CallbackActions": {
-                      "HasCallbackActions": true,
-                      "Name": "Modify Variable",
-                      "ActionType": 2,
-                      "ActionClass": 0,
-                      "Conditions": { "ConditionsAmount": 0 },
-                      "Occurrence": {
-                        "SceneEnter": false,
-                        "SceneLeave": false,
-                        "ObjectClicked": false,
-                        "BlackboardCondition": false
-                      },
-                      "EffectsAmount": 1,
-                      "EffectsGroup": {
-                        "Effect_0": {
-                          "TargetVariableName": "test",
-                          "OperatorType": 0,
-                          "IncIntegerValue": 1,
-                          "NextToggleValue": false
-                        }
-                      }
-                    }
-                  }
-                }
+            "PlayMode": 0,
+            "IsSpeedConstant": false,
+            "ConstantSpeed": 0,
+            "Visuals": {
+              "LineColor": {
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 1
               },
-              "Step_1": {
-                "Name": "New Step Name",
-                "Text": "New Step Sentence",
-                "StepID": 7141854,
-                "First": false,
-                "Visuals": {
-                  "FontName": "None",
-                  "BackgroundColor": {
-                    "r": 0,
-                    "g": 0,
-                    "b": 0,
-                    "a": 1
-                  },
-                  "FontColor": {
-                    "r": 1,
-                    "g": 1,
-                    "b": 1,
-                    "a": 1
-                  }
-                },
-                "Answers": {
-                  "AnswersAmount": 0,
-                  "Visuals": {
-                    "FontName": "None",
-                    "BackgroundColor": {
-                      "r": 0,
-                      "g": 0,
-                      "b": 0,
-                      "a": 1
-                    },
-                    "FontColor": {
-                      "r": 1,
-                      "g": 1,
-                      "b": 1,
-                      "a": 1
-                    }
-                  }
-                }
+              "BoxColor": {
+                "r": 0,
+                "g": 1,
+                "b": 0,
+                "a": 1
+              },
+              "StartBoxColor": {
+                "r": 1,
+                "g": 0,
+                "b": 0,
+                "a": 1
+              }
+            },
+            "PathSteps": {
+              "StepsAmount": 0,
+              "StartPosition": {
+                "x": 0,
+                "y": 0
               }
             }
           }
@@ -217,7 +249,7 @@
         "ClickableArea": {
           "Active": false,
           "Draw": false,
-          "DirectPosition": true,
+          "DirectPosition": false,
           "Color": {
             "r": 1,
             "g": 0.80000001192092896,
@@ -225,12 +257,12 @@
             "a": 0.40000000596046448
           },
           "MinPoint": {
-            "x": -1,
-            "y": 1
+            "x": -100,
+            "y": 100
           },
           "MaxPoint": {
-            "x": 1,
-            "y": -1
+            "x": 100,
+            "y": -100
           },
           "PosPerc": {
             "x": 0,
@@ -244,4 +276,5 @@
       }
     },
     "UserInterface": { "ElementsAmount": 0 }
-  }}
+  }
+}
