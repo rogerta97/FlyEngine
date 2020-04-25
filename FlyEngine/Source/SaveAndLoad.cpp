@@ -10,6 +10,7 @@
 #include "DialogueAction.h"
 #include "ResourceManager.h"
 #include "GameViewportDockPanel.h"
+#include "FlyObjectCharacter.h"
 #include "ModuleImGui.h"
 #include "RoomUIHandler.h"
 #include "Animation.h"
@@ -159,8 +160,102 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 	float2 scale(scaleX, scaleY);
 	newObject->transform->SetScale(scale);
 
+	// Load Animations in case the object is a character 
+	if (newObject->flyObjectType == OBJECT_CHARACTER)
+	{
+		FlyObjectCharacter* characterFO = (FlyObjectCharacter*)newObject; 
+		characterFO->InitCharacter(); 
+
+		// Load Idle Animation ---------------------------------------------------------------------------
+		characterFO->GetIdleAnimation()->SetIsSequencial(false);
+		characterFO->GetIdleAnimation()->SetActionClass((ActionClass)ActionClass::ACTION_CLASS_DIRECT);
+
+		string idleAnimStr = serializeObjectStr + "CharacterAnimations.IdleAnimation.";
+		int idleFramesAmount = json_object_dotget_number(root_obj, string(idleAnimStr + "FramesAmount").c_str());
+
+		if (idleFramesAmount > 0)
+		{
+			int playModeTmp = json_object_dotget_number(root_obj, string(idleFramesAmount + "PlayMode").c_str());
+			characterFO->GetIdleAnimation()->animPlayMode = (AnimationPlayMode)playModeTmp;
+
+			characterFO->GetIdleAnimation()->GetAnimation()->SetSpeed(json_object_dotget_number(root_obj, string(idleAnimStr + "Speed").c_str()));
+
+			int count = 0;
+			while (count < idleFramesAmount)
+			{
+				string frameStr = idleAnimStr + "Frames.Frame_" + to_string(count);
+
+				string textureName = json_object_dotget_string(root_obj, string(frameStr + ".TextureName").c_str());
+				Texture* frameTexture = (Texture*)ResourceManager::getInstance()->GetResource(textureName);
+
+				if (frameTexture)
+					characterFO->GetIdleAnimation()->AddFrame(frameTexture);
+
+				count++;
+			}
+		}
+
+		// Load Walk Animation ---------------------------------------------------------------------------
+		characterFO->GetWalkAnimation()->SetIsSequencial(false);
+		characterFO->GetWalkAnimation()->SetActionClass((ActionClass)ActionClass::ACTION_CLASS_DIRECT);
+
+		string walkAnimStr = serializeObjectStr + "CharacterAnimations.WalkAnimation.";
+		int walkFramesAmount = json_object_dotget_number(root_obj, string(walkAnimStr + "FramesAmount").c_str());
+
+		if (walkFramesAmount > 0)
+		{
+			int playModeTmp = json_object_dotget_number(root_obj, string(walkFramesAmount + "PlayMode").c_str());
+			characterFO->GetWalkAnimation()->animPlayMode = (AnimationPlayMode)playModeTmp;
+
+			characterFO->GetWalkAnimation()->GetAnimation()->SetSpeed(json_object_dotget_number(root_obj, string(walkAnimStr + "Speed").c_str()));
+
+			int count = 0;
+			while (count < walkFramesAmount)
+			{
+				string frameStr = walkAnimStr + "Frames.Frame_" + to_string(count);
+
+				string textureName = json_object_dotget_string(root_obj, string(frameStr + ".TextureName").c_str());
+				Texture* frameTexture = (Texture*)ResourceManager::getInstance()->GetResource(textureName);
+
+				if (frameTexture)
+					characterFO->GetWalkAnimation()->AddFrame(frameTexture);
+
+				count++;
+			}
+		}
+
+		// Load Talk Animation ---------------------------------------------------------------------------
+		characterFO->GetTalkAnimation()->SetIsSequencial(false);
+		characterFO->GetTalkAnimation()->SetActionClass((ActionClass)ActionClass::ACTION_CLASS_DIRECT);
+
+		string talkAnimStr = serializeObjectStr + "CharacterAnimations.TalkAnimation.";
+		int talkFramesAmount = json_object_dotget_number(root_obj, string(talkAnimStr + "FramesAmount").c_str());
+
+		if (talkFramesAmount > 0)
+		{
+			int playModeTmp = json_object_dotget_number(root_obj, string(talkFramesAmount + "PlayMode").c_str());
+			characterFO->GetTalkAnimation()->animPlayMode = (AnimationPlayMode)playModeTmp;
+
+			characterFO->GetTalkAnimation()->GetAnimation()->SetSpeed(json_object_dotget_number(root_obj, string(talkAnimStr + "Speed").c_str()));
+
+			int count = 0;
+			while (count < talkFramesAmount)
+			{
+				string frameStr = talkAnimStr + "Frames.Frame_" + to_string(count);
+
+				string textureName = json_object_dotget_string(root_obj, string(frameStr + ".TextureName").c_str());
+				Texture* frameTexture = (Texture*)ResourceManager::getInstance()->GetResource(textureName);
+
+				if (frameTexture)
+					characterFO->GetTalkAnimation()->AddFrame(frameTexture);
+
+				count++;
+			}
+		}
+	}
+
 	// Create Actions -------
-	if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("Actions")).c_str()))
+	else if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("Actions")).c_str()))
 	{
 		string serializeObjectStrActions = serializeObjectStr + "Actions.";
 		int actionsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ActionsAmount")).c_str());

@@ -214,7 +214,7 @@ void DisplayAnimationAction::AddFrame(Texture* newFrame)
 	animation->AddFrame(newFrame);
 	currentFrame = animation->GetFramesAmount() - 1;
 
-	if(!isHolderInfo)
+	if(!isHolderInfo && canChangeCanvas)
 		screenImageAction->SetTexture(newFrame);
 }
 
