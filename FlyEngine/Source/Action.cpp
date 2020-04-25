@@ -58,6 +58,10 @@ void Action::CleanUp()
 	}
 }
 
+void Action::OnSceneEnter()
+{
+}
+
 void Action::DrawUISettings()
 {
 }

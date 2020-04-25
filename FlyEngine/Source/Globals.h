@@ -17,7 +17,8 @@ enum FlyEngineEvent
 {
 	WINDOW_RESIZED, 
 	ENGINE_PLAY, 
-	ENGINE_STOP, 
+	ENGINE_STOP,
+	ENTER_ROOM,
 };
 
 enum FileExtension

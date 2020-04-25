@@ -35,7 +35,8 @@ public:
 	FlyObject();
 	~FlyObject(); 
 
-	bool Update(float dt);
+	virtual bool Update(float dt);
+	virtual void OnSceneEnter(); 
 
 	void Draw();
 	void CleanUp(); 
@@ -162,6 +163,7 @@ protected:
 	UID uid; 
 	bool hasVisuals;
 	bool isInteractable; 
+	bool sequentialSwapedTick; 
 
 	// Fly Object Fixed Actions
 	std::list<Action*> sequentialActionsList;

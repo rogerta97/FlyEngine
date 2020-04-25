@@ -65,6 +65,8 @@ public:
 	virtual void Draw();
 	virtual void CleanUp();
 
+	virtual void OnSceneEnter(); 
+
 	virtual void DrawUISettings(); 
 	virtual void DrawUISettingsSequential(); 
 	virtual void DrawUISettingsInButton(); 

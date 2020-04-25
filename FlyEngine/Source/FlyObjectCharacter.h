@@ -5,6 +5,13 @@
 
 #include <string>
 
+enum CharacterMode
+{
+	CHARACTER_IDLE,
+	CHARACTER_MOVE, 
+	CHARACTER_TALK
+};
+
 class Room;
 class Animation; 
 class DisplayAnimationAction; 
@@ -14,9 +21,13 @@ public:
 	FlyObjectCharacter(std::string objectName, std::string description = "", FlyObjectType _flyObjectType = ACTION_OBJECT, Room* parentRoom = nullptr);
 	FlyObjectCharacter();
 
+	bool Update(float dt);
+
 	void SaveObjectData(JSON_Object* jsonObject, int objectIndex);
 
 	void InitCharacter(); 
+	void PlayCharacterAnimation(CharacterMode characterMode); 
+	void OnSceneEnter();
 
 	DisplayAnimationAction* GetWalkAnimation();
 	DisplayAnimationAction* GetIdleAnimation();
@@ -25,7 +36,10 @@ public:
 	~FlyObjectCharacter();
 
 private: 
-	DisplayAnimationAction* walkAnimation;
+	DisplayAnimationAction* playingAnimation;
+	CharacterMode characterMode; 
+
+	DisplayAnimationAction* moveAnimation;
 	DisplayAnimationAction* idleAnimation;
 	DisplayAnimationAction* talkAnimation;
 };

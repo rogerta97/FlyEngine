@@ -44,6 +44,7 @@ FlyObject::FlyObject(std::string _name, std::string _description, FlyObjectType 
 	flyObjectType = _flyObjectType; 
 	parentRoom = _parentRoom; 
 	currentSequentialAction = nullptr; 
+	sequentialSwapedTick = false; 
 
 	clickableArea = new BoundingBox(); 
 	clickableAreaPosPerc = float2(0, 0); 
@@ -90,12 +91,8 @@ bool FlyObject::Update(float dt)
 		currentAction->Update(dt);
 	}
 
-	//for (auto& currentAction : sequentialActionsList)
-	//{
-	//	currentAction->Update(dt);
-	//}
-
 	// Update Sequential Action If Necessary ----------
+	sequentialSwapedTick = false; 
 	if (currentSequentialAction != nullptr)
 	{
 		if (currentSequentialAction->IsActionFinished())
@@ -126,6 +123,7 @@ bool FlyObject::Update(float dt)
 					{
 						currentSequentialAction->StopAction();
 						currentSequentialAction = *std::next(currentSequential);
+						sequentialSwapedTick = true; 
 						break;
 					}
 					else
@@ -179,11 +177,26 @@ bool FlyObject::Update(float dt)
 					currentSequentialAction = sequentialActionsList.front(); 
 				}
 				break;
+
+			case OBJECT_CHARACTER:
+				if (currentSequentialAction == nullptr && !sequentialActionsList.empty())
+				{
+					currentSequentialAction = sequentialActionsList.front();
+				}
+				break;
 			}
 		}
 	}
 
 	return ret; 
+}
+
+void FlyObject::OnSceneEnter()
+{
+	for (auto& currentAction : actionsList)
+	{
+		currentAction->OnSceneEnter();
+	}
 }
 
 void FlyObject::DoOnMouseOverActions()

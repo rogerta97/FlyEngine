@@ -4,13 +4,37 @@
 #include "DisplayImageAction.h"
 #include "Room.h"
 
+#include "Application.h"
+#include "ModuleInput.h"
+
 FlyObjectCharacter::FlyObjectCharacter(std::string objectName, std::string description, FlyObjectType _flyObjectType, Room* parentRoom) : FlyObject(objectName, description,  _flyObjectType, parentRoom)
 {
 	flyObjectType = OBJECT_CHARACTER;
+	characterMode = CHARACTER_IDLE; 
+	playingAnimation = nullptr; 
 }
 
 FlyObjectCharacter::FlyObjectCharacter()
 {
+
+}
+
+bool FlyObjectCharacter::Update(float dt)
+{
+	FlyObject::Update(dt); 
+
+	if (flyObjectType == OBJECT_CHARACTER && sequentialSwapedTick)
+	{
+		if(currentSequentialAction->GetType() == ACTION_DISPLAY_ANIMATION || App->moduleInput->GetKey(SDL_SCANCODE_2))
+			PlayCharacterAnimation(CharacterMode::CHARACTER_MOVE); 
+		else if (currentSequentialAction->GetType() == ACTION_DIALOGUE || App->moduleInput->GetKey(SDL_SCANCODE_3))
+			PlayCharacterAnimation(CharacterMode::CHARACTER_TALK);
+	}
+
+	if (App->isEngineInPlayMode && playingAnimation != nullptr)	
+		playingAnimation->Update(dt); 
+	
+	return true;
 }
 
 void FlyObjectCharacter::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
@@ -29,7 +53,7 @@ void FlyObjectCharacter::SaveObjectData(JSON_Object* jsonObject, int objectIndex
 		idleAnimation->SaveAction(jsonObject, saveCharacterAnimStr.c_str(), true); 
 
 		saveCharacterAnimStr = serializeObjectName + "CharacterAnimations.WalkAnimation.";
-		walkAnimation->SaveAction(jsonObject, saveCharacterAnimStr.c_str(), true);
+		moveAnimation->SaveAction(jsonObject, saveCharacterAnimStr.c_str(), true);
 
 		saveCharacterAnimStr = serializeObjectName + "CharacterAnimations.TalkAnimation.";
 		talkAnimation->SaveAction(jsonObject, saveCharacterAnimStr.c_str(), true);
@@ -81,9 +105,9 @@ void FlyObjectCharacter::InitCharacter()
 		idleAnimation->AttachToImage(fixedImageAction);
 
 	// Walk Animation -------------------------------------
-	walkAnimation = new DisplayAnimationAction(this);
-	walkAnimation->SetIsSequencial(false);
-	walkAnimation->canChangeCanvas = false; 
+	moveAnimation = new DisplayAnimationAction(this);
+	moveAnimation->SetIsSequencial(false);
+	moveAnimation->canChangeCanvas = false; 
 
 	if (fixedImageAction == nullptr)
 		fixedImageAction = AddDisplayImageAction("Null", false);
@@ -91,7 +115,7 @@ void FlyObjectCharacter::InitCharacter()
 	fixedImageAction->fromAnimation = true;
 
 	if (fixedImageAction != nullptr)
-		walkAnimation->AttachToImage(fixedImageAction);
+		moveAnimation->AttachToImage(fixedImageAction);
 
 	// Talk Animation -------------------------------------
 	talkAnimation = new DisplayAnimationAction(this);
@@ -105,11 +129,42 @@ void FlyObjectCharacter::InitCharacter()
 
 	if (fixedImageAction != nullptr)
 		talkAnimation->AttachToImage(fixedImageAction);
+
+	// Assign idle playing animation by deafault
+	playingAnimation = idleAnimation; 
+}
+
+void FlyObjectCharacter::PlayCharacterAnimation(CharacterMode characterMode)
+{
+	if (playingAnimation != nullptr)
+		playingAnimation->Stop();
+
+	switch (characterMode)
+	{
+	case CHARACTER_IDLE:
+		playingAnimation = idleAnimation;
+		break;
+	case CHARACTER_MOVE:
+		playingAnimation = moveAnimation;
+		break;
+	case CHARACTER_TALK:
+		playingAnimation = talkAnimation;
+		break;
+	}
+
+	if (playingAnimation != nullptr)
+		playingAnimation->Play(); 
+}
+
+void FlyObjectCharacter::OnSceneEnter()
+{
+	// Play Idle Anim by Def
+	PlayCharacterAnimation(CHARACTER_IDLE); 
 }
 
 DisplayAnimationAction* FlyObjectCharacter::GetWalkAnimation()
 {
-	return walkAnimation;
+	return moveAnimation;
 }
 
 DisplayAnimationAction* FlyObjectCharacter::GetIdleAnimation()

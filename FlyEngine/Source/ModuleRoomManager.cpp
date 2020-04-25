@@ -105,6 +105,18 @@ void ModuleRoomManager::ReceiveEvent(FlyEngineEvent eventType)
 		}
 
 		break; 
+
+	case FlyEngineEvent::ENTER_ROOM:
+
+		if (App->flySection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && App->isEngineInPlayMode && GetSelectedRoom() != nullptr)
+		{
+			for (auto& currentObject : GetSelectedRoom()->objectsInRoom)
+			{
+				currentObject->OnSceneEnter(); 
+			}
+		}
+
+		break;
 	}
 }
 
@@ -264,6 +276,7 @@ void ModuleRoomManager::SetSelectedRoom(Room* nextSelectedRoom)
 {
 	if (nextSelectedRoom != nullptr) {
 		selectedRoom = nextSelectedRoom;
+		App->BroadCastEvent(FlyEngineEvent::ENTER_ROOM);
 		//NodeGraph::getInstance()->SelectNode(nextSelectedRoom->GetName());
 	}
 }
