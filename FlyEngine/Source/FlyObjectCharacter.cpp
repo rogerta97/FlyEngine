@@ -25,10 +25,12 @@ bool FlyObjectCharacter::Update(float dt)
 
 	if (flyObjectType == OBJECT_CHARACTER && sequentialSwapedTick)
 	{
-		if(currentSequentialAction->GetType() == ACTION_DISPLAY_ANIMATION || App->moduleInput->GetKey(SDL_SCANCODE_2))
+		if(currentSequentialAction != nullptr && currentSequentialAction->GetType() == ACTION_FOLLOW_PATH || App->moduleInput->GetKey(SDL_SCANCODE_2))
 			PlayCharacterAnimation(CharacterMode::CHARACTER_MOVE); 
-		else if (currentSequentialAction->GetType() == ACTION_DIALOGUE || App->moduleInput->GetKey(SDL_SCANCODE_3))
+		else if (currentSequentialAction != nullptr  && currentSequentialAction->GetType() == ACTION_DIALOGUE || App->moduleInput->GetKey(SDL_SCANCODE_3))
 			PlayCharacterAnimation(CharacterMode::CHARACTER_TALK);
+		else
+			PlayCharacterAnimation(CharacterMode::CHARACTER_IDLE);
 	}
 
 	if (App->isEngineInPlayMode && playingAnimation != nullptr)	

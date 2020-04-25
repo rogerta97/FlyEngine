@@ -384,7 +384,7 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "ActionClass").c_str());
 	DialogueAction* dialogueAction = nullptr;
 
-	if (actionClass == ACTION_CLASS_SEQUENTIAL && newObject->flyObjectType == FlyObjectType::OBJECT_SEQUENTIAL)
+	if (actionClass == ACTION_CLASS_SEQUENTIAL && (newObject->flyObjectType == FlyObjectType::OBJECT_SEQUENTIAL || newObject->flyObjectType == FlyObjectType::OBJECT_CHARACTER))
 		dialogueAction = newObject->AddDialogueAction(true);
 	else
 		dialogueAction = newObject->AddDialogueAction();

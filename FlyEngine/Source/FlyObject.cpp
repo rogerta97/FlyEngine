@@ -127,7 +127,10 @@ bool FlyObject::Update(float dt)
 						break;
 					}
 					else
+					{
 						currentSequentialAction = nullptr;
+						sequentialSwapedTick = true; 
+					}
 					
 				}
 
@@ -182,6 +185,7 @@ bool FlyObject::Update(float dt)
 				if (currentSequentialAction == nullptr && !sequentialActionsList.empty())
 				{
 					currentSequentialAction = sequentialActionsList.front();
+					sequentialSwapedTick = true;
 				}
 				break;
 			}
