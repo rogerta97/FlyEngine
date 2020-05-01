@@ -1,6 +1,8 @@
 #include "WorldPropertiesDockPanel.h"
 #include "Application.h"
 #include "ModuleRoomManager.h"
+#include "Texture.h"
+#include "ResourceManager.h"
 #include "ModuleImGui.h"
 #include "ModuleInput.h"
 #include "imgui.h"
@@ -28,9 +30,6 @@ bool WorldPropertiesDockPanel::Draw()
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
 
 		PrintRoomsSection();
-
-		ImGui::Separator();
-		ImGui::Separator(); 
 
 		if (App->moduleRoomManager->GetSelectedRoom() != nullptr) {
 			Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
@@ -120,21 +119,27 @@ void WorldPropertiesDockPanel::NewConnectionButtonHandler()
 
 void WorldPropertiesDockPanel::PrintRoomsSection()
 {
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Rooms:");
+	ImGui::PopFont();
 	
+	PUSH_CHILD_BG_COLOR;
 	ImGui::BeginChild("RoomsList", ImVec2(ImGui::GetWindowContentRegionWidth(), ImGui::GetWindowHeight() / 4), true);
 
-	/*for (auto it : NodeGraph::getInstance()->GetNodeList()) {
+	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
+	for (auto currentRoom : App->moduleRoomManager->GetRoomsInWorldList()) {
 
-		if (ImGui::Selectable(it->title.c_str(), &it->selected)) {
-			App->moduleRoomManager->SetSelectedRoom(it->title);
+		if (ImGui::Selectable(currentRoom->GetName().c_str(), false)) {
+			App->moduleRoomManager->SetSelectedRoom(currentRoom->GetUID());
 		}
 	}
-*/
+	ImGui::PopFont(); 
+
 	ImGui::EndChild();
+	ImGui::PopStyleColor();
 
 	// New Room Button 
-	if (ImGui::Button("New")) {
+	if (ImGui::Button("Add Room")) {
 		ImGui::OpenPopup("new_room"); 
 	}
 
@@ -142,7 +147,7 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 
 	// Delete Room Button
 	ImGui::SameLine();
-	if (ImGui::Button("Delete")) {
+	if (ImGui::Button("Delete Room")) {
 		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
 		if (selectedRoom != nullptr)
 		{
@@ -151,8 +156,11 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 		}
 	}
 
-	ImGui::SameLine(ImGui::GetContentRegionMax().x - 130);
-	if (ImGui::Button("Open Room Editor", ImVec2(130, 30))) 
+	
+	ImGui::SameLine();
+	ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 45); 
+	Texture* editIcon = (Texture*)ResourceManager::getInstance()->GetResource("EditIcon"); 
+	if (ImGui::ImageButton((ImTextureID)editIcon->GetTextureID(), ImVec2(40, 40))) 
 	{
 		if(App->moduleRoomManager->GetSelectedRoom() != nullptr)
 			App->moduleImGui->AddaptToFlySection(FlyEngineSection::FLY_SECTION_ROOM_EDIT);

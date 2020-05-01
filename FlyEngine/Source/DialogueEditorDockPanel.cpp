@@ -20,6 +20,9 @@ DialogueEditorDockPanel::~DialogueEditorDockPanel()
 
 bool DialogueEditorDockPanel::Draw()
 {
+	if (!DockPanel::Draw())
+		return false;
+
 	if (ImGui::Begin(panelName.c_str(), &visible)) 
 	{
 		nodeGraph->DrawGraph();

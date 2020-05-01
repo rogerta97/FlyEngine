@@ -31,6 +31,8 @@ bool GraphPropertiesDockPanel::Draw()
 
 		if(ImGui::TreeNode("Graph Settings")) {
 
+
+			ImGui::TreePop(); 
 		}
 	}
 

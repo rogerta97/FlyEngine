@@ -16,9 +16,10 @@ RoomsNodeGraph::~RoomsNodeGraph()
 
 void RoomsNodeGraph::DrawGraph()
 {
-	/*imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(59, 131, 255, 255));
-	imnodes::PushColorStyle(imnodes::ColorStyle_LinkHovered, IM_COL32(255, 173, 51, 255));
-*/
+	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(247, 40, 40, 255));
+	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarHovered, IM_COL32(255, 80, 80, 255));
+	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarSelected, IM_COL32(255, 80, 80, 255));
+
 	imnodes::BeginNodeEditor();
 
 	if (roomManager->GetRoomsAmount() > 0)
@@ -32,13 +33,24 @@ void RoomsNodeGraph::DrawGraph()
 			ImGui::Text("%s", currentRoom->GetName().c_str());
 			imnodes::EndNodeTitleBar();
 
-			ImGui::Image(0, ImVec2(65, 50));
+			ImGui::Image(0, ImVec2(133, 100));
+
+			// Draw Enter Pin
+			imnodes::BeginInputAttribute(currentRoom->GetUID() + 1);
+			ImGui::Text("In");
+			imnodes::EndAttribute();
+
+			// Draw Output Pin
+			imnodes::BeginOutputAttribute(currentRoom->GetUID() + 2);
+
+			ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 15);
+			ImGui::Text("Out");
+			imnodes::EndAttribute();
 
 			imnodes::EndNode();
 
 			// Draw Answer Pins
 			//DrawAnswerPins(currentStep);
-
 		}
 
 		// Draw Links
@@ -48,13 +60,14 @@ void RoomsNodeGraph::DrawGraph()
 	{
 		INC_CURSOR_X_7;
 		ImGui::PushFont(App->moduleImGui->rudaBlackGiant);
-		ImGui::TextColored(ImVec4(1, 0.5f, 0.5f, 0.25f), "No dialogue selected");
+		ImGui::TextColored(ImVec4(1, 0.5f, 0.5f, 0.25f), "No Rooms In World");
 		ImGui::PopFont();
 	}
 
 	imnodes::EndNodeEditor();
 
-	//imnodes::PopColorStyle();
-	//imnodes::PopColorStyle();
+	imnodes::PopColorStyle();
+	imnodes::PopColorStyle();
+	imnodes::PopColorStyle();
 
 }

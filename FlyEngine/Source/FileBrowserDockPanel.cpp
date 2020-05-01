@@ -24,6 +24,9 @@ FileBrowserDockPanel::~FileBrowserDockPanel()
 
 bool FileBrowserDockPanel::Draw()
 {
+	if (!DockPanel::Draw())
+		return false;
+
 	if (ImGui::Begin(panelName.c_str(), &visible)) {
 		
 		ImGui::Columns(2, NULL, true);
