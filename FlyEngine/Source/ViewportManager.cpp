@@ -56,7 +56,6 @@ void ViewportManager::ResizeViewport()
 list<FlyObject*> ViewportManager::RaycastMouseClickObjects()
 {
 
-
 	list<FlyObject*> objectCandidates = list<FlyObject*>();
 
 	for (auto& currentObject : App->moduleRoomManager->GetSelectedRoom()->objectsInRoom)

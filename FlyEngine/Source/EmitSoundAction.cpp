@@ -54,12 +54,15 @@ void EmitSoundAction::DrawActionOccurenceCheckboxes()
 	}
 	else if (GetActionClass() == ACTION_CLASS_DIRECT)
 	{
-		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 110));
+
+		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 130));
 		ImGui::SetCursorPos(ImVec2(5, 5));
 		ImGui::Checkbox("Scene Enter", &occ_SceneEnter);
 		ImGui::SetCursorPos(ImVec2(5, 35));
-		ImGui::Checkbox("Object Clicked", &occ_ObjectClicked);
+		ImGui::Checkbox("Scene Leave", &occ_SceneLeave);
 		ImGui::SetCursorPos(ImVec2(5, 65));
+		ImGui::Checkbox("Object Clicked", &occ_ObjectClicked);
+		ImGui::SetCursorPos(ImVec2(5, 95));
 		ImGui::Checkbox("Object Condition", &occ_blackboardValue);
 	}
 
