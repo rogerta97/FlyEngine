@@ -4,6 +4,7 @@
 #include "DockPanel.h"
 #include "NodeGraph.h"
 
+class RoomsNodeGraph; 
 class RoomsGraphDockPanel : public DockPanel {
 
 public:
@@ -12,6 +13,9 @@ public:
 	~RoomsGraphDockPanel();
 
 	bool Draw();
+
+private:
+	RoomsNodeGraph* roomsNodeGraph; 
 };
 
 #endif 

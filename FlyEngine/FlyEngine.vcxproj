@@ -70,6 +70,7 @@
     <ClCompile Include="Source\DialogueViewportHandler.cpp" />
     <ClCompile Include="Source\imnodes.cpp" />
     <ClCompile Include="Source\DialogueNodeGraph.cpp" />
+    <ClCompile Include="Source\RoomsNodeGraph.cpp" />
     <ClCompile Include="Source\StepAnswer.cpp" />
     <ClCompile Include="Source\DialogueEditorDockPanel.cpp" />
     <ClCompile Include="Source\DialogueStep.cpp" />
@@ -231,6 +232,7 @@
     <ClInclude Include="Source\DialogueViewportHandler.h" />
     <ClInclude Include="Source\imnodes.h" />
     <ClInclude Include="Source\DialogueNodeGraph.h" />
+    <ClInclude Include="Source\RoomsNodeGraph.h" />
     <ClInclude Include="Source\StepAnswer.h" />
     <ClInclude Include="Source\DialogueEditorDockPanel.h" />
     <ClInclude Include="Source\DialogueStep.h" />

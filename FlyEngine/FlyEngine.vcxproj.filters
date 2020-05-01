@@ -486,6 +486,9 @@
     <ClCompile Include="Source\CharacterCreatorDockPanel.cpp">
       <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
     </ClCompile>
+    <ClCompile Include="Source\RoomsNodeGraph.cpp">
+      <Filter>Source\Tools\NodeGraph</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -970,6 +973,9 @@
     </ClInclude>
     <ClInclude Include="Source\CharacterCreatorDockPanel.h">
       <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RoomsNodeGraph.h">
+      <Filter>Source\Tools\NodeGraph</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
