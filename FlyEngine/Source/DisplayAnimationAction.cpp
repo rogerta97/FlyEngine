@@ -105,7 +105,6 @@ void DisplayAnimationAction::DrawActionOccurenceCheckboxes()
 
 void DisplayAnimationAction::Update(float dt)
 {
-	static bool kidding = false; 
 	if (animationState == ANIMATION_PLAY) 
 	{
 		animationTime += App->GetDeltaTime(); 
@@ -113,9 +112,11 @@ void DisplayAnimationAction::Update(float dt)
 		{
 			animationTime = 0;
 
+			// Next Frame 
 			if (NextFrame() && animPlayMode == ANIMATION_ONE_TIME)
 				Stop();
 		
+			// Updates Viewport Image
 			if(screenImageAction != nullptr)
 				screenImageAction->SetTexture(animation->GetFrameByPos(currentFrame));		
 		}

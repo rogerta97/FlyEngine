@@ -185,7 +185,6 @@ void MyFileSystem::GetFilesInDirectory(const char* directory, std::vector<string
 {
 	std::string path(directory);
 	path.append("\\*");
-
 	WIN32_FIND_DATA data;
 	HANDLE hFind;
 
@@ -195,20 +194,16 @@ void MyFileSystem::GetFilesInDirectory(const char* directory, std::vector<string
 		{
 			if (std::string(data.cFileName) != std::string(".") && std::string(data.cFileName) != std::string(".."))
 			{
-				if (include_path)
-				{
+				if (include_path){
 					string new_str = directory + string("\\") + string(data.cFileName);
 					list.push_back(new_str);
 				}
 				else
 					list.push_back(data.cFileName);
 			}
-
-
 		} while (FindNextFile(hFind, &data) != 0);
 		FindClose(hFind);
 	}
-
 	return;
 }
 
