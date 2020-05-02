@@ -1,9 +1,12 @@
 #include "RoomsNodeGraph.h"
 #include "imgui.h"
+#include "Texture.h"
 #include "Application.h"
+#include "ModuleManager.h"
 #include "ModuleImGui.h"
 #include "Room.h"
 #include "ModuleRoomManager.h"
+#include "ResourceManager.h"
 
 RoomsNodeGraph::RoomsNodeGraph()
 {
@@ -16,7 +19,7 @@ RoomsNodeGraph::~RoomsNodeGraph()
 
 void RoomsNodeGraph::DrawGraph()
 {
-	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(247, 40, 40, 255));
+	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(247, 200, 40, 255));
 	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarHovered, IM_COL32(255, 80, 80, 255));
 	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarSelected, IM_COL32(255, 80, 80, 255));
 
@@ -34,14 +37,41 @@ void RoomsNodeGraph::DrawGraph()
 			imnodes::EndNodeTitleBar();
 
 			// Get Room Viewport Texture 
-			uint thumbnailTexture = 0;
-
-			if (currentRoom->roomTextureID != 0)
-			{
-				thumbnailTexture = currentRoom->roomTextureID;
+			if (currentRoom->roomThumbnail == nullptr)
+			{		
+				currentRoom->roomThumbnail = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject");
 			}
 
-			ImGui::Image((ImTextureID)thumbnailTexture, ImVec2(133, 100));
+			ImVec2 imageMaxSize = ImVec2(140, 140);
+			ImVec2 uiImageDimensions = ImVec2(0, 0);
+
+			if (currentRoom->roomThumbnail->IsVertical())
+			{
+				uiImageDimensions.y = imageMaxSize.y;
+				uiImageDimensions.x = uiImageDimensions.y * currentRoom->roomThumbnail->GetAspectRatio();
+
+				if (uiImageDimensions.x >= imageMaxSize.x)
+				{
+					float diff = uiImageDimensions.x - imageMaxSize.x;
+					uiImageDimensions.x -= diff;
+					uiImageDimensions.y = uiImageDimensions.x * currentRoom->roomThumbnail->GetAspectRatio();
+				}
+			}
+			else
+			{
+				uiImageDimensions.x = imageMaxSize.x;
+				uiImageDimensions.y = uiImageDimensions.x / currentRoom->roomThumbnail->GetAspectRatio();
+
+				if (uiImageDimensions.y >= imageMaxSize.y)
+				{
+					float diff = uiImageDimensions.y - imageMaxSize.y;
+					uiImageDimensions.y -= diff;
+					uiImageDimensions.x = uiImageDimensions.y * currentRoom->roomThumbnail->GetAspectRatio();
+				}
+			}
+
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (70 - uiImageDimensions.x / 2));
+			ImGui::Image((ImTextureID)currentRoom->roomThumbnail->GetTextureID(), uiImageDimensions);
 
 			// Draw Enter Pin
 			imnodes::BeginInputAttribute(currentRoom->GetUID() + 1);
@@ -73,6 +103,27 @@ void RoomsNodeGraph::DrawGraph()
 	}
 
 	imnodes::EndNodeEditor();
+
+	// Handle Selected Nodes
+	int num_selected_nodes = imnodes::NumSelectedNodes();
+	if (num_selected_nodes > 0)
+	{
+		std::vector<int> selected_nodes_id_list;
+		selected_nodes_id_list.resize(num_selected_nodes);
+		imnodes::GetSelectedNodes(selected_nodes_id_list.data());
+
+		for (auto& selectedNodeID : selected_nodes_id_list)
+		{
+			Room* selectedRoom = App->moduleRoomManager->GetRoom(selectedNodeID);
+
+			if (selectedRoom != nullptr)
+			{
+				App->moduleRoomManager->SetSelectedRoom(selectedNodeID); 
+				num_selected_nodes = 0;
+				return;
+			}
+		}
+	}
 
 	imnodes::PopColorStyle();
 	imnodes::PopColorStyle();

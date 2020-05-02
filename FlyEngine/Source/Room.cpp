@@ -38,7 +38,7 @@ Room::Room(string roomName)
 	roomID = RandomNumberGenerator::GenerateUID(); 
 	backgroundMusic = nullptr; 
 
-	roomTextureID = 0; 
+	roomThumbnail = 0; 
 	roomBlackboard = new Blackboard(); 
 	roomUIHandler = new RoomUIHandler(this); 	
 }
@@ -246,6 +246,8 @@ void Room::SaveRoomData(JSON_Object* jsonObject)
 	json_object_dotset_string(jsonObject, string("RoomData.Name").c_str(), GetName().c_str());
 	json_object_dotset_number(jsonObject, string("RoomData.UID").c_str(), GetUID());
 
+	json_object_dotset_string(jsonObject, string("RoomData.ThumbnailName").c_str(), roomThumbnail->GetName().c_str());
+
 	int count = 0; 
 	for (auto& it : objectsInRoom)
 		it->SaveObjectData(jsonObject, count++);
@@ -263,44 +265,45 @@ void Room::SaveRoomData(JSON_Object* jsonObject)
 
 void Room::SaveRoomThumbnail()
 {
-	if (MyFileSystem::getInstance()->IsFileInDirectory(MyFileSystem::GetThumbnilesDirectory(), to_string(GetUID())))
-	{
-		ilEnable(IL_FILE_OVERWRITE);
-	}
+
+	//if (MyFileSystem::getInstance()->IsFileInDirectory(MyFileSystem::GetThumbnilesDirectory(), to_string(GetUID())))
+	//{
+	//	ilEnable(IL_FILE_OVERWRITE);
+	//}
 
 
-	string savePath = MyFileSystem::GetThumbnilesDirectory() + "\\" + to_string((int)GetUID()).c_str() + "_Thumbnail.dds";
-	uint savingTexture = 1; 
+	//string savePath = MyFileSystem::GetThumbnilesDirectory() + "\\" + to_string((int)GetUID()).c_str() + "_Thumbnail.dds";
+	//uint savingTexture = 1; 
 
-	//Create or open the file
-	ofstream stream;
-	stream.open(savePath.c_str(), ofstream::binary);
-	stream.clear();
+	////Create or open the file
+	//ofstream stream;
+	//stream.open(savePath.c_str(), ofstream::binary);
+	//stream.clear();
 
-	//Check the state of the Material to know what we should write (tex channels)
-	//Save the diffuse channel 
-	ILuint size;
-	ILubyte* data;
-	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5); // To pick a specific DXT compression use
+	////Check the state of the Material to know what we should write (tex channels)
+	////Save the diffuse channel 
+	//ILuint size;
+	//ILubyte* data;
+	//ilSetInteger(IL_DXTC_FORMAT, IL_DXT5); // To pick a specific DXT compression use
 
-	size = ilSaveL(IL_DDS, NULL, 0); // Get the size of the data buffer
+	//size = ilSaveL(IL_DDS, NULL, 0); // Get the size of the data buffer
 
-	if (size > 0) {
+	//if (size > 0) {
 
-		data = new ILubyte[size]; // allocate data buffer
+	//	data = new ILubyte[size]; // allocate data buffer
 
-		if (savingTexture != 0)
-		{
-			glBindTexture(GL_TEXTURE_2D, savingTexture);
+	//	if (savingTexture != 0)
+	//	{
+	//		glBindTexture(GL_TEXTURE_2D, savingTexture);
 
-			if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
-			{	
-				stream.write((const char*)data, size);
-			}
-		}
-	}
+	//		if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
+	//		{	
+	//			stream.write((const char*)data, size);
+	//		}
+	//	}
+	//}
 
-	stream.close();
+	//stream.close();
 
 }
 

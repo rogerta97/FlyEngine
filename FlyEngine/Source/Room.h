@@ -29,6 +29,7 @@ struct RoomConnection {
 
 class FlyObject; 
 class UI_Element; 
+class Texture; 
 class Room {
 
 public:
@@ -116,7 +117,7 @@ public:
 public: 
 	
 	// Save FrameBuffer ID
-	uint roomTextureID; 
+	Texture* roomThumbnail; 
 
 	// Link Management -----
 	list<RoomConnection*> outConnections;

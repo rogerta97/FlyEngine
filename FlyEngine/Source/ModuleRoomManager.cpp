@@ -111,10 +111,10 @@ void ModuleRoomManager::ReceiveEvent(FlyEngineEvent eventType)
 	case FlyEngineEvent::ENTER_ROOM:
 
 		// Save Image For Thumbnail
-		if (selectedRoom != nullptr)
+	/*	if (selectedRoom != nullptr)
 		{
-			selectedRoom->roomTextureID = ViewportManager::getInstance()->viewportTexture->GetTextureID(); 
-		}
+			selectedRoom->roomThumbnail = ViewportManager::getInstance()->viewportTexture->GetTextureID(); 
+		}*/
 
 		// Play On Scene Enter Events
 		if (App->flySection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && App->isEngineInPlayMode && GetSelectedRoom() != nullptr)
@@ -155,8 +155,8 @@ bool ModuleRoomManager::LoadRoomsData()
 		string thumbnailStr = MyFileSystem::getInstance()->GetThumbnilesDirectory() + "\\" + to_string((int)currentRoom->GetUID()) + "_Thumbnail";
 		Texture* newThumbnail = ImageImporter::getInstance()->LoadTexture(thumbnailStr.c_str(), false);
 
-		if(newThumbnail != nullptr && ResourceManager::getInstance()->AddResource((Resource*)newThumbnail, to_string((int)currentRoom->GetUID()) + "_Thumbnail"))
-			currentRoom->roomTextureID = newThumbnail->GetTextureID(); 
+		//if(newThumbnail != nullptr && ResourceManager::getInstance()->AddResource((Resource*)newThumbnail, to_string((int)currentRoom->GetUID()) + "_Thumbnail"))
+		//	currentRoom->roomThumbnail = newThumbnail->GetTextureID(); 
 	}
 
 

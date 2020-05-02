@@ -453,100 +453,170 @@ void RoomDockPanel::DrawMoveLayerSelectableButtons()
 
 void RoomDockPanel::ShowViewportSettingsTab()
 {
-	ImGui::Spacing();
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	ImGui::Text("Music:");
-	ImGui::PopFont();
 
-	Room* currentRoom = App->moduleRoomManager->GetSelectedRoom();
-
-	static char trackNameBuffer[256] = "";
-
-	if (currentRoom->backgroundMusic != nullptr)
-		strcpy(trackNameBuffer, currentRoom->backgroundMusic->GetName().c_str());
-
-	ImGui::InputTextWithHint("", "Select Music...", trackNameBuffer, IM_ARRAYSIZE(trackNameBuffer), ImGuiInputTextFlags_ReadOnly);
-
-	if (ImGui::BeginDragDropTarget())
+	if (ImGui::CollapsingHeader("Music", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
-		{
-			int* selectedResourceUID = (int*)payload->Data;
-			Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+		ImGui::Spacing();
+		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+		ImGui::Text("Music:");
+		ImGui::PopFont();
 
-			if (resourceDropped->GetType() == RESOURCE_MUSIC)
+		Room* currentRoom = App->moduleRoomManager->GetSelectedRoom();
+
+		static char trackNameBuffer[256] = "";
+
+		if (currentRoom->backgroundMusic != nullptr)
+			strcpy(trackNameBuffer, currentRoom->backgroundMusic->GetName().c_str());
+
+		ImGui::InputTextWithHint("", "Select Music...", trackNameBuffer, IM_ARRAYSIZE(trackNameBuffer), ImGuiInputTextFlags_ReadOnly);
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("drag_resource"))
 			{
-				MusicTrack* musicTrackDropped = (MusicTrack*)resourceDropped;
-				currentRoom->backgroundMusic = musicTrackDropped;
+				int* selectedResourceUID = (int*)payload->Data;
+				Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+				if (resourceDropped->GetType() == RESOURCE_MUSIC)
+				{
+					MusicTrack* musicTrackDropped = (MusicTrack*)resourceDropped;
+					currentRoom->backgroundMusic = musicTrackDropped;
+				}
+			}
+
+			ImGui::EndDragDropTarget();
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("Search##SearchMusic"))
+		{
+			ImGui::OpenPopup("print_music_selection_popup");
+			showMusicSelectionPopup = true;
+		}
+
+		if (showMusicSelectionPopup)
+		{
+			Resource* selectedSound = ResourceManager::getInstance()->PrintMusicSelectionPopup();
+
+			if (selectedSound != nullptr)
+			{
+				MusicTrack* audioTrackDropped = (MusicTrack*)selectedSound;
+				currentRoom->backgroundMusic = audioTrackDropped;
+				showMusicSelectionPopup = false;
+			}
+		}
+	}
+
+	if (ImGui::CollapsingHeader("Visibility", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+		ImGui::Text("Clickable Area Draw Mode:");
+		ImGui::PopFont();
+
+		static int selectedClickableAreaDrawMode = 0;
+		if (ImGui::Combo("##drawMode", &selectedClickableAreaDrawMode, "Draw On Selected Object\0Draw Always"))
+		{
+			switch (selectedClickableAreaDrawMode)
+			{
+			case 0:
+				ViewportManager::getInstance()->drawClickableAreaCondition = DRAW_ON_SELECTED;
+				break;
+
+			case 1:
+				ViewportManager::getInstance()->drawClickableAreaCondition = DRAW_ALWAYS;
+				break;
 			}
 		}
 
-		ImGui::EndDragDropTarget();
+	/*	static int resolutionSelected = 0;
+		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+		ImGui::Text("Resolution:");
+		ImGui::PopFont();
+
+		if (ImGui::Combo("ResolutionCombo##", &resolutionSelected, "4:3\0 1:1\0")) {
+
+			switch (resolutionSelected)
+			{
+
+			case 0:
+				ViewportManager::getInstance()->SetAspectRatioType(AR_4_3);
+				break;
+
+			case 1:
+			{
+				ViewportManager::getInstance()->SetAspectRatioType(AR_1_1);
+				break;
+			}
+
+			default:
+				break;
+			}
+		}*/
 	}
 
-	ImGui::SameLine();
-	if (ImGui::Button("Search##SearchMusic"))
+	if (ImGui::CollapsingHeader("Room Thumbnail", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		ImGui::OpenPopup("print_music_selection_popup");
-		showMusicSelectionPopup = true;
-	}
+		static char buf[256] = "";
 
-	if (showMusicSelectionPopup)
-	{
-		Resource* selectedSound = ResourceManager::getInstance()->PrintMusicSelectionPopup();
+		Texture* roomThumbnailTexture = App->moduleRoomManager->GetSelectedRoom()->roomThumbnail; 
 
-		if (selectedSound != nullptr)
+		if (roomThumbnailTexture == nullptr)
+			roomThumbnailTexture = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject"); 
+
+		// Object Occurrence -----------------------
+		float aspect_ratio = roomThumbnailTexture->GetAspectRatio();
+		float previewQuadWidth = 150;
+		float previewQuadHeight = previewQuadWidth / aspect_ratio;
+
+		PUSH_FONT(App->moduleImGui->rudaRegularMid);
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+
+		int childHeight = previewQuadHeight + 20;
+
+		ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), childHeight));
+
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, previewQuadWidth + 10);
+
+		ImGui::Spacing();
+		ImGui::Image((ImTextureID)roomThumbnailTexture->GetTextureID(), ImVec2(previewQuadWidth, previewQuadHeight));
+
+		ImGui::NextColumn();
+
+		ImGui::Spacing();
+		ImGui::Text("Name: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%s", roomThumbnailTexture->GetName().c_str());
+
+		ImGui::Text("Width: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", roomThumbnailTexture->GetWidth());
+
+		ImGui::Text("Height: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", roomThumbnailTexture->GetHeigth());
+
+		Texture* searchTexture = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
+		if (ImGui::Button("Change Image"))
 		{
-			MusicTrack* audioTrackDropped = (MusicTrack*)selectedSound;
-			currentRoom->backgroundMusic = audioTrackDropped;
-			showMusicSelectionPopup = false;
+			char const* lFilterPatterns[2] = { "*.jpg" , "*.png" };
+			const char* path = tinyfd_openFileDialog("Load Image...", NULL, 2, lFilterPatterns, NULL, 0);
+
+			if (path != NULL)
+			{
+				if (!ResourceManager::getInstance()->ExistResourcePath(path))
+				{
+					App->moduleRoomManager->GetSelectedRoom()->roomThumbnail = ImageImporter::getInstance()->LoadTexture(path, false);
+					ResourceManager::getInstance()->AddResource(App->moduleRoomManager->GetSelectedRoom()->roomThumbnail, App->moduleRoomManager->GetSelectedRoom()->roomThumbnail->GetName());
+				}
+				else
+					App->moduleRoomManager->GetSelectedRoom()->roomThumbnail = (Texture*)ResourceManager::getInstance()->GetResourceByPath(path);
+
+				strcpy(buf, path);
+				flog("Player Opened %s", path);
+			}
 		}
-	}
+		ImGui::PopStyleColor();
+		ImGui::EndChild();
 
-	// Draw Resolution UI ------------------------------------------
-	static int resolutionSelected = 0;
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	ImGui::Text("Resolution:");
-	ImGui::PopFont();
-
-	if (ImGui::Combo("ResolutionCombo##", &resolutionSelected, "4:3\0 1:1\0")) {
-
-		switch (resolutionSelected)
-		{
-
-		case 0:
-			ViewportManager::getInstance()->SetAspectRatioType(AR_4_3);
-			break;
-
-		case 1:
-		{
-			ViewportManager::getInstance()->SetAspectRatioType(AR_1_1);
-			break;
-		}
-
-		default:
-			break;
-		}
-	}
-
-	// Draw Settings -----------------------------------------------
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	ImGui::Text("Clickable Area Draw Mode:");
-	ImGui::PopFont();
-
-	static int selectedClickableAreaDrawMode = 0; 
-	if (ImGui::Combo("##drawMode", &selectedClickableAreaDrawMode, "Draw On Selected Object\0Draw Always"))
-	{
-		switch (selectedClickableAreaDrawMode)
-		{
-		case 0: 
-			ViewportManager::getInstance()->drawClickableAreaCondition = DRAW_ON_SELECTED; 
-			break; 
-			 
-		case 1: 
-			ViewportManager::getInstance()->drawClickableAreaCondition = DRAW_ALWAYS;
-			break; 
-		}
+		POP_FONT;
 	}
 }
 

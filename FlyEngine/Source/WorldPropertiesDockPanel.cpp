@@ -33,7 +33,8 @@ bool WorldPropertiesDockPanel::Draw()
 
 		PrintRoomsSection();
 
-		if (App->moduleRoomManager->GetSelectedRoom() != nullptr) {
+		if (App->moduleRoomManager->GetSelectedRoom() != nullptr) 
+		{
 			Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
 			PrintRoomInfo(selectedRoom);
 		}
@@ -46,7 +47,7 @@ bool WorldPropertiesDockPanel::Draw()
 
 void WorldPropertiesDockPanel::PrintRoomInfo(Room* selectedRoom)
 {
-	if(ImGui::CollapsingHeader("Room Info")) {
+	if(ImGui::CollapsingHeader("Room Info", ImGuiTreeNodeFlags_DefaultOpen)) {
 
 		ImGui::Text("Room Selected: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", selectedRoom->GetName().c_str());

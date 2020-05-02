@@ -873,6 +873,10 @@ void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 
 	int obj_ammount = json_object_dotget_number(root_obj, "RoomData.ObjectsAmount");
 
+	string thumbnailResourceName = json_object_dotget_string(root_obj, "RoomData.ThumbnailName");
+	Texture* thumbnailTexture = (Texture*)ResourceManager::getInstance()->GetResource(thumbnailResourceName.c_str()); 
+	roomToLoad->roomThumbnail = thumbnailTexture; 
+
 	int counter = 0;
 	while (counter < obj_ammount)
 	{
