@@ -56,6 +56,7 @@ public:
 
 	// Save & Load ---------------
 	void SaveRoomData(JSON_Object* jsonObject);
+	void SaveRoomThumbnail(); 
 
 	// Connections ---------------
 	RoomConnection* ConnectToRoom(Room* destinationRoom);
@@ -113,6 +114,9 @@ public:
 	Blackboard* CreateBlackboard();
 
 public: 
+	
+	// Save FrameBuffer ID
+	uint roomTextureID; 
 
 	// Link Management -----
 	list<RoomConnection*> outConnections;

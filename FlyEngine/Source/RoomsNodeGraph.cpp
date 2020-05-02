@@ -33,7 +33,15 @@ void RoomsNodeGraph::DrawGraph()
 			ImGui::Text("%s", currentRoom->GetName().c_str());
 			imnodes::EndNodeTitleBar();
 
-			ImGui::Image(0, ImVec2(133, 100));
+			// Get Room Viewport Texture 
+			uint thumbnailTexture = 0;
+
+			if (currentRoom->roomTextureID != 0)
+			{
+				thumbnailTexture = currentRoom->roomTextureID;
+			}
+
+			ImGui::Image((ImTextureID)thumbnailTexture, ImVec2(133, 100));
 
 			// Draw Enter Pin
 			imnodes::BeginInputAttribute(currentRoom->GetUID() + 1);
@@ -43,7 +51,7 @@ void RoomsNodeGraph::DrawGraph()
 			// Draw Output Pin
 			imnodes::BeginOutputAttribute(currentRoom->GetUID() + 2);
 
-			ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 15);
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 105);
 			ImGui::Text("Out");
 			imnodes::EndAttribute();
 

@@ -14,6 +14,8 @@
 #include "ResourceManager.h"
 #include "MyFileSystem.h"
 #include "FlyObject.h"
+#include "Texture.h"
+#include "TextureMSAA.h"
 #include "SaveAndLoad.h"
 
 #include "mmgr.h"
@@ -108,6 +110,13 @@ void ModuleRoomManager::ReceiveEvent(FlyEngineEvent eventType)
 
 	case FlyEngineEvent::ENTER_ROOM:
 
+		// Save Image For Thumbnail
+		if (selectedRoom != nullptr)
+		{
+			selectedRoom->roomTextureID = ViewportManager::getInstance()->viewportTexture->GetTextureID(); 
+		}
+
+		// Play On Scene Enter Events
 		if (App->flySection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && App->isEngineInPlayMode && GetSelectedRoom() != nullptr)
 		{
 			for (auto& currentObject : GetSelectedRoom()->objectsInRoom)
@@ -141,7 +150,16 @@ bool ModuleRoomManager::LoadRoomsData()
 	for (auto& currentRoom : roomsInWorldList)
 	{
 		SaveAndLoad::getInstance()->LoadDataToRoom(roomsDirectory + "\\" + currentRoom->GetName() + ".json", currentRoom);
+
+		// Load Thumbnail 
+		string thumbnailStr = MyFileSystem::getInstance()->GetThumbnilesDirectory() + "\\" + to_string((int)currentRoom->GetUID()) + "_Thumbnail";
+		Texture* newThumbnail = ImageImporter::getInstance()->LoadTexture(thumbnailStr.c_str(), false);
+
+		if(newThumbnail != nullptr && ResourceManager::getInstance()->AddResource((Resource*)newThumbnail, to_string((int)currentRoom->GetUID()) + "_Thumbnail"))
+			currentRoom->roomTextureID = newThumbnail->GetTextureID(); 
 	}
+
+
 	
 	if (roomsSavedFiles.size() > 0)
 		return true; 
@@ -274,7 +292,12 @@ int ModuleRoomManager::GetRoomsAmount() const
 
 void ModuleRoomManager::SetSelectedRoom(Room* nextSelectedRoom)
 {
-	if (nextSelectedRoom != nullptr) {
+	if (nextSelectedRoom != nullptr) 
+	{
+		//Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+		//if(ViewportManager::getInstance()->viewportTexture != nullptr)
+		//	selectedRoom->roomTextureID = ViewportManager::getInstance()->viewportTexture->GetTextureID();
+
 		selectedRoom = nextSelectedRoom;
 		App->BroadCastEvent(FlyEngineEvent::ENTER_ROOM);
 		//NodeGraph::getInstance()->SelectNode(nextSelectedRoom->GetName());

@@ -6,6 +6,8 @@
 #include "ModuleImGui.h"
 #include "ModuleInput.h"
 #include "imgui.h"
+#include "TextureMSAA.h"
+#include "ViewportManager.h"
 #include "Room.h"
 #include "NodeGraph.h"
 #include "mmgr.h"
@@ -162,8 +164,10 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 	Texture* editIcon = (Texture*)ResourceManager::getInstance()->GetResource("EditIcon"); 
 	if (ImGui::ImageButton((ImTextureID)editIcon->GetTextureID(), ImVec2(40, 40))) 
 	{
-		if(App->moduleRoomManager->GetSelectedRoom() != nullptr)
+		if (App->moduleRoomManager->GetSelectedRoom() != nullptr)
+		{
 			App->moduleImGui->AddaptToFlySection(FlyEngineSection::FLY_SECTION_ROOM_EDIT);
+		}
 	}
 }
 

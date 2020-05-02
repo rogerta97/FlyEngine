@@ -41,6 +41,20 @@ bool MyFileSystem::IsFolder(string& directory)
 	return false;
 }
 
+bool MyFileSystem::IsFileInDirectory(string directory, string fileName, bool compareTermination)
+{
+	std::vector<string> filesInDir; 
+	MyFileSystem::getInstance()->GetFilesInDirectory(directory.c_str(), filesInDir);
+
+	for (auto& currentFile : filesInDir)
+	{
+		if (currentFile.c_str() == fileName)
+			return true; 
+	}
+
+	return false;
+}
+
 
 string MyFileSystem::GetLastPathItem(string path, bool keepTermination = true)
 {
@@ -94,6 +108,10 @@ std::string MyFileSystem::DeleteFileExtension(string path)
 FileExtension MyFileSystem::GetFileExtension(string path)
 {
 	int pos = path.find_first_of(".");
+
+	if (pos == -1)
+		return FileExtension::FILE_null;
+
 	int to_del = path.size() - pos;
 	path = path.substr(pos, to_del);
 
@@ -154,6 +172,11 @@ string MyFileSystem::GetResourcesDirectory()
 	std::string resourcesDir = GetSolutionDirectory(); 
 	resourcesDir += "Source\\Game\\Resources";
 	return resourcesDir;
+}
+
+string MyFileSystem::GetThumbnilesDirectory()
+{
+	return instance->GetSolutionDirectory() + "Source\\Game\\Resources\\EngineResources\\EngineSavedData\\RoomThumbnails";
 }
 
 string MyFileSystem::GetSavedDataDirectory()
@@ -240,6 +263,7 @@ std::vector<string> MyFileSystem::GetFoldersInDirectory(const char* directory)
 void MyFileSystem::Init()
 {
 	CreateDirectory(string(GetSavedDataDirectory() + "RoomsData").c_str(), NULL);
+	CreateDirectory(string(GetSavedDataDirectory() + "RoomThumbnails").c_str(), NULL);
 	CreateDirectory(string(GetSavedDataDirectory() + "BlackboardsData").c_str(), NULL);
 	CreateDirectory(string(GetSavedDataDirectory() + "NodeGraphData").c_str(), NULL);
 	CreateDirectory(string(GetSavedDataDirectory() + "NodeGraphData\\Dialogues").c_str(), NULL);

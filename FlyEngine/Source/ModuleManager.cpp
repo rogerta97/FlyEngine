@@ -71,8 +71,8 @@ bool ModuleManager::Start()
 	// Load Saved Rooms
 	if (App->moduleRoomManager->LoadRoomsData())
 	{
-		App->moduleRoomManager->SetSelectedRoom(App->moduleRoomManager->GetFirstRoom());
-		App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);
+		/*App->moduleRoomManager->SetSelectedRoom(App->moduleRoomManager->GetFirstRoom());
+		App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);*/
 	}
 
 	// Create Debug Object 

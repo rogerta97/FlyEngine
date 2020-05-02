@@ -36,12 +36,11 @@ ResourceManager::~ResourceManager()
 
 bool ResourceManager::AddResource(Resource* newResource, std::string name)
 {
-	//assert(newResource->GetPath() == ""); 
-
 	if(newResource != nullptr)
 	{
 		newResource->SetName(name);
 		instance->resourceList.push_back(newResource);
+		return true; 
 	}
 
 	return false;
@@ -390,6 +389,12 @@ void ResourceManager::LoadResource(string newResourcePath, ResourceType forceTyp
 	FileExtension fileExtension = MyFileSystem::getInstance()->GetFileExtension(newResourcePath); 
 	ResourceType loadingResourceType = ResourceType::RESOURCE_null;
 
+	if (fileExtension == RESOURCE_null)
+	{
+		FLY_ERROR("Loading unrecognized file %d", newResourcePath.c_str());
+		return;
+	}
+
 	bool forced = false; 
 	if (forceType != RESOURCE_null)
 	{
@@ -454,6 +459,10 @@ void ResourceManager::LoadAllGameResources()
 
 	std::string resourcesFontsPath = MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Fonts";
 	LoadAllFilesFromFolder(resourcesFontsPath, RESOURCE_FONT);
+
+	// Thumbnails 
+	std::string tumbnailsPath = MyFileSystem::getInstance()->GetThumbnilesDirectory();
+	LoadAllFilesFromFolder(tumbnailsPath, RESOURCE_TEXTURE);
 }
 
 void ResourceManager::LoadAllFilesFromFolder(string path, ResourceType forceType)

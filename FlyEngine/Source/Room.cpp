@@ -1,12 +1,17 @@
 #include "Room.h"
+
+#include <fstream>
+
 #include "Globals.h"
 #include "NodeGraph.h"
 #include "ViewportManager.h"
 #include "RandomNumberGenerator.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "ResourceManager.h"
 #include "ObjectCreatorDockPanel.h"
 #include "FlyObject.h"
+#include "Texture.h"
 #include "GameViewportDockPanel.h"
 #include "ObjectPropertiesDockPanel.h"
 #include "GameInventory.h"
@@ -17,9 +22,15 @@
 #include "FlyVariable.h"
 #include "ObjectPropertiesDockPanel.h"
 #include "ModuleRoomManager.h"
+#include "MyFileSystem.h"
 #include "Blackboard.h"
 #include "RoomUIHandler.h"
+
 #include "mmgr.h"
+
+#include <IL/il.h>
+#include <IL/ilu.h>
+#include <IL/ilut.h>
 
 Room::Room(string roomName)
 {
@@ -27,13 +38,9 @@ Room::Room(string roomName)
 	roomID = RandomNumberGenerator::GenerateUID(); 
 	backgroundMusic = nullptr; 
 
-	static int placer = 50;
-	//NodeGraph::getInstance()->CreateNode(roomName, ImVec2(placer, 50), roomID);
-
+	roomTextureID = 0; 
 	roomBlackboard = new Blackboard(); 
-	roomUIHandler = new RoomUIHandler(this); 
-	
-	placer += 250; 
+	roomUIHandler = new RoomUIHandler(this); 	
 }
 
 Room::~Room()
@@ -249,6 +256,52 @@ void Room::SaveRoomData(JSON_Object* jsonObject)
 
 	// Save UI 
 	roomUIHandler->SaveRoomUI(jsonObject, string("RoomData.UserInterface"));
+
+	// Thumbnail 
+	SaveRoomThumbnail();
+}
+
+void Room::SaveRoomThumbnail()
+{
+	if (MyFileSystem::getInstance()->IsFileInDirectory(MyFileSystem::GetThumbnilesDirectory(), to_string(GetUID())))
+	{
+		ilEnable(IL_FILE_OVERWRITE);
+	}
+
+
+	string savePath = MyFileSystem::GetThumbnilesDirectory() + "\\" + to_string((int)GetUID()).c_str() + "_Thumbnail.dds";
+	uint savingTexture = 1; 
+
+	//Create or open the file
+	ofstream stream;
+	stream.open(savePath.c_str(), ofstream::binary);
+	stream.clear();
+
+	//Check the state of the Material to know what we should write (tex channels)
+	//Save the diffuse channel 
+	ILuint size;
+	ILubyte* data;
+	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5); // To pick a specific DXT compression use
+
+	size = ilSaveL(IL_DDS, NULL, 0); // Get the size of the data buffer
+
+	if (size > 0) {
+
+		data = new ILubyte[size]; // allocate data buffer
+
+		if (savingTexture != 0)
+		{
+			glBindTexture(GL_TEXTURE_2D, savingTexture);
+
+			if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
+			{	
+				stream.write((const char*)data, size);
+			}
+		}
+	}
+
+	stream.close();
+
 }
 
 RoomConnection* Room::ConnectToRoom(Room* destinationRoom)

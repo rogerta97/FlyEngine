@@ -37,6 +37,9 @@ enum FileExtension
 	// Font
 	FILE_TTF,
 	FILE_OTF,
+
+	// Null 
+	FILE_null
 };
 
 #define LOG(format, ...) log(__FILE__, __LINE__, CM_DEBUG, format, __VA_ARGS__)

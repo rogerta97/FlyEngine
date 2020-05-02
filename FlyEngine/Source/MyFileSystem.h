@@ -30,6 +30,7 @@ public:
 	static void DeleteLastPathItem(string& path);
 	static void DeleteFrontItem(string& path); 
 	static bool IsFolder(string& directory);
+	static bool IsFileInDirectory(string directory, string fileName, bool compareTermination = false);
 	static string PrintFolderSelectorPopup(string& parentFolder);
 
 	// Get Directories ---
@@ -39,6 +40,7 @@ public:
 	static string GetSolutionDirectory();
 	static string GetGameDirectory(); 
 	static string GetResourcesDirectory(); 
+	static string GetThumbnilesDirectory(); 
 	static void GetRelativeDirectory(string& directory); 
 
 	// File --------------
