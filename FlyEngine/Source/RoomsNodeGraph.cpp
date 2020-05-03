@@ -148,7 +148,33 @@ void RoomsNodeGraph::Update()
 	// Check Input 
 	if(App->moduleInput->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
 	{
-		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom(); 
-		App->moduleRoomManager->DeleteRoom(selectedRoom);
+
+
+		ImGui::OpenPopup("DELETING ROOM - Are You Sure?");
+	}
+
+
+	if (ImGui::BeginPopupModal("DELETING ROOM - Are You Sure?", 0,  ImGuiWindowFlags_NoResize))
+	{
+	ImGui::SetWindowSize(ImVec2(330, 105));
+		ImGui::PushFont(App->moduleImGui->rudaRegularTiny);
+		ImGui::TextWrapped("You are about to delete a room, this action cannot be reversed and will be lost forever, are you sure?"); 
+		ImGui::PopFont(); 
+
+		ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x / 2 - 50); 
+		if (ImGui::Button("Delete"))
+		{
+			Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+			App->moduleRoomManager->DeleteRoom(selectedRoom);
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("Keep"))
+		{
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::EndPopup();
 	}
 }
