@@ -70,6 +70,9 @@ void ChangeRoomAction::DrawSelectDestinationCombo()
 		int count = 0;
 		for (auto& currentRoom : roomsInWorld)
 		{
+			if (parentObject->GetParentRoom()->GetUID() == currentRoom->GetUID())
+				continue; 
+
 			if (ImGui::Selectable(currentRoom->GetName().c_str()))
 			{
 				SetDestination(currentRoom);
@@ -82,7 +85,7 @@ void ChangeRoomAction::DrawSelectDestinationCombo()
 
 void ChangeRoomAction::DrawUISettings()
 {
-	if (ImGui::CollapsingHeader("Change Room Settings"))
+	if (ImGui::CollapsingHeader("Change Room Settings", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		DrawSelectDestinationCombo();
 	}
