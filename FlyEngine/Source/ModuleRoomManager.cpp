@@ -290,7 +290,7 @@ int ModuleRoomManager::GetRoomsAmount() const
 	return roomsInWoldAmount;
 }
 
-void ModuleRoomManager::SetSelectedRoom(Room* nextSelectedRoom)
+void ModuleRoomManager::SetSelectedRoom(Room* nextSelectedRoom, bool sendEvent)
 {
 	if (nextSelectedRoom != nullptr) 
 	{
@@ -298,18 +298,24 @@ void ModuleRoomManager::SetSelectedRoom(Room* nextSelectedRoom)
 		//if(ViewportManager::getInstance()->viewportTexture != nullptr)
 		//	selectedRoom->roomTextureID = ViewportManager::getInstance()->viewportTexture->GetTextureID();
 
+		if (selectedRoom != nullptr)
+			selectedRoom->isSelected = false; 
+
 		selectedRoom = nextSelectedRoom;
-		App->BroadCastEvent(FlyEngineEvent::ENTER_ROOM);
+		selectedRoom->isSelected = true; 
+
+		if(sendEvent)
+			App->BroadCastEvent(FlyEngineEvent::ENTER_ROOM);
 		//NodeGraph::getInstance()->SelectNode(nextSelectedRoom->GetName());
 	}
 }
 
-void ModuleRoomManager::SetSelectedRoom(UID selectedRoomUID)
+void ModuleRoomManager::SetSelectedRoom(UID selectedRoomUID, bool sendEvent)
 {
 	SetSelectedRoom(GetRoom(selectedRoomUID)); 
 }
 
-void ModuleRoomManager::SetSelectedRoom(std::string roomName)
+void ModuleRoomManager::SetSelectedRoom(std::string roomName, bool sendEvent)
 {
 	SetSelectedRoom(GetRoom(roomName)); 
 }

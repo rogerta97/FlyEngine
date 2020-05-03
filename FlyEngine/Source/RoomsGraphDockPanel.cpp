@@ -2,7 +2,7 @@
 #include "ModuleInput.h"
 #include "ModuleRoomManager.h"
 #include "RoomsGraphDockPanel.h"
-
+#include "MyFileSystem.h"
 #include "imgui.h"
 #include "Room.h"
 #include "SDL_opengl.h"
@@ -16,7 +16,7 @@ RoomsGraphDockPanel::RoomsGraphDockPanel(bool isVisible) : DockPanel("Rooms Grap
 	flyEngineSection = FLY_SECTION_ROOM_GRAPH;
 	dockPanelType = DOCK_ROOMS_GRAPH;
 
-	roomsNodeGraph = new RoomsNodeGraph(); 
+	roomsNodeGraph = new RoomsNodeGraph();
 }
 
 RoomsGraphDockPanel::~RoomsGraphDockPanel()
@@ -33,9 +33,23 @@ bool RoomsGraphDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible)) 
 	{
+		if (!loaded)
+		{
+			string loadStr = MyFileSystem::getInstance()->GetRoomsNodesDirectory() + "WorldGraph.ini";
+			imnodes::LoadCurrentEditorStateFromIniFile(loadStr.c_str());
+			loaded = true; 
+		}
+
 		roomsNodeGraph->DrawGraph(); 
 	}
 
 	ImGui::End();
+}
+
+bool RoomsGraphDockPanel::CleanUp()
+{
+	string saveStr = MyFileSystem::getInstance()->GetRoomsNodesDirectory() + "WorldGraph.ini"; 
+	imnodes::SaveCurrentEditorStateToIniFile(saveStr.c_str()); 
+	return false;
 }
 

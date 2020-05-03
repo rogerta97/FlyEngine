@@ -189,6 +189,11 @@ string MyFileSystem::GetDialogueNodesDirectory()
 	return instance->GetSolutionDirectory() + "Source\\Game\\Resources\\EngineResources\\EngineSavedData\\NodeGraphData\\Dialogues\\";
 }
 
+string MyFileSystem::GetRoomsNodesDirectory()
+{
+	return instance->GetSolutionDirectory() + "Source\\Game\\Resources\\EngineResources\\EngineSavedData\\NodeGraphData\\Rooms\\";
+}
+
 void MyFileSystem::GetRelativeDirectory(string& directory)
 {
 	instance->DeleteFrontItem(directory);
@@ -263,10 +268,10 @@ std::vector<string> MyFileSystem::GetFoldersInDirectory(const char* directory)
 void MyFileSystem::Init()
 {
 	CreateDirectory(string(GetSavedDataDirectory() + "RoomsData").c_str(), NULL);
-	CreateDirectory(string(GetSavedDataDirectory() + "RoomThumbnails").c_str(), NULL);
 	CreateDirectory(string(GetSavedDataDirectory() + "BlackboardsData").c_str(), NULL);
 	CreateDirectory(string(GetSavedDataDirectory() + "NodeGraphData").c_str(), NULL);
 	CreateDirectory(string(GetSavedDataDirectory() + "NodeGraphData\\Dialogues").c_str(), NULL);
+	CreateDirectory(string(GetSavedDataDirectory() + "NodeGraphData\\Rooms").c_str(), NULL);
 }
 
 void MyFileSystem::Delete()

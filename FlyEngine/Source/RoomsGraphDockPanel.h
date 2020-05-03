@@ -13,9 +13,11 @@ public:
 	~RoomsGraphDockPanel();
 
 	bool Draw();
+	bool CleanUp();
 
 private:
 	RoomsNodeGraph* roomsNodeGraph; 
+	bool loaded = false; 
 };
 
 #endif 

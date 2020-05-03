@@ -5,6 +5,7 @@
 #include "ModuleManager.h"
 #include "ModuleImGui.h"
 #include "Room.h"
+#include "ModuleInput.h"
 #include "ModuleRoomManager.h"
 #include "ResourceManager.h"
 
@@ -19,12 +20,13 @@ RoomsNodeGraph::~RoomsNodeGraph()
 
 void RoomsNodeGraph::DrawGraph()
 {
-	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(247, 200, 40, 255));
-	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarHovered, IM_COL32(255, 80, 80, 255));
-	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarSelected, IM_COL32(255, 80, 80, 255));
+	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(74, 152, 92, 255));
+	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarHovered, IM_COL32(84, 182, 107, 255));
+	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarSelected, IM_COL32(123, 172, 134, 255));
 
 	imnodes::BeginNodeEditor();
 
+	// Draw Nodes
 	if (roomManager->GetRoomsAmount() > 0)
 	{
 		// Draw Nodes 
@@ -74,25 +76,31 @@ void RoomsNodeGraph::DrawGraph()
 			ImGui::Image((ImTextureID)currentRoom->roomThumbnail->GetTextureID(), uiImageDimensions);
 
 			// Draw Enter Pin
-			imnodes::BeginInputAttribute(currentRoom->GetUID() + 1);
+			imnodes::BeginInputAttribute(currentRoom->GetUID() - 1);
 			ImGui::Text("In");
 			imnodes::EndAttribute();
 
 			// Draw Output Pin
-			imnodes::BeginOutputAttribute(currentRoom->GetUID() + 2);
+			imnodes::BeginOutputAttribute(currentRoom->GetUID() + 1);
 
-			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 105);
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 110);
 			ImGui::Text("Out");
 			imnodes::EndAttribute();
 
 			imnodes::EndNode();
-
-			// Draw Answer Pins
-			//DrawAnswerPins(currentStep);
 		}
 
 		// Draw Links
-		//DrawGraphLinks();
+		int count = 0; 
+		for (auto& currentRoom : roomManager->GetRoomsInWorldList())
+		{
+			for (auto& currentLink : currentRoom->outLinks)
+			{
+				const std::pair<int, int> p(currentLink->originRoom->GetUID() + 1, currentLink->destinationRoom->GetUID() - 1);
+				imnodes::Link(count, p.first, p.second);
+				count++;
+			}
+		}
 	}
 	else
 	{
@@ -101,12 +109,12 @@ void RoomsNodeGraph::DrawGraph()
 		ImGui::TextColored(ImVec4(1, 0.5f, 0.5f, 0.25f), "No Rooms In World");
 		ImGui::PopFont();
 	}
-
+	
 	imnodes::EndNodeEditor();
 
 	// Handle Selected Nodes
 	int num_selected_nodes = imnodes::NumSelectedNodes();
-	if (num_selected_nodes > 0)
+	if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) && num_selected_nodes > 0)
 	{
 		std::vector<int> selected_nodes_id_list;
 		selected_nodes_id_list.resize(num_selected_nodes);

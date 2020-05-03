@@ -133,11 +133,11 @@ void Room::CleanUp()
 {
 
 	if (GetOutputConnectionsAmount() > 0) {
-		for (auto it : outConnections) {
+		for (auto it : outLinks) {
 			delete it; 
 		}
 
-		outConnections.clear();
+		outLinks.clear();
 	}
 
 	for (auto& currentObject : objectsInRoom)
@@ -307,16 +307,18 @@ void Room::SaveRoomThumbnail()
 
 }
 
-RoomConnection* Room::ConnectToRoom(Room* destinationRoom)
+RoomConnection* Room::AddConnection(Room* destinationRoom)
 {
 	// Logic
-	RoomConnection* newConnection = new RoomConnection(this, destinationRoom, "TestLink", false);
-	outConnections.push_back(newConnection);
-	destinationRoom->inRoomUIDs.push_back(GetUID());
+	RoomConnection* newConnection = new RoomConnection(this, destinationRoom, "Link", false);
+	outLinks.push_back(newConnection);
+	flog("Room %s connected the LOGIC succesfuly with %s", roomName.c_str(), destinationRoom->GetName().c_str()); 
+	
+	
+	//destinationRoom->inRoomUIDs.push_back(GetUID());
 
 	// Update Graph 
 	//NodeGraph::getInstance()->ConnectNodes(GetName(), "Out", destinationRoom->GetName(), "In", newConnection->connectionID);
-	flog("Room %s connected the LOGIC succesfuly with %s", roomName.c_str(), destinationRoom->GetName().c_str()); 
 	App->moduleRoomManager->connectionsInWorldAmount++; 
 	return newConnection;
 }
@@ -330,23 +332,23 @@ void Room::DeleteAllConnections()
 // Output Connections
 void Room::BreakOutputConnections()
 {
-	if (outConnections.size() <= 0)
+	if (outLinks.size() <= 0)
 		return; 
 
-	for (auto it : outConnections) {
+	for (auto it : outLinks) {
 		it->destinationRoom->BreakEnterConnectionFromInRoomUIDs(roomID);
 		it->DeleteOnGraph();
 
 		delete it;
 	}
 
-	App->moduleRoomManager->connectionsInWorldAmount -= outConnections.size(); 
-	outConnections.clear(); 
+	App->moduleRoomManager->connectionsInWorldAmount -= outLinks.size(); 
+	outLinks.clear(); 
 }
 
 RoomConnection* Room::GetConnectionToRoom(UID dstRoomUID) const
 {
-	for (auto it : outConnections) {		
+	for (auto it : outLinks) {		
 		if (it->destinationRoom->roomID == dstRoomUID) {
 			return it; 
 		}
@@ -361,7 +363,7 @@ int Room::GetTotalConnectionsAmount() const
 const char* Room::GetOutConnectionsAsCombo()
 {
 	string returnStr;
-	for (auto& it : outConnections) {
+	for (auto& it : outLinks) {
 		returnStr += (it)->connectionName; 
 		returnStr += '\0';
 	}
@@ -372,14 +374,14 @@ const char* Room::GetOutConnectionsAsCombo()
 
 void Room::BreakOutputConnection(UID connectionToDelUID)
 {
-	for (auto it = outConnections.begin(); it != outConnections.end();) {
+	for (auto it = outLinks.begin(); it != outLinks.end();) {
 		
 		if ((*it)->connectionID == connectionToDelUID) {
 
 			(*it)->DeleteOnGraph();
 
 			delete (*it);
-			it = outConnections.erase(it);
+			it = outLinks.erase(it);
 			App->moduleRoomManager->connectionsInWorldAmount -= 1; 
 			break; 
 		}
@@ -425,7 +427,7 @@ void Room::BreakEnterConnectionFromInRoomUIDs(UID roomToDelUID)
 
 int Room::GetOutputConnectionsAmount() const
 {
-	return outConnections.size();
+	return outLinks.size();
 }
 
 void Room::DrawRoomObjects()

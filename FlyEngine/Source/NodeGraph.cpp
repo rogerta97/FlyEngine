@@ -230,7 +230,7 @@ void NodeGraph::CheckNewConnection()
 		Node* dstNode = (Node*)_dstNode;
 		Room* dstRoom = App->moduleRoomManager->GetRoom(dstNode->title);
 
-		originRoom->ConnectToRoom(dstRoom); 
+		originRoom->AddConnection(dstRoom); 
 	}
 }
 

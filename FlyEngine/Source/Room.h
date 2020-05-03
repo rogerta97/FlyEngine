@@ -14,15 +14,20 @@ using namespace std;
 class MusicTrack; 
 class Room; 
 class RoomUIHandler; 
-struct RoomConnection {
 
+// Room Enter Pins on graph = roomUID - 1;
+// Room Out Pins on graph = roomUID + 1;
+
+struct RoomConnection 
+{
+public:
 	RoomConnection(Room* _originRoom, Room* _roomConnected, string _connectionName, bool _isBidirectional);
 	void DeleteOnGraph(); 
 
 	Room* originRoom; 
 	Room* destinationRoom;
-
 	bool isBidirectional; 
+
 	string connectionName;
 	UID connectionID; 
 };
@@ -60,7 +65,11 @@ public:
 	void SaveRoomThumbnail(); 
 
 	// Connections ---------------
-	RoomConnection* ConnectToRoom(Room* destinationRoom);
+	RoomConnection* AddConnection(Room* destinationRoom);
+
+
+	// ---
+
 	RoomConnection* GetConnectionToRoom(UID dstRoomUID) const;
 
 	void DeleteAllConnections();
@@ -118,10 +127,13 @@ public:
 	
 	// Save FrameBuffer ID
 	Texture* roomThumbnail; 
+	bool isSelected = false;
 
 	// Link Management -----
-	list<RoomConnection*> outConnections;
+	list<RoomConnection*> outLinks;
 	list<UID> inRoomUIDs;
+
+	// Room UI
 	RoomUIHandler* roomUIHandler; 
 
 	// Music ---------------

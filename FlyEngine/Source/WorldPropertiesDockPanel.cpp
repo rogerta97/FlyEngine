@@ -47,7 +47,7 @@ bool WorldPropertiesDockPanel::Draw()
 
 void WorldPropertiesDockPanel::PrintRoomInfo(Room* selectedRoom)
 {
-	if(ImGui::CollapsingHeader("Room Info", ImGuiTreeNodeFlags_DefaultOpen)) {
+	/*if(ImGui::CollapsingHeader("Room Info", ImGuiTreeNodeFlags_DefaultOpen)) {
 
 		ImGui::Text("Room Selected: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", selectedRoom->GetName().c_str());
@@ -90,7 +90,7 @@ void WorldPropertiesDockPanel::PrintRoomInfo(Room* selectedRoom)
 		}
 
 		ImGui::Separator(); 
-	}
+	}*/
 }
 
 void WorldPropertiesDockPanel::NewConnectionButtonHandler()
@@ -111,7 +111,7 @@ void WorldPropertiesDockPanel::NewConnectionButtonHandler()
 			Room* originRoom = (*itOrigin);
 			Room* dstRoom = (*itDst);
 
-			originRoom->ConnectToRoom(dstRoom);
+			originRoom->AddConnection(dstRoom);
 
 			ImGui::CloseCurrentPopup();
 		}
@@ -132,7 +132,8 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
 	for (auto currentRoom : App->moduleRoomManager->GetRoomsInWorldList()) {
 
-		if (ImGui::Selectable(currentRoom->GetName().c_str(), false)) {
+		if (ImGui::Selectable(currentRoom->GetName().c_str(), currentRoom->isSelected)) 
+		{
 			App->moduleRoomManager->SetSelectedRoom(currentRoom->GetUID());
 		}
 	}
