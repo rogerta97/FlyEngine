@@ -16,6 +16,7 @@ WorldPropertiesDockPanel::WorldPropertiesDockPanel(bool isVisible) : DockPanel("
 {
 	flyEngineSection = FLY_SECTION_ROOM_GRAPH;
 	dockPanelType = DOCK_WORLD_PROPERTIES;
+	newRoomBuffer = "New Room...";
 }
 
 WorldPropertiesDockPanel::~WorldPropertiesDockPanel()
@@ -144,6 +145,7 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 
 	// New Room Button 
 	if (ImGui::Button("Add Room")) {
+		newRoomBuffer = "New Room...";
 		ImGui::OpenPopup("new_room"); 
 	}
 
@@ -178,7 +180,6 @@ void WorldPropertiesDockPanel::ShowNewRoomUI()
 	if (ImGui::BeginPopup("new_room")) 
 	{
 		bool createThisTick = false;
-		string newRoomBuffer("Room Name...");
 		ImGui::InputText("##2", (char*)newRoomBuffer.c_str(), 265 * sizeof(char));
 
 		if (App->moduleInput->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || App->moduleInput->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN) {
@@ -193,7 +194,7 @@ void WorldPropertiesDockPanel::ShowNewRoomUI()
 
 		if (createThisTick) {
 			App->moduleRoomManager->CreateEmptyRoom(newRoomBuffer);
-			newRoomBuffer = "Room Name...";
+		//	newRoomBuffer = "Room Name...";
 			ImGui::CloseCurrentPopup();		
 		}
 

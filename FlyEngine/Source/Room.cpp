@@ -7,6 +7,7 @@
 #include "ViewportManager.h"
 #include "RandomNumberGenerator.h"
 #include "Application.h"
+#include "imnodes.h"
 #include "ModuleInput.h"
 #include "ResourceManager.h"
 #include "ObjectCreatorDockPanel.h"
@@ -323,6 +324,11 @@ RoomConnection* Room::AddConnection(Room* destinationRoom)
 	return newConnection;
 }
 
+void Room::CleanGraphConnections()
+{
+	outLinks.clear();
+}
+
 void Room::DeleteAllConnections()
 {
 	BreakOutputConnections();
@@ -335,7 +341,8 @@ void Room::BreakOutputConnections()
 	if (outLinks.size() <= 0)
 		return; 
 
-	for (auto it : outLinks) {
+	for (auto it : outLinks) 
+	{
 		it->destinationRoom->BreakEnterConnectionFromInRoomUIDs(roomID);
 		it->DeleteOnGraph();
 

@@ -24,6 +24,7 @@ private:
 	bool showNewRoomUI = false; 
 	bool showNewOutConnectionUI = false; 
 	bool showNewInConnectionUI = false; 
+	string newRoomBuffer;
 };
 
 #endif 

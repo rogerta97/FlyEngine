@@ -190,11 +190,10 @@ void ModuleRoomManager::DeleteRoom(UID roomID)
 {
 	for (auto it = roomsInWorldList.begin(); it != roomsInWorldList.end(); it++) {
 
-		if ((*it)->GetUID() == roomID) {
+		if ((*it)->GetUID() == roomID) 
+		{
+			(*it)->CleanGraphConnections();
 
-			(*it)->DeleteAllConnections();
-
-			//	NodeGraph::getInstance()->DeleteNode((*it)->GetName());
 			(*it)->CleanUp(); 
 			delete (*it);
 

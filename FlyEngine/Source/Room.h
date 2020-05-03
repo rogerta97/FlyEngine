@@ -66,7 +66,7 @@ public:
 
 	// Connections ---------------
 	RoomConnection* AddConnection(Room* destinationRoom);
-
+	void CleanGraphConnections(); 
 
 	// ---
 
