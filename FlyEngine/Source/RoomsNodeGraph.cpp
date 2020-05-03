@@ -35,7 +35,9 @@ void RoomsNodeGraph::DrawGraph()
 			imnodes::BeginNode(currentRoom->GetUID());
 
 			imnodes::BeginNodeTitleBar();
+			ImGui::PushFont(App->moduleImGui->rudaBlackMid);
 			ImGui::Text("%s", currentRoom->GetName().c_str());
+			ImGui::PopFont();
 			imnodes::EndNodeTitleBar();
 
 			// Get Room Viewport Texture 
