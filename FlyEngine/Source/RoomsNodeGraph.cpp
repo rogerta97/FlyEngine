@@ -116,7 +116,7 @@ void RoomsNodeGraph::DrawGraph()
 
 	// Handle Selected Nodes
 	int num_selected_nodes = imnodes::NumSelectedNodes();
-	if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) && num_selected_nodes > 0)
+	if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) && ImGui::IsItemHovered() && num_selected_nodes > 0)
 	{
 		std::vector<int> selected_nodes_id_list;
 		selected_nodes_id_list.resize(num_selected_nodes);

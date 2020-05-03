@@ -312,12 +312,12 @@ void ModuleRoomManager::SetSelectedRoom(Room* nextSelectedRoom, bool sendEvent)
 
 void ModuleRoomManager::SetSelectedRoom(UID selectedRoomUID, bool sendEvent)
 {
-	SetSelectedRoom(GetRoom(selectedRoomUID)); 
+	SetSelectedRoom(GetRoom(selectedRoomUID), sendEvent);
 }
 
 void ModuleRoomManager::SetSelectedRoom(std::string roomName, bool sendEvent)
 {
-	SetSelectedRoom(GetRoom(roomName)); 
+	SetSelectedRoom(GetRoom(roomName), sendEvent);
 }
 
 Room* ModuleRoomManager::GetSelectedRoom() const
