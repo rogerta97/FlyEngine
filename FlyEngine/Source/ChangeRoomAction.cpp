@@ -16,6 +16,7 @@ ChangeRoomAction::ChangeRoomAction(FlyObject* _parentObject)
 
 	SetActionName("Change Room");
 	SetToolDescription("This should be the description of the scene change");
+	parentObject = _parentObject; 
 }
 
 ChangeRoomAction::~ChangeRoomAction()
@@ -70,7 +71,10 @@ void ChangeRoomAction::DrawSelectDestinationCombo()
 		for (auto& currentRoom : roomsInWorld)
 		{
 			if (ImGui::Selectable(currentRoom->GetName().c_str()))
+			{
 				SetDestination(currentRoom);
+				parentObject->GetParentRoom()->AddConnection(currentRoom); 
+			}
 		}
 		ImGui::EndCombo();
 	}

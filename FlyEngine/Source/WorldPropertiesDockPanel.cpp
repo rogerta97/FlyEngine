@@ -127,7 +127,7 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 	ImGui::PopFont();
 	
 	PUSH_CHILD_BG_COLOR;
-	ImGui::BeginChild("RoomsList", ImVec2(ImGui::GetWindowContentRegionWidth(), ImGui::GetWindowHeight() / 4), true);
+	ImGui::BeginChild("RoomsList", ImVec2(ImGui::GetWindowContentRegionWidth(), 250), true);
 
 	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
 	for (auto currentRoom : App->moduleRoomManager->GetRoomsInWorldList()) {
