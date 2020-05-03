@@ -192,9 +192,11 @@ void WorldPropertiesDockPanel::ShowNewRoomUI()
 			createThisTick = true;
 		}
 
-		if (createThisTick) {
-			App->moduleRoomManager->CreateEmptyRoom(newRoomBuffer);
-		//	newRoomBuffer = "Room Name...";
+		if (createThisTick) 
+		{
+			Room* newRoom = App->moduleRoomManager->CreateEmptyRoom(newRoomBuffer);
+			newRoom->SaveRoomData(); 
+
 			ImGui::CloseCurrentPopup();		
 		}
 
