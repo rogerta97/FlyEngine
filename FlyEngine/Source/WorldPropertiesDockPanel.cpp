@@ -7,6 +7,7 @@
 #include "ModuleInput.h"
 #include "imgui.h"
 #include "TextureMSAA.h"
+#include "SaveAndLoad.h"
 #include "ViewportManager.h"
 #include "Room.h"
 #include "NodeGraph.h"
@@ -195,7 +196,7 @@ void WorldPropertiesDockPanel::ShowNewRoomUI()
 		if (createThisTick) 
 		{
 			Room* newRoom = App->moduleRoomManager->CreateEmptyRoom(newRoomBuffer);
-			newRoom->SaveRoomData(); 
+			SaveAndLoad::getInstance()->SaveRoomData(newRoom); 
 
 			ImGui::CloseCurrentPopup();		
 		}

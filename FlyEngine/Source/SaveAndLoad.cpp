@@ -775,7 +775,7 @@ void SaveAndLoad::LoadChangeRoomAction(JSON_Object* root_obj, std::string& seria
 	changeRoomAction->SetDestination(room);
 
 	if(room != nullptr)
-		changeRoomAction->GetParentObject()->GetParentRoom()->AddConnection(room); 
+		changeRoomAction->GetParentObject()->GetParentRoom()->AddConnection(room);
 }
 
 void SaveAndLoad::LoadDisplayImageAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)
@@ -896,6 +896,7 @@ void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 		instance->LoadActionConditions(root_obj, serializeObjectStr, roomToLoad);
 		counter++;
 	}
+
 
 	string serialiseStr = "RoomData.UserInterface";
 

@@ -42,6 +42,11 @@ Room::Room(string roomName)
 	roomThumbnail = 0; 
 	roomBlackboard = new Blackboard(); 
 	roomUIHandler = new RoomUIHandler(this); 	
+
+	
+	Texture* thumbnailTexture = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject");
+	roomThumbnail = thumbnailTexture;
+
 }
 
 Room::~Room()
