@@ -122,21 +122,33 @@ void RoomsNodeGraph::DrawGraph()
 		selected_nodes_id_list.resize(num_selected_nodes);
 		imnodes::GetSelectedNodes(selected_nodes_id_list.data());
 
-		for (auto& selectedNodeID : selected_nodes_id_list)
+		std::vector<int>::reverse_iterator currentNodeID = selected_nodes_id_list.rbegin();
+		for (auto& currentNodeID : selected_nodes_id_list)
 		{
-			Room* selectedRoom = App->moduleRoomManager->GetRoom(selectedNodeID);
+			Room* selectedRoom = App->moduleRoomManager->GetRoom(currentNodeID);
 
 			if (selectedRoom != nullptr)
 			{
-				App->moduleRoomManager->SetSelectedRoom(selectedNodeID); 
+				App->moduleRoomManager->SetSelectedRoom(currentNodeID);
 				num_selected_nodes = 0;
 				return;
 			}
 		}
+
 	}
 
 	imnodes::PopColorStyle();
 	imnodes::PopColorStyle();
 	imnodes::PopColorStyle();
 
+}
+
+void RoomsNodeGraph::Update()
+{
+	// Check Input 
+	if(App->moduleInput->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
+	{
+		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom(); 
+		App->moduleRoomManager->DeleteRoom(selectedRoom);
+	}
 }

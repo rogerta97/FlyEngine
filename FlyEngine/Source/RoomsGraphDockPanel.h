@@ -12,6 +12,7 @@ public:
 	RoomsGraphDockPanel(bool isVisible);
 	~RoomsGraphDockPanel();
 
+	void Update();
 	bool Draw();
 	bool CleanUp();
 

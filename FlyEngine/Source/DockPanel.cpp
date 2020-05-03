@@ -43,6 +43,10 @@ bool DockPanel::Draw() {
 	return true; 
 }
 
+void DockPanel::Update()
+{
+}
+
 void DockPanel::ReceiveEvent(FlyEngineEvent eventType)
 {
 }

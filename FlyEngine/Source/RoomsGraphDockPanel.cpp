@@ -23,6 +23,12 @@ RoomsGraphDockPanel::~RoomsGraphDockPanel()
 {
 }
 
+void RoomsGraphDockPanel::Update()
+{
+	if(IsVisible())
+		roomsNodeGraph->Update(); 
+}
+
 bool RoomsGraphDockPanel::Draw()
 {
 	

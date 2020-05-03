@@ -12,6 +12,7 @@ public:
 	~RoomsNodeGraph();
 
 	void DrawGraph(); 
+	void Update(); 
 
 private: 
 	ModuleRoomManager* roomManager; 

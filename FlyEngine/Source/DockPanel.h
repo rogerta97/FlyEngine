@@ -30,6 +30,7 @@ public:
 	~DockPanel();
 
 	virtual bool Draw();
+	virtual void Update();
 	virtual void ReceiveEvent(FlyEngineEvent eventType);
 	virtual bool CleanUp();
 

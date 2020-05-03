@@ -165,6 +165,16 @@ update_status ModuleImGui::PreUpdate(float dt)
 	return update_status::UPDATE_CONTINUE;
 }
 
+update_status ModuleImGui::Update(float dt)
+{
+	for (auto& currentPanel : dockPanels)
+	{
+		currentPanel->Update(); 
+	}
+
+	return update_status::UPDATE_CONTINUE;
+}
+
 void ModuleImGui::DrawDockSpace() 
 {	
 	bool open = true;
