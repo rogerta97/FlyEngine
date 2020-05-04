@@ -482,11 +482,22 @@ void RoomDockPanel::DrawRoomHierarchy()
 
 		if (ImGui::BeginPopup("rename_popup"))
 		{
+			bool assignName = false; 
 			ImGui::InputTextWithHint("", "New Name...", newNameBuffer, IM_ARRAYSIZE(newNameBuffer)); 
 			ImGui::SameLine();
+
+			if (App->moduleInput->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || App->moduleInput->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN)
+				assignName = true; 
+
 			if (ImGui::Button("OK"))
+				assignName = true; 
+
+			if (assignName)
 			{
+				FlyObject* objectToRename = selectedRoom->GetSelectedObject();
+				objectToRename->SetName(newNameBuffer); 
 				strcpy(newNameBuffer, "");
+
 				ImGui::CloseCurrentPopup(); 
 			}
 
