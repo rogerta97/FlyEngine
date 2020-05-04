@@ -5,7 +5,7 @@
 #include "DisplayTextAction.h"
 #include "DialogueText.h"
 #include "StepAnswer.h"
-
+#include "MyFileSystem.h"
 #include "DialogueViewportHandler.h"
 #include "Application.h"
 #include "ModifyVariableAction.h"
@@ -66,6 +66,13 @@ void DialogueAction::Draw()
 {
 	if(dialogue != nullptr)
 		dialogue->Draw(); 
+}
+
+void DialogueAction::CleanUp()
+{
+	// Delete Dialogue Save Data Files 
+	string removeStr = MyFileSystem::getInstance()->GetSavedDataDirectory() + "NodeGraphData\\Dialogues\\" + to_string((int)GetUID()); 
+	remove(removeStr.c_str());
 }
 
 void DialogueAction::DoAction()

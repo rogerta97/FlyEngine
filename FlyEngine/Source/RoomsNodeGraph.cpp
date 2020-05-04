@@ -148,8 +148,6 @@ void RoomsNodeGraph::Update()
 	// Check Input 
 	if(App->moduleInput->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
 	{
-
-
 		ImGui::OpenPopup("DELETING ROOM - Are You Sure?");
 	}
 

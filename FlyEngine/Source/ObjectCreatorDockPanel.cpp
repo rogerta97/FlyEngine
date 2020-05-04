@@ -32,7 +32,7 @@ ObjectCreatorDockPanel::ObjectCreatorDockPanel(bool isVisible) : DockPanel("Obje
 	dockPanelType = DOCK_OBJECT_CREATOR;
 
 	previewClickableAreaTexture = nullptr;
-	displayImageAction_Inv = nullptr; 
+	displayImageAction_Inv = nullptr;
 
 	clickableAreaPosPerc = float2(0, 0);
 	clickableAreaSizePerc = float2(1.0f, 1.0f);
@@ -46,7 +46,7 @@ ObjectCreatorDockPanel::~ObjectCreatorDockPanel()
 
 bool ObjectCreatorDockPanel::CleanUp()
 {
-	return true; 
+	return true;
 }
 
 bool ObjectCreatorDockPanel::Draw()
@@ -58,19 +58,19 @@ bool ObjectCreatorDockPanel::Draw()
 
 	if (ImGui::Begin(panelName.c_str(), &visible, ImGuiWindowFlags_NoTitleBar))
 	{
-		Texture* iconTexture = nullptr; 
+		Texture* iconTexture = nullptr;
 
-		if (creatingObject->flyObjectType == FlyObjectType::ACTION_OBJECT)	
-			iconTexture = (Texture*)ResourceManager::getInstance()->GetResource("ObjectIcon");	
+		if (creatingObject->flyObjectType == FlyObjectType::ACTION_OBJECT)
+			iconTexture = (Texture*)ResourceManager::getInstance()->GetResource("ObjectIcon");
 
-		else if (creatingObject->flyObjectType == FlyObjectType::INVENTORY_ITEM)		
+		else if (creatingObject->flyObjectType == FlyObjectType::INVENTORY_ITEM)
 			iconTexture = (Texture*)ResourceManager::getInstance()->GetResource("InventoryItemIcon");
 
 		else if (creatingObject->flyObjectType == FlyObjectType::OBJECT_SEQUENTIAL)
 			iconTexture = (Texture*)ResourceManager::getInstance()->GetResource("InventoryItemIcon");
 
-		ImGui::Image((ImTextureID)iconTexture->GetTextureID(), ImVec2(35, 35)); 
-		ImGui::SameLine(); 
+		ImGui::Image((ImTextureID)iconTexture->GetTextureID(), ImVec2(35, 35));
+		ImGui::SameLine();
 
 		INC_CURSOR_7;
 		ImGui::PushFont(App->moduleImGui->rudaBlackHuge);
@@ -82,7 +82,7 @@ bool ObjectCreatorDockPanel::Draw()
 		if (DrawCloseAndCreateButton())
 		{
 			ImGui::End();
-			return true; 
+			return true;
 		}
 
 		ImGui::Separator();
@@ -99,15 +99,15 @@ bool ObjectCreatorDockPanel::Draw()
 		{
 			switch (selectedObjectType)
 			{
-			case ACTION_OBJECT: 
+			case ACTION_OBJECT:
 				ResetObjectData();
 				creatingObject->flyObjectType = ACTION_OBJECT;
-				break; 
+				break;
 
-			case INVENTORY_ITEM: 
+			case INVENTORY_ITEM:
 				ResetObjectData();
-				clickableAreaActive = true; 
-				creatingObject->flyObjectType = INVENTORY_ITEM; 
+				clickableAreaActive = true;
+				creatingObject->flyObjectType = INVENTORY_ITEM;
 				break;
 
 			case OBJECT_SEQUENTIAL:
@@ -123,29 +123,42 @@ bool ObjectCreatorDockPanel::Draw()
 			focusClickableAreaTab = true;
 		}
 
-		ImGui::Separator(); 
-
 		if (selectedObjectType == ACTION_OBJECT || selectedObjectType == OBJECT_SEQUENTIAL)
 		{
-			if (selectedObjectType == ACTION_OBJECT)
-				DrawObjectCreator();
-			else
-				DrawObjectSequentialCreator();
-			
-			if (creatingObject->IsInteractable())
+			if (ImGui::BeginTabBar("ObjectCreatorBar"))
 			{
-				ImGuiTabItemFlags tabFlags = 0;
-				if (focusClickableAreaTab)
+				if (ImGui::BeginTabItem("Actions"))
 				{
-					tabFlags |= ImGuiTabItemFlags_SetSelected;
-					focusClickableAreaTab = false;
+					if (selectedObjectType == ACTION_OBJECT)
+						DrawObjectCreator();
+					else
+						DrawObjectSequentialCreator();
+
+					ImGui::EndTabItem();
 				}
 
-				DrawClickableAreaCreator();
+				if (creatingObject->IsInteractable())
+				{
+					if (ImGui::BeginTabItem("Clickable Area"))
+					{
+						ImGuiTabItemFlags tabFlags = 0;
+						if (focusClickableAreaTab)
+						{
+							tabFlags |= ImGuiTabItemFlags_SetSelected;
+							focusClickableAreaTab = false;
+						}
+
+						DrawClickableAreaCreator();
+						ImGui::EndTabItem();
+					}
+				}
+
+				ImGui::EndTabBar();
 			}
+
 		}
 		else if (selectedObjectType == INVENTORY_ITEM)
-		{	
+		{
 			ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
 			ImGui::Text("Item Inventory Attributes:");
 			ImGui::PopFont();
@@ -158,14 +171,14 @@ bool ObjectCreatorDockPanel::Draw()
 }
 void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 {
-	static bool toSequentialList = false; 
-	static bool updatePopup = false; 
+	static bool toSequentialList = false;
+	static bool updatePopup = false;
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Fixed Actions:");
 	ImGui::PopFont();
 
 	DrawObjectActionsList();
-	
+
 	ImGui::Spacing();
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
 
@@ -192,15 +205,15 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 
 	ImGui::PopStyleVar();
 
-	ImGui::Spacing(); 
-	ImGui::Separator(); 
+	ImGui::Spacing();
+	ImGui::Separator();
 
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Sequential Actions:");
 	ImGui::PopFont();
 
 	DrawSequentialActionsList();
-	
+
 	ImGui::Spacing();
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
 
@@ -210,7 +223,7 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
 		flog("Sequential Fixed");
-		toSequentialList = true; 
+		toSequentialList = true;
 		ImGui::OpenPopup("AddActionToObject");
 	}
 
@@ -266,7 +279,7 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 		// Tools Dictonary ----------
 		ActionSelectableInfo* newActionSelected = nullptr;
 
-		if(toSequentialList)
+		if (toSequentialList)
 			newActionSelected = App->moduleManager->DrawActionDictionaryUI();
 		else
 			newActionSelected = App->moduleManager->DrawActionDictionaryUI(FILTER_ACTIONS_FIXED);
@@ -308,7 +321,7 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 			}
 
 			if (toSequentialList && selectedAction != nullptr)
-				selectedAction->SetActionClass(ACTION_CLASS_SEQUENTIAL); 
+				selectedAction->SetActionClass(ACTION_CLASS_SEQUENTIAL);
 
 			ImGui::EndChild();
 			ImGui::PopStyleColor();
@@ -333,7 +346,7 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 	// ----------------------------------------------------------------------------------------
 	SPACING;
 	PrintClickableAreaObjectVisuals(drawClickableAreaOver);
-	SPACING; 
+	SPACING;
 
 	// Input Text to Browse Image ------------
 	static char inventoryBrowcseImageBuffer[512];
@@ -342,7 +355,7 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 
 	if (ImGui::BeginDragDropTarget())
 	{
-		if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("drag_resource"))
 		{
 			int* selectedResourceUID = (int*)payload->Data;
 			Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
@@ -350,12 +363,12 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 			if (resourceDropped->GetType() == RESOURCE_TEXTURE)
 			{
 				Texture* textureDropped = (Texture*)resourceDropped;
-	
-				if (displayImageAction_Inv == nullptr)				
-					displayImageAction_Inv = creatingObject->AddDisplayImageAction(textureDropped->GetPath());				
-				else				
+
+				if (displayImageAction_Inv == nullptr)
+					displayImageAction_Inv = creatingObject->AddDisplayImageAction(textureDropped->GetPath());
+				else
 					displayImageAction_Inv->SetTexture(textureDropped);
-				
+
 				strcpy(inventoryBrowcseImageBuffer, resourceDropped->GetName().c_str());
 			}
 		}
@@ -365,8 +378,8 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 
 	if (ImGui::Button("Change Image##Creator"))
 	{
-		clickableAreaActive = true; 
-		displayImageAction_Inv = creatingObject->AddDisplayImageAction("None"); 
+		clickableAreaActive = true;
+		displayImageAction_Inv = creatingObject->AddDisplayImageAction("None");
 
 		char const* lFilterPatterns[2] = { "*.jpg" , "*.png" };
 		const char* path = tinyfd_openFileDialog("Load Image...", NULL, 2, lFilterPatterns, NULL, 0);
@@ -394,7 +407,7 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 	ImGui::Text("Clickable Zone:");
 	ImGui::PopFont();
 
-	ImGui::Separator(); 
+	ImGui::Separator();
 	ImGui::Spacing();
 
 	if (displayImageAction_Inv != nullptr && displayImageAction_Inv->GetTexture() != nullptr)
@@ -414,14 +427,14 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 		ImGui::Text("Dimensions");
 		ImGui::DragFloat("Width", &creatingObject->GetClickableAreaSizeOne().x);
 		ImGui::DragFloat("Heigth", &creatingObject->GetClickableAreaSizeOne().y);
-		ImGui::EndChild(); 
+		ImGui::EndChild();
 
 		ImGui::PopStyleColor();
 	}
 	else
 	{
 		ImGui::PushFont(App->moduleImGui->rudaRegularTiny);
-		ImGui::TextColored(ImVec4(0,1,1,1), "Inventory Items need images assigned to enable the clickable zone. Assign an image.");
+		ImGui::TextColored(ImVec4(0, 1, 1, 1), "Inventory Items need images assigned to enable the clickable zone. Assign an image.");
 		ImGui::PopFont();
 	}
 
@@ -434,17 +447,17 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 	ImGui::Text("Perform Action When Picked:");
 	ImGui::PopFont();
 
-	ImGui::SameLine(); 
+	ImGui::SameLine();
 
 	if (ImGui::Button("Add On Pick Action"))
 	{
-		ImGui::OpenPopup("selectOnClickAction"); 
+		ImGui::OpenPopup("selectOnClickAction");
 	}
-	
+
 	if (ImGui::BeginPopup("selectOnClickAction"))
 	{
 		ActionSelectableInfo* selectableInfo = App->moduleManager->DrawActionDictionaryUI(FILTER_ACTIONS_INVENTORY_CLICK);
-		Action* addedAction = nullptr; 
+		Action* addedAction = nullptr;
 
 		if (selectableInfo != nullptr)
 		{
@@ -465,40 +478,40 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 		}
 
 		if (addedAction != nullptr)
-			addedAction->SetOccObjectClicked(true); 
-		
-		ImGui::EndPopup(); 
+			addedAction->SetOccObjectClicked(true);
+
+		ImGui::EndPopup();
 	}
 
 	// ----------------------------------------------------------------------------------------
 	// Draw the list of the action that will trigger when the item is clicked or picked up
 	// ----------------------------------------------------------------------------------------
-	PUSH_CHILD_BG_COLOR; 
-	ImGui::BeginChild("OnPickActions", ImVec2(ImGui::GetContentRegionMax().x, 150)); 
+	PUSH_CHILD_BG_COLOR;
+	ImGui::BeginChild("OnPickActions", ImVec2(ImGui::GetContentRegionMax().x, 150));
 
-	int count = 0; 
-	bool setScroll = false; 
+	int count = 0;
+	bool setScroll = false;
 	for (auto& currentAction : creatingObject->GetActionsList())
 	{
 		// In Inventory Items, the image is fixed and we dont want to treat it as an action 
 		if (currentAction->GetActionName() == "Display Image")
-			continue; 
+			continue;
 
-		if (DrawSelectable(currentAction->GetActionSelectableInfo(), currentAction->IsSelected(), count, 42, currentAction))		
-			setScroll = true; 
-		
-		count++; 
+		if (DrawSelectable(currentAction->GetActionSelectableInfo(), currentAction->IsSelected(), count, 42, currentAction))
+			setScroll = true;
+
+		count++;
 	}
 
-	ImGui::EndChild(); 
-	ImGui::PopStyleColor(); 
+	ImGui::EndChild();
+	ImGui::PopStyleColor();
 
-	ImGui::Separator(); 
+	ImGui::Separator();
 
 	if (selectedAction != nullptr)
 		selectedAction->DrawUISettings();
 
-	if(setScroll)
+	if (setScroll)
 		ImGui::SetScrollHere(0.999f);
 }
 
@@ -514,7 +527,7 @@ void ObjectCreatorDockPanel::DrawPropertiesTab()
 
 void ObjectCreatorDockPanel::ResetObjectData()
 {
-	flog("Object Data Reset"); 
+	flog("Object Data Reset");
 	strcpy(newObjectName, "");
 	strcpy(searchNewActionBuffer, "");
 	selectedAction = nullptr;
@@ -545,7 +558,7 @@ void ObjectCreatorDockPanel::DrawObjectActionsList()
 			DisplayImageAction* displayImageAction = (DisplayImageAction*)currentAction;
 
 			if (displayImageAction->fromAnimation == true)
-				continue; 
+				continue;
 		}
 
 		DrawSelectable(selectableInfo, currentAction->IsSelected(), pos, 42, currentAction);
@@ -588,9 +601,9 @@ void ObjectCreatorDockPanel::DrawSequentialActionsList()
 	ImGui::PopStyleColor();
 }
 
-bool ObjectCreatorDockPanel::DrawSelectable(ActionSelectableInfo selectableInfo, bool& isSelected, int posInList, int selectableHeight = 42, Action * currentAction = nullptr)
+bool ObjectCreatorDockPanel::DrawSelectable(ActionSelectableInfo selectableInfo, bool& isSelected, int posInList, int selectableHeight = 42, Action* currentAction = nullptr)
 {
-	bool ret = false; 
+	bool ret = false;
 	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 
 	Texture* imageIcon = App->moduleManager->GetIconFromActionType(selectableInfo.actionType);
@@ -598,11 +611,11 @@ bool ObjectCreatorDockPanel::DrawSelectable(ActionSelectableInfo selectableInfo,
 	ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
 
 	ImGui::SetCursorPos(ImVec2(50, (selectableHeight * posInList) + 4));
-	if (ImGui::Selectable(selectableInfo.actionName.c_str(), &isSelected, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, selectableHeight - 3))) 
+	if (ImGui::Selectable(selectableInfo.actionName.c_str(), &isSelected, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, selectableHeight - 3)))
 	{
 		creatingObject->SetSelectedAction(selectableInfo.actionType, currentAction->IsActionSequential());
 		selectedAction = currentAction;
-		ret = true; 
+		ret = true;
 	}
 	ImGui::PopFont();
 
@@ -614,7 +627,7 @@ bool ObjectCreatorDockPanel::DrawSelectable(ActionSelectableInfo selectableInfo,
 	ImGui::TextWrapped(selectableInfo.actionDescription.c_str());
 	ImGui::PopFont();
 
-	return ret; 
+	return ret;
 }
 
 void ObjectCreatorDockPanel::DrawSelectedActionSettings()
@@ -622,8 +635,8 @@ void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 
 	if (selectedAction != nullptr)
 	{
-		ImGui::Spacing(); 
-		selectedAction->DrawUISettings(); 
+		ImGui::Spacing();
+		selectedAction->DrawUISettings();
 	}
 
 	/*if (selectedAction)
@@ -751,7 +764,7 @@ void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 			ImGui::Checkbox("Blackboard Value Condition", &modifyVariableAction->IsOccCondition());
 
 		}
-		else if(modifyVariableAction->GetActionClass() == ACTION_CLASS_DIRECT)
+		else if (modifyVariableAction->GetActionClass() == ACTION_CLASS_DIRECT)
 		{
 			ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 132));
 			ImGui::SetCursorPos(ImVec2(5, 8));
@@ -808,7 +821,7 @@ void ObjectCreatorDockPanel::DrawModifyVariableActionSettings()
 		{
 
 		}
-	}	
+	}
 }
 
 void ObjectCreatorDockPanel::DrawEmitSoundActionSettings()
@@ -895,7 +908,7 @@ void ObjectCreatorDockPanel::DrawEmitSoundActionSettings()
 
 		if (ImGui::BeginDragDropTarget())
 		{
-			if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("drag_resource"))
 			{
 				int* selectedResourceUID = (int*)payload->Data;
 				Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
@@ -939,18 +952,18 @@ void ObjectCreatorDockPanel::DrawEmitSoundActionSettings()
 void ObjectCreatorDockPanel::DrawDisplayAnimationSettings()
 {
 	DisplayAnimationAction* displayAnimation = (DisplayAnimationAction*)this->selectedAction;
-	
+
 	if (displayAnimation != nullptr)
 	{
-		if(ImGui::CollapsingHeader("Animation Settings", ImGuiTreeNodeFlags_DefaultOpen))
-			displayAnimation->DrawUISettings(); 
+		if (ImGui::CollapsingHeader("Animation Settings", ImGuiTreeNodeFlags_DefaultOpen))
+			displayAnimation->DrawUISettings();
 	}
 }
 
 void ObjectCreatorDockPanel::OnAddActionButtonClicked(bool fromFixedAction)
 {
 	if (ImGui::BeginPopup("AddActionToObject"))
-	{	
+	{
 		ImGui::Spacing();
 
 		// Search Bar ---------------
@@ -1010,10 +1023,10 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked(bool fromFixedAction)
 
 			ImGui::EndChild();
 			ImGui::PopStyleColor();
-			ImGui::PopStyleVar();	
+			ImGui::PopStyleVar();
 			ImGui::CloseCurrentPopup();
 			ImGui::EndPopup();
-			return; 
+			return;
 		}
 
 		ImGui::EndChild();
@@ -1026,8 +1039,8 @@ void ObjectCreatorDockPanel::OnAddActionButtonClicked(bool fromFixedAction)
 
 void ObjectCreatorDockPanel::Close()
 {
-	creatingObject->CleanUp(); 
-	delete creatingObject; 
+	creatingObject->CleanUp();
+	delete creatingObject;
 
 	selectedAction = nullptr;
 	visible = false;
@@ -1035,12 +1048,10 @@ void ObjectCreatorDockPanel::Close()
 
 void ObjectCreatorDockPanel::DrawClickableAreaCreator()
 {
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	ImGui::Text("Preview:");
-	ImGui::PopFont();
+	//ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	//ImGui::Text("Preview:");
+	//ImGui::PopFont();
 
-	ImGui::SameLine();
-	ImGui::SetCursorPosX(ImGui::GetContentRegionAvailWidth() + 10);
 	if (ImGui::Checkbox("Active", &clickableAreaActive))
 	{
 		if (clickableAreaActive && previewClickableAreaTexture != nullptr)
@@ -1048,6 +1059,8 @@ void ObjectCreatorDockPanel::DrawClickableAreaCreator()
 			float2 textureSize = float2(previewClickableAreaTexture->GetWidth(), previewClickableAreaTexture->GetHeigth());
 		}
 	}
+
+	ImGui::Separator(); 
 
 	PrintClickableAreaObjectVisuals();
 	DrawClickableAreaSettings();
@@ -1121,7 +1134,7 @@ void ObjectCreatorDockPanel::DrawClickableAreaSettings()
 
 void ObjectCreatorDockPanel::PrintClickableAreaObjectVisuals(bool drawClickableArea)
 {
-	ImGui::PushFont(App->moduleImGui->rudaBoldMid);
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Preview:");
 	ImGui::PopFont();
 
@@ -1135,9 +1148,9 @@ void ObjectCreatorDockPanel::PrintClickableAreaObjectVisuals(bool drawClickableA
 
 		// Show No Visual Text
 		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-		
+
 		ImGui::SetCursorPos(ImVec2((ImGui::GetContentRegionAvailWidth() / 2) - 76, (previewTextureMaxSize / 2) - (75)));
-		Texture* emptyObject = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject"); 
+		Texture* emptyObject = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject");
 		ImGui::Image((ImTextureID)emptyObject->GetTextureID(), ImVec2(150, 150));
 
 		ImGui::PopFont();
@@ -1209,7 +1222,7 @@ void ObjectCreatorDockPanel::DrawPreviewClickableAreaOnTexture(float2 textureTop
 bool ObjectCreatorDockPanel::DrawCloseAndCreateButton()
 {
 	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1,0,0, 0.1f)); 
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 0, 0, 0.1f));
 	ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 205);
 
 	if (ImGui::Button("Close", ImVec2(100, 30)))
@@ -1219,10 +1232,10 @@ bool ObjectCreatorDockPanel::DrawCloseAndCreateButton()
 
 		ImGui::PopStyleColor();
 		ImGui::PopFont();
-		return true; 
+		return true;
 	}
 
-	ImGui::SameLine(); 
+	ImGui::SameLine();
 	ImGui::PopStyleColor();
 	ImGui::PopFont();
 
@@ -1231,7 +1244,7 @@ bool ObjectCreatorDockPanel::DrawCloseAndCreateButton()
 	if (ImGui::Button("Create", ImVec2(100, 30)))
 	{
 		std::string newObjectNameStr(newObjectName);
-		if (newObjectNameStr.empty()) 
+		if (newObjectNameStr.empty())
 		{
 			FLY_ERROR("Object with no name can not be created");
 			ImGui::PopFont();
@@ -1241,23 +1254,23 @@ bool ObjectCreatorDockPanel::DrawCloseAndCreateButton()
 		{
 			ToggleVisibility();
 			AddCreatingObject();
-			
+
 			ImGui::PopFont();
 			return false;
-		}	
+		}
 	}
 
 	ImGui::PopFont();
 
-	return false; 
+	return false;
 }
 
 void ObjectCreatorDockPanel::AddCreatingObject()
 {
 	// If is item inventory and has no image assigned, we create a display image component with a default empty image 
-	if (creatingObject->IsInventoryItem() && creatingObject->GetAction(ACTION_DISPLAY_IMAGE) == nullptr)	
-		creatingObject->AddDisplayImageAction(); 
-	
+	if (creatingObject->IsInventoryItem() && creatingObject->GetAction(ACTION_DISPLAY_IMAGE) == nullptr)
+		creatingObject->AddDisplayImageAction();
+
 	// Clickable Area
 	if (clickableAreaActive)
 	{
@@ -1285,7 +1298,7 @@ void ObjectCreatorDockPanel::AddCreatingObject()
 	App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GizmoMode::GIZMO_SELECT);
 	creatingObject->FitObjectUtils();
 
-	creatingObject->SetParentRoom(App->moduleRoomManager->GetSelectedRoom()); 
+	creatingObject->SetParentRoom(App->moduleRoomManager->GetSelectedRoom());
 }
 
 void ObjectCreatorDockPanel::DrawDisplayImageSettings()
@@ -1343,7 +1356,7 @@ void ObjectCreatorDockPanel::DrawDisplayImageSettings()
 
 		if (ImGui::BeginDragDropTarget())
 		{
-			if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("drag_resource"))
 			{
 				int* selectedResourceUID = (int*)payload->Data;
 				Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
@@ -1382,7 +1395,7 @@ void ObjectCreatorDockPanel::DrawDisplayImageSettings()
 		}
 		ImGui::EndChild();
 		ImGui::PopStyleColor();
-	
+
 		//{
 		//	//ImGui::PushFont(App->moduleImGui->rudaBoldHuge);
 		//			//ImGui::Text("Display Image Attributes:");
@@ -1465,8 +1478,8 @@ void ObjectCreatorDockPanel::DrawDisplayImageSettings()
 
 		//	POP_FONT;
 		//}
-	
-	}	
+
+	}
 }
 
 void ObjectCreatorDockPanel::DrawAddAndDeleteActionButtons(bool fromFixedAction)
@@ -1486,10 +1499,10 @@ void ObjectCreatorDockPanel::DrawAddAndDeleteActionButtons(bool fromFixedAction)
 	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
 	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
-		if (selectedAction != nullptr) 
+		if (selectedAction != nullptr)
 		{
 			creatingObject->DeleteAction(selectedAction->GetType());
-			selectedAction = nullptr; 
+			selectedAction = nullptr;
 		}
 	}
 

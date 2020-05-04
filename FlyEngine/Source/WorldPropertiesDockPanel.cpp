@@ -124,7 +124,7 @@ void WorldPropertiesDockPanel::NewConnectionButtonHandler()
 
 void WorldPropertiesDockPanel::PrintRoomsSection()
 {
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::PushFont(App->moduleImGui->rudaBlackHuge);
 	ImGui::Text("Rooms:");
 	ImGui::PopFont();
 	
