@@ -193,11 +193,7 @@ void ModuleRoomManager::DeleteRoom(UID roomID)
 		if ((*it)->GetUID() == roomID) 
 		{
 			// Clean Room Residual Files 
-			string roomDataStr = MyFileSystem::getInstance()->GetSavedDataDirectory() + "RoomsData\\" + (*it)->GetName() + ".json"; 
-			remove(roomDataStr.c_str()); 
-
-			string blackboardDataStr = MyFileSystem::getInstance()->GetSavedDataDirectory() + "BlackboardsData\\" + (*it)->GetName() + "_Blackboard.json";
-			remove(blackboardDataStr.c_str());
+			//(*it)->DeleteRoomFiles(); 
 
 			// Clean Room 
 			(*it)->CleanGraphConnections();

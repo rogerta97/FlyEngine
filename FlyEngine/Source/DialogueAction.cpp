@@ -71,8 +71,8 @@ void DialogueAction::Draw()
 void DialogueAction::CleanUp()
 {
 	// Delete Dialogue Save Data Files 
-	string removeStr = MyFileSystem::getInstance()->GetSavedDataDirectory() + "NodeGraphData\\Dialogues\\" + to_string((int)GetUID()); 
-	remove(removeStr.c_str());
+	//string removeStr = MyFileSystem::getInstance()->GetSavedDataDirectory() + "NodeGraphData\\Dialogues\\" + to_string((int)GetUID()); 
+	//remove(removeStr.c_str());
 }
 
 void DialogueAction::DoAction()

@@ -64,12 +64,13 @@ public:
 	void SaveRoomData(JSON_Object* jsonObject);
 	void SaveRoomThumbnail(); 
 
+	void DeleteRoomFiles(); 
+
 	// Connections ---------------
 	RoomConnection* AddConnection(Room* destinationRoom);
 	void CleanGraphConnections(); 
 
 	// ---
-
 	RoomConnection* GetConnectionToRoom(UID dstRoomUID) const;
 
 	void DeleteAllConnections();

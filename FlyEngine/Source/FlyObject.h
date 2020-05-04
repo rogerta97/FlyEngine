@@ -48,6 +48,8 @@ public:
 	void FitObjectUtils(); 
 	bool IsMouseOver(); 
 
+	void CopyFlyObjectActions(FlyObject* objectToClone);
+
 	bool HasVisuals(); 
 	bool IsInventoryItem(); 
 

@@ -313,6 +313,15 @@ void Room::SaveRoomThumbnail()
 
 }
 
+void Room::DeleteRoomFiles()
+{
+	string roomDataStr = MyFileSystem::getInstance()->GetSavedDataDirectory() + "RoomsData\\" + GetName() + ".json";
+	remove(roomDataStr.c_str());
+
+	string blackboardDataStr = MyFileSystem::getInstance()->GetSavedDataDirectory() + "BlackboardsData\\" + GetName() + "_Blackboard.json";
+	remove(blackboardDataStr.c_str());
+}
+
 RoomConnection* Room::AddConnection(Room* destinationRoom)
 {
 	// Logic

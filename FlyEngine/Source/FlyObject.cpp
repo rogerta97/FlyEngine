@@ -422,6 +422,34 @@ bool FlyObject::IsMouseOver()
 	return gizmos->IsMouseOver(); 
 }
 
+void FlyObject::CopyFlyObjectActions(FlyObject* objectToClone)
+{
+	for (auto& currentOtherAction : objectToClone->actionsList)
+	{
+		switch (currentOtherAction->GetType())
+		{
+		case ACTION_DISPLAY_IMAGE:
+		{
+			DisplayImageAction* otherDisplayImageAction = (DisplayImageAction*)currentOtherAction;
+
+			DisplayImageAction* newDisplayImage = AddDisplayImageAction();
+			newDisplayImage->CreateImage(otherDisplayImageAction->GetTexture()->GetPath()); 
+		}
+			break;
+		case ACTION_CHANGE_ROOM:
+		{
+			ChangeRoomAction* otherChangeRoomAction = (ChangeRoomAction*)currentOtherAction; 
+
+			ChangeRoomAction* changeRoomAction = AddChangeRoomAction();
+			changeRoomAction->SetDestination(otherChangeRoomAction->GetDesination()); 
+
+			break;
+		}
+
+		}
+	}
+}
+
 bool FlyObject::HasVisuals()
 {
 	for (auto& currentTool : actionsList)

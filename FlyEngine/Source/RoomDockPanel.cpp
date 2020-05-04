@@ -399,8 +399,8 @@ void RoomDockPanel::DrawRoomHierarchy()
 		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
 		FlyObject* selectedObject = selectedRoom->GetSelectedObject();
 
-		for (list<FlyObject*>::reverse_iterator it = selectedRoom->objectsInRoom.rbegin(); it != selectedRoom->objectsInRoom.rend(); it++) {
-
+		for (list<FlyObject*>::reverse_iterator it = selectedRoom->objectsInRoom.rbegin(); it != selectedRoom->objectsInRoom.rend(); it++) 
+		{
 			PUSH_FONT(App->moduleImGui->rudaBlackMid);
 
 			bool objectSelected = false;
@@ -412,16 +412,61 @@ void RoomDockPanel::DrawRoomHierarchy()
 			{
 				(*it)->isSelected = true;
 				App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(*it);
+			}
 
-				if (App->moduleInput->GetMouseButton(RIGHT_CLICK)) {
-					flog("CLICKED RIGHT BUTTON");
+			if (ImGui::IsWindowHovered() && App->moduleInput->GetMouseButton(RIGHT_CLICK) == KEY_DOWN)
+			{
+				if (ImGui::IsItemHovered())
+				{
+					(*it)->isSelected = true;
+					App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(*it);
+					ImGui::OpenPopup("right_click_item_hierarchy");
 				}
+				else
+					ImGui::OpenPopup("right_click_hierarchy");
 			}
 
 			// Move Layer Arrows
 			DrawMoveLayerSelectableButtons();
 
 			POP_FONT;
+		}
+		if (ImGui::BeginPopup("right_click_item_hierarchy"))
+		{
+			if (ImGui::Selectable("Rename"))
+			{
+				ImGui::CloseCurrentPopup();
+			}
+
+			if (ImGui::Selectable("Duplicate"))
+			{
+				FlyObject* objectToClone = selectedRoom->GetSelectedObject(); 
+
+				if (objectToClone != nullptr)
+				{
+					FlyObject* newClone = new FlyObject(string(objectToClone->GetName() + " (2)"), objectToClone->GetDescription(), objectToClone->flyObjectType, objectToClone->GetParentRoom());
+					objectToClone->GetParentRoom()->AddFlyObject(newClone);
+					
+					newClone->CopyFlyObjectActions(objectToClone); 
+					newClone->FitObjectUtils();
+					
+					App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(newClone);
+				}
+
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
+		}
+
+		if (ImGui::BeginPopup("right_click_hierarchy"))
+		{
+			if (ImGui::Selectable("New FlyObject"))
+			{
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
 		}
 	}
 
