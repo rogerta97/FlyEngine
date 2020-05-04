@@ -431,10 +431,12 @@ void RoomDockPanel::DrawRoomHierarchy()
 
 			POP_FONT;
 		}
+
 		if (ImGui::BeginPopup("right_click_item_hierarchy"))
 		{
 			if (ImGui::Selectable("Rename"))
 			{
+				ImGui::OpenPopup("rename_popup"); 
 				ImGui::CloseCurrentPopup();
 			}
 
@@ -467,6 +469,12 @@ void RoomDockPanel::DrawRoomHierarchy()
 			}
 
 			ImGui::EndPopup();
+		}
+
+		if (ImGui::BeginPopup("rename_popup"))
+		{
+			ImGui::Text("Im The text"); 
+			ImGui::EndPopup(); 
 		}
 	}
 
