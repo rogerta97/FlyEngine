@@ -432,12 +432,13 @@ void RoomDockPanel::DrawRoomHierarchy()
 			POP_FONT;
 		}
 
+		bool openRenamePopup = false; 
 		if (ImGui::BeginPopup("right_click_item_hierarchy"))
 		{
 			if (ImGui::Selectable("Rename"))
 			{
-				ImGui::OpenPopup("rename_popup"); 
 				ImGui::CloseCurrentPopup();
+				openRenamePopup = true; 
 			}
 
 			if (ImGui::Selectable("Duplicate"))
@@ -471,9 +472,24 @@ void RoomDockPanel::DrawRoomHierarchy()
 			ImGui::EndPopup();
 		}
 
+		static char newNameBuffer[256] = "";
+
+		if (openRenamePopup)
+		{
+			ImGui::OpenPopup("rename_popup");
+			strcpy(newNameBuffer, ""); 
+		}
+
 		if (ImGui::BeginPopup("rename_popup"))
 		{
-			ImGui::Text("Im The text"); 
+			ImGui::InputTextWithHint("", "New Name...", newNameBuffer, IM_ARRAYSIZE(newNameBuffer)); 
+			ImGui::SameLine();
+			if (ImGui::Button("OK"))
+			{
+				strcpy(newNameBuffer, "");
+				ImGui::CloseCurrentPopup(); 
+			}
+
 			ImGui::EndPopup(); 
 		}
 	}
