@@ -463,8 +463,8 @@ void FlyObject::CopyFlyObjectActions(FlyObject* objectToClone)
 			// No Working
 			FollowPathAction* followPathAction = (FollowPathAction*)currentOtherAction;
 
-			FollowPathAction* newFollowPathAction = AddFollowPathAction(currentOtherAction);
 
+			FollowPathAction* newFollowPathAction = new FollowPathAction(followPathAction);
 
 			break;
 		}

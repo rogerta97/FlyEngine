@@ -327,10 +327,9 @@ RoomConnection* Room::AddConnection(Room* destinationRoom)
 	// Logic
 	RoomConnection* newConnection = new RoomConnection(this, destinationRoom, "Link", false);
 	outLinks.push_back(newConnection);
+	destinationRoom->inRoomUIDs.push_back(GetUID());
+
 	flog("Room %s connected the LOGIC succesfuly with %s", roomName.c_str(), destinationRoom->GetName().c_str()); 
-	
-	
-	//destinationRoom->inRoomUIDs.push_back(GetUID());
 
 	// Update Graph 
 	//NodeGraph::getInstance()->ConnectNodes(GetName(), "Out", destinationRoom->GetName(), "In", newConnection->connectionID);
@@ -340,7 +339,7 @@ RoomConnection* Room::AddConnection(Room* destinationRoom)
 
 void Room::CleanGraphConnections()
 {
-	outLinks.clear();
+	//outLinks.clear();
 }
 
 void Room::DeleteAllConnections()
@@ -358,7 +357,7 @@ void Room::BreakOutputConnections()
 	for (auto it : outLinks) 
 	{
 		it->destinationRoom->BreakEnterConnectionFromInRoomUIDs(roomID);
-		it->DeleteOnGraph();
+		//it->DeleteOnGraph();
 
 		delete it;
 	}
@@ -424,7 +423,8 @@ void Room::BreakEnterConnections()
 	if (inRoomUIDs.size() <= 0)
 		return;
 
-	for (auto it = inRoomUIDs.begin(); it != inRoomUIDs.end();) {
+	for (auto it = inRoomUIDs.begin(); it != inRoomUIDs.end();) 
+	{
 		BreakEnterConnection((*it)); 
 		it = inRoomUIDs.erase(it);
 	}

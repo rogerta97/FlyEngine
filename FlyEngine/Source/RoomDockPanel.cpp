@@ -399,7 +399,8 @@ void RoomDockPanel::DrawRoomHierarchy()
 		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
 		FlyObject* selectedObject = selectedRoom->GetSelectedObject();
 
-		for (list<FlyObject*>::reverse_iterator it = selectedRoom->objectsInRoom.rbegin(); it != selectedRoom->objectsInRoom.rend(); it++) 
+	//	for (list<FlyObject*>::reverse_iterator it = selectedRoom->objectsInRoom.rbegin(); it != selectedRoom->objectsInRoom.rend(); it++) 
+		for (list<FlyObject*>::iterator it = selectedRoom->objectsInRoom.begin(); it != selectedRoom->objectsInRoom.end(); it++) 
 		{
 			PUSH_FONT(App->moduleImGui->rudaBlackMid);
 

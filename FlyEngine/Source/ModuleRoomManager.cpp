@@ -196,7 +196,8 @@ void ModuleRoomManager::DeleteRoom(UID roomID)
 			//(*it)->DeleteRoomFiles(); 
 
 			// Clean Room 
-			(*it)->CleanGraphConnections();
+			(*it)->BreakOutputConnections();
+			(*it)->BreakEnterConnections(); 
 			(*it)->CleanUp(); 
 			delete (*it);
 			roomsInWorldList.erase(it);

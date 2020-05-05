@@ -54,7 +54,7 @@ class FollowPathAction : public Action
 {
 public:
 	FollowPathAction(FlyObject* _parentObject);
-//L	FollowPathAction(FollowPathAction& _parentObject);
+	FollowPathAction(FollowPathAction* otherAction);
 	~FollowPathAction();
 
 	void Update(float dt);

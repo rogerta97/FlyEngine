@@ -42,10 +42,24 @@ FollowPathAction::FollowPathAction(FlyObject* _parentObject)
 	SetToolDescription("This should be the description of follow path action");
 }
 
-//FollowPathAction::FollowPathAction(FollowPathAction& _parentObject)
-//{
-//
-//}
+FollowPathAction::FollowPathAction(FollowPathAction* otherAction)
+{
+	this->currentStepIndex = otherAction->currentStepIndex;
+	this->stepTime = otherAction->stepTime;
+	this->constantSpeed = otherAction->constantSpeed;
+	this->isSpeedConstant = otherAction->isSpeedConstant;
+
+	this->loopsCompleted = otherAction->loopsCompleted;
+	this->targetLoopsAmount = otherAction->targetLoopsAmount;
+
+	this->startPosition = otherAction->startPosition;
+	this->lineWidth = otherAction->lineWidth;
+	this->alphaFactor = otherAction->alphaFactor;
+
+	this->graphBoxColor = otherAction->graphBoxColor;
+	this->startBoxColor = otherAction->startBoxColor;
+	this->lineColor = otherAction->lineColor;
+}
 
 FollowPathAction::~FollowPathAction()
 {
