@@ -42,6 +42,11 @@ FollowPathAction::FollowPathAction(FlyObject* _parentObject)
 	SetToolDescription("This should be the description of follow path action");
 }
 
+//FollowPathAction::FollowPathAction(FollowPathAction& _parentObject)
+//{
+//
+//}
+
 FollowPathAction::~FollowPathAction()
 {
 	

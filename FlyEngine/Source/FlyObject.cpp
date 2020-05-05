@@ -446,6 +446,39 @@ void FlyObject::CopyFlyObjectActions(FlyObject* objectToClone)
 			break;
 		}
 
+		case ACTION_EMIT_SOUND:
+		{
+			EmitSoundAction* emitSoundAction = (EmitSoundAction*)currentOtherAction;
+
+			EmitSoundAction* newEmitSoundAction = AddEmitSoundAction();
+			newEmitSoundAction->audioClip = emitSoundAction->audioClip; 
+			newEmitSoundAction->audioPlayMode = emitSoundAction->audioPlayMode; 
+
+			break;
+		}
+
+
+		case ACTION_FOLLOW_PATH:
+		{
+			// No Working
+			FollowPathAction* followPathAction = (FollowPathAction*)currentOtherAction;
+
+			FollowPathAction* newFollowPathAction = AddFollowPathAction(currentOtherAction);
+
+
+			break;
+		}
+		
+		case ACTION_DISPLAY_ANIMATION:
+		{
+			DisplayAnimationAction* otherDisplayAnimationAction = (DisplayAnimationAction*)currentOtherAction;
+
+			DisplayAnimationAction* newDisplayAnimationAction = AddDisplayAnimationAction();
+			
+
+			break;
+		}
+
 		}
 	}
 }
