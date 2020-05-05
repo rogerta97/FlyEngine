@@ -1909,7 +1909,7 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
-		showToolDictionary = true;
+		ImGui::OpenPopup("AddNewActionToObject"); 
 	}
 
 	ImGui::SameLine();
@@ -1928,34 +1928,32 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 
 	ImGui::PopStyleVar();
 
-	if (showToolDictionary)
+	if (ImGui::BeginPopup("AddNewActionToObject"))
 	{
 		ImGui::Spacing();
-		ImGui::BeginChild("AddToolObjectProperties", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
 
+		static char searchNewActionBuffer[256]; 
 		// Search Bar ---------------
-		ImGui::InputTextWithHint("##SearchTool", "Search...", searchNewToolBuffer, IM_ARRAYSIZE(searchNewToolBuffer));
+		ImGui::InputTextWithHint("##SearchTool", "Search...", searchNewActionBuffer, IM_ARRAYSIZE(searchNewActionBuffer));
 		ImGui::SameLine();
 
 		Texture* filterIcon = (Texture*)ResourceManager::getInstance()->GetResource("FilterIcon");
 		ImGui::Image((ImTextureID)filterIcon->GetTextureID(), ImVec2(22, 22));
 
 		ImGui::Spacing();
-		ImGui::Separator();
-		ImGui::Spacing();
 
-		// Tools Dictonary ----------
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(2.0f, 2.0f));
-		ImGui::BeginChild("##5ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), 150));
+		ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), 150));
 
+		// Tools Dictonary ----------
 		ActionSelectableInfo* newActionSelected = App->moduleManager->DrawActionDictionaryUI();
 		if (newActionSelected != nullptr)
 		{
 			switch (newActionSelected->actionType)
 			{
 			case ACTION_DISPLAY_IMAGE:
-				selectedObject->AddDisplayImageAction("None");
+				selectedObject->AddDisplayImageAction(std::string(MyFileSystem::getInstance()->GetIconsDirectory() + "EmptyObject.png").c_str(), false);
 				break;
 
 			case ACTION_CHANGE_ROOM:
@@ -1975,7 +1973,7 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 				break;
 
 			case ACTION_DISPLAY_ANIMATION:
-				selectedObject->AddDisplayAnimationAction();
+				selectedObject->AddDisplayAnimationAction(false);
 				break;
 
 			case ACTION_FOLLOW_PATH:
@@ -1990,15 +1988,92 @@ void ObjectPropertiesDockPanel::DrawAddAndDeleteButtons()
 				break;
 			}
 
-			showToolDictionary = false;
+			ImGui::EndChild();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleVar();
+			ImGui::CloseCurrentPopup();
+			ImGui::EndPopup();
+			return;
 		}
 
 		ImGui::EndChild();
 		ImGui::PopStyleColor();
 		ImGui::PopStyleVar();
 
-		ImGui::EndChild();
+		ImGui::EndPopup();
 	}
+
+	//if (showToolDictionary)
+	//{
+	//	ImGui::Spacing();
+	//	ImGui::BeginChild("AddToolObjectProperties", ImVec2(ImGui::GetContentRegionAvailWidth(), 200));
+
+	//	// Search Bar ---------------
+	//	ImGui::InputTextWithHint("##SearchTool", "Search...", searchNewToolBuffer, IM_ARRAYSIZE(searchNewToolBuffer));
+	//	ImGui::SameLine();
+
+	//	Texture* filterIcon = (Texture*)ResourceManager::getInstance()->GetResource("FilterIcon");
+	//	ImGui::Image((ImTextureID)filterIcon->GetTextureID(), ImVec2(22, 22));
+
+	//	ImGui::Spacing();
+	//	ImGui::Separator();
+	//	ImGui::Spacing();
+
+	//	// Tools Dictonary ----------
+	//	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	//	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(2.0f, 2.0f));
+	//	ImGui::BeginChild("##5ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), 150));
+
+	//	ActionSelectableInfo* newActionSelected = App->moduleManager->DrawActionDictionaryUI();
+	//	if (newActionSelected != nullptr)
+	//	{
+	//		switch (newActionSelected->actionType)
+	//		{
+	//		case ACTION_DISPLAY_IMAGE:
+	//			selectedObject->AddDisplayImageAction("None");
+	//			break;
+
+	//		case ACTION_CHANGE_ROOM:
+	//			selectedObject->AddChangeRoomAction();
+	//			break;
+
+	//		case ACTION_MOD_VARIABLE:
+	//			selectedObject->AddModifyVariableAction();
+	//			break;
+
+	//		case ACTION_EMIT_SOUND:
+	//			selectedObject->AddEmitSoundAction();
+	//			break;
+
+	//		case ACTION_DISPLAY_TEXT:
+	//			selectedObject->AddDisplayTextAction();
+	//			break;
+
+	//		case ACTION_DISPLAY_ANIMATION:
+	//			selectedObject->AddDisplayAnimationAction();
+	//			break;
+
+	//		case ACTION_FOLLOW_PATH:
+	//			selectedObject->AddFollowPathAction();
+	//			break;
+
+	//		case ACTION_DIALOGUE:
+	//			selectedObject->AddDialogueAction();
+	//			break;
+
+	//		case AT_null:
+	//			break;
+	//		}
+
+	//		showToolDictionary = false;
+	//	}
+
+	//	ImGui::EndChild();
+	//	ImGui::PopStyleColor();
+	//	ImGui::PopStyleVar();
+
+	//	ImGui::EndChild();
+	//}
 }
 
 bool ObjectPropertiesDockPanel::DrawActionSelectable(ActionSelectableInfo& selectableInfo, Action*& currentAction, int posInList, int selectableHeigth)
