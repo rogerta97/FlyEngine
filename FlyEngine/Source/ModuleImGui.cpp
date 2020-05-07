@@ -19,7 +19,7 @@
 #include "ResourceManager.h"
 #include "WorldPropertiesDockPanel.h"
 #include "ModuleInput.h"
-#include "GraphPropertiesDockPanel.h"
+#include "GamePropertiesDockPanel.h"
 #include "ObjectCreatorDockPanel.h"
 #include "FileBrowserDockPanel.h"
 #include "MyFileSystem.h"
@@ -109,7 +109,7 @@ void ModuleImGui::CreatePanels()
 {
 	ConsoleDockPanel* consolePanel = new ConsoleDockPanel(true);
 	RoomsGraphDockPanel* roomsGraphPanel = new RoomsGraphDockPanel(true);
-	GraphPropertiesDockPanel* graphPropertiesPanel = new GraphPropertiesDockPanel(true);
+	GamePropertiesDockPanel* graphPropertiesPanel = new GamePropertiesDockPanel(true);
 	WorldPropertiesDockPanel* roomPropertiesPanel = new WorldPropertiesDockPanel(true);
 
 	FileBrowserDockPanel* fileBrowserDockPanel = new FileBrowserDockPanel(false); 

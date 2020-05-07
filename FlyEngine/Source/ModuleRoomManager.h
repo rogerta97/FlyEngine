@@ -48,6 +48,9 @@ public:
 	Room* GetFirstRoom(); 
 	int GetRoomsAmount() const;
 
+	void SetStartRoom(Room* firstRoom); 
+	Room* GetStartRoom(); 
+
 	void SetSelectedRoom(Room* selectedRoom, bool sendEvent = false); 
 	void SetSelectedRoom(std::string roomName, bool sendEvent = false);
 	void SetSelectedRoom(UID roomName, bool sendEvent = false);

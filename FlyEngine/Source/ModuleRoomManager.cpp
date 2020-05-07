@@ -3,7 +3,7 @@
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "RandomNumberGenerator.h"
-#include "GraphPropertiesDockPanel.h"
+#include "GamePropertiesDockPanel.h"
 #include "ViewportManager.h"
 #include "GameInventory.h"
 #include "AudioImporter.h"
@@ -280,6 +280,32 @@ Room* ModuleRoomManager::GetRoom(UID roomID) const
 
 	FLY_ERROR("Room with ID %f in ModuleRoomManager::GetRoom() could not be found", roomID);
 	return nullptr;
+}
+
+void ModuleRoomManager::SetStartRoom(Room* newFirstRoom)
+{
+	for (auto& currentRoom : roomsInWorldList)
+	{
+		if (currentRoom == newFirstRoom)
+		{
+			currentRoom->isStart = true; 
+		}
+		else
+			currentRoom->isStart = false; 
+	}
+}
+
+Room* ModuleRoomManager::GetStartRoom()
+{
+	for (auto& currentRoom : roomsInWorldList)
+	{
+		if (currentRoom->isStart)
+		{
+			return currentRoom;
+		}
+	}
+
+	return nullptr; 
 }
 
 Room* ModuleRoomManager::GetFirstRoom()

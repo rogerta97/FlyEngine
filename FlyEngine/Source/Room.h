@@ -129,6 +129,7 @@ public:
 	// Save FrameBuffer ID
 	Texture* roomThumbnail; 
 	bool isSelected = false;
+	bool isStart = false;
 
 	// Link Management -----
 	list<RoomConnection*> outLinks;

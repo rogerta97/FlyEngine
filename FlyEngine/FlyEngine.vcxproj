@@ -130,7 +130,7 @@
     <ClCompile Include="Source\NodeGraph.cpp" />
     <ClCompile Include="Source\Action.cpp" />
     <ClCompile Include="Source\ObjectPropertiesDockPanel.cpp" />
-    <ClCompile Include="Source\GraphPropertiesDockPanel.cpp" />
+    <ClCompile Include="Source\GamePropertiesDockPanel.cpp" />
     <ClCompile Include="Source\Quad.cpp" />
     <ClCompile Include="Source\RandomNumberGenerator.cpp" />
     <ClCompile Include="Source\Room.cpp" />
@@ -293,7 +293,7 @@
     <ClInclude Include="Source\NodeGraph.h" />
     <ClInclude Include="Source\Action.h" />
     <ClInclude Include="Source\ObjectPropertiesDockPanel.h" />
-    <ClInclude Include="Source\GraphPropertiesDockPanel.h" />
+    <ClInclude Include="Source\GamePropertiesDockPanel.h" />
     <ClInclude Include="Source\OpenGL.h" />
     <ClInclude Include="Source\Quad.h" />
     <ClInclude Include="Source\Room.h" />

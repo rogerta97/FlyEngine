@@ -14,7 +14,7 @@
 #define IMGUI_SPACED_SEPARATOR ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
 
 class ConsoleDockPanel;
-class GraphPropertiesDockPanel; 
+class GamePropertiesDockPanel; 
 class GameViewportDockPanel;
 class DialogueEditorDockPanel; 
 class ObjectCreatorDockPanel; 
@@ -48,7 +48,7 @@ public:
 	DockPanel* GetDockPanel(DockPanelType panelType);
 
 	ConsoleDockPanel* consoleDockPanel;
-	GraphPropertiesDockPanel* graphPropertiesDockPanel;
+	GamePropertiesDockPanel* graphPropertiesDockPanel;
 	GameViewportDockPanel* gameViewportDockPanel;
 	ObjectCreatorDockPanel* objectCreatorDockPanel; 
 	DialogueEditorDockPanel* dialogueEditorDockPanel;

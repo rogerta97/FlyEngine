@@ -1,15 +1,16 @@
-#ifndef _GRAPH_PROPERTIES_DOCKPANEL_H_
-#define _GRAPH_PROPERTIES_DOCKPANEL_H_
+#ifndef _GAME_PROPERTIES_DOCKPANEL_H_
+#define _GAME_PROPERTIES_DOCKPANEL_H_
 
 #include "DockPanel.h"
 #include <vector>
 
-class GraphPropertiesDockPanel : public DockPanel {
+class Room;
+class GamePropertiesDockPanel : public DockPanel {
 
 public:
 
-	GraphPropertiesDockPanel(bool isVisible);
-	~GraphPropertiesDockPanel();
+	GamePropertiesDockPanel(bool isVisible);
+	~GamePropertiesDockPanel();
 
 	bool Draw();
 
@@ -20,7 +21,11 @@ public:
 	void PrintConnectionsSection();
 
 private: 
+
 	bool showNewRoomNaming = false;	
+
+	Room* firstRoom; 
+
 };
 
 #endif 

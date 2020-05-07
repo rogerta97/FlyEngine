@@ -11,7 +11,7 @@
 
 RoomsNodeGraph::RoomsNodeGraph()
 {
-	roomManager = App->moduleRoomManager; 
+	roomManager = App->moduleRoomManager;
 }
 
 RoomsNodeGraph::~RoomsNodeGraph()
@@ -20,9 +20,9 @@ RoomsNodeGraph::~RoomsNodeGraph()
 
 void RoomsNodeGraph::DrawGraph()
 {
-	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(74, 152, 92, 255));
-	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarHovered, IM_COL32(84, 182, 107, 255));
-	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarSelected, IM_COL32(123, 172, 134, 255));
+	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(0, 130, 189, 255));
+	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarHovered, IM_COL32(76, 150, 185, 255));
+	imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarSelected, IM_COL32(0, 152, 223, 255));
 
 	imnodes::BeginNodeEditor();
 
@@ -32,6 +32,13 @@ void RoomsNodeGraph::DrawGraph()
 		// Draw Nodes 
 		for (auto& currentRoom : roomManager->GetRoomsInWorldList())
 		{
+			if (currentRoom->isStart == true)
+			{
+				imnodes::PushColorStyle(imnodes::ColorStyle_TitleBar, IM_COL32(189, 154, 0, 255));
+				imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarHovered, IM_COL32(185, 166, 76, 255));
+				imnodes::PushColorStyle(imnodes::ColorStyle_TitleBarSelected, IM_COL32(223, 182, 0, 255));
+			}
+
 			imnodes::BeginNode(currentRoom->GetUID());
 
 			imnodes::BeginNodeTitleBar();
@@ -42,7 +49,7 @@ void RoomsNodeGraph::DrawGraph()
 
 			// Get Room Viewport Texture 
 			if (currentRoom->roomThumbnail == nullptr)
-			{		
+			{
 				currentRoom->roomThumbnail = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject");
 			}
 
@@ -90,10 +97,17 @@ void RoomsNodeGraph::DrawGraph()
 			imnodes::EndAttribute();
 
 			imnodes::EndNode();
+
+			if (currentRoom->isStart == true)
+			{
+				imnodes::PopColorStyle();
+				imnodes::PopColorStyle();
+				imnodes::PopColorStyle();
+			}
 		}
 
 		// Draw Links
-		int count = 0; 
+		int count = 0;
 		for (auto& currentRoom : roomManager->GetRoomsInWorldList())
 		{
 			for (auto& currentLink : currentRoom->outLinks)
@@ -111,7 +125,7 @@ void RoomsNodeGraph::DrawGraph()
 		ImGui::TextColored(ImVec4(1, 0.5f, 0.5f, 0.25f), "No Rooms In World");
 		ImGui::PopFont();
 	}
-	
+
 	imnodes::EndNodeEditor();
 
 	// Handle Selected Nodes
@@ -146,20 +160,19 @@ void RoomsNodeGraph::DrawGraph()
 void RoomsNodeGraph::Update()
 {
 	// Check Input 
-	if(App->moduleInput->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
+	if (App->moduleInput->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
 	{
 		ImGui::OpenPopup("DELETING ROOM - Are You Sure?");
 	}
 
-
-	if (ImGui::BeginPopupModal("DELETING ROOM - Are You Sure?", 0,  ImGuiWindowFlags_NoResize))
+	if (ImGui::BeginPopupModal("DELETING ROOM - Are You Sure?", 0, ImGuiWindowFlags_NoResize))
 	{
-	ImGui::SetWindowSize(ImVec2(330, 105));
+		ImGui::SetWindowSize(ImVec2(330, 105));
 		ImGui::PushFont(App->moduleImGui->rudaRegularTiny);
-		ImGui::TextWrapped("You are about to delete a room, this action cannot be reversed and will be lost forever, are you sure?"); 
-		ImGui::PopFont(); 
+		ImGui::TextWrapped("You are about to delete a room, this action cannot be reversed and will be lost forever, are you sure?");
+		ImGui::PopFont();
 
-		ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x / 2 - 50); 
+		ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x / 2 - 50);
 		if (ImGui::Button("Delete"))
 		{
 			Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();

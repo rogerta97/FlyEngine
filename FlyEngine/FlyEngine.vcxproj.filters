@@ -204,9 +204,6 @@
     <ClCompile Include="Source\Room.cpp">
       <Filter>Source\FlyEngine\Room</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GraphPropertiesDockPanel.cpp">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
-    </ClCompile>
     <ClCompile Include="Source\RandomNumberGenerator.cpp">
       <Filter>Source\Tools\RandomGenerator</Filter>
     </ClCompile>
@@ -489,6 +486,9 @@
     <ClCompile Include="Source\RoomsNodeGraph.cpp">
       <Filter>Source\Tools\NodeGraph</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GamePropertiesDockPanel.cpp">
+      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -577,9 +577,6 @@
     </ClInclude>
     <ClInclude Include="Source\ImNodeDemo.h">
       <Filter>Source\3rdParty\ImNode</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GraphPropertiesDockPanel.h">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\RandomNumberGenerator.h">
       <Filter>Source\Tools\RandomGenerator</Filter>
@@ -976,6 +973,9 @@
     </ClInclude>
     <ClInclude Include="Source\RoomsNodeGraph.h">
       <Filter>Source\Tools\NodeGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GamePropertiesDockPanel.h">
+      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

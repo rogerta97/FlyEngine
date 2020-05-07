@@ -38,6 +38,7 @@ Room::Room(string roomName)
 	this->roomName = roomName;
 	roomID = RandomNumberGenerator::GenerateUID(); 
 	backgroundMusic = nullptr; 
+	isStart = false; 
 
 	roomThumbnail = 0; 
 	roomBlackboard = new Blackboard(); 
