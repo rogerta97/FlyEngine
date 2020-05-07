@@ -246,6 +246,17 @@ void ModuleImGui::DrawMainMenuBar()
 			App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_GRAPH); 
 		}
 
+		if (ImGui::SmallButton("Game ode"))
+		{
+			App->moduleImGui->AddaptToGameMode();
+		}
+
+
+		if (ImGui::SmallButton("Editor Mode"))
+		{
+			App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);
+		}
+
 		ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x / 2 - 100);
 		ImGui::Text("Room Editor - %s", App->moduleRoomManager->GetSelectedRoom()->GetName().c_str()); 
 	}
@@ -254,6 +265,17 @@ void ModuleImGui::DrawMainMenuBar()
 
 	if (demoOpened)
 		ImGui::ShowDemoWindow(&demoOpened);
+}
+
+void ModuleImGui::AddaptToGameMode()
+{
+	for (auto it = dockPanels.begin(); it != dockPanels.end(); it++) 
+	{
+		if((*it)->GetPanelType() == DockPanelType::DOCK_GAME_VIEWPORT)
+			(*it)->SetVisible(true);
+		else
+			(*it)->SetVisible(false);
+	}
 }
 
 void ModuleImGui::DrawPanels()

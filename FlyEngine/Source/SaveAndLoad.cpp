@@ -115,7 +115,11 @@ void SaveAndLoad::SaveInitFile()
 	JSON_Value* scene_v = json_value_init_object();
 	JSON_Object* scene_obj = json_value_get_object(scene_v);
 	
-	json_object_dotset_number(scene_obj, "StartRoomUID", startRoom->GetUID()); 
+	if(startRoom != nullptr)
+		json_object_dotset_number(scene_obj, "StartRoomUID", startRoom->GetUID()); 
+	else
+		json_object_dotset_number(scene_obj, "StartRoomUID", 0); 
+
 
 	json_serialize_to_file(scene_v, savePath.c_str());
 }

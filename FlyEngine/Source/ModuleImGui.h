@@ -37,6 +37,7 @@ public:
 	// Docking --------------
 	void DrawDockSpace();
 	void DrawMainMenuBar();
+	void AddaptToGameMode(); 
 
 	// Panels ---------------
 	void CreatePanels(); 
