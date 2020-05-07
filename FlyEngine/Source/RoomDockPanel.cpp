@@ -537,10 +537,10 @@ void RoomDockPanel::ShowViewportSettingsTab()
 
 	if (ImGui::CollapsingHeader("Music", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		ImGui::Spacing();
+	/*	ImGui::Spacing();
 		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 		ImGui::Text("Music:");
-		ImGui::PopFont();
+		ImGui::PopFont();*/
 
 		Room* currentRoom = App->moduleRoomManager->GetSelectedRoom();
 
@@ -590,9 +590,9 @@ void RoomDockPanel::ShowViewportSettingsTab()
 
 	if (ImGui::CollapsingHeader("Visibility", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-		ImGui::Text("Clickable Area Draw Mode:");
-		ImGui::PopFont();
+		//ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+		//ImGui::Text("Clickable Area Draw Mode:");
+		//ImGui::PopFont();
 
 		static int selectedClickableAreaDrawMode = 0;
 		if (ImGui::Combo("##drawMode", &selectedClickableAreaDrawMode, "Draw On Selected Object\0Draw Always"))

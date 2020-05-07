@@ -18,6 +18,8 @@ public:
 	~SaveAndLoad();
 	static void Delete();
 
+	static void SaveAllData(); 
+
 	// Save ----
 	static void SaveCurrentRoomData();
 
@@ -27,6 +29,8 @@ public:
 
 	static void SaveSelectedRoomToOnPlayData(); 
 	static void LoadOnPlayData(); 
+
+	static void SaveInitFile();
 
 	// Load ----
 	static void LoadDataToSelectedRoom(std::string roomDataFilePath);

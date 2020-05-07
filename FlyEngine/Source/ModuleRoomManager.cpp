@@ -67,6 +67,9 @@ update_status ModuleRoomManager::PostUpdate(float dt)
 bool ModuleRoomManager::CleanUp()
 {
 	CleanUpRooms();
+
+	SaveAndLoad::getInstance()->SaveInitFile();
+
 	DeleteSingletones();
 
 	return true;

@@ -129,6 +129,11 @@ void Room::Update()
 	{
 		FlyObject* pickedObject = GameInventory::getInstance()->PickObjectFromInventory(0); 
 	}
+
+	if (App->moduleInput->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	{
+		
+	}
 }
 
 void Room::PostUpdate()

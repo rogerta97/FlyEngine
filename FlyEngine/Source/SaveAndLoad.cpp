@@ -106,6 +106,20 @@ void SaveAndLoad::LoadOnPlayData()
 	instance->LoadDataToSelectedRoom(provisionalPath);
 }
 
+void SaveAndLoad::SaveInitFile()
+{
+	Room* startRoom = App->moduleRoomManager->GetStartRoom();
+
+	string savePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "Init.json";
+
+	JSON_Value* scene_v = json_value_init_object();
+	JSON_Object* scene_obj = json_value_get_object(scene_v);
+	
+	json_object_dotset_number(scene_obj, "StartRoomUID", startRoom->GetUID()); 
+
+	json_serialize_to_file(scene_v, savePath.c_str());
+}
+
 void SaveAndLoad::LoadDataToSelectedRoom(std::string roomDataFilePath)
 {
 	// Get Current Room 
@@ -912,4 +926,14 @@ SaveAndLoad::SaveAndLoad()
 void SaveAndLoad::Delete()
 {
 	delete instance;
+}
+
+void SaveAndLoad::SaveAllData()
+{
+	for (auto& currentRoom : App->moduleRoomManager->roomsInWorldList)
+	{
+		instance->SaveRoomData(currentRoom);
+	}
+
+	instance->SaveInitFile();
 }
