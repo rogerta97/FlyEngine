@@ -13,6 +13,7 @@
 #include "FlyObjectCharacter.h"
 #include "ModuleImGui.h"
 #include "RoomUIHandler.h"
+#include "GamePropertiesDockPanel.h"
 #include "Animation.h"
 #include "Room.h"
 #include "DialogueStep.h"
@@ -116,12 +117,27 @@ void SaveAndLoad::SaveInitFile()
 	JSON_Object* scene_obj = json_value_get_object(scene_v);
 	
 	if(startRoom != nullptr)
-		json_object_dotset_number(scene_obj, "StartRoomUID", startRoom->GetUID()); 
+		json_object_dotset_number(scene_obj, "InitData.StartRoomUID", startRoom->GetUID()); 
 	else
-		json_object_dotset_number(scene_obj, "StartRoomUID", 0); 
+		json_object_dotset_number(scene_obj, "InitData.StartRoomUID", 0); 
 
+	string projectName = App->moduleImGui->gamePropertiesDockPanel->GetProjectName(); 
+	json_object_dotset_string(scene_obj, "InitData.ProjectName", projectName.c_str());
+
+	//if(!projectName.empty())
+	//	json_object_dotset_string(scene_obj, "InitData.ProjectName", App->moduleImGui->gamePropertiesDockPanel->GetProjectName().c_str());
+	//else
+
+	json_object_dotset_number(scene_obj, "InitData.GameMode", App->GetGameMode());
 
 	json_serialize_to_file(scene_v, savePath.c_str());
+
+	// Set Hidden File
+	//int attr = GetFileAttributes(savePath.c_str());
+	//if ((attr & FILE_ATTRIBUTE_HIDDEN) == 0)
+	//{
+	//	SetFileAttributes(savePath.c_str(), attr | FILE_ATTRIBUTE_HIDDEN);
+	//}
 }
 
 void SaveAndLoad::LoadDataToSelectedRoom(std::string roomDataFilePath)
@@ -939,5 +955,5 @@ void SaveAndLoad::SaveAllData()
 		instance->SaveRoomData(currentRoom);
 	}
 
-	instance->SaveInitFile();
+	//instance->SaveInitFile();
 }

@@ -11,6 +11,8 @@
 
 Application::Application()
 {
+	gameMode = ENGINE_MODE; 
+
 	moduleInput = new ModuleInput(this);
 	moduleWindow = new ModuleWindow(this);
 	moduleImGui = new ModuleImGui(this);
@@ -121,6 +123,8 @@ update_status Application::Update()
 bool Application::CleanUp()
 {
 	bool ret = true;
+	
+	SaveAndLoad::getInstance()->SaveInitFile();
 
 	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.rend(); item++)
 	{
@@ -133,12 +137,27 @@ bool Application::CleanUp()
 	return ret;
 }
 
+void Application::Exit()
+{
+	App->moduleInput->quit = true;
+}
+
 void Application::BroadCastEvent(FlyEngineEvent eventType)
 {
 	for (auto& it : list_modules) 
 	{
 		(it)->ReceiveEvent(eventType); 
 	}
+}
+
+void Application::SetGameMode(GameMode newGameMode)
+{
+	gameMode = newGameMode; 
+}
+
+GameMode Application::GetGameMode()
+{
+	return gameMode;
 }
 
 

@@ -15,6 +15,12 @@ enum FlyEngineSection
 	FLY_SECTION_null
 };
 
+enum GameMode
+{
+	ENGINE_MODE,
+	PLAY_MODE,
+};
+
 // Forward Declarations 
 class ModuleWindow;
 class ModuleInput;
@@ -41,6 +47,7 @@ private:
 	Timer	ms_timer;
 	float	dt;
 	std::list<Module*> list_modules;
+	GameMode gameMode; 
 
 public:
 
@@ -52,8 +59,13 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
+	
+	void Exit(); 
 
 	void BroadCastEvent(FlyEngineEvent eventType); 
+
+	void SetGameMode(GameMode newGameMode); 
+	GameMode GetGameMode();
 
 	FlyEngineSection flySection = FlyEngineSection::FLY_SECTION_null; 
 	bool isEngineInPlayMode = false; 

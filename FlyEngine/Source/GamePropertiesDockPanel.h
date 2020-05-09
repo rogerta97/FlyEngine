@@ -3,6 +3,7 @@
 
 #include "DockPanel.h"
 #include <vector>
+#include <string>
 
 class Room;
 class GamePropertiesDockPanel : public DockPanel {
@@ -20,11 +21,14 @@ public:
 	void PrintRoomsSection();
 	void PrintConnectionsSection();
 
+	std::string GetProjectName(); 
+
 private: 
 
 	bool showNewRoomNaming = false;	
 
 	Room* firstRoom; 
+	std::string projectName;
 
 };
 

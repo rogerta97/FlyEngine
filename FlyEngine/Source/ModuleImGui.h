@@ -49,7 +49,7 @@ public:
 	DockPanel* GetDockPanel(DockPanelType panelType);
 
 	ConsoleDockPanel* consoleDockPanel;
-	GamePropertiesDockPanel* graphPropertiesDockPanel;
+	GamePropertiesDockPanel* gamePropertiesDockPanel;
 	GameViewportDockPanel* gameViewportDockPanel;
 	ObjectCreatorDockPanel* objectCreatorDockPanel; 
 	DialogueEditorDockPanel* dialogueEditorDockPanel;

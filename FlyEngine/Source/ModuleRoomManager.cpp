@@ -54,22 +54,12 @@ update_status ModuleRoomManager::Update(float dt)
 
 update_status ModuleRoomManager::PostUpdate(float dt)
 {
-
-	if (App->moduleInput->GetKey(SDL_SCANCODE_S)) {
-
-		FLY_WARNING("Rooms Count: %d", roomsInWoldAmount); 
-		FLY_WARNING("Connections Count: %d", connectionsInWorldAmount); 
-	}
-
 	return UPDATE_CONTINUE;
 }
 
 bool ModuleRoomManager::CleanUp()
-{
+{	
 	CleanUpRooms();
-
-	SaveAndLoad::getInstance()->SaveInitFile();
-
 	DeleteSingletones();
 
 	return true;

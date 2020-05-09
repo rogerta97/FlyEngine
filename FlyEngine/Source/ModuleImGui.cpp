@@ -109,7 +109,7 @@ void ModuleImGui::CreatePanels()
 {
 	ConsoleDockPanel* consolePanel = new ConsoleDockPanel(true);
 	RoomsGraphDockPanel* roomsGraphPanel = new RoomsGraphDockPanel(true);
-	GamePropertiesDockPanel* graphPropertiesPanel = new GamePropertiesDockPanel(true);
+	GamePropertiesDockPanel* gamePropertiesPanel = new GamePropertiesDockPanel(true);
 	WorldPropertiesDockPanel* roomPropertiesPanel = new WorldPropertiesDockPanel(true);
 
 	FileBrowserDockPanel* fileBrowserDockPanel = new FileBrowserDockPanel(false); 
@@ -123,7 +123,7 @@ void ModuleImGui::CreatePanels()
 
 	dockPanels.push_back(consolePanel); 
 	dockPanels.push_back(roomsGraphPanel);
-	dockPanels.push_back(graphPropertiesPanel);
+	dockPanels.push_back(gamePropertiesPanel);
 	dockPanels.push_back(roomPropertiesPanel); 
 
 	dockPanels.push_back(dialogueEditorPanel);
@@ -136,7 +136,7 @@ void ModuleImGui::CreatePanels()
 	dockPanels.push_back(characterCreatorPanel); 
 
 	consoleDockPanel = consolePanel; 
-	graphPropertiesDockPanel = graphPropertiesPanel;
+	gamePropertiesDockPanel = gamePropertiesPanel;
 	objectCreatorDockPanel = objectCreatorPanel; 
 	gameViewportDockPanel = gameViewporPanel;
 	dialogueEditorDockPanel = dialogueEditorPanel;
