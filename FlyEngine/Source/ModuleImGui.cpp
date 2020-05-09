@@ -180,9 +180,11 @@ void ModuleImGui::DrawDockSpace()
 	bool open = true;
 
 	// Set Main Window Settings
-	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar;
-	window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 	window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+
+	if (App->GetGameMode() == ENGINE_MODE)
+		window_flags |= ImGuiWindowFlags_MenuBar;
 
 	ImGuiViewport* viewport = ImGui::GetMainViewport();
 	ImGui::SetNextWindowPos(viewport->Pos);
@@ -212,6 +214,9 @@ void ModuleImGui::DrawDockSpace()
 
 void ModuleImGui::DrawMainMenuBar()
 {
+	if (App->GetGameMode() == PLAY_MODE)
+		return; 
+
 	ImGui::BeginMainMenuBar();
 
 	static bool demoOpened = false;
@@ -248,6 +253,7 @@ void ModuleImGui::DrawMainMenuBar()
 
 		if (ImGui::SmallButton("Game ode"))
 		{
+			App->SetGameMode(PLAY_MODE);
 			App->moduleImGui->AddaptToGameMode();
 		}
 

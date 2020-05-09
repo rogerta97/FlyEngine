@@ -50,8 +50,21 @@ bool GameViewportDockPanel::Draw()
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, backgroundColor);
 
-	if (ImGui::Begin(panelName.c_str(), &visible)) 
+	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_None;
+
+	if (App->GetGameMode() == PLAY_MODE)
+	{
+		windowFlags |= ImGuiWindowFlags_NoTitleBar;
+	}
+
+	if (ImGui::Begin(panelName.c_str(), &visible, windowFlags))
 	{		
+		if (App->GetGameMode() == PLAY_MODE)
+		{
+			if(!ImGui::GetCurrentWindow()->DockNode->IsHiddenTabBar())
+				ImGui::GetCurrentWindow()->DockNode->WantHiddenTabBarToggle = true; 
+		}
+
 		float2 regionSizeThisTick = float2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
 		if (!regionSizeThisTick.Equals(regionSize) && regionSize.x != -1.0f)
 		{
