@@ -109,6 +109,9 @@ void SaveAndLoad::LoadOnPlayData()
 
 void SaveAndLoad::SaveInitFile()
 {
+	if (App->IsReleaseVersion())
+		return; 
+
 	Room* startRoom = App->moduleRoomManager->GetStartRoom();
 
 	string savePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "Init.json";
@@ -128,7 +131,7 @@ void SaveAndLoad::SaveInitFile()
 	//	json_object_dotset_string(scene_obj, "InitData.ProjectName", App->moduleImGui->gamePropertiesDockPanel->GetProjectName().c_str());
 	//else
 
-	json_object_dotset_number(scene_obj, "InitData.GameMode", App->GetGameMode());
+	json_object_dotset_boolean(scene_obj, "InitData.GameMode", App->GetGameMode());
 
 	json_serialize_to_file(scene_v, savePath.c_str());
 

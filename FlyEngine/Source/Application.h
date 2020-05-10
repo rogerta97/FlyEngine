@@ -44,6 +44,7 @@ public:
 
 private:
 
+	bool isReleaseVersion;
 	Timer	ms_timer;
 	float	dt;
 	std::list<Module*> list_modules;
@@ -66,6 +67,9 @@ public:
 
 	void SetGameMode(GameMode newGameMode); 
 	GameMode GetGameMode();
+
+	void SetIsReleaseVersion(bool newGameMode);
+	bool IsReleaseVersion();
 
 	FlyEngineSection flySection = FlyEngineSection::FLY_SECTION_null; 
 	bool isEngineInPlayMode = false; 

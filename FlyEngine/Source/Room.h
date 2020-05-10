@@ -48,6 +48,7 @@ public:
 	void CleanUp();
 	void CleanRoomObjects(); 
 	void CleanRoomUI(); 
+	void FitObjectUtils(); 
 
 	// Utility -------------------
 	int GetObjectsInRoomAmount(); 

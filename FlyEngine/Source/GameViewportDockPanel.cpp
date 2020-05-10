@@ -80,6 +80,12 @@ bool GameViewportDockPanel::Draw()
 		regionSize = float2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
 		//regionSize.y += verticalOffset;
 
+		if (fitViewportNextFrame)
+		{
+			FitViewportToRegion();
+			fitViewportNextFrame = false; 
+		}
+
 		float2 screenCenter = float2(regionSize.x / 2, regionSize.y / 2);
 		viewportCenterGlobalPos = float2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y) + screenCenter;
 
@@ -139,6 +145,12 @@ bool GameViewportDockPanel::IsMouseInViewport()
 
 void GameViewportDockPanel::FitViewportToRegion()
 {
+	if (regionSize.x <= 0 || regionSize.y <= 0)
+	{
+		fitViewportNextFrame = true; 
+		return;
+	}
+
 	viewportSize.x = regionSize.x;
 	viewportSize.y = ViewportManager::getInstance()->GetHeightFromWidth(viewportSize.x);
 
@@ -155,6 +167,8 @@ void GameViewportDockPanel::FitViewportToRegion()
 	glViewport(0, 0, viewportSize.x, viewportSize.y); 
 	glOrtho(-500.0 * aspectRatio, 500.0 * aspectRatio, -500.0, 500.0, 1.0, -1.0);
 }
+
+
 
 float2& GameViewportDockPanel::GetRegionSize() 
 {

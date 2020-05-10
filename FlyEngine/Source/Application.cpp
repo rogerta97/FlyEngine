@@ -160,6 +160,16 @@ GameMode Application::GetGameMode()
 	return gameMode;
 }
 
+void Application::SetIsReleaseVersion(bool newGameMode)
+{
+	isReleaseVersion = newGameMode;
+}
+
+bool Application::IsReleaseVersion()
+{
+	return isReleaseVersion;
+}
+
 
 
 void Application::AddModule(Module* mod)

@@ -34,7 +34,9 @@ public:
 	update_status PostUpdate(float dt); 
 
 	bool Init();
-	bool Start(); 
+	bool Start();
+	void StartGame(const UID& firstRoomUID);
+
 	bool CleanUp(); 
 
 	// Dialogues -------------------

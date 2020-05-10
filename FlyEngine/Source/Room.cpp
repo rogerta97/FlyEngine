@@ -185,6 +185,14 @@ void Room::CleanRoomUI()
 		roomUIHandler->CleanUp();
 }
 
+void Room::FitObjectUtils()
+{
+	for (auto& currentObject : objectsInRoom)
+	{
+		currentObject->FitObjectUtils();
+	}
+}
+
 int Room::GetObjectsInRoomAmount()
 {
 	return objectsInRoom.size();

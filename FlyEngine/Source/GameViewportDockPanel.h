@@ -25,6 +25,7 @@ public:
 	bool Draw();
 	void FitViewportToRegion();
 
+
 	void ReceiveEvent(FlyEngineEvent eventType);
 	bool IsMouseInViewport();
 
@@ -48,6 +49,9 @@ public:
 	float verticalOffset; 
 
 private: 
+
+	bool fitViewportNextFrame = false; 
+
 	float2 viewportCenterGlobalPos; 
 	float2 regionSize;
 	float2 viewportSize;

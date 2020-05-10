@@ -3,9 +3,12 @@
 #include "ResourceManager.h"
 #include "MyFileSystem.h"
 #include "EmitSoundAction.h"
+#include "ModuleRoomManager.h"
 #include "Application.h"
 #include "ModuleRoomManager.h"
+#include "GameViewportDockPanel.h"
 #include "ChangeRoomAction.h"
+#include "ModuleWindow.h"
 #include "ObjectPropertiesDockPanel.h"
 #include "Room.h"
 #include "ModuleImGui.h"
@@ -76,29 +79,38 @@ bool ModuleManager::Start()
 	}
 
 	string initFilePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "Init.json"; 
-	JSON_Value* root = json_parse_file(initFilePath.c_str());;
+
+	JSON_Value* root = json_parse_file(initFilePath.c_str());
 	JSON_Object* root_obj = json_value_get_object(root);
 
-	UID firstRoomUID = json_object_dotget_number(root_obj, "FirstRoomUID"); 
-	UID firstRoomUID = json_object_dotget_number(root_obj, "FirstRoomUID"); 
+	bool gameMode = json_object_dotget_boolean(root_obj, "InitData.GameMode"); 
 
-	int obj_ammount = json_object_dotget_number(root_obj, "RoomData.ObjectsAmount");
+	if (gameMode)
+	{
+		UID firstRoomUID = json_object_dotget_number(root_obj, "InitData.StartRoomUID"); 
+		string projectName = json_object_dotget_string(root_obj, "InitData.ProjectName"); 
 
-	// Create Debug Object 
-	//Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
-	//FlyObject* addingObject = selectedRoom->CreateFlyObject("AddingObject", "TráTrá!");
+		//StartGame(firstRoomUID);
 
-	//string keyPath = MyFileSystem::getInstance()->GetSolutionDirectory() + "\\Source\\Game\\Resources\\Images\\Transformer.png";
-	//addingObject->AddDisplayImageAction(keyPath.c_str());
+		App->SetIsReleaseVersion(true);
 
-	//addingObject->CreateClickableArea(float2(0, 0), float2(1, 1), false);
-	//addingObject->clickableAreaActive = true;
-	//
-	//EmitSoundAction* emitSoundAction = addingObject->AddEmitSoundAction(); 
-	//emitSoundAction->audioClip = (AudioClip*)ResourceManager::getInstance()->GetResource("Fart"); 
-	//emitSoundAction->SetOccObjectClicked(true); 
+		App->moduleWindow->SetTitle(projectName.c_str());
+	}
 
 	return true;
+}
+
+void ModuleManager::StartGame(const UID& firstRoomUID)
+{
+	App->BroadCastEvent(FlyEngineEvent::ENGINE_PLAY); 
+
+	App->moduleRoomManager->SetSelectedRoom(firstRoomUID, true);
+	App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);
+	App->moduleImGui->gameViewportDockPanel->FitViewportToRegion();
+	App->moduleRoomManager->FitObjectUtils(); 
+
+	App->SetGameMode(PLAY_MODE);
+	App->moduleImGui->AddaptToGameMode();
 }
 
 bool ModuleManager::CleanUp()

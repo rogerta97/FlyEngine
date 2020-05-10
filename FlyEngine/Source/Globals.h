@@ -93,4 +93,4 @@ enum update_status
 #define WIN_BORDERLESS false
 #define WIN_FULLSCREEN_DESKTOP false
 #define VSYNC true
-#define TITLE "Fly Engine V 0.01"
+#define TITLE " "

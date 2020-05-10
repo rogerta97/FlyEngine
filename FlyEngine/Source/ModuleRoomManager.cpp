@@ -64,6 +64,12 @@ bool ModuleRoomManager::CleanUp()
 	return true;
 }
 
+void ModuleRoomManager::FitObjectUtils()
+{
+	if (selectedRoom != nullptr)
+		selectedRoom->FitObjectUtils(); 
+}
+
 void ModuleRoomManager::DeleteSingletones()
 {
 	GameInventory::getInstance()->CleanUp();
@@ -146,13 +152,8 @@ bool ModuleRoomManager::LoadRoomsData()
 		// Load Thumbnail 
 		string thumbnailStr = MyFileSystem::getInstance()->GetThumbnilesDirectory() + "\\" + to_string((int)currentRoom->GetUID()) + "_Thumbnail";
 		Texture* newThumbnail = ImageImporter::getInstance()->LoadTexture(thumbnailStr.c_str(), false);
-
-		//if(newThumbnail != nullptr && ResourceManager::getInstance()->AddResource((Resource*)newThumbnail, to_string((int)currentRoom->GetUID()) + "_Thumbnail"))
-		//	currentRoom->roomThumbnail = newThumbnail->GetTextureID(); 
 	}
 
-
-	
 	if (roomsSavedFiles.size() > 0)
 		return true; 
 

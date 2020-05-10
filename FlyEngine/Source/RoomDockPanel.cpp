@@ -535,7 +535,7 @@ void RoomDockPanel::DrawMoveLayerSelectableButtons()
 void RoomDockPanel::ShowViewportSettingsTab()
 {
 
-	if (ImGui::CollapsingHeader("Music", ImGuiTreeNodeFlags_DefaultOpen))
+	if (ImGui::CollapsingHeader("Music"))
 	{
 	/*	ImGui::Spacing();
 		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
@@ -588,7 +588,7 @@ void RoomDockPanel::ShowViewportSettingsTab()
 		}
 	}
 
-	if (ImGui::CollapsingHeader("Visibility", ImGuiTreeNodeFlags_DefaultOpen))
+	if (ImGui::CollapsingHeader("Visibility"))
 	{
 		//ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 		//ImGui::Text("Clickable Area Draw Mode:");
@@ -635,7 +635,7 @@ void RoomDockPanel::ShowViewportSettingsTab()
 		}*/
 	}
 
-	if (ImGui::CollapsingHeader("Room Thumbnail", ImGuiTreeNodeFlags_DefaultOpen))
+	if (ImGui::CollapsingHeader("Room Thumbnail"))
 	{
 		static char buf[256] = "";
 
