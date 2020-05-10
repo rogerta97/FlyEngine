@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29201.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FlyEngine", "FlyEngine.vcxproj", "{5139FDC6-4C0A-4D2A-885F-A47D639FC41D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EditMode", "..\EditMode\EditMode.vcxproj", "{D116DF94-DC30-465B-B81F-7B46047CCD79}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{5139FDC6-4C0A-4D2A-885F-A47D639FC41D}.Release|x64.Build.0 = Release|x64
 		{5139FDC6-4C0A-4D2A-885F-A47D639FC41D}.Release|x86.ActiveCfg = Release|Win32
 		{5139FDC6-4C0A-4D2A-885F-A47D639FC41D}.Release|x86.Build.0 = Release|Win32
+		{D116DF94-DC30-465B-B81F-7B46047CCD79}.Debug|x64.ActiveCfg = Debug|x64
+		{D116DF94-DC30-465B-B81F-7B46047CCD79}.Debug|x64.Build.0 = Debug|x64
+		{D116DF94-DC30-465B-B81F-7B46047CCD79}.Debug|x86.ActiveCfg = Debug|Win32
+		{D116DF94-DC30-465B-B81F-7B46047CCD79}.Debug|x86.Build.0 = Debug|Win32
+		{D116DF94-DC30-465B-B81F-7B46047CCD79}.Release|x64.ActiveCfg = Release|x64
+		{D116DF94-DC30-465B-B81F-7B46047CCD79}.Release|x64.Build.0 = Release|x64
+		{D116DF94-DC30-465B-B81F-7B46047CCD79}.Release|x86.ActiveCfg = Release|Win32
+		{D116DF94-DC30-465B-B81F-7B46047CCD79}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

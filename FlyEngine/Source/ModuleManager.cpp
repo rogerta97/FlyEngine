@@ -90,11 +90,19 @@ bool ModuleManager::Start()
 		UID firstRoomUID = json_object_dotget_number(root_obj, "InitData.StartRoomUID"); 
 		string projectName = json_object_dotget_string(root_obj, "InitData.ProjectName"); 
 
-		//StartGame(firstRoomUID);
+		StartGame(firstRoomUID);
 
 		App->SetIsReleaseVersion(true);
 
 		App->moduleWindow->SetTitle(projectName.c_str());
+	}
+	else
+	{
+		JSON_Value* scene_v = json_value_init_object();
+		JSON_Object* scene_obj = json_value_get_object(scene_v);
+		json_object_dotset_number(root_obj, "InitData.StartRoomUID", 0);
+		json_object_dotset_string(root_obj, "InitData.ProjectName", "None");
+		json_serialize_to_file(scene_v, initFilePath.c_str());
 	}
 
 	return true;
@@ -103,6 +111,7 @@ bool ModuleManager::Start()
 void ModuleManager::StartGame(const UID& firstRoomUID)
 {
 	App->BroadCastEvent(FlyEngineEvent::ENGINE_PLAY); 
+	App->isEngineInPlayMode = true; 
 
 	App->moduleRoomManager->SetSelectedRoom(firstRoomUID, true);
 	App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);
