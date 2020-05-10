@@ -2,21 +2,25 @@
 //
 
 #include <iostream>
+#include <filesystem>
 #include <JSON/parson.h>
 
 int main()
 {
     std::cout << "Hello World!\n";
 
-	//std::string hello = SDL_GetBasePath();
+	char full[_MAX_PATH];
+	_fullpath(full, ".\\", _MAX_PATH);
 
-	JSON_Value* root = json_parse_file("ldskhfldsaf");
+	std::string initFilePath = full + std::string("Resources\\EngineResources\\EngineSavedData\\Init.json");
+	JSON_Value* root = json_parse_file("C:\\Users\\Roger\\Documents\\FlyEngine\\FlyEngine\\Source\\Game\\Resources\\EngineResources\\EngineSavedData\\Init.json");
 	JSON_Object* root_obj = json_value_get_object(root);
 
 	//string currentRoomName = json_object_dotget_string(root_obj, "RoomData.Name");
 	//Room* newRoom = App->moduleRoomManager->CreateEmptyRoom(currentRoomName);
 
     getchar();
+	return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
