@@ -33,7 +33,6 @@ ModuleRoomManager::~ModuleRoomManager()
 
 bool ModuleRoomManager::Start()
 {
-	
 	return true;
 }
 

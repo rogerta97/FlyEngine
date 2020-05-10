@@ -75,6 +75,15 @@ bool ModuleManager::Start()
 		App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);*/
 	}
 
+	string initFilePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "Init.json"; 
+	JSON_Value* root = json_parse_file(initFilePath.c_str());;
+	JSON_Object* root_obj = json_value_get_object(root);
+
+	UID firstRoomUID = json_object_dotget_number(root_obj, "FirstRoomUID"); 
+	UID firstRoomUID = json_object_dotget_number(root_obj, "FirstRoomUID"); 
+
+	int obj_ammount = json_object_dotget_number(root_obj, "RoomData.ObjectsAmount");
+
 	// Create Debug Object 
 	//Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
 	//FlyObject* addingObject = selectedRoom->CreateFlyObject("AddingObject", "Tr·Tr·!");
