@@ -7,18 +7,29 @@
 
 int main()
 {
-    std::cout << "Hello World!\n";
-
 	char full[_MAX_PATH];
 	_fullpath(full, ".\\", _MAX_PATH);
 
+	// Load Path Data 
 	std::string initFilePath = full + std::string("Resources\\EngineResources\\EngineSavedData\\Init.json");
-	JSON_Value* root = json_parse_file("C:\\Users\\Roger\\Documents\\FlyEngine\\FlyEngine\\Source\\Game\\Resources\\EngineResources\\EngineSavedData\\Init.json");
+	JSON_Value* root = json_parse_file(initFilePath.c_str());
 	JSON_Object* root_obj = json_value_get_object(root);
 
-	//string currentRoomName = json_object_dotget_string(root_obj, "RoomData.Name");
-	//Room* newRoom = App->moduleRoomManager->CreateEmptyRoom(currentRoomName);
+	int firstRoomUID = json_object_dotget_number(root_obj, "InitData.StartRoomUID");
+	std::string currentRoomName = json_object_dotget_string(root_obj, "InitData.ProjectName");
+	int gameMode = json_object_dotget_number(root_obj, "InitData.GameMode");
 
+	// Save New File Modified 
+	JSON_Value* scene_v = json_value_init_object();
+	JSON_Object* scene_obj = json_value_get_object(scene_v);
+
+	json_object_dotset_number(scene_obj, "InitData.StartRoomUID", 0);
+	json_object_dotset_string(scene_obj, "InitData.ProjectName", "");
+	json_object_dotset_boolean(scene_obj, "InitData.GameMode", 0);
+
+	json_serialize_to_file(scene_v, initFilePath.c_str());
+
+    std::cout << "Fly Engine is now in Edit Mode!";
     getchar();
 	return 0;
 }
