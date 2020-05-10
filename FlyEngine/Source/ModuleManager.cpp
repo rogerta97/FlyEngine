@@ -72,6 +72,9 @@ bool ModuleManager::Init()
 bool ModuleManager::Start()
 {
 	// Load Saved Rooms
+	Texture* engineIcon = (Texture*)ResourceManager::getInstance()->GetResource("PlusIcon"); 
+	App->moduleWindow->SetIcon(engineIcon->GetPath());
+
 	if (App->moduleRoomManager->LoadRoomsData())
 	{
 		/*App->moduleRoomManager->SetSelectedRoom(App->moduleRoomManager->GetFirstRoom());

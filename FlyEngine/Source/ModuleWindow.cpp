@@ -17,6 +17,16 @@ ModuleWindow::~ModuleWindow()
 {
 }
 
+void ModuleWindow::SetIcon(const char* image_path)
+{
+	if (image_path)
+	{
+		SDL_Surface* surface = SDL_LoadBMP(image_path);
+		SDL_SetWindowIcon(mainWindow, surface);
+		SDL_FreeSurface(surface);
+	}
+}
+
 // Called before render is available
 bool ModuleWindow::Init()
 {

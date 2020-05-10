@@ -21,6 +21,7 @@ public:
 
 	// Utility
 	void SetTitle(const char* title);
+	void SetIcon(const char* imagePath);
 	int GetWidth() const; 
 	int GetHeight() const;
 	float GetAspectRatio() const; 
