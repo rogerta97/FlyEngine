@@ -139,7 +139,7 @@ string MyFileSystem::GetIconsDirectory()
 	if (instance->iconsDirectory == "")
 	{
 		instance->iconsDirectory = GetSolutionDirectory();
-		instance->iconsDirectory += "Source\\Game\\Resources\\EngineResources\\EngineIcons\\";
+		instance->iconsDirectory += "Game\\Resources\\EngineResources\\EngineIcons\\";
 	}
 		
 	return instance->iconsDirectory;
@@ -161,7 +161,7 @@ string MyFileSystem::GetGameDirectory()
 	if (instance->gameDirectory == "")
 	{
 		instance->gameDirectory = instance->GetSolutionDirectory();
-		instance->gameDirectory += "Source\\Game"; 
+		instance->gameDirectory += "Game"; 
 	}
 
 	return instance->gameDirectory;
@@ -170,28 +170,28 @@ string MyFileSystem::GetGameDirectory()
 string MyFileSystem::GetResourcesDirectory()
 {
 	std::string resourcesDir = GetSolutionDirectory(); 
-	resourcesDir += "Source\\Game\\Resources";
+	resourcesDir += "Game\\Resources";
 	return resourcesDir;
 }
 
 string MyFileSystem::GetThumbnilesDirectory()
 {
-	return instance->GetSolutionDirectory() + "Source\\Game\\Resources\\EngineResources\\EngineSavedData\\RoomThumbnails";
+	return instance->GetSolutionDirectory() + "Game\\Resources\\EngineResources\\EngineSavedData\\RoomThumbnails";
 }
 
 string MyFileSystem::GetSavedDataDirectory()
 {
-	return instance->GetSolutionDirectory() + "Source\\Game\\Resources\\EngineResources\\EngineSavedData\\";
+	return instance->GetSolutionDirectory() + "Game\\Resources\\EngineResources\\EngineSavedData\\";
 }
 
 string MyFileSystem::GetDialogueNodesDirectory()
 {
-	return instance->GetSolutionDirectory() + "Source\\Game\\Resources\\EngineResources\\EngineSavedData\\NodeGraphData\\Dialogues\\";
+	return instance->GetSolutionDirectory() + "Game\\Resources\\EngineResources\\EngineSavedData\\NodeGraphData\\Dialogues\\";
 }
 
 string MyFileSystem::GetRoomsNodesDirectory()
 {
-	return instance->GetSolutionDirectory() + "Source\\Game\\Resources\\EngineResources\\EngineSavedData\\NodeGraphData\\Rooms\\";
+	return instance->GetSolutionDirectory() + "Game\\Resources\\EngineResources\\EngineSavedData\\NodeGraphData\\Rooms\\";
 }
 
 void MyFileSystem::GetRelativeDirectory(string& directory)

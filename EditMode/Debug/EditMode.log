@@ -1,4 +1,1 @@
-﻿  EditMode.cpp
-C:\Users\Roger\Documents\FlyEngine\EditMode\EditMode.cpp(18,19): warning C4244:  'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
-C:\Users\Roger\Documents\FlyEngine\EditMode\EditMode.cpp(20,15): warning C4244:  'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
-  EditMode.vcxproj -> C:\Users\Roger\Documents\FlyEngine\FlyEngine\Debug\EditMode.exe
+﻿  EditMode.vcxproj -> C:\Users\FULLMAC\Documents\FlyEngine\FlyEngine\Debug\EditMode.exe
