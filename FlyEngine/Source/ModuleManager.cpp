@@ -72,8 +72,8 @@ bool ModuleManager::Init()
 bool ModuleManager::Start()
 {
 	// Load Saved Rooms
-	Texture* engineIcon = (Texture*)ResourceManager::getInstance()->GetResource("PlusIcon"); 
-	App->moduleWindow->SetIcon(engineIcon->GetPath());
+	string engineIconPath = MyFileSystem::getInstance()->GetIconsDirectory() + "WingIcon.bmp";
+	App->moduleWindow->SetIcon(engineIconPath.c_str());
 
 	if (App->moduleRoomManager->LoadRoomsData())
 	{
