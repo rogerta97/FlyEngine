@@ -6,7 +6,7 @@
 #include "imgui.h"
 #include "ResourceManager.h"
 #include "Application.h"
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "Texture.h"
 
 #include "mmgr.h"

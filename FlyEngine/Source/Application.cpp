@@ -4,7 +4,7 @@
 #include "ModuleInput.h"
 #include "ModuleImGui.h"
 #include "ModuleRender.h"
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "ModuleManager.h"
 #include "ModuleAudioManager.h"
 #include "mmgr.h"
@@ -16,7 +16,7 @@ Application::Application()
 	moduleInput = new ModuleInput(this);
 	moduleWindow = new ModuleWindow(this);
 	moduleImGui = new ModuleImGui(this);
-	moduleRoomManager = new ModuleRoomManager(this);
+	moduleRoomManager = new ModuleWorldManager(this);
 	moduleRender = new ModuleRender(this);
 	moduleManager = new ModuleManager(this); 
 	moduleAudioManager = new ModuleAudioManager(this); 
@@ -70,7 +70,6 @@ bool Application::Init()
 		module_iterator++;
 	}
 
-	//flySection = FLY_SECTION_ROOM_EDIT; 
 	ms_timer.Start();
 	return ret;
 }

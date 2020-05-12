@@ -1,5 +1,5 @@
 #include "RoomObjectsDockPanel.h"
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "ModuleImGui.h"
 #include "Application.h"
 #include "Texture.h"

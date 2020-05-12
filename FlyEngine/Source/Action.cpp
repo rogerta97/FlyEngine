@@ -7,7 +7,7 @@
 #include "ResourceManager.h"
 #include "ActionCondition.h"
 #include "Room.h"
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "FlyVariable.h"
 #include "ActionConditionVariable.h"
 #include "ActionConditionHasItem.h"

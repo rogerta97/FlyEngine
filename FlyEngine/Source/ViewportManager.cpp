@@ -1,6 +1,6 @@
 #include "ViewportManager.h"
 #include "Application.h"
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "GameViewportDockPanel.h"
 #include "ModuleWindow.h"
 #include "OpenGL.h"

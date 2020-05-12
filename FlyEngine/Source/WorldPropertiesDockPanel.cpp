@@ -1,6 +1,6 @@
 #include "WorldPropertiesDockPanel.h"
 #include "Application.h"
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "Texture.h"
 #include "ResourceManager.h"
 #include "ModuleImGui.h"

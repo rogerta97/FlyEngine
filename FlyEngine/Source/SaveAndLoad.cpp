@@ -2,7 +2,7 @@
 
 #include "MyFileSystem.h"
 #include "Application.h"
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "StepAnswer.h"
 #include "ModifyVariableAction.h"
 #include "DisplayAnimationAction.h"

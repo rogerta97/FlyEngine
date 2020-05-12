@@ -17,7 +17,7 @@
 #include "ModuleInput.h"
 #include "DisplayTextAction.h"
 #include "EmitSoundAction.h"
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "GameInventory.h"
 #include "ModifyVariableAction.h"
 #include "ViewportManager.h"

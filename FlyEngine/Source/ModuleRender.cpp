@@ -11,7 +11,7 @@
 #include "Room.h"
 
 #include "ModuleWindow.h"
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "ModuleManager.h"
 #include "ModuleImGui.h"
 #include "GameViewportDockPanel.h"
@@ -117,7 +117,7 @@ update_status ModuleRender::PostUpdate(float dt)
 	//	selectedRoom->DrawRoomObjects();
 	//}
 
-	if (App->flySection == FLY_SECTION_ROOM_EDIT) 
+	if (App->flySection == FLY_SECTION_ROOM_EDIT || App->GetGameMode() == PLAY_MODE) 
 	{
 		ViewportManager::getInstance()->viewportTexture->Bind();
 
@@ -133,10 +133,12 @@ update_status ModuleRender::PostUpdate(float dt)
 			App->moduleManager->GetSceneUITint().w
 		);
 
-		selectedRoom->DrawRoomObjects();
-
-		glColor4f(1, 1, 1, 1);
-		selectedRoom->DrawRoomUserInterface(); 
+		if (selectedRoom != nullptr)
+		{
+			selectedRoom->DrawRoomObjects();
+			glColor4f(1, 1, 1, 1);
+			selectedRoom->DrawRoomUserInterface();
+		}
 
 		ViewportManager::getInstance()->viewportTexture->Render();
 		ViewportManager::getInstance()->viewportTexture->Unbind();

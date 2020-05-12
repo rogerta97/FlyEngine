@@ -3,9 +3,9 @@
 #include "ResourceManager.h"
 #include "MyFileSystem.h"
 #include "EmitSoundAction.h"
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "Application.h"
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "GameViewportDockPanel.h"
 #include "ChangeRoomAction.h"
 #include "ModuleWindow.h"
@@ -72,7 +72,7 @@ bool ModuleManager::Init()
 bool ModuleManager::Start()
 {
 	// Load Saved Rooms
-	string engineIconPath = MyFileSystem::getInstance()->GetIconsDirectory() + "WingIcon.bmp";
+	string engineIconPath = MyFileSystem::getInstance()->GetIconsDirectory() + "FlyEngineIcon.bmp";
 	App->moduleWindow->SetIcon(engineIconPath.c_str());
 
 	if (App->moduleRoomManager->LoadRoomsData())
@@ -90,8 +90,13 @@ bool ModuleManager::Start()
 
 	if (gameMode)
 	{
-		UID firstRoomUID = json_object_dotget_number(root_obj, "InitData.StartRoomUID"); 
-		string projectName = json_object_dotget_string(root_obj, "InitData.ProjectName"); 
+		UID firstRoomUID = 0; 
+		string projectName = ""; 
+
+		if(json_object_dothas_value(root_obj, "InitData.StartRoomUID"))
+			firstRoomUID = json_object_dotget_number(root_obj, "InitData.StartRoomUID"); 
+		if (json_object_dothas_value(root_obj, "InitData.ProjectName"))
+			projectName = json_object_dotget_string(root_obj, "InitData.ProjectName"); 
 
 		StartGame(firstRoomUID);
 
@@ -99,14 +104,14 @@ bool ModuleManager::Start()
 
 		App->moduleWindow->SetTitle(projectName.c_str());
 	}
-	else
-	{
-		JSON_Value* scene_v = json_value_init_object();
-		JSON_Object* scene_obj = json_value_get_object(scene_v);
-		json_object_dotset_number(root_obj, "InitData.StartRoomUID", 0);
-		json_object_dotset_string(root_obj, "InitData.ProjectName", "None");
-		json_serialize_to_file(scene_v, initFilePath.c_str());
-	}
+	//else
+	//{
+	//	JSON_Value* scene_v = json_value_init_object();
+	//	JSON_Object* scene_obj = json_value_get_object(scene_v);
+	//	json_object_dotset_number(root_obj, "InitData.StartRoomUID", 0);
+	//	json_object_dotset_string(root_obj, "InitData.ProjectName", "None");
+	//	json_serialize_to_file(scene_v, initFilePath.c_str());
+	//}
 
 	return true;
 }

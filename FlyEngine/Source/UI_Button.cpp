@@ -6,7 +6,7 @@
 #include "MyFileSystem.h"
 #include "ResourceManager.h"
 #include "ChangeRoomAction.h"
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "Gizmos.h"
 #include "Application.h"
 #include "ModuleImGui.h"

@@ -4,7 +4,7 @@
 #include "ResourceManager.h"
 #include "Application.h"
 #include "Room.h"
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "Texture.h"
 #include "GameInventory.h"
 #include "FlyObject.h"

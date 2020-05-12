@@ -1,4 +1,4 @@
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "ModuleInput.h"
 #include "Application.h"
 #include "ModuleImGui.h"
@@ -20,28 +20,28 @@
 
 #include "mmgr.h"
 
-ModuleRoomManager::ModuleRoomManager(bool start_enabled)
+ModuleWorldManager::ModuleWorldManager(bool start_enabled)
 {
 	moduleType = MODULE_ENGINE_MANAGER;
 	connectionsInWorldAmount = 0;
 	roomsInWoldAmount = 0;
 }
 
-ModuleRoomManager::~ModuleRoomManager()
+ModuleWorldManager::~ModuleWorldManager()
 {
 }
 
-bool ModuleRoomManager::Start()
+bool ModuleWorldManager::Start()
 {
 	return true;
 }
 
-update_status ModuleRoomManager::PreUpdate(float dt)
+update_status ModuleWorldManager::PreUpdate(float dt)
 {
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleRoomManager::Update(float dt)
+update_status ModuleWorldManager::Update(float dt)
 {
 	for (auto& currentRoom : roomsInWorldList)
 	{
@@ -51,12 +51,12 @@ update_status ModuleRoomManager::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleRoomManager::PostUpdate(float dt)
+update_status ModuleWorldManager::PostUpdate(float dt)
 {
 	return UPDATE_CONTINUE;
 }
 
-bool ModuleRoomManager::CleanUp()
+bool ModuleWorldManager::CleanUp()
 {	
 	CleanUpRooms();
 	DeleteSingletones();
@@ -64,13 +64,13 @@ bool ModuleRoomManager::CleanUp()
 	return true;
 }
 
-void ModuleRoomManager::FitObjectUtils()
+void ModuleWorldManager::FitObjectUtils()
 {
 	if (selectedRoom != nullptr)
 		selectedRoom->FitObjectUtils(); 
 }
 
-void ModuleRoomManager::DeleteSingletones()
+void ModuleWorldManager::DeleteSingletones()
 {
 	GameInventory::getInstance()->CleanUp();
 	MyFileSystem::getInstance()->Delete();
@@ -83,7 +83,7 @@ void ModuleRoomManager::DeleteSingletones()
 	FontImporter::getInstance()->Delete(); 
 }
 
-void ModuleRoomManager::ReceiveEvent(FlyEngineEvent eventType)
+void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 {
 	switch (eventType)
 	{
@@ -127,7 +127,7 @@ void ModuleRoomManager::ReceiveEvent(FlyEngineEvent eventType)
 	}
 }
 
-bool ModuleRoomManager::LoadRoomsData()
+bool ModuleWorldManager::LoadRoomsData()
 {
 	string roomsDirectory = MyFileSystem::getInstance()->GetSavedDataDirectory() + "RoomsData";
 	vector<string> roomsSavedFiles;
@@ -160,7 +160,7 @@ bool ModuleRoomManager::LoadRoomsData()
 	return false; 
 }
 
-Room* ModuleRoomManager::CreateEmptyRoom(string roomName)
+Room* ModuleWorldManager::CreateEmptyRoom(string roomName)
 {
 	Room* newRoom = new Room(roomName);
 	roomsInWorldList.push_back(newRoom);
@@ -168,7 +168,7 @@ Room* ModuleRoomManager::CreateEmptyRoom(string roomName)
 	return newRoom;
 }
 
-void ModuleRoomManager::DeleteRoom(string roomName)
+void ModuleWorldManager::DeleteRoom(string roomName)
 {
 	UID roomUID = GetRoom(roomName)->GetUID();
 
@@ -179,7 +179,7 @@ void ModuleRoomManager::DeleteRoom(string roomName)
 	DeleteRoom(roomUID);	
 }
 
-void ModuleRoomManager::DeleteRoom(UID roomID)
+void ModuleWorldManager::DeleteRoom(UID roomID)
 {
 	for (auto it = roomsInWorldList.begin(); it != roomsInWorldList.end(); it++) {
 
@@ -201,12 +201,12 @@ void ModuleRoomManager::DeleteRoom(UID roomID)
 	roomsInWoldAmount--;
 }
 
-void ModuleRoomManager::DeleteRoom(Room* roomToDelete)
+void ModuleWorldManager::DeleteRoom(Room* roomToDelete)
 {
 	DeleteRoom(roomToDelete->GetUID()); 
 }
 
-void ModuleRoomManager::CleanUpRooms()
+void ModuleWorldManager::CleanUpRooms()
 {
 	for (auto it = roomsInWorldList.begin(); it != roomsInWorldList.end(); it++) {
 		(*it)->CleanUp();
@@ -217,12 +217,12 @@ void ModuleRoomManager::CleanUpRooms()
 	roomsInWoldAmount = 0;
 }
 
-list<Room*>& ModuleRoomManager::GetRoomsInWorldList()
+list<Room*>& ModuleWorldManager::GetRoomsInWorldList()
 {
 	return roomsInWorldList; 
 }
 
-void ModuleRoomManager::SerializeRoomListNames()
+void ModuleWorldManager::SerializeRoomListNames()
 {
 	std::string saveFilePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "RoomNames.json";
 
@@ -238,7 +238,7 @@ void ModuleRoomManager::SerializeRoomListNames()
 	json_serialize_to_file(scene_v, saveFilePath.c_str());
 }
 
-const char** ModuleRoomManager::GetRoomsAsCombo(bool includeSelected)
+const char** ModuleWorldManager::GetRoomsAsCombo(bool includeSelected)
 {
 	const char* roomsNameRet[256];
 	
@@ -250,7 +250,7 @@ const char** ModuleRoomManager::GetRoomsAsCombo(bool includeSelected)
 	return roomsNameRet;
 }
 
-Room* ModuleRoomManager::GetRoom(std::string roomName) const
+Room* ModuleWorldManager::GetRoom(std::string roomName) const
 {
 	for (auto const& it : roomsInWorldList) {
 
@@ -259,11 +259,11 @@ Room* ModuleRoomManager::GetRoom(std::string roomName) const
 		}
 	}
 
-	FLY_ERROR("Room with name %s in ModuleRoomManager::GetRoom() could not be found", roomName.c_str());
+	FLY_ERROR("Room with name %s in ModuleWorldManager::GetRoom() could not be found", roomName.c_str());
 	return nullptr;
 }
 
-Room* ModuleRoomManager::GetRoom(UID roomID) const
+Room* ModuleWorldManager::GetRoom(UID roomID) const
 {
 	for (auto const& it : roomsInWorldList) 
 	{
@@ -271,11 +271,11 @@ Room* ModuleRoomManager::GetRoom(UID roomID) const
 			return it;		
 	}
 
-	FLY_ERROR("Room with ID %f in ModuleRoomManager::GetRoom() could not be found", roomID);
+	FLY_ERROR("Room with ID %f in ModuleWorldManager::GetRoom() could not be found", roomID);
 	return nullptr;
 }
 
-void ModuleRoomManager::SetStartRoom(Room* newFirstRoom)
+void ModuleWorldManager::SetStartRoom(Room* newFirstRoom)
 {
 	for (auto& currentRoom : roomsInWorldList)
 	{
@@ -288,7 +288,7 @@ void ModuleRoomManager::SetStartRoom(Room* newFirstRoom)
 	}
 }
 
-Room* ModuleRoomManager::GetStartRoom()
+Room* ModuleWorldManager::GetStartRoom()
 {
 	for (auto& currentRoom : roomsInWorldList)
 	{
@@ -301,17 +301,17 @@ Room* ModuleRoomManager::GetStartRoom()
 	return nullptr; 
 }
 
-Room* ModuleRoomManager::GetFirstRoom()
+Room* ModuleWorldManager::GetFirstRoom()
 {
 	return roomsInWorldList.front();
 }
 
-int ModuleRoomManager::GetRoomsAmount() const
+int ModuleWorldManager::GetRoomsAmount() const
 {
 	return roomsInWoldAmount;
 }
 
-void ModuleRoomManager::SetSelectedRoom(Room* nextSelectedRoom, bool sendEvent)
+void ModuleWorldManager::SetSelectedRoom(Room* nextSelectedRoom, bool sendEvent)
 {
 	if (nextSelectedRoom != nullptr) 
 	{
@@ -331,22 +331,22 @@ void ModuleRoomManager::SetSelectedRoom(Room* nextSelectedRoom, bool sendEvent)
 	}
 }
 
-void ModuleRoomManager::SetSelectedRoom(UID selectedRoomUID, bool sendEvent)
+void ModuleWorldManager::SetSelectedRoom(UID selectedRoomUID, bool sendEvent)
 {
 	SetSelectedRoom(GetRoom(selectedRoomUID), sendEvent);
 }
 
-void ModuleRoomManager::SetSelectedRoom(std::string roomName, bool sendEvent)
+void ModuleWorldManager::SetSelectedRoom(std::string roomName, bool sendEvent)
 {
 	SetSelectedRoom(GetRoom(roomName), sendEvent);
 }
 
-Room* ModuleRoomManager::GetSelectedRoom() const
+Room* ModuleWorldManager::GetSelectedRoom() const
 {
 	return selectedRoom;
 }
 
-RoomUIHandler* ModuleRoomManager::GetSelectedRoomUI() const
+RoomUIHandler* ModuleWorldManager::GetSelectedRoomUI() const
 {
 	if(selectedRoom != nullptr)
 		return selectedRoom->roomUIHandler;

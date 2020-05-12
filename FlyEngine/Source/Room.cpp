@@ -22,7 +22,7 @@
 #include "FlyObjectCharacter.h"
 #include "FlyVariable.h"
 #include "ObjectPropertiesDockPanel.h"
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "MyFileSystem.h"
 #include "Blackboard.h"
 #include "RoomUIHandler.h"
@@ -467,7 +467,8 @@ int Room::GetOutputConnectionsAmount() const
 
 void Room::DrawRoomObjects()
 {
-	for (auto& it : objectsInRoom) {
+	for (auto& it : objectsInRoom) 
+	{
 		(it)->Draw(); 
 	}
 

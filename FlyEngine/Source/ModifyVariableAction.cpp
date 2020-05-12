@@ -1,6 +1,6 @@
 #include "ModifyVariableAction.h"
 #include "Application.h"
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "Blackboard.h"
 #include "Room.h"
 #include "Globals.h"

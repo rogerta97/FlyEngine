@@ -6,7 +6,7 @@
 #include "ModuleImGui.h"
 #include "Room.h"
 #include "ModuleInput.h"
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "ResourceManager.h"
 
 RoomsNodeGraph::RoomsNodeGraph()

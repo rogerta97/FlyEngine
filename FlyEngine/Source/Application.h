@@ -26,7 +26,7 @@ class ModuleWindow;
 class ModuleInput;
 class ModuleImGui;
 class ModuleRender;
-class ModuleRoomManager;
+class ModuleWorldManager;
 class ModuleManager; 
 class ModuleAudioManager; 
 
@@ -34,7 +34,7 @@ class Application
 {
 public:
 
-	ModuleRoomManager* moduleRoomManager; 
+	ModuleWorldManager* moduleRoomManager; 
 	ModuleWindow* moduleWindow;
 	ModuleInput* moduleInput;
 	ModuleRender* moduleRender;

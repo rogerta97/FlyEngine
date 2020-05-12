@@ -4,7 +4,7 @@
 #include "Globals.h"
 #include "imnodes.h"
 
-class ModuleRoomManager; 
+class ModuleWorldManager; 
 class RoomsNodeGraph
 {
 public:
@@ -15,7 +15,7 @@ public:
 	void Update(); 
 
 private: 
-	ModuleRoomManager* roomManager; 
+	ModuleWorldManager* roomManager; 
 	
 };
 

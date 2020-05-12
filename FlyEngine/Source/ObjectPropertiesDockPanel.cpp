@@ -4,7 +4,7 @@
 #include "ModuleManager.h"
 #include "imgui.h"
 #include "Action.h"
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "ModifyVariableAction.h"
 #include "Gizmos.h"
 #include "UI_Text.h"

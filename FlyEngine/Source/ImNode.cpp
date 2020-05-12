@@ -25,7 +25,7 @@
 #endif
 
 #include "Application.h"
-#include "ModuleRoomManager.h"
+#include "ModuleWorldManager.h"
 #include "ImNode.h"
 
 #include "mmgr.h"
