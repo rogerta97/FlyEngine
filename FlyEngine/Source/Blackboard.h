@@ -31,6 +31,7 @@ public:
 
 private:
 	bool isGlobal; 
+	bool showGlobalsOnListPopup; 
 };
 
 #endif // !_BLACKBOARD_H_

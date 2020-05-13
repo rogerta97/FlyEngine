@@ -4,7 +4,10 @@
 #include "ResourceManager.h"
 #include "Texture.h"
 #include "FlyVariable.h"
+#include "ModuleImGui.h"
 #include "MyFileSystem.h"
+#include "Application.h"
+#include "ModuleWorldManager.h"
 
 #include "imgui.h"
 #include "mmgr.h"
@@ -12,6 +15,7 @@
 Blackboard::Blackboard(bool _isGlobal)
 {
 	isGlobal = _isGlobal;
+	showGlobalsOnListPopup = true; 
 }
 
 Blackboard::~Blackboard()
@@ -120,7 +124,13 @@ FlyVariable* Blackboard::DrawVariableListPopup(std::string popupID)
 	if (ImGui::BeginPopup(popupID.c_str()))
 	{
 		static char searchVarBuffer[256];
+
+		ImGui::SetNextItemWidth(200);
 		ImGui::InputTextWithHint("", "Search...", searchVarBuffer, IM_ARRAYSIZE(searchVarBuffer)); 
+
+		ImGui::SameLine();
+
+		ImGui::Checkbox("Globals", &showGlobalsOnListPopup);
 
 		ImGui::Separator(); 
 
@@ -140,6 +150,31 @@ FlyVariable* Blackboard::DrawVariableListPopup(std::string popupID)
 			{
 				ImGui::EndPopup(); 
 				return currentVariable; 
+			}
+		}
+
+		if (showGlobalsOnListPopup)
+		{
+			for (auto& currentVariable : App->moduleWorldManager->globalBlackboard->blackboardVariablesList)
+			{
+				Texture* varTexture = 0;
+
+				if (currentVariable->varType == Var_Integer)
+					varTexture = (Texture*)ResourceManager::getInstance()->GetResource("NaturalNumberIcon");
+				else if (currentVariable->varType == Var_Toggle)
+					varTexture = (Texture*)ResourceManager::getInstance()->GetResource("ToggleIcon");
+
+				ImGui::Image((ImTextureID)varTexture->GetTextureID(), ImVec2(20, 20));
+				ImGui::SameLine();
+
+				ImGui::PushFont(App->moduleImGui->rudaBlackMid);
+				if (ImGui::Selectable(currentVariable->name.c_str()))
+				{
+					ImGui::PopFont();
+					ImGui::EndPopup();
+					return currentVariable;
+				}
+				ImGui::PopFont();
 			}
 		}
 
