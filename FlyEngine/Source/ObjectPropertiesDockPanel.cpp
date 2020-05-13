@@ -47,7 +47,7 @@ ObjectPropertiesDockPanel::~ObjectPropertiesDockPanel()
 bool ObjectPropertiesDockPanel::Draw()
 {
 #pragma region secutiryChecks
-	if (!DockPanel::Draw() || App->moduleRoomManager->GetSelectedRoom() == nullptr)
+	if (!DockPanel::Draw() || App->moduleWorldManager->GetSelectedRoom() == nullptr)
 		return false;
 #pragma endregion
 
@@ -71,7 +71,7 @@ bool ObjectPropertiesDockPanel::Draw()
 
 void ObjectPropertiesDockPanel::DrawUIElementProperties()
 {
-	RoomUIHandler* roomUIHandler = App->moduleRoomManager->GetSelectedRoom()->roomUIHandler;
+	RoomUIHandler* roomUIHandler = App->moduleWorldManager->GetSelectedRoom()->roomUIHandler;
 	UI_Element* selectedUIElement = roomUIHandler->GetSelectedElement();
 
 	if (selectedUIElement != nullptr)
@@ -317,7 +317,7 @@ void ObjectPropertiesDockPanel::DrawUIButtonProperties(UI_Element* selectedUIEle
 			ImGui::EndChild();
 			ImGui::PopStyleColor();
 
-			App->moduleRoomManager->GetSelectedRoomUI()->DrawSelectedOnClickActionSettings();
+			App->moduleWorldManager->GetSelectedRoomUI()->DrawSelectedOnClickActionSettings();
 
 			if (scrollToEnd)
 			{
@@ -346,7 +346,7 @@ void ObjectPropertiesDockPanel::DrawOnClickActionButtonList(UI_Button* selectedB
 		if (DrawActionSelectable(selectableInfo, currentAction, count, 40))
 		{
 			selectedButton->GetHolderObject()->SetSelectedAction(currentAction->GetType(), currentAction->IsActionSequential()); 
-			RoomUIHandler* selectedRoomUI = App->moduleRoomManager->GetSelectedRoomUI();
+			RoomUIHandler* selectedRoomUI = App->moduleWorldManager->GetSelectedRoomUI();
 			selectedRoomUI->selectedButtonUIAction = currentAction;
 			scrollToEnd = true; 
 		}
@@ -712,7 +712,7 @@ void ObjectPropertiesDockPanel::DrawUIImageProperties(UI_Element* selectedUIElem
 
 void ObjectPropertiesDockPanel::DrawFlyObjectProperties()
 {
-	FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();
+	FlyObject* selectedObject = App->moduleWorldManager->GetSelectedRoom()->GetSelectedObject();
 
 	if (selectedObject != nullptr)
 	{
@@ -902,7 +902,7 @@ void ObjectPropertiesDockPanel::DrawTransformButtons()
 	{
 		App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GIZMO_SELECT);
 
-		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();
+		FlyObject* selectedObject = App->moduleWorldManager->GetSelectedRoom()->GetSelectedObject();
 		if (selectedObject != nullptr)
 		{
 			selectedObject->CalculateCurrentGizmo();
@@ -926,7 +926,7 @@ void ObjectPropertiesDockPanel::DrawTransformButtons()
 	if (ImGui::ImageButton((ImTextureID)moveArrows->GetTextureID(), ImVec2(30, 30)))
 	{
 		App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GIZMO_MOVE);
-		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();
+		FlyObject* selectedObject = App->moduleWorldManager->GetSelectedRoom()->GetSelectedObject();
 		if (selectedObject != nullptr)
 		{
 			selectedObject->CalculateCurrentGizmo();
@@ -950,7 +950,7 @@ void ObjectPropertiesDockPanel::DrawTransformButtons()
 	if (ImGui::ImageButton((ImTextureID)scaleIcon->GetTextureID(), ImVec2(30, 30)))
 	{
 		App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GIZMO_SCALE);
-		FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();
+		FlyObject* selectedObject = App->moduleWorldManager->GetSelectedRoom()->GetSelectedObject();
 		if (selectedObject != nullptr)
 		{
 			selectedObject->CalculateCurrentGizmo();

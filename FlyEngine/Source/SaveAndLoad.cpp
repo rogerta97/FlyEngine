@@ -47,18 +47,18 @@ SaveAndLoad::~SaveAndLoad()
 
 void SaveAndLoad::SaveCurrentRoomData()
 {
-	Room* currentRoom = App->moduleRoomManager->GetSelectedRoom(); 
+	Room* currentRoom = App->moduleWorldManager->GetSelectedRoom(); 
 	instance->SaveRoomData(currentRoom); 
 }
 
 void SaveAndLoad::SaveRoomData(std::string roomName)
 {
-	instance->SaveRoomData(App->moduleRoomManager->GetRoom(roomName));
+	instance->SaveRoomData(App->moduleWorldManager->GetRoom(roomName));
 }
 
 void SaveAndLoad::SaveRoomData(UID roomUID)
 {
-	instance->SaveRoomData(App->moduleRoomManager->GetRoom(roomUID));
+	instance->SaveRoomData(App->moduleWorldManager->GetRoom(roomUID));
 }
 
 void SaveAndLoad::SaveRoomData(Room* roomToSave)
@@ -79,7 +79,7 @@ void SaveAndLoad::SaveRoomData(Room* roomToSave)
 
 void SaveAndLoad::SaveSelectedRoomToOnPlayData()
 {
-	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom(); 
+	Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom(); 
 
 	string provisionalPath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "OnPlaySaveData.json"; 
 
@@ -99,10 +99,10 @@ void SaveAndLoad::LoadOnPlayData()
 	JSON_Object* root_obj = json_value_get_object(root);
 
 	UID selectedWhenPlayRoomUID = json_object_dotget_number(root_obj, "RoomData.UID"); 
-	Room* nextSelectedRoom = App->moduleRoomManager->GetRoom(selectedWhenPlayRoomUID); 
-	App->moduleRoomManager->SetSelectedRoom(nextSelectedRoom); 
+	Room* nextSelectedRoom = App->moduleWorldManager->GetRoom(selectedWhenPlayRoomUID); 
+	App->moduleWorldManager->SetSelectedRoom(nextSelectedRoom); 
 
-	App->moduleRoomManager->GetSelectedRoom()->CleanUp(); 
+	App->moduleWorldManager->GetSelectedRoom()->CleanUp(); 
 
 	instance->LoadDataToSelectedRoom(provisionalPath);
 }
@@ -112,7 +112,7 @@ void SaveAndLoad::SaveInitFile()
 	if (App->IsReleaseVersion())
 		return; 
 
-	Room* startRoom = App->moduleRoomManager->GetStartRoom();
+	Room* startRoom = App->moduleWorldManager->GetStartRoom();
 
 	string savePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "Init.json";
 
@@ -146,7 +146,7 @@ void SaveAndLoad::SaveInitFile()
 void SaveAndLoad::LoadDataToSelectedRoom(std::string roomDataFilePath)
 {
 	// Get Current Room 
-	Room* currentRoom = App->moduleRoomManager->GetSelectedRoom();
+	Room* currentRoom = App->moduleWorldManager->GetSelectedRoom();
 	LoadDataToRoom(roomDataFilePath, currentRoom); 
 }
 
@@ -808,7 +808,7 @@ void SaveAndLoad::LoadChangeRoomAction(JSON_Object* root_obj, std::string& seria
 	changeRoomAction->SetActionClass((ActionClass)actionClass);
 	changeRoomAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("ChangeRoom.Occurrence."));
 
-	Room* room = App->moduleRoomManager->GetRoom(destinationRoomUID);
+	Room* room = App->moduleWorldManager->GetRoom(destinationRoomUID);
 	changeRoomAction->SetDestination(room);
 
 	if(room != nullptr)
@@ -953,7 +953,7 @@ void SaveAndLoad::Delete()
 
 void SaveAndLoad::SaveAllData()
 {
-	for (auto& currentRoom : App->moduleRoomManager->roomsInWorldList)
+	for (auto& currentRoom : App->moduleWorldManager->roomsInWorldList)
 	{
 		instance->SaveRoomData(currentRoom);
 	}

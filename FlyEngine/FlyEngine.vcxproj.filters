@@ -121,11 +121,11 @@
     <Filter Include="Source\Tools\Dialogues">
       <UniqueIdentifier>{7bddf65c-ad1b-4f8b-be07-458b3d3cf7cc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\FlyEngine\FlyObject\DockingPanels">
-      <UniqueIdentifier>{c27d716c-5ae7-4394-875d-a3ad33ff3aef}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\3rdParty\imnodes">
       <UniqueIdentifier>{e07cfcd7-db8a-406d-b7b0-baf7915c2c3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\FlyEngine\DockingPanels">
+      <UniqueIdentifier>{c27d716c-5ae7-4394-875d-a3ad33ff3aef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -172,25 +172,25 @@
       <Filter>Source\3rdParty\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Source\ConsoleDockPanel.cpp">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\DockPanel.cpp">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="3rdParty\mmgr\mmgr.cpp">
       <Filter>Source\3rdParty\MemoryManager</Filter>
     </ClCompile>
     <ClCompile Include="Source\GameViewportDockPanel.cpp">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\ObjectPropertiesDockPanel.cpp">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\RoomObjectsDockPanel.cpp">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\RoomsGraphDockPanel.cpp">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\ImNode.cpp">
       <Filter>Source\3rdParty\ImNode</Filter>
@@ -211,7 +211,7 @@
       <Filter>Source\3rdParty\RNG</Filter>
     </ClCompile>
     <ClCompile Include="Source\WorldPropertiesDockPanel.cpp">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\TextureMSAA.cpp">
       <Filter>Source\Utilities</Filter>
@@ -340,7 +340,7 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="Source\ObjectCreatorDockPanel.cpp">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\BoundingBox.cpp">
       <Filter>Source\Utilities\BoundingBox</Filter>
@@ -352,7 +352,7 @@
       <Filter>Source\Utilities\Gizmos</Filter>
     </ClCompile>
     <ClCompile Include="Source\RoomDockPanel.cpp">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\Action.cpp">
       <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
@@ -382,7 +382,7 @@
       <Filter>Source\FlyEngine\FlyObject\Blackboard</Filter>
     </ClCompile>
     <ClCompile Include="Source\FileBrowserDockPanel.cpp">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\ModuleAudioManager.cpp">
       <Filter>Source\Modules</Filter>
@@ -448,7 +448,7 @@
       <Filter>Source\FlyEngine\FlyObject\FlyObject</Filter>
     </ClCompile>
     <ClCompile Include="Source\DialogueEditorDockPanel.cpp">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\Dialogue.cpp">
       <Filter>Source\Tools\Dialogues</Filter>
@@ -478,16 +478,19 @@
       <Filter>Source\FlyEngine\FlyObject\FlyObject</Filter>
     </ClCompile>
     <ClCompile Include="Source\CharacterCreatorDockPanel.cpp">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\RoomsNodeGraph.cpp">
       <Filter>Source\Tools\NodeGraph</Filter>
     </ClCompile>
     <ClCompile Include="Source\GamePropertiesDockPanel.cpp">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClCompile>
     <ClCompile Include="Source\ModuleWorldManager.cpp">
       <Filter>Source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GlobalBlackboardDockPanel.cpp">
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -540,10 +543,10 @@
       <Filter>Source\3rdParty\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Source\ConsoleDockPanel.h">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\DockPanel.h">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="3rdParty\mmgr\mmgr.h">
       <Filter>Source\3rdParty\MemoryManager</Filter>
@@ -552,16 +555,16 @@
       <Filter>Source\3rdParty\MemoryManager</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameViewportDockPanel.h">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\ObjectPropertiesDockPanel.h">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\RoomObjectsDockPanel.h">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\RoomsGraphDockPanel.h">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\ImNode.h">
       <Filter>Source\3rdParty\ImNode</Filter>
@@ -585,7 +588,7 @@
       <Filter>Source\3rdParty\RNG</Filter>
     </ClInclude>
     <ClInclude Include="Source\WorldPropertiesDockPanel.h">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\TextureMSAA.h">
       <Filter>Source\Utilities</Filter>
@@ -828,7 +831,7 @@
       <Filter>Source\3rdParty\TinyFileDialog</Filter>
     </ClInclude>
     <ClInclude Include="Source\ObjectCreatorDockPanel.h">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\BoundingBox.h">
       <Filter>Source\Utilities\BoundingBox</Filter>
@@ -840,7 +843,7 @@
       <Filter>Source\Utilities\Gizmos</Filter>
     </ClInclude>
     <ClInclude Include="Source\RoomDockPanel.h">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\Action.h">
       <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
@@ -870,7 +873,7 @@
       <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
     </ClInclude>
     <ClInclude Include="Source\FileBrowserDockPanel.h">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleAudioManager.h">
       <Filter>Source\Modules</Filter>
@@ -936,7 +939,7 @@
       <Filter>Source\FlyEngine\FlyObject\FlyObject</Filter>
     </ClInclude>
     <ClInclude Include="Source\DialogueEditorDockPanel.h">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\Dialogue.h">
       <Filter>Source\Tools\Dialogues</Filter>
@@ -966,16 +969,19 @@
       <Filter>Source\FlyEngine\FlyObject\FlyObject</Filter>
     </ClInclude>
     <ClInclude Include="Source\CharacterCreatorDockPanel.h">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\RoomsNodeGraph.h">
       <Filter>Source\Tools\NodeGraph</Filter>
     </ClInclude>
     <ClInclude Include="Source\GamePropertiesDockPanel.h">
-      <Filter>Source\FlyEngine\FlyObject\DockingPanels</Filter>
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleWorldManager.h">
       <Filter>Source\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GlobalBlackboardDockPanel.h">
+      <Filter>Source\FlyEngine\DockingPanels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

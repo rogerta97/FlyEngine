@@ -124,7 +124,7 @@ update_status ModuleRender::PostUpdate(float dt)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.0, 0.0, 0.0, 1);
 
-		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+		Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom();
 
 		glColor4f(
 			App->moduleManager->GetSceneUITint().x,

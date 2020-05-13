@@ -2,6 +2,7 @@
 #include "ModuleInput.h"
 #include "Application.h"
 #include "ModuleImGui.h"
+#include "Blackboard.h"
 #include "RandomNumberGenerator.h"
 #include "GamePropertiesDockPanel.h"
 #include "ViewportManager.h"
@@ -33,6 +34,7 @@ ModuleWorldManager::~ModuleWorldManager()
 
 bool ModuleWorldManager::Start()
 {
+	globalBlackboard = new Blackboard(); 
 	return true;
 }
 
@@ -60,6 +62,9 @@ bool ModuleWorldManager::CleanUp()
 {	
 	CleanUpRooms();
 	DeleteSingletones();
+
+	globalBlackboard->CleanUp(); 
+	delete globalBlackboard;
 
 	return true;
 }
@@ -139,7 +144,7 @@ bool ModuleWorldManager::LoadRoomsData()
 		JSON_Object* root_obj = json_value_get_object(root);
 
 		string currentRoomName = json_object_dotget_string(root_obj, "RoomData.Name");
-		Room* newRoom = App->moduleRoomManager->CreateEmptyRoom(currentRoomName);
+		Room* newRoom = App->moduleWorldManager->CreateEmptyRoom(currentRoomName);
 
 		string uidStr = string("RoomData.UID");
 		newRoom->SetUID(json_object_dotget_number(root_obj, uidStr.c_str()));
@@ -151,7 +156,7 @@ bool ModuleWorldManager::LoadRoomsData()
 
 		// Load Thumbnail 
 		string thumbnailStr = MyFileSystem::getInstance()->GetThumbnilesDirectory() + "\\" + to_string((int)currentRoom->GetUID()) + "_Thumbnail";
-		Texture* newThumbnail = ImageImporter::getInstance()->LoadTexture(thumbnailStr.c_str(), false);
+		Texture* newThumbnail = ImageImporter::getInstance()->LoadTexture (thumbnailStr.c_str(), false);
 	}
 
 	if (roomsSavedFiles.size() > 0)

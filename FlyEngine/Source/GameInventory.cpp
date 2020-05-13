@@ -92,10 +92,10 @@ void GameInventory::DropDroppingObjectToRoom()
 {
 	for (auto it = instance->objectsInInventory.begin(); it != instance->objectsInInventory.end(); it++)
 	{
-		// TODO: this should be sone by UID for seccurity
+		// TODO: this should be done by UID for seccurity
 		if (instance->droppingObject->GetName() == (*it)->GetName())
 		{
-			Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom(); 
+			Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom(); 
 			selectedRoom->AddFlyObject(*it);
 			instance->objectsInInventory.erase(it);
 			instance->droppingObject = nullptr; 

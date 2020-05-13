@@ -46,7 +46,7 @@ void ModifyVariableAction::DoAction()
 	for (auto& currentEffect : variablesEffectList)
 	{
 		// Get Correct Blackboard (For Now Room) 
-		Blackboard* roomBlackboard = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard(); 
+		Blackboard* roomBlackboard = App->moduleWorldManager->GetSelectedRoom()->GetBlackboard(); 
 
 		if (currentEffect->targetVariable->varType == Var_Integer)
 		{
@@ -250,7 +250,7 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 		ImGui::OpenPopup(string("search_variable_popup" + to_string(pos)).c_str());
 	}
 
-	FlyVariable* popupVarSelected = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup(string("search_variable_popup" + to_string(pos)).c_str());
+	FlyVariable* popupVarSelected = App->moduleWorldManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup(string("search_variable_popup" + to_string(pos)).c_str());
 	if (popupVarSelected != nullptr)
 	{
 		modifyVarEffect->variableOperatorType = (VariableOperatorType)0;

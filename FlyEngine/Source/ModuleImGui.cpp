@@ -12,6 +12,7 @@
 #include "DialogueEditorDockPanel.h"
 #include "ConsoleDockPanel.h"
 #include "RoomsGraphDockPanel.h"
+#include "GlobalBlackboardDockPanel.h"
 #include "ChangeRoomAction.h"
 #include "ViewportManager.h"
 #include "TextureMSAA.h"
@@ -111,6 +112,7 @@ void ModuleImGui::CreatePanels()
 	RoomsGraphDockPanel* roomsGraphPanel = new RoomsGraphDockPanel(true);
 	GamePropertiesDockPanel* gamePropertiesPanel = new GamePropertiesDockPanel(true);
 	WorldPropertiesDockPanel* roomPropertiesPanel = new WorldPropertiesDockPanel(true);
+	GlobalBlackboardDockPanel* globalBlackboardPanel = new GlobalBlackboardDockPanel(true);
 
 	FileBrowserDockPanel* fileBrowserDockPanel = new FileBrowserDockPanel(false); 
 	GameViewportDockPanel* gameViewporPanel = new GameViewportDockPanel(false);
@@ -125,6 +127,7 @@ void ModuleImGui::CreatePanels()
 	dockPanels.push_back(roomsGraphPanel);
 	dockPanels.push_back(gamePropertiesPanel);
 	dockPanels.push_back(roomPropertiesPanel); 
+	dockPanels.push_back(globalBlackboardPanel); 
 
 	dockPanels.push_back(dialogueEditorPanel);
 	dockPanels.push_back(gameViewporPanel);
@@ -264,7 +267,7 @@ void ModuleImGui::DrawMainMenuBar()
 		}
 
 		ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x / 2 - 100);
-		ImGui::Text("Room Editor - %s", App->moduleRoomManager->GetSelectedRoom()->GetName().c_str()); 
+		ImGui::Text("Room Editor - %s", App->moduleWorldManager->GetSelectedRoom()->GetName().c_str()); 
 	}
 
 	ImGui::EndMainMenuBar();
@@ -288,7 +291,7 @@ void ModuleImGui::DrawPanels()
 {
 	for (auto it = dockPanels.begin(); it != dockPanels.end(); it++) 
 	{
-		if (App->flySection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && App->moduleRoomManager->GetSelectedRoom() == nullptr)
+		if (App->flySection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && App->moduleWorldManager->GetSelectedRoom() == nullptr)
 			continue; 
 
 		(*it)->Draw();
@@ -297,7 +300,7 @@ void ModuleImGui::DrawPanels()
 
 void ModuleImGui::AddaptToFlySection(FlyEngineSection flyEngineSection)
 {
-	if (flyEngineSection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && App->moduleRoomManager->GetSelectedRoom() == nullptr) {
+	if (flyEngineSection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && App->moduleWorldManager->GetSelectedRoom() == nullptr) {
 		FLY_ERROR("Room Editor can not open with any room selected"); 
 	}
 

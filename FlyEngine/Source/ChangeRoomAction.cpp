@@ -57,7 +57,7 @@ void ChangeRoomAction::CleanUp()
 
 void ChangeRoomAction::DrawSelectDestinationCombo()
 {
-	std::list<Room*> roomsInWorld = App->moduleRoomManager->GetRoomsInWorldList();
+	std::list<Room*> roomsInWorld = App->moduleWorldManager->GetRoomsInWorldList();
 
 	char selectedRoom[256] = "Select Destination...";
 	if (GetDesination() != nullptr)
@@ -122,7 +122,7 @@ void ChangeRoomAction::DoAction()
 {
 	if (destinationRoom)
 	{
-		App->moduleRoomManager->SetSelectedRoom(destinationRoom);
+		App->moduleWorldManager->SetSelectedRoom(destinationRoom);
 		SetActionCompleted(true); 
 	}
 }

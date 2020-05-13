@@ -36,11 +36,11 @@ bool GamePropertiesDockPanel::Draw()
 		if (ImGui::BeginCombo("Start Room", roomShowingName))
 		{
 			int count = 0;
-			for (auto& currentRoom : App->moduleRoomManager->roomsInWorldList)
+			for (auto& currentRoom : App->moduleWorldManager->roomsInWorldList)
 			{
 				if (ImGui::Selectable(currentRoom->GetName().c_str()))
 				{
-					App->moduleRoomManager->SetStartRoom(currentRoom); 
+					App->moduleWorldManager->SetStartRoom(currentRoom); 
 					strcpy(roomShowingName, currentRoom->GetName().c_str());
 				}
 			}

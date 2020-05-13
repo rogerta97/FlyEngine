@@ -40,7 +40,7 @@ bool GameViewportDockPanel::Draw()
 	if (!DockPanel::Draw())
 		return false;
 
-	if (App->moduleRoomManager->GetSelectedRoom() == nullptr)
+	if (App->moduleWorldManager->GetSelectedRoom() == nullptr)
 		return false; 
 
 #pragma endregion

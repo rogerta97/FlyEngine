@@ -1292,13 +1292,13 @@ void ObjectCreatorDockPanel::AddCreatingObject()
 
 	// Add Object
 	creatingObject->SetName(newObjectName);
-	App->moduleRoomManager->GetSelectedRoom()->AddFlyObject(creatingObject);
+	App->moduleWorldManager->GetSelectedRoom()->AddFlyObject(creatingObject);
 
-	App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(creatingObject);
+	App->moduleWorldManager->GetSelectedRoom()->SetSelectedObject(creatingObject);
 	App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GizmoMode::GIZMO_SELECT);
 	creatingObject->FitObjectUtils();
 
-	creatingObject->SetParentRoom(App->moduleRoomManager->GetSelectedRoom());
+	creatingObject->SetParentRoom(App->moduleWorldManager->GetSelectedRoom());
 }
 
 void ObjectCreatorDockPanel::DrawDisplayImageSettings()

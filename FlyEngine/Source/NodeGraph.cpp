@@ -225,10 +225,10 @@ void NodeGraph::CheckNewConnection()
 	if (ImNodes::GetNewConnection(&_dstNode, &_dstSlotName, &_originNode, &_originSlotName)) {
 
 		Node* originNode = (Node*)_originNode; 
-		Room* originRoom = App->moduleRoomManager->GetRoom(originNode->title); 
+		Room* originRoom = App->moduleWorldManager->GetRoom(originNode->title); 
 
 		Node* dstNode = (Node*)_dstNode;
-		Room* dstRoom = App->moduleRoomManager->GetRoom(dstNode->title);
+		Room* dstRoom = App->moduleWorldManager->GetRoom(dstNode->title);
 
 		originRoom->AddConnection(dstRoom); 
 	}

@@ -68,6 +68,7 @@
     <ClCompile Include="Source\DialogueAction.cpp" />
     <ClCompile Include="Source\Dialogue.cpp" />
     <ClCompile Include="Source\DialogueViewportHandler.cpp" />
+    <ClCompile Include="Source\GlobalBlackboardDockPanel.cpp" />
     <ClCompile Include="Source\imnodes.cpp" />
     <ClCompile Include="Source\DialogueNodeGraph.cpp" />
     <ClCompile Include="Source\RoomsNodeGraph.cpp" />
@@ -230,6 +231,7 @@
     <ClInclude Include="Source\DialogueAction.h" />
     <ClInclude Include="Source\Dialogue.h" />
     <ClInclude Include="Source\DialogueViewportHandler.h" />
+    <ClInclude Include="Source\GlobalBlackboardDockPanel.h" />
     <ClInclude Include="Source\imnodes.h" />
     <ClInclude Include="Source\DialogueNodeGraph.h" />
     <ClInclude Include="Source\RoomsNodeGraph.h" />

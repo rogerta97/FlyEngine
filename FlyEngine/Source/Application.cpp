@@ -16,7 +16,7 @@ Application::Application()
 	moduleInput = new ModuleInput(this);
 	moduleWindow = new ModuleWindow(this);
 	moduleImGui = new ModuleImGui(this);
-	moduleRoomManager = new ModuleWorldManager(this);
+	moduleWorldManager = new ModuleWorldManager(this);
 	moduleRender = new ModuleRender(this);
 	moduleManager = new ModuleManager(this); 
 	moduleAudioManager = new ModuleAudioManager(this); 
@@ -24,7 +24,7 @@ Application::Application()
 	AddModule(moduleInput);
 	AddModule(moduleWindow);
 
-	AddModule(moduleRoomManager);
+	AddModule(moduleWorldManager);
 	AddModule(moduleRender);
 	AddModule(moduleImGui);
 	AddModule(moduleAudioManager);

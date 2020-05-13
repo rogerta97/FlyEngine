@@ -61,7 +61,7 @@ void ActionConditionVariable::DrawUIItem(int itemPosition)
 		ImGui::OpenPopup(string("search_variable_popup" + to_string(itemPosition)).c_str());
 	}
 
-	FlyVariable* selectedPopupVar = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup(string("search_variable_popup" + to_string(itemPosition)).c_str());
+	FlyVariable* selectedPopupVar = App->moduleWorldManager->GetSelectedRoom()->GetBlackboard()->DrawVariableListPopup(string("search_variable_popup" + to_string(itemPosition)).c_str());
 	if (selectedPopupVar != nullptr)
 	{
 		targetVariable = selectedPopupVar;

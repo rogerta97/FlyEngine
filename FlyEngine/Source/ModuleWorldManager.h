@@ -12,6 +12,7 @@ using namespace std;
 class Room; 
 class RoomConnection; 
 class RoomUIHandler; 
+class Blackboard;
 class ModuleWorldManager : public Module
 {
 public:
@@ -66,6 +67,7 @@ public:
 public:
 	list<Room*> roomsInWorldList;
 	list<RoomConnection*> connectionsInWorldList; 
+	Blackboard* globalBlackboard; 
 
 private: 
 	Room* selectedRoom;

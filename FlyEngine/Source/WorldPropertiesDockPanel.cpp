@@ -35,9 +35,9 @@ bool WorldPropertiesDockPanel::Draw()
 
 		PrintRoomsSection();
 
-		if (App->moduleRoomManager->GetSelectedRoom() != nullptr) 
+		if (App->moduleWorldManager->GetSelectedRoom() != nullptr) 
 		{
-			Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+			Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom();
 			PrintRoomInfo(selectedRoom);
 		}
 	}
@@ -107,8 +107,8 @@ void WorldPropertiesDockPanel::NewConnectionButtonHandler()
 
 		if (ImGui::Button("Connect")) 
 		{
-			list<Room*>::iterator itOrigin = std::next(App->moduleRoomManager->roomsInWorldList.begin(), originRoomSelected);
-			list<Room*>::iterator itDst = std::next(App->moduleRoomManager->roomsInWorldList.begin(), destinationRoomSelected);
+			list<Room*>::iterator itOrigin = std::next(App->moduleWorldManager->roomsInWorldList.begin(), originRoomSelected);
+			list<Room*>::iterator itDst = std::next(App->moduleWorldManager->roomsInWorldList.begin(), destinationRoomSelected);
 
 			Room* originRoom = (*itOrigin);
 			Room* dstRoom = (*itDst);
@@ -132,11 +132,11 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 	ImGui::BeginChild("RoomsList", ImVec2(ImGui::GetWindowContentRegionWidth(), 250), true);
 
 	ImGui::PushFont(App->moduleImGui->rudaBlackMid);
-	for (auto currentRoom : App->moduleRoomManager->GetRoomsInWorldList()) {
+	for (auto currentRoom : App->moduleWorldManager->GetRoomsInWorldList()) {
 
 		if (ImGui::Selectable(currentRoom->GetName().c_str(), currentRoom->isSelected)) 
 		{
-			App->moduleRoomManager->SetSelectedRoom(currentRoom->GetUID());
+			App->moduleWorldManager->SetSelectedRoom(currentRoom->GetUID());
 		}
 	}
 	ImGui::PopFont(); 
@@ -155,10 +155,10 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 	// Delete Room Button
 	ImGui::SameLine();
 	if (ImGui::Button("Delete Room")) {
-		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+		Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom();
 		if (selectedRoom != nullptr)
 		{
-			App->moduleRoomManager->DeleteRoom(selectedRoom->GetUID());
+			App->moduleWorldManager->DeleteRoom(selectedRoom->GetUID());
 			selectedRoom = nullptr;
 		}
 	}
@@ -169,7 +169,7 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 	Texture* editIcon = (Texture*)ResourceManager::getInstance()->GetResource("EditIcon"); 
 	if (ImGui::ImageButton((ImTextureID)editIcon->GetTextureID(), ImVec2(40, 40))) 
 	{
-		if (App->moduleRoomManager->GetSelectedRoom() != nullptr)
+		if (App->moduleWorldManager->GetSelectedRoom() != nullptr)
 		{
 			App->moduleImGui->AddaptToFlySection(FlyEngineSection::FLY_SECTION_ROOM_EDIT);
 		}
@@ -195,7 +195,7 @@ void WorldPropertiesDockPanel::ShowNewRoomUI()
 
 		if (createThisTick) 
 		{
-			Room* newRoom = App->moduleRoomManager->CreateEmptyRoom(newRoomBuffer);
+			Room* newRoom = App->moduleWorldManager->CreateEmptyRoom(newRoomBuffer);
 			SaveAndLoad::getInstance()->SaveRoomData(newRoom); 
 
 			ImGui::CloseCurrentPopup();		

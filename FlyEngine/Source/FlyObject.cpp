@@ -169,7 +169,7 @@ bool FlyObject::Update(float dt)
 
 			case INVENTORY_ITEM:
 				DoOnClickActions(); 
-				App->moduleRoomManager->GetSelectedRoom()->AddItemToInventory(this);
+				App->moduleWorldManager->GetSelectedRoom()->AddItemToInventory(this);
 				isPicked = true; 
 				ret = true; 
 				break;

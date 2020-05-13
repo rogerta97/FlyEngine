@@ -11,7 +11,7 @@
 
 RoomsNodeGraph::RoomsNodeGraph()
 {
-	roomManager = App->moduleRoomManager;
+	roomManager = App->moduleWorldManager;
 }
 
 RoomsNodeGraph::~RoomsNodeGraph()
@@ -139,11 +139,11 @@ void RoomsNodeGraph::DrawGraph()
 		std::vector<int>::reverse_iterator currentNodeID = selected_nodes_id_list.rbegin();
 		for (auto& currentNodeID : selected_nodes_id_list)
 		{
-			Room* selectedRoom = App->moduleRoomManager->GetRoom(currentNodeID);
+			Room* selectedRoom = App->moduleWorldManager->GetRoom(currentNodeID);
 
 			if (selectedRoom != nullptr)
 			{
-				App->moduleRoomManager->SetSelectedRoom(currentNodeID);
+				App->moduleWorldManager->SetSelectedRoom(currentNodeID);
 				num_selected_nodes = 0;
 				return;
 			}
@@ -175,8 +175,8 @@ void RoomsNodeGraph::Update()
 		ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x / 2 - 50);
 		if (ImGui::Button("Delete"))
 		{
-			Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
-			App->moduleRoomManager->DeleteRoom(selectedRoom);
+			Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom();
+			App->moduleWorldManager->DeleteRoom(selectedRoom);
 			ImGui::CloseCurrentPopup();
 		}
 

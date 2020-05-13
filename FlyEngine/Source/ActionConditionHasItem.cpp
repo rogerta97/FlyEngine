@@ -47,7 +47,7 @@ void ActionConditionHasItem::DrawUIItem(int itemPosition)
 	//*******************************************************************************************
 	//* Draw Find Item Inventory Button
 	//*******************************************************************************************
-	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+	Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom();
 	std::string findButtonID = "Find##FindItemConditionButton" + to_string(itemPosition);
 
 	INC_CURSOR_Y_7;

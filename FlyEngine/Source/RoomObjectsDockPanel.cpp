@@ -41,7 +41,7 @@ void RoomObjectsDockPanel::DrawObjectHierarchy()
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 	ImGui::Spacing();
 
-	Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+	Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom();
 	FlyObject* selectedObject = selectedRoom->GetSelectedObject(); 
 
 	for (auto& it : selectedRoom->objectsInRoom) {
@@ -56,7 +56,7 @@ void RoomObjectsDockPanel::DrawObjectHierarchy()
 		if (ImGui::Selectable(string("  " + (it)->GetName()).c_str(), objectSelected, ImGuiSelectableFlags_AllowDoubleClick))
 		{
 			(it)->isSelected = true;
-			App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(it);
+			App->moduleWorldManager->GetSelectedRoom()->SetSelectedObject(it);
 
 			if (App->moduleInput->GetMouseButton(RIGHT_CLICK)) {
 				flog("CLICKED RIGHT BUTTON");
@@ -103,7 +103,7 @@ void RoomObjectsDockPanel::DrawControlButtons()
 	ImGui::SameLine();
 	if(ImGui::ImageButton((ImTextureID)minusObjectTexture->GetTextureID(), ImVec2(20, 20), ImVec2(0, 1), ImVec2(1, 0), 0))
 	{
-		App->moduleRoomManager->GetSelectedRoom()->DeleteSelectedObject();
+		App->moduleWorldManager->GetSelectedRoom()->DeleteSelectedObject();
 	}
 
 	ImGui::SameLine();

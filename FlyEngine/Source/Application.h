@@ -34,7 +34,7 @@ class Application
 {
 public:
 
-	ModuleWorldManager* moduleRoomManager; 
+	ModuleWorldManager* moduleWorldManager; 
 	ModuleWindow* moduleWindow;
 	ModuleInput* moduleInput;
 	ModuleRender* moduleRender;

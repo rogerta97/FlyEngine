@@ -69,7 +69,7 @@ void Room::Update()
 	if (ViewportManager::getInstance()->blockInput)
 		return; 
 
-	if (App->moduleRoomManager->GetSelectedRoom() == this)
+	if (App->moduleWorldManager->GetSelectedRoom() == this)
 	{
 		UpdateRoomObjects();
 		roomUIHandler->Update(); 
@@ -347,7 +347,7 @@ RoomConnection* Room::AddConnection(Room* destinationRoom)
 
 	// Update Graph 
 	//NodeGraph::getInstance()->ConnectNodes(GetName(), "Out", destinationRoom->GetName(), "In", newConnection->connectionID);
-	App->moduleRoomManager->connectionsInWorldAmount++; 
+	App->moduleWorldManager->connectionsInWorldAmount++; 
 	return newConnection;
 }
 
@@ -376,7 +376,7 @@ void Room::BreakOutputConnections()
 		delete it;
 	}
 
-	App->moduleRoomManager->connectionsInWorldAmount -= outLinks.size(); 
+	App->moduleWorldManager->connectionsInWorldAmount -= outLinks.size(); 
 	outLinks.clear(); 
 }
 
@@ -416,7 +416,7 @@ void Room::BreakOutputConnection(UID connectionToDelUID)
 
 			delete (*it);
 			it = outLinks.erase(it);
-			App->moduleRoomManager->connectionsInWorldAmount -= 1; 
+			App->moduleWorldManager->connectionsInWorldAmount -= 1; 
 			break; 
 		}
 		else
@@ -447,7 +447,7 @@ void Room::BreakEnterConnections()
 }
 void Room::BreakEnterConnection(UID roomToDelUID)
 {
-	Room* originRoom = App->moduleRoomManager->GetRoom(roomToDelUID);
+	Room* originRoom = App->moduleWorldManager->GetRoom(roomToDelUID);
 	originRoom->BreakOutputConnection(this); 
 }
 void Room::BreakEnterConnectionFromInRoomUIDs(UID roomToDelUID)

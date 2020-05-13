@@ -99,13 +99,13 @@ bool CharacterCreatorDockPanel::Draw()
 
 				// Add Object
 				creatingCharacterFO->SetName(newObjectName);
-				App->moduleRoomManager->GetSelectedRoom()->AddFlyObject(creatingCharacterFO);
+				App->moduleWorldManager->GetSelectedRoom()->AddFlyObject(creatingCharacterFO);
 
-				App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(creatingCharacterFO);
+				App->moduleWorldManager->GetSelectedRoom()->SetSelectedObject(creatingCharacterFO);
 				App->moduleImGui->gameViewportDockPanel->SetGizmoMode(GizmoMode::GIZMO_SELECT);
 				creatingCharacterFO->FitObjectUtils();
 
-				creatingCharacterFO->SetParentRoom(App->moduleRoomManager->GetSelectedRoom());
+				creatingCharacterFO->SetParentRoom(App->moduleWorldManager->GetSelectedRoom());
 
 				ImGui::PopFont();
 				ImGui::End();

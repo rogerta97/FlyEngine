@@ -58,7 +58,7 @@ list<FlyObject*> ViewportManager::RaycastMouseClickObjects()
 
 	list<FlyObject*> objectCandidates = list<FlyObject*>();
 
-	for (auto& currentObject : App->moduleRoomManager->GetSelectedRoom()->objectsInRoom)
+	for (auto& currentObject : App->moduleWorldManager->GetSelectedRoom()->objectsInRoom)
 	{
 		if (currentObject->IsMouseOver() && currentObject->IsInteractable())
 			objectCandidates.push_back(currentObject);
@@ -70,7 +70,7 @@ list<FlyObject*> ViewportManager::RaycastMouseClickObjects()
 list<UI_Element*> ViewportManager::RaycastMouseClickUI()
 {
 	list<UI_Element*> objectCandidates = list<UI_Element*>();
-	for (auto& currentElement : App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->uiElements)
+	for (auto& currentElement : App->moduleWorldManager->GetSelectedRoom()->roomUIHandler->uiElements)
 	{
 		if (currentElement->uiElementType == UI_TEXT)
 		{
@@ -149,7 +149,7 @@ void ViewportManager::SetAspectRatioType(ViewportAspectRatio newAR)
 	App->moduleImGui->gameViewportDockPanel->FitViewportToRegion();
 	App->moduleImGui->gameViewportDockPanel->aspectRatioChanged = true; 
 
-	FlyObject* selectedObject = App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject(); 
+	FlyObject* selectedObject = App->moduleWorldManager->GetSelectedRoom()->GetSelectedObject(); 
 
 	if (selectedObject != nullptr)
 	{

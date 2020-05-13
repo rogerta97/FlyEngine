@@ -43,7 +43,7 @@ bool RoomDockPanel::Draw()
 {
 
 #pragma region secutiryChecks
-	if (!DockPanel::Draw() || App->moduleRoomManager->GetSelectedRoom() == nullptr)
+	if (!DockPanel::Draw() || App->moduleWorldManager->GetSelectedRoom() == nullptr)
 		return false;
 #pragma endregion
 
@@ -64,7 +64,7 @@ bool RoomDockPanel::Draw()
 			if (ImGui::IsItemClicked())
 			{
 				ViewportManager::getInstance()->editRoomMode = EDIT_ROOM_OBJECTS;
-				App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->SetSelectedElement(nullptr);
+				App->moduleWorldManager->GetSelectedRoom()->roomUIHandler->SetSelectedElement(nullptr);
 				App->moduleManager->SetSceneUITint(float4(1, 1, 1, 1));
 			}
 
@@ -77,7 +77,7 @@ bool RoomDockPanel::Draw()
 			if (ImGui::IsItemClicked())
 			{
 				ViewportManager::getInstance()->editRoomMode = EDIT_ROOM_UI;
-				App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(nullptr); 
+				App->moduleWorldManager->GetSelectedRoom()->SetSelectedObject(nullptr); 
 				App->moduleManager->SetSceneUITint(float4(1, 1, 1, 0.5f));
 			}
 
@@ -91,7 +91,7 @@ bool RoomDockPanel::Draw()
 			if (ImGui::IsItemClicked())
 			{
 				ViewportManager::getInstance()->editRoomMode = EDIT_ROOM_OBJECTS;
-				App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->SetSelectedElement(nullptr);
+				App->moduleWorldManager->GetSelectedRoom()->roomUIHandler->SetSelectedElement(nullptr);
 				App->moduleManager->SetSceneUITint(float4(1, 1, 1, 1));
 			}
 
@@ -104,7 +104,7 @@ bool RoomDockPanel::Draw()
 			if (ImGui::IsItemClicked())
 			{
 				ViewportManager::getInstance()->editRoomMode = EDIT_ROOM_OBJECTS;
-				App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->SetSelectedElement(nullptr);
+				App->moduleWorldManager->GetSelectedRoom()->roomUIHandler->SetSelectedElement(nullptr);
 				App->moduleManager->SetSceneUITint(float4(1, 1, 1, 1));
 			}
 
@@ -135,7 +135,7 @@ void RoomDockPanel::DrawUserInterfaceTab()
 			IMGUI_SPACED_SEPARATOR;
 		}
 
-		RoomUIHandler* roomUIHandler = App->moduleRoomManager->GetSelectedRoom()->roomUIHandler;
+		RoomUIHandler* roomUIHandler = App->moduleWorldManager->GetSelectedRoom()->roomUIHandler;
 
 		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 		ImGui::Text("User Interface Objects:");
@@ -189,7 +189,7 @@ void RoomDockPanel::ShowBlackboardTab()
 	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
-		App->moduleRoomManager->GetSelectedRoom()->GetBlackboard()->AddDefaultVariable();
+		App->moduleWorldManager->GetSelectedRoom()->GetBlackboard()->AddDefaultVariable();
 	}
 
 	ImGui::SameLine();
@@ -217,7 +217,7 @@ void RoomDockPanel::ShowBlackboardTab()
 
 void RoomDockPanel::DrawRoomVariablesUI()
 {
-	Blackboard* roomBB = App->moduleRoomManager->GetSelectedRoom()->GetBlackboard();
+	Blackboard* roomBB = App->moduleWorldManager->GetSelectedRoom()->GetBlackboard();
 
 	PUSH_CHILD_BG_COLOR;
 	ImGui::BeginChild("BlackboardChild", ImVec2(ImGui::GetContentRegionMax().x - 5, ImGui::GetContentRegionAvail().y));
@@ -337,7 +337,7 @@ void RoomDockPanel::DrawTopButtons()
 		if (path != "")
 		{
 			// Clean Current Room Content
-			Room* currentRoom = App->moduleRoomManager->GetSelectedRoom();
+			Room* currentRoom = App->moduleWorldManager->GetSelectedRoom();
 			currentRoom->CleanUp();
 
 			// Load New Data
@@ -390,13 +390,13 @@ void RoomDockPanel::DrawRoomHierarchy()
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 	ImGui::Spacing();
 
-	if (App->moduleRoomManager->GetSelectedRoom()->GetObjectsInRoomAmount() == 0)
+	if (App->moduleWorldManager->GetSelectedRoom()->GetObjectsInRoomAmount() == 0)
 	{
 		ImGui::TextColored(ImVec4(0, 1, 1, 1), " There are no objects in this room");
 	}
 	else
 	{
-		Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
+		Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom();
 		FlyObject* selectedObject = selectedRoom->GetSelectedObject();
 
 	//	for (list<FlyObject*>::reverse_iterator it = selectedRoom->objectsInRoom.rbegin(); it != selectedRoom->objectsInRoom.rend(); it++) 
@@ -412,7 +412,7 @@ void RoomDockPanel::DrawRoomHierarchy()
 			if (ImGui::Selectable((*it)->GetName().c_str(), objectSelected, ImGuiSelectableFlags_AllowDoubleClick))
 			{
 				(*it)->isSelected = true;
-				App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(*it);
+				App->moduleWorldManager->GetSelectedRoom()->SetSelectedObject(*it);
 			}
 
 			if (ImGui::IsWindowHovered() && App->moduleInput->GetMouseButton(RIGHT_CLICK) == KEY_DOWN)
@@ -420,7 +420,7 @@ void RoomDockPanel::DrawRoomHierarchy()
 				if (ImGui::IsItemHovered())
 				{
 					(*it)->isSelected = true;
-					App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(*it);
+					App->moduleWorldManager->GetSelectedRoom()->SetSelectedObject(*it);
 					ImGui::OpenPopup("right_click_item_hierarchy");
 				}
 				else
@@ -454,7 +454,7 @@ void RoomDockPanel::DrawRoomHierarchy()
 					newClone->CopyFlyObjectActions(objectToClone); 
 					newClone->FitObjectUtils();
 					
-					App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(newClone);
+					App->moduleWorldManager->GetSelectedRoom()->SetSelectedObject(newClone);
 				}
 
 				ImGui::CloseCurrentPopup();
@@ -519,14 +519,14 @@ void RoomDockPanel::DrawMoveLayerSelectableButtons()
 	Texture* arrowUpObjectTexture = (Texture*)ResourceManager::getInstance()->GetResource("ArrowUpWhite");
 	if (ImGui::ImageButton((ImTextureID)arrowUpObjectTexture->GetTextureID(), ImVec2(20, 20), ImVec2(0, 0), ImVec2(1, 1), 0))
 	{
-		App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(nullptr);
+		App->moduleWorldManager->GetSelectedRoom()->SetSelectedObject(nullptr);
 	}
 
 	ImGui::SameLine();
 	Texture* arrowDownObjectTexture = (Texture*)ResourceManager::getInstance()->GetResource("ArrowDownWhite");
 	if (ImGui::ImageButton((ImTextureID)arrowDownObjectTexture->GetTextureID(), ImVec2(20, 20), ImVec2(0, 0), ImVec2(1, 1), 0))
 	{
-		App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(nullptr);
+		App->moduleWorldManager->GetSelectedRoom()->SetSelectedObject(nullptr);
 	}
 
 	ImGui::PopStyleColor();
@@ -542,7 +542,7 @@ void RoomDockPanel::ShowViewportSettingsTab()
 		ImGui::Text("Music:");
 		ImGui::PopFont();*/
 
-		Room* currentRoom = App->moduleRoomManager->GetSelectedRoom();
+		Room* currentRoom = App->moduleWorldManager->GetSelectedRoom();
 
 		static char trackNameBuffer[256] = "";
 
@@ -639,7 +639,7 @@ void RoomDockPanel::ShowViewportSettingsTab()
 	{
 		static char buf[256] = "";
 
-		Texture* roomThumbnailTexture = App->moduleRoomManager->GetSelectedRoom()->roomThumbnail; 
+		Texture* roomThumbnailTexture = App->moduleWorldManager->GetSelectedRoom()->roomThumbnail; 
 
 		if (roomThumbnailTexture == nullptr)
 			roomThumbnailTexture = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject"); 
@@ -684,11 +684,11 @@ void RoomDockPanel::ShowViewportSettingsTab()
 			{
 				if (!ResourceManager::getInstance()->ExistResourcePath(path))
 				{
-					App->moduleRoomManager->GetSelectedRoom()->roomThumbnail = ImageImporter::getInstance()->LoadTexture(path, false);
-					ResourceManager::getInstance()->AddResource(App->moduleRoomManager->GetSelectedRoom()->roomThumbnail, App->moduleRoomManager->GetSelectedRoom()->roomThumbnail->GetName());
+					App->moduleWorldManager->GetSelectedRoom()->roomThumbnail = ImageImporter::getInstance()->LoadTexture(path, false);
+					ResourceManager::getInstance()->AddResource(App->moduleWorldManager->GetSelectedRoom()->roomThumbnail, App->moduleWorldManager->GetSelectedRoom()->roomThumbnail->GetName());
 				}
 				else
-					App->moduleRoomManager->GetSelectedRoom()->roomThumbnail = (Texture*)ResourceManager::getInstance()->GetResourceByPath(path);
+					App->moduleWorldManager->GetSelectedRoom()->roomThumbnail = (Texture*)ResourceManager::getInstance()->GetResourceByPath(path);
 
 				strcpy(buf, path);
 				flog("Player Opened %s", path);

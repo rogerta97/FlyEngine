@@ -337,7 +337,7 @@ void UI_Button::Load(JSON_Object* jsonObject, string serializeStr)
 			ChangeRoomAction* newChangeRoomAction = uiObject->AddChangeRoomAction(); 
 			
 			UID dstRoomUID = json_object_dotget_number(jsonObject, string(actionStr + "Destination").c_str());
-			newChangeRoomAction->SetDestination(App->moduleRoomManager->GetRoom(dstRoomUID)); 
+			newChangeRoomAction->SetDestination(App->moduleWorldManager->GetRoom(dstRoomUID)); 
 
 			AddOnClickAction(newChangeRoomAction);
 		}

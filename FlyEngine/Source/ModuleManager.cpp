@@ -75,7 +75,7 @@ bool ModuleManager::Start()
 	string engineIconPath = MyFileSystem::getInstance()->GetIconsDirectory() + "FlyEngineIcon.bmp";
 	App->moduleWindow->SetIcon(engineIconPath.c_str());
 
-	if (App->moduleRoomManager->LoadRoomsData())
+	if (App->moduleWorldManager->LoadRoomsData())
 	{
 		/*App->moduleRoomManager->SetSelectedRoom(App->moduleRoomManager->GetFirstRoom());
 		App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);*/
@@ -121,10 +121,10 @@ void ModuleManager::StartGame(const UID& firstRoomUID)
 	App->BroadCastEvent(FlyEngineEvent::ENGINE_PLAY); 
 	App->isEngineInPlayMode = true; 
 
-	App->moduleRoomManager->SetSelectedRoom(firstRoomUID, true);
+	App->moduleWorldManager->SetSelectedRoom(firstRoomUID, true);
 	App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);
 	App->moduleImGui->gameViewportDockPanel->FitViewportToRegion();
-	App->moduleRoomManager->FitObjectUtils(); 
+	App->moduleWorldManager->FitObjectUtils(); 
 
 	App->SetGameMode(PLAY_MODE);
 	App->moduleImGui->AddaptToGameMode();
@@ -269,7 +269,7 @@ Texture* ModuleManager::GetIconFromActionType(ActionType toolType)
 
 void ModuleManager::NotifyVariableChange(FlyVariable* variableCurrentValue)
 {
-	for (auto& currentRoom : App->moduleRoomManager->GetRoomsInWorldList())
+	for (auto& currentRoom : App->moduleWorldManager->GetRoomsInWorldList())
 	{
 		currentRoom->NotifyVariableChange(variableCurrentValue);
 	}
@@ -492,22 +492,22 @@ void ModuleManager::DrawImageFitInCenter(Texture* textureToShow)
 
 FlyObject* ModuleManager::GetSelectedFlyObject()
 {
-	return App->moduleRoomManager->GetSelectedRoom()->GetSelectedObject();
+	return App->moduleWorldManager->GetSelectedRoom()->GetSelectedObject();
 }
 
 void ModuleManager::SetSelectedFlyObject(FlyObject* newSelectedObject)
 {
-	App->moduleRoomManager->GetSelectedRoom()->SetSelectedObject(newSelectedObject);
+	App->moduleWorldManager->GetSelectedRoom()->SetSelectedObject(newSelectedObject);
 }
 
 UI_Element* ModuleManager::GetSelectedUIElement()
 {
-	return App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->GetSelectedElement(); 
+	return App->moduleWorldManager->GetSelectedRoom()->roomUIHandler->GetSelectedElement(); 
 }
 
 void ModuleManager::SetSelectedUIElement(UI_Element* newSelectedObject)
 {
-	App->moduleRoomManager->GetSelectedRoom()->roomUIHandler->SetSelectedElement(newSelectedObject); 
+	App->moduleWorldManager->GetSelectedRoom()->roomUIHandler->SetSelectedElement(newSelectedObject); 
 }
 
 std::list<ActionSelectableInfo> ModuleManager::GetToolsNamesDescriptionsList() const
