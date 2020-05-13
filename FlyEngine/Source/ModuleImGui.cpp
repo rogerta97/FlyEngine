@@ -224,12 +224,19 @@ void ModuleImGui::DrawMainMenuBar()
 
 	static bool demoOpened = false;
 
-	if (ImGui::MenuItem("File")) {
+	if (ImGui::BeginMenu("Options")) 
+	{
+		if (ImGui::MenuItem("Save"))
+		{
+			SaveAndLoad::getInstance()->SaveAllData(); 
+		}
 
-	}
+		if (ImGui::MenuItem("Exit"))
+		{
+			App->Exit(); 
+		}
 
-	if (ImGui::MenuItem("Edit")) {
-
+		ImGui::EndMenu();
 	}
 
 	if (ImGui::BeginMenu("View")) {

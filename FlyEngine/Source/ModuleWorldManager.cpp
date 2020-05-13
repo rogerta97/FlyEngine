@@ -132,12 +132,13 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 	}
 }
 
-bool ModuleWorldManager::LoadRoomsData()
+bool ModuleWorldManager::LoadAllData()
 {
 	string roomsDirectory = MyFileSystem::getInstance()->GetSavedDataDirectory() + "RoomsData";
 	vector<string> roomsSavedFiles;
 	MyFileSystem::getInstance()->GetFilesInDirectory(roomsDirectory.c_str(), roomsSavedFiles, false);
 
+	// Load Rooms -------
 	for (auto& currentRoomFile : roomsSavedFiles)
 	{
 		JSON_Value* root = json_parse_file(string(roomsDirectory + "\\" + currentRoomFile).c_str());
@@ -158,6 +159,9 @@ bool ModuleWorldManager::LoadRoomsData()
 		string thumbnailStr = MyFileSystem::getInstance()->GetThumbnilesDirectory() + "\\" + to_string((int)currentRoom->GetUID()) + "_Thumbnail";
 		Texture* newThumbnail = ImageImporter::getInstance()->LoadTexture (thumbnailStr.c_str(), false);
 	}
+
+	// Load Global Blackboard 
+	App->moduleWorldManager->globalBlackboard->LoadData("Global"); 
 
 	if (roomsSavedFiles.size() > 0)
 		return true; 

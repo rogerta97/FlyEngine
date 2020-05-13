@@ -75,7 +75,7 @@ bool ModuleManager::Start()
 	string engineIconPath = MyFileSystem::getInstance()->GetIconsDirectory() + "FlyEngineIcon.bmp";
 	App->moduleWindow->SetIcon(engineIconPath.c_str());
 
-	if (App->moduleWorldManager->LoadRoomsData())
+	if (App->moduleWorldManager->LoadAllData())
 	{
 		/*App->moduleRoomManager->SetSelectedRoom(App->moduleRoomManager->GetFirstRoom());
 		App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);*/

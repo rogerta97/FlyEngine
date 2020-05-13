@@ -282,8 +282,6 @@ void RoomDockPanel::DrawRoomVariablesUI()
 		}
 		}
 
-
-
 		ImGui::EndChild();
 		ImGui::PopStyleColor();
 

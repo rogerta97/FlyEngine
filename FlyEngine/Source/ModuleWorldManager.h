@@ -31,7 +31,7 @@ public:
 	void DeleteSingletones();
 
 	void ReceiveEvent(FlyEngineEvent eventType);
-	bool LoadRoomsData(); 
+	bool LoadAllData(); 
 
 	// Rooms ------------
 	Room* CreateEmptyRoom(string roomName = "New Room"); 

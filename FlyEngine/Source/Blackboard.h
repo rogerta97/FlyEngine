@@ -11,7 +11,7 @@ class Blackboard
 {
 
 public: 
-	Blackboard(); 
+	Blackboard(bool _isGlobal = false);
 	~Blackboard(); 
 
 	void CleanUp(); 
@@ -28,6 +28,9 @@ public:
 
 public: 
 	std::list<FlyVariable*> blackboardVariablesList; 
+
+private:
+	bool isGlobal; 
 };
 
 #endif // !_BLACKBOARD_H_

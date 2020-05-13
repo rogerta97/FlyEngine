@@ -12,6 +12,8 @@ public:
 
 	bool Draw();
 
+	void DrawBlackboardVariables();
+
 private:
 
 };

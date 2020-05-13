@@ -958,5 +958,8 @@ void SaveAndLoad::SaveAllData()
 		instance->SaveRoomData(currentRoom);
 	}
 
+	// Save Global Blackboard
+	App->moduleWorldManager->globalBlackboard->SaveData("Global"); 
+
 	//instance->SaveInitFile();
 }

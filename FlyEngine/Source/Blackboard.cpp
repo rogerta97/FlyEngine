@@ -9,8 +9,9 @@
 #include "imgui.h"
 #include "mmgr.h"
 
-Blackboard::Blackboard()
+Blackboard::Blackboard(bool _isGlobal)
 {
+	isGlobal = _isGlobal;
 }
 
 Blackboard::~Blackboard()
@@ -31,7 +32,16 @@ void Blackboard::CleanUp()
 
 void Blackboard::SaveData(std::string _fileName)
 {
-	std::string path = MyFileSystem::getInstance()->GetSavedDataDirectory() + "BlackboardsData\\" + _fileName.c_str() + "_Blackboard.json";
+	std::string path = ""; 
+	
+	if (isGlobal || _fileName == "Global")
+	{
+		path = MyFileSystem::getInstance()->GetSavedDataDirectory() + "BlackboardsData\\GlobalBlackboard.json"; 
+	}
+	else
+	{
+		path = MyFileSystem::getInstance()->GetSavedDataDirectory() + "BlackboardsData\\" + _fileName.c_str() + "_Blackboard.json";
+	}
 
 	JSON_Value* blackboard_v = json_value_init_object();
 	JSON_Object* blackboard_obj = json_value_get_object(blackboard_v);
@@ -50,7 +60,15 @@ void Blackboard::SaveData(std::string _fileName)
 
 void Blackboard::LoadData(std::string _fileName)
 {
-	std::string filePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "BlackboardsData\\" + _fileName.c_str() + ".json";
+	std::string filePath; 
+	if (isGlobal || _fileName == "Global")
+	{
+		filePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "BlackboardsData\\GlobalBlackboard.json";
+	}
+	else
+	{
+		filePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "BlackboardsData\\" + _fileName.c_str() + "_Blackboard.json";
+	}
 
 	JSON_Value* root = json_parse_file(filePath.c_str());
 	JSON_Object* root_obj = json_value_get_object(root);
