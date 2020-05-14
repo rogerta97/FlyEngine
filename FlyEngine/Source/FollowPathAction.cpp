@@ -27,6 +27,8 @@ FollowPathAction::FollowPathAction(FlyObject* _parentObject)
 	constantSpeed = 0; 
 	isSpeedConstant = false; 
 
+	isValidForCreator = false; 
+
 	startBox = new BoundingBox();
 	startBox->SetSize(25, 25); 
 
@@ -272,7 +274,7 @@ void FollowPathAction::DrawActionOccurenceCheckboxes()
 	}
 	else if (GetActionClass() == ACTION_CLASS_DIRECT)
 	{
-		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 110));
+		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 95));
 		ImGui::SetCursorPos(ImVec2(5, 5));
 		ImGui::Checkbox("Scene Enter", &occ_SceneEnter);
 		ImGui::SetCursorPos(ImVec2(5, 35));

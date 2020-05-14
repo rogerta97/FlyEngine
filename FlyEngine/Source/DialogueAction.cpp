@@ -22,12 +22,14 @@ DialogueAction::DialogueAction(FlyObject* _parentObject)
 	isVisual = false;
 	showVariableConditions = false; 
 
+	isValidForCreator = false;
+
 	sentencePlacementCombo = 0;
 	fontSize = 0; 
 	fontColor = float4::zero; 
 	dialoguePlaying = false; 
 
-	SetActionName("Dialog");
+	SetActionName("Dialogue");
 	SetToolDescription("This should be the description of the dialog");
 
 	dialogue = new Dialogue(); 
@@ -490,7 +492,7 @@ void DialogueAction::DrawActionOccurenceCheckboxes()
 	}
 	else if (GetActionClass() == ACTION_CLASS_DIRECT)
 	{
-		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 100));
+		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 95));
 		ImGui::SetCursorPos(ImVec2(5, 5));
 		ImGui::Checkbox("Scene Enter", &occ_SceneEnter);
 		ImGui::SetCursorPos(ImVec2(5, 35));

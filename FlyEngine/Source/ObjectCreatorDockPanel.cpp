@@ -139,7 +139,7 @@ bool ObjectCreatorDockPanel::Draw()
 
 				if (creatingObject->IsInteractable())
 				{
-					if (ImGui::BeginTabItem("Clickable Area"))
+					/*if (ImGui::BeginTabItem("Clickable Area"))
 					{
 						ImGuiTabItemFlags tabFlags = 0;
 						if (focusClickableAreaTab)
@@ -150,7 +150,7 @@ bool ObjectCreatorDockPanel::Draw()
 
 						DrawClickableAreaCreator();
 						ImGui::EndTabItem();
-					}
+					}*/
 				}
 
 				ImGui::EndTabBar();
@@ -187,7 +187,7 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
-		flog("Plus Fixed");
+		//flog("Plus Fixed");
 		toSequentialList = false;
 		ImGui::OpenPopup("AddActionToObject");
 	}
@@ -222,7 +222,6 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 
 	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
 	{
-		flog("Sequential Fixed");
 		toSequentialList = true;
 		ImGui::OpenPopup("AddActionToObject");
 	}
@@ -252,6 +251,7 @@ void ObjectCreatorDockPanel::DrawObjectSequentialCreator()
 
 	ImGui::PopStyleVar();
 
+	ImGui::Spacing(); 
 	if (ImGui::BeginTabBar("SelectedSettings"))
 	{
 		DrawSelectedActionSettings();
@@ -509,7 +509,18 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 	ImGui::Separator();
 
 	if (selectedAction != nullptr)
-		selectedAction->DrawUISettings();
+	{
+		if (selectedAction->IsValidForCreator())
+		{
+			selectedAction->DrawUISettings();
+		}
+		else
+		{
+			ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+			ImGui::TextColored(ImVec4(1, 0.8f, 0.8f, 0.35f), "%s settings not available in object creator", selectedAction->GetActionName().c_str());
+			ImGui::PopFont(); 
+		}
+	}
 
 	if (setScroll)
 		ImGui::SetScrollHere(0.999f);
@@ -527,7 +538,7 @@ void ObjectCreatorDockPanel::DrawPropertiesTab()
 
 void ObjectCreatorDockPanel::ResetObjectData()
 {
-	flog("Object Data Reset");
+	//flog("Object Data Reset");
 	strcpy(newObjectName, "");
 	strcpy(searchNewActionBuffer, "");
 	selectedAction = nullptr;
@@ -632,44 +643,19 @@ bool ObjectCreatorDockPanel::DrawSelectable(ActionSelectableInfo selectableInfo,
 
 void ObjectCreatorDockPanel::DrawSelectedActionSettings()
 {
-
 	if (selectedAction != nullptr)
 	{
-		ImGui::Spacing();
-		selectedAction->DrawUISettings();
-	}
-
-	/*if (selectedAction)
-	{
-		ImGui::Spacing();
-
-		switch (selectedAction->GetType())
+		if (selectedAction->IsValidForCreator())
 		{
-		case ACTION_DISPLAY_IMAGE:
-			DrawDisplayImageSettings();
-			break;
-
-		case ACTION_CHANGE_ROOM:
-			DrawChangeRoomActionSettings();
-			break;
-
-		case ACTION_MOD_VARIABLE:
-			DrawModifyVariableActionSettings();
-			break;
-
-		case ACTION_EMIT_SOUND:
-			DrawEmitSoundActionSettings();
-			break;
-
-		case ACTION_DISPLAY_ANIMATION:
-			DrawDisplayAnimationSettings();
-			break;
-
-		case ACTION_FOLLOW_PATH:
-			DrawFollowPathSettings();
-			break;
+			selectedAction->DrawUISettings();
 		}
-	}*/
+		else
+		{
+			ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+			ImGui::TextColored(ImVec4(1, 0.8f, 0.8f, 0.35f), "%s settings not available in object creator", selectedAction->GetActionName().c_str());
+			ImGui::PopFont();
+		}
+	}
 }
 
 void ObjectCreatorDockPanel::DrawFollowPathSettings()
@@ -1184,7 +1170,8 @@ void ObjectCreatorDockPanel::DrawPrevTextureCA(bool drawClickableArea)
 		ImGui::SetCursorPos(ImVec2(imageTopLeft.x, imageTopLeft.y));
 		ImGui::Image((ImTextureID)previewClickableAreaTexture->GetTextureID(), prevTextureSize);
 
-		if (clickableAreaActive && drawClickableArea) {
+		if (clickableAreaActive && drawClickableArea) 
+		{
 			DrawPreviewClickableAreaOnTexture(imageTopLeft, float2(prevTextureSize.x, prevTextureSize.y));
 		}
 	}
@@ -1390,7 +1377,7 @@ void ObjectCreatorDockPanel::DrawDisplayImageSettings()
 				}
 
 				strcpy(buf, path);
-				flog("Player Opened %s", path);
+				//flog("Player Opened %s", path);
 			}
 		}
 		ImGui::EndChild();

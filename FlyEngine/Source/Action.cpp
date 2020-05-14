@@ -25,6 +25,8 @@ Action::Action()
 	occ_blackboardValue = false;
 	occ_ObjectClicked = false;
 
+	isValidForCreator = true; 
+
 	actionClass = ACTION_CLASS_DIRECT;
 
 	uid = RandomNumberGenerator::getInstance()->GenerateUID();
@@ -215,6 +217,11 @@ void Action::OnAddConditionButtonPressed()
 			AddEmptyCondition(CONDITION_HAS_ITEM);
 		ImGui::EndPopup();
 	}
+}
+
+bool Action::IsValidForCreator()
+{
+	return isValidForCreator;
 }
 
 std::string Action::GetActionName() const

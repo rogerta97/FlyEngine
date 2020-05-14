@@ -343,7 +343,7 @@ RoomConnection* Room::AddConnection(Room* destinationRoom)
 	outLinks.push_back(newConnection);
 	destinationRoom->inRoomUIDs.push_back(GetUID());
 
-	flog("Room %s connected the LOGIC succesfuly with %s", roomName.c_str(), destinationRoom->GetName().c_str()); 
+	//flog("Room %s connected the LOGIC succesfuly with %s", roomName.c_str(), destinationRoom->GetName().c_str()); 
 
 	// Update Graph 
 	//NodeGraph::getInstance()->ConnectNodes(GetName(), "Out", destinationRoom->GetName(), "In", newConnection->connectionID);
@@ -469,7 +469,12 @@ void Room::DrawRoomObjects()
 {
 	for (auto& it : objectsInRoom) 
 	{
-		(it)->Draw(); 
+		(it)->DrawVisualLayer(); 
+	}
+
+	for (auto& it : objectsInRoom)
+	{
+		(it)->DrawOverlaysLayer();
 	}
 
 	// Draw dropping inventory object 
@@ -498,7 +503,7 @@ FlyObject* Room::CreateFlyObject(std::string objectName, std::string description
 {
 	FlyObject* newObject = new FlyObject(objectName, description, ACTION_OBJECT, this); 
 	objectsInRoom.push_back(newObject); 
-	flog("New Object");
+	//flog("New Object");
 	return newObject; 
 }
 
@@ -506,7 +511,7 @@ FlyObject* Room::CreateCharacter(std::string objectName, std::string description
 {
 	FlyObjectCharacter* newObject = new FlyObjectCharacter(objectName, description, OBJECT_CHARACTER, this);
 	objectsInRoom.push_back(newObject);
-	flog("New Object");
+	//flog("New Object");
 
 	if (init)
 		newObject->InitCharacter(); 

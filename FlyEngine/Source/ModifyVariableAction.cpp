@@ -338,6 +338,10 @@ int ModifyVariableAction::GetOperatorTextureIDFromType(VariableOperatorType effe
 	case VariableOperatorType::VarEffect_SET_TOGGLE:
 		operatorTexture = (Texture*)ResourceManager::getInstance()->GetResource("EqualOperatorIcon");
 		return operatorTexture->GetTextureID();
+
+	default:
+		operatorTexture = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject");
+		return operatorTexture->GetTextureID();
 	}
 
 	return 0; 

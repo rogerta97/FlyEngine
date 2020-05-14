@@ -38,7 +38,9 @@ public:
 	virtual bool Update(float dt);
 	virtual void OnSceneEnter(); 
 
-	void Draw();
+	void DrawVisualLayer();
+	void DrawOverlaysLayer(); 
+
 	void CleanUp(); 
 
 	// Utils -----------

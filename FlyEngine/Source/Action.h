@@ -112,6 +112,8 @@ public:
 	void OnAddConditionButtonPressed();
 
 	// Set and Get ---------------------
+	bool IsValidForCreator(); 
+
 	std::string GetActionName() const; 
 	void SetActionName(std::string newName);
 
@@ -178,6 +180,7 @@ protected:
 	std::string toolName; 
 	std::string toolDescription; 
 	
+	bool isValidForCreator = true; 
 	bool isSelected = false; 
 	bool isVisual = false; 
 	bool isSequential = false; 

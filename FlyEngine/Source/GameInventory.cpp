@@ -82,8 +82,10 @@ void GameInventory::DrawDroppingObject()
 	float2 mouseRelativePos = App->moduleImGui->gameViewportDockPanel->GetMouseRelativePosition(); 
 	mouseRelativePos = App->moduleImGui->gameViewportDockPanel->GetMouseGamePos();
 	instance->droppingObject->transform->SetPosition(mouseRelativePos); 
-	instance->droppingObject->FitObjectUtils(); 
-	instance->droppingObject->Draw();
+	instance->droppingObject->FitObjectUtils();
+
+	instance->droppingObject->DrawVisualLayer();
+	instance->droppingObject->DrawOverlaysLayer();
 
 	flog("Object Dropping"); 
 }

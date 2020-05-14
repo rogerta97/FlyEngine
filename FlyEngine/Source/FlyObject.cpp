@@ -254,7 +254,7 @@ bool FlyObject::HasSequentialAction(ActionType _actionToCheckType)
 	return false;
 }
 
-void FlyObject::Draw()
+void FlyObject::DrawVisualLayer()
 {
 	if (isPicked)
 		return; 
@@ -268,18 +268,21 @@ void FlyObject::Draw()
 		if(it->GetDrawIfSequential())
 			(it)->Draw();
 	}
+}
 
+void FlyObject::DrawOverlaysLayer()
+{
 	if (isSelected || ViewportManager::getInstance()->drawClickableAreaCondition == DRAW_ALWAYS)
 	{
-		if (clickableArea != nullptr && drawClickableArea && clickableAreaActive && !App->isEngineInPlayMode)		
+		if (clickableArea != nullptr && drawClickableArea && clickableAreaActive && !App->isEngineInPlayMode)
 			DrawClickableArea();
 	}
 
-	if(isSelected)
+	if (isSelected)
 	{
 		if (selectedAction != nullptr && selectedAction->GetType() == ACTION_DISPLAY_TEXT)
-			return; 
-			
+			return;
+
 		gizmos->Draw();
 	}
 }

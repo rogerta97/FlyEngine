@@ -159,6 +159,7 @@ FlyVariable* Blackboard::DrawVariableListPopup(std::string popupID)
 			{
 				Texture* varTexture = 0;
 
+
 				if (currentVariable->varType == Var_Integer)
 					varTexture = (Texture*)ResourceManager::getInstance()->GetResource("NaturalNumberIcon");
 				else if (currentVariable->varType == Var_Toggle)

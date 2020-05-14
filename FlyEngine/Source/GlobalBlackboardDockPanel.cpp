@@ -73,11 +73,12 @@ void GlobalBlackboardDockPanel::DrawBlackboardVariables()
 	PUSH_CHILD_BG_COLOR;
 	ImGui::BeginChild("BlackboardChild", ImVec2(ImGui::GetContentRegionMax().x - 5, ImGui::GetContentRegionAvail().y));
 
-	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 5, (ImGui::GetCursorPos().y + 5)));
+
 
 	int counter = 0;
 	for (auto& currentVar : globalBB->blackboardVariablesList)
 	{
+		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 5, (ImGui::GetCursorPos().y + 5)));
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.28f, 0.43f, 0.56, 0.2f));
 
 		string varChildID = "VariableUIGroup" + to_string(counter);

@@ -146,66 +146,156 @@ void DisplayImageAction::DrawUISettings()
 {
 	if (ImGui::CollapsingHeader("Image Settings", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		static char buf[256] = "";
+		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+		ImGui::Text("Display Image:");
+		ImGui::PopFont();
 
-		// Object Occurrence -----------------------
-		float aspect_ratio = GetTexture()->GetAspectRatio();
-		float previewQuadWidth = 150;
-		float previewQuadHeight = previewQuadWidth / aspect_ratio;
-
-		PUSH_FONT(App->moduleImGui->rudaRegularMid);
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+		ImGui::BeginChild("UI_ImagePreview", ImVec2(ImGui::GetContentRegionAvailWidth(), 195));
 
-		int childHeight = previewQuadHeight + 20;
+		ImVec2 imageMaxSize = ImVec2(ImGui::GetContentRegionAvailWidth(), 135);
+		ImVec2 uiImageDimensions = ImVec2(150, 150);
+		Texture* imageTexture = GetTexture();
+		ImTextureID selectedTextureID = 0;
 
-		PUSH_FONT(App->moduleImGui->rudaBoldBig);
-		ImGui::Text("Image Settings:");
-		POP_FONT;
-
-		ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), childHeight));
-
-		ImGui::Columns(2);
-		ImGui::SetColumnWidth(0, previewQuadWidth + 10);
-
-		ImGui::Spacing();
-		ImGui::Image((ImTextureID)GetTexture()->GetTextureID(), ImVec2(previewQuadWidth, previewQuadHeight));
-
-		ImGui::NextColumn();
-
-		ImGui::Spacing();
-		ImGui::Text("Name: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%s", GetTexture()->GetName().c_str());
-
-		ImGui::Text("Width: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", GetTexture()->GetWidth());
-
-		ImGui::Text("Height: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", GetTexture()->GetHeigth());
-
-		Texture* searchTexture = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
-		if (ImGui::Button("Change Image"))
+		if (imageTexture != nullptr)
 		{
-			char const* lFilterPatterns[2] = { "*.jpg" , "*.png" };
-			const char* path = tinyfd_openFileDialog("Load Image...", NULL, 2, lFilterPatterns, NULL, 0);
+			float aspectRatio = imageTexture->GetAspectRatio();
 
-			if (path != NULL)
+			if (imageTexture->IsVertical())
 			{
-				if (!ResourceManager::getInstance()->ExistResourcePath(path))
-				{
-					SetTexture(ImageImporter::getInstance()->LoadTexture(path, false));
-					ResourceManager::getInstance()->AddResource(GetTexture(), GetTexture()->GetName());
-				}
-				else		
-					SetTexture((Texture*)ResourceManager::getInstance()->GetResourceByPath(path));
-			
-				strcpy(buf, path);
-				flog("Player Opened %s", path);
+				uiImageDimensions.y = imageMaxSize.y;
+				uiImageDimensions.x = uiImageDimensions.x * aspectRatio;
 			}
-		}
-		ImGui::PopStyleColor();
-		ImGui::EndChild();
+			else
+			{
+				uiImageDimensions.y = imageMaxSize.y;
+				uiImageDimensions.x = uiImageDimensions.y * aspectRatio;
 
-		POP_FONT;
+				if (uiImageDimensions.x > imageMaxSize.x)
+				{
+					float diff = uiImageDimensions.x - imageMaxSize.x;
+					uiImageDimensions.x -= diff;
+					uiImageDimensions.y = uiImageDimensions.x * aspectRatio;
+				}
+			}
+			selectedTextureID = (ImTextureID)imageTexture->GetTextureID();
+		}
+
+		ImGui::Spacing();
+
+		ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (uiImageDimensions.x / 2), imageMaxSize.y / 2 - (uiImageDimensions.y / 2) + 10));
+		ImGui::Image(selectedTextureID, uiImageDimensions);
+
+		ImGui::Spacing();
+
+		static char searchButtonImageBuffer[256];
+
+		ImGui::Spacing();
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+		ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() - 70);
+
+
+		if (imageTexture != nullptr)
+		{
+			strcpy(searchButtonImageBuffer, imageTexture->GetName().c_str()); 
+		}
+
+		ImGui::InputTextWithHint("", "Search Image...", searchButtonImageBuffer, IM_ARRAYSIZE(searchButtonImageBuffer));
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("drag_resource"))
+			{
+				int* selectedResourceUID = (int*)payload->Data;
+				Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+				if (resourceDropped->GetType() == RESOURCE_TEXTURE)
+				{
+					Texture* textureDropped = (Texture*)resourceDropped;
+					SetTexture(textureDropped);
+				}
+			}
+
+			ImGui::EndDragDropTarget();
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("Search##SearchUIIMage"))
+		{
+			ImGui::OpenPopup("print_image_selection_popup"); 
+		}
+
+		Texture* selectedImage = (Texture*)ResourceManager::getInstance()->PrintImagesSelectionPopup(); 
+
+		if (selectedImage != nullptr)
+		{
+			SetTexture(selectedImage); 
+		}
+
+		ImGui::EndChild();
+		ImGui::PopStyleColor();
+
+		//static char buf[256] = "";
+
+		//// Object Occurrence -----------------------
+		//float aspect_ratio = GetTexture()->GetAspectRatio();
+		//float previewQuadWidth = 150;
+		//float previewQuadHeight = previewQuadWidth / aspect_ratio;
+
+		//PUSH_FONT(App->moduleImGui->rudaRegularMid);
+		//ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+
+		//int childHeight = previewQuadHeight + 20;
+
+		//PUSH_FONT(App->moduleImGui->rudaBoldBig);
+		//ImGui::Text("Image Settings:");
+		//POP_FONT;
+
+		//ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), childHeight));
+
+		//ImGui::Columns(2);
+		//ImGui::SetColumnWidth(0, previewQuadWidth + 10);
+
+		//ImGui::Spacing();
+		//ImGui::Image((ImTextureID)GetTexture()->GetTextureID(), ImVec2(previewQuadWidth, previewQuadHeight));
+
+		//ImGui::NextColumn();
+
+		//ImGui::Spacing();
+		//ImGui::Text("Name: "); ImGui::SameLine();
+		//ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%s", GetTexture()->GetName().c_str());
+
+		//ImGui::Text("Width: "); ImGui::SameLine();
+		//ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", GetTexture()->GetWidth());
+
+		//ImGui::Text("Height: "); ImGui::SameLine();
+		//ImGui::TextColored(ImVec4(0.1f, 0.7f, 1.0f, 1.0f), "%d", GetTexture()->GetHeigth());
+
+		//Texture* searchTexture = (Texture*)ResourceManager::getInstance()->GetResource("SearchIcon");
+		//if (ImGui::Button("Change Image"))
+		//{
+		//	char const* lFilterPatterns[2] = { "*.jpg" , "*.png" };
+		//	const char* path = tinyfd_openFileDialog("Load Image...", NULL, 2, lFilterPatterns, NULL, 0);
+
+		//	if (path != NULL)
+		//	{
+		//		if (!ResourceManager::getInstance()->ExistResourcePath(path))
+		//		{
+		//			SetTexture(ImageImporter::getInstance()->LoadTexture(path, false));
+		//			ResourceManager::getInstance()->AddResource(GetTexture(), GetTexture()->GetName());
+		//		}
+		//		else		
+		//			SetTexture((Texture*)ResourceManager::getInstance()->GetResourceByPath(path));
+		//	
+		//		strcpy(buf, path);
+		//		flog("Player Opened %s", path);
+		//	}
+		//}
+		//ImGui::PopStyleColor();
+		//ImGui::EndChild();
+
+		//POP_FONT;
 	}
 }
 
