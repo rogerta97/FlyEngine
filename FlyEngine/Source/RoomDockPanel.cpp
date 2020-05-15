@@ -181,35 +181,20 @@ void RoomDockPanel::DrawUserInterfaceTab()
 
 void RoomDockPanel::ShowBlackboardTab()
 {
-	// Add and delete variable Buttons -----------
-	ImGui::Spacing();
-	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
-	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
-
-	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
-	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(30, 30)))
-	{
-		App->moduleWorldManager->GetSelectedRoom()->GetBlackboard()->AddDefaultVariable();
-	}
-
-	ImGui::SameLine();
-	Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("MinusIconWhite");
-	if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(30, 30)))
-	{
-
-	}
-
-	ImGui::PopStyleVar();
-	IMGUI_SPACED_SEPARATOR;
+	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	ImGui::Text("Blackboard Variables:");
+	POP_FONT;
 
 	// Search Bar --------------------
 	static char searchVariableBuffer[256];
 	ImGui::InputTextWithHint("", "Search...", searchVariableBuffer, IM_ARRAYSIZE(searchVariableBuffer));
 
-	// Child List Space Title --------
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	ImGui::Text("Blackboard Variables:");
-	POP_FONT;
+	ImGui::SameLine();
+	Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
+	if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(20, 20)))
+	{
+		App->moduleWorldManager->GetSelectedRoom()->GetBlackboard()->AddDefaultVariable();
+	}
 
 	// Variable List UI --------------
 	DrawRoomVariablesUI();
@@ -227,16 +212,17 @@ void RoomDockPanel::DrawRoomVariablesUI()
 	int counter = 0;
 	for (auto& currentVar : roomBB->blackboardVariablesList)
 	{
+		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 5, (ImGui::GetCursorPos().y + 5)));
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.28f, 0.43f, 0.56, 0.2f));
 
 		string varChildID = "VariableUIGroup" + to_string(counter);
-		ImGui::BeginChild(varChildID.c_str(), ImVec2(ImGui::GetContentRegionAvail().x - 5, 95));
+		ImGui::BeginChild(varChildID.c_str(), ImVec2(ImGui::GetContentRegionAvail().x - 5, 103));
 
 		ImGui::Columns(2, 0, false);
 		ImGui::SetColumnWidth(0, 70);
 
-		int iconSize = 47;
-		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 8, (ImGui::GetContentRegionAvail().y / 2) - iconSize / 2));
+		int iconSize = 55;
+		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 4, (ImGui::GetContentRegionAvail().y / 2) - iconSize / 2));
 		Texture* variableType = nullptr;
 
 		if (currentVar->varType == Var_Integer)
@@ -247,13 +233,23 @@ void RoomDockPanel::DrawRoomVariablesUI()
 		ImGui::Image((ImTextureID*)variableType->GetTextureID(), ImVec2(iconSize, iconSize));
 
 		ImGui::NextColumn();
+
 		ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5);
+		ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 28);
+		Texture* minusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("DeleteIcon");
+
+		if (ImGui::ImageButton((ImTextureID)minusIconTex->GetTextureID(), ImVec2(20, 20)))
+		{
+
+		}
+
+		ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 27);
 
 		char nameBuffer[256];
 		strcpy(nameBuffer, currentVar->name.c_str());
 		string nameStringID = "Name##VarName" + to_string(counter);
 
-		if (ImGui::InputText(nameStringID.c_str(), nameBuffer, IM_ARRAYSIZE(nameBuffer)))
+		if (ImGui::InputTextWithHint(nameStringID.c_str(), "Attach Variable...", nameBuffer, IM_ARRAYSIZE(nameBuffer)))
 		{
 			currentVar->name = nameBuffer;
 		}

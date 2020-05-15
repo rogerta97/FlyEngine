@@ -33,6 +33,9 @@ bool GamePropertiesDockPanel::Draw()
 	{
 		static char roomShowingName[256] = "Room Name..."; 
 
+		PUSH_CHILD_BG_COLOR;
+		ImGui::BeginChild("Save As Release Child", ImVec2(ImGui::GetWindowContentRegionWidth(), 73), true);
+
 		if (ImGui::BeginCombo("Start Room", roomShowingName))
 		{
 			int count = 0;
@@ -56,6 +59,9 @@ bool GamePropertiesDockPanel::Draw()
 		{
 			projectName = tmpProjectName;
 		}
+
+		ImGui::EndChild();
+		ImGui::PopStyleColor();
 
 		if (ImGui::Button("Save As Release"))
 		{

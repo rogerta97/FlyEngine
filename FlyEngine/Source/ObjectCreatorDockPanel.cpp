@@ -1038,122 +1038,122 @@ void ObjectCreatorDockPanel::DrawClickableAreaCreator()
 	//ImGui::Text("Preview:");
 	//ImGui::PopFont();
 
-	if (ImGui::Checkbox("Active", &clickableAreaActive))
-	{
-		if (clickableAreaActive && previewClickableAreaTexture != nullptr)
-		{
-			float2 textureSize = float2(previewClickableAreaTexture->GetWidth(), previewClickableAreaTexture->GetHeigth());
-		}
-	}
+	//if (ImGui::Checkbox("Active", &clickableAreaActive))
+	//{
+	//	if (clickableAreaActive && previewClickableAreaTexture != nullptr)
+	//	{
+	//		float2 textureSize = float2(previewClickableAreaTexture->GetWidth(), previewClickableAreaTexture->GetHeigth());
+	//	}
+	//}
 
-	ImGui::Separator(); 
+	//ImGui::Separator(); 
 
-	PrintClickableAreaObjectVisuals();
-	DrawClickableAreaSettings();
+	//PrintClickableAreaObjectVisuals();
+	//DrawClickableAreaSettings();
 }
 
 void ObjectCreatorDockPanel::DrawClickableAreaSettings()
 {
-	if (clickableAreaActive)
-	{
-		float2 posLimit = float2(1, 1);
-		float2 sizeLimit = float2(1, 1);
+	//if (clickableAreaActive)
+	//{
+	//	float2 posLimit = float2(1, 1);
+	//	float2 sizeLimit = float2(1, 1);
 
-		if (!creatingObject->HasVisuals())
-		{
-			ImGui::Separator();
+	//	if (!creatingObject->HasVisuals())
+	//	{
+	//		ImGui::Separator();
 
-			ImGui::PushFont(App->moduleImGui->rudaRegularTiny);
-			ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth() + 5);
-			ImGui::TextColored(ImVec4(1, 1, 0.2f, 0.8f), "The object being created has no actions with visible content. Clickable Area position will fit the center of the object");
-			ImGui::PopTextWrapPos();
-			ImGui::PopFont();
+	//		ImGui::PushFont(App->moduleImGui->rudaRegularTiny);
+	//		ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth() + 5);
+	//		ImGui::TextColored(ImVec4(1, 1, 0.2f, 0.8f), "The object being created has no actions with visible content. Clickable Area position will fit the center of the object");
+	//		ImGui::PopTextWrapPos();
+	//		ImGui::PopFont();
 
-			ImGui::Separator();
+	//		ImGui::Separator();
 
-			ImGui::DragFloat("Width", &clickableAreaSizePerc.x, 1.0f, 0.1f, App->moduleImGui->gameViewportDockPanel->GetViewportSize().x);
-			ImGui::DragFloat("Height", &clickableAreaSizePerc.y, 1.0f, 0.1f, App->moduleImGui->gameViewportDockPanel->GetViewportSize().y);
-		}
-		else
-		{
-			ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-			ImGui::Text("Position:");
-			ImGui::PopFont();
+	//		ImGui::DragFloat("Width", &clickableAreaSizePerc.x, 1.0f, 0.1f, App->moduleImGui->gameViewportDockPanel->GetViewportSize().x);
+	//		ImGui::DragFloat("Height", &clickableAreaSizePerc.y, 1.0f, 0.1f, App->moduleImGui->gameViewportDockPanel->GetViewportSize().y);
+	//	}
+	//	else
+	//	{
+	//		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	//		ImGui::Text("Position:");
+	//		ImGui::PopFont();
 
-			posLimit = float2(1, 1) - clickableAreaSizePerc;
-			if (clickableAreaSizePerc.x > sizeLimit.x)
-			{
-				sizeLimit.x = 1 - clickableAreaPosPerc.x;
-			}
+	//		posLimit = float2(1, 1) - clickableAreaSizePerc;
+	//		if (clickableAreaSizePerc.x > sizeLimit.x)
+	//		{
+	//			sizeLimit.x = 1 - clickableAreaPosPerc.x;
+	//		}
 
-			if (clickableAreaSizePerc.y > sizeLimit.y)
-			{
-				sizeLimit.y = 1 - clickableAreaPosPerc.x;
-			}
+	//		if (clickableAreaSizePerc.y > sizeLimit.y)
+	//		{
+	//			sizeLimit.y = 1 - clickableAreaPosPerc.x;
+	//		}
 
-			ImGui::DragFloat("Horizontal", &clickableAreaPosPerc.x, 0.005f, 0.05f, posLimit.x);
-			ImGui::DragFloat("Vertical", &clickableAreaPosPerc.y, 0.005f, 0.05f, posLimit.y);
+	//		ImGui::DragFloat("Horizontal", &clickableAreaPosPerc.x, 0.005f, 0.05f, posLimit.x);
+	//		ImGui::DragFloat("Vertical", &clickableAreaPosPerc.y, 0.005f, 0.05f, posLimit.y);
 
-			ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-			ImGui::Text("Size:");
-			ImGui::PopFont();
+	//		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	//		ImGui::Text("Size:");
+	//		ImGui::PopFont();
 
-			float2 viewportSize = App->moduleImGui->gameViewportDockPanel->GetViewportSize();
-			sizeLimit = float2(1, 1) - clickableAreaPosPerc;
-			if (clickableAreaPosPerc.x > posLimit.x)
-			{
-				posLimit.x = 1 - clickableAreaSizePerc.x;
-			}
+	//		float2 viewportSize = App->moduleImGui->gameViewportDockPanel->GetViewportSize();
+	//		sizeLimit = float2(1, 1) - clickableAreaPosPerc;
+	//		if (clickableAreaPosPerc.x > posLimit.x)
+	//		{
+	//			posLimit.x = 1 - clickableAreaSizePerc.x;
+	//		}
 
-			if (clickableAreaPosPerc.y > posLimit.y)
-			{
-				posLimit.y = 1 - clickableAreaSizePerc.x;
-			}
+	//		if (clickableAreaPosPerc.y > posLimit.y)
+	//		{
+	//			posLimit.y = 1 - clickableAreaSizePerc.x;
+	//		}
 
-			ImGui::DragFloat("Width", &clickableAreaSizePerc.x, 0.005f, 0.05f, sizeLimit.x);
-			ImGui::DragFloat("Height", &clickableAreaSizePerc.y, 0.005f, 0.05f, sizeLimit.y);
+	//		ImGui::DragFloat("Width", &clickableAreaSizePerc.x, 0.005f, 0.05f, sizeLimit.x);
+	//		ImGui::DragFloat("Height", &clickableAreaSizePerc.y, 0.005f, 0.05f, sizeLimit.y);
 
-			IMGUI_SPACED_SEPARATOR;
-		}
-	}
+	//		IMGUI_SPACED_SEPARATOR;
+	//	}
+	//}
 }
 
 void ObjectCreatorDockPanel::PrintClickableAreaObjectVisuals(bool drawClickableArea)
 {
-	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	ImGui::Text("Preview:");
-	ImGui::PopFont();
+	//ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+	//ImGui::Text("Preview:");
+	//ImGui::PopFont();
 
-	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-	ImGui::BeginChild("ShowClickableArea", ImVec2(ImGui::GetContentRegionAvailWidth(), previewTextureMaxSize));
-	if (!creatingObject->HasVisuals())
-	{
-		// Background
-		ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (previewTextureMaxSize / 2), 0));
-		ImGui::Image(0, ImVec2(previewTextureMaxSize, previewTextureMaxSize));
+	//ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+	//ImGui::BeginChild("ShowClickableArea", ImVec2(ImGui::GetContentRegionAvailWidth(), previewTextureMaxSize));
+	//if (!creatingObject->HasVisuals())
+	//{
+	//	// Background
+	//	ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvailWidth() / 2 - (previewTextureMaxSize / 2), 0));
+	//	ImGui::Image(0, ImVec2(previewTextureMaxSize, previewTextureMaxSize));
 
-		// Show No Visual Text
-		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+	//	// Show No Visual Text
+	//	ImGui::PushFont(App->moduleImGui->rudaBoldBig);
 
-		ImGui::SetCursorPos(ImVec2((ImGui::GetContentRegionAvailWidth() / 2) - 76, (previewTextureMaxSize / 2) - (75)));
-		Texture* emptyObject = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject");
-		ImGui::Image((ImTextureID)emptyObject->GetTextureID(), ImVec2(150, 150));
+	//	ImGui::SetCursorPos(ImVec2((ImGui::GetContentRegionAvailWidth() / 2) - 76, (previewTextureMaxSize / 2) - (75)));
+	//	Texture* emptyObject = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject");
+	//	ImGui::Image((ImTextureID)emptyObject->GetTextureID(), ImVec2(150, 150));
 
-		ImGui::PopFont();
-	}
-	else
-	{
-		DrawPrevTextureCA(drawClickableArea);
-	}
+	//	ImGui::PopFont();
+	//}
+	//else
+	//{
+	//	DrawPrevTextureCA(drawClickableArea);
+	//}
 
-	ImGui::EndChild();
-	ImGui::PopStyleColor();
+	//ImGui::EndChild();
+	//ImGui::PopStyleColor();
 }
 
 void ObjectCreatorDockPanel::DrawPrevTextureCA(bool drawClickableArea)
 {
 	// Prev Texture
-	DisplayImageAction* displayImageAction = (DisplayImageAction*)creatingObject->GetAction(ACTION_DISPLAY_IMAGE);
+	/*DisplayImageAction* displayImageAction = (DisplayImageAction*)creatingObject->GetAction(ACTION_DISPLAY_IMAGE);
 	if (displayImageAction != nullptr)
 	{
 		previewClickableAreaTexture = displayImageAction->GetTexture();
@@ -1174,7 +1174,7 @@ void ObjectCreatorDockPanel::DrawPrevTextureCA(bool drawClickableArea)
 		{
 			DrawPreviewClickableAreaOnTexture(imageTopLeft, float2(prevTextureSize.x, prevTextureSize.y));
 		}
-	}
+	}*/
 }
 
 void ObjectCreatorDockPanel::GetTextureSizeFitted(ImVec2& prevTextureSize)
@@ -1196,14 +1196,14 @@ void ObjectCreatorDockPanel::GetTextureSizeFitted(ImVec2& prevTextureSize)
 
 void ObjectCreatorDockPanel::DrawPreviewClickableAreaOnTexture(float2 textureTopLeft, float2 prevTextureSize)
 {
-	float2 clickableAreaPos = float2(prevTextureSize.x * clickableAreaPosPerc.x, prevTextureSize.y * clickableAreaPosPerc.y);
-	float2 clickableAreaSize = float2(prevTextureSize.x * clickableAreaSizePerc.x, prevTextureSize.y * clickableAreaSizePerc.y);
+	//float2 clickableAreaPos = float2(prevTextureSize.x * clickableAreaPosPerc.x, prevTextureSize.y * clickableAreaPosPerc.y);
+	//float2 clickableAreaSize = float2(prevTextureSize.x * clickableAreaSizePerc.x, prevTextureSize.y * clickableAreaSizePerc.y);
 
-	float2 clickableAreaTopLeft = textureTopLeft + clickableAreaPos;
-	ImGui::SetCursorPos(ImVec2(clickableAreaTopLeft.x, clickableAreaTopLeft.y));
+	//float2 clickableAreaTopLeft = textureTopLeft + clickableAreaPos;
+	//ImGui::SetCursorPos(ImVec2(clickableAreaTopLeft.x, clickableAreaTopLeft.y));
 
-	Texture* colorTexture = (Texture*)ResourceManager::getInstance()->GetResource("ClickableAreaPreviewColor");
-	ImGui::Image((ImTextureID)colorTexture->GetTextureID(), ImVec2(clickableAreaSize.x, clickableAreaSize.y));
+	//Texture* colorTexture = (Texture*)ResourceManager::getInstance()->GetResource("ClickableAreaPreviewColor");
+	//ImGui::Image((ImTextureID)colorTexture->GetTextureID(), ImVec2(clickableAreaSize.x, clickableAreaSize.y));
 }
 
 bool ObjectCreatorDockPanel::DrawCloseAndCreateButton()
