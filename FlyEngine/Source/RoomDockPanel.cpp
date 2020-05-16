@@ -534,11 +534,6 @@ void RoomDockPanel::ShowViewportSettingsTab()
 
 	if (ImGui::CollapsingHeader("Music"))
 	{
-	/*	ImGui::Spacing();
-		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-		ImGui::Text("Music:");
-		ImGui::PopFont();*/
-
 		Room* currentRoom = App->moduleWorldManager->GetSelectedRoom();
 
 		static char trackNameBuffer[256] = "";
@@ -583,6 +578,10 @@ void RoomDockPanel::ShowViewportSettingsTab()
 				showMusicSelectionPopup = false;
 			}
 		}
+	}
+
+	if (ImGui::CollapsingHeader("Inventory"))
+	{
 	}
 
 	if (ImGui::CollapsingHeader("Visibility"))

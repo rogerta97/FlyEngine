@@ -6,9 +6,9 @@
 #include "ModuleWorldManager.h"
 #include "FlyObject.h"
 #include "ModuleManager.h"
-
+#include "BoundingBox.h"
 #include "Room.h"
-
+#include "Quad.h"
 #include "MathGeoLib.h"
 #include "mmgr.h"
 
@@ -17,6 +17,11 @@ GameInventory* GameInventory::instance = 0;
 GameInventory::GameInventory()
 {
 	droppingObject = nullptr; 
+
+	backgroundQuad = new BoundingBox();
+	backgroundQuad->SetSize(10, 10); 
+
+	opened = false; 
 }
 
 GameInventory* GameInventory::getInstance()
@@ -37,7 +42,7 @@ void GameInventory::CleanUp()
 	delete instance; 
 }
 
-void GameInventory::AddObjectToInventoryList(FlyObject* newObject)
+void GameInventory::AddObjectToInventory(FlyObject* newObject)
 {
 	if (newObject == nullptr)
 		return; 
@@ -54,6 +59,32 @@ bool GameInventory::IsItemInInventory(UID checkItemUID)
 	}
 
 	return false; 
+}
+
+void GameInventory::OpenInventory()
+{
+	instance->opened = true; 
+}
+
+void GameInventory::CloseInventory()
+{
+	instance->opened = false;
+}
+
+void GameInventory::ToggleVisibility()
+{
+	instance->opened = !instance->opened;
+}
+
+void GameInventory::DrawInventoryInViewport()
+{
+	if (!instance->opened)
+		return; 
+
+	if (instance->backgroundQuad != nullptr)
+	{
+		instance->backgroundQuad->DrawSquare(); 
+	}		
 }
 
 FlyObject* GameInventory::PickObjectFromInventory(int index)

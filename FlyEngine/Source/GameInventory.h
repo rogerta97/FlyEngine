@@ -5,6 +5,7 @@
 #include "Globals.h"
 
 class FlyObject;
+class BoundingBox;
 struct GameInventory
 {
 private:
@@ -16,9 +17,14 @@ public:
 	~GameInventory();
 	static void CleanUp(); 
 
-	static void AddObjectToInventoryList(FlyObject* newObject);
-
+	static void AddObjectToInventory(FlyObject* newObject);
 	static bool IsItemInInventory(UID checkItemUID);
+
+	// Draw
+	static void OpenInventory();
+	static void CloseInventory(); 
+	static void ToggleVisibility(); 
+	static void DrawInventoryInViewport(); 
 
 	// Pick and Drop ---
 	static FlyObject* PickObjectFromInventory(int index); 
@@ -29,6 +35,10 @@ public:
 
 private:
 	std::list<FlyObject*> objectsInInventory; 
+
+	// Draw Vars
+	BoundingBox* backgroundQuad; 
+	bool opened = false; 
 };
 
 #endif

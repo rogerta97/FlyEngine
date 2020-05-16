@@ -59,7 +59,6 @@ Room::~Room()
 
 void Room::Update()
 {
-
 	if (ViewportManager::getInstance()->blockInputTick)
 	{
 		ViewportManager::getInstance()->blockInputTick = false;
@@ -68,6 +67,13 @@ void Room::Update()
 
 	if (ViewportManager::getInstance()->blockInput)
 		return; 
+
+	if (App->moduleInput->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
+	{
+		GameInventory::getInstance()->ToggleVisibility();
+	}
+
+	GameInventory::getInstance()->DrawInventoryInViewport();
 
 	if (App->moduleWorldManager->GetSelectedRoom() == this)
 	{
@@ -209,7 +215,7 @@ void Room::AddItemToInventory(FlyObject* newObject_Inv)
 #pragma endregion
 
 	// Delete the object from the room (now it will lay in the inventory) 
-	GameInventory::getInstance()->AddObjectToInventoryList(newObject_Inv);
+	GameInventory::getInstance()->AddObjectToInventory(newObject_Inv);
 }
 
 bool Room::HasObject(FlyObject* newObject_Inv)
