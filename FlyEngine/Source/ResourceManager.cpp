@@ -345,7 +345,7 @@ string ResourceManager::PrintFolderSelectionPopup(string parentFolder)
 		ImGui::SameLine();
 
 		Texture* filterIcon = (Texture*)ResourceManager::getInstance()->GetResource("FilterIcon");
-		ImGui::Image((ImTextureID)filterIcon->GetTextureID(), ImVec2(22, 22));
+		ImGui::Image((ImTextureID)filterIcon->GetTextureID(), ImVec2(22, 22), ImVec2(1,1), ImVec2(0, 0));
 
 		ImGui::Spacing();
 
@@ -460,7 +460,6 @@ void ResourceManager::LoadAllGameResources()
 	std::string resourcesFontsPath = MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Fonts";
 	LoadAllFilesFromFolder(resourcesFontsPath, RESOURCE_FONT);
 
-	// Thumbnails 
 	std::string tumbnailsPath = MyFileSystem::getInstance()->GetThumbnilesDirectory();
 	LoadAllFilesFromFolder(tumbnailsPath, RESOURCE_TEXTURE);
 }

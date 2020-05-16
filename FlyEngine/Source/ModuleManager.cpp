@@ -57,8 +57,8 @@ bool ModuleManager::Init()
 	ResourceManager::getInstance()->LoadAllGameResources(); 
 
 	// Tools Descriptions 
-	AddToolsNameDescription("Display Image", "This should be the description of the image tool", ACTION_DISPLAY_IMAGE);
-	AddToolsNameDescription("Change Scene", "This should be the description of the change scene tool", ACTION_CHANGE_ROOM);
+	AddToolsNameDescription("Display Image", "Displays an image in the Fly Object's position", ACTION_DISPLAY_IMAGE);
+	AddToolsNameDescription("Change Room", "Changes the room the player is ", ACTION_CHANGE_ROOM);
 	AddToolsNameDescription("Modify Variable", "This should be the description of the mofdify variable tool", ACTION_MOD_VARIABLE);
 	AddToolsNameDescription("Emit Sound", "This should be the description of the emit sound tool", ACTION_EMIT_SOUND);
 	AddToolsNameDescription("Display Text", "This should be the description of the display text tool", ACTION_DISPLAY_TEXT);

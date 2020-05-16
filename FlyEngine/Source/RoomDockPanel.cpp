@@ -386,7 +386,10 @@ void RoomDockPanel::DrawRoomHierarchy()
 
 	if (App->moduleWorldManager->GetSelectedRoom()->GetObjectsInRoomAmount() == 0)
 	{
-		ImGui::TextColored(ImVec4(0, 1, 1, 1), " There are no objects in this room");
+		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+		ImGui::TextColored(ImVec4(1, 1, 1, 0.25), "This Room Is Empty");
+		ImGui::PopFont();
 	}
 	else
 	{

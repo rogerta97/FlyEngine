@@ -733,7 +733,9 @@ void ObjectPropertiesDockPanel::DrawFlyObjectProperties()
 	}
 	else
 	{
-		ImGui::TextColored(ImVec4(0.8f, 0.5f, 0.5f, 1.0f), "No Object Selected");
+		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
+		ImGui::TextColored(ImVec4(1, 1, 1, 0.25), "Any Object Is Selected");
+		ImGui::PopFont();
 	}
 }
 

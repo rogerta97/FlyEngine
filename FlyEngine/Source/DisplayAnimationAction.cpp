@@ -6,6 +6,7 @@
 #include "DisplayImageAction.h"
 #include "Texture.h"
 #include "MyFileSystem.h"
+#include "ImageImporter.h"
 #include "Animation.h"
 #include "FlyObject.h"
 #include "ResourceManager.h"
@@ -321,7 +322,7 @@ void DisplayAnimationAction::DrawAddFramePopup()
 				ImGui::OpenPopup("print_image_selection_popup"); 
 			}
 
-			else if (currentSelection == 0)
+			else if (currentSelection == 1)
 			{
 				hint = "Folder...";
 				ImGui::OpenPopup("print_folder_selection_popup");
@@ -365,6 +366,40 @@ void DisplayAnimationAction::DrawAddFramePopup()
 				ImGui::CloseCurrentPopup();
 				ImGui::EndPopup(); 
 				return;
+			}
+			else if (currentSelection == 1)
+			{
+				string folderPath = searchFileBuffer; 
+				
+				vector<string> frameFilesList; 
+				MyFileSystem::getInstance()->GetFilesInDirectory(folderPath.c_str(), frameFilesList, false); 
+
+				if (!frameFilesList.empty())
+				{
+					for (auto& currentFrameFile : frameFilesList)
+					{
+						string fileWithoutExtension = MyFileSystem::getInstance()->DeleteFileExtension(currentFrameFile);
+						Texture* newAnimFrameTexture = (Texture*)ResourceManager::getInstance()->GetResource(fileWithoutExtension);
+
+						if (newAnimFrameTexture == nullptr)
+						{
+							string imagePath = folderPath + "\\" + currentFrameFile;
+							newAnimFrameTexture = ImageImporter::getInstance()->LoadTexture(imagePath.c_str(), false);
+						}
+
+						animation->AddFrame(newAnimFrameTexture);
+						currentFrame = animation->GetFramesAmount() - 1;
+
+						if (screenImageAction != nullptr && !isSequential && canChangeCanvas)
+							screenImageAction->SetTexture(newAnimFrameTexture);
+					}
+
+					ImGui::CloseCurrentPopup();
+					ImGui::EndPopup();
+					return;
+				}
+
+
 			}
 		}
 
