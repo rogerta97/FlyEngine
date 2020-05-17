@@ -16,6 +16,8 @@ public:
 	FlyObject* GetSlotObject();
 	void SetObject(FlyObject* newObject); 
 
+	bool IsEmpty(); 
+
 	BoundingBox* GetSlotBB(); 
 
 private:

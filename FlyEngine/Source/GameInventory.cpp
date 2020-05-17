@@ -79,13 +79,13 @@ void GameInventory::AddEmptySlot()
 
 void GameInventory::AddObjectToInventory(FlyObject* newObject)
 {
-	//if (newObject == nullptr)
-	//	return; 
-
-	//InventorySlot* newInvSlot = new InventorySlot(); 
-	//newInvSlot->SetObject(newObject); 
-
-	//instance->inventorySlots.push_back(newInvSlot);
+	for (auto& currentSlot : instance->inventorySlots)
+	{
+		if (currentSlot->IsEmpty())
+		{
+			currentSlot->SetObject(newObject);
+		}
+	}
 }
 
 bool GameInventory::IsItemInInventory(UID checkItemUID)
@@ -152,9 +152,17 @@ void GameInventory::DrawInventorySlots()
 	{
 		if (counter >= startDrawingIndex && counter < startDrawingIndex + SLOTS_PER_PAGE)
 		{
+			// Draw Background 
+
 			(*it)->GetSlotBB()->SetPosition(pen, true);
 			(*it)->GetSlotBB()->Draw(true, float4(0,0,0,1)); 
 			pen.x += (*it)->GetSlotBB()->GetSize().x + instance->slotsInnerPadding; 
+
+			// Draw Object 
+			FlyObject* objectInSlot = (*it)->GetSlotObject();
+			
+			if(objectInSlot)
+				objectInSlot->DrawVisualLayer();
 		}
 
 		counter++;
@@ -232,6 +240,14 @@ void InventorySlot::SetObject(FlyObject* newObject)
 {
 	if(newObject != nullptr)
 		slotObject = newObject;
+}
+
+bool InventorySlot::IsEmpty()
+{
+	if(slotObject == nullptr)
+		return true;
+
+	return false;
 }
 
 BoundingBox* InventorySlot::GetSlotBB()
