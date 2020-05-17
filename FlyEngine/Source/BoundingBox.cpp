@@ -78,11 +78,14 @@ void BoundingBox::DrawSquare(float4 color, bool fill)
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
-void BoundingBox::SetPosition(float2 newPositon)
+void BoundingBox::SetPosition(float2 newPositon, bool fromTopLeft)
 {
 	CenterMinMaxPointsToScreen(); 
 	minPoint += newPositon;
 	maxPoint += newPositon;
+
+	if (fromTopLeft)
+		SetPositionInc(GetSize() / 2);	
 }
 
 void BoundingBox::SetPositionInc(float2 newPositon)
@@ -170,6 +173,11 @@ float2 BoundingBox::GetCenter()
 	float2 relativeCenterPoint(size.x / 2, size.y / 2); 
 	float2 worldCenterPoint(minPoint.x + relativeCenterPoint.x, maxPoint.y + relativeCenterPoint.y); 
 	return worldCenterPoint;
+}
+
+float2 BoundingBox::GetTopLeft()
+{
+	return float2(minPoint.x, maxPoint.y);
 }
 
 void BoundingBox::CenterMinMaxPointsToScreen()

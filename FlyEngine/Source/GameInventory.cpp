@@ -12,7 +12,7 @@
 #include "MathGeoLib.h"
 #include "mmgr.h"
 
-#define SLOTS_PER_PAGE 4
+#define SLOTS_PER_PAGE 5
 
 GameInventory* GameInventory::instance = 0; 
 
@@ -23,11 +23,22 @@ GameInventory::GameInventory()
 	inventoryWidth = 900;
 	inventoryHeigth = 160;
 	currentPage = 0; 
-	slotsPadding = 15;
+	slotsInnerPadding = 30;
+	slotsOutterPadding = 20; 
+	arrowsWidth = 60; 
+	arrowsHeigth = 90; 
 
 	backgroundQuad = new BoundingBox();
 	backgroundQuad->SetSize(inventoryWidth, inventoryHeigth);
 	backgroundQuad->SetPositionInc(float2(0, -423)); 
+
+	nextPageArrow = new BoundingBox();
+	nextPageArrow->SetSize(arrowsWidth, arrowsHeigth);
+	nextPageArrow->SetPositionInc(float2(backgroundQuad->GetTopLeft().x, -423));
+
+	prevPageArrow = new BoundingBox();
+	prevPageArrow->SetSize(arrowsWidth, arrowsHeigth);
+	prevPageArrow->SetPositionInc(float2(backgroundQuad->GetMaxPoint().x, -423));
 
 	opened = false; 
 }
@@ -108,14 +119,23 @@ void GameInventory::DrawInventory()
 	if (!instance->opened)
 		return; 
 
+	instance->DrawInventoryBackground();
+	instance->DrawInventorySlots();
+	instance->DrawPageArrows();
+}
+
+void GameInventory::DrawPageArrows()
+{
+	instance->prevPageArrow->Draw(true, float4(1, 0, 0, 1));
+	instance->nextPageArrow->Draw(true, float4(1, 0, 0, 1));
+}
+
+void GameInventory::DrawInventoryBackground()
+{
 	if (instance->backgroundQuad != nullptr)
 	{
-		instance->backgroundQuad->Draw(true, float4(1, 1, 1, 1)); 
-	}	
-
-	// Draw Slots 
-	instance->DrawInventorySlots();
-
+		instance->backgroundQuad->Draw(true, float4(1, 1, 1, 1));
+	}
 }
 
 void GameInventory::DrawInventorySlots()
@@ -126,15 +146,15 @@ void GameInventory::DrawInventorySlots()
 
 	int counter = 0; 
 
-	float2 pen = inventoryBackgroundTopLeft;
+	float2 pen = inventoryBackgroundTopLeft + float2(40,11);
 
 	for (std::list<InventorySlot*>::iterator it = instance->inventorySlots.begin(); it != instance->inventorySlots.end(); it++)
 	{
 		if (counter >= startDrawingIndex && counter < startDrawingIndex + SLOTS_PER_PAGE)
 		{
-			(*it)->GetSlotBB()->SetPosition(pen);
+			(*it)->GetSlotBB()->SetPosition(pen, true);
 			(*it)->GetSlotBB()->Draw(true, float4(0,0,0,1)); 
-			pen.x += (*it)->GetSlotBB()->GetSize().x + instance->slotsPadding; 
+			pen.x += (*it)->GetSlotBB()->GetSize().x + instance->slotsInnerPadding; 
 		}
 
 		counter++;
@@ -196,7 +216,7 @@ InventorySlot::InventorySlot(float inventoryBgHeigth)
 	slotObject = nullptr;
 
 	slotBB = new BoundingBox();
-	slotBB->SetSize(inventoryBgHeigth - 10.0f, inventoryBgHeigth - 10.0f);
+	slotBB->SetSize(inventoryBgHeigth - 20.0f, inventoryBgHeigth - 20.0f);
 }
 
 InventorySlot::~InventorySlot()

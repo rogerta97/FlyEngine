@@ -22,6 +22,7 @@ public:
 
 	// Utility -------
 	float2 GetCenter(); 
+	float2 GetTopLeft(); 
 	void CenterMinMaxPointsToScreen();
 	void EnableDrag(bool enable); 
 	void CreateGizmos();
@@ -32,7 +33,7 @@ public:
 	float2 HandleDrag(CardinalAxis limitOnAxis = CardinalAxis::AxisNone);
 
 	// Set & Getc 
-	void SetPosition(float2 newPositon); 
+	void SetPosition(float2 newPositon, bool fromTopLeft = false);
 	void SetPositionInc(float2 newPositon); 
 	float2 GetPosition();
 

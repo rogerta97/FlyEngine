@@ -116,7 +116,7 @@ bool ModuleManager::Start()
 
 	// Init Inventory 
 	GameInventory::getInstance(); 
-	GameInventory::getInstance()->CreateSlots(4);
+	GameInventory::getInstance()->CreateSlots(5);
 
 	return true;
 }

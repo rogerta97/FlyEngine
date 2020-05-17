@@ -44,7 +44,10 @@ public:
 	static void CloseInventory(); 
 	static void ToggleVisibility(); 
 
-	static void DrawInventory(); 
+	static void DrawInventory();
+	static void DrawPageArrows();
+	static void DrawInventoryBackground();
+
 	static void DrawInventorySlots(); 
 
 	// Pick and Drop ---
@@ -59,11 +62,18 @@ private:
 
 	// Draw Vars
 	BoundingBox* backgroundQuad; 
+	BoundingBox* nextPageArrow; 
+	BoundingBox* prevPageArrow; 
 
 	int currentPage = 0; 
 	float inventoryWidth;
 	float inventoryHeigth;
-	float slotsPadding; 
+	float slotsInnerPadding; 
+	float slotsOutterPadding; 
+
+	float arrowsWidth;
+	float arrowsHeigth;
+
 	bool opened = false; 
 };
 
