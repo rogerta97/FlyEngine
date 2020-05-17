@@ -9,6 +9,7 @@
 #include "GameViewportDockPanel.h"
 #include "ChangeRoomAction.h"
 #include "ModuleWindow.h"
+#include "GameInventory.h"
 #include "ObjectPropertiesDockPanel.h"
 #include "Room.h"
 #include "ModuleImGui.h"
@@ -112,6 +113,10 @@ bool ModuleManager::Start()
 	//	json_object_dotset_string(root_obj, "InitData.ProjectName", "None");
 	//	json_serialize_to_file(scene_v, initFilePath.c_str());
 	//}
+
+	// Init Inventory 
+	GameInventory::getInstance(); 
+	GameInventory::getInstance()->CreateSlots(4);
 
 	return true;
 }

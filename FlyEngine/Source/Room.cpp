@@ -476,7 +476,7 @@ void Room::DrawRoomObjects()
 		(it)->DrawVisualLayer(); 
 	}
 
-	GameInventory::getInstance()->DrawInventoryInViewport();
+	GameInventory::getInstance()->DrawInventory();
 
 	for (auto& it : objectsInRoom)
 	{

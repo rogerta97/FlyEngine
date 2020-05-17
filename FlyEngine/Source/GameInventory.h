@@ -10,15 +10,17 @@ class BoundingBox;
 class InventorySlot
 {
 public: 
-	InventorySlot();
+	InventorySlot(float inventoryBgHeigth);
 	~InventorySlot();
 
 	FlyObject* GetSlotObject();
 	void SetObject(FlyObject* newObject); 
 
+	BoundingBox* GetSlotBB(); 
+
 private:
 	FlyObject* slotObject; 
-	BoundingBox* slotBG; 
+	BoundingBox* slotBB; 
 };
 
 struct GameInventory
@@ -32,6 +34,7 @@ public:
 	~GameInventory();
 	static void CleanUp(); 
 
+	static void CreateSlots(int amount); 
 	static void AddEmptySlot(); 
 	static void AddObjectToInventory(FlyObject* newObject);
 	static bool IsItemInInventory(UID checkItemUID);
@@ -41,7 +44,7 @@ public:
 	static void CloseInventory(); 
 	static void ToggleVisibility(); 
 
-	static void DrawInventoryInViewport(); 
+	static void DrawInventory(); 
 	static void DrawInventorySlots(); 
 
 	// Pick and Drop ---
@@ -57,9 +60,10 @@ private:
 	// Draw Vars
 	BoundingBox* backgroundQuad; 
 
-	int showingPage = 0; 
+	int currentPage = 0; 
 	float inventoryWidth;
 	float inventoryHeigth;
+	float slotsPadding; 
 	bool opened = false; 
 };
 

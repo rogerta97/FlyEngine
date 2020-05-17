@@ -12,6 +12,8 @@
 #include "MathGeoLib.h"
 #include "mmgr.h"
 
+#define SLOTS_PER_PAGE 4
+
 GameInventory* GameInventory::instance = 0; 
 
 GameInventory::GameInventory()
@@ -20,18 +22,14 @@ GameInventory::GameInventory()
 
 	inventoryWidth = 900;
 	inventoryHeigth = 160;
-	showingPage = 0; 
+	currentPage = 0; 
+	slotsPadding = 15;
 
 	backgroundQuad = new BoundingBox();
 	backgroundQuad->SetSize(inventoryWidth, inventoryHeigth);
 	backgroundQuad->SetPositionInc(float2(0, -423)); 
 
 	opened = false; 
-
-	AddEmptySlot();
-	AddEmptySlot();
-	AddEmptySlot();
-	AddEmptySlot();
 }
 
 GameInventory* GameInventory::getInstance()
@@ -52,21 +50,31 @@ void GameInventory::CleanUp()
 	delete instance; 
 }
 
+void GameInventory::CreateSlots(int amount)
+{
+	int counter = 0;
+	while (counter < amount)
+	{
+		instance->AddEmptySlot();
+		counter++; 
+	}
+}
+
 void GameInventory::AddEmptySlot()
 {
-	InventorySlot* newSlot = new InventorySlot();
+	InventorySlot* newSlot = new InventorySlot(instance->inventoryHeigth);
 	instance->inventorySlots.push_back(newSlot);
 }
 
 void GameInventory::AddObjectToInventory(FlyObject* newObject)
 {
-	if (newObject == nullptr)
-		return; 
+	//if (newObject == nullptr)
+	//	return; 
 
-	InventorySlot* newInvSlot = new InventorySlot(); 
-	newInvSlot->SetObject(newObject); 
+	//InventorySlot* newInvSlot = new InventorySlot(); 
+	//newInvSlot->SetObject(newObject); 
 
-	instance->inventorySlots.push_back(newInvSlot);
+	//instance->inventorySlots.push_back(newInvSlot);
 }
 
 bool GameInventory::IsItemInInventory(UID checkItemUID)
@@ -95,20 +103,42 @@ void GameInventory::ToggleVisibility()
 	instance->opened = !instance->opened;
 }
 
-void GameInventory::DrawInventoryInViewport()
+void GameInventory::DrawInventory()
 {
 	if (!instance->opened)
 		return; 
 
 	if (instance->backgroundQuad != nullptr)
 	{
-		instance->backgroundQuad->Draw(true, float4(1, 1, 1, 1));
-		//instance->backgroundQuad->DrawSquare(); 
-	}		
+		instance->backgroundQuad->Draw(true, float4(1, 1, 1, 1)); 
+	}	
+
+	// Draw Slots 
+	instance->DrawInventorySlots();
+
 }
 
 void GameInventory::DrawInventorySlots()
 {
+	float2 inventoryBackgroundTopLeft = float2(instance->backgroundQuad->GetMinPoint().x, instance->backgroundQuad->GetMaxPoint().y);
+
+	int startDrawingIndex = instance->currentPage * SLOTS_PER_PAGE;
+
+	int counter = 0; 
+
+	float2 pen = inventoryBackgroundTopLeft;
+
+	for (std::list<InventorySlot*>::iterator it = instance->inventorySlots.begin(); it != instance->inventorySlots.end(); it++)
+	{
+		if (counter >= startDrawingIndex && counter < startDrawingIndex + SLOTS_PER_PAGE)
+		{
+			(*it)->GetSlotBB()->SetPosition(pen);
+			(*it)->GetSlotBB()->Draw(true, float4(0,0,0,1)); 
+			pen.x += (*it)->GetSlotBB()->GetSize().x + instance->slotsPadding; 
+		}
+
+		counter++;
+	}
 }
 
 FlyObject* GameInventory::PickObjectFromInventory(int index)
@@ -161,8 +191,12 @@ void GameInventory::DropDroppingObjectToRoom()
 	}
 }
 
-InventorySlot::InventorySlot()
+InventorySlot::InventorySlot(float inventoryBgHeigth)
 {
+	slotObject = nullptr;
+
+	slotBB = new BoundingBox();
+	slotBB->SetSize(inventoryBgHeigth - 10.0f, inventoryBgHeigth - 10.0f);
 }
 
 InventorySlot::~InventorySlot()
@@ -178,4 +212,9 @@ void InventorySlot::SetObject(FlyObject* newObject)
 {
 	if(newObject != nullptr)
 		slotObject = newObject;
+}
+
+BoundingBox* InventorySlot::GetSlotBB()
+{
+	return slotBB;
 }
