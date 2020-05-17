@@ -4,8 +4,23 @@
 #include <list>
 #include "Globals.h"
 
+
 class FlyObject;
 class BoundingBox;
+class InventorySlot
+{
+public: 
+	InventorySlot();
+	~InventorySlot();
+
+	FlyObject* GetSlotObject();
+	void SetObject(FlyObject* newObject); 
+
+private:
+	FlyObject* slotObject; 
+	BoundingBox* slotBG; 
+};
+
 struct GameInventory
 {
 private:
@@ -17,6 +32,7 @@ public:
 	~GameInventory();
 	static void CleanUp(); 
 
+	static void AddEmptySlot(); 
 	static void AddObjectToInventory(FlyObject* newObject);
 	static bool IsItemInInventory(UID checkItemUID);
 
@@ -24,7 +40,9 @@ public:
 	static void OpenInventory();
 	static void CloseInventory(); 
 	static void ToggleVisibility(); 
+
 	static void DrawInventoryInViewport(); 
+	static void DrawInventorySlots(); 
 
 	// Pick and Drop ---
 	static FlyObject* PickObjectFromInventory(int index); 
@@ -34,10 +52,14 @@ public:
 	FlyObject* droppingObject; 
 
 private:
-	std::list<FlyObject*> objectsInInventory; 
+	std::list<InventorySlot*> inventorySlots;
 
 	// Draw Vars
 	BoundingBox* backgroundQuad; 
+
+	int showingPage = 0; 
+	float inventoryWidth;
+	float inventoryHeigth;
 	bool opened = false; 
 };
 

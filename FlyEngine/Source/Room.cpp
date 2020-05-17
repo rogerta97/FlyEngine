@@ -73,8 +73,6 @@ void Room::Update()
 		GameInventory::getInstance()->ToggleVisibility();
 	}
 
-	GameInventory::getInstance()->DrawInventoryInViewport();
-
 	if (App->moduleWorldManager->GetSelectedRoom() == this)
 	{
 		UpdateRoomObjects();
@@ -477,6 +475,8 @@ void Room::DrawRoomObjects()
 	{
 		(it)->DrawVisualLayer(); 
 	}
+
+	GameInventory::getInstance()->DrawInventoryInViewport();
 
 	for (auto& it : objectsInRoom)
 	{

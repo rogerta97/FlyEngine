@@ -18,10 +18,20 @@ GameInventory::GameInventory()
 {
 	droppingObject = nullptr; 
 
+	inventoryWidth = 900;
+	inventoryHeigth = 160;
+	showingPage = 0; 
+
 	backgroundQuad = new BoundingBox();
-	backgroundQuad->SetSize(10, 10); 
+	backgroundQuad->SetSize(inventoryWidth, inventoryHeigth);
+	backgroundQuad->SetPositionInc(float2(0, -423)); 
 
 	opened = false; 
+
+	AddEmptySlot();
+	AddEmptySlot();
+	AddEmptySlot();
+	AddEmptySlot();
 }
 
 GameInventory* GameInventory::getInstance()
@@ -42,19 +52,28 @@ void GameInventory::CleanUp()
 	delete instance; 
 }
 
+void GameInventory::AddEmptySlot()
+{
+	InventorySlot* newSlot = new InventorySlot();
+	instance->inventorySlots.push_back(newSlot);
+}
+
 void GameInventory::AddObjectToInventory(FlyObject* newObject)
 {
 	if (newObject == nullptr)
 		return; 
 
-	instance->objectsInInventory.push_back(newObject); 
+	InventorySlot* newInvSlot = new InventorySlot(); 
+	newInvSlot->SetObject(newObject); 
+
+	instance->inventorySlots.push_back(newInvSlot);
 }
 
 bool GameInventory::IsItemInInventory(UID checkItemUID)
 {
-	for (auto& currentItem : instance->objectsInInventory)
+	for (auto& currentSlot : instance->inventorySlots)
 	{
-		if (currentItem->GetUID() == checkItemUID)
+		if (currentSlot->GetSlotObject()->GetUID() == checkItemUID)
 			return true; 
 	}
 
@@ -83,19 +102,24 @@ void GameInventory::DrawInventoryInViewport()
 
 	if (instance->backgroundQuad != nullptr)
 	{
-		instance->backgroundQuad->DrawSquare(); 
+		instance->backgroundQuad->Draw(true, float4(1, 1, 1, 1));
+		//instance->backgroundQuad->DrawSquare(); 
 	}		
+}
+
+void GameInventory::DrawInventorySlots()
+{
 }
 
 FlyObject* GameInventory::PickObjectFromInventory(int index)
 {
 	int count = 0; 
 	FlyObject* retObject = nullptr; 
-	for (auto currentObject = instance->objectsInInventory.begin(); currentObject != instance->objectsInInventory.end(); currentObject++)
+	for (auto currentSlot = instance->inventorySlots.begin(); currentSlot != instance->inventorySlots.end(); currentSlot++)
 	{
 		if (count++ == index)
 		{	
-			retObject = *currentObject; 
+			retObject = (*currentSlot)->GetSlotObject(); 
 			break;
 		}
 	}
@@ -123,16 +147,35 @@ void GameInventory::DrawDroppingObject()
 
 void GameInventory::DropDroppingObjectToRoom()
 {
-	for (auto it = instance->objectsInInventory.begin(); it != instance->objectsInInventory.end(); it++)
+	for (auto it = instance->inventorySlots.begin(); it != instance->inventorySlots.end(); it++)
 	{
 		// TODO: this should be done by UID for seccurity
-		if (instance->droppingObject->GetName() == (*it)->GetName())
+		if (instance->droppingObject->GetName() == (*it)->GetSlotObject()->GetName())
 		{
 			Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom(); 
-			selectedRoom->AddFlyObject(*it);
-			instance->objectsInInventory.erase(it);
+			selectedRoom->AddFlyObject((*it)->GetSlotObject());
+			instance->inventorySlots.erase(it);
 			instance->droppingObject = nullptr; 
 			break; 
 		}
 	}
+}
+
+InventorySlot::InventorySlot()
+{
+}
+
+InventorySlot::~InventorySlot()
+{
+}
+
+FlyObject* InventorySlot::GetSlotObject()
+{
+	return slotObject; 
+}
+
+void InventorySlot::SetObject(FlyObject* newObject)
+{
+	if(newObject != nullptr)
+		slotObject = newObject;
 }
