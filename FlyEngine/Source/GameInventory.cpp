@@ -6,6 +6,8 @@
 #include "ModuleWorldManager.h"
 #include "FlyObject.h"
 #include "ModuleManager.h"
+#include "Gizmos.h"
+#include "DisplayImageAction.h"
 #include "BoundingBox.h"
 #include "Room.h"
 #include "Quad.h"
@@ -61,6 +63,14 @@ void GameInventory::CleanUp()
 	delete instance; 
 }
 
+void GameInventory::ClearItems()
+{
+	for (auto& currentSlot : instance->inventorySlots)
+	{
+		currentSlot->SetObject(nullptr); 
+	}
+}
+
 void GameInventory::CreateSlots(int amount)
 {
 	int counter = 0;
@@ -77,13 +87,51 @@ void GameInventory::AddEmptySlot()
 	instance->inventorySlots.push_back(newSlot);
 }
 
-void GameInventory::AddObjectToInventory(FlyObject* newObject)
+void GameInventory::AddObjectToInventory(FlyObject* newItem)
 {
+	if (newItem->isPicked)
+		return; 
+
 	for (auto& currentSlot : instance->inventorySlots)
 	{
 		if (currentSlot->IsEmpty())
-		{
-			currentSlot->SetObject(newObject);
+		{	
+			// Adjust object position
+			float ar = App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
+			float2 center = currentSlot->GetSlotBB()->GetCenter();
+			newItem->transform->SetPosition(center / ar); 
+
+			// Adjust object scale 
+			bool isObjectVertical = newItem->GetDisplayImageAction()->IsVertical();
+
+			if (isObjectVertical)
+			{
+				DisplayImageAction* newObjectDisplayImage = newItem->GetDisplayImageAction();
+				float itemHeigth = newItem->gizmos->selectGizmo->objectBorderBox->GetSize().y;
+				float slotHeigth = currentSlot->GetSlotBB()->GetSize().y; 
+				float increment = slotHeigth / itemHeigth;
+
+				float2 currentItemScale = newItem->transform->GetScale(); 
+				float2 desiredItemScale = currentItemScale * increment; 
+
+				newItem->transform->SetScale(desiredItemScale); 
+			}
+			else
+			{
+				DisplayImageAction* newObjectDisplayImage = newItem->GetDisplayImageAction();
+				float itemWidth = newItem->gizmos->selectGizmo->objectBorderBox->GetSize().x; 
+				float slotHWidth = currentSlot->GetSlotBB()->GetSize().x;
+				float increment = slotHWidth / itemWidth;
+
+				float2 currentItemScale = newItem->transform->GetScale();
+				float2 desiredItemScale = currentItemScale * increment;
+
+				newItem->transform->SetScale(desiredItemScale);
+			}
+
+
+			currentSlot->SetObject(newItem);
+			return;
 		}
 	}
 }
@@ -116,7 +164,7 @@ void GameInventory::ToggleVisibility()
 
 void GameInventory::DrawInventory()
 {
-	if (!instance->opened)
+	if (!instance->opened || !App->isEngineInPlayMode)
 		return; 
 
 	instance->DrawInventoryBackground();
@@ -153,7 +201,6 @@ void GameInventory::DrawInventorySlots()
 		if (counter >= startDrawingIndex && counter < startDrawingIndex + SLOTS_PER_PAGE)
 		{
 			// Draw Background 
-
 			(*it)->GetSlotBB()->SetPosition(pen, true);
 			(*it)->GetSlotBB()->Draw(true, float4(0,0,0,1)); 
 			pen.x += (*it)->GetSlotBB()->GetSize().x + instance->slotsInnerPadding; 
@@ -162,7 +209,7 @@ void GameInventory::DrawInventorySlots()
 			FlyObject* objectInSlot = (*it)->GetSlotObject();
 			
 			if(objectInSlot)
-				objectInSlot->DrawVisualLayer();
+				objectInSlot->DrawVisualLayer(true);
 		}
 
 		counter++;
@@ -238,8 +285,10 @@ FlyObject* InventorySlot::GetSlotObject()
 
 void InventorySlot::SetObject(FlyObject* newObject)
 {
-	if(newObject != nullptr)
+	if (newObject != nullptr)
 		slotObject = newObject;
+	else
+		slotObject = nullptr;	
 }
 
 bool InventorySlot::IsEmpty()

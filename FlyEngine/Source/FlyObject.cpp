@@ -254,9 +254,9 @@ bool FlyObject::HasSequentialAction(ActionType _actionToCheckType)
 	return false;
 }
 
-void FlyObject::DrawVisualLayer()
+void FlyObject::DrawVisualLayer(bool forceDraw)
 {
-	if (isPicked)
+	if (isPicked && !forceDraw)
 		return; 
 
 	for (auto& it : actionsList) {

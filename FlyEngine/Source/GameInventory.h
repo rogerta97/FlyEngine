@@ -34,7 +34,9 @@ private:
 public:
 	static GameInventory* getInstance();
 	~GameInventory();
+
 	static void CleanUp(); 
+	static void ClearItems(); 
 
 	static void CreateSlots(int amount); 
 	static void AddEmptySlot(); 

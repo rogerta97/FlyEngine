@@ -28,6 +28,8 @@ public:
 	bool CreateImage(const char* texturePath);
 	void SetImageTextureByPath(const char* texturePath);
 
+	bool IsVertical();
+
 	// Set & Get --------
 	Quad* GetQuad() const;
 	void SetQuad(Quad* newQuad);

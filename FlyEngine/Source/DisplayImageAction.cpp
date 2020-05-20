@@ -377,6 +377,14 @@ void DisplayImageAction::SetImageTextureByPath(const char* texturePath)
 		imageTexture = (Texture*)ResourceManager::getInstance()->GetResource("EmptyObject");
 }
 
+bool DisplayImageAction::IsVertical()
+{
+	if(imageTexture == nullptr)
+		return false;
+
+	return imageTexture->IsVertical();
+}
+
 Quad* DisplayImageAction::GetQuad() const
 {
 	return quadMesh; 
