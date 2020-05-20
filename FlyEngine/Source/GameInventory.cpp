@@ -79,6 +79,8 @@ void GameInventory::CreateSlots(int amount)
 		instance->AddEmptySlot();
 		counter++; 
 	}
+
+	instance->UpdateInventorySlots();
 }
 
 void GameInventory::AddEmptySlot()
@@ -183,6 +185,26 @@ void GameInventory::DrawInventoryBackground()
 	if (instance->backgroundQuad != nullptr)
 	{
 		instance->backgroundQuad->Draw(true, float4(1, 1, 1, 1));
+	}
+}
+
+void GameInventory::UpdateInventorySlots()
+{
+	float2 inventoryBackgroundTopLeft = float2(instance->backgroundQuad->GetMinPoint().x, instance->backgroundQuad->GetMaxPoint().y);
+
+	int startDrawingIndex = instance->currentPage * SLOTS_PER_PAGE;
+
+	int counter = 0;
+
+	float2 pen = inventoryBackgroundTopLeft + float2(40, 11);
+
+	for (std::list<InventorySlot*>::iterator it = instance->inventorySlots.begin(); it != instance->inventorySlots.end(); it++)
+	{
+		if (counter >= startDrawingIndex && counter < startDrawingIndex + SLOTS_PER_PAGE)
+		{
+			(*it)->GetSlotBB()->SetPosition(pen, true);	
+		}
+		counter++;
 	}
 }
 

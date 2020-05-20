@@ -42,6 +42,7 @@ public:
 	static void AddEmptySlot(); 
 	static void AddObjectToInventory(FlyObject* newObject);
 	static bool IsItemInInventory(UID checkItemUID);
+	static void UpdateInventorySlots();
 
 	// Draw
 	static void OpenInventory();
@@ -51,7 +52,6 @@ public:
 	static void DrawInventory();
 	static void DrawPageArrows();
 	static void DrawInventoryBackground();
-
 	static void DrawInventorySlots(); 
 
 	// Pick and Drop ---
