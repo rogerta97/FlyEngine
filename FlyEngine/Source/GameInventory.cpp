@@ -1,5 +1,5 @@
 #include "GameInventory.h"
-
+#include "ResourceManager.h"
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "GameViewportDockPanel.h"
@@ -8,9 +8,11 @@
 #include "ModuleManager.h"
 #include "Gizmos.h"
 #include "DisplayImageAction.h"
+#include "DisplayImageAction.h"
 #include "BoundingBox.h"
 #include "Room.h"
 #include "Quad.h"
+#include "Texture.h"
 #include "MathGeoLib.h"
 #include "mmgr.h"
 
@@ -29,6 +31,13 @@ GameInventory::GameInventory()
 	slotsOutterPadding = 20; 
 	arrowsWidth = 60; 
 	arrowsHeigth = 90; 
+
+	slotIconDropingAction = new DisplayImageAction(nullptr); 
+	Texture* tex = (Texture*)ResourceManager::getInstance()->GetResource("DropItemSlot");
+	slotIconDropingAction->CreateImage(tex->GetPath());
+
+	//dropintObjectIconQuad = new Quad(); 
+	//dropintObjectIconQuad->Create(inventoryWidth, inventoryHeigth);
 
 	backgroundQuad = new BoundingBox();
 	backgroundQuad->SetSize(inventoryWidth, inventoryHeigth);
@@ -98,6 +107,8 @@ void GameInventory::AddObjectToInventory(FlyObject* newItem)
 	{
 		if (currentSlot->IsEmpty())
 		{	
+			currentSlot->viewportScale = newItem->transform->GetScale(); 
+
 			// Adjust object position
 			float ar = App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
 			float2 center = currentSlot->GetSlotBB()->GetCenter();
@@ -131,8 +142,15 @@ void GameInventory::AddObjectToInventory(FlyObject* newItem)
 				newItem->transform->SetScale(desiredItemScale);
 			}
 
-
+			currentSlot->slotScale = newItem->transform->GetScale();
 			currentSlot->SetObject(newItem);
+
+			Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom();
+			if (selectedRoom != nullptr)
+			{
+				App->moduleManager->AddDeleteFromListObject(newItem);
+			}
+
 			return;
 		}
 	}
@@ -161,7 +179,8 @@ void GameInventory::CloseInventory()
 
 void GameInventory::ToggleVisibility()
 {
-	instance->opened = !instance->opened;
+	if(App->isEngineInPlayMode)
+		instance->opened = !instance->opened;
 }
 
 void GameInventory::DrawInventory()
@@ -172,6 +191,9 @@ void GameInventory::DrawInventory()
 	instance->DrawInventoryBackground();
 	instance->DrawInventorySlots();
 	instance->DrawPageArrows();
+
+	if(ImGui::IsMouseClicked(0) && instance->droppingObject != nullptr)
+		GameInventory::getInstance()->DropObjectToRoom();
 }
 
 void GameInventory::DrawPageArrows()
@@ -208,15 +230,20 @@ void GameInventory::UpdateInventorySlots()
 	}
 }
 
+bool GameInventory::IsOpened()
+{
+	return instance->opened;
+}
+
 void GameInventory::DrawInventorySlots()
 {
 	float2 inventoryBackgroundTopLeft = float2(instance->backgroundQuad->GetMinPoint().x, instance->backgroundQuad->GetMaxPoint().y);
 
 	int startDrawingIndex = instance->currentPage * SLOTS_PER_PAGE;
 
-	int counter = 0; 
+	int counter = 0;
 
-	float2 pen = inventoryBackgroundTopLeft + float2(40,11);
+	float2 pen = inventoryBackgroundTopLeft + float2(40, 11);
 
 	for (std::list<InventorySlot*>::iterator it = instance->inventorySlots.begin(); it != instance->inventorySlots.end(); it++)
 	{
@@ -224,14 +251,25 @@ void GameInventory::DrawInventorySlots()
 		{
 			// Draw Background 
 			(*it)->GetSlotBB()->SetPosition(pen, true);
-			(*it)->GetSlotBB()->Draw(true, float4(0,0,0,1)); 
-			pen.x += (*it)->GetSlotBB()->GetSize().x + instance->slotsInnerPadding; 
+			(*it)->GetSlotBB()->Draw(true, float4(0, 0, 0, 1));
+			pen.x += (*it)->GetSlotBB()->GetSize().x + instance->slotsInnerPadding;
 
 			// Draw Object 
 			FlyObject* objectInSlot = (*it)->GetSlotObject();
-			
-			if(objectInSlot)
-				objectInSlot->DrawVisualLayer(true);
+			if (objectInSlot)
+			{
+				if ((*it)->isObjectPicked)
+				{
+					instance->slotIconDropingAction->SetOwnPosition((*it)->GetSlotBB()->GetCenter());
+					instance->slotIconDropingAction->Draw();
+				}
+				else
+				{
+					objectInSlot->transform->SetScale((*it)->slotScale);
+					objectInSlot->DrawVisualLayer(true);
+				//	flog("Draw Slot Object");
+				}
+			}
 		}
 
 		counter++;
@@ -240,13 +278,18 @@ void GameInventory::DrawInventorySlots()
 
 FlyObject* GameInventory::PickObjectFromInventory(int index)
 {
+	if (!instance->opened)
+		return nullptr; 
+
 	int count = 0; 
 	FlyObject* retObject = nullptr; 
 	for (auto currentSlot = instance->inventorySlots.begin(); currentSlot != instance->inventorySlots.end(); currentSlot++)
 	{
 		if (count++ == index)
 		{	
-			retObject = (*currentSlot)->GetSlotObject(); 
+			(*currentSlot)->isObjectPicked = true; 
+			retObject = (*currentSlot)->GetSlotObject();
+			retObject->transform->SetScale((*currentSlot)->viewportScale);
 			break;
 		}
 	}
@@ -266,23 +309,32 @@ void GameInventory::DrawDroppingObject()
 	instance->droppingObject->transform->SetPosition(mouseRelativePos); 
 	instance->droppingObject->FitObjectUtils();
 
-	instance->droppingObject->DrawVisualLayer();
+	instance->droppingObject->DrawVisualLayer(true);
 	instance->droppingObject->DrawOverlaysLayer();
 
-	flog("Object Dropping"); 
+	//flog("Draw Object Dropping"); 
 }
 
-void GameInventory::DropDroppingObjectToRoom()
+void GameInventory::DropObjectToRoom()
 {
 	for (auto it = instance->inventorySlots.begin(); it != instance->inventorySlots.end(); it++)
 	{
 		// TODO: this should be done by UID for seccurity
-		if (instance->droppingObject->GetName() == (*it)->GetSlotObject()->GetName())
+		if ((*it)->GetSlotObject() == nullptr)
+			continue; 
+		
+		if (instance->droppingObject->GetUID() == (*it)->GetSlotObject()->GetUID())
 		{
+			(*it)->GetSlotObject()->isPicked = false; 
+
 			Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom(); 
 			selectedRoom->AddFlyObject((*it)->GetSlotObject());
-			instance->inventorySlots.erase(it);
+
+			(*it)->SetObject(nullptr); 
+			(*it)->isObjectPicked = false;
+
 			instance->droppingObject = nullptr; 
+
 			break; 
 		}
 	}
@@ -294,6 +346,9 @@ InventorySlot::InventorySlot(float inventoryBgHeigth)
 
 	slotBB = new BoundingBox();
 	slotBB->SetSize(inventoryBgHeigth - 20.0f, inventoryBgHeigth - 20.0f);
+
+	slotScale = float2::one;
+	viewportScale = float2::one;
 }
 
 InventorySlot::~InventorySlot()

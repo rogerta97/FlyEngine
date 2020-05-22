@@ -2,6 +2,7 @@
 #define _DISPLAY_IMAGE_ACTION_H_
 
 #include "Action.h"
+#include "Math/float2.h"
 
 using namespace std; 
 
@@ -17,9 +18,11 @@ public:
 
 	// Virtuals ----------
 	void Init(); 
-	void Draw(); 
 	void DoAction(); 
 	void CleanUp();
+
+	void Draw(); 
+	void PushAlphaDraw(float alphaIntensity); 
 
 	void DrawUISettings();
 
@@ -29,6 +32,8 @@ public:
 	void SetImageTextureByPath(const char* texturePath);
 
 	bool IsVertical();
+
+	void SetOwnPosition(float2 newPosition); 
 
 	// Set & Get --------
 	Quad* GetQuad() const;
@@ -48,13 +53,17 @@ public:
 public:
 	bool fromAnimation = false; 
 	bool holdingData = false; 
+	bool isSlotIcon = false; 
 
 private:
 	Quad*		quadMesh;
 	Texture*	imageTexture;
+
+	float2		ownPosition; 
 	
 	float		imageWidth; 
 	float		imageHeight; 
+	float		alphaDrawIntensity;
 };
 
 #endif 

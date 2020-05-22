@@ -9,7 +9,6 @@ class Texture;
 class RoomDockPanel : public DockPanel {
 
 public:
-
 	RoomDockPanel(bool isVisible);
 	~RoomDockPanel();
 

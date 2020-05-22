@@ -118,10 +118,10 @@ void Room::Update()
 		}
 	}
 
-	if (App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && GameInventory::getInstance()->droppingObject != nullptr)
+	if (ImGui::IsMouseClicked(0) && GameInventory::getInstance()->droppingObject != nullptr)
 	{
 		// For now we will simply drop the object on click
-		GameInventory::getInstance()->DropDroppingObjectToRoom();
+		
 	}
 
 	// Check if SUPR is pressed to delete
@@ -129,14 +129,24 @@ void Room::Update()
 		DeleteSelectedObject(); 
 	
 	// Check if 1 is pressed to pick from inventory
-	if (App->moduleInput->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-	{
-		FlyObject* pickedObject = GameInventory::getInstance()->PickObjectFromInventory(0); 
-	}
 
-	if (App->moduleInput->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	if (GameInventory::getInstance()->IsOpened())
 	{
+		if (App->moduleInput->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		{
+			FlyObject* pickedObject = GameInventory::getInstance()->PickObjectFromInventory(0); 
+		}
+
+		if (App->moduleInput->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+		{
 		
+			FlyObject* pickedObject = GameInventory::getInstance()->PickObjectFromInventory(1);
+		}
+
+		if (App->moduleInput->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+		{
+			FlyObject* pickedObject = GameInventory::getInstance()->PickObjectFromInventory(2);
+		}
 	}
 }
 

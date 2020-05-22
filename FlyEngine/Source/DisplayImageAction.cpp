@@ -27,6 +27,12 @@ DisplayImageAction::DisplayImageAction(FlyObject* _parentObject = nullptr)
 	fromAnimation = false; 
 	drawIfSequential = false; 
 
+	if (parentObject == nullptr)
+	{
+		ownPosition = float2::zero;
+		isSlotIcon = true;
+	}
+
 	SetActionName("Display Image"); 
 	SetToolDescription("This should be the description of the image"); 
 }
@@ -49,7 +55,23 @@ void DisplayImageAction::Draw()
 	glBindBuffer(GL_ARRAY_BUFFER, quadMesh->verticesID); 
 	glVertexPointer(3, GL_FLOAT, 0, NULL); 
 
-	if (parentObject->transform != nullptr)
+	if (isSlotIcon)
+	{
+		float2 appliedArPos = ownPosition;
+
+		float4x4 new_mat = float4x4::identity;
+
+		new_mat = new_mat * new_mat.Scale(float3(0.60f, 0.60f, 0.60f));
+		new_mat.SetTranslatePart(float3(appliedArPos.x, appliedArPos.y, 0));
+
+		glMatrixMode(GL_MODELVIEW);
+		glLoadMatrixf((GLfloat*)new_mat.Transposed().v);
+
+		//float2 unAppliedArPos = parentObject->transform->GetPosition() / App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
+		//parentObject->transform->SetPosition(unAppliedArPos);
+
+	}
+	else if (parentObject->transform != nullptr)
 	{
 		float2 appliedArPos = parentObject->transform->GetPosition(true);
 		parentObject->transform->SetPosition(appliedArPos);
@@ -75,8 +97,19 @@ void DisplayImageAction::Draw()
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
+	//if (alphaDrawIntensity)
+	//{
+	//	glColor4f(1, 1, 1, alphaDrawIntensity); 	
+	//}
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadMesh->indicesID);
 	glDrawElements(GL_TRIANGLES, quadMesh->numIndices, GL_UNSIGNED_INT, NULL); 
+
+	//if (alphaDrawIntensity)
+	//{
+	//	glColor4f(1, 1, 1, 1);
+	//	alphaDrawIntensity = 0.0f;
+	//}
 
 	if(imageTexture) 
 	{	
@@ -95,6 +128,12 @@ void DisplayImageAction::Draw()
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 	SetActionCompleted(true); 
+}
+
+void DisplayImageAction::PushAlphaDraw(float alphaIntensity)
+{
+	if(alphaIntensity != 0)
+		alphaDrawIntensity = alphaIntensity;
 }
 
 void DisplayImageAction::DoAction()
@@ -383,6 +422,18 @@ bool DisplayImageAction::IsVertical()
 		return false;
 
 	return imageTexture->IsVertical();
+}
+
+void DisplayImageAction::SetOwnPosition(float2 newPosition)
+{
+	if (parentObject != nullptr)
+	{
+		FLY_ERROR("Own Position to Display ImageAction can't be aplied to an object with a parent"); 
+		return;
+	}
+
+	isSlotIcon = true; 
+	ownPosition = newPosition; 
 }
 
 Quad* DisplayImageAction::GetQuad() const

@@ -3,10 +3,11 @@
 
 #include <list>
 #include "Globals.h"
-
+#include "Math/float2.h"
 
 class FlyObject;
 class BoundingBox;
+class DisplayImageAction;
 class InventorySlot
 {
 public: 
@@ -19,6 +20,11 @@ public:
 	bool IsEmpty(); 
 
 	BoundingBox* GetSlotBB(); 
+
+public: 
+	float2 slotScale;
+	float2 viewportScale;
+	bool isObjectPicked; 
 
 private:
 	FlyObject* slotObject; 
@@ -43,6 +49,7 @@ public:
 	static void AddObjectToInventory(FlyObject* newObject);
 	static bool IsItemInInventory(UID checkItemUID);
 	static void UpdateInventorySlots();
+	static bool IsOpened(); 
 
 	// Draw
 	static void OpenInventory();
@@ -52,12 +59,12 @@ public:
 	static void DrawInventory();
 	static void DrawPageArrows();
 	static void DrawInventoryBackground();
-	static void DrawInventorySlots(); 
+	static void DrawInventorySlots();
 
 	// Pick and Drop ---
 	static FlyObject* PickObjectFromInventory(int index); 
 	static void DrawDroppingObject(); 
-	static void DropDroppingObjectToRoom(); 
+	static void DropObjectToRoom(); 
 
 	FlyObject* droppingObject; 
 
@@ -68,6 +75,8 @@ private:
 	BoundingBox* backgroundQuad; 
 	BoundingBox* nextPageArrow; 
 	BoundingBox* prevPageArrow; 
+
+	DisplayImageAction* slotIconDropingAction;
 
 	int currentPage = 0; 
 	float inventoryWidth;
