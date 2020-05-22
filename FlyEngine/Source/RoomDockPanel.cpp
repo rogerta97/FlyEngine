@@ -13,6 +13,7 @@
 #include "UI_Button.h"
 #include "RoomDockPanel.h"
 #include "RoomUIHandler.h"
+#include "GameInventory.h"
 #include "ImageImporter.h"
 #include "TinyFileDialog.h"
 #include "SaveAndLoad.h"
@@ -582,11 +583,25 @@ void RoomDockPanel::ShowViewportSettingsTab()
 
 	if (ImGui::CollapsingHeader("Inventory"))
 	{
+		float4 backgroundInventoryColor = GameInventory::getInstance()->backgroundColor; 
+		if(ImGui::ColorEdit4("Background Color", (float*)&backgroundInventoryColor))
+			GameInventory::getInstance()->backgroundColor = backgroundInventoryColor;
 
-		//ImGui::ColorEdit4("Background Color", )
+		float4 slotInventoryColor = GameInventory::getInstance()->slotColor;
+		if (ImGui::ColorEdit4("Slot Color", (float*)&slotInventoryColor))		
+			GameInventory::getInstance()->slotColor = slotInventoryColor; 
 		
+		float4 arrowInventoryColor = GameInventory::getInstance()->arrowColor;
+		if(ImGui::ColorEdit4("Arrow Color", (float*)&arrowInventoryColor))
+			GameInventory::getInstance()->arrowColor = arrowInventoryColor;
 
+		if (ImGui::Checkbox("See Preview", &GameInventory::getInstance()->seePreview))
+		{
+		
+			//	GameInventory::getInstance()->ToggleVisibility();
 
+			
+		}
 	}
 
 	if (ImGui::CollapsingHeader("Visibility"))
@@ -609,31 +624,6 @@ void RoomDockPanel::ShowViewportSettingsTab()
 				break;
 			}
 		}
-
-	/*	static int resolutionSelected = 0;
-		ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-		ImGui::Text("Resolution:");
-		ImGui::PopFont();
-
-		if (ImGui::Combo("ResolutionCombo##", &resolutionSelected, "4:3\0 1:1\0")) {
-
-			switch (resolutionSelected)
-			{
-
-			case 0:
-				ViewportManager::getInstance()->SetAspectRatioType(AR_4_3);
-				break;
-
-			case 1:
-			{
-				ViewportManager::getInstance()->SetAspectRatioType(AR_1_1);
-				break;
-			}
-
-			default:
-				break;
-			}
-		}*/
 	}
 
 	if (ImGui::CollapsingHeader("Room Thumbnail"))

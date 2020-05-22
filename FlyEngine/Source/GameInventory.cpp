@@ -36,8 +36,9 @@ GameInventory::GameInventory()
 	Texture* tex = (Texture*)ResourceManager::getInstance()->GetResource("DropItemSlot");
 	slotIconDropingAction->CreateImage(tex->GetPath());
 
-	//dropintObjectIconQuad = new Quad(); 
-	//dropintObjectIconQuad->Create(inventoryWidth, inventoryHeigth);
+	backgroundColor = float4(1, 1, 1, 1);
+	slotColor = float4(0, 0, 0, 1);
+	arrowColor = float4(1, 0, 0, 1);
 
 	backgroundQuad = new BoundingBox();
 	backgroundQuad->SetSize(inventoryWidth, inventoryHeigth);
@@ -185,8 +186,12 @@ void GameInventory::ToggleVisibility()
 
 void GameInventory::DrawInventory()
 {
-	if (!instance->opened || !App->isEngineInPlayMode)
-		return; 
+	if (!instance->seePreview)
+	{
+		if (!instance->seePreview && (!instance->opened || !App->isEngineInPlayMode))
+			return; 
+	}
+
 
 	instance->DrawInventoryBackground();
 	instance->DrawInventorySlots();
@@ -198,15 +203,15 @@ void GameInventory::DrawInventory()
 
 void GameInventory::DrawPageArrows()
 {
-	instance->prevPageArrow->Draw(true, float4(1, 0, 0, 1));
-	instance->nextPageArrow->Draw(true, float4(1, 0, 0, 1));
+	instance->prevPageArrow->Draw(true, instance->arrowColor);
+	instance->nextPageArrow->Draw(true, instance->arrowColor);
 }
 
 void GameInventory::DrawInventoryBackground()
 {
 	if (instance->backgroundQuad != nullptr)
 	{
-		instance->backgroundQuad->Draw(true, float4(1, 1, 1, 1));
+		instance->backgroundQuad->Draw(true, instance->backgroundColor);
 	}
 }
 
@@ -251,7 +256,7 @@ void GameInventory::DrawInventorySlots()
 		{
 			// Draw Background 
 			(*it)->GetSlotBB()->SetPosition(pen, true);
-			(*it)->GetSlotBB()->Draw(true, float4(0, 0, 0, 1));
+			(*it)->GetSlotBB()->Draw(true, instance->slotColor);
 			pen.x += (*it)->GetSlotBB()->GetSize().x + instance->slotsInnerPadding;
 
 			// Draw Object 
@@ -278,7 +283,7 @@ void GameInventory::DrawInventorySlots()
 
 FlyObject* GameInventory::PickObjectFromInventory(int index)
 {
-	if (!instance->opened)
+	if (!instance->opened || instance->droppingObject != nullptr)
 		return nullptr; 
 
 	int count = 0; 

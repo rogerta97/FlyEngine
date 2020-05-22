@@ -23,9 +23,16 @@ bool DialogueEditorDockPanel::Draw()
 	if (!DockPanel::Draw())
 		return false;
 
+
 	if (ImGui::Begin(panelName.c_str(), &visible)) 
 	{
 		nodeGraph->DrawGraph();
+	}
+
+	if (nodeGraph == nullptr || nodeGraph->GetDialogueData() == nullptr)
+	{
+		ImGui::End();
+		return false;
 	}
 
 	if (ImGui::IsWindowFocused())

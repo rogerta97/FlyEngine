@@ -4,6 +4,7 @@
 #include <list>
 #include "Globals.h"
 #include "Math/float2.h"
+#include "Math/float4.h"
 
 class FlyObject;
 class BoundingBox;
@@ -67,6 +68,11 @@ public:
 	static void DropObjectToRoom(); 
 
 	FlyObject* droppingObject; 
+
+	float4 backgroundColor = float4::zero; 
+	float4 slotColor = float4::zero;
+	float4 arrowColor = float4::zero;
+	bool seePreview = false; 
 
 private:
 	std::list<InventorySlot*> inventorySlots;
