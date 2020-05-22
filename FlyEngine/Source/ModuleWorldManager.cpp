@@ -69,6 +69,32 @@ bool ModuleWorldManager::CleanUp()
 	return true;
 }
 
+void ModuleWorldManager::SaveConfigData()
+{
+	// Save Inventory Colors
+	JSON_Value* scene_v = json_value_init_object();
+	JSON_Object* scene_obj = json_value_get_object(scene_v);
+
+	json_object_dotset_number(scene_obj, "Inventory.BackgroundColor.r", GameInventory::getInstance()->backgroundColor.x);
+	json_object_dotset_number(scene_obj, "Inventory.BackgroundColor.g", GameInventory::getInstance()->backgroundColor.y);
+	json_object_dotset_number(scene_obj, "Inventory.BackgroundColor.b", GameInventory::getInstance()->backgroundColor.z);
+	json_object_dotset_number(scene_obj, "Inventory.BackgroundColor.a", GameInventory::getInstance()->backgroundColor.w);
+
+	json_object_dotset_number(scene_obj, "Inventory.SlotColor.r", GameInventory::getInstance()->slotColor.x);
+	json_object_dotset_number(scene_obj, "Inventory.SlotColor.g", GameInventory::getInstance()->slotColor.y);
+	json_object_dotset_number(scene_obj, "Inventory.SlotColor.b", GameInventory::getInstance()->slotColor.z);
+	json_object_dotset_number(scene_obj, "Inventory.SlotColor.a", GameInventory::getInstance()->slotColor.w);
+
+	json_object_dotset_number(scene_obj, "Inventory.ArrowColor.r", GameInventory::getInstance()->arrowColor.x);
+	json_object_dotset_number(scene_obj, "Inventory.ArrowColor.g", GameInventory::getInstance()->arrowColor.y);
+	json_object_dotset_number(scene_obj, "Inventory.ArrowColor.b", GameInventory::getInstance()->arrowColor.z);
+	json_object_dotset_number(scene_obj, "Inventory.ArrowColor.a", GameInventory::getInstance()->arrowColor.w);
+
+	string savePath = MyFileSystem::getInstance()->GetSavedDataDirectory(); 
+	json_serialize_to_file(scene_v, savePath.c_str());
+
+}
+
 void ModuleWorldManager::FitObjectUtils()
 {
 	if (selectedRoom != nullptr)

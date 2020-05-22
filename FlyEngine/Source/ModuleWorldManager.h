@@ -26,8 +26,9 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void FitObjectUtils(); 
+	void SaveConfigData(); 
 
+	void FitObjectUtils(); 
 	void DeleteSingletones();
 
 	void ReceiveEvent(FlyEngineEvent eventType);

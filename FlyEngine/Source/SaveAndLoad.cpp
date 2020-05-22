@@ -961,5 +961,6 @@ void SaveAndLoad::SaveAllData()
 	// Save Global Blackboard
 	App->moduleWorldManager->globalBlackboard->SaveData("Global"); 
 
-	//instance->SaveInitFile();
+	// Save Global Data
+	App->moduleWorldManager->SaveConfigData(); 
 }
