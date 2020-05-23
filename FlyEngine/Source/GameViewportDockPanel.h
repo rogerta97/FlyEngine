@@ -23,8 +23,8 @@ public:
 
 	// Draw ---
 	bool Draw();
+	void CalculateViewport();
 	void FitViewportToRegion();
-
 
 	void ReceiveEvent(FlyEngineEvent eventType);
 	bool IsMouseInViewport();
@@ -47,6 +47,7 @@ public:
 
 	bool aspectRatioChanged; 
 	float verticalOffset; 
+	bool initialized = false; 
 
 private: 
 

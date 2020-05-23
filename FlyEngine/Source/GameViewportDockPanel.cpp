@@ -65,32 +65,16 @@ bool GameViewportDockPanel::Draw()
 				ImGui::GetCurrentWindow()->DockNode->WantHiddenTabBarToggle = true; 
 		}
 
-		float2 regionSizeThisTick = float2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
-		if (!regionSizeThisTick.Equals(regionSize) && regionSize.x != -1.0f)
-		{
-			regionSize = regionSizeThisTick;
-			FitViewportToRegion();
-		}
-
-		float titleBarHeight = ImGui::GetCurrentWindow()->TitleBarHeight(); 
-		float menuBarHeight = ImGui::GetCurrentWindow()->MenuBarHeight();
-
-		//verticalOffset = titleBarHeight + menuBarHeight;
-		verticalOffset = titleBarHeight;
-		regionSize = float2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
-		//regionSize.y += verticalOffset;
-
-		if (fitViewportNextFrame)
-		{
-			FitViewportToRegion();
-			fitViewportNextFrame = false; 
-		}
+		CalculateViewport();
 
 		float2 screenCenter = float2(regionSize.x / 2, regionSize.y / 2);
 		viewportCenterGlobalPos = float2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y) + screenCenter;
 
 		ImGui::SetCursorPos(ImVec2(screenCenter.x - viewportSize.x / 2, screenCenter.y - (viewportSize.y / 2) + (verticalOffset)));
 		ImGui::Image((ImTextureID)ViewportManager::getInstance()->viewportTexture->GetTextureID(), ImVec2(viewportSize.x - 1, viewportSize.y - 2));
+
+		if(!initialized)
+			initialized = true;
 	}
 
 	if (ImGui::IsWindowFocused())	
@@ -103,6 +87,30 @@ bool GameViewportDockPanel::Draw()
 	ImGui::PopStyleVar();
 	 
 	return true; 
+}
+
+void GameViewportDockPanel::CalculateViewport()
+{
+	float2 regionSizeThisTick = float2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
+	if (!regionSizeThisTick.Equals(regionSize) && regionSize.x != -1.0f)
+	{
+		regionSize = regionSizeThisTick;
+		FitViewportToRegion();
+	}
+
+	float titleBarHeight = ImGui::GetCurrentWindow()->TitleBarHeight();
+	float menuBarHeight = ImGui::GetCurrentWindow()->MenuBarHeight();
+
+	//verticalOffset = titleBarHeight + menuBarHeight;
+	verticalOffset = titleBarHeight;
+	regionSize = float2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
+	//regionSize.y += verticalOffset;
+
+	if (fitViewportNextFrame)
+	{
+		FitViewportToRegion();
+		fitViewportNextFrame = false;
+	}
 }
 
 void GameViewportDockPanel::ReceiveEvent(FlyEngineEvent eventType)

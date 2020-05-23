@@ -12,6 +12,7 @@
 #include "NodeGraph.h"
 #include "FontImporter.h"
 #include "ImageImporter.h"
+#include "GameViewportDockPanel.h"
 #include "ResourceManager.h"
 #include "MyFileSystem.h"
 #include "FlyObject.h"
@@ -52,6 +53,12 @@ update_status ModuleWorldManager::Update(float dt)
 
 	if(App->isEngineInPlayMode && GameInventory::getInstance()->IsOpened())
 		HandleSlotDrag();
+
+	if (App->moduleImGui->gameViewportDockPanel->initialized && !firstFit)
+	{
+		firstFit = true; 
+		FitObjectUtils(); 
+	}
 
 	return UPDATE_CONTINUE;
 }
@@ -217,6 +224,7 @@ bool ModuleWorldManager::LoadAllData()
 	string roomsDirectory = MyFileSystem::getInstance()->GetSavedDataDirectory() + "RoomsData";
 	vector<string> roomsSavedFiles;
 	MyFileSystem::getInstance()->GetFilesInDirectory(roomsDirectory.c_str(), roomsSavedFiles, false);
+
 
 	// Load Rooms -------
 	for (auto& currentRoomFile : roomsSavedFiles)

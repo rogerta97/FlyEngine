@@ -75,6 +75,7 @@ public:
 
 private: 
 	Room* selectedRoom;
+	bool firstFit = false;
 
 };
 

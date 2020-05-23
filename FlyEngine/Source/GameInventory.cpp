@@ -189,7 +189,6 @@ void GameInventory::ToggleVisibility()
 
 void GameInventory::DrawInventory()
 {
-
 	if ((App->isEngineInPlayMode && instance->opened) || (!App->isEngineInPlayMode && instance->seePreview))
 	{
 		instance->DrawInventoryBackground();
