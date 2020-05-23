@@ -90,7 +90,7 @@ void ModuleWorldManager::SaveConfigData()
 	json_object_dotset_number(scene_obj, "Inventory.ArrowColor.b", GameInventory::getInstance()->arrowColor.z);
 	json_object_dotset_number(scene_obj, "Inventory.ArrowColor.a", GameInventory::getInstance()->arrowColor.w);
 
-	string savePath = MyFileSystem::getInstance()->GetSavedDataDirectory(); 
+	string savePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "Config.json"; 
 	json_serialize_to_file(scene_v, savePath.c_str());
 
 }
@@ -191,6 +191,25 @@ bool ModuleWorldManager::LoadAllData()
 
 	// Load Global Blackboard 
 	App->moduleWorldManager->globalBlackboard->LoadData("Global"); 
+
+	// Load Inventory Style
+	JSON_Value* root = json_parse_file(std::string(MyFileSystem::getInstance()->GetSavedDataDirectory() + "Config.json").c_str());
+	JSON_Object* scene_obj = json_value_get_object(root);
+
+	GameInventory::getInstance()->backgroundColor.x = json_object_dotget_number(scene_obj, "Inventory.BackgroundColor.r");
+	GameInventory::getInstance()->backgroundColor.y = json_object_dotget_number(scene_obj, "Inventory.BackgroundColor.g");
+	GameInventory::getInstance()->backgroundColor.z = json_object_dotget_number(scene_obj, "Inventory.BackgroundColor.b");
+	GameInventory::getInstance()->backgroundColor.w = json_object_dotget_number(scene_obj, "Inventory.BackgroundColor.a");
+				   
+	GameInventory::getInstance()->slotColor.x = json_object_dotget_number(scene_obj, "Inventory.SlotColor.r");
+	GameInventory::getInstance()->slotColor.y = json_object_dotget_number(scene_obj, "Inventory.SlotColor.g");
+	GameInventory::getInstance()->slotColor.z = json_object_dotget_number(scene_obj, "Inventory.SlotColor.b");
+	GameInventory::getInstance()->slotColor.w = json_object_dotget_number(scene_obj, "Inventory.SlotColor.a");
+				   
+	GameInventory::getInstance()->arrowColor.x = json_object_dotget_number(scene_obj, "Inventory.ArrowColor.r");
+	GameInventory::getInstance()->arrowColor.y = json_object_dotget_number(scene_obj, "Inventory.ArrowColor.g");
+	GameInventory::getInstance()->arrowColor.z = json_object_dotget_number(scene_obj, "Inventory.ArrowColor.b");
+	GameInventory::getInstance()->arrowColor.w = json_object_dotget_number(scene_obj, "Inventory.ArrowColor.a");
 
 	if (roomsSavedFiles.size() > 0)
 		return true; 

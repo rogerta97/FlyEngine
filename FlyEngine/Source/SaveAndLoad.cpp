@@ -75,6 +75,8 @@ void SaveAndLoad::SaveRoomData(Room* roomToSave)
 	roomToSave->SaveRoomData(scene_obj);
 
 	json_serialize_to_file(scene_v, saveFilePath.c_str());
+
+	App->moduleWorldManager->SaveConfigData();
 }
 
 void SaveAndLoad::SaveSelectedRoomToOnPlayData()
