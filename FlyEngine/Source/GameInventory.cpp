@@ -43,17 +43,17 @@ GameInventory::GameInventory()
 	slotColor = float4(0, 0, 0, 1);
 	arrowColor = float4(1, 0, 0, 1);
 
-	backgroundQuad = new BoundingBox();
-	backgroundQuad->SetSize(inventoryWidth, inventoryHeigth);
-	backgroundQuad->SetPositionInc(float2(0, -423)); 
+	backgroundBB = new BoundingBox();
+	backgroundBB->SetSize(inventoryWidth, inventoryHeigth);
+	backgroundBB->SetPositionInc(float2(0, -423)); 
 
 	nextPageArrow = new BoundingBox();
 	nextPageArrow->SetSize(arrowsWidth, arrowsHeigth);
-	nextPageArrow->SetPositionInc(float2(backgroundQuad->GetTopLeft().x, -423));
+	nextPageArrow->SetPositionInc(float2(backgroundBB->GetTopLeft().x, -423));
 
 	prevPageArrow = new BoundingBox();
 	prevPageArrow->SetSize(arrowsWidth, arrowsHeigth);
-	prevPageArrow->SetPositionInc(float2(backgroundQuad->GetMaxPoint().x, -423));
+	prevPageArrow->SetPositionInc(float2(backgroundBB->GetMaxPoint().x, -423));
 
 	opened = false; 
 }
@@ -209,15 +209,15 @@ void GameInventory::DrawPageArrows()
 
 void GameInventory::DrawInventoryBackground()
 {
-	if (instance->backgroundQuad != nullptr)
+	if (instance->backgroundBB != nullptr)
 	{
-		instance->backgroundQuad->Draw(true, instance->backgroundColor);
+		instance->backgroundBB->Draw(true, instance->backgroundColor);
 	}
 }
 
 void GameInventory::UpdateInventorySlots()
 {
-	float2 inventoryBackgroundTopLeft = float2(instance->backgroundQuad->GetMinPoint().x, instance->backgroundQuad->GetMaxPoint().y);
+	float2 inventoryBackgroundTopLeft = float2(instance->backgroundBB->GetMinPoint().x, instance->backgroundBB->GetMaxPoint().y);
 
 	int startDrawingIndex = instance->currentPage * SLOTS_PER_PAGE;
 
@@ -242,7 +242,7 @@ bool GameInventory::IsOpened()
 
 void GameInventory::DrawInventorySlots()
 {
-	float2 inventoryBackgroundTopLeft = float2(instance->backgroundQuad->GetMinPoint().x, instance->backgroundQuad->GetMaxPoint().y);
+	float2 inventoryBackgroundTopLeft = float2(instance->backgroundBB->GetMinPoint().x, instance->backgroundBB->GetMaxPoint().y);
 
 	int startDrawingIndex = instance->currentPage * SLOTS_PER_PAGE;
 
@@ -343,6 +343,11 @@ void GameInventory::DropObjectToRoom()
 			break; 
 		}
 	}
+}
+
+BoundingBox* GameInventory::GetBackgroundBB()
+{
+	return instance->backgroundBB;
 }
 
 InventorySlot::InventorySlot(float inventoryBgHeigth)

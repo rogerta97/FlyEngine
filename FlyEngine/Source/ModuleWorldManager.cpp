@@ -74,9 +74,25 @@ bool ModuleWorldManager::CleanUp()
 
 void ModuleWorldManager::HandleSlotDrag()
 {
-	if (ImGui::IsMouseDragPastThreshold(0, 5.0f))
-	{
+	if (!GameInventory::getInstance()->GetBackgroundBB()->IsMouseOver())
+		return; 
 
+	static bool canDrag = false; 
+	if (ImGui::IsMouseClicked(0))
+	{
+		canDrag = true;
+		flog("CAN DRAG");
+	}
+
+	if (ImGui::IsMouseReleased(0))
+	{
+		canDrag = false;
+		flog("CAN NOT DRAG");
+	}
+
+	if (canDrag && ImGui::IsMouseDragPastThreshold(0, 15.0f))
+	{
+		GameInventory::getInstance()->PickObjectFromInventory(0);
 	}
 }
 

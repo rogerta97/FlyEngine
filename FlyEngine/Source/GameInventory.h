@@ -65,7 +65,10 @@ public:
 	// Pick and Drop ---
 	static FlyObject* PickObjectFromInventory(int index); 
 	static void DrawDroppingObject(); 
-	static void DropObjectToRoom(); 
+	static void DropObjectToRoom();
+
+	// Others ------------
+	static BoundingBox* GetBackgroundBB();
 
 	FlyObject* droppingObject; 
 
@@ -78,7 +81,7 @@ private:
 	std::list<InventorySlot*> inventorySlots;
 
 	// Draw Vars
-	BoundingBox* backgroundQuad; 
+	BoundingBox* backgroundBB; 
 	BoundingBox* nextPageArrow; 
 	BoundingBox* prevPageArrow; 
 
