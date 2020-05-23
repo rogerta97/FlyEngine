@@ -749,12 +749,15 @@ void ObjectPropertiesDockPanel::DrawObjectTabs()
 	{
 		if (ImGui::BeginTabItem("Actions"))
 		{
-			if (selectedObject->flyObjectType == FlyObjectType::OBJECT_SEQUENTIAL)
-				DrawObjectSequenceActionsTab();
-			else if (selectedObject->flyObjectType == FlyObjectType::ACTION_OBJECT)
-				DrawObjectActionsTab();
-			else if (selectedObject->flyObjectType == FlyObjectType::OBJECT_CHARACTER)
-				DrawCharacterTab(); 
+			if (selectedObject != nullptr)
+			{
+				if (selectedObject->flyObjectType == FlyObjectType::OBJECT_SEQUENTIAL)
+					DrawObjectSequenceActionsTab();
+				else if (selectedObject->flyObjectType == FlyObjectType::ACTION_OBJECT)
+					DrawObjectActionsTab();
+				else if (selectedObject->flyObjectType == FlyObjectType::OBJECT_CHARACTER)
+					DrawCharacterTab();
+			}
 
 			ImGui::EndTabItem();
 		}
