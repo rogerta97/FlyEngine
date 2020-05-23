@@ -59,6 +59,9 @@ Room::~Room()
 
 void Room::Update()
 {
+	if (App->moduleWorldManager->GetSelectedRoom() != nullptr && App->moduleWorldManager->GetSelectedRoom()->GetUID() != GetUID())
+		return; 
+
 	if (ViewportManager::getInstance()->blockInputTick)
 	{
 		ViewportManager::getInstance()->blockInputTick = false;
@@ -68,8 +71,9 @@ void Room::Update()
 	if (ViewportManager::getInstance()->blockInput)
 		return; 
 
-	if (App->moduleInput->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
+	if (App->isEngineInPlayMode && App->moduleInput->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
 	{
+		flog("OPsd");
 		GameInventory::getInstance()->ToggleVisibility();
 	}
 

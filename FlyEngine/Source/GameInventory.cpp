@@ -14,6 +14,9 @@
 #include "Quad.h"
 #include "Texture.h"
 #include "MathGeoLib.h"
+
+#include "imgui.h"
+
 #include "mmgr.h"
 
 #define SLOTS_PER_PAGE 5
@@ -186,19 +189,16 @@ void GameInventory::ToggleVisibility()
 
 void GameInventory::DrawInventory()
 {
-	if (!instance->seePreview)
+
+	if ((App->isEngineInPlayMode && instance->opened) || (!App->isEngineInPlayMode && instance->seePreview))
 	{
-		if (!instance->seePreview && (!instance->opened || !App->isEngineInPlayMode))
-			return; 
+		instance->DrawInventoryBackground();
+		instance->DrawInventorySlots();
+		instance->DrawPageArrows();
+
+		if(ImGui::IsMouseClicked(0) && instance->droppingObject != nullptr)
+			GameInventory::getInstance()->DropObjectToRoom();
 	}
-
-
-	instance->DrawInventoryBackground();
-	instance->DrawInventorySlots();
-	instance->DrawPageArrows();
-
-	if(ImGui::IsMouseClicked(0) && instance->droppingObject != nullptr)
-		GameInventory::getInstance()->DropObjectToRoom();
 }
 
 void GameInventory::DrawPageArrows()
@@ -290,7 +290,7 @@ FlyObject* GameInventory::PickObjectFromInventory(int index)
 	FlyObject* retObject = nullptr; 
 	for (auto currentSlot = instance->inventorySlots.begin(); currentSlot != instance->inventorySlots.end(); currentSlot++)
 	{
-		if (count++ == index)
+		if (count++ == index && (*currentSlot)->GetSlotObject() != nullptr)
 		{	
 			(*currentSlot)->isObjectPicked = true; 
 			retObject = (*currentSlot)->GetSlotObject();

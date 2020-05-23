@@ -50,6 +50,9 @@ update_status ModuleWorldManager::Update(float dt)
 		currentRoom->Update(); 
 	}
 
+	if(App->isEngineInPlayMode && GameInventory::getInstance()->IsOpened())
+		HandleSlotDrag();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -67,6 +70,14 @@ bool ModuleWorldManager::CleanUp()
 	delete globalBlackboard;
 
 	return true;
+}
+
+void ModuleWorldManager::HandleSlotDrag()
+{
+	if (ImGui::IsMouseDragPastThreshold(0, 5.0f))
+	{
+
+	}
 }
 
 void ModuleWorldManager::SaveConfigData()
@@ -92,7 +103,6 @@ void ModuleWorldManager::SaveConfigData()
 
 	string savePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "Config.json"; 
 	json_serialize_to_file(scene_v, savePath.c_str());
-
 }
 
 void ModuleWorldManager::FitObjectUtils()
