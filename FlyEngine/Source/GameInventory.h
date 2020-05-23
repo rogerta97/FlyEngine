@@ -51,6 +51,7 @@ public:
 	static bool IsItemInInventory(UID checkItemUID);
 	static void UpdateInventorySlots();
 	static bool IsOpened(); 
+	static std::list<InventorySlot*>* GetInventorySlots(); 
 
 	// Draw
 	static void OpenInventory();

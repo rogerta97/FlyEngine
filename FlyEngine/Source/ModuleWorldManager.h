@@ -26,7 +26,8 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void HandleSlotDrag(); 
+	void HandleSlotDrag();
+	int GetSlotClickedID();
 
 	void SaveConfigData(); 
 

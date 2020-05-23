@@ -78,22 +78,47 @@ void ModuleWorldManager::HandleSlotDrag()
 		return; 
 
 	static bool canDrag = false; 
+	static int slotClicked = -1; 
 	if (ImGui::IsMouseClicked(0))
 	{
 		canDrag = true;
+	
+		slotClicked = GetSlotClickedID();
+		flog("Slot Clicked: %d", slotClicked);
 		flog("CAN DRAG");
 	}
 
 	if (ImGui::IsMouseReleased(0))
 	{
 		canDrag = false;
+		slotClicked = -1;
 		flog("CAN NOT DRAG");
+		
 	}
 
-	if (canDrag && ImGui::IsMouseDragPastThreshold(0, 15.0f))
+	if (canDrag && slotClicked != -1 && ImGui::IsMouseDragPastThreshold(0, 15.0f))
 	{
-		GameInventory::getInstance()->PickObjectFromInventory(0);
+		flog("Dragging");
+		GameInventory::getInstance()->PickObjectFromInventory(slotClicked);
 	}
+}
+
+int ModuleWorldManager::GetSlotClickedID()
+{
+	bool slotOver = false; 
+	int slotIndex = 0;
+	for (auto& currentslot : *GameInventory::getInstance()->GetInventorySlots())
+	{
+		if (currentslot->GetSlotBB()->IsMouseOver())
+		{
+			slotOver = true;
+			return slotIndex; 
+		}
+
+		slotIndex++;
+	}
+
+	return -1; 
 }
 
 void ModuleWorldManager::SaveConfigData()

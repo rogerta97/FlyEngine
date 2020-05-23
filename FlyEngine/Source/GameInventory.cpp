@@ -240,6 +240,11 @@ bool GameInventory::IsOpened()
 	return instance->opened;
 }
 
+std::list<InventorySlot*>* GameInventory::GetInventorySlots()
+{
+	return &instance->inventorySlots;
+}
+
 void GameInventory::DrawInventorySlots()
 {
 	float2 inventoryBackgroundTopLeft = float2(instance->backgroundBB->GetMinPoint().x, instance->backgroundBB->GetMaxPoint().y);
@@ -290,13 +295,18 @@ FlyObject* GameInventory::PickObjectFromInventory(int index)
 	FlyObject* retObject = nullptr; 
 	for (auto currentSlot = instance->inventorySlots.begin(); currentSlot != instance->inventorySlots.end(); currentSlot++)
 	{
-		if (count++ == index && (*currentSlot)->GetSlotObject() != nullptr)
+		if ((*currentSlot)->GetSlotObject() == nullptr)
+			continue; 
+
+		if (count == index)
 		{	
 			(*currentSlot)->isObjectPicked = true; 
 			retObject = (*currentSlot)->GetSlotObject();
 			retObject->transform->SetScale((*currentSlot)->viewportScale);
 			break;
 		}
+
+		count++;
 	}
 
 	instance->droppingObject = retObject; 
