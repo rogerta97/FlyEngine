@@ -46,10 +46,20 @@ void DialogueAction::Update(float dt)
 		DialogueStep* currentStep = dialogue->dialogueViewportHandler->GetCurrentStep();
 		StepAnswer* clickedAnswer = currentStep->ListenAnswerClick();
 
+		bool forceFinish = false; 
+		if (!currentStep->HasAnswers())
+			forceFinish = true; 
+
 		if(clickedAnswer != nullptr)
 			flog("Congrats, you have clicked the answer %s", clickedAnswer->GetName().c_str()); 
 
-		if (clickedAnswer != nullptr)
+		if (forceFinish == true && ImGui::IsMouseClicked(0))
+		{
+			dialogue->dialogueViewportHandler->SetCurrentStep(nullptr);
+			actionFinished = true;
+			flog("The Dialog Has Finsihed");
+		}
+		else if (clickedAnswer != nullptr)
 		{
 			DialogueStep* nextStep = clickedAnswer->GetDestinationStep();
 			dialogue->dialogueViewportHandler->SetCurrentStep(nextStep); 

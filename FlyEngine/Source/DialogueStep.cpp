@@ -120,6 +120,14 @@ void DialogueStep::DeleteLinksAndAnswers()
 	}
 }
 
+bool DialogueStep::HasAnswers()
+{
+	if (answersList.empty())
+		return false; 
+
+	return true; 
+}
+
 void DialogueStep::SetText(string _dialogueText)
 {
 	dialogueText->SetDialogueText(_dialogueText);

@@ -206,7 +206,7 @@ bool DisplayAnimationAction::NextFrame()
 		return true; 
 	}
 
-	flog("Next Frame: %d", currentFrame);
+	//flog("Next Frame: %d", currentFrame);
 	return false; 
 }
 

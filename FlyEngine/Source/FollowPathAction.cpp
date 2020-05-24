@@ -160,7 +160,7 @@ void FollowPathAction::SetAlphaFactor(float _alphaFactor)
 
 void FollowPathAction::Draw()
 {
-	if(parentObject->isSelected)
+	if(parentObject->isSelected && !App->isEngineInPlayMode)
 		DrawPath(); 
 }
 

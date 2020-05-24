@@ -29,6 +29,7 @@ public:
 	void CleanUp();
 
 	void DeleteLinksAndAnswers();
+	bool HasAnswers();
 
 	// Step Utilities ----
 	void SetText(string _dialogueText); 

@@ -159,7 +159,7 @@ bool FlyObject::Update(float dt)
 
 		if (clickableArea->IsBoxClicked())
 		{
-			flog("Object Clicked"); 
+			//flog("Object Clicked"); 
 
 			switch (flyObjectType)
 			{
