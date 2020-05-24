@@ -122,7 +122,7 @@ void RoomsNodeGraph::DrawGraph()
 	{
 		INC_CURSOR_X_7;
 		ImGui::PushFont(App->moduleImGui->rudaBlackGiant);
-		ImGui::TextColored(ImVec4(1, 0.5f, 0.5f, 0.25f), "No Rooms In World");
+		ImGui::TextColored(ImVec4(0.5f, 0.5f, 1.0f, 0.30f), "The Project Is Empty");
 		ImGui::PopFont();
 	}
 

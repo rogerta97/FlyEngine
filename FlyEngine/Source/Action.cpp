@@ -22,8 +22,10 @@ Action::Action()
 
 	occ_SceneEnter = false;
 	occ_SceneLeave = false;
-	occ_blackboardValue = false;
 	occ_ObjectClicked = false;
+	occ_blackboardValue = false;
+	occ_continuous = false;
+	occ_mouseOver = false;
 
 	isValidForCreator = true; 
 

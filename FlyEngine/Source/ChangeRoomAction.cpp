@@ -14,6 +14,13 @@ ChangeRoomAction::ChangeRoomAction(FlyObject* _parentObject)
 	actionType = ACTION_CHANGE_ROOM;
 	isVisual = false;
 
+	occ_SceneEnter = false;
+	occ_SceneLeave = false;
+	occ_ObjectClicked = false;
+	occ_blackboardValue = false;
+	occ_continuous = false;
+	occ_mouseOver = false;
+
 	SetActionName("Change Room");
 	SetToolDescription("This should be the description of the scene change");
 	parentObject = _parentObject; 
@@ -122,6 +129,7 @@ void ChangeRoomAction::DoAction()
 {
 	if (destinationRoom)
 	{
+		App->BroadCastEvent(FlyEngineEvent::LEAVE_ROOM);
 		App->moduleWorldManager->SetSelectedRoom(destinationRoom);
 		SetActionCompleted(true); 
 	}

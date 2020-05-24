@@ -115,6 +115,7 @@ void DisplayTextAction::SaveAction(JSON_Object* jsonObject, string serializeObje
 		toolsSerializeSection = serializeObjectString;
 
 	Action::SaveAction(jsonObject, toolsSerializeSection);
+	Action::SaveOccurrence(jsonObject, toolsSerializeSection);
 
 	// Save Bounding Box Position 
 	json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("TextBox.MinPoint.x")).c_str(), textBox->GetMinPoint().x);

@@ -18,7 +18,13 @@
 
 DisplayImageAction::DisplayImageAction(FlyObject* _parentObject = nullptr)
 {
-	//Action::Action();
+	occ_SceneEnter = false;
+	occ_SceneLeave = false;
+	occ_ObjectClicked = false;
+	occ_blackboardValue = false;
+	occ_continuous = false;
+	occ_mouseOver = false;
+
 	actionType = ACTION_DISPLAY_IMAGE; 
 	quadMesh = nullptr; 
 	imageTexture = nullptr; 
@@ -348,6 +354,7 @@ void DisplayImageAction::SaveAction(JSON_Object* jsonObject, string serializeObj
 		toolsSerializeSection = serializeObjectString;
 
 	Action::SaveAction(jsonObject, toolsSerializeSection);
+	Action::SaveOccurrence(jsonObject, toolsSerializeSection); 
 
 	if (imageTexture != nullptr)
 	{

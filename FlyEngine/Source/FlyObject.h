@@ -37,6 +37,7 @@ public:
 
 	virtual bool Update(float dt);
 	virtual void OnSceneEnter(); 
+	virtual void OnSceneLeave(); 
 
 	void DrawVisualLayer(bool forceDraw = false);
 	void DrawOverlaysLayer(); 

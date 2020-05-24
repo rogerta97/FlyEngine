@@ -210,6 +210,19 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 		}
 
 		break;
+
+	case FlyEngineEvent::LEAVE_ROOM:
+
+		// Play On Scene Enter Events
+		if (App->flySection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && App->isEngineInPlayMode && GetSelectedRoom() != nullptr)
+		{
+			for (auto& currentObject : GetSelectedRoom()->objectsInRoom)
+			{
+				currentObject->OnSceneLeave();
+			}
+		}
+
+		break;
 	}
 }
 

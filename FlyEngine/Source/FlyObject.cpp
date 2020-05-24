@@ -199,7 +199,17 @@ void FlyObject::OnSceneEnter()
 {
 	for (auto& currentAction : actionsList)
 	{
-		currentAction->OnSceneEnter();
+		if(currentAction->IsOccSceneEnter())
+			currentAction->DoAction();
+	}
+}
+
+void FlyObject::OnSceneLeave()
+{
+	for (auto& currentAction : actionsList)
+	{
+		if (currentAction->IsOccSceneLeave())
+			currentAction->DoAction();
 	}
 }
 

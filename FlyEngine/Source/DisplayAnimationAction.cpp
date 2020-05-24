@@ -15,6 +15,8 @@
 
 DisplayAnimationAction::DisplayAnimationAction(FlyObject* _parentObject)
 {
+	Action::Action();
+
 	actionType = ACTION_DISPLAY_ANIMATION;
 	isVisual = false;
 	parentObject = _parentObject; 

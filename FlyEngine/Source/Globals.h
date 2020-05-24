@@ -19,6 +19,7 @@ enum FlyEngineEvent
 	ENGINE_PLAY, 
 	ENGINE_STOP,
 	ENTER_ROOM,
+	LEAVE_ROOM,
 };
 
 enum FileExtension

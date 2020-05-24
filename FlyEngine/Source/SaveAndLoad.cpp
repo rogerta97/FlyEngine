@@ -181,6 +181,7 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 
 	// Interactable
 	newObject->SetInteractable(json_object_dotget_boolean(root_obj, string(serializeObjectStr + string("Interactable")).c_str()));
+
 	// Parent Room --
 	newObject->SetParentRoom(currentRoom); 
 
@@ -800,7 +801,7 @@ void SaveAndLoad::LoadChangeRoomAction(JSON_Object* root_obj, std::string& seria
 {
 	UID destinationRoomUID = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("Destination")).c_str());
 
-	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "ActionClass").c_str());
 
 	ChangeRoomAction* changeRoomAction = nullptr;
 	if (actionClass == ACTION_CLASS_SEQUENTIAL)
@@ -809,7 +810,7 @@ void SaveAndLoad::LoadChangeRoomAction(JSON_Object* root_obj, std::string& seria
 		changeRoomAction = newObject->AddChangeRoomAction();
 
 	changeRoomAction->SetActionClass((ActionClass)actionClass);
-	changeRoomAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("ChangeRoom.Occurrence."));
+	changeRoomAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("Occurrence."));
 
 	Room* room = App->moduleWorldManager->GetRoom(destinationRoomUID);
 	changeRoomAction->SetDestination(room);

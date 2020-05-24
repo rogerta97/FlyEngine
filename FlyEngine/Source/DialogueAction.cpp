@@ -22,6 +22,13 @@ DialogueAction::DialogueAction(FlyObject* _parentObject)
 	isVisual = false;
 	showVariableConditions = false; 
 
+	occ_SceneEnter = false;
+	occ_SceneLeave = false;
+	occ_ObjectClicked = false;
+	occ_blackboardValue = false;
+	occ_continuous = false;
+	occ_mouseOver = false;
+
 	isValidForCreator = false;
 
 	sentencePlacementCombo = 0;
