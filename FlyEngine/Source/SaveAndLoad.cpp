@@ -8,6 +8,7 @@
 #include "DisplayAnimationAction.h"
 #include "FollowPathAction.h"
 #include "DialogueAction.h"
+#include "ImageImporter.h"
 #include "ResourceManager.h"
 #include "GameViewportDockPanel.h"
 #include "FlyObjectCharacter.h"

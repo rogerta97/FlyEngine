@@ -389,7 +389,7 @@ void ResourceManager::LoadResource(string newResourcePath, ResourceType forceTyp
 	FileExtension fileExtension = MyFileSystem::getInstance()->GetFileExtension(newResourcePath); 
 	ResourceType loadingResourceType = ResourceType::RESOURCE_null;
 
-	if (fileExtension == RESOURCE_null)
+	if (fileExtension == FILE_null)
 	{
 		FLY_ERROR("Loading unrecognized file %d", newResourcePath.c_str());
 		return;
@@ -462,6 +462,14 @@ void ResourceManager::LoadAllGameResources()
 
 	std::string tumbnailsPath = MyFileSystem::getInstance()->GetThumbnilesDirectory();
 	LoadAllFilesFromFolder(tumbnailsPath, RESOURCE_TEXTURE);
+
+	string animationsPath = MyFileSystem::getInstance()->GetResourcesDirectory() + "\\Animations"; 
+	std::vector<string> folders = MyFileSystem::getInstance()->GetFoldersInDirectory(animationsPath.c_str());
+
+	for (auto& currentFolder : folders)
+	{
+		LoadAllFilesFromFolder(currentFolder);
+	}
 }
 
 void ResourceManager::LoadAllFilesFromFolder(string path, ResourceType forceType)

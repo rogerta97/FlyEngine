@@ -126,7 +126,6 @@ void FollowPathAction::Update(float dt)
 				{
 					float2 startPosition = pathSteps->back()->targetPosition;
 					float2 finishPosition = this->startPosition;
-					float targetTime = 5;
 
 					flyObjectInterpolation->SetInterpolationSegment(startPosition, finishPosition);
 					stepTime = 0;
@@ -689,7 +688,7 @@ PathStep::PathStep()
 {
 	startPosition = float2(0, 0); 
 	targetPosition = float2(0, 0); 
-	targetTime = 5.0f;
+	targetTime = 1.0f;
 	graphBox = new BoundingBox();
 	graphBox->SetSize(25.0f, 25.0f);
 }
