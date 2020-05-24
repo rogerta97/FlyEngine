@@ -13,6 +13,17 @@ public:
 	bool Init();
 	bool CleanUp(); 
 
+	float GetMusicVolume();
+	void SetMusicVolume(float newVolume);
+
+	float GetSFXVolume();
+	void SetSFXVolume(float newVolume);
+
+private:
+
+	float musicVolume;
+	float SFXVolume; 
+
 };
 
 #endif

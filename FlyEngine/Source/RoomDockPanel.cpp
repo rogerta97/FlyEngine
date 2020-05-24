@@ -10,6 +10,7 @@
 #include "ModuleImGui.h"
 
 #include "UI_Image.h"
+#include "ModuleAudioManager.h"
 #include "UI_Button.h"
 #include "RoomDockPanel.h"
 #include "RoomUIHandler.h"
@@ -358,8 +359,8 @@ void RoomDockPanel::DrawTopButtons()
 		}
 		else
 		{
-			App->BroadCastEvent(FlyEngineEvent::ENGINE_STOP);
 			App->BroadCastEvent(FlyEngineEvent::LEAVE_ROOM);
+			App->BroadCastEvent(FlyEngineEvent::ENGINE_STOP);
 
 			playButtonColor = ImVec4(0.35f, 0.39f, 0.50f, 1.00f);
 			playStopButtonTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlayIcon");		
@@ -580,6 +581,18 @@ void RoomDockPanel::ShowViewportSettingsTab()
 				currentRoom->backgroundMusic = audioTrackDropped;
 				showMusicSelectionPopup = false;
 			}
+		}
+
+		float musicV = App->moduleAudioManager->GetMusicVolume();
+		if (ImGui::SliderFloat("Music Volume", &musicV, 0.0f, 100.0f, "%.1f"))
+		{
+			App->moduleAudioManager->SetMusicVolume(musicV);
+		}
+
+		float sfxV = App->moduleAudioManager->GetSFXVolume();
+		if (ImGui::SliderFloat("SFX Volume", &sfxV, 0.0f, 100.0f, "%.1f"))
+		{
+			App->moduleAudioManager->SetSFXVolume(sfxV);
 		}
 	}
 

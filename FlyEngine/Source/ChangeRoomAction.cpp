@@ -131,6 +131,7 @@ void ChangeRoomAction::DoAction()
 	{
 		App->BroadCastEvent(FlyEngineEvent::LEAVE_ROOM);
 		App->moduleWorldManager->SetSelectedRoom(destinationRoom);
+		App->BroadCastEvent(FlyEngineEvent::ENTER_ROOM);
 		SetActionCompleted(true); 
 	}
 }

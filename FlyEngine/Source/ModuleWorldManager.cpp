@@ -12,6 +12,7 @@
 #include "NodeGraph.h"
 #include "FontImporter.h"
 #include "ImageImporter.h"
+#include "MusicTrack.h"
 #include "GameViewportDockPanel.h"
 #include "ResourceManager.h"
 #include "MyFileSystem.h"
@@ -195,6 +196,8 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 			GameInventory::getInstance()->ClearItems();
 		}
 
+		if (GetSelectedRoom()->backgroundMusic != nullptr)
+			GetSelectedRoom()->backgroundMusic->Stop();
 
 		break; 
 
@@ -207,6 +210,9 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 			{
 				currentObject->OnSceneEnter(); 
 			}
+
+			if(GetSelectedRoom()->backgroundMusic != nullptr)
+				GetSelectedRoom()->backgroundMusic->Play();
 		}
 
 		break;
@@ -220,6 +226,7 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 			{
 				currentObject->OnSceneLeave();
 			}
+
 		}
 
 		break;

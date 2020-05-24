@@ -6,6 +6,8 @@
 
 ModuleAudioManager::ModuleAudioManager(bool start_enabled)
 {
+	musicVolume = 50.0f;
+	SFXVolume = 10.0f;
 }
 
 ModuleAudioManager::~ModuleAudioManager()
@@ -28,4 +30,25 @@ bool ModuleAudioManager::CleanUp()
 	Mix_CloseAudio(); 
 
 	return true;
+}
+
+float ModuleAudioManager::GetMusicVolume()
+{
+	return musicVolume;
+}
+
+void ModuleAudioManager::SetMusicVolume(float newVolume)
+{
+	musicVolume = newVolume; 
+	Mix_VolumeMusic(musicVolume); 
+}
+
+float ModuleAudioManager::GetSFXVolume()
+{
+	return SFXVolume;
+}
+
+void ModuleAudioManager::SetSFXVolume(float newVolume)
+{
+	SFXVolume = newVolume; 
 }

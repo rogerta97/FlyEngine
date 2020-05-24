@@ -1,5 +1,7 @@
 #include "MusicTrack.h"
 #include "SDL_mixer.h"
+#include "Application.h"
+#include "ModuleAudioManager.h"
 
 #include "mmgr.h"
 
@@ -7,6 +9,7 @@ MusicTrack::MusicTrack() : Resource(RESOURCE_MUSIC)
 {
 	mixMusic = nullptr;
 	trackLenght = 0;
+	Mix_VolumeMusic(App->moduleAudioManager->GetMusicVolume()); 
 }
 
 MusicTrack::~MusicTrack()
@@ -16,7 +19,6 @@ MusicTrack::~MusicTrack()
 
 void MusicTrack::Play(int loops)
 {
-
 	if (Mix_PausedMusic())
 	{
 		Mix_ResumeMusic();
@@ -24,14 +26,16 @@ void MusicTrack::Play(int loops)
 	else
 	{
 		Mix_PlayMusic(mixMusic, loops);
-	}
-	
+	}	
 }
 
 void MusicTrack::Stop()
 {
 	if (Mix_PlayingMusic())
-		Mix_PauseMusic(); 
+	{
+		Mix_PauseMusic();
+		Mix_RewindMusic();
+	}
 }
 
 Mix_Music* MusicTrack::GetMixMusic()

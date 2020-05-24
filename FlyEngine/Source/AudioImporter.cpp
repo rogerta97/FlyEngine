@@ -1,5 +1,7 @@
 #include "AudioImporter.h"
 #include "SDL_Mixer/SDL_mixer.h"
+#include "Application.h"
+#include "ModuleAudioManager.h"
 
 #include "AudioClip.h"
 #include "MusicTrack.h"
@@ -31,6 +33,7 @@ AudioClip* AudioImporter::LoadAudioClip(std::string audioPath)
 
 	if (audioChunk != nullptr)
 	{
+		Mix_VolumeChunk(audioChunk, App->moduleAudioManager->GetSFXVolume());
 		AudioClip* newAudioClip = new AudioClip(); 
 		newAudioClip->SetChunk(audioChunk); 
 		newAudioClip->SetPath(audioPath.c_str()); 
