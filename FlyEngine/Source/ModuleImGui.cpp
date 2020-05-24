@@ -111,7 +111,7 @@ void ModuleImGui::CreatePanels()
 	ConsoleDockPanel* consolePanel = new ConsoleDockPanel(true);
 	RoomsGraphDockPanel* roomsGraphPanel = new RoomsGraphDockPanel(true);
 	GamePropertiesDockPanel* gamePropertiesPanel = new GamePropertiesDockPanel(true);
-	WorldPropertiesDockPanel* roomPropertiesPanel = new WorldPropertiesDockPanel(true);
+	WorldPropertiesDockPanel* worldPropertiesPanel = new WorldPropertiesDockPanel(true);
 	GlobalBlackboardDockPanel* globalBlackboardPanel = new GlobalBlackboardDockPanel(true);
 
 	FileBrowserDockPanel* fileBrowserDockPanel = new FileBrowserDockPanel(false); 
@@ -126,7 +126,6 @@ void ModuleImGui::CreatePanels()
 	dockPanels.push_back(consolePanel); 
 	dockPanels.push_back(roomsGraphPanel);
 	dockPanels.push_back(gamePropertiesPanel);
-	dockPanels.push_back(roomPropertiesPanel); 
 	dockPanels.push_back(globalBlackboardPanel); 
 
 	dockPanels.push_back(dialogueEditorPanel);
@@ -137,6 +136,8 @@ void ModuleImGui::CreatePanels()
 	dockPanels.push_back(sceneDockPanel);
 	dockPanels.push_back(fileBrowserDockPanel); 
 	dockPanels.push_back(characterCreatorPanel); 
+	dockPanels.push_back(worldPropertiesPanel); 
+	
 
 	consoleDockPanel = consolePanel; 
 	gamePropertiesDockPanel = gamePropertiesPanel;
@@ -321,6 +322,11 @@ void ModuleImGui::AddaptToFlySection(FlyEngineSection flyEngineSection)
 
 	if(flyEngineSection == FLY_SECTION_ROOM_EDIT || flyEngineSection == FLY_SECTION_ROOM_GRAPH)
 		App->flySection = flyEngineSection;
+
+	//if (flyEngineSection == FLY_SECTION_ROOM_GRAPH)
+	//{
+	//	ImGui::SetWindowFocus("World Properties"); 
+	//}
 }
 
 DockPanel* ModuleImGui::GetDockPanel(DockPanelType panelType)

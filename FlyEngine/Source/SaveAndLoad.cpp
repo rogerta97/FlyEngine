@@ -745,7 +745,7 @@ void SaveAndLoad::LoadEmitSoundAction(JSON_Object* root_obj, std::string& serial
 
 	emitSoundAction->SetActionClass((ActionClass)actionClass);
 	emitSoundAction->SetActionClass((ActionClass)actionClass); 
-	emitSoundAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("EmitSound.Occurrence."));
+	emitSoundAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("Occurrence."));
 
 	if (audioClipPath != "None")
 	{

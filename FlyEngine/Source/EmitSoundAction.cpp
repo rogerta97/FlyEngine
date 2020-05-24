@@ -54,7 +54,6 @@ void EmitSoundAction::DrawActionOccurenceCheckboxes()
 	}
 	else if (GetActionClass() == ACTION_CLASS_DIRECT)
 	{
-
 		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 130));
 		ImGui::SetCursorPos(ImVec2(5, 5));
 		ImGui::Checkbox("Scene Enter", &occ_SceneEnter);

@@ -118,6 +118,11 @@ bool ModuleManager::Start()
 	GameInventory::getInstance(); 
 	GameInventory::getInstance()->CreateSlots(5);
 
+	//if (flyEngineSection == FLY_SECTION_ROOM_GRAPH)
+	//{
+	//ImGui::SetWindowFocus("World Properties");
+	
+
 	return true;
 }
 

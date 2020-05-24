@@ -200,12 +200,6 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 
 	case FlyEngineEvent::ENTER_ROOM:
 
-		// Save Image For Thumbnail
-	/*	if (selectedRoom != nullptr)
-		{
-			selectedRoom->roomThumbnail = ViewportManager::getInstance()->viewportTexture->GetTextureID(); 
-		}*/
-
 		// Play On Scene Enter Events
 		if (App->flySection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && App->isEngineInPlayMode && GetSelectedRoom() != nullptr)
 		{
