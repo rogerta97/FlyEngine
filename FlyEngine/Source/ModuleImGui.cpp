@@ -322,11 +322,6 @@ void ModuleImGui::AddaptToFlySection(FlyEngineSection flyEngineSection)
 
 	if(flyEngineSection == FLY_SECTION_ROOM_EDIT || flyEngineSection == FLY_SECTION_ROOM_GRAPH)
 		App->flySection = flyEngineSection;
-
-	//if (flyEngineSection == FLY_SECTION_ROOM_GRAPH)
-	//{
-	//	ImGui::SetWindowFocus("World Properties"); 
-	//}
 }
 
 DockPanel* ModuleImGui::GetDockPanel(DockPanelType panelType)

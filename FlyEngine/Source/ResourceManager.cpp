@@ -411,6 +411,10 @@ void ResourceManager::LoadResource(string newResourcePath, ResourceType forceTyp
 	{
 		Texture* newResource = ImageImporter::getInstance()->LoadTexture(newResourcePath, false);
 		string resourceName = MyFileSystem::getInstance()->GetLastPathItem(newResourcePath, false);
+
+		//if (resourceName == "Door")
+		//	flog("hids"); 
+
 		AddResource(newResource, resourceName.c_str());
 		flog("Added Resource %s", resourceName.c_str());
 	}

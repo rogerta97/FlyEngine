@@ -7,6 +7,7 @@
 #include "ModuleInput.h"
 #include "imgui.h"
 #include "TextureMSAA.h"
+#include "GameViewportDockPanel.h"
 #include "SaveAndLoad.h"
 #include "ViewportManager.h"
 #include "Room.h"
@@ -162,7 +163,6 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 			selectedRoom = nullptr;
 		}
 	}
-
 	
 	ImGui::SameLine();
 	ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 45); 
@@ -172,6 +172,7 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 		if (App->moduleWorldManager->GetSelectedRoom() != nullptr)
 		{
 			App->moduleImGui->AddaptToFlySection(FlyEngineSection::FLY_SECTION_ROOM_EDIT);
+			App->moduleImGui->gameViewportDockPanel->FitViewportToRegion();
 		}
 	}
 }
