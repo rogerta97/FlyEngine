@@ -86,8 +86,8 @@ private:
 
 	// Draw Vars
 	BoundingBox* backgroundBB; 
-	BoundingBox* nextPageArrow; 
 	BoundingBox* prevPageArrow; 
+	BoundingBox* nextPageArrow; 
 
 	DisplayImageAction* slotIconDropingAction;
 

@@ -48,13 +48,13 @@ GameInventory::GameInventory()
 	backgroundBB->SetSize(inventoryWidth, inventoryHeigth);
 	backgroundBB->SetPositionInc(float2(0, -423)); 
 
-	nextPageArrow = new BoundingBox();
-	nextPageArrow->SetSize(arrowsWidth, arrowsHeigth);
-	nextPageArrow->SetPositionInc(float2(backgroundBB->GetTopLeft().x, -423));
-
 	prevPageArrow = new BoundingBox();
 	prevPageArrow->SetSize(arrowsWidth, arrowsHeigth);
-	prevPageArrow->SetPositionInc(float2(backgroundBB->GetMaxPoint().x, -423));
+	prevPageArrow->SetPositionInc(float2(backgroundBB->GetTopLeft().x, -423));
+
+	nextPageArrow = new BoundingBox();
+	nextPageArrow->SetSize(arrowsWidth, arrowsHeigth);
+	nextPageArrow->SetPositionInc(float2(backgroundBB->GetMaxPoint().x, -423));
 
 	opened = false; 
 }
@@ -203,18 +203,20 @@ void GameInventory::DrawInventory()
 
 void GameInventory::DrawPageArrows()
 {
-	instance->prevPageArrow->Draw(true, instance->arrowColor);
 	instance->nextPageArrow->Draw(true, instance->arrowColor);
-
-	if (instance->prevPageArrow->IsBoxClicked())
-	{
-		instance->currentPage--;
-	}
-
+	instance->prevPageArrow->Draw(true, instance->arrowColor);
 
 	if (instance->nextPageArrow->IsBoxClicked())
 	{
-		instance->currentPage++;
+		if(instance->currentPage < 3)
+			instance->currentPage++;
+	}
+
+
+	if (instance->prevPageArrow->IsBoxClicked())
+	{
+		if (instance->currentPage > 0)
+			instance->currentPage--;
 	}
 }
 
@@ -273,6 +275,7 @@ void GameInventory::DrawInventorySlots()
 	{
 		if (counter < startDrawingIndex)
 		{
+			counter++;
 			continue; 
 		}
 		else if (counter < endDrawingIndex)
