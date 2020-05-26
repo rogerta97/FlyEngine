@@ -116,7 +116,7 @@ bool ModuleManager::Start()
 
 	// Init Inventory 
 	GameInventory::getInstance(); 
-	GameInventory::getInstance()->CreateSlots(5);
+	GameInventory::getInstance()->CreateSlots();
 
 	//if (flyEngineSection == FLY_SECTION_ROOM_GRAPH)
 	//{

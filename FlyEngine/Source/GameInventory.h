@@ -45,7 +45,7 @@ public:
 	static void CleanUp(); 
 	static void ClearItems(); 
 
-	static void CreateSlots(int amount); 
+	static void CreateSlots(); 
 	static void AddEmptySlot(); 
 	static void AddObjectToInventory(FlyObject* newObject);
 	static bool IsItemInInventory(UID checkItemUID);
@@ -71,6 +71,9 @@ public:
 	// Others ------------
 	static BoundingBox* GetBackgroundBB();
 
+	float GetMaxSlots(); 
+	void SetMaxSlots(float _maxSlots);
+
 	FlyObject* droppingObject; 
 
 	float4 backgroundColor = float4::zero; 
@@ -93,6 +96,7 @@ private:
 	float inventoryHeigth;
 	float slotsInnerPadding; 
 	float slotsOutterPadding; 
+	float maxSlots; 
 
 	float arrowsWidth;
 	float arrowsHeigth;

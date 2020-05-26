@@ -77,6 +77,9 @@ void ChangeRoomAction::DrawSelectDestinationCombo()
 		int count = 0;
 		for (auto& currentRoom : roomsInWorld)
 		{
+			if (parentObject->GetParentRoom() == nullptr)
+				continue; 
+
 			if (parentObject->GetParentRoom()->GetUID() == currentRoom->GetUID())
 				continue; 
 

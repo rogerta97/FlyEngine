@@ -32,8 +32,9 @@ GameInventory::GameInventory()
 	currentPage = 0; 
 	slotsInnerPadding = 30;
 	slotsOutterPadding = 20; 
-	arrowsWidth = 60; 
-	arrowsHeigth = 90; 
+	arrowsWidth = 25; 
+	arrowsHeigth = 105; 
+	maxSlots = 5;
 
 	slotIconDropingAction = new DisplayImageAction(nullptr); 
 	Texture* tex = (Texture*)ResourceManager::getInstance()->GetResource("DropItemSlot");
@@ -84,10 +85,10 @@ void GameInventory::ClearItems()
 	}
 }
 
-void GameInventory::CreateSlots(int amount)
+void GameInventory::CreateSlots()
 {
 	int counter = 0;
-	while (counter < amount)
+	while (counter < 20)
 	{
 		instance->AddEmptySlot();
 		counter++; 
@@ -204,6 +205,17 @@ void GameInventory::DrawPageArrows()
 {
 	instance->prevPageArrow->Draw(true, instance->arrowColor);
 	instance->nextPageArrow->Draw(true, instance->arrowColor);
+
+	if (instance->prevPageArrow->IsBoxClicked())
+	{
+		instance->currentPage--;
+	}
+
+
+	if (instance->nextPageArrow->IsBoxClicked())
+	{
+		instance->currentPage++;
+	}
 }
 
 void GameInventory::DrawInventoryBackground()
@@ -249,14 +261,21 @@ void GameInventory::DrawInventorySlots()
 	float2 inventoryBackgroundTopLeft = float2(instance->backgroundBB->GetMinPoint().x, instance->backgroundBB->GetMaxPoint().y);
 
 	int startDrawingIndex = instance->currentPage * SLOTS_PER_PAGE;
+	int endDrawingIndex = startDrawingIndex + SLOTS_PER_PAGE;
 
 	int counter = 0;
+	int drawCount = 0; 
+	int slotsToDraw = 20 - startDrawingIndex; 
 
 	float2 pen = inventoryBackgroundTopLeft + float2(40, 11);
 
 	for (std::list<InventorySlot*>::iterator it = instance->inventorySlots.begin(); it != instance->inventorySlots.end(); it++)
 	{
-		if (counter >= startDrawingIndex && counter < startDrawingIndex + SLOTS_PER_PAGE)
+		if (counter < startDrawingIndex)
+		{
+			continue; 
+		}
+		else if (counter < endDrawingIndex)
 		{
 			// Draw Background 
 			(*it)->GetSlotBB()->SetPosition(pen, true);
@@ -279,8 +298,13 @@ void GameInventory::DrawInventorySlots()
 				//	flog("Draw Slot Object");
 				}
 			}
-		}
 
+		}
+		else
+		{
+			break;
+		}
+		
 		counter++;
 	}
 }
@@ -357,6 +381,16 @@ void GameInventory::DropObjectToRoom()
 BoundingBox* GameInventory::GetBackgroundBB()
 {
 	return instance->backgroundBB;
+}
+
+float GameInventory::GetMaxSlots()
+{
+	return maxSlots;
+}
+
+void GameInventory::SetMaxSlots(float _maxSlots)
+{
+	maxSlots = _maxSlots;
 }
 
 InventorySlot::InventorySlot(float inventoryBgHeigth)
