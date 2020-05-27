@@ -466,6 +466,55 @@ void ModuleWorldManager::SetSelectedRoom(UID selectedRoomUID, bool sendEvent)
 	SetSelectedRoom(GetRoom(selectedRoomUID), sendEvent);
 }
 
+FlyObject* ModuleWorldManager::PrintInventoryObjectSelectionPopup()
+{
+	if (ImGui::BeginPopup("inventory_item_selection_popup"))
+	{
+		ImGui::Spacing();
+
+		// Search Bar ---------------
+		static char searchImageBuffer[256];
+		ImGui::InputTextWithHint("##SearchToolInvItem", "Search...", searchImageBuffer, IM_ARRAYSIZE(searchImageBuffer));
+		ImGui::SameLine();
+
+		Texture* filterIcon = (Texture*)ResourceManager::getInstance()->GetResource("FilterIcon");
+		ImGui::Image((ImTextureID)filterIcon->GetTextureID(), ImVec2(22, 22));
+
+		ImGui::Spacing();
+
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(2.0f, 2.0f));
+		ImGui::BeginChild("##4ShowImage", ImVec2(ImGui::GetContentRegionAvailWidth(), 150));
+
+		for (auto& currentRoom : roomsInWorldList)
+		{
+			for (auto& currentObject : currentRoom->objectsInRoom)
+			{
+				if (currentObject->flyObjectType != FlyObjectType::INVENTORY_ITEM)
+					continue; 
+
+				if (ImGui::Selectable(currentObject->GetName().c_str(), false, 0, ImVec2(ImGui::GetContentRegionAvail().x, 20)))
+				{
+					ImGui::EndChild();
+					ImGui::PopStyleColor();
+					ImGui::PopStyleVar();
+					ImGui::CloseCurrentPopup();
+					ImGui::EndPopup();
+					return currentObject;
+				}
+			}
+
+	
+		}
+		ImGui::EndChild();
+		ImGui::PopStyleColor();
+		ImGui::PopStyleVar();
+		ImGui::EndPopup();
+	}
+
+	return nullptr;
+}
+
 void ModuleWorldManager::SetSelectedRoom(std::string roomName, bool sendEvent)
 {
 	SetSelectedRoom(GetRoom(roomName), sendEvent);

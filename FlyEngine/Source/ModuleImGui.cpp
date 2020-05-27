@@ -262,18 +262,6 @@ void ModuleImGui::DrawMainMenuBar()
 			App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_GRAPH); 
 		}
 
-		if (ImGui::SmallButton("Game ode"))
-		{
-			App->SetGameMode(PLAY_MODE);
-			App->moduleImGui->AddaptToGameMode();
-		}
-
-
-		if (ImGui::SmallButton("Editor Mode"))
-		{
-			App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);
-		}
-
 		ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x / 2 - 100);
 		ImGui::Text("Room Editor - %s", App->moduleWorldManager->GetSelectedRoom()->GetName().c_str()); 
 	}

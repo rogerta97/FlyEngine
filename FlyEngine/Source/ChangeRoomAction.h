@@ -32,6 +32,7 @@ public:
 
 private:
 	Room* destinationRoom; 
+	bool showClickWithItems = false; 
 };
 
 #endif 

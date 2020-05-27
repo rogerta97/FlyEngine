@@ -154,6 +154,8 @@ public:
 
 	bool IsActionFinished(); 
 	void SetActionCompleted(bool isFinished);
+
+	FlyObject* itemToClickWith; 
  
 protected:
 	ActionType actionType;

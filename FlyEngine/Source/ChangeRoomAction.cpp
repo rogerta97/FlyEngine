@@ -39,8 +39,68 @@ void ChangeRoomAction::DrawActionOccurenceCheckboxes()
 	ImGui::PushFont(App->moduleImGui->rudaRegularMid);
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 
-	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 35));
-	ImGui::Checkbox("Object Clicked", &occ_ObjectClicked);
+	static char itemToClickWithNameBuffer[256];
+	int childSize = 35; 
+
+	if (showClickWithItems)
+		childSize += 30; 
+
+	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), childSize));
+	INC_CURSOR_4;
+	
+	if (ImGui::Checkbox("Object Clicked", &occ_ObjectClicked))
+	{
+		if (!occ_ObjectClicked)
+		{
+			strcpy(itemToClickWithNameBuffer, "");
+			itemToClickWith = nullptr; 
+		}
+	}
+
+	if (occ_ObjectClicked)
+	{
+		ImGui::SameLine();
+		static std::string clickWithItemConditionButtonText = "Click With Item";
+		if (ImGui::SmallButton(clickWithItemConditionButtonText.c_str()))
+		{
+			if (showClickWithItems)
+			{
+				showClickWithItems = false;
+				clickWithItemConditionButtonText = "Click With Item";
+			}
+			else
+			{
+				showClickWithItems = true;
+				clickWithItemConditionButtonText = "Hide";
+			}
+		}
+
+		if (showClickWithItems)
+		{
+			
+
+			if (itemToClickWith != nullptr)
+			{
+				strcpy(itemToClickWithNameBuffer, itemToClickWith->GetName().c_str()); 
+			}
+
+			INC_CURSOR_X_4;
+			ImGui::InputTextWithHint("", "Item...", itemToClickWithNameBuffer, IM_ARRAYSIZE(itemToClickWithNameBuffer)); 
+
+			ImGui::SameLine();
+			if (ImGui::Button("Search##SearchInventoryItem"))
+			{
+				ImGui::OpenPopup("inventory_item_selection_popup"); 
+			}
+		}
+
+		FlyObject* newInventoryItem = App->moduleWorldManager->PrintInventoryObjectSelectionPopup(); 
+
+		if (newInventoryItem != nullptr)
+		{
+			itemToClickWith = newInventoryItem;
+		}
+	}
 
 	ImGui::Spacing(); 
 	ImGui::EndChild(); 
@@ -97,6 +157,7 @@ void ChangeRoomAction::DrawUISettings()
 {
 	if (ImGui::CollapsingHeader("Change Room Settings", ImGuiTreeNodeFlags_DefaultOpen))
 	{
+		DrawActionOccurenceCheckboxes();
 		DrawSelectDestinationCombo();
 	}
 }

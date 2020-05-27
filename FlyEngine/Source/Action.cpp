@@ -19,6 +19,7 @@ Action::Action()
 {
 	actionType = AT_null; 
 	isSelected = false; 
+	itemToClickWith = nullptr; 
 
 	occ_SceneEnter = false;
 	occ_SceneLeave = false;

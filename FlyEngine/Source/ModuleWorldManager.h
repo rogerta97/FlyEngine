@@ -13,6 +13,7 @@ class Room;
 class RoomConnection; 
 class RoomUIHandler; 
 class Blackboard;
+class FlyObject; 
 class ModuleWorldManager : public Module
 {
 public:
@@ -62,6 +63,8 @@ public:
 	void SetSelectedRoom(std::string roomName, bool sendEvent = false);
 	void SetSelectedRoom(UID roomName, bool sendEvent = false);
 
+	FlyObject* PrintInventoryObjectSelectionPopup(); 
+
 	Room* GetSelectedRoom() const;
 	RoomUIHandler* GetSelectedRoomUI() const; 
 
@@ -76,7 +79,6 @@ public:
 private: 
 	Room* selectedRoom;
 	bool firstFit = false;
-
 };
 
 
