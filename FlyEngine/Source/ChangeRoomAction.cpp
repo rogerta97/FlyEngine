@@ -53,7 +53,8 @@ void ChangeRoomAction::DrawActionOccurenceCheckboxes()
 		if (!occ_ObjectClicked)
 		{
 			strcpy(itemToClickWithNameBuffer, "");
-			itemToClickWith = nullptr; 
+			itemToClickWith = nullptr;
+			showClickWithItems = false;
 		}
 	}
 

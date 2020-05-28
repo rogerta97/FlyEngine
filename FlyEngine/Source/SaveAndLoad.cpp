@@ -844,24 +844,19 @@ void SaveAndLoad::LoadActionConditions(JSON_Object* root_obj, std::string& seria
 		FLY_ERROR("Parent Object could not be found when loading action conditions");
 		assert(false);
 	}
-
+	
 	if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("Actions")).c_str()))
-	{
-		const char* actionNames[] = 
-		{ 
-			"DisplayImage", 
-			"ChangeRoom", 
-			"EmitSound", 
-			"ModifyVariable" 
-		}; 
+	{	
+		string actionStr = serializeObjectStr + "Actions"; 
+		int actionsAmount = json_object_dotget_number(root_obj, string(actionStr + ".ActionsAmount").c_str());
 
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < actionsAmount; i++)
 		{
-			string serializeObjectStrActions = serializeObjectStr + "Actions." + actionNames[i];
-			if (json_object_dothas_value(root_obj, string(serializeObjectStrActions).c_str()))
-			{
-				Action* holderAction = nullptr;
-				string conditionsSerializeStr = string(serializeObjectStrActions + ".Conditions").c_str();
+			string serializeObjectStrActions = actionStr + ".Action_" + to_string(i);
+			UID itemToClickWithUID = json_object_dotget_number(root_obj, string(serializeObjectStrActions + ".Occurrence.ItemToClickWith").c_str());
+			FlyObject
+			i++;
+		/*		string conditionsSerializeStr = string(serializeObjectStrActions + ".Conditions").c_str();
 				int conditionsAmount = json_object_dotget_number(root_obj, string(conditionsSerializeStr + ".ConditionsAmount").c_str());
 
 				if (conditionsAmount == 0)
@@ -899,8 +894,8 @@ void SaveAndLoad::LoadActionConditions(JSON_Object* root_obj, std::string& seria
 						break;
 					}
 					count++;
-				}
-			}
+				}*/
+			
 		}	
 	}
 }

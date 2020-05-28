@@ -102,6 +102,16 @@ void Action::SaveOccurrence(JSON_Object* jsonObject, string serializeObjectStrin
 	json_object_dotset_boolean(jsonObject, string(serializeObjectOccurrenceStr + "SceneEnter").c_str(), IsOccSceneEnter());
 	json_object_dotset_boolean(jsonObject, string(serializeObjectOccurrenceStr + "SceneLeave").c_str(), IsOccSceneLeave());
 	json_object_dotset_boolean(jsonObject, string(serializeObjectOccurrenceStr + "ObjectClicked").c_str(), IsOccObjectClicked());
+
+	if (itemToClickWith == nullptr)
+	{
+		json_object_dotset_number(jsonObject, string(serializeObjectOccurrenceStr + "ItemToClickWith").c_str(), 0);
+	}
+	else
+	{
+		json_object_dotset_number(jsonObject, string(serializeObjectOccurrenceStr + "ItemToClickWith").c_str(), itemToClickWith->GetUID());
+	}
+
 	json_object_dotset_boolean(jsonObject, string(serializeObjectOccurrenceStr + "BlackboardCondition").c_str(), IsOccCondition());
 }
 

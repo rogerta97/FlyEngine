@@ -605,6 +605,12 @@ void FlyObject::DoOnClickActions()
 		{
 			if (it->IsOccCondition() && !it->PassConditionTest())
 				continue; 
+
+			if (it->IsOccCondition() && it->itemToClickWith != nullptr)
+			{
+				if (GameInventory::getInstance()->droppingObject != it->itemToClickWith)
+					continue; 
+			}
 		}
 
 		it->DoAction(); 
