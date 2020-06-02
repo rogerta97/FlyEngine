@@ -12,7 +12,7 @@
 
 FileBrowserDockPanel::FileBrowserDockPanel(bool isVisible) : DockPanel("Resources", isVisible)
 {
-	flyEngineSection = FLY_SECTION_ROOM_EDIT;
+	flyEngineSection = FLY_SECTION_null;
 	dockPanelType = DOCK_FILE_BROWSER;
 	selectedResourceUID = 0; 
 }

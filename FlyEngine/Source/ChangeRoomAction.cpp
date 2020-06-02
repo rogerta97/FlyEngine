@@ -54,6 +54,7 @@ void ChangeRoomAction::DrawActionOccurenceCheckboxes()
 		{
 			strcpy(itemToClickWithNameBuffer, "");
 			itemToClickWith = nullptr;
+			flog("item to click is null now"); 
 			showClickWithItems = false;
 		}
 	}

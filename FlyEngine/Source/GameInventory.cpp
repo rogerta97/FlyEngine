@@ -195,9 +195,6 @@ void GameInventory::DrawInventory()
 		instance->DrawInventoryBackground();
 		instance->DrawInventorySlots();
 		instance->DrawPageArrows();
-
-		if(ImGui::IsMouseClicked(0) && instance->droppingObject != nullptr)
-			GameInventory::getInstance()->DropObjectToRoom();
 	}
 }
 

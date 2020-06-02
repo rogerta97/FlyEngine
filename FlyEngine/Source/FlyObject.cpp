@@ -150,7 +150,7 @@ bool FlyObject::Update(float dt)
 		}
 	}
 
-	if (App->isEngineInPlayMode && App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN && GameInventory::getInstance()->droppingObject == nullptr)
+	if (App->isEngineInPlayMode && App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN)
 	{
 		if (clickableArea->IsMouseOver())
 		{
@@ -606,7 +606,7 @@ void FlyObject::DoOnClickActions()
 			if (it->IsOccCondition() && !it->PassConditionTest())
 				continue; 
 
-			if (it->IsOccCondition() && it->itemToClickWith != nullptr)
+			if (it->itemToClickWith != nullptr)
 			{
 				if (GameInventory::getInstance()->droppingObject != it->itemToClickWith)
 					continue; 

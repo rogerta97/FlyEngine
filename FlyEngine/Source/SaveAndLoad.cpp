@@ -853,8 +853,17 @@ void SaveAndLoad::LoadActionConditions(JSON_Object* root_obj, std::string& seria
 		for (int i = 0; i < actionsAmount; i++)
 		{
 			string serializeObjectStrActions = actionStr + ".Action_" + to_string(i);
+			int actionType = json_object_dotget_number(root_obj, string(serializeObjectStrActions + ".ActionType").c_str());
+			Action* currentAction = parentObject->GetAction((ActionType)actionType); 
+
+			bool occObjectClick = json_object_dotget_boolean(root_obj, string(serializeObjectStrActions + ".Occurrence.ObjectClicked").c_str());
 			UID itemToClickWithUID = json_object_dotget_number(root_obj, string(serializeObjectStrActions + ".Occurrence.ItemToClickWith").c_str());
-			FlyObject
+
+			if (occObjectClick && itemToClickWithUID != 0)
+			{
+				currentAction->itemToClickWith = currentRoom->GetFlyObject(itemToClickWithUID);
+			}
+
 			i++;
 		/*		string conditionsSerializeStr = string(serializeObjectStrActions + ".Conditions").c_str();
 				int conditionsAmount = json_object_dotget_number(root_obj, string(conditionsSerializeStr + ".ConditionsAmount").c_str());
