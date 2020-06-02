@@ -257,6 +257,18 @@ std::list<InventorySlot*>* GameInventory::GetInventorySlots()
 
 void GameInventory::CheckReturnDroppingObject()
 {
+	if (instance->returnDroppingObject)
+	{
+		for (auto& currentSlot : instance->inventorySlots)
+		{
+			if (currentSlot->isObjectPicked)
+			{
+				currentSlot->isObjectPicked = false; 
+				instance->droppingObject = nullptr; 
+				return; 
+			}
+		}
+	}
 }
 
 void GameInventory::DrawInventorySlots()

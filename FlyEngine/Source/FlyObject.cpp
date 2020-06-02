@@ -159,8 +159,6 @@ bool FlyObject::Update(float dt)
 
 		if (clickableArea->IsBoxClicked())
 		{
-			//flog("Object Clicked"); 
-
 			switch (flyObjectType)
 			{
 			case ACTION_OBJECT:
@@ -609,7 +607,13 @@ void FlyObject::DoOnClickActions()
 			if (it->itemToClickWith != nullptr)
 			{
 				if (GameInventory::getInstance()->droppingObject != it->itemToClickWith)
+				{
 					continue; 
+				}
+				else
+				{
+					GameInventory::getInstance()->returnDroppingObject = true; 
+				}
 			}
 		}
 
