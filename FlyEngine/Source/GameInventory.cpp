@@ -262,23 +262,6 @@ void GameInventory::CheckReturnDroppingObject()
 		FlyObject* droppedObject = instance->DropObjectToRoom();
 		instance->AddObjectToInventory(droppedObject);
 		App->moduleWorldManager->canDragInventory = false; 
-		//for (auto& currentSlot : instance->inventorySlots)
-		//{
-		//	
-		//	if (currentSlot->isObjectPicked)
-		//	{
-		//		
-		//		
-		//	}
-
-		//	//if (currentSlot->isObjectPicked)
-		//	//{
-		//	//	currentSlot->isObjectPicked = false; 
-		//	//	instance->droppingObject = nullptr; 
-		//	//	break; 
-		//	//}
-		//}
-
 		instance->returnDroppingObject = false; 
 	}
 }

@@ -1,7 +1,7 @@
 #include "ChangeRoomAction.h"
 #include "imgui.h"
 #include "FlyObject.h"
-
+#include "GameInventory.h"
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "Room.h"
@@ -195,6 +195,7 @@ void ChangeRoomAction::DoAction()
 {
 	if (destinationRoom)
 	{
+		GameInventory::getInstance()->CheckReturnDroppingObject();
 		App->BroadCastEvent(FlyEngineEvent::LEAVE_ROOM);
 		App->moduleWorldManager->SetSelectedRoom(destinationRoom);
 		App->BroadCastEvent(FlyEngineEvent::ENTER_ROOM);
