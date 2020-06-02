@@ -255,6 +255,10 @@ std::list<InventorySlot*>* GameInventory::GetInventorySlots()
 	return &instance->inventorySlots;
 }
 
+void GameInventory::CheckReturnDroppingObject()
+{
+}
+
 void GameInventory::DrawInventorySlots()
 {
 	float2 inventoryBackgroundTopLeft = float2(instance->backgroundBB->GetMinPoint().x, instance->backgroundBB->GetMaxPoint().y);

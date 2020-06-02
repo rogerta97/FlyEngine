@@ -52,6 +52,7 @@ public:
 	static void UpdateInventorySlots();
 	static bool IsOpened(); 
 	static std::list<InventorySlot*>* GetInventorySlots(); 
+	static void CheckReturnDroppingObject(); 
 
 	// Draw
 	static void OpenInventory();
@@ -80,6 +81,7 @@ public:
 	float4 slotColor = float4::zero;
 	float4 arrowColor = float4::zero;
 	bool seePreview = false; 
+	bool returnDroppingObject = false; 
 
 private:
 	std::list<InventorySlot*> inventorySlots;
