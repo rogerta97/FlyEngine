@@ -257,17 +257,29 @@ std::list<InventorySlot*>* GameInventory::GetInventorySlots()
 
 void GameInventory::CheckReturnDroppingObject()
 {
-	if (instance->returnDroppingObject)
+	if (instance->returnDroppingObject && instance->droppingObject != nullptr)
 	{
-		for (auto& currentSlot : instance->inventorySlots)
-		{
-			if (currentSlot->isObjectPicked)
-			{
-				currentSlot->isObjectPicked = false; 
-				instance->droppingObject = nullptr; 
-				return; 
-			}
-		}
+		FlyObject* droppedObject = instance->DropObjectToRoom();
+		instance->AddObjectToInventory(droppedObject);
+		App->moduleWorldManager->canDragInventory = false; 
+		//for (auto& currentSlot : instance->inventorySlots)
+		//{
+		//	
+		//	if (currentSlot->isObjectPicked)
+		//	{
+		//		
+		//		
+		//	}
+
+		//	//if (currentSlot->isObjectPicked)
+		//	//{
+		//	//	currentSlot->isObjectPicked = false; 
+		//	//	instance->droppingObject = nullptr; 
+		//	//	break; 
+		//	//}
+		//}
+
+		instance->returnDroppingObject = false; 
 	}
 }
 
@@ -369,7 +381,7 @@ void GameInventory::DrawDroppingObject()
 	//flog("Draw Object Dropping"); 
 }
 
-void GameInventory::DropObjectToRoom()
+FlyObject* GameInventory::DropObjectToRoom()
 {
 	for (auto it = instance->inventorySlots.begin(); it != instance->inventorySlots.end(); it++)
 	{
@@ -382,14 +394,14 @@ void GameInventory::DropObjectToRoom()
 			(*it)->GetSlotObject()->isPicked = false; 
 
 			Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom(); 
-			selectedRoom->AddFlyObject((*it)->GetSlotObject());
+			FlyObject* retObject = selectedRoom->AddFlyObject((*it)->GetSlotObject());
 
 			(*it)->SetObject(nullptr); 
 			(*it)->isObjectPicked = false;
 
 			instance->droppingObject = nullptr; 
 
-			break; 
+			return retObject;
 		}
 	}
 }

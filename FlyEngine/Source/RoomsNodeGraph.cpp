@@ -3,6 +3,7 @@
 #include "Texture.h"
 #include "Application.h"
 #include "ModuleManager.h"
+#include "GameInventory.h"
 #include "ModuleImGui.h"
 #include "Room.h"
 #include "ModuleInput.h"

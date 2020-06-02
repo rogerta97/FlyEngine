@@ -47,6 +47,11 @@ update_status ModuleWorldManager::PreUpdate(float dt)
 
 update_status ModuleWorldManager::Update(float dt)
 {
+	if (App->moduleInput->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
+		GameInventory::getInstance()->returnDroppingObject = true;
+	}
+
 	for (auto& currentRoom : roomsInWorldList)
 	{
 		currentRoom->Update(); 
@@ -85,11 +90,10 @@ void ModuleWorldManager::HandleSlotDrag()
 	if (!GameInventory::getInstance()->GetBackgroundBB()->IsMouseOver())
 		return; 
 
-	static bool canDrag = false; 
 	static int slotClicked = -1; 
 	if (ImGui::IsMouseClicked(0))
 	{
-		canDrag = true;
+		canDragInventory = true;
 	
 		slotClicked = GetSlotClickedID();
 		flog("Slot Clicked: %d", slotClicked);
@@ -98,13 +102,13 @@ void ModuleWorldManager::HandleSlotDrag()
 
 	if (ImGui::IsMouseReleased(0))
 	{
-		canDrag = false;
+		canDragInventory = false;
 		slotClicked = -1;
 		flog("CAN NOT DRAG");
 		
 	}
 
-	if (canDrag && slotClicked != -1 && ImGui::IsMouseDragPastThreshold(0, 15.0f))
+	if (canDragInventory && slotClicked != -1 && ImGui::IsMouseDragPastThreshold(0, 15.0f))
 	{
 		flog("Dragging");
 		GameInventory::getInstance()->PickObjectFromInventory(slotClicked);

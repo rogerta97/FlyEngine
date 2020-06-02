@@ -67,7 +67,7 @@ public:
 	// Pick and Drop ---
 	static FlyObject* PickObjectFromInventory(int index); 
 	static void DrawDroppingObject(); 
-	static void DropObjectToRoom();
+	static FlyObject* DropObjectToRoom();
 
 	// Others ------------
 	static BoundingBox* GetBackgroundBB();

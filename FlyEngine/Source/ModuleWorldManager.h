@@ -75,6 +75,7 @@ public:
 	list<Room*> roomsInWorldList;
 	list<RoomConnection*> connectionsInWorldList; 
 	Blackboard* globalBlackboard; 
+	bool canDragInventory; 
 
 private: 
 	Room* selectedRoom;

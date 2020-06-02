@@ -558,14 +558,16 @@ FlyObject* Room::CreateFlyObjectSequencial(std::string objectName, std::string d
 	return newObject;
 }
 
-void Room::AddFlyObject(FlyObject* newFlyObject)
+FlyObject* Room::AddFlyObject(FlyObject* newFlyObject)
 {
-	if (newFlyObject == nullptr) {
+	if (newFlyObject == nullptr) 
+	{
 		FLY_ERROR("NULL object is trying to be added to the scene"); 
-		return; 
+		return nullptr; 
 	}
 
 	objectsInRoom.push_back(newFlyObject);
+	return newFlyObject;
 }
 
 void Room::DeleteFlyObject(FlyObject* objectToDelete)
