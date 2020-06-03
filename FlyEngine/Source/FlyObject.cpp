@@ -201,6 +201,15 @@ void FlyObject::OnSceneEnter()
 		if(currentAction->IsOccSceneEnter())
 			currentAction->DoAction();
 	}
+
+	// Check Start Sequential 
+	if (occ_SceneEnter && flyObjectType == FlyObjectType::OBJECT_SEQUENTIAL)
+	{
+		if (currentSequentialAction == nullptr && !sequentialActionsList.empty())
+		{
+			currentSequentialAction = sequentialActionsList.front();
+		}
+	}
 }
 
 void FlyObject::OnSceneLeave()

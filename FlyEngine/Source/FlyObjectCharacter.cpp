@@ -170,6 +170,15 @@ void FlyObjectCharacter::OnSceneEnter()
 {
 	// Play Idle Anim by Def
 	PlayCharacterAnimation(CHARACTER_IDLE); 
+
+	// Check Start Sequential 
+	if (occ_SceneEnter)
+	{
+		if (currentSequentialAction == nullptr && !sequentialActionsList.empty())
+		{
+			currentSequentialAction = sequentialActionsList.front();
+		}
+	}
 }
 
 DisplayAnimationAction* FlyObjectCharacter::GetWalkAnimation()

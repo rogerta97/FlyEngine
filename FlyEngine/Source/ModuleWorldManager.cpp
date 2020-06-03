@@ -195,8 +195,6 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 
 		if (App->flySection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && GetSelectedRoom() != nullptr)
 		{
-			// For now they will be set to true, in the future they are going to be loaded from the viewportConfig.json
-			//ViewportManager::getInstance()->drawClickableArea = true;
 			ViewportManager::getInstance()->drawGizmos = true;
 			GameInventory::getInstance()->ClearItems();
 		}
