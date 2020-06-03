@@ -130,6 +130,11 @@ public:
 
 	DisplayImageAction* GetDisplayImageAction(); 
 
+	bool occ_SceneEnter = false;
+	bool occ_ObjectClicked = false;
+	bool occ_blackboardValue = false;
+	bool occ_mouseOver = false;
+
 private: 
 	// Draw UI ---------
 	void DrawDisplayImageSettings(); 

@@ -1029,8 +1029,39 @@ void ObjectPropertiesDockPanel::DrawCharacterTab()
 	ImGui::PopFont();
 	ImGui::Separator();
 
+	PUSH_CHILD_BG_COLOR_DARK;
+	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 130));
+	ImGui::SetCursorPos(ImVec2(5, 5));
+	ImGui::Checkbox("Scene Enter", &selectedObject->occ_SceneEnter);
+	ImGui::SetCursorPos(ImVec2(5, 35));
+	ImGui::Checkbox("Mouse Over", &selectedObject->occ_mouseOver);
+	ImGui::SetCursorPos(ImVec2(5, 65));
+	ImGui::Checkbox("Object Clicked", &selectedObject->occ_ObjectClicked);
+	ImGui::SetCursorPos(ImVec2(5, 95));
+	ImGui::Checkbox("Object Condition", &selectedObject->occ_blackboardValue);
+
+	ImGui::SameLine();
+	static std::string showValueConditionButtonText = "Show Conditions";
+	if (ImGui::Button(showValueConditionButtonText.c_str()))
+	{
+		if (showVariableConditions)
+		{
+			showVariableConditions = false;
+			showValueConditionButtonText = "Show Conditions";
+		}
+		else
+		{
+			showVariableConditions = true;
+			showValueConditionButtonText = "Hide Conditions";
+		}
+	}
+
+	ImGui::EndChild();
+	ImGui::PopStyleColor();
+	ImGui::Spacing();
+
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	ImGui::Text("Sequence Actions:");
+	ImGui::Text("Sequential Actions:");
 	ImGui::PopFont();
 
 	PUSH_CHILD_BG_COLOR_DARK;
@@ -1200,6 +1231,35 @@ void ObjectPropertiesDockPanel::DrawObjectSequenceActionsTab()
 
 	ImGui::Spacing();
 	ImGui::Separator();
+
+	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 130));
+	ImGui::SetCursorPos(ImVec2(5, 5));
+	ImGui::Checkbox("Scene Enter", &selectedObject->occ_SceneEnter);
+	ImGui::SetCursorPos(ImVec2(5, 35));
+	ImGui::Checkbox("Mouse Over", &selectedObject->occ_mouseOver);
+	ImGui::SetCursorPos(ImVec2(5, 65));
+	ImGui::Checkbox("Object Clicked", &selectedObject->occ_ObjectClicked);
+	ImGui::SetCursorPos(ImVec2(5, 95));
+	ImGui::Checkbox("Object Condition", &selectedObject->occ_blackboardValue);
+
+	ImGui::SameLine();
+	static std::string showValueConditionButtonText = "Show Conditions";
+	if (ImGui::Button(showValueConditionButtonText.c_str()))
+	{
+		if (showVariableConditions)
+		{
+			showVariableConditions = false;
+			showValueConditionButtonText = "Show Conditions";
+		}
+		else
+		{
+			showVariableConditions = true;
+			showValueConditionButtonText = "Hide Conditions";
+		}
+	}
+
+	ImGui::EndChild();
+	ImGui::Spacing();
 
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Sequential Actions:");
