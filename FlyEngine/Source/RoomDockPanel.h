@@ -21,7 +21,6 @@ public:
 
 	// Hierarchy ---
 	void DrawRoomHierarchy();
-	void DrawMoveLayerSelectableButtons();
 
 	// Viewport ----
 	void ShowViewportSettingsTab();

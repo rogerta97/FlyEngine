@@ -400,8 +400,7 @@ void RoomDockPanel::DrawRoomHierarchy()
 		Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom();
 		FlyObject* selectedObject = selectedRoom->GetSelectedObject();
 
-	//	for (list<FlyObject*>::reverse_iterator it = selectedRoom->objectsInRoom.rbegin(); it != selectedRoom->objectsInRoom.rend(); it++) 
-		for (list<FlyObject*>::iterator it = selectedRoom->objectsInRoom.begin(); it != selectedRoom->objectsInRoom.end(); it++) 
+		for (list<FlyObject*>::reverse_iterator it = selectedRoom->objectsInRoom.rbegin(); it != selectedRoom->objectsInRoom.rend(); it++) 
 		{
 			PUSH_FONT(App->moduleImGui->rudaBlackMid);
 
@@ -427,9 +426,6 @@ void RoomDockPanel::DrawRoomHierarchy()
 				else
 					ImGui::OpenPopup("right_click_hierarchy");
 			}
-
-			// Move Layer Arrows
-			DrawMoveLayerSelectableButtons();
 
 			POP_FONT;
 		}
@@ -471,6 +467,18 @@ void RoomDockPanel::DrawRoomHierarchy()
 				ImGui::CloseCurrentPopup();
 			}
 
+			if (ImGui::Selectable("Layer Up"))
+			{
+
+				ImGui::CloseCurrentPopup();
+			}
+
+			if (ImGui::Selectable("Layer Down"))
+			{
+
+				ImGui::CloseCurrentPopup();
+			}
+
 			ImGui::EndPopup();
 		}
 
@@ -509,28 +517,6 @@ void RoomDockPanel::DrawRoomHierarchy()
 
 	ImGui::PopStyleVar();
 	ImGui::EndChild();
-}
-
-void RoomDockPanel::DrawMoveLayerSelectableButtons()
-{
-	ImGui::SameLine();
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-
-	ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 48);
-	Texture* arrowUpObjectTexture = (Texture*)ResourceManager::getInstance()->GetResource("ArrowUpWhite");
-	if (ImGui::ImageButton((ImTextureID)arrowUpObjectTexture->GetTextureID(), ImVec2(20, 20), ImVec2(0, 0), ImVec2(1, 1), 0))
-	{
-		App->moduleWorldManager->GetSelectedRoom()->SetSelectedObject(nullptr);
-	}
-
-	ImGui::SameLine();
-	Texture* arrowDownObjectTexture = (Texture*)ResourceManager::getInstance()->GetResource("ArrowDownWhite");
-	if (ImGui::ImageButton((ImTextureID)arrowDownObjectTexture->GetTextureID(), ImVec2(20, 20), ImVec2(0, 0), ImVec2(1, 1), 0))
-	{
-		App->moduleWorldManager->GetSelectedRoom()->SetSelectedObject(nullptr);
-	}
-
-	ImGui::PopStyleColor();
 }
 
 void RoomDockPanel::ShowViewportSettingsTab()
