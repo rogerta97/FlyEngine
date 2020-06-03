@@ -469,13 +469,14 @@ void RoomDockPanel::DrawRoomHierarchy()
 
 			if (ImGui::Selectable("Layer Up"))
 			{
-
+				selectedRoom->MoveObjectInList(selectedObject, true);
 				ImGui::CloseCurrentPopup();
 			}
 
 			if (ImGui::Selectable("Layer Down"))
 			{
 
+				selectedRoom->MoveObjectInList(selectedObject, false);
 				ImGui::CloseCurrentPopup();
 			}
 

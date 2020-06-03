@@ -55,6 +55,7 @@ public:
 	void AddItemToInventory(FlyObject* newObject_Inv); 
 	bool CheckRaycastConditions(); 
 	void NotifyVariableChange(FlyVariable* currentVariableValue); 
+	void MoveObjectInList(FlyObject* objectToMove, bool moveUp);
 	
 	bool HasObject(FlyObject* newObject);
 	FlyObject* GetFlyObject(UID _uid); 

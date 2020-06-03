@@ -265,6 +265,27 @@ void Room::NotifyVariableChange(FlyVariable* currentVariableValue)
 	}
 }
 
+void Room::MoveObjectInList(FlyObject* objectToMove, bool moveUp)
+{
+	int counter = 0;
+	for (auto currentObject = objectsInRoom.begin(); currentObject != objectsInRoom.end(); currentObject++)
+	{
+		if ((*currentObject)->GetUID() == objectToMove->GetUID())
+		{
+			if (moveUp == false && counter > 0)
+			{
+				std::swap(*currentObject, *std::prev(currentObject));
+			}
+
+			if (moveUp == 1 && counter < objectsInRoom.size() - 1)
+			{
+				std::swap(*currentObject, *std::next(currentObject));
+			}
+		}
+		counter++;
+	}
+}
+
 list<FlyObject*> Room::GetInventoryItemsList()
 {
 	list<FlyObject*> returnList = list<FlyObject*>(); 
@@ -505,6 +526,8 @@ void Room::DrawRoomObjects()
 	if (ImGui::IsMouseClicked(0) && GameInventory::getInstance()->droppingObject != nullptr)
 		GameInventory::getInstance()->DropObjectToRoom();
 }
+
+
 
 void Room::DrawRoomUserInterface()
 {
