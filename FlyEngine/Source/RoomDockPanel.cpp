@@ -400,6 +400,7 @@ void RoomDockPanel::DrawRoomHierarchy()
 		Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom();
 		FlyObject* selectedObject = selectedRoom->GetSelectedObject();
 
+		bool popupOpenThisTick = false;
 		for (list<FlyObject*>::reverse_iterator it = selectedRoom->objectsInRoom.rbegin(); it != selectedRoom->objectsInRoom.rend(); it++) 
 		{
 			PUSH_FONT(App->moduleImGui->rudaBlackMid);
@@ -417,14 +418,20 @@ void RoomDockPanel::DrawRoomHierarchy()
 
 			if (ImGui::IsWindowHovered() && App->moduleInput->GetMouseButton(RIGHT_CLICK) == KEY_DOWN)
 			{
-				if (ImGui::IsItemHovered())
+				if (!popupOpenThisTick)
 				{
-					(*it)->isSelected = true;
-					App->moduleWorldManager->GetSelectedRoom()->SetSelectedObject(*it);
-					ImGui::OpenPopup("right_click_item_hierarchy");
+					if (ImGui::IsItemHovered())
+					{
+						(*it)->isSelected = true;
+						App->moduleWorldManager->GetSelectedRoom()->SetSelectedObject(*it);
+						ImGui::OpenPopup("right_click_item_hierarchy");
+						popupOpenThisTick = true;
+					}
+					else
+					{
+						ImGui::OpenPopup("right_click_hierarchy");
+					}
 				}
-				else
-					ImGui::OpenPopup("right_click_hierarchy");
 			}
 
 			POP_FONT;
@@ -457,16 +464,6 @@ void RoomDockPanel::DrawRoomHierarchy()
 				ImGui::CloseCurrentPopup();
 			}
 
-			ImGui::EndPopup();
-		}
-
-		if (ImGui::BeginPopup("right_click_hierarchy"))
-		{
-			if (ImGui::Selectable("New FlyObject"))
-			{
-				ImGui::CloseCurrentPopup();
-			}
-
 			if (ImGui::Selectable("Layer Up"))
 			{
 				selectedRoom->MoveObjectInList(selectedObject, true);
@@ -477,6 +474,16 @@ void RoomDockPanel::DrawRoomHierarchy()
 			{
 
 				selectedRoom->MoveObjectInList(selectedObject, false);
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
+		}
+
+		if (ImGui::BeginPopup("right_click_hierarchy"))
+		{
+			if (ImGui::Selectable("New FlyObject"))
+			{
 				ImGui::CloseCurrentPopup();
 			}
 
