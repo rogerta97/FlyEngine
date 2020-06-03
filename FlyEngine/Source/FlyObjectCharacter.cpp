@@ -33,8 +33,13 @@ bool FlyObjectCharacter::Update(float dt)
 			PlayCharacterAnimation(CharacterMode::CHARACTER_IDLE);
 	}
 
-	if (App->isEngineInPlayMode && playingAnimation != nullptr)	
-		playingAnimation->Update(dt); 
+
+	if (playingAnimation != nullptr)
+	{
+		idleAnimation->Update(dt);
+		talkAnimation->Update(dt);
+		moveAnimation->Update(dt);
+	}
 	
 	return true;
 }
@@ -97,6 +102,7 @@ void FlyObjectCharacter::InitCharacter()
 	// Idle Animation -------------------------------------
 	idleAnimation = new DisplayAnimationAction(this);
 	idleAnimation->SetIsSequencial(false);
+	idleAnimation->fromCharacter = true; 
 
 	if (fixedImageAction == nullptr)
 		fixedImageAction = AddDisplayImageAction("Null", false);
@@ -110,6 +116,7 @@ void FlyObjectCharacter::InitCharacter()
 	moveAnimation = new DisplayAnimationAction(this);
 	moveAnimation->SetIsSequencial(false);
 	moveAnimation->canChangeCanvas = false; 
+	moveAnimation->fromCharacter = true;
 
 	if (fixedImageAction == nullptr)
 		fixedImageAction = AddDisplayImageAction("Null", false);
@@ -123,6 +130,7 @@ void FlyObjectCharacter::InitCharacter()
 	talkAnimation = new DisplayAnimationAction(this);
 	talkAnimation->SetIsSequencial(false);
 	talkAnimation->canChangeCanvas = false;
+	talkAnimation->fromCharacter = true;
 
 	if (fixedImageAction == nullptr)
 		fixedImageAction = AddDisplayImageAction("Null", false);

@@ -12,6 +12,7 @@ enum AnimationState
 {
 	ANIMATION_PLAY,
 	ANIMATION_STOP, 
+	ANIMATION_PLAY_ONLY_PREVIEW, 
 };
 
 enum AnimationPlayMode
@@ -65,6 +66,7 @@ public:
 	AnimationPlayMode animPlayMode = ANIMATION_LOOP; 
 
 	bool canChangeCanvas = true; 
+	bool fromCharacter = false; 
 
 private:
 

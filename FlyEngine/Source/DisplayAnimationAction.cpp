@@ -107,7 +107,7 @@ void DisplayAnimationAction::DrawActionOccurenceCheckboxes()
 
 void DisplayAnimationAction::Update(float dt)
 {
-	if (animationState == ANIMATION_PLAY) 
+	if (animationState == ANIMATION_PLAY || animationState == ANIMATION_PLAY_ONLY_PREVIEW) 
 	{
 		animationTime += App->GetDeltaTime(); 
 		if (animationTime > animation->GetFramesInterval())
@@ -119,7 +119,7 @@ void DisplayAnimationAction::Update(float dt)
 				Stop();
 		
 			// Updates Viewport Image
-			if(screenImageAction != nullptr)
+			if(screenImageAction != nullptr && animationState != ANIMATION_PLAY_ONLY_PREVIEW)
 				screenImageAction->SetTexture(animation->GetFrameByPos(currentFrame));		
 		}
 	}
@@ -177,7 +177,10 @@ void DisplayAnimationAction::StopAction()
 void DisplayAnimationAction::Play()
 {
 	currentFrame = 0; 
-	animationState = ANIMATION_PLAY; 
+	if(fromCharacter && !App->isEngineInPlayMode)
+		animationState = ANIMATION_PLAY_ONLY_PREVIEW; 
+	else
+		animationState = ANIMATION_PLAY; 
 
 	if (animPlayMode == AnimationPlayMode::ANIMATION_LOOP)
 		SetActionCompleted(true);
@@ -532,7 +535,7 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize, string p
 
 	ImTextureID playPauseIconID = 0; 
 
-	if (animationState == ANIMATION_PLAY)
+	if (animationState == ANIMATION_PLAY || animationState == ANIMATION_PLAY_ONLY_PREVIEW)
 	{
 		Texture* placeholder = (Texture*)ResourceManager::getInstance()->GetResource("StopIcon"); 
 		playPauseIconID = (ImTextureID)placeholder->GetTextureID(); 
@@ -542,7 +545,6 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize, string p
 		Texture* placeholder = (Texture*)ResourceManager::getInstance()->GetResource("PlayIcon");
 		playPauseIconID = (ImTextureID)placeholder->GetTextureID();
 	}
-
 
 	Texture* previewFrame = (Texture*)ResourceManager::getInstance()->GetResource("PreviewFrameIcon");
 	ImGui::SetCursorPos(ImVec2(centerControlls.x - 80, centerControlls.y - 25));
@@ -554,11 +556,14 @@ void DisplayAnimationAction::DrawUISettingsLeftColumn(float squareSize, string p
 	INC_CURSOR_4;
 	ImGui::SameLine();
 	ImGui::SetCursorPos(ImVec2(centerControlls.x - 35, centerControlls.y - 25));
+
 	if (ImGui::ImageButton(playPauseIconID, ImVec2(25, 25)))
 	{
 		if (animationState == ANIMATION_STOP)
+		{
 			Play();
-		else if (animationState == ANIMATION_PLAY)
+		}
+		else if (animationState == ANIMATION_PLAY || animationState == ANIMATION_PLAY_ONLY_PREVIEW)
 		{
 			Stop(); 
 

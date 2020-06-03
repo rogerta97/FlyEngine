@@ -150,6 +150,7 @@ bool FlyObject::Update(float dt)
 		}
 	}
 
+	// User Click Interaction -------------------------
 	if (App->isEngineInPlayMode && App->moduleInput->GetMouseButton(RI_MOUSE_BUTTON_1_DOWN) == KEY_DOWN)
 	{
 		if (clickableArea->IsMouseOver())
