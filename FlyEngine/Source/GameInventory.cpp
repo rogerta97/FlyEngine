@@ -115,40 +115,7 @@ void GameInventory::AddObjectToInventory(FlyObject* newItem)
 			currentSlot->viewportScale = newItem->transform->GetScale(); 
 
 			// Adjust object position
-			float ar = App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
-			float2 center = currentSlot->GetSlotBB()->GetCenter();
-			newItem->transform->SetPosition(center / ar); 
-
-			// Adjust object scale 
-			bool isObjectVertical = newItem->GetDisplayImageAction()->IsVertical();
-
-			if (isObjectVertical)
-			{
-				DisplayImageAction* newObjectDisplayImage = newItem->GetDisplayImageAction();
-				float itemHeigth = newItem->gizmos->selectGizmo->objectBorderBox->GetSize().y;
-				float slotHeigth = currentSlot->GetSlotBB()->GetSize().y; 
-				float increment = slotHeigth / itemHeigth;
-
-				float2 currentItemScale = newItem->transform->GetScale(); 
-				float2 desiredItemScale = currentItemScale * increment; 
-
-				newItem->transform->SetScale(desiredItemScale); 
-			}
-			else
-			{
-				DisplayImageAction* newObjectDisplayImage = newItem->GetDisplayImageAction();
-				float itemWidth = newItem->gizmos->selectGizmo->objectBorderBox->GetSize().x; 
-				float slotHWidth = currentSlot->GetSlotBB()->GetSize().x;
-				float increment = slotHWidth / itemWidth;
-
-				float2 currentItemScale = newItem->transform->GetScale();
-				float2 desiredItemScale = currentItemScale * increment;
-
-				newItem->transform->SetScale(desiredItemScale);
-			}
-
-			currentSlot->slotScale = newItem->transform->GetScale();
-			currentSlot->SetObject(newItem);
+			instance->PlaceObjectInSlot(currentSlot, newItem);
 
 			Room* selectedRoom = App->moduleWorldManager->GetSelectedRoom();
 			if (selectedRoom != nullptr)
@@ -159,6 +126,44 @@ void GameInventory::AddObjectToInventory(FlyObject* newItem)
 			return;
 		}
 	}
+}
+
+void GameInventory::PlaceObjectInSlot(InventorySlot* currentSlot, FlyObject* newItem)
+{
+	float ar = App->moduleImGui->gameViewportDockPanel->GetAspectRatio();
+	float2 center = currentSlot->GetSlotBB()->GetCenter();
+	newItem->transform->SetPosition(center / ar);
+
+	// Adjust object scale 
+	bool isObjectVertical = newItem->GetDisplayImageAction()->IsVertical();
+
+	if (isObjectVertical)
+	{
+		DisplayImageAction* newObjectDisplayImage = newItem->GetDisplayImageAction();
+		float itemHeigth = newItem->gizmos->selectGizmo->objectBorderBox->GetSize().y;
+		float slotHeigth = currentSlot->GetSlotBB()->GetSize().y;
+		float increment = slotHeigth / itemHeigth;
+
+		float2 currentItemScale = newItem->transform->GetScale();
+		float2 desiredItemScale = currentItemScale * increment;
+
+		newItem->transform->SetScale(desiredItemScale);
+	}
+	else
+	{
+		DisplayImageAction* newObjectDisplayImage = newItem->GetDisplayImageAction();
+		float itemWidth = newItem->gizmos->selectGizmo->objectBorderBox->GetSize().x;
+		float slotHWidth = currentSlot->GetSlotBB()->GetSize().x;
+		float increment = slotHWidth / itemWidth;
+
+		float2 currentItemScale = newItem->transform->GetScale();
+		float2 desiredItemScale = currentItemScale * increment;
+
+		newItem->transform->SetScale(desiredItemScale);
+	}
+
+	currentSlot->slotScale = newItem->transform->GetScale();
+	currentSlot->SetObject(newItem);
 }
 
 bool GameInventory::IsItemInInventory(UID checkItemUID)
@@ -259,10 +264,22 @@ void GameInventory::CheckReturnDroppingObject()
 {
 	if (instance->returnDroppingObject && instance->droppingObject != nullptr)
 	{
-		FlyObject* droppedObject = instance->DropObjectToRoom();
+		for (auto& currentSlot : instance->inventorySlots)
+		{
+			if (currentSlot->isObjectPicked)
+			{
+				currentSlot->isObjectPicked = false; 
+				instance->PlaceObjectInSlot(currentSlot, instance->droppingObject);
+				instance->droppingObject = nullptr; 
+				App->moduleWorldManager->canDragInventory = false;
+			}
+		}
+
+		instance->returnDroppingObject = false;
+		/*FlyObject* droppedObject = instance->DropObjectToRoom();
 		instance->AddObjectToInventory(droppedObject);
 		App->moduleWorldManager->canDragInventory = false; 
-		instance->returnDroppingObject = false; 
+		instance->returnDroppingObject = false; */
 	}
 }
 

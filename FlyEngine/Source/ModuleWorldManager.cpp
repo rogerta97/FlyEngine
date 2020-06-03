@@ -50,6 +50,7 @@ update_status ModuleWorldManager::Update(float dt)
 	if (App->moduleInput->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 	{
 		GameInventory::getInstance()->returnDroppingObject = true;
+		GameInventory::getInstance()->CheckReturnDroppingObject();
 	}
 
 	for (auto& currentRoom : roomsInWorldList)

@@ -48,6 +48,7 @@ public:
 	static void CreateSlots(); 
 	static void AddEmptySlot(); 
 	static void AddObjectToInventory(FlyObject* newObject);
+	static void PlaceObjectInSlot(InventorySlot* currentSlot, FlyObject* newItem);
 	static bool IsItemInInventory(UID checkItemUID);
 	static void UpdateInventorySlots();
 	static bool IsOpened(); 

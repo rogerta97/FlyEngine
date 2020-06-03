@@ -499,7 +499,7 @@ void Room::DrawRoomObjects()
 
 	// Draw dropping inventory object 
 	GameInventory::getInstance()->DrawDroppingObject();
-	GameInventory::getInstance()->CheckReturnDroppingObject();
+	//GameInventory::getInstance()->CheckReturnDroppingObject();
 
 
 	if (ImGui::IsMouseClicked(0) && GameInventory::getInstance()->droppingObject != nullptr)
