@@ -346,10 +346,9 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		}
 	}
 
-
-	// Save Sequential Occurrence 
-	string sequenceConditionStr = string(serializeObjectStr + "Sequential_BlackboardConditions.Conditions.");
-	int sequenceConditionsAmount = json_object_dotget_number(root_obj, string(sequenceConditionStr + string("ConditionsAmount")).c_str());
+	// Load Sequential Occurrence 
+	string sequenceConditionStr = string(serializeObjectStr + "Sequential_BlackboardConditions.Conditions");
+	int sequenceConditionsAmount = json_object_dotget_number(root_obj, string(sequenceConditionStr + string(".ConditionsAmount")).c_str());
 
 	int count = 0;
 	while (count < sequenceConditionsAmount)
@@ -999,8 +998,6 @@ void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 	{
 		string serializeObjectStr = "RoomData.Objects" + string(".FlyObject_") + to_string(counter) + string(".");
 		
-
-
 		counter++;
 	}
 

@@ -71,7 +71,7 @@ void Blackboard::LoadData(std::string _fileName)
 	}
 	else
 	{
-		filePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "BlackboardsData\\" + _fileName.c_str() + "_Blackboard.json";
+		filePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "BlackboardsData\\" + _fileName.c_str() + ".json";
 	}
 
 	JSON_Value* root = json_parse_file(filePath.c_str());
