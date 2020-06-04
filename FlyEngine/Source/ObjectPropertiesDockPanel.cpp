@@ -1060,6 +1060,69 @@ void ObjectPropertiesDockPanel::DrawCharacterTab()
 	ImGui::PopStyleColor();
 	ImGui::Spacing();
 
+
+	if (showVariableConditions)
+	{
+		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+		ImGui::Text("Evaluation Criteria:");
+		ImGui::PopFont();
+
+		int evaluationCritatiaComboInt = (int)selectedObject->sequentialEvaluationCriteria;
+		if (ImGui::Combo("##CharacterSequential", &evaluationCritatiaComboInt, "All conditions must succed\0One condition must succed"))
+		{
+			switch (evaluationCritatiaComboInt)
+			{
+			case 0:
+				selectedObject->sequentialEvaluationCriteria = SEQ_ALL_SUCCED;
+				break;
+
+			case 1:
+				selectedObject->sequentialEvaluationCriteria = SEQ_ONE_SUCCED;
+				break;
+			}
+		}
+
+		ImGui::Spacing();
+
+		// Value Conditions List 
+		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+		ImGui::Text("Conditions List:");
+		ImGui::PopFont();
+
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
+		ImGui::BeginChild("valueConditionsHolder", ImVec2(ImGui::GetContentRegionAvailWidth(), 250));
+
+		int count = 0;
+		for (auto& currentCondition : selectedObject->sequentialActionConditions)
+		{
+			//currentCondition->DrawUIItem(count);
+			count++;
+		}
+
+		ImGui::EndChild();
+		ImGui::PopStyleColor();
+
+		ImGui::Spacing();
+		ImGui::Separator();
+
+		// Draw Condition Buttons 
+		Texture* plusTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlusIcon");
+		if (ImGui::ImageButton((ImTextureID)plusTexture->GetTextureID(), ImVec2(25, 25)))
+		{
+			ImGui::OpenPopup("SelectConditionType");
+		}
+
+		// Callback for when button Add is pressed
+		//OnAddConditionButtonPressed();
+
+		ImGui::SameLine();
+		Texture* minusTexture = (Texture*)ResourceManager::getInstance()->GetResource("MinusIcon");
+		if (ImGui::ImageButton((ImTextureID)minusTexture->GetTextureID(), ImVec2(25, 25)))
+		{
+
+		}
+	}
+
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
 	ImGui::Text("Sequential Actions:");
 	ImGui::PopFont();

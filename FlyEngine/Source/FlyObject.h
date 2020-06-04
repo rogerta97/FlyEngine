@@ -19,6 +19,12 @@ enum FlyObjectType
 	UI_HOLDER, 
 };
 
+enum SequentialConditionEvaluationCriteria
+{
+	SEQ_ALL_SUCCED, 
+	SEQ_ONE_SUCCED
+};
+
 class Gizmos; 
 class DisplayImageAction; 
 class ModifyVariableAction; 
@@ -130,6 +136,8 @@ public:
 
 	DisplayImageAction* GetDisplayImageAction(); 
 
+	SequentialConditionEvaluationCriteria sequentialEvaluationCriteria;
+	std::list<ActionCondition*> sequentialActionConditions;
 	bool occ_SceneEnter = false;
 	bool occ_ObjectClicked = false;
 	bool occ_blackboardValue = false;

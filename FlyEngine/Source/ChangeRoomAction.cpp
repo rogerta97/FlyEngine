@@ -79,8 +79,6 @@ void ChangeRoomAction::DrawActionOccurenceCheckboxes()
 
 		if (showClickWithItems)
 		{
-			
-
 			if (itemToClickWith != nullptr)
 			{
 				strcpy(itemToClickWithNameBuffer, itemToClickWith->GetName().c_str()); 

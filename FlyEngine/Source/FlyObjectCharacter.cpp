@@ -33,7 +33,6 @@ bool FlyObjectCharacter::Update(float dt)
 			PlayCharacterAnimation(CharacterMode::CHARACTER_IDLE);
 	}
 
-
 	if (playingAnimation != nullptr)
 	{
 		idleAnimation->Update(dt);

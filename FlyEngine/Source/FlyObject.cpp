@@ -191,6 +191,27 @@ bool FlyObject::Update(float dt)
 		}
 	}
 
+	// Sequential Start Conditions
+	if (App->isEngineInPlayMode)
+	{
+		if (occ_mouseOver && clickableArea->IsMouseOver())
+		{
+			if (currentSequentialAction == nullptr && !sequentialActionsList.empty())
+			{
+				flog("Start Sequential");
+				currentSequentialAction = sequentialActionsList.front();
+			}
+		}
+		else if (occ_ObjectClicked && clickableArea->IsBoxClicked())
+		{
+			if (currentSequentialAction == nullptr && !sequentialActionsList.empty())
+			{
+				flog("Start Sequential");
+				currentSequentialAction = sequentialActionsList.front();
+			}
+		}
+	}
+
 	return ret; 
 }
 
