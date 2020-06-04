@@ -1095,7 +1095,7 @@ void ObjectPropertiesDockPanel::DrawCharacterTab()
 		int count = 0;
 		for (auto& currentCondition : selectedObject->sequentialActionConditions)
 		{
-			//currentCondition->DrawUIItem(count);
+			currentCondition->DrawUIItem(count);
 			count++;
 		}
 
@@ -1113,7 +1113,24 @@ void ObjectPropertiesDockPanel::DrawCharacterTab()
 		}
 
 		// Callback for when button Add is pressed
-		//OnAddConditionButtonPressed();
+		if (ImGui::BeginPopup("SelectConditionType"))
+		{
+			Texture* checkVariableIcon = (Texture*)ResourceManager::getInstance()->GetResource("CheckVariableIcon");
+			ImGui::Image((ImTextureID)checkVariableIcon->GetTextureID(), ImVec2(18, 18));
+			ImGui::SameLine();
+
+			if (ImGui::Selectable("Check Blackboard Variable"))
+				selectedObject->AddEmptySequentialCondition(CONDITION_IS_VARIABLE);
+
+			Texture* checkInventoryItemIcon = (Texture*)ResourceManager::getInstance()->GetResource("CheckInventoryItemIcon");
+			ImGui::Image((ImTextureID)checkInventoryItemIcon->GetTextureID(), ImVec2(18, 18));
+			ImGui::SameLine();
+
+			if (ImGui::Selectable("Check Inventory Object"))
+				selectedObject->AddEmptySequentialCondition(CONDITION_HAS_ITEM);
+
+			ImGui::EndPopup();
+		}
 
 		ImGui::SameLine();
 		Texture* minusTexture = (Texture*)ResourceManager::getInstance()->GetResource("MinusIcon");

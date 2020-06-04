@@ -74,6 +74,7 @@ public:
 	void DoVariableConditionActions(FlyVariable* currentVariableValue);
 	bool HasAction(ActionType _actionToCheckType);
 	bool HasSequentialAction(ActionType _actionToCheckType);
+	ActionCondition* AddEmptySequentialCondition(ActionConditionType conditionType);
 
 	// Tools -----------
 	DisplayImageAction* AddDisplayImageAction(const char* imageTexturePath = "None", bool addToSequentialActions = false);

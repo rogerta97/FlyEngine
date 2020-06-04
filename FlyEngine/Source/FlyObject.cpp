@@ -9,6 +9,8 @@
 #include "DialogueNodeGraph.h"
 #include "ImageImporter.h"
 #include "DisplayAnimationAction.h"
+#include "ActionConditionVariable.h"
+#include "ActionConditionHasItem.h"
 #include "ModuleManager.h"
 #include "GameViewportDockPanel.h"
 #include "FollowPathAction.h"
@@ -798,6 +800,29 @@ EmitSoundAction* FlyObject::AddEmitSoundAction(bool addToSequentialActions)
 	}
 
 	return (EmitSoundAction*)GetAction(ACTION_EMIT_SOUND);
+}
+
+ActionCondition* FlyObject::AddEmptySequentialCondition(ActionConditionType conditionType)
+{
+	switch (conditionType)
+	{
+	case CONDITION_IS_VARIABLE:
+	{
+		ActionConditionVariable* conditionCheckVar = new ActionConditionVariable();
+		sequentialActionConditions.push_back(conditionCheckVar);
+		return conditionCheckVar;
+	}
+	case CONDITION_HAS_ITEM:
+	{
+		ActionConditionHasItem* conditionHasItem = new ActionConditionHasItem();
+		sequentialActionConditions.push_back(conditionHasItem);
+		return conditionHasItem;
+	}
+	case AC_NONE:
+		break;
+	}
+
+	return nullptr;
 }
 
 DisplayAnimationAction* FlyObject::AddDisplayAnimationAction(bool addToSequentialActions)
