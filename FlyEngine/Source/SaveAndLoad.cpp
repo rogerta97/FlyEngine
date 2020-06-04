@@ -16,6 +16,9 @@
 #include "RoomUIHandler.h"
 #include "GamePropertiesDockPanel.h"
 #include "Animation.h"
+#include "ActionConditionVariable.h"
+#include "ActionCondition.h"
+#include "ActionConditionHasItem.h"
 #include "Room.h"
 #include "DialogueStep.h"
 #include "Dialogue.h"
@@ -343,11 +346,64 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 		}
 	}
 
+
+	// Save Sequential Occurrence 
+	string sequenceConditionStr = string(serializeObjectStr + "Sequential_BlackboardConditions.Conditions.");
+	int sequenceConditionsAmount = json_object_dotget_number(root_obj, string(sequenceConditionStr + string("ConditionsAmount")).c_str());
+
+	int count = 0;
+	while (count < sequenceConditionsAmount)
+	{
+		string serializeStr = sequenceConditionStr + ".Condition_" + to_string(count);
+
+		int conditionType_tmp = json_object_dotget_number(root_obj, string(serializeStr + ".ConditionType").c_str());
+		ActionConditionType actionConditionType = (ActionConditionType)conditionType_tmp;
+
+		switch (actionConditionType)
+		{
+		case CONDITION_IS_VARIABLE:
+		{
+			ActionConditionVariable* newConditionVariable = new ActionConditionVariable();
+
+			string targetVariableName = json_object_dotget_string(root_obj, string(serializeStr + ".TargetVariableName").c_str());
+
+			// For optimization the code will first search in the currentRoom blackboard, if the variable is not found it will search in the globalBlackboard
+			if (currentRoom->GetBlackboard() != nullptr)
+			{
+				newConditionVariable->targetVariable = currentRoom->GetBlackboard()->GetVariable(targetVariableName);
+			}
+			else if (App->moduleWorldManager->globalBlackboard != nullptr)
+			{
+				newConditionVariable->targetVariable = App->moduleWorldManager->globalBlackboard->GetVariable(targetVariableName);
+			}
+
+			int conditionOperator_tmp = json_object_dotget_number(root_obj, string(serializeStr + ".ConditionType").c_str());
+			newConditionVariable->actionConditionOperator = (ActionConditionOperator)conditionOperator_tmp;
+
+			newConditionVariable->targetValueInteger = json_object_dotget_number(root_obj, string(serializeStr + ".TargetValueInteger").c_str());
+			newConditionVariable->targetValueBoolean = json_object_dotget_boolean(root_obj, string(serializeStr + ".TargetValueBoolean").c_str());
+
+			newObject->sequentialActionConditions.push_back(newConditionVariable);
+			break;
+		}
+
+		case CONDITION_HAS_ITEM:
+			// holderAction->LoadConditionHasItem(root_obj, serializeStr);
+			break;
+		}
+		count++;
+	}
+
 	// Create Sequential Actions ----
 	if (json_object_dothas_value(root_obj, string(serializeObjectStr + string("SequentialActions")).c_str()))
 	{
+		// Load Sequential Actions Occurrence -------
 		string serializeObjectStrActions = serializeObjectStr + "SequentialActions.";
 		int actionsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ActionsAmount")).c_str());
+
+		newObject->occ_SceneEnter = json_object_dotget_boolean(root_obj, string(serializeObjectStrActions + "StartOccurrence.SceneEnter").c_str());
+		newObject->occ_ObjectClicked = json_object_dotget_boolean(root_obj, string(serializeObjectStrActions + "StartOccurrence.ObjectClicked").c_str());
+		newObject->occ_blackboardValue = json_object_dotget_boolean(root_obj, string(serializeObjectStrActions + "StartOccurrence.BlackboardCondition").c_str());
 
 		int counter = 0;
 		while (counter < actionsAmount)
@@ -856,6 +912,7 @@ void SaveAndLoad::LoadActionConditions(JSON_Object* root_obj, std::string& seria
 			int actionType = json_object_dotget_number(root_obj, string(serializeObjectStrActions + ".ActionType").c_str());
 			Action* currentAction = parentObject->GetAction((ActionType)actionType); 
 
+			// Load Occurrence Item To Click With ------------
 			bool occObjectClick = json_object_dotget_boolean(root_obj, string(serializeObjectStrActions + ".Occurrence.ObjectClicked").c_str());
 			UID itemToClickWithUID = json_object_dotget_number(root_obj, string(serializeObjectStrActions + ".Occurrence.ItemToClickWith").c_str());
 
@@ -863,48 +920,49 @@ void SaveAndLoad::LoadActionConditions(JSON_Object* root_obj, std::string& seria
 			{
 				currentAction->itemToClickWith = currentRoom->GetFlyObject(itemToClickWithUID);
 			}
+			
+			// Load Action Variable Conditions ----------------
+			string conditionsSerializeStr = string(serializeObjectStrActions + ".Conditions").c_str();
+			int conditionsAmount = json_object_dotget_number(root_obj, string(conditionsSerializeStr + ".ConditionsAmount").c_str());
+
+			if (conditionsAmount == 0)
+				continue;
+
+			Action* holderAction = nullptr; 
+			if (currentAction->GetActionName() == "Display Image")
+				holderAction = parentObject->GetAction(ACTION_DISPLAY_IMAGE);
+
+			else if (currentAction->GetActionName() == "Change Room")
+				holderAction = parentObject->GetAction(ACTION_CHANGE_ROOM);
+
+			else if (currentAction->GetActionName() == "Emit Sound")
+				holderAction = parentObject->GetAction(ACTION_EMIT_SOUND);
+
+			else if (currentAction->GetActionName() == "Modify Variable")
+				holderAction = parentObject->GetAction(ACTION_MOD_VARIABLE);
+
+			int count = 0;
+			while (count < conditionsAmount)
+			{
+				string serializeStr = conditionsSerializeStr + ".Condition_" + to_string(count);
+
+				int conditionType_tmp = json_object_dotget_number(root_obj, string(serializeStr + ".ConditionType").c_str());
+				ActionConditionType actionConditionType = (ActionConditionType)conditionType_tmp;
+
+				switch (actionConditionType)
+				{
+				case CONDITION_IS_VARIABLE:
+					holderAction->LoadConditionVariable(root_obj, serializeStr, parentObject->GetParentRoom()->GetBlackboard());
+					break;
+
+				case CONDITION_HAS_ITEM:
+					holderAction->LoadConditionHasItem(root_obj, serializeStr);
+					break;
+				}
+				count++;
+			}
 
 			i++;
-		/*		string conditionsSerializeStr = string(serializeObjectStrActions + ".Conditions").c_str();
-				int conditionsAmount = json_object_dotget_number(root_obj, string(conditionsSerializeStr + ".ConditionsAmount").c_str());
-
-				if (conditionsAmount == 0)
-					continue;
-				
-				if(actionNames[i] == "DisplayImage")
-					holderAction = parentObject->GetAction(ACTION_DISPLAY_IMAGE);
-
-				else if (actionNames[i] == "ChangeRoom")
-					holderAction = parentObject->GetAction(ACTION_CHANGE_ROOM);
-
-				else if (actionNames[i] == "EmitSound")
-					holderAction = parentObject->GetAction(ACTION_EMIT_SOUND);
-
-				else if (actionNames[i] == "ModifyVariable")
-					holderAction = parentObject->GetAction(ACTION_MOD_VARIABLE);
-
-
-				int count = 0;
-				while (count < conditionsAmount)
-				{
-					string serializeStr = conditionsSerializeStr + ".Condition_" + to_string(count);
-
-					int conditionType_tmp = json_object_dotget_number(root_obj, string(serializeStr + ".ConditionType").c_str());
-					ActionConditionType actionConditionType = (ActionConditionType)conditionType_tmp;
-
-					switch (actionConditionType)
-					{
-					case CONDITION_IS_VARIABLE:
-						holderAction->LoadConditionVariable(root_obj, serializeStr, parentObject->GetParentRoom()->GetBlackboard());
-						break;
-
-					case CONDITION_HAS_ITEM:
-						holderAction->LoadConditionHasItem(root_obj, serializeStr);
-						break;
-					}
-					count++;
-				}*/
-			
 		}	
 	}
 }
@@ -934,6 +992,19 @@ void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 	}
 
 	// We wait until the object is created to ensure any reference in Conditions is already there 
+
+	// Object Conditions First 
+	counter = 0;
+	while (counter < obj_ammount)
+	{
+		string serializeObjectStr = "RoomData.Objects" + string(".FlyObject_") + to_string(counter) + string(".");
+		
+
+
+		counter++;
+	}
+
+	// Action Conditions
 	counter = 0;
 	while (counter < obj_ammount)
 	{
@@ -941,7 +1012,6 @@ void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 		instance->LoadActionConditions(root_obj, serializeObjectStr, roomToLoad);
 		counter++;
 	}
-
 
 	string serialiseStr = "RoomData.UserInterface";
 

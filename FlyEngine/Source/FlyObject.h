@@ -65,6 +65,7 @@ public:
 	// Save & Load 
 	virtual void SaveObjectData(JSON_Object* jsonObject, int objectIndex);
 	void SaveTransform(std::string serializeObjectName, JSON_Object* jsonObject);
+	void SaveSequentialConditions(std::string serializeObjectName, JSON_Object* jsonObject);
 	void SaveClickableArea(std::string serializeObjectName, JSON_Object* jsonObject);
 
 	// Actions ---------
@@ -142,7 +143,6 @@ public:
 	bool occ_SceneEnter = false;
 	bool occ_ObjectClicked = false;
 	bool occ_blackboardValue = false;
-	bool occ_mouseOver = false;
 
 private: 
 	// Draw UI ---------

@@ -196,15 +196,7 @@ bool FlyObject::Update(float dt)
 	// Sequential Start Conditions
 	if (App->isEngineInPlayMode)
 	{
-		if (occ_mouseOver && clickableArea->IsMouseOver())
-		{
-			if (currentSequentialAction == nullptr && !sequentialActionsList.empty())
-			{
-				flog("Start Sequential");
-				currentSequentialAction = sequentialActionsList.front();
-			}
-		}
-		else if (occ_ObjectClicked && clickableArea->IsBoxClicked())
+		if (occ_ObjectClicked && clickableArea->IsBoxClicked())
 		{
 			if (currentSequentialAction == nullptr && !sequentialActionsList.empty())
 			{
@@ -577,7 +569,9 @@ void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 	// Save Sequential Occurrence 
 	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "SequentialActions.StartOccurrence.SceneEnter").c_str(), occ_SceneEnter);
 	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "SequentialActions.StartOccurrence.ObjectClicked").c_str(), occ_ObjectClicked);
-	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "SequentialActions.StartOccurrence.BlackboardValue").c_str(), occ_blackboardValue);
+	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "SequentialActions.StartOccurrence.BlackboardCondition").c_str(), occ_blackboardValue);
+
+	SaveSequentialConditions(string(serializeObjectName + "Sequential_BlackboardConditions."), jsonObject);
 
 	//if (itemToClickWith == nullptr)
 	//{
@@ -588,8 +582,6 @@ void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 	//	json_object_dotset_number(jsonObject, string(serializeObjectName + "ItemToClickWith").c_str(), itemToClickWith->GetUID());
 	//}
 
-//	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "BlackboardCondition").c_str(), IsOccCondition());
-
 	// Save Sequential Actions
 	counter = 0;
 	for (auto& it : sequentialActionsList)
@@ -597,7 +589,6 @@ void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 		it->SaveAction(jsonObject, std::string(serializeObjectName + "SequentialActions."), false, counter);
 		counter++;
 	}
-
 
 	// Save Object Clickable Area
 	SaveClickableArea(serializeObjectName, jsonObject);
@@ -614,6 +605,23 @@ void FlyObject::SaveTransform(std::string serializeObjectName, JSON_Object* json
 
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "Scale.x").c_str(), transform->GetScale().x);
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "Scale.y").c_str(), transform->GetScale().y);
+}
+
+
+void FlyObject::SaveSequentialConditions(std::string serializeObjectName, JSON_Object* jsonObject)
+{
+	int conditionsAmount = this->sequentialActionConditions.size();
+	json_object_dotset_number(jsonObject, string(serializeObjectName + "Conditions.ConditionsAmount").c_str(), conditionsAmount);
+
+	if (!sequentialActionConditions.empty())
+	{
+		string conditionsSaveStr = serializeObjectName + "Conditions.";
+		int count = 0;
+		for (auto& currentCondition : sequentialActionConditions)
+		{
+			currentCondition->SaveCondition(jsonObject, conditionsSaveStr, count++);
+		}
+	}
 }
 
 void FlyObject::SaveClickableArea(std::string serializeObjectName, JSON_Object* jsonObject)

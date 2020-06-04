@@ -1030,14 +1030,12 @@ void ObjectPropertiesDockPanel::DrawCharacterTab()
 	ImGui::Separator();
 
 	PUSH_CHILD_BG_COLOR_DARK;
-	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 130));
+	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 95));
 	ImGui::SetCursorPos(ImVec2(5, 5));
 	ImGui::Checkbox("Scene Enter", &selectedObject->occ_SceneEnter);
 	ImGui::SetCursorPos(ImVec2(5, 35));
-	ImGui::Checkbox("Mouse Over", &selectedObject->occ_mouseOver);
-	ImGui::SetCursorPos(ImVec2(5, 65));
 	ImGui::Checkbox("Object Clicked", &selectedObject->occ_ObjectClicked);
-	ImGui::SetCursorPos(ImVec2(5, 95));
+	ImGui::SetCursorPos(ImVec2(5, 65));
 	ImGui::Checkbox("Object Condition", &selectedObject->occ_blackboardValue);
 
 	ImGui::SameLine();
@@ -1059,7 +1057,6 @@ void ObjectPropertiesDockPanel::DrawCharacterTab()
 	ImGui::EndChild();
 	ImGui::PopStyleColor();
 	ImGui::Spacing();
-
 
 	if (showVariableConditions)
 	{
@@ -1312,14 +1309,12 @@ void ObjectPropertiesDockPanel::DrawObjectSequenceActionsTab()
 	ImGui::Spacing();
 	ImGui::Separator();
 
-	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 130));
+	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 95));
 	ImGui::SetCursorPos(ImVec2(5, 5));
 	ImGui::Checkbox("Scene Enter", &selectedObject->occ_SceneEnter);
 	ImGui::SetCursorPos(ImVec2(5, 35));
-	ImGui::Checkbox("Mouse Over", &selectedObject->occ_mouseOver);
-	ImGui::SetCursorPos(ImVec2(5, 65));
 	ImGui::Checkbox("Object Clicked", &selectedObject->occ_ObjectClicked);
-	ImGui::SetCursorPos(ImVec2(5, 95));
+	ImGui::SetCursorPos(ImVec2(5, 65));
 	ImGui::Checkbox("Object Condition", &selectedObject->occ_blackboardValue);
 
 	ImGui::SameLine();

@@ -82,6 +82,13 @@ void FlyObjectCharacter::SaveObjectData(JSON_Object* jsonObject, int objectIndex
 
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "SequentialActions.ActionsAmount").c_str(), sequentialActionsList.size());
 
+	// Save Sequential Occurrence 
+	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "SequentialActions.StartOccurrence.SceneEnter").c_str(), occ_SceneEnter);
+	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "SequentialActions.StartOccurrence.ObjectClicked").c_str(), occ_ObjectClicked);
+	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "SequentialActions.StartOccurrence.BlackboardCondition").c_str(), occ_blackboardValue);
+
+	SaveSequentialConditions(string(serializeObjectName + "Sequential_BlackboardConditions."), jsonObject);
+
 	// Save Object Sequenntial Action Settings
 	counter = 0;
 	for (auto& it : sequentialActionsList)
@@ -89,6 +96,8 @@ void FlyObjectCharacter::SaveObjectData(JSON_Object* jsonObject, int objectIndex
 		it->SaveAction(jsonObject, std::string(serializeObjectName + "SequentialActions."), false, counter);
 		counter++;
 	}
+
+
 
 	// Save Object Clickable Area
 	SaveClickableArea(serializeObjectName, jsonObject);
