@@ -34,23 +34,23 @@
 
 FlyObject::FlyObject(std::string _name, std::string _description, FlyObjectType _flyObjectType, Room* _parentRoom)
 {
-	name = _name; 
+	name = _name;
 	description = _description;
-	uid = RandomNumberGenerator::GenerateUID(); 
-	isSelected = false; 
-	hasVisuals = false; 
+	uid = RandomNumberGenerator::GenerateUID();
+	isSelected = false;
+	hasVisuals = false;
 	clickableAreaActive = false;
-	isPicked = false; 
-	isInteractable = true; 
+	isPicked = false;
+	isInteractable = true;
 	drawClickableArea = false;
-	flyObjectType = _flyObjectType; 
-	parentRoom = _parentRoom; 
-	currentSequentialAction = nullptr; 
-	sequentialSwapedTick = false; 
+	flyObjectType = _flyObjectType;
+	parentRoom = _parentRoom;
+	currentSequentialAction = nullptr;
+	sequentialSwapedTick = false;
 
-	clickableArea = new BoundingBox(); 
-	clickableAreaPosPerc = float2(0, 0); 
-	clickableAreaSizePerc = float2(0, 0); 
+	clickableArea = new BoundingBox();
+	clickableAreaPosPerc = float2(0, 0);
+	clickableAreaSizePerc = float2(0, 0);
 	clickableAreaColor = float4(1.0f, 0.8f, 0.8f, 0.4f);
 
 	transform = new Transform();
@@ -59,7 +59,7 @@ FlyObject::FlyObject(std::string _name, std::string _description, FlyObjectType 
 
 FlyObject::FlyObject()
 {
-	
+
 }
 
 FlyObject::~FlyObject()
@@ -70,17 +70,17 @@ FlyObject::~FlyObject()
 //Returns true if this objects is deleted in the middle of the 
 bool FlyObject::Update(float dt)
 {
-	bool ret = false; 
+	bool ret = false;
 
-	if (isSelected) 
+	if (isSelected)
 	{
-		if(!(selectedAction != nullptr && selectedAction->GetType() == ACTION_DISPLAY_TEXT))
+		if (!(selectedAction != nullptr && selectedAction->GetType() == ACTION_DISPLAY_TEXT))
 			gizmos->Update();
 
-		if(clickableArea != nullptr)
+		if (clickableArea != nullptr)
 		{
 			//clickableArea->Update();	
-		}		
+		}
 	}
 
 	for (auto& currentAction : actionsList)
@@ -94,14 +94,14 @@ bool FlyObject::Update(float dt)
 	}
 
 	// Update Sequential Action If Necessary ----------
-	sequentialSwapedTick = false; 
+	sequentialSwapedTick = false;
 	if (currentSequentialAction != nullptr)
 	{
 		if (currentSequentialAction->IsActionFinished())
 		{
 			bool assignNext = false;
-			bool assignedSuccess = false; 
-			int actionIndex = 0; 
+			bool assignedSuccess = false;
+			int actionIndex = 0;
 			for (auto currentSequential = sequentialActionsList.begin(); currentSequential != sequentialActionsList.end(); currentSequential++)
 			{
 				/*if (assignNext)
@@ -118,31 +118,31 @@ bool FlyObject::Update(float dt)
 					currentSequentialAction = nullptr;
 					break;
 				}*/
-		
+
 				if (*currentSequential == currentSequentialAction)
 				{
 					if (actionIndex < sequentialActionsList.size() - 1)
 					{
 						currentSequentialAction->StopAction();
 						currentSequentialAction = *std::next(currentSequential);
-						sequentialSwapedTick = true; 
+						sequentialSwapedTick = true;
 						break;
 					}
 					else
 					{
 						currentSequentialAction = nullptr;
-						sequentialSwapedTick = true; 
+						sequentialSwapedTick = true;
 					}
-					
+
 				}
 
 				actionIndex++;
 			}
 
-	/*		if (!assignedSuccess)
-			{
-				currentSequentialAction = nullptr; 
-			}*/
+			/*		if (!assignedSuccess)
+					{
+						currentSequentialAction = nullptr;
+					}*/
 		}
 
 		if (currentSequentialAction != nullptr)
@@ -169,16 +169,16 @@ bool FlyObject::Update(float dt)
 				break;
 
 			case INVENTORY_ITEM:
-				DoOnClickActions(); 
+				DoOnClickActions();
 				App->moduleWorldManager->GetSelectedRoom()->AddItemToInventory(this);
-				isPicked = true; 
-				ret = true; 
+				isPicked = true;
+				ret = true;
 				break;
 
 			case OBJECT_SEQUENTIAL:
 				if (currentSequentialAction == nullptr && !sequentialActionsList.empty())
 				{
-					currentSequentialAction = sequentialActionsList.front(); 
+					currentSequentialAction = sequentialActionsList.front();
 				}
 				break;
 
@@ -214,14 +214,14 @@ bool FlyObject::Update(float dt)
 		}
 	}
 
-	return ret; 
+	return ret;
 }
 
 void FlyObject::OnSceneEnter()
 {
 	for (auto& currentAction : actionsList)
 	{
-		if(currentAction->IsOccSceneEnter())
+		if (currentAction->IsOccSceneEnter())
 			currentAction->DoAction();
 	}
 
@@ -264,22 +264,22 @@ void FlyObject::DoVariableConditionActions(FlyVariable* currentVariableValue)
 	{
 		if (currentAction->IsOccCondition() && currentAction->PassConditionTest())
 		{
-			currentAction->DoAction(); 
+			currentAction->DoAction();
 		}
 	}
 }
 
 bool FlyObject::HasAction(ActionType _actionToCheckType)
 {
-	for(auto& currentAction : actionsList)
+	for (auto& currentAction : actionsList)
 	{
 		if (currentAction->GetType() == _actionToCheckType)
 		{
-			return true;  
+			return true;
 		}
 	}
 
-	return false; 
+	return false;
 }
 
 bool FlyObject::HasSequentialAction(ActionType _actionToCheckType)
@@ -298,15 +298,15 @@ bool FlyObject::HasSequentialAction(ActionType _actionToCheckType)
 void FlyObject::DrawVisualLayer(bool forceDraw)
 {
 	if (isPicked && !forceDraw)
-		return; 
+		return;
 
 	for (auto& it : actionsList) {
-		(it)->Draw(); 
+		(it)->Draw();
 	}
 
-	for (auto& it : sequentialActionsList) 
-	{	
-		if(it->GetDrawIfSequential())
+	for (auto& it : sequentialActionsList)
+	{
+		if (it->GetDrawIfSequential())
 			(it)->Draw();
 	}
 }
@@ -340,8 +340,8 @@ void FlyObject::CleanUp()
 {
 	for (auto& it : actionsList)
 	{
-		(it)->CleanUp(); 
-		delete it; 
+		(it)->CleanUp();
+		delete it;
 	}
 
 	for (auto& it : sequentialActionsList)
@@ -350,11 +350,11 @@ void FlyObject::CleanUp()
 		delete it;
 	}
 
-	actionsList.clear(); 
-	delete transform; 
+	actionsList.clear();
+	delete transform;
 
 	gizmos->CleanUp();
-	delete gizmos; 
+	delete gizmos;
 
 	if (clickableArea != nullptr)
 	{
@@ -371,7 +371,7 @@ std::string FlyObject::GetName() const
 
 void FlyObject::SetName(std::string newName)
 {
-	name = newName; 
+	name = newName;
 }
 
 UID FlyObject::GetUID() const
@@ -401,28 +401,28 @@ float4 FlyObject::GetClickableAreaColor() const
 
 void FlyObject::SetClickableAreaColor(float4 newColor)
 {
-	clickableAreaColor = newColor; 
+	clickableAreaColor = newColor;
 }
 
 Room* FlyObject::GetParentRoom() const
 {
-	return parentRoom; 
+	return parentRoom;
 }
 
 void FlyObject::SetParentRoom(Room* newParentRoom)
 {
-	if(newParentRoom != nullptr)
-		parentRoom = newParentRoom; 
+	if (newParentRoom != nullptr)
+		parentRoom = newParentRoom;
 }
 
 bool& FlyObject::IsInteractable()
 {
-	return isInteractable; 
+	return isInteractable;
 }
 
 void FlyObject::SetInteractable(bool _isInteractable)
 {
-	isInteractable = _isInteractable; 
+	isInteractable = _isInteractable;
 }
 
 DisplayImageAction* FlyObject::GetDisplayImageAction()
@@ -432,23 +432,23 @@ DisplayImageAction* FlyObject::GetDisplayImageAction()
 
 float2 FlyObject::GetObjectVisualDimensions()
 {
-	float2 objectVisualSize; 
+	float2 objectVisualSize;
 
 	// For now we will just take into account ImageTool, if you are deleting this you advanced really. 
-	DisplayImageAction* imageTool = (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE); 
+	DisplayImageAction* imageTool = (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE);
 	if (imageTool != nullptr)
 	{
-		objectVisualSize = float2(imageTool->GetQuad()->quadWidth, imageTool->GetQuad()->quadHeigth); 
+		objectVisualSize = float2(imageTool->GetQuad()->quadWidth, imageTool->GetQuad()->quadHeigth);
 	}
 
-	return objectVisualSize; 
+	return objectVisualSize;
 }
 
 void FlyObject::CalculateAllGizmos()
 {
 	gizmos->CalculateSelectGizmo(this);
 	gizmos->CalculateMoveGizmo(this);
-	gizmos->CalculateScaleGizmo(this); 
+	gizmos->CalculateScaleGizmo(this);
 }
 
 void FlyObject::FitObjectUtils()
@@ -456,14 +456,14 @@ void FlyObject::FitObjectUtils()
 	CalculateAllGizmos();
 	if (clickableArea)
 	{
-		float2 offset = SetCASizeFromOne(clickableAreaPosPerc, clickableAreaSizePerc, !hasVisuals); 
-		clickableArea->SetPosition(float2(transform->GetPosition(true).x + offset.x,transform->GetPosition(true).y + offset.y)); 
+		float2 offset = SetCASizeFromOne(clickableAreaPosPerc, clickableAreaSizePerc, !hasVisuals);
+		clickableArea->SetPosition(float2(transform->GetPosition(true).x + offset.x, transform->GetPosition(true).y + offset.y));
 	}
 }
 
 bool FlyObject::IsMouseOver()
 {
-	return gizmos->IsMouseOver(); 
+	return gizmos->IsMouseOver();
 }
 
 void FlyObject::CopyFlyObjectActions(FlyObject* objectToClone)
@@ -477,15 +477,15 @@ void FlyObject::CopyFlyObjectActions(FlyObject* objectToClone)
 			DisplayImageAction* otherDisplayImageAction = (DisplayImageAction*)currentOtherAction;
 
 			DisplayImageAction* newDisplayImage = AddDisplayImageAction();
-			newDisplayImage->CreateImage(otherDisplayImageAction->GetTexture()->GetPath()); 
+			newDisplayImage->CreateImage(otherDisplayImageAction->GetTexture()->GetPath());
 		}
-			break;
+		break;
 		case ACTION_CHANGE_ROOM:
 		{
-			ChangeRoomAction* otherChangeRoomAction = (ChangeRoomAction*)currentOtherAction; 
+			ChangeRoomAction* otherChangeRoomAction = (ChangeRoomAction*)currentOtherAction;
 
 			ChangeRoomAction* changeRoomAction = AddChangeRoomAction();
-			changeRoomAction->SetDestination(otherChangeRoomAction->GetDesination()); 
+			changeRoomAction->SetDestination(otherChangeRoomAction->GetDesination());
 
 			break;
 		}
@@ -495,8 +495,8 @@ void FlyObject::CopyFlyObjectActions(FlyObject* objectToClone)
 			EmitSoundAction* emitSoundAction = (EmitSoundAction*)currentOtherAction;
 
 			EmitSoundAction* newEmitSoundAction = AddEmitSoundAction();
-			newEmitSoundAction->audioClip = emitSoundAction->audioClip; 
-			newEmitSoundAction->audioPlayMode = emitSoundAction->audioPlayMode; 
+			newEmitSoundAction->audioClip = emitSoundAction->audioClip;
+			newEmitSoundAction->audioPlayMode = emitSoundAction->audioPlayMode;
 
 			break;
 		}
@@ -512,13 +512,13 @@ void FlyObject::CopyFlyObjectActions(FlyObject* objectToClone)
 
 			break;
 		}
-		
+
 		case ACTION_DISPLAY_ANIMATION:
 		{
 			DisplayAnimationAction* otherDisplayAnimationAction = (DisplayAnimationAction*)currentOtherAction;
 
 			DisplayAnimationAction* newDisplayAnimationAction = AddDisplayAnimationAction();
-			
+
 
 			break;
 		}
@@ -532,18 +532,18 @@ bool FlyObject::HasVisuals()
 	for (auto& currentTool : actionsList)
 	{
 		if (currentTool->HasVisual())
-			return true; 
+			return true;
 	}
 
-	return false; 
+	return false;
 }
 
 bool FlyObject::IsInventoryItem()
 {
 	if (flyObjectType == INVENTORY_ITEM)
-		return true; 
+		return true;
 
-	return false; 
+	return false;
 }
 
 void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
@@ -556,15 +556,16 @@ void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "Interactable").c_str(), isInteractable);
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "ObjectType").c_str(), this->flyObjectType);
 
-	if(!GetDescription().empty())
+	if (!GetDescription().empty())
 		json_object_dotset_string(jsonObject, string(serializeObjectName + "Description").c_str(), GetDescription().c_str());
 
 	SaveTransform(serializeObjectName, jsonObject);
 
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "Actions.ActionsAmount").c_str(), actionsList.size());
 
+
 	// Save Object Action Settings
-	int counter = 0; 
+	int counter = 0;
 	for (auto& it : actionsList)
 	{
 		it->SaveAction(jsonObject, serializeObjectName, false, counter);
@@ -573,13 +574,30 @@ void FlyObject::SaveObjectData(JSON_Object* jsonObject, int objectIndex)
 
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "SequentialActions.ActionsAmount").c_str(), sequentialActionsList.size());
 
-	// Save Object Sequenntial Action Settings
+	// Save Sequential Occurrence 
+	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "SequentialActions.StartOccurrence.SceneEnter").c_str(), occ_SceneEnter);
+	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "SequentialActions.StartOccurrence.ObjectClicked").c_str(), occ_ObjectClicked);
+	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "SequentialActions.StartOccurrence.BlackboardValue").c_str(), occ_blackboardValue);
+
+	//if (itemToClickWith == nullptr)
+	//{
+	//	json_object_dotset_number(jsonObject, string(serializeObjectName + "ItemToClickWith").c_str(), 0);
+	//}
+	//else
+	//{
+	//	json_object_dotset_number(jsonObject, string(serializeObjectName + "ItemToClickWith").c_str(), itemToClickWith->GetUID());
+	//}
+
+//	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "BlackboardCondition").c_str(), IsOccCondition());
+
+	// Save Sequential Actions
 	counter = 0;
 	for (auto& it : sequentialActionsList)
 	{
 		it->SaveAction(jsonObject, std::string(serializeObjectName + "SequentialActions."), false, counter);
-		counter++; 
+		counter++;
 	}
+
 
 	// Save Object Clickable Area
 	SaveClickableArea(serializeObjectName, jsonObject);
@@ -604,7 +622,7 @@ void FlyObject::SaveClickableArea(std::string serializeObjectName, JSON_Object* 
 
 	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "Active").c_str(), clickableAreaActive);
 	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "Draw").c_str(), drawClickableArea);
-	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "DirectPosition").c_str(),!hasVisuals);
+	json_object_dotset_boolean(jsonObject, string(serializeObjectName + "DirectPosition").c_str(), !hasVisuals);
 
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "Color.r").c_str(), clickableAreaColor.x);
 	json_object_dotset_number(jsonObject, string(serializeObjectName + "Color.g").c_str(), clickableAreaColor.y);
@@ -635,22 +653,22 @@ void FlyObject::DoOnClickActions()
 		if (it->IsOccObjectClicked())
 		{
 			if (it->IsOccCondition() && !it->PassConditionTest())
-				continue; 
+				continue;
 
 			if (it->itemToClickWith != nullptr)
 			{
 				if (GameInventory::getInstance()->droppingObject != it->itemToClickWith)
 				{
-					continue; 
+					continue;
 				}
 				else
 				{
-					GameInventory::getInstance()->returnDroppingObject = true; 
+					GameInventory::getInstance()->returnDroppingObject = true;
 				}
 			}
 		}
 
-		it->DoAction(); 
+		it->DoAction();
 	}
 }
 
@@ -659,8 +677,8 @@ void FlyObject::CalculateCurrentGizmo()
 	switch (App->moduleImGui->gameViewportDockPanel->GetGizmoMode())
 	{
 	case GIZMO_SELECT:
-		gizmos->CalculateSelectGizmo(this); 
-		break; 
+		gizmos->CalculateSelectGizmo(this);
+		break;
 
 	case GIZMO_MOVE:
 		gizmos->CalculateMoveGizmo(this);
@@ -680,13 +698,13 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 	/*	if (!HasAction(ACTION_DISPLAY_IMAGE))
 		{
 			DisplayImageAction* displayImageAct = AddDisplayImageAction("Null", false);
-			displayImageAct->SetVisible(false); 
+			displayImageAct->SetVisible(false);
 		}*/
 
 		// Create Sequencial 
 		DisplayImageAction* newAtrImage = new DisplayImageAction(this);
 		newAtrImage->SetIsInfoHolder(true);
-		newAtrImage->SetIsSequencial(true); 
+		newAtrImage->SetIsSequencial(true);
 		newAtrImage->SetImageTextureByPath(imageTexturePath);
 
 		sequentialActionsList.push_back(newAtrImage);
@@ -695,23 +713,23 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 	else if (GetAction(ACTION_DISPLAY_IMAGE) == nullptr)
 	{
 		if (imageTexturePath == "None")
-			imageTexturePath = "EmptyObject"; 
+			imageTexturePath = "EmptyObject";
 
 		DisplayImageAction* newAtrImage = new DisplayImageAction(this);
 		newAtrImage->CreateImage(imageTexturePath);
 
-		if(addToSequentialActions )
+		if (addToSequentialActions)
 			sequentialActionsList.push_back(newAtrImage);
 		else
 			actionsList.push_back(newAtrImage);
 
 		// Addapt Gizmo Rect to new Image
 		gizmos->FitSelectBoxSize();
-		hasVisuals = true; 
+		hasVisuals = true;
 
 		return newAtrImage;
 	}
-	else if(imageTexturePath != "Null")
+	else if (imageTexturePath != "Null")
 	{
 		DisplayImageAction* newAtrImage = (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE);
 
@@ -720,14 +738,14 @@ DisplayImageAction* FlyObject::AddDisplayImageAction(const char* imageTexturePat
 
 		Texture* newTexture = (Texture*)ResourceManager::GetResource(textureName);
 
-		if(newTexture == nullptr)
+		if (newTexture == nullptr)
 			newTexture = (Texture*)ResourceManager::GetResource("EmptyObject");
-	
+
 		newAtrImage->SetTexture(newTexture);
 	}
 
-	
-	return (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE); 	
+
+	return (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE);
 }
 
 ChangeRoomAction* FlyObject::AddChangeRoomAction(bool addToSequentialActions)
@@ -736,7 +754,7 @@ ChangeRoomAction* FlyObject::AddChangeRoomAction(bool addToSequentialActions)
 	{
 		ChangeRoomAction* changeSceneTool = new ChangeRoomAction(this);
 
-		if (addToSequentialActions )
+		if (addToSequentialActions)
 			sequentialActionsList.push_back(changeSceneTool);
 		else
 			actionsList.push_back(changeSceneTool);
@@ -760,7 +778,7 @@ ModifyVariableAction* FlyObject::AddModifyVariableAction(bool addToSequentialAct
 	if (GetAction(ACTION_MOD_VARIABLE) == nullptr)
 	{
 		ModifyVariableAction* mofidyVarAction = new ModifyVariableAction(this);
-		if (addToSequentialActions )
+		if (addToSequentialActions)
 			sequentialActionsList.push_back(mofidyVarAction);
 		else
 			actionsList.push_back(mofidyVarAction);
@@ -770,8 +788,8 @@ ModifyVariableAction* FlyObject::AddModifyVariableAction(bool addToSequentialAct
 	{
 		ModifyVariableAction* mofidyVarAction = new ModifyVariableAction(this);
 
-	
-			sequentialActionsList.push_back(mofidyVarAction);
+
+		sequentialActionsList.push_back(mofidyVarAction);
 	}
 
 	return (ModifyVariableAction*)GetAction(ACTION_MOD_VARIABLE);
@@ -793,8 +811,8 @@ EmitSoundAction* FlyObject::AddEmitSoundAction(bool addToSequentialActions)
 	{
 		EmitSoundAction* emitSoundAction = new EmitSoundAction(this);
 
-	
-			sequentialActionsList.push_back(emitSoundAction);
+
+		sequentialActionsList.push_back(emitSoundAction);
 
 		return emitSoundAction;
 	}
@@ -831,16 +849,16 @@ DisplayAnimationAction* FlyObject::AddDisplayAnimationAction(bool addToSequentia
 	{
 		DisplayAnimationAction* newAtrAnimation = new DisplayAnimationAction(this);
 		newAtrAnimation->SetIsInfoHolder(true);
-		newAtrAnimation->SetIsSequencial(true); 
+		newAtrAnimation->SetIsSequencial(true);
 
 		sequentialActionsList.push_back(newAtrAnimation);
-		
+
 		DisplayImageAction* fixedImageAction = (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE);
-		
+
 		// If there is a fixed image
 		if (fixedImageAction != nullptr)
 		{
-			newAtrAnimation->AttachToImage(fixedImageAction); 
+			newAtrAnimation->AttachToImage(fixedImageAction);
 		}
 
 		//// Add Action to the parent
@@ -859,12 +877,12 @@ DisplayAnimationAction* FlyObject::AddDisplayAnimationAction(bool addToSequentia
 	else if (GetAction(ACTION_DISPLAY_ANIMATION) == nullptr)
 	{
 		DisplayAnimationAction* displayAnimationAction = new DisplayAnimationAction(this);
-		displayAnimationAction->SetIsSequencial(false); 
+		displayAnimationAction->SetIsSequencial(false);
 
 		DisplayImageAction* fixedImageAction = (DisplayImageAction*)GetAction(ACTION_DISPLAY_IMAGE);
 
-		if(fixedImageAction == nullptr)
-		{ 
+		if (fixedImageAction == nullptr)
+		{
 			fixedImageAction = AddDisplayImageAction(std::string(MyFileSystem::getInstance()->GetIconsDirectory() + "EmptyObject.png").c_str(), false);
 		}
 
@@ -883,7 +901,7 @@ DisplayAnimationAction* FlyObject::AddDisplayAnimationAction(bool addToSequentia
 
 		return displayAnimationAction;
 	}
-	
+
 	return (DisplayAnimationAction*)GetAction(ACTION_DISPLAY_ANIMATION);
 }
 
@@ -900,7 +918,7 @@ FollowPathAction* FlyObject::AddFollowPathAction(bool addToSequentialActions)
 	}
 	else if (addToSequentialActions)
 	{
-		FollowPathAction* followPathAction = new FollowPathAction(this);	
+		FollowPathAction* followPathAction = new FollowPathAction(this);
 		sequentialActionsList.push_back(followPathAction);
 		return followPathAction;
 	}
@@ -954,13 +972,13 @@ void FlyObject::DrawSequentialActionsList()
 		ImGui::PushFont(App->moduleImGui->rudaBoldMid);
 
 		Texture* imageIcon = App->moduleManager->GetIconFromActionType(selectableInfo.actionType);
-		int selectableHeight = 42; 
+		int selectableHeight = 42;
 
 		ImGui::SetCursorPos(ImVec2(10, 5 + (selectableHeight * pos)));
 		ImGui::Image((ImTextureID)imageIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
 
 		ImGui::SetCursorPos(ImVec2(50, (selectableHeight * pos) + 4));
-		if (ImGui::Selectable(std::string(selectableInfo.actionName + "##" + to_string(currentAction->GetUID())).c_str(), &currentAction->IsSelected(), ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, selectableHeight - 3))) 
+		if (ImGui::Selectable(std::string(selectableInfo.actionName + "##" + to_string(currentAction->GetUID())).c_str(), &currentAction->IsSelected(), ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionMax().x, selectableHeight - 3)))
 		{
 			SetSelectedAction(currentAction->GetUID(), currentAction->IsActionSequential());
 			selectedAction = currentAction;
@@ -991,7 +1009,7 @@ DisplayTextAction* FlyObject::AddDisplayTextAction(bool addToSequentialActions)
 		DisplayTextAction* displayTextAction = new DisplayTextAction(this);
 		displayTextAction->SetText("Text");
 
-		if (addToSequentialActions )
+		if (addToSequentialActions)
 			sequentialActionsList.push_back(displayTextAction);
 		else
 			actionsList.push_back(displayTextAction);
@@ -1004,7 +1022,7 @@ DisplayTextAction* FlyObject::AddDisplayTextAction(bool addToSequentialActions)
 	else if (addToSequentialActions)
 	{
 		DisplayTextAction* displayTextAction = new DisplayTextAction(this);
-	
+
 		sequentialActionsList.push_back(displayTextAction);
 
 		return displayTextAction;
@@ -1015,20 +1033,20 @@ DisplayTextAction* FlyObject::AddDisplayTextAction(bool addToSequentialActions)
 
 void FlyObject::SetSelectedAction(UID toolTypeSelectedUID, bool isSequential)
 {
-	bool prevSelectedDialogue = false; 
+	bool prevSelectedDialogue = false;
 
-	if (selectedAction != nullptr && selectedAction->GetType() == ACTION_DIALOGUE)	
-		prevSelectedDialogue = true; 	
+	if (selectedAction != nullptr && selectedAction->GetType() == ACTION_DIALOGUE)
+		prevSelectedDialogue = true;
 
 	for (auto& it : actionsList)
 	{
 		if (it->GetUID() == toolTypeSelectedUID && !isSequential)
 		{
 			it->SetSelected(true);
-			selectedAction = it; 
+			selectedAction = it;
 		}
 		else
-			it->SetSelected(false); 
+			it->SetSelected(false);
 	}
 
 	for (auto& it : sequentialActionsList)
@@ -1046,18 +1064,18 @@ void FlyObject::SetSelectedAction(UID toolTypeSelectedUID, bool isSequential)
 	{
 		DialogueAction* selectedDialogueAction = (DialogueAction*)selectedAction;
 
-		if (prevSelectedDialogue)	
-			App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->saveData = true; 
-		
-		if (selectedAction->GetType() == ACTION_DIALOGUE)	
-			App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->AttachDialogue(selectedDialogueAction->GetDialogueData()); 
+		if (prevSelectedDialogue)
+			App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->saveData = true;
+
+		if (selectedAction->GetType() == ACTION_DIALOGUE)
+			App->moduleImGui->dialogueEditorDockPanel->GetNodeGraph()->AttachDialogue(selectedDialogueAction->GetDialogueData());
 	}
 }
 
 ActionType FlyObject::GetSelectedActionType()
 {
 	if (selectedAction == nullptr)
-		return AT_null; 
+		return AT_null;
 
 	return selectedAction->GetType();
 }
@@ -1070,7 +1088,7 @@ Action* FlyObject::GetAction(std::string toolName)
 			return currentAction;
 	}
 
-	return nullptr; 
+	return nullptr;
 }
 
 Action* FlyObject::GetAction(ActionType toolType)
@@ -1124,9 +1142,9 @@ void FlyObject::DeleteAction(ActionType actionType)
 		{
 			(*currentTool)->CleanUp();
 			delete (*currentTool);
-			(*currentTool) = nullptr; 
-			currentTool = actionsList.erase(currentTool); 
-			return; 
+			(*currentTool) = nullptr;
+			currentTool = actionsList.erase(currentTool);
+			return;
 		}
 	}
 }
@@ -1164,7 +1182,7 @@ void FlyObject::DeleteAction(UID actionUID)
 // 0 == up / 1 == down
 void FlyObject::MoveSequentialAction(UID actionUID, int moveType)
 {
-	int counter = 0; 
+	int counter = 0;
 	for (auto currentSequential = sequentialActionsList.begin(); currentSequential != sequentialActionsList.end(); currentSequential++)
 	{
 		if ((*currentSequential)->GetUID() == actionUID)
@@ -1193,31 +1211,31 @@ void FlyObject::CreateClickableArea(float2 percentagePos, float2 percentageSize,
 	if (clickableArea == nullptr)
 		clickableArea = new BoundingBox();
 
-	SetCASizeFromOne(percentagePos, percentageSize, directPosition); 
+	SetCASizeFromOne(percentagePos, percentageSize, directPosition);
 
-	clickableAreaPosPerc = percentagePos; 
+	clickableAreaPosPerc = percentagePos;
 	clickableAreaSizePerc = percentageSize;
 }
 
 
 float2& FlyObject::GetClickableAreaPosOne()
 {
-	return clickableAreaPosPerc; 
+	return clickableAreaPosPerc;
 }
 
 float2& FlyObject::GetClickableAreaSizeOne()
 {
-	return clickableAreaSizePerc; 
+	return clickableAreaSizePerc;
 }
 
 void FlyObject::SetClickableAreaPosOne(float2 newAreaPosOne)
 {
-	clickableAreaPosPerc = newAreaPosOne; 
+	clickableAreaPosPerc = newAreaPosOne;
 }
 
 void FlyObject::SetClickableAreaSizeOne(float2 newAreaSizeOne)
 {
-	clickableAreaSizePerc = newAreaSizeOne; 
+	clickableAreaSizePerc = newAreaSizeOne;
 }
 
 Action* FlyObject::GetSelectedAction()
@@ -1228,9 +1246,9 @@ Action* FlyObject::GetSelectedAction()
 float2 FlyObject::SetCASizeFromOne(float2 percentagePos, float2 percentageSize, bool directiPosition)
 {
 	if (clickableArea == nullptr)
-		return float2::zero; 
+		return float2::zero;
 
-	float2 offsetFromCenter; 
+	float2 offsetFromCenter;
 
 	if (directiPosition)
 	{
@@ -1240,8 +1258,8 @@ float2 FlyObject::SetCASizeFromOne(float2 percentagePos, float2 percentageSize, 
 	}
 	else
 	{
-		float2 objectSize = GetObjectVisualDimensions(); 
-		
+		float2 objectSize = GetObjectVisualDimensions();
+
 		float2 objectTopLeft = float2(-objectSize.x / 2, -objectSize.y / 2);
 		float2 clickable_area_size = float2(objectSize.x * percentageSize.x, objectSize.y * percentageSize.y);
 		float2 clickable_area_pos = float2(objectSize.x * percentagePos.x, objectSize.y * percentagePos.y);
@@ -1256,16 +1274,16 @@ float2 FlyObject::SetCASizeFromOne(float2 percentagePos, float2 percentageSize, 
 		this->clickableAreaSizePerc = percentageSize;
 
 		float2 objectCenter = objectTopLeft + GetObjectVisualDimensions() / 2;
-		offsetFromCenter = clickableArea->GetCenter() - objectCenter; 
-	}	
+		offsetFromCenter = clickableArea->GetCenter() - objectCenter;
+	}
 
-	return offsetFromCenter; 
+	return offsetFromCenter;
 }
 
 void FlyObject::DrawDisplayImageSettings()
 {
-	DisplayImageAction* imageTool = (DisplayImageAction*)GetAction("Image"); 
-	Texture* imageTexture = imageTool->GetTexture(); 
+	DisplayImageAction* imageTool = (DisplayImageAction*)GetAction("Image");
+	Texture* imageTexture = imageTool->GetTexture();
 
 	if (ImGui::CollapsingHeader("Image Adjustments"))
 	{
