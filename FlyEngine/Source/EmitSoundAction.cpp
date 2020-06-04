@@ -3,7 +3,7 @@
 #include "imgui.h"
 #include "Texture.h"
 #include "ResourceManager.h"
-
+#include "FlyObject.h"
 #include "mmgr.h"
 
 #include "Application.h"
@@ -96,9 +96,11 @@ void EmitSoundAction::DrawUISettings()
 {
 	if (ImGui::CollapsingHeader("Emit Sound Settings", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		DrawActionOccurenceCheckboxes(); 
-
-		IMGUI_SPACED_SEPARATOR; 
+		if (!(parentObject->flyObjectType == FlyObjectType::OBJECT_CHARACTER || parentObject->flyObjectType == FlyObjectType::OBJECT_SEQUENTIAL))
+		{
+			DrawActionOccurenceCheckboxes(); 
+			IMGUI_SPACED_SEPARATOR; 
+		}
 
 		static int playModeSelected = 0; 
 		if (ImGui::Combo("Play Mode##AudioPlayMode", &playModeSelected, "One Time\0Loop\0"))
