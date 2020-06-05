@@ -262,6 +262,7 @@ void Room::NotifyVariableChange(FlyVariable* currentVariableValue)
 	for (auto& currentObject : objectsInRoom)
 	{
 		currentObject->DoVariableConditionActions(currentVariableValue);
+		flog("Space To Log");
 	}
 }
 

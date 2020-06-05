@@ -176,10 +176,7 @@ bool FlyObject::Update(float dt)
 				break;
 
 			case OBJECT_SEQUENTIAL:
-				if (currentSequentialAction == nullptr && !sequentialActionsList.empty())
-				{
-					currentSequentialAction = sequentialActionsList.front();
-				}
+				BeginSequentialActions();
 				break;
 
 			case OBJECT_CHARACTER:
@@ -207,6 +204,14 @@ bool FlyObject::Update(float dt)
 	}
 
 	return ret;
+}
+
+void FlyObject::BeginSequentialActions()
+{
+	if (currentSequentialAction == nullptr && !sequentialActionsList.empty())
+	{
+		currentSequentialAction = sequentialActionsList.front();
+	}
 }
 
 void FlyObject::OnSceneEnter()
@@ -250,6 +255,27 @@ void FlyObject::DoOnMouseOverActions()
 	}
 }
 
+bool FlyObject::PassConditionTest()
+{
+	for (auto& currentCondition : sequentialActionConditions)
+	{
+		bool testResult = currentCondition->PassTestCondition();
+
+		if (testResult == true)
+		{
+			if (sequentialEvaluationCriteria == SEQ_ONE_SUCCED)
+				return true;
+		}
+		else
+		{
+			if (sequentialEvaluationCriteria == SEQ_ALL_SUCCED)
+				return false;
+		}
+	}
+
+	return true;
+}
+
 void FlyObject::DoVariableConditionActions(FlyVariable* currentVariableValue)
 {
 	for (auto& currentAction : actionsList)
@@ -258,6 +284,11 @@ void FlyObject::DoVariableConditionActions(FlyVariable* currentVariableValue)
 		{
 			currentAction->DoAction();
 		}
+	}
+
+	if (occ_blackboardValue && PassConditionTest())
+	{
+		BeginSequentialActions(); 
 	}
 }
 

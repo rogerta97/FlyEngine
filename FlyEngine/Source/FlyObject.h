@@ -42,6 +42,7 @@ public:
 	~FlyObject(); 
 
 	virtual bool Update(float dt);
+	void BeginSequentialActions();
 	virtual void OnSceneEnter(); 
 	virtual void OnSceneLeave(); 
 
@@ -61,6 +62,7 @@ public:
 
 	bool HasVisuals(); 
 	bool IsInventoryItem(); 
+	bool PassConditionTest();
 
 	// Save & Load 
 	virtual void SaveObjectData(JSON_Object* jsonObject, int objectIndex);
