@@ -515,7 +515,7 @@ void Room::DrawRoomObjects()
 
 	for (auto& it : objectsInRoom)
 	{
-		(it)->DrawOverlaysLayer();
+		(it)->DrawDebugShapes();
 	}
 
 	// Draw dropping inventory object 

@@ -54,6 +54,10 @@ void Action::Draw()
 {
 }
 
+void Action::DrawDebugShapes()
+{
+}
+
 void Action::CleanUp()
 {
 	for (auto& currentCondition : actionConditions)

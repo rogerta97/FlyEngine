@@ -265,7 +265,8 @@ void DisplayAnimationAction::DrawUISettings()
 		if (animation)
 			framesAmount = animation->GetFramesAmount();
 
-		DrawActionOccurenceCheckboxes();
+		if (parentObject->flyObjectType == ACTION_OBJECT)
+			DrawActionOccurenceCheckboxes();
 
 		ImGui::Separator();
 

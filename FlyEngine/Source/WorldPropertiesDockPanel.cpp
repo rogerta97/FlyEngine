@@ -173,6 +173,7 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 		{
 			App->moduleImGui->AddaptToFlySection(FlyEngineSection::FLY_SECTION_ROOM_EDIT);
 			App->moduleImGui->gameViewportDockPanel->FitViewportToRegion();
+			App->moduleWorldManager->GetSelectedRoom()->FitObjectUtils();
 		}
 	}
 }

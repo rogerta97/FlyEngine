@@ -303,12 +303,22 @@ void FlyObject::DrawVisualLayer(bool forceDraw)
 	}
 }
 
-void FlyObject::DrawOverlaysLayer()
+void FlyObject::DrawDebugShapes()
 {
 	if (isSelected || ViewportManager::getInstance()->drawClickableAreaCondition == DRAW_ALWAYS)
 	{
 		if (clickableArea != nullptr && drawClickableArea && clickableAreaActive && !App->isEngineInPlayMode)
 			DrawClickableArea();
+	}
+
+	for (auto& currentAction : actionsList)
+	{
+		currentAction->DrawDebugShapes(); 
+	}
+
+	for (auto& currentSequential : sequentialActionsList)
+	{
+		currentSequential->DrawDebugShapes();
 	}
 
 	if (isSelected)

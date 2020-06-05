@@ -157,7 +157,9 @@ void ChangeRoomAction::DrawUISettings()
 {
 	if (ImGui::CollapsingHeader("Change Room Settings", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		DrawActionOccurenceCheckboxes();
+		if(parentObject->flyObjectType == ACTION_OBJECT)
+			DrawActionOccurenceCheckboxes();
+
 		DrawSelectDestinationCombo();
 	}
 }

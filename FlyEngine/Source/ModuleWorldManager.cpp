@@ -452,6 +452,8 @@ void ModuleWorldManager::SetSelectedRoom(Room* nextSelectedRoom, bool sendEvent)
 		//if(ViewportManager::getInstance()->viewportTexture != nullptr)
 		//	selectedRoom->roomTextureID = ViewportManager::getInstance()->viewportTexture->GetTextureID();
 
+		flog("Set Selected Room"); 
+
 		if (selectedRoom != nullptr)
 			selectedRoom->isSelected = false; 
 
@@ -460,6 +462,9 @@ void ModuleWorldManager::SetSelectedRoom(Room* nextSelectedRoom, bool sendEvent)
 
 		if(sendEvent)
 			App->BroadCastEvent(FlyEngineEvent::ENTER_ROOM);
+
+		if(App->flySection == FLY_SECTION_ROOM_EDIT)
+			selectedRoom->FitObjectUtils();
 		//NodeGraph::getInstance()->SelectNode(nextSelectedRoom->GetName());
 	}
 }

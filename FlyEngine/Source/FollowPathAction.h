@@ -59,6 +59,7 @@ public:
 
 	void Update(float dt);
 	void Draw(); 
+	void DrawDebugShapes(); 
 	void DoAction(); 
 	void CleanUp(); 
 

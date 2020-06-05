@@ -160,8 +160,13 @@ void FollowPathAction::SetAlphaFactor(float _alphaFactor)
 
 void FollowPathAction::Draw()
 {
-	if(parentObject->isSelected && !App->isEngineInPlayMode)
-		DrawPath(); 
+
+}
+
+void FollowPathAction::DrawDebugShapes()
+{
+	if (parentObject->isSelected && !App->isEngineInPlayMode)
+		DrawPath();
 }
 
 void FollowPathAction::DoAction()
@@ -313,7 +318,8 @@ void FollowPathAction::DrawUISettings()
 {
 	if (ImGui::CollapsingHeader("Emit Sound Settings", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		DrawActionOccurenceCheckboxes(); 
+		if (parentObject->flyObjectType == ACTION_OBJECT)
+			DrawActionOccurenceCheckboxes(); 
 
 		ImGui::Separator(); 
 
@@ -343,13 +349,19 @@ void FollowPathAction::DrawUISettings()
 
 		PUSH_CHILD_BG_COLOR_DARK;
 		INC_CURSOR_4;
-		ImGui::BeginChild("StartPosPathDark", ImVec2(ImGui::GetContentRegionAvailWidth() - 5, 38));
+		ImGui::BeginChild("StartPosPathDark", ImVec2(ImGui::GetContentRegionAvailWidth() - 5, 70));
 
 		float startPos[2] = { startPosition.x, startPosition.y }; 
 		INC_CURSOR_7;
 		if (ImGui::DragFloat2("Start Position", startPos, 0.5f, -500.0f, 500.0f, "%.2f"))
 		{
 			startPosition = float2(startPos[0], startPos[1]); 
+		}
+
+		INC_CURSOR_X_7
+		if (ImGui::Button("Adjust to object"))
+		{
+			startPosition = parentObject->transform->GetPosition(); 
 		}
 
 		ImGui::EndChild();
@@ -384,7 +396,7 @@ void FollowPathAction::DrawUISettings()
 		{
 			PathStep* newStep = new PathStep();
 			newStep->targetPosition = float2(0, 0);
-			newStep->SetMovementSpeed(5.0f);
+			newStep->SetMovementSpeed(0.5f);
 			pathSteps->push_back(newStep);
 		}
 

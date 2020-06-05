@@ -831,7 +831,6 @@ void SaveAndLoad::LoadModifyVariableAction(JSON_Object* root_obj, std::string& s
 	while (count < effectsAmount)
 	{
 		ModifyVariableEffect* newEffect = new ModifyVariableEffect();
-
 		string effectSerializeStr = effectsGroupStr + "Effect_" + to_string(count) + ".";
 
 		// Load Target Variable -----------
@@ -841,11 +840,11 @@ void SaveAndLoad::LoadModifyVariableAction(JSON_Object* root_obj, std::string& s
 		newEffect->targetVariable = targetVariable;
 
 		// Load Operator Type, IncInt, NextToggle ----------
-		int varOpTmp = (int)json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("OperatorType")).c_str());
+		int varOpTmp = (int)json_object_dotget_number(root_obj, string(effectSerializeStr + string("OperatorType")).c_str());
 		newEffect->variableOperatorType = (VariableOperatorType)varOpTmp;
 
-		newEffect->incIntegerValue = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("IncIntegerValue")).c_str());
-		newEffect->nextToggleValue = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("NextToggleValue")).c_str());
+		newEffect->incIntegerValue = json_object_dotget_number(root_obj, string(effectSerializeStr + string("IncIntegerValue")).c_str());
+		newEffect->nextToggleValue = json_object_dotget_number(root_obj, string(effectSerializeStr + string("NextToggleValue")).c_str());
 
 		modifyVariableAction->AddEffect(newEffect);
 		count++;

@@ -372,7 +372,7 @@ void GameInventory::DrawDroppingObject()
 	instance->droppingObject->FitObjectUtils();
 
 	instance->droppingObject->DrawVisualLayer(true);
-	instance->droppingObject->DrawOverlaysLayer();
+	instance->droppingObject->DrawDebugShapes();
 
 	//flog("Draw Object Dropping"); 
 }

@@ -63,6 +63,7 @@ public:
 	virtual void Init();
 	virtual void Update(float dt);
 	virtual void Draw();
+	virtual void DrawDebugShapes(); 
 	virtual void CleanUp();
 
 	virtual void OnSceneEnter(); 

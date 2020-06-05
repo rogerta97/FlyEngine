@@ -46,7 +46,7 @@ public:
 	virtual void OnSceneLeave(); 
 
 	void DrawVisualLayer(bool forceDraw = false);
-	void DrawOverlaysLayer(); 
+	void DrawDebugShapes(); 
 
 	void CleanUp(); 
 

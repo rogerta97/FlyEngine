@@ -9,6 +9,7 @@
 #include "FlyVariable.h"
 #include "ResourceManager.h"
 #include "ModuleManager.h"
+#include "FlyObject.h"
 
 #include "imgui.h"
 #include "mmgr/mmgr.h"
@@ -17,6 +18,7 @@ ModifyVariableAction::ModifyVariableAction(FlyObject* _parentObject)
 {
 	actionType = ACTION_MOD_VARIABLE;
 	isVisual = false;
+	parentObject = _parentObject;
 
 	SetActionName("Modify Variable");
 	SetToolDescription("This should be the description of the modify variable action");
@@ -85,14 +87,17 @@ void ModifyVariableAction::DrawUISettings()
 {
 	if (ImGui::CollapsingHeader("Modify Variable Attributes", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		// Object Occurrence ---------
-		ImGui::PushFont(App->moduleImGui->rudaBoldBig);
-		ImGui::Text("Action Happens On:");
-		ImGui::PopFont();
 
-		DrawActionOccurenceCheckboxes();
+		if (parentObject != nullptr && parentObject->flyObjectType == FlyObjectType::ACTION_OBJECT)
+		{
+			// Object Occurrence ---------
+			ImGui::PushFont(App->moduleImGui->rudaBoldBig);
+			ImGui::Text("Action Happens On:");
+			ImGui::PopFont();
 
-		IMGUI_SPACED_SEPARATOR;
+			DrawActionOccurenceCheckboxes();
+			IMGUI_SPACED_SEPARATOR;
+		}
 
 		// Object Settings ----------
 		ImGui::PushFont(App->moduleImGui->rudaBoldBig);

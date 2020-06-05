@@ -145,7 +145,9 @@ void DialogueAction::DrawUISettings()
 {
 	if (ImGui::CollapsingHeader("Dialogue Settings:", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		DrawActionOccurenceCheckboxes();
+		if (parentObject != nullptr && parentObject->flyObjectType == ACTION_OBJECT)
+			DrawActionOccurenceCheckboxes();
+
 		DialogueStep* selectedStep = dialogue->GetSelectedStep();
 
 		ImGui::Separator();

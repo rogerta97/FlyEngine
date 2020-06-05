@@ -60,7 +60,7 @@ DisplayTextAction::~DisplayTextAction()
 
 void DisplayTextAction::Draw()
 {
-	if (parentObject->isSelected && drawTextBox)
+	if (!App->isEngineInPlayMode && parentObject->isSelected && drawTextBox)
 	{
 		if(displayTextBox)
 			DrawTextBox(); 
@@ -152,7 +152,7 @@ void DisplayTextAction::DrawUISettings()
 
 		ImGui::PushFont(App->moduleImGui->rudaRegularMid);
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
+		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 35));
 
 		ImGui::SetCursorPos(ImVec2(5, 5));
 		ImGui::Checkbox("Draw when mouse is over", &IsOccMouseOver());

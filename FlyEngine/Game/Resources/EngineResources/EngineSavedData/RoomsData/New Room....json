@@ -1,0 +1,92 @@
+{
+  "RoomData": {
+    "ObjectsAmount": 1,
+    "Name": "New Room...",
+    "UID": 6777173,
+    "ThumbnailName": "EmptyObject",
+    "Objects": {
+      "FlyObject_0": {
+        "Name": "modifyVariable",
+        "UID": 1091810,
+        "Interactable": true,
+        "ObjectType": 0,
+        "Transform": {
+          "Position": {
+            "x": 0,
+            "y": 0
+          },
+          "Rotation": {
+            "x": 0,
+            "y": 0
+          },
+          "Scale": {
+            "x": 1,
+            "y": 1
+          }
+        },
+        "Actions": {
+          "ActionsAmount": 1,
+          "Action_0": {
+            "Name": "Modify Variable",
+            "ActionType": 2,
+            "ActionClass": 0,
+            "Conditions": { "ConditionsAmount": 0 },
+            "Occurrence": {
+              "SceneEnter": false,
+              "SceneLeave": false,
+              "ObjectClicked": true,
+              "ItemToClickWith": 0,
+              "BlackboardCondition": false
+            },
+            "EffectsAmount": 1,
+            "EffectsGroup": {
+              "Effect_0": {
+                "TargetVariableName": "asd",
+                "OperatorType": 0,
+                "IncIntegerValue": 1,
+                "NextToggleValue": false
+              }
+            }
+          }
+        },
+        "SequentialActions": {
+          "ActionsAmount": 0,
+          "StartOccurrence": {
+            "SceneEnter": false,
+            "ObjectClicked": false,
+            "BlackboardCondition": false
+          }
+        },
+        "Sequential_BlackboardConditions": { "Conditions": { "ConditionsAmount": 0 } },
+        "ClickableArea": {
+          "Active": true,
+          "Draw": true,
+          "DirectPosition": true,
+          "Color": {
+            "r": 1,
+            "g": 0.80000001192092896,
+            "b": 0.80000001192092896,
+            "a": 0.40000000596046448
+          },
+          "MinPoint": {
+            "x": -131,
+            "y": 88
+          },
+          "MaxPoint": {
+            "x": 131,
+            "y": -88
+          },
+          "PosPerc": {
+            "x": 0,
+            "y": 0
+          },
+          "SizePerc": {
+            "x": 131,
+            "y": 88
+          }
+        }
+      }
+    },
+    "UserInterface": { "ElementsAmount": 0 }
+  }
+}
