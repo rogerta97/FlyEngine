@@ -371,6 +371,11 @@ void Action::SetOccObjectClicked(bool newOccObjectClicked)
 	occ_ObjectClicked = newOccObjectClicked;
 }
 
+void Action::SetOccMouseOver(bool newValue)
+{
+	occ_mouseOver = newValue;
+}
+
 ActionCondition* Action::AddEmptyCondition(ActionConditionType conditionType)
 {
 	switch (conditionType)

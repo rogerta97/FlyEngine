@@ -104,6 +104,7 @@ public:
 	void SetOccSceneLeave(bool newValue);
 	void SetOccBlackboardValue(bool newValue);
 	void SetOccObjectClicked(bool newValue);
+	void SetOccMouseOver(bool newValue);
 
 	ActionCondition* AddEmptyCondition(ActionConditionType conditionType);
 	void AddCondition(ActionCondition* newCondition);

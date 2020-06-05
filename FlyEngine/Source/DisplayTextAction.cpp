@@ -120,6 +120,8 @@ void DisplayTextAction::SaveAction(JSON_Object* jsonObject, string serializeObje
 		toolsSerializeSection = serializeObjectString;
 
 	Action::SaveAction(jsonObject, toolsSerializeSection);
+	json_object_dotset_boolean(jsonObject, string(toolsSerializeSection + "Occurrence.MouseOver").c_str(), IsOccMouseOver());
+
 	Action::SaveOccurrence(jsonObject, toolsSerializeSection);
 
 	// Save Bounding Box Position 

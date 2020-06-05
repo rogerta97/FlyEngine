@@ -757,6 +757,7 @@ void SaveAndLoad::LoadDisplayTextAction(JSON_Object* root_obj, std::string& seri
 
 	displayTextAction->SetActionClass((ActionClass)actionClass);
 	displayTextAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("Occurrence."));
+	displayTextAction->SetOccMouseOver(json_object_dotget_boolean(root_obj, string(serializeObjectStrActions + "Occurrence.MouseOver").c_str()));
 
 	float2 minPoint = float2::zero; 
 	float2 maxPoint = float2::zero; 
