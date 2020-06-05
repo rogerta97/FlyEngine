@@ -813,9 +813,9 @@ void SaveAndLoad::LoadEmitSoundAction(JSON_Object* root_obj, std::string& serial
 
 void SaveAndLoad::LoadModifyVariableAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject, Room* currentRoom)
 {
-	int effectsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.EffectsAmount")).c_str());
+	int effectsAmount = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("EffectsAmount")).c_str());
 
-	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "DisplayImage.ActionClass").c_str());
+	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "ActionClass").c_str());
 
 	ModifyVariableAction* modifyVariableAction = nullptr;
 	if (actionClass == ACTION_CLASS_SEQUENTIAL)
@@ -824,9 +824,9 @@ void SaveAndLoad::LoadModifyVariableAction(JSON_Object* root_obj, std::string& s
 		modifyVariableAction = newObject->AddModifyVariableAction();
 
 	modifyVariableAction->SetActionClass((ActionClass)actionClass);
-	modifyVariableAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("ModifyVariable.Occurrence."));
+	modifyVariableAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("Occurrence."));
 
-	string effectsGroupStr = serializeObjectStrActions + "ModifyVariable.EffectsGroup.";
+	string effectsGroupStr = serializeObjectStrActions + "EffectsGroup.";
 	int count = 0;
 	while (count < effectsAmount)
 	{
@@ -841,11 +841,11 @@ void SaveAndLoad::LoadModifyVariableAction(JSON_Object* root_obj, std::string& s
 		newEffect->targetVariable = targetVariable;
 
 		// Load Operator Type, IncInt, NextToggle ----------
-		int varOpTmp = (int)json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.OperatorType")).c_str());
+		int varOpTmp = (int)json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("OperatorType")).c_str());
 		newEffect->variableOperatorType = (VariableOperatorType)varOpTmp;
 
-		newEffect->incIntegerValue = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.IncIntegerValue")).c_str());
-		newEffect->nextToggleValue = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("ModifyVariable.NextToggleValue")).c_str());
+		newEffect->incIntegerValue = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("IncIntegerValue")).c_str());
+		newEffect->nextToggleValue = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("NextToggleValue")).c_str());
 
 		modifyVariableAction->AddEffect(newEffect);
 		count++;

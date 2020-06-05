@@ -70,7 +70,12 @@ void DisplayTextAction::Draw()
 	}
 
 	if (!text.empty())
+	{
+		if (App->isEngineInPlayMode && IsOccMouseOver() && !parentObject->GetClickableArea()->IsMouseOver())
+			return;
+
 		RenderText(); 
+	}
 }
 
 void DisplayTextAction::Update(float dt)
@@ -150,10 +155,10 @@ void DisplayTextAction::DrawUISettings()
 		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 70));
 
 		ImGui::SetCursorPos(ImVec2(5, 5));
-		ImGui::Checkbox("On Mouse Over", &IsOccMouseOver());
+		ImGui::Checkbox("Draw when mouse is over", &IsOccMouseOver());
 
-		ImGui::SetCursorPos(ImVec2(5, 35));
-		ImGui::Checkbox("Blackboard Value Condition", &IsOccCondition());
+	/*	ImGui::SetCursorPos(ImVec2(5, 35));
+		ImGui::Checkbox("Blackboard Value Condition", &IsOccCondition());*/
 
 		ImGui::SameLine();
 		static std::string showValueConditionButtonText = "Show Conditions";
