@@ -17,6 +17,7 @@
 #include "GamePropertiesDockPanel.h"
 #include "Animation.h"
 #include "ActionConditionVariable.h"
+#include "FontImporter.h"
 #include "ActionCondition.h"
 #include "ActionConditionHasItem.h"
 #include "Room.h"
@@ -775,10 +776,13 @@ void SaveAndLoad::LoadDisplayTextAction(JSON_Object* root_obj, std::string& seri
 	string fontTmp = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("FontName")).c_str());
 	if (fontTmp != "None")
 	{
-		Font* textFont = (Font*)ResourceManager::GetResource(fontTmp.c_str(), RESOURCE_FONT);
+		Font* tmptextFont = (Font*)ResourceManager::GetResource("arial", RESOURCE_FONT);
 
-		if (textFont)
-			displayTextAction->SetFont(textFont);
+		Font* newFont = new Font();
+		newFont = FontImporter::getInstance()->LoadFont(tmptextFont->GetPath());
+
+		if (newFont)
+			displayTextAction->SetFont(newFont);
 	}
 
 	string textTmp = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("Text")).c_str());
@@ -791,6 +795,7 @@ void SaveAndLoad::LoadDisplayTextAction(JSON_Object* root_obj, std::string& seri
 	if (textSize != 0)
 	{
 		displayTextAction->GetFont()->SetSize(textSize); 
+		displayTextAction->UpdateTextQuads();
 	}
 
 	displayTextAction->GetTextBox()->CalculateAllGizmos();
