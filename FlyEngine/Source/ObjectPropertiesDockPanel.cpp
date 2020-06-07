@@ -1495,8 +1495,6 @@ void ObjectPropertiesDockPanel::DrawClickableAreaTab()
 		selectedObject->GetClickableAreaColor().w,
 	};
 
-	flog("Color: %f %f %f %f", color[0], color[1], color[2], color[3]); 
-
 	if (ImGui::ColorEdit4("", color))
 		selectedObject->SetClickableAreaColor(float4(color[0], color[1], color[2], color[3]));
 
