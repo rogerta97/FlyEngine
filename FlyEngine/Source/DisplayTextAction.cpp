@@ -10,6 +10,7 @@
 #include "Quad.h"
 #include "Gizmos.h"
 #include "GameViewportDockPanel.h"
+#include "FontImporter.h"
 #include "ResourceManager.h"
 #include "ViewportManager.h"
 
@@ -44,7 +45,11 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 
 	originTextPosition = float2(0, 0);
 
-	textFont = (Font*)ResourceManager::GetResource("arial", RESOURCE_FONT);
+	Font* tmptextFont = (Font*)ResourceManager::GetResource("arial", RESOURCE_FONT);
+
+	textFont = new Font(); 
+	textFont = FontImporter::getInstance()->LoadFont(tmptextFont->GetPath()); 
+
 	SetText("");
 	SetLineSpacing(textFont->GetSize()); 
 	textColor = float4(1.0f, 1.0f, 1.0f, 1.0f); 
@@ -105,6 +110,9 @@ void DisplayTextAction::CleanUp()
 
 	textBox->CleanUp(); 
 	delete textBox;
+
+	textFont->CleanUp();
+	delete textFont;
 
 	textQuads->clear();
 	delete textQuads;
