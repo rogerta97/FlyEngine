@@ -7,6 +7,7 @@
 #include "ModuleInput.h"
 #include "imgui.h"
 #include "TextureMSAA.h"
+#include "RoomUIHandler.h"
 #include "GameViewportDockPanel.h"
 #include "SaveAndLoad.h"
 #include "ViewportManager.h"
@@ -174,6 +175,7 @@ void WorldPropertiesDockPanel::PrintRoomsSection()
 			App->moduleImGui->AddaptToFlySection(FlyEngineSection::FLY_SECTION_ROOM_EDIT);
 			App->moduleImGui->gameViewportDockPanel->FitViewportToRegion();
 			App->moduleWorldManager->GetSelectedRoom()->FitObjectUtils();
+			App->moduleWorldManager->GetSelectedRoom()->roomUIHandler->FitUIElements();
 		}
 	}
 }

@@ -1002,8 +1002,6 @@ void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 		counter++;
 	}
 
-	// We wait until the object is created to ensure any reference in Conditions is already there 
-
 	// Object Conditions First 
 	counter = 0;
 	while (counter < obj_ammount)
@@ -1024,8 +1022,11 @@ void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 
 	string serialiseStr = "RoomData.UserInterface";
 
-	if(roomToLoad)
+	if (roomToLoad)
+	{
 		roomToLoad->roomUIHandler->LoadRoomUI(root_obj, serialiseStr);
+		roomToLoad->roomUIHandler->FitUIElements();
+	}
 }
 
 SaveAndLoad::SaveAndLoad()

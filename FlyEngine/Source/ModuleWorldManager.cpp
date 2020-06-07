@@ -7,6 +7,7 @@
 #include "GamePropertiesDockPanel.h"
 #include "ViewportManager.h"
 #include "GameInventory.h"
+#include "RoomUIHandler.h"
 #include "AudioImporter.h"
 #include "Room.h"
 #include "NodeGraph.h"
@@ -65,13 +66,27 @@ update_status ModuleWorldManager::Update(float dt)
 	{
 		firstFit = true; 
 		FitObjectUtils(); 
+		FitUIObjectUtils();	
 	}
 
 	return UPDATE_CONTINUE;
 }
 
+void ModuleWorldManager::FitUIObjectUtils()
+{
+	for (auto& currentRoom : roomsInWorldList)
+	{
+		for (auto& uiElement : currentRoom->roomUIHandler->uiElements)
+		{
+			uiElement->GetHolderObject()->FitObjectUtils();
+		}
+	}
+}
+
 update_status ModuleWorldManager::PostUpdate(float dt)
 {
+
+
 	return UPDATE_CONTINUE;
 }
 
@@ -463,8 +478,11 @@ void ModuleWorldManager::SetSelectedRoom(Room* nextSelectedRoom, bool sendEvent)
 		if(sendEvent)
 			App->BroadCastEvent(FlyEngineEvent::ENTER_ROOM);
 
-		if(App->flySection == FLY_SECTION_ROOM_EDIT)
+		if (App->flySection == FLY_SECTION_ROOM_EDIT)
+		{
 			selectedRoom->FitObjectUtils();
+			selectedRoom->roomUIHandler->FitUIElements(); 
+		}
 		//NodeGraph::getInstance()->SelectNode(nextSelectedRoom->GetName());
 	}
 }

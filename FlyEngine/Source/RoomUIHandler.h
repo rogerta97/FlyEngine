@@ -33,6 +33,7 @@ public:
 	void SetSelectedElement(UID newSelectedElementUID); 
 	UI_Element* GetUIElement(UID elementUID);
 	UI_Element* GetSelectedElement();
+	void FitUIElements(); 
 
 	// Draw --------------------------
 	UID DrawUIElementsHierarchy(); 

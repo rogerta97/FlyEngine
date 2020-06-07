@@ -77,6 +77,7 @@ void RoomUIHandler::LoadRoomUI(JSON_Object* jsonObject, string baseSerializeStr)
 
 		count++;
 	}
+
 }
 
 void RoomUIHandler::Update()
@@ -195,6 +196,14 @@ UI_Element* RoomUIHandler::GetUIElement(UID elementUID)
 UI_Element* RoomUIHandler::GetSelectedElement()
 {
 	return selectedElement;
+}
+
+void RoomUIHandler::FitUIElements()
+{
+	for (auto& currentElement : uiElements)
+	{
+		currentElement->GetHolderObject()->FitObjectUtils(); 
+	}
 }
 
 void RoomUIHandler::DrawSelectedOnClickActionSettings()

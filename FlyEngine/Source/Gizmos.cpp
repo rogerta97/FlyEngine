@@ -605,7 +605,7 @@ void SelectGizmo::AddaptSelectBox(FlyObject* objectAttached)
 
 	// Position
 	selectMaxPoint.x += objectAttached->transform->GetPosition().x * ViewportManager::getInstance()->GetAspectRatio(); 
-	selectMaxPoint.y += objectAttached->transform->GetPosition().y * ViewportManager::getInstance()->GetAspectRatio(); 
+	selectMaxPoint.y += objectAttached->transform->GetPosition().y * ViewportManager::getInstance()->GetAspectRatio();
 						
 	selectMinPoint.x += objectAttached->transform->GetPosition().x * ViewportManager::getInstance()->GetAspectRatio();
 	selectMinPoint.y += objectAttached->transform->GetPosition().y * ViewportManager::getInstance()->GetAspectRatio();

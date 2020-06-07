@@ -23,7 +23,9 @@ public:
 	// Module
 	bool Start();
 	update_status PreUpdate(float dt);
-	update_status Update(float dt); 
+	update_status Update(float dt);
+	void FitUIObjectUtils();
+
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
@@ -80,6 +82,7 @@ public:
 private: 
 	Room* selectedRoom;
 	bool firstFit = false;
+	bool firstUpdate = true; 
 };
 
 

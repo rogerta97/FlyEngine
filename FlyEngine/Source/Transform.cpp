@@ -27,7 +27,7 @@ float2 Transform::GetPosition(bool withAR)
 	float2 posToRet = float2(position.x, position.y); 
 
 	if (withAR){
-		posToRet *= ViewportManager::getInstance()->GetAspectRatio(); 
+		posToRet *= App->moduleImGui->gameViewportDockPanel->GetAspectRatio(); 
 	}
 
 	return posToRet;
