@@ -51,7 +51,7 @@ FlyObject::FlyObject(std::string _name, std::string _description, FlyObjectType 
 	clickableArea = new BoundingBox();
 	clickableAreaPosPerc = float2(0, 0);
 	clickableAreaSizePerc = float2(0, 0);
-	clickableAreaColor = float4(1.0f, 0.8f, 0.8f, 0.4f);
+	clickableAreaColor = float4(1.0f, 1.0f, 1.0f, 0.4f);
 
 	transform = new Transform();
 	gizmos = new Gizmos(this);
