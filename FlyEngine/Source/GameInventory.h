@@ -9,6 +9,7 @@
 class FlyObject;
 class BoundingBox;
 class DisplayImageAction;
+class AudioClip; 
 class InventorySlot
 {
 public: 
@@ -93,6 +94,9 @@ private:
 	BoundingBox* nextPageArrow; 
 
 	DisplayImageAction* slotIconDropingAction;
+
+	AudioClip* openInventorySFX;
+	AudioClip* closeInventorySFX;
 
 	int currentPage = 0; 
 	float inventoryWidth;

@@ -142,6 +142,11 @@ void DisplayTextAction::SaveAction(JSON_Object* jsonObject, string serializeObje
 	else
 		json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("FontName")).c_str(), "None");
 
+	// Save Text Size 
+	if (textFont != nullptr)
+		json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("Size")).c_str(), textFont->GetSize());
+	else
+		json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("Size")).c_str(), 0);
 }
 
 void DisplayTextAction::DrawUISettings()

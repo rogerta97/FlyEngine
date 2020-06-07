@@ -787,6 +787,12 @@ void SaveAndLoad::LoadDisplayTextAction(JSON_Object* root_obj, std::string& seri
 		displayTextAction->SetText(textTmp);
 	}
 
+	int textSize = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("Size")).c_str());
+	if (textSize != 0)
+	{
+		displayTextAction->GetFont()->SetSize(textSize); 
+	}
+
 	displayTextAction->GetTextBox()->CalculateAllGizmos();
 }
 

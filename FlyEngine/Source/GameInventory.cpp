@@ -6,11 +6,13 @@
 #include "ModuleWorldManager.h"
 #include "FlyObject.h"
 #include "ModuleManager.h"
+#include "ModuleAudioManager.h"
 #include "Gizmos.h"
 #include "DisplayImageAction.h"
 #include "DisplayImageAction.h"
 #include "BoundingBox.h"
 #include "Room.h"
+#include "AudioClip.h"
 #include "Quad.h"
 #include "Texture.h"
 #include "MathGeoLib.h"
@@ -55,6 +57,9 @@ GameInventory::GameInventory()
 	nextPageArrow = new BoundingBox();
 	nextPageArrow->SetSize(arrowsWidth, arrowsHeigth);
 	nextPageArrow->SetPositionInc(float2(backgroundBB->GetMaxPoint().x, -423));
+
+	openInventorySFX = (AudioClip*)ResourceManager::getInstance()->GetAudioClip("OpenInventory");
+	closeInventorySFX = (AudioClip*)ResourceManager::getInstance()->GetAudioClip("OpenInventory");
 
 	opened = false; 
 }
@@ -180,11 +185,13 @@ bool GameInventory::IsItemInInventory(UID checkItemUID)
 void GameInventory::OpenInventory()
 {
 	instance->opened = true; 
+//	instance->openInventorySFX->Play();
 }
 
 void GameInventory::CloseInventory()
 {
 	instance->opened = false;
+//	instance->closeInventorySFX->Play();
 }
 
 void GameInventory::ToggleVisibility()
