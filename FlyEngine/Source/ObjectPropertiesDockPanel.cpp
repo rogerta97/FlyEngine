@@ -787,7 +787,7 @@ void ObjectPropertiesDockPanel::DrawInventoryItemTabs(FlyObject* selectedObject)
 			ImGui::PopFont();
 
 			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
-			ImGui::BeginChild("ButtonImagePreview", ImVec2(ImGui::GetContentRegionAvailWidth(), 195));
+			ImGui::BeginChild("ButtonImagePreview", ImVec2(ImGui::GetContentRegionAvailWidth(), 215));
 
 			DisplayImageAction* displayImageAction = selectedObject->GetDisplayImageAction(); 
 

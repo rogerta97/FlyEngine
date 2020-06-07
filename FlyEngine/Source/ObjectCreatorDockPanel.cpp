@@ -444,7 +444,7 @@ void ObjectCreatorDockPanel::DrawInventorySettings()
 	ImGui::Separator();
 
 	ImGui::PushFont(App->moduleImGui->rudaBlackBig);
-	ImGui::Text("Perform Action When Picked:");
+	ImGui::Text("Actions When Picked Up:");
 	ImGui::PopFont();
 
 	ImGui::SameLine();

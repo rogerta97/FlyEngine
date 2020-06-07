@@ -446,7 +446,7 @@ int ModuleWorldManager::GetRoomsAmount() const
 
 void ModuleWorldManager::SetSelectedRoom(Room* nextSelectedRoom, bool sendEvent)
 {
-	if (nextSelectedRoom != nullptr) 
+	if (nextSelectedRoom != nullptr && nextSelectedRoom != selectedRoom)
 	{
 		//Room* selectedRoom = App->moduleRoomManager->GetSelectedRoom();
 		//if(ViewportManager::getInstance()->viewportTexture != nullptr)

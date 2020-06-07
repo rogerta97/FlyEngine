@@ -387,6 +387,7 @@ void ModuleManager::DrawActionListWithSettings(FlyObject* ownerObejct)
 				ChangeRoomAction* changeRoomAction = ownerObejct->AddChangeRoomAction();
 				changeRoomAction->SetOccObjectClicked(true);
 			}
+				break;
 
 			case ACTION_DISPLAY_TEXT:
 			{
@@ -416,7 +417,7 @@ void ModuleManager::DrawActionListWithSettings(FlyObject* ownerObejct)
 
 		if (objectProperties->DrawActionSelectable(selectableInfo, currentAction, count, 40))
 		{
-			ownerObejct->SetSelectedAction(selectableInfo.actionType);
+			ownerObejct->SetSelectedAction(currentAction->GetUID());
 		}
 
 		count++;
