@@ -335,6 +335,7 @@ void UI_Button::Load(JSON_Object* jsonObject, string serializeStr)
 		case ACTION_CHANGE_ROOM:
 		{
 			ChangeRoomAction* newChangeRoomAction = uiObject->AddChangeRoomAction(); 
+			newChangeRoomAction->SetParentObject(uiObject); 
 			
 			UID dstRoomUID = json_object_dotget_number(jsonObject, string(actionStr + "Destination").c_str());
 			newChangeRoomAction->SetDestination(App->moduleWorldManager->GetRoom(dstRoomUID)); 
@@ -344,6 +345,7 @@ void UI_Button::Load(JSON_Object* jsonObject, string serializeStr)
 			break;
 		case ACTION_MOD_VARIABLE:
 			break;
+
 		case ACTION_EMIT_SOUND:
 			break;
 		}

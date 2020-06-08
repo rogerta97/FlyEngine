@@ -7,6 +7,7 @@
 #include "ResourceManager.h"
 #include "ViewportManager.h"
 #include "Application.h"
+#include "ModuleWorldManager.h"
 #include "ModuleInput.h"
 
 #include "UI_Image.h"
@@ -57,12 +58,14 @@ void RoomUIHandler::LoadRoomUI(JSON_Object* jsonObject, string baseSerializeStr)
 		{
 			UI_Image* newElementImageCast = CreateUIImage();
 			newElementImageCast->Load(jsonObject, elementStr);
+			newElementImageCast->GetHolderObject()->SetParentRoom(this->roomAttached); 
 			break; 
 		}
 		case UIElementType::UI_BUTTON:
 		{
 			UI_Button* newElementButtonCast = CreateUIButton();
 			newElementButtonCast->Load(jsonObject, elementStr);
+			newElementButtonCast->GetHolderObject()->SetParentRoom(this->roomAttached);
 			break;
 		}
 
@@ -70,6 +73,7 @@ void RoomUIHandler::LoadRoomUI(JSON_Object* jsonObject, string baseSerializeStr)
 		{
 			UI_Text* newElementTextCast = CreateUIText();
 			newElementTextCast->Load(jsonObject, elementStr);
+			newElementTextCast->GetHolderObject()->SetParentRoom(this->roomAttached);
 			break;
 		}
 
@@ -140,20 +144,24 @@ UID RoomUIHandler::DrawUIElementsHierarchy()
 
 void RoomUIHandler::AddEmptyElement(UIElementType elementType)
 {
+	UI_Element* newElement = nullptr; 
 	switch (elementType)
 	{
 	case UI_IMAGE:
-		CreateUIImage();
+		newElement = CreateUIImage();
 		break;
 
 	case UI_BUTTON:
-		CreateUIButton();
+		newElement = CreateUIButton();
 		break;
 
 	case UI_TEXT:
-		CreateUIText(); 
+		newElement = CreateUIText();
 		break;
 	}
+
+	if(App->moduleWorldManager->GetSelectedRoom() != nullptr)
+		newElement->GetHolderObject()->SetParentRoom(App->moduleWorldManager->GetSelectedRoom());
 }
 
 void RoomUIHandler::SetSelectedElement(UI_Element* newSelectedElement)
