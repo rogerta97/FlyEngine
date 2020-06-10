@@ -212,6 +212,8 @@ void FlyObject::BeginSequentialActions()
 	{
 		currentSequentialAction = sequentialActionsList.front();
 	}
+
+	sequentialSwapedTick = true;
 }
 
 void FlyObject::OnSceneEnter()
@@ -229,6 +231,8 @@ void FlyObject::OnSceneEnter()
 		{
 			currentSequentialAction = sequentialActionsList.front();
 		}
+
+		sequentialSwapedTick = true;
 	}
 }
 

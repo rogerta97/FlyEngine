@@ -21,7 +21,6 @@ FlyObjectCharacter::FlyObjectCharacter()
 
 bool FlyObjectCharacter::Update(float dt)
 {
-	FlyObject::Update(dt); 
 
 	if (flyObjectType == OBJECT_CHARACTER && sequentialSwapedTick)
 	{
@@ -32,6 +31,8 @@ bool FlyObjectCharacter::Update(float dt)
 		else
 			PlayCharacterAnimation(CharacterMode::CHARACTER_IDLE);
 	}
+
+	FlyObject::Update(dt); 
 
 	if (playingAnimation != nullptr)
 	{
@@ -186,6 +187,8 @@ void FlyObjectCharacter::OnSceneEnter()
 		{
 			currentSequentialAction = sequentialActionsList.front();
 		}
+
+		sequentialSwapedTick = true;
 	}
 }
 
