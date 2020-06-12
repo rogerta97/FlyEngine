@@ -8,6 +8,7 @@
 #include "ObjectCreatorDockPanel.h"
 #include "CharacterCreatorDockPanel.h"
 #include "ModuleImGui.h"
+#include "AudioClip.h"
 
 #include "UI_Image.h"
 #include "ModuleAudioManager.h"
@@ -604,12 +605,14 @@ void RoomDockPanel::ShowViewportSettingsTab()
 		if(ImGui::ColorEdit4("Arrow Color", (float*)&arrowInventoryColor))
 			GameInventory::getInstance()->arrowColor = arrowInventoryColor;
 
-		if (ImGui::Checkbox("See Preview", &GameInventory::getInstance()->seePreview))
-		{
-		
-			//	GameInventory::getInstance()->ToggleVisibility();
+		// Open Inventory Sound
+		if(ImGui::Button)
 
-			
+
+
+		if (ImGui::Checkbox("See Preview", &GameInventory::getInstance()->seePreview))
+		{	
+			//	GameInventory::getInstance()->ToggleVisibility();
 		}
 	}
 

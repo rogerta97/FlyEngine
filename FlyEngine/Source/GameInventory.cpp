@@ -6,6 +6,7 @@
 #include "ModuleWorldManager.h"
 #include "FlyObject.h"
 #include "ModuleManager.h"
+#include "EmitSoundAction.h"
 #include "ModuleAudioManager.h"
 #include "Gizmos.h"
 #include "DisplayImageAction.h"
@@ -58,8 +59,14 @@ GameInventory::GameInventory()
 	nextPageArrow->SetSize(arrowsWidth, arrowsHeigth);
 	nextPageArrow->SetPositionInc(float2(backgroundBB->GetMaxPoint().x, -423));
 
-	openInventorySFX = (AudioClip*)ResourceManager::getInstance()->GetAudioClip("OpenInventory");
-	closeInventorySFX = (AudioClip*)ResourceManager::getInstance()->GetAudioClip("OpenInventory");
+	openInventorySFX = new EmitSoundAction(nullptr);
+	closeInventorySFX = new EmitSoundAction(nullptr);
+
+	AudioClip* openInventoryAudioClip = (AudioClip*)ResourceManager::getInstance()->GetAudioClip("OpenInventory");
+	AudioClip* closeInventoryAudioClip = (AudioClip*)ResourceManager::getInstance()->GetAudioClip("OpenInventory");
+
+	openInventorySFX->audioClip = openInventoryAudioClip; 
+	closeInventorySFX->audioClip = closeInventoryAudioClip; 
 
 	opened = false; 
 }
@@ -212,8 +219,16 @@ void GameInventory::ToggleVisibility()
 	
 }
 
+void GameInventory::UpdateInventory()
+{
+	instance->openInventorySFX->Update(0.16f);
+	instance->closeInventorySFX->Update(0.16f);
+}
+
 void GameInventory::DrawInventory()
 {
+	UpdateInventory(); 
+
 	if ((App->isEngineInPlayMode && instance->opened) || (!App->isEngineInPlayMode && instance->seePreview))
 	{
 		instance->DrawInventoryBackground();

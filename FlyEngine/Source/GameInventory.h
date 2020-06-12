@@ -10,6 +10,7 @@ class FlyObject;
 class BoundingBox;
 class DisplayImageAction;
 class AudioClip; 
+class EmitSoundAction; 
 class InventorySlot
 {
 public: 
@@ -61,6 +62,8 @@ public:
 	static void CloseInventory(bool doSound = true); 
 	static void ToggleVisibility(); 
 
+	static void UpdateInventory(); 
+
 	static void DrawInventory();
 	static void DrawPageArrows();
 	static void DrawInventoryBackground();
@@ -85,6 +88,9 @@ public:
 	bool seePreview = false; 
 	bool returnDroppingObject = false; 
 
+	EmitSoundAction* openInventorySFX;
+	EmitSoundAction* closeInventorySFX;
+
 private:
 	std::list<InventorySlot*> inventorySlots;
 
@@ -94,9 +100,6 @@ private:
 	BoundingBox* nextPageArrow; 
 
 	DisplayImageAction* slotIconDropingAction;
-
-	AudioClip* openInventorySFX;
-	AudioClip* closeInventorySFX;
 
 	int currentPage = 0; 
 	float inventoryWidth;
