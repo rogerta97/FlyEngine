@@ -3,6 +3,7 @@
 #include "MyFileSystem.h"
 #include "DisplayImageAction.h"
 #include "Room.h"
+#include "FollowPathAction.h"
 
 #include "Application.h"
 #include "ModuleInput.h"

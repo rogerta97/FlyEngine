@@ -26,6 +26,8 @@ public:
 	update_status Update(float dt);
 	void FitUIObjectUtils();
 
+	void ResetSequentials();
+
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 

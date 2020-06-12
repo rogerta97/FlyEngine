@@ -110,8 +110,11 @@ void SaveAndLoad::LoadOnPlayData()
 	App->moduleWorldManager->SetSelectedRoom(nextSelectedRoom); 
 
 	App->moduleWorldManager->GetSelectedRoom()->CleanUp(); 
-
+	
 	instance->LoadDataToSelectedRoom(provisionalPath);
+
+	App->moduleWorldManager->GetSelectedRoom()->reloadWhenStop = false; 
+
 }
 
 void SaveAndLoad::SaveInitFile()
@@ -980,6 +983,8 @@ void SaveAndLoad::LoadActionConditions(JSON_Object* root_obj, std::string& seria
 
 void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 {
+	flog("ROOOOOOOOOOOOOM");
+
 	// Load Room Blackboard
 	Blackboard* roomBB = roomToLoad->CreateBlackboard(); 
 	roomBB->LoadData(roomToLoad->GetName() + "_Blackboard");

@@ -158,6 +158,18 @@ void Room::PostUpdate()
 	App->moduleManager->DeleteObjectsFromListNow();
 }
 
+
+void Room::ReloadRoom()
+{
+	CleanRoomObjects(); 
+	CleanRoomUI(); 
+
+	App->moduleWorldManager->SetSelectedRoom(this); 
+
+	string roomPath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "RoomsData\\" + roomName.c_str() + ".json";
+	SaveAndLoad::getInstance()->LoadDataToSelectedRoom(roomPath);
+}
+
 void Room::CleanUp()
 {
 

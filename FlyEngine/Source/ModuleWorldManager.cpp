@@ -83,6 +83,11 @@ void ModuleWorldManager::FitUIObjectUtils()
 	}
 }
 
+void ModuleWorldManager::ResetSequentials()
+{
+	
+}
+
 update_status ModuleWorldManager::PostUpdate(float dt)
 {
 
@@ -217,6 +222,16 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 		if (GetSelectedRoom()->backgroundMusic != nullptr)
 			GetSelectedRoom()->backgroundMusic->Stop();
 
+		for (auto& currentRoom : roomsInWorldList)
+		{
+			if (currentRoom->reloadWhenStop)
+			{
+				currentRoom->ReloadRoom();
+				flog("Room Reloaded: %s", currentRoom->GetName().c_str()); 
+				currentRoom->reloadWhenStop = false; 
+			}
+		}
+
 		break; 
 
 	case FlyEngineEvent::ENTER_ROOM:
@@ -231,6 +246,12 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 
 			if(GetSelectedRoom()->backgroundMusic != nullptr)
 				GetSelectedRoom()->backgroundMusic->Play();
+
+			if (!GetSelectedRoom()->reloadWhenStop)
+			{
+				GetSelectedRoom()->reloadWhenStop = true;
+				flog("Needs To Reload: %s", GetSelectedRoom()->GetName().c_str()); 
+			}
 		}
 
 		break;

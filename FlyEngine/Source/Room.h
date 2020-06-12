@@ -45,6 +45,7 @@ public:
 	void Update(); 
 	void PostUpdate(); 
 
+	void ReloadRoom(); 
 	void CleanUp();
 	void CleanRoomObjects(); 
 	void CleanRoomUI(); 
@@ -125,6 +126,7 @@ public:
 	Blackboard* GetBlackboard(); 
 	FlyVariable* GetBlackboardVariable(string varName); 
 	Blackboard* CreateBlackboard();
+	bool reloadWhenStop;
 
 public: 
 	

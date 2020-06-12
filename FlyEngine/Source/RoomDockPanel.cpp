@@ -361,11 +361,14 @@ void RoomDockPanel::DrawTopButtons()
 		else
 		{
 			App->BroadCastEvent(FlyEngineEvent::LEAVE_ROOM);
+
 			App->BroadCastEvent(FlyEngineEvent::ENGINE_STOP);
 
 			playButtonColor = ImVec4(0.35f, 0.39f, 0.50f, 1.00f);
-			playStopButtonTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlayIcon");		
+			playStopButtonTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlayIcon");
+
 			SaveAndLoad::getInstance()->LoadOnPlayData();
+			//App->moduleWorldManager->ResetSequentials();
 		}
 	}
 	ImGui::PopStyleColor(2);
