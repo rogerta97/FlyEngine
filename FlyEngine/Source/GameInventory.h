@@ -58,7 +58,7 @@ public:
 
 	// Draw
 	static void OpenInventory();
-	static void CloseInventory(); 
+	static void CloseInventory(bool doSound = true); 
 	static void ToggleVisibility(); 
 
 	static void DrawInventory();

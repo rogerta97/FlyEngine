@@ -185,19 +185,31 @@ bool GameInventory::IsItemInInventory(UID checkItemUID)
 void GameInventory::OpenInventory()
 {
 	instance->opened = true; 
-//	instance->openInventorySFX->Play();
+	instance->openInventorySFX->Play();
 }
 
-void GameInventory::CloseInventory()
+void GameInventory::CloseInventory(bool doSound)
 {
 	instance->opened = false;
-//	instance->closeInventorySFX->Play();
+
+	if(doSound)
+		instance->closeInventorySFX->Play();
 }
 
 void GameInventory::ToggleVisibility()
 {
-	if(App->isEngineInPlayMode)
-		instance->opened = !instance->opened;
+	if (App->isEngineInPlayMode)
+	{
+		if (instance->opened)
+		{
+			CloseInventory();
+		}
+		else
+		{
+			OpenInventory();
+		}
+	}
+	
 }
 
 void GameInventory::DrawInventory()

@@ -201,7 +201,7 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 		
 		if (App->flySection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && GetSelectedRoom() != nullptr){
 			ViewportManager::getInstance()->drawGizmos = false; 
-			GameInventory::getInstance()->CloseInventory();
+			GameInventory::getInstance()->CloseInventory(false);
 		}
 
 		break; 

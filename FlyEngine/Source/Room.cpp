@@ -73,7 +73,6 @@ void Room::Update()
 
 	if (App->isEngineInPlayMode && App->moduleInput->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
 	{
-		flog("OPsd");
 		GameInventory::getInstance()->ToggleVisibility();
 	}
 
