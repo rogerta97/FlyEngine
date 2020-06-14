@@ -881,6 +881,15 @@ void ObjectPropertiesDockPanel::DrawFixedPartObjectUI(FlyObject* selectedObject)
 	ImGui::Text("%s", selectedObject->GetName().c_str());
 	ImGui::PopFont();
 
+	ImGui::SameLine(); 
+	ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x - 80);
+	if (ImGui::Button("Rename"))
+	{
+		ImGui::OpenPopup("Rename FlyObject"); 
+	}
+
+	App->moduleImGui->ShowRenameModal(); 
+
 	if (!selectedObject->GetDescription().empty())
 	{
 		ImGui::Spacing();

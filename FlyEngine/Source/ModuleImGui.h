@@ -39,6 +39,9 @@ public:
 	void DrawMainMenuBar();
 	void AddaptToGameMode(); 
 
+	// Uitlity --------------
+	std::string ShowRenameModal(); 
+
 	// Panels ---------------
 	void CreatePanels(); 
 	void DeletePanels(); 
@@ -91,6 +94,7 @@ private:
 
 	std::list<DockPanel*> dockPanels;
 	ImGuiID mainDock_ID = 0; 
+	char renameBuffer[236];
 };
 
 #endif

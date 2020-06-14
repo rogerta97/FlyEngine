@@ -283,6 +283,33 @@ void ModuleImGui::AddaptToGameMode()
 	}
 }
 
+std::string ModuleImGui::ShowRenameModal()
+{
+	if (ImGui::BeginPopupModal("Rename FlyObject", 0, ImGuiWindowFlags_NoResize))
+	{
+		ImGui::SetWindowSize(ImVec2(330, 70));
+		ImGui::InputTextWithHint("", "New Name...", renameBuffer, IM_ARRAYSIZE(renameBuffer));
+		ImGui::SameLine(); 
+		if (ImGui::Button("OK"))
+		{
+			FlyObject* selectedFO = App->moduleManager->GetSelectedFlyObject(); 
+			selectedFO->SetName(renameBuffer); 
+			strcpy(renameBuffer, ""); 
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel"))
+		{
+			strcpy(renameBuffer, ""); 
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::EndPopup(); 
+	}
+	return std::string();
+}
+
 void ModuleImGui::DrawPanels()
 {
 	for (auto it = dockPanels.begin(); it != dockPanels.end(); it++) 
