@@ -90,6 +90,7 @@ public:
 
 	EmitSoundAction* openInventorySFX;
 	EmitSoundAction* closeInventorySFX;
+	EmitSoundAction* pickFromInventorySFX;
 
 private:
 	std::list<InventorySlot*> inventorySlots;

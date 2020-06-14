@@ -22,7 +22,6 @@ FlyObjectCharacter::FlyObjectCharacter()
 
 bool FlyObjectCharacter::Update(float dt)
 {
-
 	if (flyObjectType == OBJECT_CHARACTER && sequentialSwapedTick)
 	{
 		if(currentSequentialAction != nullptr && currentSequentialAction->GetType() == ACTION_FOLLOW_PATH || App->moduleInput->GetKey(SDL_SCANCODE_2))
@@ -188,8 +187,9 @@ void FlyObjectCharacter::OnSceneEnter()
 		{
 			currentSequentialAction = sequentialActionsList.front();
 		}
-
-		sequentialSwapedTick = true;
+		
+		if(!sequentialDoneOnce)
+			sequentialSwapedTick = true;
 	}
 }
 

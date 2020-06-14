@@ -10,6 +10,8 @@
 #include "DialogueAction.h"
 #include "ImageImporter.h"
 #include "ResourceManager.h"
+#include "GameInventory.h"
+#include "AudioClip.h"
 #include "GameViewportDockPanel.h"
 #include "FlyObjectCharacter.h"
 #include "ModuleImGui.h"
@@ -142,6 +144,21 @@ void SaveAndLoad::SaveInitFile()
 	//else
 
 	json_object_dotset_boolean(scene_obj, "InitData.GameMode", App->GetGameMode());
+
+	if(GameInventory::getInstance()->openInventorySFX->audioClip != nullptr)
+		json_object_dotset_string(scene_obj, "InitData.OpenInventorySFX_Path", GameInventory::getInstance()->openInventorySFX->audioClip->GetPath());
+	else
+		json_object_dotset_string(scene_obj, "InitData.OpenInventorySFX_Path", "None");
+
+	if (GameInventory::getInstance()->closeInventorySFX->audioClip != nullptr)
+		json_object_dotset_string(scene_obj, "InitData.CloseInventorySFX_Path", GameInventory::getInstance()->closeInventorySFX->audioClip->GetPath());
+	else
+		json_object_dotset_string(scene_obj, "InitData.CloseInventorySFX_Path", "None");
+
+	if (GameInventory::getInstance()->pickFromInventorySFX->audioClip != nullptr)
+		json_object_dotset_string(scene_obj, "InitData.PickFromInventorySFX_Path", GameInventory::getInstance()->pickFromInventorySFX->audioClip->GetPath());
+	else
+		json_object_dotset_string(scene_obj, "InitData.PickFromInventorySFX_Path", "None");
 
 	json_serialize_to_file(scene_v, savePath.c_str());
 

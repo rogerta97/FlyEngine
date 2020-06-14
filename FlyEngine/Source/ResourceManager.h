@@ -49,6 +49,8 @@ public:
 	// Selection Popups 
 	static Resource* PrintImagesSelectionPopup(); 
 	static Resource* PrintSoundsSelectionPopup(); 
+	static Resource* PrintSoundsSelectionPopup2(); 
+	static Resource* PrintSoundsSelectionPopup3(); 
 	static Resource* PrintMusicSelectionPopup(); 
 	static Resource* PrintFontSelectionPopup(); 
 	static string PrintFolderSelectionPopup(string parentFolder);

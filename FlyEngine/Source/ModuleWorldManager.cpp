@@ -244,8 +244,14 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 				currentObject->OnSceneEnter(); 
 			}
 
-			if(GetSelectedRoom()->backgroundMusic != nullptr)
+			if (GetSelectedRoom()->backgroundMusic != nullptr)
+			{
 				GetSelectedRoom()->backgroundMusic->Play();
+			}
+			else
+			{
+				GetSelectedRoom()->backgroundMusic->Stop();
+			}
 
 			if (!GetSelectedRoom()->reloadWhenStop)
 			{

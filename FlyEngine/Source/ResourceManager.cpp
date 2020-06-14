@@ -271,6 +271,68 @@ Resource* ResourceManager::PrintSoundsSelectionPopup()
 	return nullptr; 
 }
 
+Resource* ResourceManager::PrintSoundsSelectionPopup2()
+{
+	if (ImGui::BeginPopup("print_sound_selection_popup2"))
+	{
+		static char searchSoundBuffer[256];
+		ImGui::InputTextWithHint("##SearchSound", "Search...", searchSoundBuffer, IM_ARRAYSIZE(searchSoundBuffer));
+		ImGui::Separator();
+
+		for (auto& currentResource : instance->resourceList)
+		{
+			if (currentResource->GetType() != ResourceType::RESOURCE_SFX)
+				continue;
+
+			Texture* speakerIcon = (Texture*)ResourceManager::getInstance()->GetResource("SpeakerIcon");
+
+			ImGui::Image((ImTextureID)speakerIcon->GetTextureID(), ImVec2(20, 20));
+			ImGui::SameLine();
+
+			if (ImGui::Selectable(currentResource->GetName().c_str()))
+			{
+				ImGui::EndPopup();
+				return currentResource;
+			}
+		}
+
+		ImGui::EndPopup();
+	}
+
+	return nullptr;
+}
+
+Resource* ResourceManager::PrintSoundsSelectionPopup3()
+{
+	if (ImGui::BeginPopup("print_sound_selection_popup3"))
+	{
+		static char searchSoundBuffer[256];
+		ImGui::InputTextWithHint("##SearchSound", "Search...", searchSoundBuffer, IM_ARRAYSIZE(searchSoundBuffer));
+		ImGui::Separator();
+
+		for (auto& currentResource : instance->resourceList)
+		{
+			if (currentResource->GetType() != ResourceType::RESOURCE_SFX)
+				continue;
+
+			Texture* speakerIcon = (Texture*)ResourceManager::getInstance()->GetResource("SpeakerIcon");
+
+			ImGui::Image((ImTextureID)speakerIcon->GetTextureID(), ImVec2(20, 20));
+			ImGui::SameLine();
+
+			if (ImGui::Selectable(currentResource->GetName().c_str()))
+			{
+				ImGui::EndPopup();
+				return currentResource;
+			}
+		}
+
+		ImGui::EndPopup();
+	}
+
+	return nullptr;
+}
+
 Resource* ResourceManager::PrintMusicSelectionPopup()
 {
 	if (ImGui::BeginPopup("print_music_selection_popup"))

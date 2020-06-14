@@ -145,6 +145,7 @@ public:
 	bool occ_SceneEnter = false;
 	bool occ_ObjectClicked = false;
 	bool occ_blackboardValue = false;
+	bool sequentialDoneOnce = false; 
 
 private: 
 	// Draw UI ---------

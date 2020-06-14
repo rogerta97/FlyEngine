@@ -105,6 +105,24 @@ bool ModuleManager::Start()
 
 		App->moduleWindow->SetTitle(projectName.c_str());
 	}
+
+	string openInvSFXPath =	"None"; 
+	string closeInvSFXPath = "None"; 
+	string pickFromInvSFXPath =	"None"; 
+
+	if (json_object_dothas_value(root_obj, "InitData.OpenInventorySFX_Path"))
+		openInvSFXPath = json_object_dotget_string(root_obj, "InitData.OpenInventorySFX_Path");
+
+	if (json_object_dothas_value(root_obj, "InitData.CloseInventorySFX_Path"))
+		closeInvSFXPath = json_object_dotget_string(root_obj, "InitData.CloseInventorySFX_Path");
+
+	if (json_object_dothas_value(root_obj, "InitData.PickFromInventorySFX_Path"))
+		pickFromInvSFXPath = json_object_dotget_string(root_obj, "InitData.PickFromInventorySFX_Path");
+
+	GameInventory::getInstance()->openInventorySFX->audioClip = (AudioClip*)ResourceManager::getInstance()->GetAudioClip(openInvSFXPath.c_str());
+	GameInventory::getInstance()->closeInventorySFX->audioClip = (AudioClip*)ResourceManager::getInstance()->GetAudioClip(closeInvSFXPath.c_str());
+	GameInventory::getInstance()->pickFromInventorySFX->audioClip = (AudioClip*)ResourceManager::getInstance()->GetAudioClip(pickFromInvSFXPath.c_str());
+
 	//else
 	//{
 	//	JSON_Value* scene_v = json_value_init_object();

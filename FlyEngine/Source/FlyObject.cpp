@@ -95,7 +95,7 @@ bool FlyObject::Update(float dt)
 
 	// Update Sequential Action If Necessary ----------
 	sequentialSwapedTick = false;
-	if (currentSequentialAction != nullptr)
+	if (currentSequentialAction != nullptr && !sequentialDoneOnce)
 	{
 		if (currentSequentialAction->IsActionFinished())
 		{
@@ -132,6 +132,7 @@ bool FlyObject::Update(float dt)
 					{
 						currentSequentialAction = nullptr;
 						sequentialSwapedTick = true;
+						sequentialDoneOnce = true; 
 					}
 
 				}
@@ -148,7 +149,6 @@ bool FlyObject::Update(float dt)
 		if (currentSequentialAction != nullptr)
 		{
 			currentSequentialAction->DoAction();
-			//flog("Current Action Name: %s", currentSequentialAction->GetActionName().c_str());
 		}
 	}
 

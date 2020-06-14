@@ -195,7 +195,11 @@ void ChangeRoomAction::DoAction()
 {
 	if (destinationRoom)
 	{
+		if (GameInventory::getInstance()->droppingObject != nullptr)
+			GameInventory::getInstance()->returnDroppingObject = true; 
+
 		GameInventory::getInstance()->CheckReturnDroppingObject();
+
 		App->BroadCastEvent(FlyEngineEvent::LEAVE_ROOM);
 		App->moduleWorldManager->SetSelectedRoom(destinationRoom);
 		App->BroadCastEvent(FlyEngineEvent::ENTER_ROOM);

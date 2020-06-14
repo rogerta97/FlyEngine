@@ -61,9 +61,7 @@ GameInventory::GameInventory()
 
 	openInventorySFX = new EmitSoundAction(nullptr);
 	closeInventorySFX = new EmitSoundAction(nullptr);
-
-	AudioClip* openInventoryAudioClip = (AudioClip*)ResourceManager::getInstance()->GetAudioClip("OpenInventory");
-	AudioClip* closeInventoryAudioClip = (AudioClip*)ResourceManager::getInstance()->GetAudioClip("OpenInventory");
+	pickFromInventorySFX = new EmitSoundAction(nullptr);
 
 	openInventorySFX->audioClip = nullptr; 
 	closeInventorySFX->audioClip = nullptr; 
@@ -223,6 +221,7 @@ void GameInventory::UpdateInventory()
 {
 	instance->openInventorySFX->Update(0.16f);
 	instance->closeInventorySFX->Update(0.16f);
+	instance->pickFromInventorySFX->Update(0.16f);
 }
 
 void GameInventory::DrawInventory()
@@ -384,6 +383,7 @@ FlyObject* GameInventory::PickObjectFromInventory(int index)
 			(*currentSlot)->isObjectPicked = true; 
 			retObject = (*currentSlot)->GetSlotObject();
 			retObject->transform->SetScale((*currentSlot)->viewportScale);
+			instance->pickFromInventorySFX->Play(); 
 			break;
 		}
 
