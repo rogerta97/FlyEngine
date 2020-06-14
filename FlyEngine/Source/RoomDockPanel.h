@@ -30,7 +30,7 @@ private:
 	Texture* playStopButtonTexture;
 
 	bool showMusicSelectionPopup = false; 
-
+	bool showSoundSelectionPopup = false;
 };
 
 #endif 

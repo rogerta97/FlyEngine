@@ -65,8 +65,8 @@ GameInventory::GameInventory()
 	AudioClip* openInventoryAudioClip = (AudioClip*)ResourceManager::getInstance()->GetAudioClip("OpenInventory");
 	AudioClip* closeInventoryAudioClip = (AudioClip*)ResourceManager::getInstance()->GetAudioClip("OpenInventory");
 
-	openInventorySFX->audioClip = openInventoryAudioClip; 
-	closeInventorySFX->audioClip = closeInventoryAudioClip; 
+	openInventorySFX->audioClip = nullptr; 
+	closeInventorySFX->audioClip = nullptr; 
 
 	opened = false; 
 }

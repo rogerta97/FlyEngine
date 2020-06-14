@@ -254,6 +254,11 @@ void EmitSoundAction::Stop()
 	}
 }
 
+bool EmitSoundAction::IsPlaying() const
+{
+	return isPlaying;
+}
+
 void EmitSoundAction::SaveAction(JSON_Object* jsonObject, std::string serializeStr, bool literalStr, int actionPositionInObject)
 {
 	string toolsSerializeSection; 

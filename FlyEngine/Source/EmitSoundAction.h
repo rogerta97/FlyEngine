@@ -28,6 +28,8 @@ public:
 	void Play(); 
 	void Stop(); 
 
+	bool IsPlaying() const;
+
 	void SaveAction(JSON_Object* jsonObject, std::string serializeStr, bool literalStr = false, int actionPositionInObject = 0);
 	void DoAction(); 
 

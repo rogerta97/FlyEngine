@@ -17,6 +17,7 @@
 #include "RoomUIHandler.h"
 #include "GameInventory.h"
 #include "ImageImporter.h"
+#include "EmitSoundAction.h"
 #include "TinyFileDialog.h"
 #include "SaveAndLoad.h"
 #include "MyFileSystem.h"
@@ -368,7 +369,6 @@ void RoomDockPanel::DrawTopButtons()
 			playStopButtonTexture = (Texture*)ResourceManager::getInstance()->GetResource("PlayIcon");
 
 			SaveAndLoad::getInstance()->LoadOnPlayData();
-			//App->moduleWorldManager->ResetSequentials();
 		}
 	}
 	ImGui::PopStyleColor(2);
@@ -609,10 +609,134 @@ void RoomDockPanel::ShowViewportSettingsTab()
 			GameInventory::getInstance()->arrowColor = arrowInventoryColor;
 
 		// Open Inventory Sound
-		if(ImGui::Button)
+		IMGUI_SPACED_SEPARATOR; 
+		{
+			ImGui::Text("Open Inventory SFX:");
+			static char soundNameBuffer[256] = "";
+
+			if (GameInventory::getInstance()->openInventorySFX->audioClip != nullptr)
+				strcpy(soundNameBuffer, GameInventory::getInstance()->openInventorySFX->audioClip->GetName().c_str());
+
+			Texture* buttonIcon = nullptr;
+
+			if (!GameInventory::getInstance()->openInventorySFX->IsPlaying())
+				buttonIcon = (Texture*)ResourceManager::getInstance()->GetResource("PlayAudio");
+			else
+				buttonIcon = (Texture*)ResourceManager::getInstance()->GetResource("StopIcon");
+
+			if (ImGui::ImageButton((ImTextureID)buttonIcon->GetTextureID(), ImVec2(20, 20)))
+			{
+				if (!GameInventory::getInstance()->openInventorySFX->IsPlaying())
+					GameInventory::getInstance()->openInventorySFX->Play();
+				else
+					GameInventory::getInstance()->openInventorySFX->Stop();
+			}
+
+			ImGui::SameLine();
+
+			ImGui::InputTextWithHint("", "Open Inventory Sound...", soundNameBuffer, IM_ARRAYSIZE(soundNameBuffer), ImGuiInputTextFlags_ReadOnly);
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+				{
+					int* selectedResourceUID = (int*)payload->Data;
+					Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+					if (resourceDropped->GetType() == RESOURCE_SFX)
+					{
+						GameInventory::getInstance()->openInventorySFX->audioClip = (AudioClip*)resourceDropped;
+						strcpy(soundNameBuffer, resourceDropped->GetName().c_str());
+					}
+				}
+				ImGui::EndDragDropTarget();
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("Search##SearchSound"))
+			{
+				ImGui::OpenPopup("print_sound_selection_popup");
+				showSoundSelectionPopup = true;
+			}
+
+			if (showSoundSelectionPopup)
+			{
+				Resource* selectedSound = ResourceManager::getInstance()->PrintSoundsSelectionPopup();
+
+				if (selectedSound != nullptr)
+				{
+					GameInventory::getInstance()->openInventorySFX->audioClip = (AudioClip*)selectedSound;
+					showSoundSelectionPopup = false;
+					strcpy(soundNameBuffer, GameInventory::getInstance()->openInventorySFX->audioClip->GetName().c_str());
+				}
+			}
+		}
+		{
+			ImGui::Text("Close Inventory SFX:");
+				static char soundNameBuffer[256] = "";
+
+			if (GameInventory::getInstance()->closeInventorySFX->audioClip != nullptr)
+				strcpy(soundNameBuffer, GameInventory::getInstance()->closeInventorySFX->audioClip->GetName().c_str());
+
+			Texture* buttonIcon = nullptr;
+
+			if (!GameInventory::getInstance()->closeInventorySFX->IsPlaying())
+				buttonIcon = (Texture*)ResourceManager::getInstance()->GetResource("PlayAudio");
+			else
+				buttonIcon = (Texture*)ResourceManager::getInstance()->GetResource("StopIcon");
+
+			if (ImGui::ImageButton((ImTextureID)buttonIcon->GetTextureID(), ImVec2(20, 20)))
+			{
+				if (!GameInventory::getInstance()->closeInventorySFX->IsPlaying())
+					GameInventory::getInstance()->closeInventorySFX->Play();
+				else
+					GameInventory::getInstance()->closeInventorySFX->Stop();
+			}
+
+			ImGui::SameLine();
+
+			ImGui::InputTextWithHint("", "Open Inventory Sound...", soundNameBuffer, IM_ARRAYSIZE(soundNameBuffer), ImGuiInputTextFlags_ReadOnly);
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload * payload = ImGui::AcceptDragDropPayload("drag_resource"))
+				{
+					int* selectedResourceUID = (int*)payload->Data;
+					Resource* resourceDropped = ResourceManager::getInstance()->GetResource(*selectedResourceUID);
+
+					if (resourceDropped->GetType() == RESOURCE_SFX)
+					{
+						GameInventory::getInstance()->closeInventorySFX->audioClip = (AudioClip*)resourceDropped;
+						strcpy(soundNameBuffer, resourceDropped->GetName().c_str());
+					}
+				}
+				ImGui::EndDragDropTarget();
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("Search##SearchSound"))
+			{
+				ImGui::OpenPopup("print_sound_selection_popup");
+				showSoundSelectionPopup = true;
+			}
+
+			if (showSoundSelectionPopup)
+			{
+				Resource* selectedSound = ResourceManager::getInstance()->PrintSoundsSelectionPopup();
+
+				if (selectedSound != nullptr)
+				{
+					GameInventory::getInstance()->closeInventorySFX->audioClip = (AudioClip*)selectedSound;
+					showSoundSelectionPopup = false;
+					strcpy(soundNameBuffer, GameInventory::getInstance()->closeInventorySFX->audioClip->GetName().c_str());
+				}
+			}
+		}
 
 
-
+		IMGUI_SPACED_SEPARATOR;
 		if (ImGui::Checkbox("See Preview", &GameInventory::getInstance()->seePreview))
 		{	
 			//	GameInventory::getInstance()->ToggleVisibility();
