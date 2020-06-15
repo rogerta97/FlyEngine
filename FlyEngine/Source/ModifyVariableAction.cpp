@@ -54,6 +54,10 @@ void ModifyVariableAction::DoAction()
 		{
 			roomBlackboard->ModifyIntegerVariable(currentEffect); 
 		}
+		else if (currentEffect->targetVariable->varType == Var_Toggle)
+		{
+			roomBlackboard->ModifyToggleVariable(currentEffect);
+		}
 	}
 
 	if (!variablesEffectList.empty())

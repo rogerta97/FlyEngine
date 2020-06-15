@@ -119,6 +119,19 @@ void Blackboard::ModifyIntegerVariable(ModifyVariableEffect* modifyVariableEffec
 	modifyVariableEffect->ApplyEffect(); 
 }
 
+void Blackboard::ModifyToggleVariable(ModifyVariableEffect* modifyVariableEffect)
+{
+	// Sanity Checks 
+	std::string targetVarName = modifyVariableEffect->targetVariable->name;
+	FlyVariable* targetVar = GetVariable(targetVarName);
+
+	if (targetVar == nullptr)
+		return;
+
+	modifyVariableEffect->ApplyEffect();
+}
+
+
 FlyVariable* Blackboard::DrawVariableListPopup(std::string popupID)
 {
 	if (ImGui::BeginPopup(popupID.c_str()))

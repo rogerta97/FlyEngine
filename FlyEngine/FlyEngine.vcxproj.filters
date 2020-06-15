@@ -608,9 +608,6 @@
     <ClInclude Include="Source\ModuleImGui.h">
       <Filter>Source\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Transform.h">
-      <Filter>Source\FlyEngine\FlyObject\ObjectActions</Filter>
-    </ClInclude>
     <ClInclude Include="3rdParty\MathGeoLib\MathBuildConfig.h">
       <Filter>Source\3rdParty\MathGeoLib</Filter>
     </ClInclude>
@@ -982,6 +979,9 @@
     </ClInclude>
     <ClInclude Include="Source\GlobalBlackboardDockPanel.h">
       <Filter>Source\FlyEngine\DockingPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Transform.h">
+      <Filter>Source\FlyEngine\UIElements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

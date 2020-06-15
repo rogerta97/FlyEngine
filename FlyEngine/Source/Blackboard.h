@@ -20,6 +20,7 @@ public:
 	void LoadData(std::string fileName); 
 
 	void ModifyIntegerVariable(ModifyVariableEffect* variableEffect);
+	void ModifyToggleVariable(ModifyVariableEffect* variableEffect);
 
 	// Utility 
 	FlyVariable* DrawVariableListPopup(std::string popupID);

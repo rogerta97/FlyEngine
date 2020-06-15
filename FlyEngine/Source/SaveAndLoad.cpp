@@ -640,7 +640,7 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 					newEffect->variableOperatorType = (VariableOperatorType)varOpTmp;
 
 					newEffect->incIntegerValue = json_object_dotget_number(root_obj, string(effectSerializeStr + string("IncIntegerValue")).c_str());
-					newEffect->nextToggleValue = json_object_dotget_number(root_obj, string(effectSerializeStr + string("NextToggleValue")).c_str());
+					newEffect->nextToggleValue = json_object_dotget_boolean(root_obj, string(effectSerializeStr + string("NextToggleValue")).c_str());
 
 					newCallbackModifyAction->AddEffect(newEffect);
 					count++;
@@ -1014,7 +1014,7 @@ void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 	Texture* thumbnailTexture = (Texture*)ResourceManager::getInstance()->GetResource(thumbnailResourceName.c_str()); 
 	roomToLoad->roomThumbnail = thumbnailTexture; 
 
-	// Load Room Background Music ç
+	// Load Room Background Music
 	string backgroundMusicResourceName = json_object_dotget_string(root_obj, string("RoomData.BackgroundMusic").c_str());
 	roomToLoad->backgroundMusic = (MusicTrack*)ResourceManager::getInstance()->GetResource(backgroundMusicResourceName.c_str()); 
 
