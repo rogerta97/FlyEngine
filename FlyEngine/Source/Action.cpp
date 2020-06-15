@@ -5,7 +5,7 @@
 #include "ModuleImGui.h"
 #include "Texture.h"
 #include "ResourceManager.h"
-#include "ActionCondition.h"
+#include "GlobalBlackboardDockPanel.h"
 #include "Room.h"
 #include "ModuleWorldManager.h"
 #include "FlyVariable.h"
@@ -294,6 +294,11 @@ ActionConditionVariable* Action::LoadConditionVariable(JSON_Object* jsonObject, 
 
 	string targetVariableName = json_object_dotget_string(jsonObject, string(serializeObjectString + ".TargetVariableName").c_str());
 	newConditionVariable->targetVariable = currentBlackboard->GetVariable(targetVariableName);
+
+	if (newConditionVariable->targetVariable == nullptr)
+	{
+		newConditionVariable->targetVariable = App->moduleWorldManager->globalBlackboard->GetVariable(targetVariableName);
+	}
 
 	int conditionOperator_tmp = json_object_dotget_number(jsonObject, string(serializeObjectString + ".ConditionType").c_str());
 	newConditionVariable->actionConditionOperator = (ActionConditionOperator)conditionOperator_tmp;

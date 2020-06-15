@@ -224,7 +224,7 @@ void ModifyVariableAction::DrawEffectsList()
 		string childStr = "ChildItem" + to_string(count++);
 		ImGui::BeginChild(childStr.c_str(), ImVec2(ImGui::GetContentRegionAvail().x - 5, 100));
 
-		DrawEffectItem(currentEffect, count);
+	//	DrawEffectItem(currentEffect, count);
 
 		ImGui::EndChild();
 		ImGui::PopStyleColor();
