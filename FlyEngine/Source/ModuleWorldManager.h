@@ -14,6 +14,7 @@ class RoomConnection;
 class RoomUIHandler; 
 class Blackboard;
 class FlyObject; 
+class Timer; 
 class ModuleWorldManager : public Module
 {
 public:
@@ -24,6 +25,7 @@ public:
 	bool Start();
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
+	void AutoSave();
 	void FitUIObjectUtils();
 
 	void ResetSequentials();
@@ -85,6 +87,9 @@ private:
 	Room* selectedRoom;
 	bool firstFit = false;
 	bool firstUpdate = true; 
+
+	Timer* autosaveTimer; 
+	float autoSaveThreshold = 60000; 
 };
 
 

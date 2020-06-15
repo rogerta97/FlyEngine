@@ -17,7 +17,7 @@
 
 WorldPropertiesDockPanel::WorldPropertiesDockPanel(bool isVisible) : DockPanel("World Properties", isVisible)
 {
-	flyEngineSection = FLY_SECTION_ROOM_GRAPH;
+	flyEngineSection = FLY_SECTION_WORLD_EDITOR;
 	dockPanelType = DOCK_WORLD_PROPERTIES;
 	newRoomBuffer = "New Room...";
 }

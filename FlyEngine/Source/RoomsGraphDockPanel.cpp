@@ -13,7 +13,7 @@
 
 RoomsGraphDockPanel::RoomsGraphDockPanel(bool isVisible) : DockPanel("Rooms Graph", isVisible)
 {
-	flyEngineSection = FLY_SECTION_ROOM_GRAPH;
+	flyEngineSection = FLY_SECTION_WORLD_EDITOR;
 	dockPanelType = DOCK_ROOMS_GRAPH;
 
 	roomsNodeGraph = new RoomsNodeGraph();

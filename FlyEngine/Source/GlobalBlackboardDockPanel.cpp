@@ -11,7 +11,7 @@
 
 GlobalBlackboardDockPanel::GlobalBlackboardDockPanel(bool isVisible) : DockPanel("Global Blackboard", isVisible)
 {
-	flyEngineSection = FLY_SECTION_ROOM_GRAPH;
+	flyEngineSection = FLY_SECTION_WORLD_EDITOR;
 	dockPanelType = DOCK_GLOBAL_BLACKBOARD;
 }
 

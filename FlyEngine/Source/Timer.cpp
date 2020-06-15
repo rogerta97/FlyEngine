@@ -26,6 +26,12 @@ void Timer::Stop()
 	stopped_at = SDL_GetTicks();
 }
 
+void Timer::Restart()
+{
+	Stop();
+	Start();
+}
+
 // ---------------------------------------------
 Uint32 Timer::Read()
 {

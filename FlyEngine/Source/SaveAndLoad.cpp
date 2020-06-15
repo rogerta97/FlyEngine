@@ -146,19 +146,19 @@ void SaveAndLoad::SaveInitFile()
 	json_object_dotset_boolean(scene_obj, "InitData.GameMode", App->GetGameMode());
 
 	if(GameInventory::getInstance()->openInventorySFX->audioClip != nullptr)
-		json_object_dotset_string(scene_obj, "InitData.OpenInventorySFX_Path", GameInventory::getInstance()->openInventorySFX->audioClip->GetPath());
+		json_object_dotset_string(scene_obj, "InitData.OpenInventorySFX_Name", GameInventory::getInstance()->openInventorySFX->audioClip->GetName().c_str());
 	else
-		json_object_dotset_string(scene_obj, "InitData.OpenInventorySFX_Path", "None");
+		json_object_dotset_string(scene_obj, "InitData.OpenInventorySFX_Name", "None");
 
 	if (GameInventory::getInstance()->closeInventorySFX->audioClip != nullptr)
-		json_object_dotset_string(scene_obj, "InitData.CloseInventorySFX_Path", GameInventory::getInstance()->closeInventorySFX->audioClip->GetPath());
+		json_object_dotset_string(scene_obj, "InitData.CloseInventorySFX_Name", GameInventory::getInstance()->closeInventorySFX->audioClip->GetName().c_str());
 	else
-		json_object_dotset_string(scene_obj, "InitData.CloseInventorySFX_Path", "None");
+		json_object_dotset_string(scene_obj, "InitData.CloseInventorySFX_Name", "None");
 
 	if (GameInventory::getInstance()->pickFromInventorySFX->audioClip != nullptr)
-		json_object_dotset_string(scene_obj, "InitData.PickFromInventorySFX_Path", GameInventory::getInstance()->pickFromInventorySFX->audioClip->GetPath());
+		json_object_dotset_string(scene_obj, "InitData.PickFromInventorySFX_Name", GameInventory::getInstance()->pickFromInventorySFX->audioClip->GetName().c_str());
 	else
-		json_object_dotset_string(scene_obj, "InitData.PickFromInventorySFX_Path", "None");
+		json_object_dotset_string(scene_obj, "InitData.PickFromInventorySFX_Name", "None");
 
 	json_serialize_to_file(scene_v, savePath.c_str());
 
@@ -1000,8 +1000,6 @@ void SaveAndLoad::LoadActionConditions(JSON_Object* root_obj, std::string& seria
 
 void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 {
-	flog("ROOOOOOOOOOOOOM");
-
 	// Load Room Blackboard
 	Blackboard* roomBB = roomToLoad->CreateBlackboard(); 
 	roomBB->LoadData(roomToLoad->GetName() + "_Blackboard");

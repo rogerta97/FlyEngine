@@ -316,21 +316,21 @@ void RoomDockPanel::DrawTopButtons()
 
 	// Save Button ------------
 	ImGui::SameLine();
-	Texture* exportTexture = (Texture*)ResourceManager::getInstance()->GetResource("ExportIcon");
+	Texture* exportTexture = (Texture*)ResourceManager::getInstance()->GetResource("SaveIcon");
 	if (ImGui::ImageButton((ImTextureID)exportTexture->GetTextureID(), ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, 1)))
 	{
 		SaveAndLoad::getInstance()->SaveCurrentRoomData();
 	}
 
-	// Save Button ------------
+	// Load Button ------------
 	ImGui::SameLine();
-	Texture* importIcon = (Texture*)ResourceManager::getInstance()->GetResource("ImportIcon");
+	Texture* importIcon = (Texture*)ResourceManager::getInstance()->GetResource("ExportIcon");
 	if (ImGui::ImageButton((ImTextureID)importIcon->GetTextureID(), ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, 1)))
 	{
 		char const* lFilterPatterns[1] = { "*.json" };
 		string defaultPath = MyFileSystem::getInstance()->GetSolutionDirectory();
 		defaultPath += "Source\\Game\\Resources\\EngineSavedData\\RoomsData\\";
-		const char* path = tinyfd_openFileDialog("Load Image...", defaultPath.c_str(), 1, lFilterPatterns, NULL, 0);
+		string path = tinyfd_openFileDialog("Load Image...", defaultPath.c_str(), 1, lFilterPatterns, NULL, 0);
 
 		if (path != "")
 		{
@@ -646,6 +646,7 @@ void RoomDockPanel::ShowViewportSettingsTab()
 					if (resourceDropped->GetType() == RESOURCE_SFX)
 					{
 						GameInventory::getInstance()->openInventorySFX->audioClip = (AudioClip*)resourceDropped;
+						SaveAndLoad::getInstance()->SaveInitFile();
 						strcpy(soundNameBuffer, resourceDropped->GetName().c_str());
 					}
 				}
@@ -667,6 +668,7 @@ void RoomDockPanel::ShowViewportSettingsTab()
 				if (selectedSound != nullptr)
 				{
 					GameInventory::getInstance()->openInventorySFX->audioClip = (AudioClip*)selectedSound;
+					SaveAndLoad::getInstance()->SaveInitFile();
 					showSoundSelectionPopup = false;
 					strcpy(soundNameBuffer, GameInventory::getInstance()->openInventorySFX->audioClip->GetName().c_str());
 				}
@@ -710,6 +712,7 @@ void RoomDockPanel::ShowViewportSettingsTab()
 					if (resourceDropped->GetType() == RESOURCE_SFX)
 					{
 						GameInventory::getInstance()->closeInventorySFX->audioClip = (AudioClip*)resourceDropped;
+						SaveAndLoad::getInstance()->SaveInitFile();
 						strcpy(soundNameBuffer, resourceDropped->GetName().c_str());
 					}
 				}
@@ -731,6 +734,7 @@ void RoomDockPanel::ShowViewportSettingsTab()
 				if (selectedSound != nullptr)
 				{
 					GameInventory::getInstance()->closeInventorySFX->audioClip = (AudioClip*)selectedSound;
+					SaveAndLoad::getInstance()->SaveInitFile();
 					showSoundSelectionPopup = false;
 					strcpy(soundNameBuffer, GameInventory::getInstance()->closeInventorySFX->audioClip->GetName().c_str());
 				}
@@ -774,6 +778,7 @@ void RoomDockPanel::ShowViewportSettingsTab()
 					if (resourceDropped->GetType() == RESOURCE_SFX)
 					{
 						GameInventory::getInstance()->pickFromInventorySFX->audioClip = (AudioClip*)resourceDropped;
+						SaveAndLoad::getInstance()->SaveInitFile();
 						strcpy(soundNameBuffer, resourceDropped->GetName().c_str());
 					}
 				}
@@ -795,16 +800,20 @@ void RoomDockPanel::ShowViewportSettingsTab()
 				if (selectedSound != nullptr)
 				{
 					GameInventory::getInstance()->pickFromInventorySFX->audioClip = (AudioClip*)selectedSound;
+					SaveAndLoad::getInstance()->SaveInitFile();
 					showSoundSelectionPopup = false;
 					strcpy(soundNameBuffer, GameInventory::getInstance()->pickFromInventorySFX->audioClip->GetName().c_str());
 				}
 			}
 		}
 
-		IMGUI_SPACED_SEPARATOR;
-		if (ImGui::Checkbox("See Preview", &GameInventory::getInstance()->seePreview))
-		{	
-			//	GameInventory::getInstance()->ToggleVisibility();
+		if (App->isEngineInPlayMode)
+		{
+			IMGUI_SPACED_SEPARATOR;
+			if (ImGui::Checkbox("See Preview", &GameInventory::getInstance()->seePreview))
+			{
+				GameInventory::getInstance()->ToggleVisibility();
+			}
 		}
 	}
 

@@ -38,6 +38,13 @@ ModuleWorldManager::~ModuleWorldManager()
 bool ModuleWorldManager::Start()
 {
 	globalBlackboard = new Blackboard(); 
+
+	if (!App->isEngineInPlayMode)
+	{
+		autosaveTimer = new Timer();
+		autosaveTimer->Start(); 
+	}
+
 	return true;
 }
 
@@ -48,6 +55,15 @@ update_status ModuleWorldManager::PreUpdate(float dt)
 
 update_status ModuleWorldManager::Update(float dt)
 {
+	if (!App->isEngineInPlayMode)
+	{
+		if (autosaveTimer->Read() > autoSaveThreshold)
+		{
+			autosaveTimer->Restart();
+			AutoSave();
+		}
+	}
+
 	if (App->moduleInput->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 	{
 		GameInventory::getInstance()->returnDroppingObject = true;
@@ -70,6 +86,22 @@ update_status ModuleWorldManager::Update(float dt)
 	}
 
 	return UPDATE_CONTINUE;
+}
+
+void ModuleWorldManager::AutoSave()
+{
+	if (App->flySection == FlyEngineSection::FLY_SECTION_WORLD_EDITOR)
+	{
+		flog("World Graph Saved");
+	}
+	else if (App->flySection == FlyEngineSection::FLY_SECTION_ROOM_EDIT)
+	{
+		if (selectedRoom != nullptr)
+		{
+			SaveAndLoad::getInstance()->SaveRoomData(selectedRoom);
+			flog("%s Room Saved", selectedRoom->GetName().c_str());
+		}
+	}
 }
 
 void ModuleWorldManager::FitUIObjectUtils()
@@ -271,7 +303,6 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 			{
 				currentObject->OnSceneLeave();
 			}
-
 		}
 
 		break;
@@ -283,7 +314,6 @@ bool ModuleWorldManager::LoadAllData()
 	string roomsDirectory = MyFileSystem::getInstance()->GetSavedDataDirectory() + "RoomsData";
 	vector<string> roomsSavedFiles;
 	MyFileSystem::getInstance()->GetFilesInDirectory(roomsDirectory.c_str(), roomsSavedFiles, false);
-
 
 	// Load Rooms -------
 	for (auto& currentRoomFile : roomsSavedFiles)
@@ -494,7 +524,7 @@ void ModuleWorldManager::SetSelectedRoom(Room* nextSelectedRoom, bool sendEvent)
 		//if(ViewportManager::getInstance()->viewportTexture != nullptr)
 		//	selectedRoom->roomTextureID = ViewportManager::getInstance()->viewportTexture->GetTextureID();
 
-		flog("Set Selected Room"); 
+		flog("Set Selected Room: %s", nextSelectedRoom->GetName().c_str());
 
 		if (selectedRoom != nullptr)
 			selectedRoom->isSelected = false; 

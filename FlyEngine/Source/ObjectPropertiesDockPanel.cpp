@@ -874,7 +874,6 @@ void ObjectPropertiesDockPanel::DrawFixedPartObjectUI(FlyObject* selectedObject)
 		ImGui::Image((ImTextureID)objectIconTexture->GetTextureID(), ImVec2(35, 35));
 
 	ImGui::Separator();
-
 	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 45, ImGui::GetCursorPosY() - 38));
 
 	ImGui::PushFont(App->moduleImGui->rudaBoldHuge);

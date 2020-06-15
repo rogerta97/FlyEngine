@@ -257,9 +257,17 @@ void ModuleImGui::DrawMainMenuBar()
 
 	if (App->flySection == FLY_SECTION_ROOM_EDIT) 
 	{
-		if (ImGui::SmallButton("Back To World")) 
+		if (ImGui::SmallButton("World Editor")) 
 		{
-			App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_GRAPH); 
+			Room* currentRoom = App->moduleWorldManager->GetSelectedRoom();
+			string path = MyFileSystem::getInstance()->GetSavedDataDirectory() + "RoomsData\\" + currentRoom->GetName() + ".json";
+
+			if (path != "")
+			{
+				SaveAndLoad::getInstance()->SaveRoomData(currentRoom);
+			}
+
+			App->moduleImGui->AddaptToFlySection(FLY_SECTION_WORLD_EDITOR); 
 		}
 
 		ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x / 2 - 100);
@@ -335,7 +343,7 @@ void ModuleImGui::AddaptToFlySection(FlyEngineSection flyEngineSection)
 			(*it)->SetVisible(false); 
 	}
 
-	if(flyEngineSection == FLY_SECTION_ROOM_EDIT || flyEngineSection == FLY_SECTION_ROOM_GRAPH)
+	if(flyEngineSection == FLY_SECTION_ROOM_EDIT || flyEngineSection == FLY_SECTION_WORLD_EDITOR)
 		App->flySection = flyEngineSection;
 }
 

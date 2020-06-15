@@ -100,46 +100,30 @@ bool ModuleManager::Start()
 			projectName = json_object_dotget_string(root_obj, "InitData.ProjectName"); 
 
 		StartGame(firstRoomUID);
-
 		App->SetIsReleaseVersion(true);
-
 		App->moduleWindow->SetTitle(projectName.c_str());
 	}
 
-	string openInvSFXPath =	"None"; 
-	string closeInvSFXPath = "None"; 
-	string pickFromInvSFXPath =	"None"; 
+	string openInvSFXName =	"None"; 
+	string closeInvSFXName = "None";
+	string pickFromInvSFXName =	"None";
 
-	if (json_object_dothas_value(root_obj, "InitData.OpenInventorySFX_Path"))
-		openInvSFXPath = json_object_dotget_string(root_obj, "InitData.OpenInventorySFX_Path");
+	if (json_object_dothas_value(root_obj, "InitData.OpenInventorySFX_Name"))
+		openInvSFXName = json_object_dotget_string(root_obj, "InitData.OpenInventorySFX_Name");
 
-	if (json_object_dothas_value(root_obj, "InitData.CloseInventorySFX_Path"))
-		closeInvSFXPath = json_object_dotget_string(root_obj, "InitData.CloseInventorySFX_Path");
+	if (json_object_dothas_value(root_obj, "InitData.CloseInventorySFX_Name"))
+		closeInvSFXName = json_object_dotget_string(root_obj, "InitData.CloseInventorySFX_Name");
 
-	if (json_object_dothas_value(root_obj, "InitData.PickFromInventorySFX_Path"))
-		pickFromInvSFXPath = json_object_dotget_string(root_obj, "InitData.PickFromInventorySFX_Path");
+	if (json_object_dothas_value(root_obj, "InitData.PickFromInventorySFX_Name"))
+		pickFromInvSFXName = json_object_dotget_string(root_obj, "InitData.PickFromInventorySFX_Name");
 
-	GameInventory::getInstance()->openInventorySFX->audioClip = (AudioClip*)ResourceManager::getInstance()->GetAudioClip(openInvSFXPath.c_str());
-	GameInventory::getInstance()->closeInventorySFX->audioClip = (AudioClip*)ResourceManager::getInstance()->GetAudioClip(closeInvSFXPath.c_str());
-	GameInventory::getInstance()->pickFromInventorySFX->audioClip = (AudioClip*)ResourceManager::getInstance()->GetAudioClip(pickFromInvSFXPath.c_str());
-
-	//else
-	//{
-	//	JSON_Value* scene_v = json_value_init_object();
-	//	JSON_Object* scene_obj = json_value_get_object(scene_v);
-	//	json_object_dotset_number(root_obj, "InitData.StartRoomUID", 0);
-	//	json_object_dotset_string(root_obj, "InitData.ProjectName", "None");
-	//	json_serialize_to_file(scene_v, initFilePath.c_str());
-	//}
+	GameInventory::getInstance()->openInventorySFX->audioClip = (AudioClip*)ResourceManager::getInstance()->GetAudioClip(openInvSFXName.c_str());
+	GameInventory::getInstance()->closeInventorySFX->audioClip = (AudioClip*)ResourceManager::getInstance()->GetAudioClip(closeInvSFXName.c_str());
+	GameInventory::getInstance()->pickFromInventorySFX->audioClip = (AudioClip*)ResourceManager::getInstance()->GetAudioClip(pickFromInvSFXName.c_str());
 
 	// Init Inventory 
 	GameInventory::getInstance(); 
 	GameInventory::getInstance()->CreateSlots();
-
-	//if (flyEngineSection == FLY_SECTION_ROOM_GRAPH)
-	//{
-	//ImGui::SetWindowFocus("World Properties");
-	
 
 	return true;
 }

@@ -12,7 +12,7 @@
 
 GamePropertiesDockPanel::GamePropertiesDockPanel(bool isVisible) : DockPanel("Game Properties", isVisible)
 {
-	flyEngineSection = FLY_SECTION_ROOM_GRAPH;
+	flyEngineSection = FLY_SECTION_WORLD_EDITOR;
 	dockPanelType = DOCK_GAME_PROPERTIES;
 	firstRoom = nullptr; 
 	projectName = ""; 
