@@ -35,7 +35,12 @@ void ActionConditionVariable::SaveCondition(JSON_Object* jsonObject, std::string
 	std::string saveStr = serializeObjectString + "Condition_" + to_string(pos);
 
 	json_object_dotset_number(jsonObject, std::string(saveStr + ".ConditionType").c_str(), actionConditionType);
-	json_object_dotset_string(jsonObject, std::string(saveStr + ".TargetVariableName").c_str(), targetVariable->name.c_str());
+
+	if(targetVariable != nullptr)
+		json_object_dotset_string(jsonObject, std::string(saveStr + ".TargetVariableName").c_str(), targetVariable->name.c_str());
+	else
+		json_object_dotset_string(jsonObject, std::string(saveStr + ".TargetVariableName").c_str(), "None");
+
 	json_object_dotset_number(jsonObject, std::string(saveStr + ".ConditionOperator").c_str(), actionConditionOperator);
 	json_object_dotset_number(jsonObject, std::string(saveStr + ".TargetValueInteger").c_str(), targetValueInteger);
 	json_object_dotset_boolean(jsonObject, std::string(saveStr + ".TargetValueBoolean").c_str(), targetValueBoolean);

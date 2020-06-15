@@ -121,7 +121,7 @@ void SaveAndLoad::LoadOnPlayData()
 
 void SaveAndLoad::SaveInitFile()
 {
-	if (App->IsReleaseVersion())
+	if (App->IsReleaseVersion() || App->isEngineInPlayMode)
 		return; 
 
 	Room* startRoom = App->moduleWorldManager->GetStartRoom();

@@ -50,7 +50,7 @@ void EmitSoundAction::DrawActionOccurenceCheckboxes()
 	{
 		ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), 35));
 		ImGui::SetCursorPos(ImVec2(5, 5));
-		ImGui::Checkbox("Object Condition", &occ_blackboardValue);
+		ImGui::Checkbox("Blackboard Condition", &occ_blackboardValue);
 	}
 	else if (GetActionClass() == ACTION_CLASS_DIRECT)
 	{
@@ -62,7 +62,7 @@ void EmitSoundAction::DrawActionOccurenceCheckboxes()
 		ImGui::SetCursorPos(ImVec2(5, 65));
 		ImGui::Checkbox("Object Clicked", &occ_ObjectClicked);
 		ImGui::SetCursorPos(ImVec2(5, 95));
-		ImGui::Checkbox("Object Condition", &occ_blackboardValue);
+		ImGui::Checkbox("Blackboard Condition", &occ_blackboardValue);
 	}
 
 	ImGui::SameLine();

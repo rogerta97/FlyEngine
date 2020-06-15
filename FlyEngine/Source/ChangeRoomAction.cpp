@@ -40,10 +40,13 @@ void ChangeRoomAction::DrawActionOccurenceCheckboxes()
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 
 	static char itemToClickWithNameBuffer[256];
-	int childSize = 35; 
+	int childSize = 67; 
 
 	if (showClickWithItems)
 		childSize += 30; 
+
+	//if (showVariableConditions)
+	//	childSize += 100;
 
 	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), childSize));
 	INC_CURSOR_4;
@@ -102,8 +105,34 @@ void ChangeRoomAction::DrawActionOccurenceCheckboxes()
 		}
 	}
 
+	INC_CURSOR_X_4;
+	if (ImGui::Checkbox("Blackboard Condition", &occ_blackboardValue))
+	{
+
+	}
+
+	ImGui::SameLine();
+	static std::string showValueConditionButtonText = "Show Conditions";
+	if (ImGui::Button(showValueConditionButtonText.c_str()))
+	{
+		if (showVariableConditions)
+		{
+			showVariableConditions = false;
+			showValueConditionButtonText = "Show Conditions";
+		}
+		else
+		{
+			showVariableConditions = true;
+			showValueConditionButtonText = "Hide Conditions";
+		}
+	}
+
+
 	ImGui::Spacing(); 
 	ImGui::EndChild(); 
+
+	if (showVariableConditions)
+		DrawActionConditionsList();
 
 	ImGui::PopFont();
 	ImGui::PopStyleColor(); 

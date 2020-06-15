@@ -33,6 +33,7 @@ public:
 private:
 	Room* destinationRoom; 
 	bool showClickWithItems = false; 
+	bool showVariableConditions = false; 
 };
 
 #endif 
