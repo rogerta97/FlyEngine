@@ -238,7 +238,8 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 	{
 	case FlyEngineEvent::ENGINE_PLAY:
 		
-		if (App->flySection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && GetSelectedRoom() != nullptr){
+		if (App->flySection == FlyEngineSection::FLY_SECTION_ROOM_EDIT && GetSelectedRoom() != nullptr)
+		{
 			ViewportManager::getInstance()->drawGizmos = false; 
 			GameInventory::getInstance()->CloseInventory(false);
 		}
@@ -253,8 +254,7 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 			GameInventory::getInstance()->ClearItems();
 		}
 
-		if (GetSelectedRoom()->backgroundMusic != nullptr)
-			GetSelectedRoom()->backgroundMusic->Stop();
+		GetSelectedRoom()->backgroundMusic->Stop();
 
 		for (auto& currentRoom : roomsInWorldList)
 		{
@@ -280,7 +280,7 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 
 			if (GetSelectedRoom()->backgroundMusic != nullptr)
 			{
-				GetSelectedRoom()->backgroundMusic->Play();
+				GetSelectedRoom()->backgroundMusic->Play(0, true);
 			}
 			else
 			{

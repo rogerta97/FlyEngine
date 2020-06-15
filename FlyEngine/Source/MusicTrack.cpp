@@ -17,7 +17,7 @@ MusicTrack::~MusicTrack()
 
 }
 
-void MusicTrack::Play(int loops)
+void MusicTrack::Play(int loops, bool forceNew)
 {
 	if (Mix_PausedMusic())
 	{
@@ -25,7 +25,8 @@ void MusicTrack::Play(int loops)
 	}
 	else
 	{
-		Mix_PlayMusic(mixMusic, loops);
+		if(mixMusic != nullptr)
+			Mix_PlayMusic(mixMusic, loops);
 	}	
 }
 
@@ -33,8 +34,7 @@ void MusicTrack::Stop()
 {
 	if (Mix_PlayingMusic())
 	{
-		Mix_PauseMusic();
-		Mix_RewindMusic();
+		Mix_HaltMusic();
 	}
 }
 

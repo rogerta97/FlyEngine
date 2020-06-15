@@ -11,7 +11,7 @@ public:
 	~MusicTrack();
 
 	// Play 
-	void Play(int loops = 0); 
+	void Play(int loops = 0, bool forceNew = false);
 	void Stop(); 
 
 	// Set & Get 
