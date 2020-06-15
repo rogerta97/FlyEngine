@@ -102,6 +102,8 @@ void ModuleWorldManager::AutoSave()
 			flog("%s Room Saved", selectedRoom->GetName().c_str());
 		}
 	}
+
+	SaveAndLoad::getInstance()->SaveInitFile(); 
 }
 
 void ModuleWorldManager::FitUIObjectUtils()

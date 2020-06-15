@@ -618,9 +618,17 @@ void ObjectPropertiesDockPanel::DrawButtonMainImagePreview(UI_Button* selectedBu
 	}
 
 	ImGui::SameLine();
-	if (ImGui::Button("Search"))
+	if (ImGui::Button("Search##ButtonImageSearch"))
 	{
+		ImGui::OpenPopup("print_image_selection_popup");
+	}
 
+	Texture* selectedImage = (Texture*)ResourceManager::getInstance()->PrintImagesSelectionPopup();
+
+	if (selectedImage != nullptr)
+	{
+		selectedButton->SetMainTexture(selectedImage);
+		selectedButton->GetHolderObject()->FitObjectUtils();
 	}
 
 	ImGui::EndChild();

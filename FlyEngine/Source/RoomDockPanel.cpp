@@ -70,6 +70,7 @@ bool RoomDockPanel::Draw()
 				ViewportManager::getInstance()->editRoomMode = EDIT_ROOM_OBJECTS;
 				App->moduleWorldManager->GetSelectedRoom()->roomUIHandler->SetSelectedElement(nullptr);
 				App->moduleManager->SetSceneUITint(float4(1, 1, 1, 1));
+				SaveAndLoad::getInstance()->SaveInitFile();
 			}
 
 			if (ImGui::BeginTabItem("User Interface"))
@@ -83,12 +84,12 @@ bool RoomDockPanel::Draw()
 				ViewportManager::getInstance()->editRoomMode = EDIT_ROOM_UI;
 				App->moduleWorldManager->GetSelectedRoom()->SetSelectedObject(nullptr); 
 				App->moduleManager->SetSceneUITint(float4(1, 1, 1, 0.5f));
+				SaveAndLoad::getInstance()->SaveInitFile();
 			}
 
 			if (ImGui::BeginTabItem("Room Settings"))
 			{
 				ShowViewportSettingsTab();
-
 				ImGui::EndTabItem();
 			}
 
@@ -110,6 +111,7 @@ bool RoomDockPanel::Draw()
 				ViewportManager::getInstance()->editRoomMode = EDIT_ROOM_OBJECTS;
 				App->moduleWorldManager->GetSelectedRoom()->roomUIHandler->SetSelectedElement(nullptr);
 				App->moduleManager->SetSceneUITint(float4(1, 1, 1, 1));
+				SaveAndLoad::getInstance()->SaveInitFile();
 			}
 
 
@@ -542,6 +544,8 @@ void RoomDockPanel::ShowViewportSettingsTab()
 
 		if (currentRoom->backgroundMusic != nullptr)
 			strcpy(trackNameBuffer, currentRoom->backgroundMusic->GetName().c_str());
+		else
+			strcpy(trackNameBuffer, "");
 
 		ImGui::InputTextWithHint("", "Select Music...", trackNameBuffer, IM_ARRAYSIZE(trackNameBuffer), ImGuiInputTextFlags_ReadOnly);
 

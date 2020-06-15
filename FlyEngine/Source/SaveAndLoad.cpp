@@ -1014,6 +1014,10 @@ void SaveAndLoad::LoadDataToRoom(std::string roomDataFilePath, Room* roomToLoad)
 	Texture* thumbnailTexture = (Texture*)ResourceManager::getInstance()->GetResource(thumbnailResourceName.c_str()); 
 	roomToLoad->roomThumbnail = thumbnailTexture; 
 
+	// Load Room Background Music ç
+	string backgroundMusicResourceName = json_object_dotget_string(root_obj, string("RoomData.BackgroundMusic").c_str());
+	roomToLoad->backgroundMusic = (MusicTrack*)ResourceManager::getInstance()->GetResource(backgroundMusicResourceName.c_str()); 
+
 	int counter = 0;
 	while (counter < obj_ammount)
 	{

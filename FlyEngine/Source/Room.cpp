@@ -323,6 +323,12 @@ void Room::SaveRoomData(JSON_Object* jsonObject)
 	for (auto& it : objectsInRoom)
 		it->SaveObjectData(jsonObject, count++);
 
+	// Save Room Background Music 
+	if(backgroundMusic != nullptr)
+		json_object_dotset_string(jsonObject, string("RoomData.BackgroundMusic").c_str(), backgroundMusic->GetName().c_str());
+	else
+		json_object_dotset_string(jsonObject, string("RoomData.BackgroundMusic").c_str(), "None");
+
 	// Save Blackboard 
 	if(roomBlackboard != nullptr)
 		roomBlackboard->SaveData(GetName()); 

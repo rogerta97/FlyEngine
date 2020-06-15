@@ -89,7 +89,7 @@ private:
 	bool firstUpdate = true; 
 
 	Timer* autosaveTimer; 
-	float autoSaveThreshold = 60000; 
+	float autoSaveThreshold = 300000; 
 };
 
 

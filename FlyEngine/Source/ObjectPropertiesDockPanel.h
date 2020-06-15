@@ -69,6 +69,7 @@ private:
 
 	// Emit Sound 
 	bool showSoundSelectionPopup = false; 
+	bool showImageSelectionPopup = false; 
 
 	// Conditions 
 	bool showVariableConditions = false; 
