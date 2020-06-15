@@ -50,11 +50,11 @@ void ModifyVariableAction::DoAction()
 		// Get Correct Blackboard (For Now Room) 
 		Blackboard* roomBlackboard = App->moduleWorldManager->GetSelectedRoom()->GetBlackboard(); 
 
-		if (currentEffect->targetVariable->varType == Var_Integer)
+		if (currentEffect->targetVariable != nullptr && currentEffect->targetVariable->varType == Var_Integer)
 		{
 			roomBlackboard->ModifyIntegerVariable(currentEffect); 
 		}
-		else if (currentEffect->targetVariable->varType == Var_Toggle)
+		else if (currentEffect->targetVariable != nullptr && currentEffect->targetVariable->varType == Var_Toggle)
 		{
 			roomBlackboard->ModifyToggleVariable(currentEffect);
 		}
@@ -224,7 +224,7 @@ void ModifyVariableAction::DrawEffectsList()
 		string childStr = "ChildItem" + to_string(count++);
 		ImGui::BeginChild(childStr.c_str(), ImVec2(ImGui::GetContentRegionAvail().x - 5, 100));
 
-	//	DrawEffectItem(currentEffect, count);
+		DrawEffectItem(currentEffect, count);
 
 		ImGui::EndChild();
 		ImGui::PopStyleColor();

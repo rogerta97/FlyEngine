@@ -317,6 +317,9 @@ bool ModuleWorldManager::LoadAllData()
 	vector<string> roomsSavedFiles;
 	MyFileSystem::getInstance()->GetFilesInDirectory(roomsDirectory.c_str(), roomsSavedFiles, false);
 
+	// Load Global Blackboard 
+	App->moduleWorldManager->globalBlackboard->LoadData("Global"); 
+
 	// Load Rooms -------
 	for (auto& currentRoomFile : roomsSavedFiles)
 	{
@@ -339,8 +342,6 @@ bool ModuleWorldManager::LoadAllData()
 		Texture* newThumbnail = ImageImporter::getInstance()->LoadTexture (thumbnailStr.c_str(), false);
 	}
 
-	// Load Global Blackboard 
-	App->moduleWorldManager->globalBlackboard->LoadData("Global"); 
 
 	// Load Inventory Style
 	JSON_Value* root = json_parse_file(std::string(MyFileSystem::getInstance()->GetSavedDataDirectory() + "Config.json").c_str());
