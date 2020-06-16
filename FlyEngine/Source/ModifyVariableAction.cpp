@@ -48,15 +48,20 @@ void ModifyVariableAction::DoAction()
 	for (auto& currentEffect : variablesEffectList)
 	{
 		// Get Correct Blackboard (For Now Room) 
-		Blackboard* roomBlackboard = App->moduleWorldManager->GetSelectedRoom()->GetBlackboard(); 
-
+		Blackboard* dstBlackboard = nullptr; 
+		
+		if (currentEffect->targetVariable->isGlobal)
+			dstBlackboard = App->moduleWorldManager->globalBlackboard;
+		else
+			dstBlackboard = App->moduleWorldManager->GetSelectedRoom()->GetBlackboard();
+		
 		if (currentEffect->targetVariable != nullptr && currentEffect->targetVariable->varType == Var_Integer)
 		{
-			roomBlackboard->ModifyIntegerVariable(currentEffect); 
+			dstBlackboard->ModifyIntegerVariable(currentEffect);
 		}
 		else if (currentEffect->targetVariable != nullptr && currentEffect->targetVariable->varType == Var_Toggle)
 		{
-			roomBlackboard->ModifyToggleVariable(currentEffect);
+			dstBlackboard->ModifyToggleVariable(currentEffect);
 		}
 	}
 
@@ -373,7 +378,7 @@ void ModifyVariableEffect::SaveEffect(JSON_Object* jsonObject, string serializeO
 	if (targetVariable != nullptr)
 		json_object_dotset_string(jsonObject, saveString.c_str(), targetVariable->name.c_str());
 	else
-		json_object_dotset_string(jsonObject, saveString.c_str(), "..None..");
+		json_object_dotset_string(jsonObject, saveString.c_str(), "None");
 
 	saveString = serializeObjectString + ".OperatorType";
 	json_object_dotset_number(jsonObject, saveString.c_str(), variableOperatorType);

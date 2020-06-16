@@ -49,7 +49,8 @@ bool GlobalBlackboardDockPanel::Draw()
 		Texture* plusIconTex = (Texture*)ResourceManager::getInstance()->GetResource("PlusIconWhite");
 		if (ImGui::ImageButton((ImTextureID)plusIconTex->GetTextureID(), ImVec2(20, 20)))
 		{
-			App->moduleWorldManager->globalBlackboard->AddDefaultVariable();
+			FlyVariable* newGlobalVar = App->moduleWorldManager->globalBlackboard->AddDefaultVariable();
+			newGlobalVar->isGlobal = true; 
 		}
 
 		DrawBlackboardVariables();

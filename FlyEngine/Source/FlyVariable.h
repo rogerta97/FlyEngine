@@ -26,6 +26,7 @@ public:
 public: 
 	std::string name;
 	VariableType varType;
+	bool isGlobal = false; 
 
 	int varIntegerValue;
 	bool varToogleValue;

@@ -636,6 +636,9 @@ void SaveAndLoad::LoadDialogueAction(JSON_Object* root_obj, std::string& seriali
 					FlyVariable* targetVariable = newObject->GetParentRoom()->GetBlackboardVariable(varName);
 					newEffect->targetVariable = targetVariable;
 
+					if (newEffect->targetVariable == nullptr)
+						newEffect->targetVariable = App->moduleWorldManager->globalBlackboard->GetVariable(varName); 
+
 					// Load Operator Type, IncInt, NextToggle ----------
 					int varOpTmp = (int)json_object_dotget_number(root_obj, string(effectSerializeStr + string("OperatorType")).c_str());
 					newEffect->variableOperatorType = (VariableOperatorType)varOpTmp;

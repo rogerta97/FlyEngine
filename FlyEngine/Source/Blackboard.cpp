@@ -64,10 +64,12 @@ void Blackboard::SaveData(std::string _fileName)
 
 void Blackboard::LoadData(std::string _fileName)
 {
+	bool setGlobalVars = false;
 	std::string filePath; 
 	if (isGlobal || _fileName == "Global")
 	{
 		filePath = MyFileSystem::getInstance()->GetSavedDataDirectory() + "BlackboardsData\\GlobalBlackboard.json";
+		setGlobalVars = true; 
 	}
 	else
 	{
@@ -84,6 +86,8 @@ void Blackboard::LoadData(std::string _fileName)
 	{
 		string serializeObjectStr = "FlyVariable_" + to_string(counter) + string(".");
 		FlyVariable* newVariable = new FlyVariable(); 
+		
+		newVariable->isGlobal = setGlobalVars;
 
 		std::string currentFieldObjStr = serializeObjectStr + "VariableName"; 
 		newVariable->name = json_object_dotget_string(root_obj, currentFieldObjStr.c_str());
