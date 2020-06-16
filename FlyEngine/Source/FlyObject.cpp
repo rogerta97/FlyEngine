@@ -284,13 +284,13 @@ void FlyObject::DoVariableConditionActions(FlyVariable* currentVariableValue)
 {
 	for (auto& currentAction : actionsList)
 	{
-		if (currentAction->IsOccCondition() && currentAction->PassConditionTest())
+		if (App->moduleWorldManager->GetSelectedRoom() == this->parentRoom && currentAction->IsOccCondition() && currentAction->PassConditionTest())
 		{
 			currentAction->DoAction();
 		}
 	}
 
-	if (occ_blackboardValue && PassConditionTest())
+	if (App->moduleWorldManager->GetSelectedRoom() == this->parentRoom && occ_blackboardValue && PassConditionTest())
 	{
 		BeginSequentialActions(); 
 	}
