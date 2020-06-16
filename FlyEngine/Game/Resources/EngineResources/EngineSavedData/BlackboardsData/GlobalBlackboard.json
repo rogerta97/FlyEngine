@@ -1,1 +1,1 @@
-{"VariablesAmount":1,"FlyVariable_0":{"VariableType":1,"VariableName":"FirstRoomCompleted","IntegerValue":0,"ToggleValue":false,"UID":3241601}}
+{"VariablesAmount":2,"FlyVariable_0":{"VariableType":1,"VariableName":"FirstRoomCompleted","IntegerValue":0,"ToggleValue":false,"UID":3241601},"FlyVariable_1":{"VariableType":1,"VariableName":"CanceledHouseEntrance","IntegerValue":0,"ToggleValue":false,"UID":5132597}}
