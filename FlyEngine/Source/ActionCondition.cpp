@@ -22,9 +22,9 @@ void ActionCondition::SaveCondition(JSON_Object* jsonObject, std::string seriali
 
 }
 
-void ActionCondition::DrawUIItem(int itemPosition)
+bool ActionCondition::DrawUIItem(int itemPosition)
 {
-
+	return true;
 }
 
 bool ActionCondition::PassTestCondition()

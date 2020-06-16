@@ -527,7 +527,7 @@ void ModuleWorldManager::SetSelectedRoom(Room* nextSelectedRoom, bool sendEvent)
 		//if(ViewportManager::getInstance()->viewportTexture != nullptr)
 		//	selectedRoom->roomTextureID = ViewportManager::getInstance()->viewportTexture->GetTextureID();
 
-		flog("Set Selected Room: %s", nextSelectedRoom->GetName().c_str());
+		//flog("Set Selected Room: %s", nextSelectedRoom->GetName().c_str());
 
 		if (selectedRoom != nullptr)
 			selectedRoom->isSelected = false; 

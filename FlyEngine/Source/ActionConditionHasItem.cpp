@@ -34,8 +34,18 @@ void ActionConditionHasItem::SaveCondition(JSON_Object* jsonObject, std::string 
 	json_object_dotset_number(jsonObject, string(serializeStr + ".ItemToCheckUID").c_str(), itemToCheckUID); 
 }
 
-void ActionConditionHasItem::DrawUIItem(int itemPosition)
+bool ActionConditionHasItem::DrawUIItem(int itemPosition)
 {
+	//*******************************************************************************************
+	// Delete Button Icon
+	//*******************************************************************************************
+	//Texture* deleteIcon = (Texture*)ResourceManager::getInstance()->GetResource("DeleteIcon");
+	//if (ImGui::ImageButton((ImTextureID)deleteIcon->GetTextureID(), ImVec2(15, 15)))
+	//{
+	//	return false;
+	//}
+
+	ImGui::SameLine();
 	//*******************************************************************************************
 	//* Draw Check Inventory Item Icom
 	//*******************************************************************************************
@@ -106,6 +116,8 @@ void ActionConditionHasItem::DrawUIItem(int itemPosition)
 	ImGui::PushItemWidth(itemDesiredWidth + itemDesiredOffset);
 	ImGui::InputTextWithHint(inputTextID.c_str(), "Which item..?", itemNameBuffer, IM_ARRAYSIZE(itemNameBuffer));
 	ImGui::PopItemWidth();
+
+	return true;
 }
 
 bool ActionConditionHasItem::PassTestCondition()

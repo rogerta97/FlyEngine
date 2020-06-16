@@ -20,7 +20,7 @@ public:
 
 	virtual void CleanUp();
 	virtual void SaveCondition(JSON_Object* jsonObject, std::string serializeObjectString, int pos);
-	virtual void DrawUIItem(int itemPosition);
+	virtual bool DrawUIItem(int itemPosition);
 	virtual bool PassTestCondition(); 
 
 	ActionConditionType actionConditionType; 

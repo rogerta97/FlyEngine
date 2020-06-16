@@ -253,7 +253,11 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 
 	// Name Var ----
 	static char selectedVarName[256];
-	strcpy(selectedVarName, modifyVarEffect->targetVariable->name.c_str());
+
+	if(modifyVarEffect->targetVariable != nullptr)
+		strcpy(selectedVarName, modifyVarEffect->targetVariable->name.c_str());
+	else
+		strcpy(selectedVarName, "");
 
 	string textNameStr = "##" + to_string(pos); 
 	ImGui::InputTextWithHint(textNameStr.c_str(), "Target Variable...", selectedVarName, IM_ARRAYSIZE(selectedVarName), ImGuiInputTextFlags_ReadOnly);
@@ -272,7 +276,7 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 	}
 
 	// Object Operator 
-	if (modifyVarEffect->targetVariable->varType == Var_Integer)
+	if (modifyVarEffect->targetVariable != nullptr && modifyVarEffect->targetVariable->varType == Var_Integer)
 	{
 		int intOperatorSelected = modifyVarEffect->variableOperatorType;
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
@@ -285,7 +289,7 @@ void ModifyVariableAction::DrawEffectItem(ModifyVariableEffect*& modifyVarEffect
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
 		ImGui::InputInt("Value", &modifyVarEffect->incIntegerValue);
 	}
-	else if (modifyVarEffect->targetVariable->varType == Var_Toggle)
+	else if (modifyVarEffect->targetVariable != nullptr && modifyVarEffect->targetVariable->varType == Var_Toggle)
 	{	
 		int toggleOperatorSelectedInt = modifyVarEffect->variableOperatorType;
 

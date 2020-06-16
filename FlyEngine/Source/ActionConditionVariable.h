@@ -22,7 +22,7 @@ public:
 
 	void CleanUp();
 	void SaveCondition(JSON_Object* jsonObject, std::string serializeObjectString, int pos);
-	void DrawUIItem(int itemPosition);
+	bool DrawUIItem(int itemPosition);
 
 	bool PassTestCondition(); 
 	bool PassTestIntegerVar();

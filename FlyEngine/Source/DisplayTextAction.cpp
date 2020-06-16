@@ -70,8 +70,8 @@ void DisplayTextAction::Draw()
 		if(displayTextBox)
 			DrawTextBox(); 
 
-		if(displayTextBB)
-			DrawTextBoundingBox(); 
+		/*if(displayTextBB)
+			DrawTextBoundingBox(); */
 	}
 
 	if (!text.empty())

@@ -46,8 +46,19 @@ void ActionConditionVariable::SaveCondition(JSON_Object* jsonObject, std::string
 	json_object_dotset_boolean(jsonObject, std::string(saveStr + ".TargetValueBoolean").c_str(), targetValueBoolean);
 }
 
-void ActionConditionVariable::DrawUIItem(int itemPosition)
+// Will return false in case the condition is deleted
+bool ActionConditionVariable::DrawUIItem(int itemPosition)
 {
+	//*******************************************************************************************
+	// Delete Button Icon
+	//*******************************************************************************************
+	//Texture* deleteIcon = (Texture*)ResourceManager::getInstance()->GetResource("DeleteIcon");
+	//if (ImGui::ImageButton((ImTextureID)deleteIcon->GetTextureID(), ImVec2(15, 15)))
+	//{
+	//	return false; 
+	//}
+
+	ImGui::SameLine();
 	//*******************************************************************************************
 	// Draw Check Variable Icon
 	//*******************************************************************************************
@@ -132,6 +143,8 @@ void ActionConditionVariable::DrawUIItem(int itemPosition)
 			ImGui::PopItemWidth();
 		}
 	}
+
+	return true; 
 }
 
 bool ActionConditionVariable::PassTestCondition()
