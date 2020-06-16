@@ -392,7 +392,8 @@ void SaveAndLoad::CreateFlyObjectFromSavedData(JSON_Object* root_obj, std::strin
 			{
 				newConditionVariable->targetVariable = currentRoom->GetBlackboard()->GetVariable(targetVariableName);
 			}
-			else if (App->moduleWorldManager->globalBlackboard != nullptr)
+			
+			if (newConditionVariable->targetVariable == nullptr && App->moduleWorldManager->globalBlackboard != nullptr)
 			{
 				newConditionVariable->targetVariable = App->moduleWorldManager->globalBlackboard->GetVariable(targetVariableName);
 			}
