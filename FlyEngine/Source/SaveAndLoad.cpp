@@ -985,6 +985,7 @@ void SaveAndLoad::LoadActionConditions(JSON_Object* root_obj, std::string& seria
 				{
 				case CONDITION_IS_VARIABLE:
 					holderAction->LoadConditionVariable(root_obj, serializeStr, parentObject->GetParentRoom()->GetBlackboard());
+					flog("Added Condition to %s", parentObject->GetName().c_str()); 
 					break;
 
 				case CONDITION_HAS_ITEM:
