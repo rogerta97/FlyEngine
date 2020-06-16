@@ -183,6 +183,12 @@ void FlyObjectCharacter::OnSceneEnter()
 	// Check Start Sequential 
 	if (occ_SceneEnter)
 	{
+		if (occ_blackboardValue)
+		{
+			if (!PassConditionTest())
+				return; 
+		}
+
 		if (currentSequentialAction == nullptr && !sequentialActionsList.empty())
 		{
 			currentSequentialAction = sequentialActionsList.front();

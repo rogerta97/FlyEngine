@@ -139,7 +139,6 @@ bool ActionConditionVariable::PassTestCondition()
 	bool ret = false; 
 	switch (targetVariable->varType)
 	{
-
 	case Var_Integer:
 		ret = PassTestIntegerVar(); 
 		break; 
@@ -185,7 +184,7 @@ bool ActionConditionVariable::PassTestToggleVar()
 	switch (actionConditionOperator)
 	{
 	case AC_EQUALS_TO:
-		if (targetVariable->varIntegerValue == targetValueInteger)
+		if (targetVariable->varToogleValue == targetValueBoolean)
 			return true;
 
 		break;
