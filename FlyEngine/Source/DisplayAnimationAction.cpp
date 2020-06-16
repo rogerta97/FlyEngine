@@ -110,7 +110,7 @@ void DisplayAnimationAction::Update(float dt)
 	if (animationState == ANIMATION_PLAY || animationState == ANIMATION_PLAY_ONLY_PREVIEW) 
 	{
 		animationTime += App->GetDeltaTime(); 
-		if (animationTime > animation->GetFramesInterval())
+		if (animationTime > animation->GetFramesInterval() && animation->GetFramesAmount() > 1)
 		{
 			animationTime = 0;
 
