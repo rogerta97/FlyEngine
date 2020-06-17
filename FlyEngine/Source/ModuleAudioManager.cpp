@@ -8,6 +8,7 @@ ModuleAudioManager::ModuleAudioManager(bool start_enabled)
 {
 	musicVolume = 50.0f;
 	SFXVolume = 10.0f;
+	currentMusic = nullptr; 
 }
 
 ModuleAudioManager::~ModuleAudioManager()

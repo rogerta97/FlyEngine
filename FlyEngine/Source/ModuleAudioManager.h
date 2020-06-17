@@ -3,6 +3,7 @@
 
 #include "Module.h"
 
+class MusicTrack; 
 class ModuleAudioManager : public Module
 {
 public:
@@ -18,6 +19,8 @@ public:
 
 	float GetSFXVolume();
 	void SetSFXVolume(float newVolume);
+
+	MusicTrack* currentMusic = nullptr;
 
 private:
 

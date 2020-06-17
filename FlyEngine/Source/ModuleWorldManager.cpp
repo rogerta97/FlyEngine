@@ -9,6 +9,7 @@
 #include "GameInventory.h"
 #include "RoomUIHandler.h"
 #include "AudioImporter.h"
+#include "ModuleAudioManager.h"
 #include "Room.h"
 #include "NodeGraph.h"
 #include "FontImporter.h"
@@ -254,7 +255,11 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 			GameInventory::getInstance()->ClearItems();
 		}
 
-		GetSelectedRoom()->backgroundMusic->Stop();
+		if (App->moduleAudioManager->currentMusic)
+		{
+			App->moduleAudioManager->currentMusic->Stop();
+			App->moduleAudioManager->currentMusic = nullptr; 
+		}
 
 		for (auto& currentRoom : roomsInWorldList)
 		{
@@ -278,19 +283,29 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 				currentObject->OnSceneEnter(); 
 			}
 
-			if (GetSelectedRoom()->backgroundMusic != nullptr)
-			{
-				GetSelectedRoom()->backgroundMusic->Play(0, true);
-			}
-			else
-			{
-				GetSelectedRoom()->backgroundMusic->Stop();
-			}
-
 			if (!GetSelectedRoom()->reloadWhenStop)
 			{
 				GetSelectedRoom()->reloadWhenStop = true;
 				flog("Needs To Reload: %s", GetSelectedRoom()->GetName().c_str()); 
+			}
+
+			if (GetSelectedRoom()->backgroundMusic != nullptr)
+			{
+				if (App->moduleAudioManager->currentMusic == nullptr)
+				{
+					App->moduleAudioManager->currentMusic = GetSelectedRoom()->backgroundMusic; 
+					App->moduleAudioManager->currentMusic->Play(0, true);
+				}	
+				else if (App->moduleAudioManager->currentMusic != GetSelectedRoom()->backgroundMusic)
+				{
+					App->moduleAudioManager->currentMusic = GetSelectedRoom()->backgroundMusic;
+					App->moduleAudioManager->currentMusic->Play(0, true);
+				}
+			}
+			else
+			{
+				App->moduleAudioManager->currentMusic->Stop();
+				App->moduleAudioManager->currentMusic = nullptr;
 			}
 		}
 
