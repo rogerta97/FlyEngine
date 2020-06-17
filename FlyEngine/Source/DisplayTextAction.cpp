@@ -142,8 +142,14 @@ void DisplayTextAction::SaveAction(JSON_Object* jsonObject, string serializeObje
 	if (text.empty())	
 		json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("Text")).c_str(), "None");	
 	else	
-		json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("Text")).c_str(), text.c_str());	
+		json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("Text")).c_str(), text.c_str());
 
+	// Save Text Color 
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("Color.r")).c_str(), textColor.x);
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("Color.g")).c_str(), textColor.y);
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("Color.b")).c_str(), textColor.z);
+	json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("Color.a")).c_str(), textColor.w);
+	
 	// Save Text Font 
 	if(textFont != nullptr)
 		json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("FontName")).c_str(), textFont->GetName().c_str());
@@ -599,6 +605,7 @@ void DisplayTextAction::RenderText(bool setup, float bbOffset)
 
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glDisableClientState(GL_VERTEX_ARRAY);
+		glColor4f(255, 255, 255, 255);
 
 		letterCount++;
 	}

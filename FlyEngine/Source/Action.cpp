@@ -106,7 +106,7 @@ int Action::GetOccurrencesMarkedAmount()
 
 bool Action::PassAllOccurrenceConditions()
 {
-	return false;
+	return true;
 }
 
 void Action::SaveAction(JSON_Object* jsonObject, std::string serializeObjectString, bool literalString, int actionPositionInObject)

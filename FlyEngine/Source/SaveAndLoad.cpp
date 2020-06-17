@@ -809,6 +809,14 @@ void SaveAndLoad::LoadDisplayTextAction(JSON_Object* root_obj, std::string& seri
 			displayTextAction->SetFont(newFont);
 	}
 
+	float4 color = float4::zero; 
+	color.x = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("Color.r")).c_str());
+	color.y = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("Color.g")).c_str());
+	color.z = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("Color.b")).c_str());
+	color.w = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("Color.a")).c_str());
+
+	displayTextAction->SetTextColor(color); 
+
 	string textTmp = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("Text")).c_str());
 	if (textTmp != "None")
 	{
