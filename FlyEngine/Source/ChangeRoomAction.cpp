@@ -215,9 +215,9 @@ void ChangeRoomAction::SaveAction(JSON_Object* jsonObject, string serializeObjec
 	Action::SaveOccurrence(jsonObject, toolsSerializeSection);
 
 	if (destinationRoom != nullptr)
-		json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("Destination")).c_str(), destinationRoom->GetUID());
+		json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("Destination")).c_str(), destinationRoom->GetName().c_str());
 	else
-		json_object_dotset_number(jsonObject, string(toolsSerializeSection + string("Destination")).c_str(), 0);
+		json_object_dotset_string(jsonObject, string(toolsSerializeSection + string("Destination")).c_str(), 0);
 }
 
 void ChangeRoomAction::DoAction()

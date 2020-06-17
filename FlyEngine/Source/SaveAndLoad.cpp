@@ -890,7 +890,8 @@ void SaveAndLoad::LoadModifyVariableAction(JSON_Object* root_obj, std::string& s
 
 void SaveAndLoad::LoadChangeRoomAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)
 {
-	UID destinationRoomUID = json_object_dotget_number(root_obj, string(serializeObjectStrActions + string("Destination")).c_str());
+	string destinationRoom = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("Destination")).c_str());
+	//string destinationRoom = "Hall";
 
 	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "ActionClass").c_str());
 
@@ -903,7 +904,7 @@ void SaveAndLoad::LoadChangeRoomAction(JSON_Object* root_obj, std::string& seria
 	changeRoomAction->SetActionClass((ActionClass)actionClass);
 	changeRoomAction->LoadOccurrence(root_obj, serializeObjectStrActions + string("Occurrence."));
 
-	Room* room = App->moduleWorldManager->GetRoom(destinationRoomUID);
+	Room* room = App->moduleWorldManager->GetRoom(destinationRoom);
 	changeRoomAction->SetDestination(room);
 
 	if(room != nullptr)
