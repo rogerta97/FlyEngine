@@ -220,7 +220,7 @@ void FlyObject::OnSceneEnter()
 {
 	for (auto& currentAction : actionsList)
 	{
-		if (currentAction->IsOccSceneEnter())
+		if (currentAction->IsOccSceneEnter() && currentAction->PassAllOccurrenceConditions())
 			currentAction->DoAction();
 	}
 
@@ -284,7 +284,7 @@ void FlyObject::DoVariableConditionActions(FlyVariable* currentVariableValue)
 {
 	for (auto& currentAction : actionsList)
 	{
-		if (App->moduleWorldManager->GetSelectedRoom() == this->parentRoom && currentAction->IsOccCondition() && currentAction->PassConditionTest())
+		if (App->moduleWorldManager->GetSelectedRoom() == this->parentRoom && currentAction->IsOccCondition() && currentAction->GetOccurrencesMarkedAmount() == 1 && currentAction->PassConditionTest())
 		{
 			currentAction->DoAction();
 		}

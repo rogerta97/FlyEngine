@@ -23,6 +23,7 @@ public:
 	void DrawUISettings(); 
 	void DrawUISettingsInButton(); 
 	void DrawActionOccurenceCheckboxes(); 
+	bool PassAllOccurrenceConditions();
 
 	void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false, int actionPositionInObject = 0);
 	void DoAction(); 

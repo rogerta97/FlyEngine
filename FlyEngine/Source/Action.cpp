@@ -91,6 +91,24 @@ bool Action::IsActionSequential()
 	return false; 
 }
 
+int Action::GetOccurrencesMarkedAmount()
+{
+	int occurrencesAmount = 0; 
+
+	if (occ_blackboardValue) occurrencesAmount++;
+	if (occ_mouseOver) occurrencesAmount++;
+	if (occ_ObjectClicked) occurrencesAmount++;
+	if (occ_SceneEnter) occurrencesAmount++;
+	if (occ_SceneLeave) occurrencesAmount++;
+
+	return occurrencesAmount; 
+}
+
+bool Action::PassAllOccurrenceConditions()
+{
+	return false;
+}
+
 void Action::SaveAction(JSON_Object* jsonObject, std::string serializeObjectString, bool literalString, int actionPositionInObject)
 {
 	json_object_dotset_string(jsonObject, string(serializeObjectString + "Name").c_str(), GetActionName().c_str());

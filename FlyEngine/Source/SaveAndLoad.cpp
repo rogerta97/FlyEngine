@@ -890,7 +890,9 @@ void SaveAndLoad::LoadModifyVariableAction(JSON_Object* root_obj, std::string& s
 
 void SaveAndLoad::LoadChangeRoomAction(JSON_Object* root_obj, std::string& serializeObjectStrActions, FlyObject* newObject)
 {
-	string destinationRoom = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("Destination")).c_str());
+	string destinationRoom = "";
+	if(json_object_dothas_value(root_obj, string(serializeObjectStrActions + string("Destination")).c_str()))
+		destinationRoom = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("Destination")).c_str());
 	//string destinationRoom = "Hall";
 
 	int actionClass = json_object_dotget_number(root_obj, string(serializeObjectStrActions + "ActionClass").c_str());

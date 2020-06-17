@@ -72,8 +72,11 @@ public:
 	virtual void DrawUISettingsSequential(); 
 	virtual void DrawUISettingsInButton(); 
 
+	virtual bool PassAllOccurrenceConditions(); 
+
 	// Utility ------------------------
 	bool IsActionSequential(); 
+	int GetOccurrencesMarkedAmount(); 
 
 	// Save & Load --------------------
 	virtual void SaveAction(JSON_Object* jsonObject, string serializeObjectString, bool literalStr = false, int actionPositionInObject = 0);

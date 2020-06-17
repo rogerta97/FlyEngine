@@ -40,7 +40,7 @@ void ChangeRoomAction::DrawActionOccurenceCheckboxes()
 	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.12f, 0.14f, 0.17f, 1.00f));
 
 	static char itemToClickWithNameBuffer[256];
-	int childSize = 67; 
+	int childSize = 95; 
 
 	if (showClickWithItems)
 		childSize += 30; 
@@ -50,7 +50,11 @@ void ChangeRoomAction::DrawActionOccurenceCheckboxes()
 
 	ImGui::BeginChild("##OccChild", ImVec2(ImGui::GetContentRegionAvailWidth(), childSize));
 	INC_CURSOR_4;
-	
+	if (ImGui::Checkbox("Scene Enter", &occ_SceneEnter))
+	{
+	}
+
+	INC_CURSOR_4;
 	if (ImGui::Checkbox("Object Clicked", &occ_ObjectClicked))
 	{
 		if (!occ_ObjectClicked)
@@ -136,6 +140,22 @@ void ChangeRoomAction::DrawActionOccurenceCheckboxes()
 
 	ImGui::PopFont();
 	ImGui::PopStyleColor(); 
+}
+
+bool ChangeRoomAction::PassAllOccurrenceConditions()
+{
+	bool ret = true;
+	// Object Clicked 
+	if (occ_ObjectClicked && this->parentObject->GetClickableArea()->IsBoxClicked())
+	{
+		ret = false;
+	}
+
+	// Blackboard Conditions 
+	if (occ_blackboardValue && !PassConditionTest())
+		ret = false; 
+
+	return ret; 
 }
 
 void ChangeRoomAction::Init()
