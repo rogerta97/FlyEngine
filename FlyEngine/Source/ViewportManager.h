@@ -69,7 +69,8 @@ public:
 	// Render Viewport Settings 
 	bool drawGizmos;
 	bool blockInputTick; 
-	bool blockInput; 
+	bool blockInput;
+	bool drawingDialogues; 
 
 };
 

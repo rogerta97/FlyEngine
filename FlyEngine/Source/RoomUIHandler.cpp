@@ -118,6 +118,9 @@ void RoomUIHandler::CleanUp()
 
 void RoomUIHandler::DrawUIElements()
 {
+	if (App->isEngineInPlayMode && ViewportManager::getInstance()->drawingDialogues)
+		return; 
+
 	for (auto& currentUIElement : uiElements)
 	{
 		currentUIElement->Draw(); 

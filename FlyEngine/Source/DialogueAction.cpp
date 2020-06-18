@@ -12,6 +12,7 @@
 #include "ModuleImGui.h"
 #include "ResourceManager.h"
 #include "Texture.h"
+#include "ViewportManager.h"
 
 #include "mmgr.h"
 
@@ -64,6 +65,7 @@ void DialogueAction::Update(float dt)
 		{
 			dialogue->dialogueViewportHandler->SetCurrentStep(nullptr);
 			actionFinished = true;
+			ViewportManager::getInstance()->drawingDialogues = false;
 			flog("The Dialog Has Finsihed");
 		}
 		else if (clickedAnswer != nullptr)
@@ -75,6 +77,7 @@ void DialogueAction::Update(float dt)
 			if (nextStep == nullptr)
 			{
 				actionFinished = true;
+				ViewportManager::getInstance()->drawingDialogues = false; 
 				flog("The Dialog Has Finsihed"); 
 			}
 		}

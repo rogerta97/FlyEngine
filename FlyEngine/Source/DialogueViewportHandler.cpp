@@ -4,7 +4,7 @@
 #include "StepAnswer.h"
 #include "DialogueText.h"
 #include "DisplayTextAction.h"
-
+#include "ViewportManager.h"
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "GameViewportDockPanel.h"
@@ -38,6 +38,7 @@ void DialogueViewportHandler::DrawSentence()
 {
 	if (currentStep != nullptr)
 	{
+		ViewportManager::getInstance()->drawingDialogues = true; 
 		DrawSentenceBackground();
 
 		currentStep->GetDialogueText()->GetTextAction()->SetTextColor(currentStep->fontColorHold);
