@@ -304,7 +304,8 @@ void DialogueAction::DrawUISettings()
 					ImGui::PopFont();
 
 					PUSH_CHILD_BG_COLOR_DARK;
-					ImGui::BeginChild("Answers Effect Childs", ImVec2(ImGui::GetContentRegionAvail().x - 8, 200));
+					string childID = "Answers Effect Childs" + to_string(currentAnswer->GetUID());
+					ImGui::BeginChild(childID.c_str(), ImVec2(ImGui::GetContentRegionAvail().x - 8, 200));
 
 					if (currentAnswer->GetModifyVarEffect() != nullptr)
 						currentAnswer->GetModifyVarEffect()->DrawEffectsList();
