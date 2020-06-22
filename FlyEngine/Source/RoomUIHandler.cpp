@@ -86,6 +86,9 @@ void RoomUIHandler::LoadRoomUI(JSON_Object* jsonObject, string baseSerializeStr)
 
 void RoomUIHandler::Update()
 {
+	if (App->isEngineInPlayMode && ViewportManager::getInstance()->drawingDialogues)
+		return;
+
 	for (auto& currentUIElement : uiElements)
 	{
 		currentUIElement->Update();
