@@ -64,6 +64,8 @@ void Blackboard::SaveData(std::string _fileName)
 
 void Blackboard::LoadData(std::string _fileName)
 {
+	CleanUp(); 
+
 	bool setGlobalVars = false;
 	std::string filePath; 
 	if (isGlobal || _fileName == "Global")

@@ -229,6 +229,13 @@ void FileBrowserDockPanel::DrawResourceTextureInfo(Texture* resourceTexture)
 	ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5);
 	ImGui::Text("Dimensions: "); ImGui::SameLine(); 
 
+	string widthPxStr = to_string(resourceTexture->GetWidth()) + " px"; 
+	string heigthPxStr = to_string(resourceTexture->GetHeigth()) + " px"; 
+	ImGui::Text(widthPxStr.c_str()); ImGui::SameLine();
+	ImGui::Text("/");  ImGui::SameLine();
+	ImGui::Text(heigthPxStr.c_str());
+
+
 	ImGui::EndChild();
 	ImGui::PopStyleColor();
 }

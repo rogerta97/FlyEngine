@@ -271,6 +271,9 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 			}
 		}
 
+
+		App->moduleWorldManager->globalBlackboard->LoadData("Global");
+
 		break; 
 
 	case FlyEngineEvent::ENTER_ROOM:
