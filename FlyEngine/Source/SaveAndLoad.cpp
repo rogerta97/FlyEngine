@@ -800,7 +800,7 @@ void SaveAndLoad::LoadDisplayTextAction(JSON_Object* root_obj, std::string& seri
 	string fontTmp = json_object_dotget_string(root_obj, string(serializeObjectStrActions + string("FontName")).c_str());
 	if (fontTmp != "None")
 	{
-		Font* tmptextFont = (Font*)ResourceManager::GetResource("arial", RESOURCE_FONT);
+		Font* tmptextFont = (Font*)ResourceManager::GetResource("Oswald-Regular", RESOURCE_FONT);
 
 		Font* newFont = new Font();
 		newFont = FontImporter::getInstance()->LoadFont(tmptextFont->GetPath());

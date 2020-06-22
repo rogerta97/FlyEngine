@@ -361,7 +361,8 @@ void FlyObject::DrawDebugShapes()
 		if (selectedAction != nullptr && selectedAction->GetType() == ACTION_DISPLAY_TEXT)
 			return;
 
-		gizmos->Draw();
+		if(!App->isEngineInPlayMode)
+			gizmos->Draw();
 	}
 }
 

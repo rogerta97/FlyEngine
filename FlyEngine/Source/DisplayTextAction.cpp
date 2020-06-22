@@ -45,7 +45,7 @@ DisplayTextAction::DisplayTextAction(FlyObject* _parentObject)
 
 	originTextPosition = float2(0, 0);
 
-	Font* tmptextFont = (Font*)ResourceManager::GetResource("arial", RESOURCE_FONT);
+	Font* tmptextFont = (Font*)ResourceManager::GetResource("Oswald-Regular", RESOURCE_FONT);
 
 	textFont = new Font(); 
 	textFont = FontImporter::getInstance()->LoadFont(tmptextFont->GetPath()); 
