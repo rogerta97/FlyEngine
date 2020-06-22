@@ -65,10 +65,10 @@ bool GamePropertiesDockPanel::Draw()
 
 		if (ImGui::Button("Save As Release"))
 		{
-			ImGui::OpenPopup("save_as_release"); 
+			ImGui::OpenPopup("Save As Release"); 
 		}
 
-		if (ImGui::BeginPopupModal("save_as_release"))
+		if (ImGui::BeginPopupModal("Save As Release"))
 		{
 			ImGui::SetWindowSize(ImVec2(330, 120));
 			ImGui::PushFont(App->moduleImGui->rudaRegularTiny);

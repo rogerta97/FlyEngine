@@ -133,8 +133,8 @@ void ModuleManager::StartGame(const UID& firstRoomUID)
 	App->BroadCastEvent(FlyEngineEvent::ENGINE_PLAY); 
 	App->isEngineInPlayMode = true; 
 
-	App->moduleWorldManager->SetSelectedRoom(firstRoomUID, true);
 	App->moduleImGui->AddaptToFlySection(FLY_SECTION_ROOM_EDIT);
+	App->moduleWorldManager->SetSelectedRoom(firstRoomUID, true);
 	App->moduleImGui->gameViewportDockPanel->FitViewportToRegion();
 	App->moduleWorldManager->FitObjectUtils(); 
 

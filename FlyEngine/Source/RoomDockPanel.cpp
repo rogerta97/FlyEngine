@@ -573,6 +573,15 @@ void RoomDockPanel::ShowViewportSettingsTab()
 			showMusicSelectionPopup = true;
 		}
 
+	//	if (currentRoom->backgroundMusic != nullptr)
+		//{
+			ImGui::SameLine();
+			if (ImGui::Button("Clear##ClearMusic"))
+			{
+				currentRoom->backgroundMusic = nullptr; 
+			}
+		//}
+
 		if (showMusicSelectionPopup)
 		{
 			Resource* selectedSound = ResourceManager::getInstance()->PrintMusicSelectionPopup();

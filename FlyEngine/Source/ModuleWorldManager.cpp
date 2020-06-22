@@ -271,7 +271,7 @@ void ModuleWorldManager::ReceiveEvent(FlyEngineEvent eventType)
 			}
 		}
 
-
+		ViewportManager::getInstance()->drawingDialogues = false;
 		App->moduleWorldManager->globalBlackboard->LoadData("Global");
 
 		break; 
